@@ -43,6 +43,28 @@
                 count++;
             });
 
+            $("#preview-inferred-temporal").click(function(event) {
+                event.preventDefault();
+
+                <#if inferredTemporalCoverage?has_content>
+                // remove all current items
+                $("[id^=temporal-]").remove();
+
+                var idNewForm = "temporal-" + count;
+                var newForm = $("#temporal-99999").clone().attr("id", idNewForm).css('display', '');
+                // Add the fields depending of the actual value in the select
+                var typeSubForm = $("#tempTypes").prop("value");
+                //Adding the 'sub-form' to the new form.
+                addTypeForm(newForm, typeSubForm, true);
+                $("#temporals").append(newForm);
+                newForm.hide();
+                //Updating the components of the new 'sub-form'.
+                updateFields(idNewForm, count);
+                $("#temporal-" + count).slideDown("slow").css('zoom', 1);
+                count++;
+                </#if>
+            });
+
             /**
              * This method add a new subform to the form that is in the parameter.
              */
@@ -259,6 +281,23 @@
                                 <@s.text name='manage.metadata.tempcoverage.intro'/>
                             </p>
 
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-6">
+                                    <@checkbox name="inferTemporalCoverageAutomatically" value="${inferTemporalCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                </div>
+
+                                <div class="col-md-6 d-md-flex justify-content-md-end">
+                                    <a id="preview-inferred-temporal" class="text-smaller" href="">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                        </svg>
+                                    </span>
+                                        <span><@s.text name="eml.previewInferred"/></span>
+                                    </a>
+                                </div>
+                            </div>
+
                             <div id="temporals">
                                 <!-- Adding the temporal coverages that already exists on the file -->
                                 <#assign next_agent_index=0 />
@@ -318,6 +357,30 @@
                                     </div>
                                 </#list>
                             </div>
+
+<#--                            <div class="table-responsive mt-2">-->
+<#--                                <table class="table table-sm table-borderless mb-0">-->
+<#--                                    <tbody>-->
+<#--                                    <tr>-->
+<#--                                        <th class="col-4 p-0">-->
+<#--                                            Start date-->
+<#--                                        </th>-->
+<#--                                        <td class="p-0">-->
+<#--                                            ${inferredTemporalCoverage.key}-->
+
+<#--                                        </td>-->
+<#--                                    </tr>-->
+<#--                                    <tr>-->
+<#--                                        <th class="p-0">-->
+<#--                                            End date-->
+<#--                                        </th>-->
+<#--                                        <td class="p-0">-->
+<#--                                            ${inferredTemporalCoverage.name}-->
+<#--                                        </td>-->
+<#--                                    </tr>-->
+<#--                                    </tbody>-->
+<#--                                </table>-->
+<#--                            </div>-->
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-2">
