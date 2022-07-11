@@ -103,7 +103,7 @@
                                     <@checkbox name="inferTaxonomicCoverageAutomatically" value="${inferTaxonomicCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
-                                <div class="col-md-6 d-md-flex justify-content-md-end">
+                                <div class="col-md-6 d-flex justify-content-end">
                                     <a id="preview-inferred-taxonomic" class="text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
@@ -131,7 +131,9 @@
                                             </a>
                                         </div>
 
-                                        <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
+                                        <div class="mt-2">
+                                            <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
+                                        </div>
 
                                         <!-- Taxon list-->
                                         <div class="my-2 text-smaller">
@@ -233,7 +235,9 @@
                                     </a>
                                 </div>
 
-                                <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
+                                <div class="mt-2">
+                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
+                                </div>
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
