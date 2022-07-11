@@ -147,6 +147,14 @@ public class MetadataAction extends ManagerBaseAction {
     resource.setInferTaxonomicCoverageAutomatically(inferTaxonomicCoverageAutomatically);
   }
 
+  public boolean isInferTemporalCoverageAutomatically() {
+    return resource.isInferTemporalCoverageAutomatically();
+  }
+
+  public void setInferTemporalCoverageAutomatically(boolean inferTemporalCoverageAutomatically) {
+    resource.setInferTemporalCoverageAutomatically(inferTemporalCoverageAutomatically);
+  }
+
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
     return JGTICuratorialUnitType.HTML_SELECT_MAP;
   }
@@ -422,6 +430,11 @@ public class MetadataAction extends ManagerBaseAction {
 
           // set inferred data if 'infer automatically' is checked
           if (resource.isInferTemporalCoverageAutomatically()) {
+            if (inferredTemporalCoverage == null) {
+              // TODO: 11/07/2022 log exception? inform user
+              break;
+            }
+
             resource.getEml().getTemporalCoverages().clear();
             TemporalCoverage temporalCoverage = new TemporalCoverage();
 
@@ -987,5 +1000,9 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
     return inferredTaxonomicCoverage;
+  }
+
+  public KeyNamePair getInferredTemporalCoverage() {
+    return inferredTemporalCoverage;
   }
 }
