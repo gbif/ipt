@@ -73,7 +73,8 @@ public final class Constants {
   public static final String VOCAB_PHYLUM = "http://rs.tdwg.org/dwc/terms/phylum";
   public static final String VOCAB_CLASS = "http://rs.tdwg.org/dwc/terms/class";
   public static final String VOCAB_ORDER = "http://rs.tdwg.org/dwc/terms/order";
-  public static final String VOCAB_FAMILY= "http://rs.tdwg.org/dwc/terms/family";
+  public static final String VOCAB_FAMILY = "http://rs.tdwg.org/dwc/terms/family";
+  public static final String VOCAB_EVENT_DATE = "http://rs.tdwg.org/dwc/terms/eventDate";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "https://www.gbif.org";
   public static final String THESAURUS_DATASET_TYPE =

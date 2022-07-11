@@ -42,10 +42,12 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -97,6 +99,7 @@ public class MetadataAction extends ManagerBaseAction {
   private boolean doiReservedOrAssigned = false;
   private BBox inferredGeocoverage;
   private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
+  private KeyNamePair inferredTemporalCoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -404,6 +407,8 @@ public class MetadataAction extends ManagerBaseAction {
                 taxonItem.setScientificName(pair.getName());
                 taxonomicCoverage.addTaxonKeyword(taxonItem);
               }
+
+              resource.getEml().getTaxonomicCoverages().add(taxonomicCoverage);
             }
           }
         }
@@ -412,6 +417,23 @@ public class MetadataAction extends ManagerBaseAction {
       case TEMPORAL_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
+        } else {
+          inferredTemporalCoverage = resourceManager.inferTemporalCoverageFromSourceData(resource);
+
+          // set inferred data if 'infer automatically' is checked
+          if (resource.isInferTemporalCoverageAutomatically()) {
+            resource.getEml().getTemporalCoverages().clear();
+            TemporalCoverage temporalCoverage = new TemporalCoverage();
+
+            try {
+              temporalCoverage.setStart(inferredTemporalCoverage.getKey());
+              temporalCoverage.setEnd(inferredTemporalCoverage.getName());
+            } catch (ParseException e) {
+              // TODO: 11/07/2022 log exception and inform user about it somehow
+            }
+
+            resource.getEml().getTemporalCoverages().add(temporalCoverage);
+          }
         }
         break;
 

@@ -16,6 +16,9 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.common.parsers.core.OccurrenceParseResult;
+import org.gbif.common.parsers.core.ParseResult;
+import org.gbif.common.parsers.date.DateParsers;
+import org.gbif.common.parsers.date.TemporalParser;
 import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
 import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -107,6 +110,7 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.Point;
+import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.registry.metadata.EMLProfileVersion;
 import org.gbif.registry.metadata.EmlValidator;
 import org.gbif.registry.metadata.InvalidEmlException;
@@ -128,6 +132,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -169,6 +176,7 @@ import org.xml.sax.SAXException;
 import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
+import static org.gbif.ipt.config.Constants.VOCAB_EVENT_DATE;
 import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
 import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
@@ -1975,6 +1983,85 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public KeyNamePair inferTemporalCoverageFromSourceData(Resource resource) {
+    int eventDataSourceColumnIndex = -1;
+    boolean noValidData = true;
+    String startDateStr = null;
+    TemporalAccessor startDateTA = null;
+    String endDateStr = null;
+    TemporalAccessor endDateTA = null;
+
+    if (!resource.getMappings().isEmpty()) {
+      for (ExtensionMapping mapping : resource.getMappings()) {
+        for (PropertyMapping field : mapping.getFields()) {
+          if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
+            eventDataSourceColumnIndex = field.getIndex();
+          }
+        }
+
+        ClosableReportingIterator<String[]> iter = null;
+        try {
+          // get the source iterator
+          iter = sourceManager.rowIterator(mapping.getSource());
+
+          while (iter.hasNext()) {
+            String[] in = iter.next();
+            if (in == null || in.length == 0) {
+              continue;
+            }
+
+            if (eventDataSourceColumnIndex != -1) {
+              String rawEventDateValue = in[eventDataSourceColumnIndex];
+
+              TemporalParser temporalParser = DateParsers.defaultTemporalParser();
+              ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
+              TemporalAccessor parsedEventDateTA = parsedEventDateResult.getPayload();
+
+              // skip erratic records
+              if (!parsedEventDateResult.isSuccessful() || parsedEventDateTA == null || !parsedEventDateTA.isSupported(ChronoField.YEAR)) {
+                continue;
+              } else {
+                noValidData = false;
+              }
+
+              if (startDateTA == null) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+              if (endDateTA == null) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+            }
+          }
+        } catch (Exception e) {
+          LOG.error("Error while trying to infer geocoverage from source data", e);
+        } finally {
+          if (iter != null) {
+            try {
+              iter.close();
+            } catch (Exception e) {
+              LOG.error("Error while closing iterator", e);
+            }
+          }
+        }
+      }
+    }
+
+    return noValidData ? null : new KeyNamePair(startDateStr, endDateStr);
+  }
+
+  @Override
   public Map<String, Set<KeyNamePair>> inferTaxonomicCoverageFromSourceData(Resource resource) {
     Map<String, Set<KeyNamePair>> result = new HashMap<>();
     int kingdomSourceColumnIndex = -1;
@@ -2114,7 +2201,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               LatLng latLng = latLngParseResult.getPayload();
 
               // skip erratic records
-              if (!latLngParseResult.isSuccessful() && latLng == null) {
+              if (!latLngParseResult.isSuccessful() || latLng == null) {
                 continue;
               } else {
                 noValidData = false;
