@@ -141,7 +141,7 @@ public class AccountAction extends POSTAction {
         currentPassword = null;
         password2 = null;
         addActionMessage(getText("admin.user.account.passwordChanged"));
-        LOG.error("The password has been reset");
+        LOG.debug("The password has been reset");
         return SUCCESS;
       }
     }
