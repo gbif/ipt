@@ -300,7 +300,10 @@
                                     <#list resource.getMappings(resource.coreRowType) as m>
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
-                                            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
+                                            <td>
+                                                ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <span class="fw-bold">${(m.source.name)!}</span><br>
+                                                ${(m.lastModified?datetime?string.medium)!}
+                                            </td>
                                             <td class="d-flex justify-content-end pt-0">
                                                 <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                     <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -326,7 +329,10 @@
                                                 <#list resource.getMappings(ext.rowType) as m>
                                                     <tr <#if m_index==0>class="mapping_row"</#if>>
                                                         <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
-                                                        <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
+                                                        <td>
+                                                            ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <span class="fw-bold">${(m.source.name)!}</span><br>
+                                                            ${(m.lastModified?datetime?string.medium)!}
+                                                        </td>
                                                         <td class="d-flex justify-content-end">
                                                             <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                                 <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
