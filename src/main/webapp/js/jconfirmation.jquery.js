@@ -23,12 +23,12 @@
 
             $(this).bind('click', function (e) {
                 var submitBtn = $(this);
+                var thisHref = $(this).attr('href');
 
                 if ($(this).attr("jconfirmed")) {
                     submitBtn.removeAttr("jconfirmed");
                 } else {
                     e.preventDefault();
-                    thisHref = $(this).attr('href');
 
                     // get empty modal window
                     var dialogWindow = $("#dialog-confirm");
