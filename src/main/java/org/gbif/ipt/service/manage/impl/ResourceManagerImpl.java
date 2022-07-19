@@ -49,6 +49,10 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredMetadata;
+import org.gbif.ipt.model.InferredGeographicCoverage;
+import org.gbif.ipt.model.InferredTaxonomicCoverage;
+import org.gbif.ipt.model.InferredTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
@@ -110,7 +114,6 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.Point;
-import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.registry.metadata.EMLProfileVersion;
 import org.gbif.registry.metadata.EmlValidator;
 import org.gbif.registry.metadata.InvalidEmlException;
@@ -760,6 +763,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
+
+    // aliases for inferred metadata
+    xstream.alias("inferredMetadata", InferredMetadata.class);
+    xstream.alias("inferredGeographicCoverage", InferredGeographicCoverage.class);
+    xstream.alias("inferredTaxonomicCoverage", InferredTaxonomicCoverage.class);
+    xstream.alias("inferredTemporalCoverage", InferredTemporalCoverage.class);
+
     xstream.alias("filesource", TextFileSource.class);
     xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
@@ -1967,7 +1977,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
     if (!resource.getMappings().isEmpty()) {
-      BBox inferredGeocoverage = inferGeocoverageFromSourceData(resource);
+      BBox inferredGeocoverage = inferMetadata(resource).getInferredGeographicCoverage().getData();
       // check object to preserve description
       if (resource.getEml().getGeospatialCoverages().isEmpty()) {
         GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
@@ -2161,7 +2171,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public BBox inferGeocoverageFromSourceData(Resource resource) {
+  public InferredMetadata inferMetadata(Resource resource) {
+    InferredMetadata inferredMetadata = new InferredMetadata();
+    inferredMetadata.setLastModified(new Date());
+
     int decimalLongitudeSourceColumnIndex = -1;
     int decimalLatitudeSourceColumnIndex = -1;
     boolean noValidData = true;
@@ -2192,6 +2205,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               continue;
             }
 
+            // geographic coverage section
             if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
               String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
               String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
@@ -2201,35 +2215,35 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               LatLng latLng = latLngParseResult.getPayload();
 
               // skip erratic records
-              if (!latLngParseResult.isSuccessful() || latLng == null) {
-                continue;
-              } else {
+              if (latLng != null && latLngParseResult.isSuccessful()) {
                 noValidData = false;
-              }
 
-              // initialize min and max values
-              if (initializeExtremeValues) {
-                minDecimalLatitude = latLng.getLat();
-                maxDecimalLatitude = latLng.getLat();
-                minDecimalLongitude = latLng.getLng();
-                maxDecimalLongitude = latLng.getLng();
-                initializeExtremeValues = false;
-              }
+                // initialize min and max values
+                if (initializeExtremeValues) {
+                  minDecimalLatitude = latLng.getLat();
+                  maxDecimalLatitude = latLng.getLat();
+                  minDecimalLongitude = latLng.getLng();
+                  maxDecimalLongitude = latLng.getLng();
+                  initializeExtremeValues = false;
+                }
 
-              if (latLng.getLat() > maxDecimalLatitude) {
-                maxDecimalLatitude = latLng.getLat();
-              }
-              if (latLng.getLat() < minDecimalLatitude) {
-                minDecimalLatitude = latLng.getLat();
-              }
+                if (latLng.getLat() > maxDecimalLatitude) {
+                  maxDecimalLatitude = latLng.getLat();
+                }
+                if (latLng.getLat() < minDecimalLatitude) {
+                  minDecimalLatitude = latLng.getLat();
+                }
 
-              if (latLng.getLng() > maxDecimalLongitude) {
-                maxDecimalLongitude = latLng.getLng();
-              }
-              if (latLng.getLng() < minDecimalLongitude) {
-                minDecimalLongitude = latLng.getLng();
+                if (latLng.getLng() > maxDecimalLongitude) {
+                  maxDecimalLongitude = latLng.getLng();
+                }
+                if (latLng.getLng() < minDecimalLongitude) {
+                  minDecimalLongitude = latLng.getLng();
+                }
               }
             }
+
+
           }
         } catch (Exception e) {
           LOG.error("Error while trying to infer geocoverage from source data", e);
@@ -2245,7 +2259,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
 
-    return noValidData ? null : new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude));
+    InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
+    if (noValidData) {
+      inferredGeographicCoverage.addError("No valid data!");
+    } else {
+      inferredGeographicCoverage.setInferred(true);
+      inferredGeographicCoverage.setData(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
+    }
+
+    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
+
+    return inferredMetadata;
   }
 
   /**

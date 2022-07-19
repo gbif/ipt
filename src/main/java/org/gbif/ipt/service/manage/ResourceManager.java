@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
@@ -381,6 +382,15 @@ public interface ResourceManager {
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
 
   /**
+   * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
+   *
+   * @param resource resource
+   *
+   * @return inferred metadata
+   */
+  InferredMetadata inferMetadata(Resource resource);
+
+  /**
    * Update resource's metadata geocoverage with inferred from source data
    *
    * @param resource resource
@@ -388,15 +398,6 @@ public interface ResourceManager {
    * @return resource with updated geocoverage metadata from source
    */
   Resource updateGeocoverageWithInferredFromSourceData(Resource resource);
-
-  /**
-   * Infer geographical coverage from source data for the resource
-   *
-   * @param resource resource
-   *
-   * @return bounding box with coordinates
-   */
-  BBox inferGeocoverageFromSourceData(Resource resource);
 
   /**
    * Infer taxonomic coverage from source data for the resource

@@ -20,6 +20,7 @@ import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -38,7 +39,6 @@ import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TaxonKeyword;
 import org.gbif.metadata.eml.TaxonomicCoverage;
@@ -97,6 +97,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
+  private InferredMetadata inferredMetadata;
   private BBox inferredGeocoverage;
   private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
   private KeyNamePair inferredTemporalCoverage;
@@ -288,6 +289,15 @@ public class MetadataAction extends ManagerBaseAction {
 
     // take the section parameter from the requested url
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
+    boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
+
+    // infer metadata if absent or re-infer if requested
+    if (reinferMetadata || resource.getInferredMetadata() == null) {
+      inferredMetadata = resourceManager.inferMetadata(resource);
+      resource.setInferredMetadata(inferredMetadata);
+    } else {
+      inferredMetadata = resource.getInferredMetadata();
+    }
 
     switch (section) {
       case BASIC_SECTION:
@@ -365,22 +375,6 @@ public class MetadataAction extends ManagerBaseAction {
       case GEOGRAPHIC_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
-        } else {
-          inferredGeocoverage = resourceManager.inferGeocoverageFromSourceData(resource);
-
-          // set inferred data if 'infer automatically' is checked
-          if (resource.isInferGeocoverageAutomatically()) {
-            if (!resource.getMappings().isEmpty()) {
-              if (resource.getEml().getGeospatialCoverages().isEmpty()) {
-                GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-                geospatialCoverage.setDescription("Automatically inferred data");
-                geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
-                resource.getEml().addGeospatialCoverage(geospatialCoverage);
-              } else {
-                resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
-              }
-            }
-          }
         }
         break;
 
@@ -994,8 +988,8 @@ public class MetadataAction extends ManagerBaseAction {
     return s;
   }
 
-  public BBox getInferredGeocoverage() {
-    return inferredGeocoverage;
+  public InferredMetadata getInferredMetadata() {
+    return inferredMetadata;
   }
 
   public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
