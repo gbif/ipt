@@ -301,7 +301,7 @@
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
                                             <td>
-                                                ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <span class="fw-bold">${(m.source.name)!}</span><br>
+                                                ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
                                                 ${(m.lastModified?datetime?string.medium)!}
                                             </td>
                                             <td class="d-flex justify-content-end pt-0">
@@ -330,7 +330,7 @@
                                                     <tr <#if m_index==0>class="mapping_row"</#if>>
                                                         <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
                                                         <td>
-                                                            ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <span class="fw-bold">${(m.source.name)!}</span><br>
+                                                            ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
                                                             ${(m.lastModified?datetime?string.medium)!}
                                                         </td>
                                                         <td class="d-flex justify-content-end">
