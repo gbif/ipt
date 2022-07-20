@@ -52,7 +52,6 @@
                 $("#" + maxLngId).val(MAX_LNG_VAL_LIMIT);
                 $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
                 $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
-                // $("#coordinates").slideUp('slow');
                 $("#coordinates").hide();
                 locationFilter.disable();
                 map.fitWorld();
@@ -62,6 +61,7 @@
                 e.preventDefault();
                 setInferredCoordinatesToInputs();
                 $("#dateInferred").show();
+                $("#globalCoverage").prop("checked", false);
                 adjustMapWithInferredCoordinates();
             });
 
@@ -72,7 +72,10 @@
             if ($("#inferGeocoverageAutomatically").is(':checked')) {
                 $('#globalCoverageWrapper').hide();
                 $('#coordinates').hide();
+                $('.intro').hide();
+                $('#preview-inferred-geo').hide();
                 $('#static-coordinates').show();
+                $("#dateInferred").show();
                 adjustMapWithInferredCoordinates()
                 setInferredCoordinatesToInputs();
             }
@@ -81,15 +84,21 @@
                 if ($("#inferGeocoverageAutomatically").is(':checked')) {
                     $('#globalCoverageWrapper').hide();
                     $('#coordinates').hide();
+                    $('.intro').hide();
+                    $('#preview-inferred-geo').hide();
                     $('#static-coordinates').show();
+                    $("#dateInferred").show();
                     adjustMapWithInferredCoordinates(true)
                     setInferredCoordinatesToInputs()
+                    $("#globalCoverage").prop("checked", false);
                     $("#inferGeocoverageAutomatically").prop("checked", true);
                     $("#coordinates").hide();
                     $("#static-coordinates").show();
                 } else {
                     $('#globalCoverageWrapper').show();
                     $('#coordinates').show();
+                    $('.intro').show();
+                    $('#preview-inferred-geo').show();
                     $('#static-coordinates').hide();
                 }
             });
@@ -121,7 +130,6 @@
                     $("#" + maxLngId).val(MAX_LNG_VAL_LIMIT);
                     $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
                     $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
-                    // $("#coordinates").slideUp('slow');
                     $("#coordinates").hide();
                     $('#inferGeocoverageAutomaticallyWrapper').hide();
                     locationFilter.disable();
@@ -135,7 +143,6 @@
                     $("#" + maxLngId).val(maxLngVal);
                     $("#" + minLatId).val(minLatVal);
                     $("#" + maxLatId).val(maxLatVal);
-                    // $("#coordinates").slideDown('slow');
                     $("#coordinates").show();
                     $('#inferGeocoverageAutomaticallyWrapper').show();
                     locationFilter.enable();
@@ -152,6 +159,8 @@
                     $("#coordinates").show();
                     $("#globalCoverageWrapper").show();
                     $("#static-coordinates").hide();
+                    $('#preview-inferred-geo').show();
+                    $('.intro').show();
 
                     var minLatVal = locationFilter.getBounds()._southWest.lat
                     var minLngVal = locationFilter.getBounds()._southWest.lng
@@ -334,21 +343,13 @@
 
                 <div class="bd-content">
                     <div class="my-md-3 p-3">
-                        <p><@s.text name='manage.metadata.geocoverage.intro'/></p>
-
-                        <div id="map"></div>
-
-                        <div id="bbox" class="g-3">
-                            <div id="globalCoverageWrapper" class="col-12">
-                                <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+                        <div class="row g-2 mt-0">
+                            <div class="col-md-6">
+                                <@checkbox name="inferGeocoverageAutomatically" value="${inferGeocoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
                             </div>
 
-                            <div id="coordinates" class="row g-3 mt-0">
-                                <p class="mb-0">
-                                    <strong><@s.text name='manage.metadata.geocoverage.warning'/></strong>
-                                </p>
-
-                                <div class="col-12 d-flex justify-content-end">
+                            <div id="preview-links" class="col-md-6">
+                                <div class="d-flex justify-content-end">
                                     <a id="preview-inferred-geo" class="text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
@@ -358,7 +359,7 @@
                                         <span><@s.text name="eml.previewInferred"/></span>
                                     </a>
                                 </div>
-                                <div id="dateInferred" class="col-12 text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
+                                <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                     ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
                                     <a href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
                                         <span>
@@ -369,23 +370,35 @@
                                         <span><@s.text name="eml.reinfer"/></span>
                                     </a>
                                 </div>
-                                <div class="col-md-6">
-                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
-                                </div>
-                                <div class="col-md-6">
-                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
-                                </div>
-                                <div class="col-md-6">
-                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
-                                </div>
-                                <div class="col-md-6">
-                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
-                                </div>
+                            </div>
+                        </div>
+
+                        <p class="intro"><@s.text name='manage.metadata.geocoverage.intro'/></p>
+
+                        <div id="map"></div>
+
+                        <div id="bbox" class="g-3">
+                            <div id="globalCoverageWrapper" class="col-12">
+                                <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
                             </div>
 
-                            <div id="inferGeocoverageAutomaticallyWrapper" class="row mt-4">
-                                <div class="col-12">
-                                    <@checkbox name="inferGeocoverageAutomatically" value="${inferGeocoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                            <div id="coordinates" class="mt-0">
+                                <div id="separator-warning" class="callout callout-info text-smaller">
+                                    <@s.text name='manage.metadata.geocoverage.warning'/>
+                                </div>
+                                <div class="row g-3 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
+                                    </div>
                                 </div>
                             </div>
 
@@ -395,19 +408,6 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
                                             <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${inferredMetadata.inferredGeographicCoverage.data.min.latitude},&nbsp;${inferredMetadata.inferredGeographicCoverage.data.min.longitude}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${inferredMetadata.inferredGeographicCoverage.data.max.latitude},&nbsp;${inferredMetadata.inferredGeographicCoverage.data.max.longitude}&#93;</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="eml.dateInferred"/></th>
-                                            <td>${(inferredMetadata.lastModified?datetime?string.medium)!}
-                                                <a href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
-                                                    <span>
-                                                        <svg class="link-icon" viewBox="0 0 24 24">
-                                                            <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span><@s.text name="eml.reinfer"/></span>
-                                                </a>
-                                            </td>
                                         </tr>
                                     </table>
                                 </div>
