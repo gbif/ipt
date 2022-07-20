@@ -1,23 +1,35 @@
 package org.gbif.ipt.model;
 
-import org.apache.commons.math3.util.Pair;
+import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
+import org.gbif.metadata.eml.TaxonomicCoverage;
 
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class InferredTaxonomicCoverage {
 
-  private Map<String, Set<Pair<String, String>>> data;
+  private TaxonomicCoverage data;
+  // for UI representation
+  private OrganizedTaxonomicCoverage organizedData;
   private boolean inferred = false;
   private Set<String> errors = new HashSet<>();
 
-  public Map<String, Set<Pair<String, String>>> getData() {
+  public TaxonomicCoverage getData() {
     return data;
   }
 
-  public void setData(Map<String, Set<Pair<String, String>>> data) {
+  public void setData(TaxonomicCoverage data) {
     this.data = data;
+  }
+
+  public OrganizedTaxonomicCoverage getOrganizedData() {
+    return organizedData;
+  }
+
+  public void setOrganizedData(OrganizedTaxonomicCoverage organizedData) {
+    this.organizedData = organizedData;
   }
 
   public boolean isInferred() {
@@ -38,5 +50,31 @@ public class InferredTaxonomicCoverage {
 
   public void addError(String error) {
     errors.add(error);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    InferredTaxonomicCoverage that = (InferredTaxonomicCoverage) o;
+    return inferred == that.inferred
+        && Objects.equals(data, that.data)
+        && Objects.equals(organizedData, that.organizedData)
+        && Objects.equals(errors, that.errors);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(data, organizedData, inferred, errors);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", InferredTaxonomicCoverage.class.getSimpleName() + "[", "]")
+        .add("data=" + data)
+        .add("organizedData=" + organizedData)
+        .add("inferred=" + inferred)
+        .add("errors=" + errors)
+        .toString();
   }
 }

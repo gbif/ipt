@@ -1,21 +1,23 @@
 package org.gbif.ipt.model;
 
-import org.apache.commons.math3.util.Pair;
+import org.gbif.metadata.eml.TemporalCoverage;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class InferredTemporalCoverage {
 
-  private Pair<String, String> data;
+  private TemporalCoverage data;
   private boolean inferred = false;
   private Set<String> errors = new HashSet<>();
 
-  public Pair<String, String> getData() {
+  public TemporalCoverage getData() {
     return data;
   }
 
-  public void setData(Pair<String, String> data) {
+  public void setData(TemporalCoverage data) {
     this.data = data;
   }
 
@@ -37,5 +39,29 @@ public class InferredTemporalCoverage {
 
   public void addError(String error) {
     errors.add(error);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    InferredTemporalCoverage that = (InferredTemporalCoverage) o;
+    return inferred == that.inferred
+        && Objects.equals(data, that.data)
+        && Objects.equals(errors, that.errors);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(data, inferred, errors);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", InferredTemporalCoverage.class.getSimpleName() + "[", "]")
+        .add("data=" + data)
+        .add("inferred=" + inferred)
+        .add("errors=" + errors)
+        .toString();
   }
 }
