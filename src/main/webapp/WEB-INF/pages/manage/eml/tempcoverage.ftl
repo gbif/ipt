@@ -29,7 +29,7 @@
             $("#plus").click(function (event) {
                 event.preventDefault();
                 var idNewForm = "temporal-" + count;
-                var newForm = $("#temporal-99999").clone().attr("id", idNewForm).css('display', '');
+                var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
                 // Add the fields depending of the actual value in the select
                 var typeSubForm = $("#tempTypes").prop("value");
                 //Adding the 'sub-form' to the new form.
@@ -43,24 +43,53 @@
                 count++;
             });
 
+            if ($("#inferTemporalCoverageAutomatically").is(':checked')) {
+                $("[id^=temporal-]").remove();
+                $('.intro').hide();
+                $('#preview-inferred-temporal').hide();
+                $('.addNew').hide();
+                $('#static-temporal').show();
+                $("#dateInferred").show();
+            }
+
+            $("#inferTemporalCoverageAutomatically").click(function() {
+                if ($("#inferTemporalCoverageAutomatically").is(':checked')) {
+                    $("[id^=temporal-]").remove();
+                    $('.intro').hide();
+                    $('#preview-inferred-temporal').hide();
+                    $('.addNew').hide();
+                    $('#static-temporal').show();
+                    $("#dateInferred").show();
+                } else {
+                    $('.intro').show();
+                    $('#preview-inferred-temporal').show();
+                    $('.addNew').show();
+                    $('#static-temporal').hide();
+                    $("#dateInferred").hide();
+                }
+            });
+
             $("#preview-inferred-temporal").click(function(event) {
                 event.preventDefault();
 
-                <#if inferredTemporalCoverage?has_content>
+                <#if (inferredMetadata.inferredTemporalCoverage.data?has_content)>
+                count = 0;
                 // remove all current items
                 $("[id^=temporal-]").remove();
 
                 var idNewForm = "temporal-" + count;
-                var newForm = $("#temporal-99999").clone().attr("id", idNewForm).css('display', '');
-                // Add the fields depending of the actual value in the select
-                var typeSubForm = $("#tempTypes").prop("value");
+                var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
+
                 //Adding the 'sub-form' to the new form.
-                addTypeForm(newForm, typeSubForm, true);
+                addTypeForm(newForm, DATE_RANGE, true);
                 $("#temporals").append(newForm);
                 newForm.hide();
                 //Updating the components of the new 'sub-form'.
-                updateFields(idNewForm, count);
+                updateFields(idNewForm, count, DATE_RANGE);
+                $("#tempTypes-" + count).val(DATE_RANGE);
                 $("#temporal-" + count).slideDown("slow").css('zoom', 1);
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
                 count++;
                 </#if>
             });
@@ -91,7 +120,7 @@
             /**
              * this method update the name and the id of the form to the consecutive number in the parameter.
              */
-            function updateFields(idNewForm, index) {
+            function updateFields(idNewForm, index, typeSubFormDefault) {
                 $("#" + idNewForm + " .removeLink").attr("id", "removeLink-" + index);
                 // Remove Link (registering the event for the new links).
                 $("#" + idNewForm + " .removeLink").click(
@@ -105,7 +134,7 @@
                     return $(this).attr("id");
                 });
                 // Update the fields depending of the actual value in the select
-                var typeSubForm = $("#" + idNewForm + " #tempTypes-" + index).prop("value");
+                var typeSubForm = typeSubFormDefault ? typeSubFormDefault : $("#" + idNewForm + " #tempTypes-" + index).prop("value");
                 // Registering the event for the new selects.
                 $("#" + idNewForm + " #tempTypes-" + count).change(
                     function () {
@@ -276,27 +305,39 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
-
-                            <p class="mb-0 mb-1">
-                                <@s.text name='manage.metadata.tempcoverage.intro'/>
-                            </p>
-
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
                                     <@checkbox name="inferTemporalCoverageAutomatically" value="${inferTemporalCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
-                                <div class="col-md-6 d-md-flex justify-content-md-end">
-                                    <a id="preview-inferred-temporal" class="text-smaller" href="">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                        </svg>
-                                    </span>
-                                        <span><@s.text name="eml.previewInferred"/></span>
-                                    </a>
+                                <div id="preview-links" class="col-md-6">
+                                    <div class="d-flex justify-content-end">
+                                        <a id="preview-inferred-temporal" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                            </svg>
+                                        </span>
+                                            <span><@s.text name="eml.previewInferred"/></span>
+                                        </a>
+                                    </div>
+                                    <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
+                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
+                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
+                                        <span>
+                                            <svg class="link-icon" viewBox="0 0 24 24">
+                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                            </svg>
+                                        </span>
+                                            <span><@s.text name="eml.reinfer"/></span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
+
+                            <p class="mb-0 my-3 intro">
+                                <@s.text name='manage.metadata.tempcoverage.intro'/>
+                            </p>
 
                             <div id="temporals">
                                 <!-- Adding the temporal coverages that already exists on the file -->
@@ -358,29 +399,17 @@
                                 </#list>
                             </div>
 
-<#--                            <div class="table-responsive mt-2">-->
-<#--                                <table class="table table-sm table-borderless mb-0">-->
-<#--                                    <tbody>-->
-<#--                                    <tr>-->
-<#--                                        <th class="col-4 p-0">-->
-<#--                                            Start date-->
-<#--                                        </th>-->
-<#--                                        <td class="p-0">-->
-<#--                                            ${inferredTemporalCoverage.key}-->
-
-<#--                                        </td>-->
-<#--                                    </tr>-->
-<#--                                    <tr>-->
-<#--                                        <th class="p-0">-->
-<#--                                            End date-->
-<#--                                        </th>-->
-<#--                                        <td class="p-0">-->
-<#--                                            ${inferredTemporalCoverage.name}-->
-<#--                                        </td>-->
-<#--                                    </tr>-->
-<#--                                    </tbody>-->
-<#--                                </table>-->
-<#--                            </div>-->
+                            <!-- Static data -->
+                            <div id="static-temporal" class="mt-4" style="display: none;">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
+                                            <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-2">
@@ -397,9 +426,8 @@
                             <!-- internal parameter -->
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
-
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
-                            <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
+                            <div id="base-temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="d-flex justify-content-end mt-4">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>

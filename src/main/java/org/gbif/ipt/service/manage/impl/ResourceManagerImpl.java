@@ -34,6 +34,8 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
+import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -114,6 +116,9 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.Point;
+import org.gbif.metadata.eml.TaxonKeyword;
+import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.registry.metadata.EMLProfileVersion;
 import org.gbif.registry.metadata.EmlValidator;
 import org.gbif.registry.metadata.InvalidEmlException;
@@ -135,6 +140,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
@@ -144,6 +150,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -176,6 +183,14 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xml.sax.SAXException;
 
+import static org.gbif.ipt.config.Constants.CLASS;
+import static org.gbif.ipt.config.Constants.EVENT_DATE;
+import static org.gbif.ipt.config.Constants.FAMILY;
+import static org.gbif.ipt.config.Constants.KINGDOM;
+import static org.gbif.ipt.config.Constants.LATITUDE;
+import static org.gbif.ipt.config.Constants.LONGITUDE;
+import static org.gbif.ipt.config.Constants.ORDER;
+import static org.gbif.ipt.config.Constants.PHYLUM;
 import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
@@ -769,6 +784,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("inferredGeographicCoverage", InferredGeographicCoverage.class);
     xstream.alias("inferredTaxonomicCoverage", InferredTaxonomicCoverage.class);
     xstream.alias("inferredTemporalCoverage", InferredTemporalCoverage.class);
+    xstream.alias("taxonKeyword", TaxonKeyword.class);
+    xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
 
     xstream.alias("filesource", TextFileSource.class);
     xstream.alias("excelsource", ExcelFileSource.class);
@@ -1974,6 +1991,77 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  public List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
+    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
+    for (TaxonomicCoverage coverage : coverages) {
+      OrganizedTaxonomicCoverage organizedCoverage = constructOrganizedTaxonomicCoverage(coverage);
+      organizedTaxonomicCoverages.add(organizedCoverage);
+    }
+    return organizedTaxonomicCoverages;
+  }
+
+  public OrganizedTaxonomicCoverage constructOrganizedTaxonomicCoverage(TaxonomicCoverage coverage) {
+    OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
+    organizedCoverage.setDescription(coverage.getDescription());
+    organizedCoverage.setKeywords(setOrganizedTaxonomicKeywords(coverage.getTaxonKeywords()));
+    return organizedCoverage;
+  }
+
+  private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
+    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
+
+    // also, we want a unique set of names corresponding to empty rank
+    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
+
+    Map<String, String> ranks = new LinkedHashMap<>(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.ENGLISH.getLanguage(), false));
+
+    for (String rank : ranks.keySet()) {
+      OrganizedTaxonomicKeywords organizedKeywords = new OrganizedTaxonomicKeywords();
+      // set rank
+      organizedKeywords.setRank(rank);
+      // construct display name for each TaxonKeyword, and add display name to organized keywords list
+      for (TaxonKeyword keyword : keywords) {
+        // add display name to appropriate list if it isn't null
+        String displayName = createKeywordDisplayName(keyword);
+        if (displayName != null) {
+          if (rank.equalsIgnoreCase(keyword.getRank())) {
+            organizedKeywords.getDisplayNames().add(displayName);
+          } else if (StringUtils.trimToNull(keyword.getRank()) == null) {
+            uniqueNamesForEmptyRank.add(displayName);
+          }
+        }
+      }
+      // add to list
+      organizedTaxonomicKeywordsList.add(organizedKeywords);
+    }
+    // if there were actually some names with empty ranks, add the special OrganizedTaxonomicKeywords for empty rank
+    if (!uniqueNamesForEmptyRank.isEmpty()) {
+      // create special OrganizedTaxonomicKeywords for empty rank
+      OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
+      emptyRankKeywords.setRank("Unranked");
+      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
+      organizedTaxonomicKeywordsList.add(emptyRankKeywords);
+    }
+    // return list
+    return organizedTaxonomicKeywordsList;
+  }
+
+  private String createKeywordDisplayName(TaxonKeyword keyword) {
+    String combined = null;
+    if (keyword != null) {
+      String scientificName = StringUtils.trimToNull(keyword.getScientificName());
+      String commonName = StringUtils.trimToNull(keyword.getCommonName());
+      if (scientificName != null && commonName != null) {
+        combined = scientificName + " (" + commonName + ")";
+      } else if (scientificName != null) {
+        combined = scientificName;
+      } else if (commonName != null) {
+        combined = commonName;
+      }
+    }
+    return combined;
+  }
+
   @Override
   public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
     if (!resource.getMappings().isEmpty()) {
@@ -2173,24 +2261,96 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public InferredMetadata inferMetadata(Resource resource) {
     InferredMetadata inferredMetadata = new InferredMetadata();
-    inferredMetadata.setLastModified(new Date());
 
+    // geo coverage column indexes
     int decimalLongitudeSourceColumnIndex = -1;
     int decimalLatitudeSourceColumnIndex = -1;
-    boolean noValidData = true;
+
+    // tax coverage column indexes
+    int kingdomSourceColumnIndex = -1;
+    int phylumSourceColumnIndex = -1;
+    int classSourceColumnIndex = -1;
+    int orderSourceColumnIndex = -1;
+    int familySourceColumnIndex = -1;
+
+    // temp coverage column indexes
+    int eventDataSourceColumnIndex = -1;
+
+    // geo coverage variables
+    boolean geoDataMappedForAtLeastOneMapping = false;
+    boolean geoDataMappedForThisMapping = false;
+    boolean noValidDataGeo = true;
     Double minDecimalLongitude = -180.0D;
     Double maxDecimalLongitude = 180.0D;
     Double minDecimalLatitude = -90.0D;
     Double maxDecimalLatitude = 90.0D;
 
+    // tax coverage variables
+    boolean taxDataMappedForAtLeastOneMapping = false;
+    boolean taxDataMappedForThisMapping = false;
+    int taxonItemsAdded = 0;
+    final int maxNumberOfTaxonItems = 200;
+    Set<TaxonKeyword> taxa = new HashSet<>();
+
+    // temp coverage variables
+    boolean tempDataMappedForAtLeastOneMapping = false;
+    boolean tempDataMappedForThisMapping = false;
+    boolean noValidDataTemporal = true;
+    String startDateStr = null;
+    TemporalAccessor startDateTA = null;
+    String endDateStr = null;
+    TemporalAccessor endDateTA = null;
+
     if (!resource.getMappings().isEmpty()) {
       for (ExtensionMapping mapping : resource.getMappings()) {
+
+        // calculate column indexes for mapping
         for (PropertyMapping field : mapping.getFields()) {
           if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
             decimalLongitudeSourceColumnIndex = field.getIndex();
           } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
             decimalLatitudeSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
+            kingdomSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
+            phylumSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
+            classSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
+            orderSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
+            familySourceColumnIndex = field.getIndex();
+          } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
+            eventDataSourceColumnIndex = field.getIndex();
           }
+        }
+
+        // both fields should be present
+        if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
+          geoDataMappedForThisMapping = true;
+          geoDataMappedForAtLeastOneMapping = true;
+        } else {
+          geoDataMappedForThisMapping = false;
+        }
+
+        // at least one field should be present
+        if (kingdomSourceColumnIndex != -1
+            || phylumSourceColumnIndex != -1
+            || classSourceColumnIndex != -1
+            || orderSourceColumnIndex != -1
+            || familySourceColumnIndex != -1) {
+          taxDataMappedForThisMapping = true;
+          taxDataMappedForAtLeastOneMapping = true;
+        } else {
+          taxDataMappedForThisMapping = false;
+        }
+
+        // field should be present
+        if (eventDataSourceColumnIndex != -1) {
+          tempDataMappedForThisMapping = true;
+          tempDataMappedForAtLeastOneMapping = true;
+        } else {
+          tempDataMappedForThisMapping = false;
         }
 
         ClosableReportingIterator<String[]> iter = null;
@@ -2206,7 +2366,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // geographic coverage section
-            if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
+            if (geoDataMappedForThisMapping) {
               String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
               String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
 
@@ -2216,7 +2376,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
               // skip erratic records
               if (latLng != null && latLngParseResult.isSuccessful()) {
-                noValidData = false;
+                noValidDataGeo = false;
 
                 // initialize min and max values
                 if (initializeExtremeValues) {
@@ -2243,10 +2403,73 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               }
             }
 
+            // taxonomic coverage section
+            if (taxDataMappedForThisMapping && taxonItemsAdded < maxNumberOfTaxonItems) {
+              if (kingdomSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[kingdomSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[kingdomSourceColumnIndex], KINGDOM, null));
+                taxonItemsAdded++;
+              }
+              if (phylumSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[phylumSourceColumnIndex], PHYLUM, null));
+                taxonItemsAdded++;
+              }
+              if (classSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[classSourceColumnIndex], CLASS, null));
+                taxonItemsAdded++;
+              }
+              if (orderSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[orderSourceColumnIndex], ORDER, null));
+                taxonItemsAdded++;
+              }
+              if (familySourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[familySourceColumnIndex], FAMILY, null));
+                taxonItemsAdded++;
+              }
+            }
+
+            // temporal coverage section
+            if (tempDataMappedForThisMapping) {
+              String rawEventDateValue = in[eventDataSourceColumnIndex];
+
+              TemporalParser temporalParser = DateParsers.defaultTemporalParser();
+              ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
+              TemporalAccessor parsedEventDateTA = parsedEventDateResult.getPayload();
+
+              // skip erratic records
+              if (!parsedEventDateResult.isSuccessful() || parsedEventDateTA == null || !parsedEventDateTA.isSupported(ChronoField.YEAR)) {
+                continue;
+              } else {
+                noValidDataTemporal = false;
+              }
+
+              if (startDateTA == null) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+              if (endDateTA == null) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+            }
 
           }
         } catch (Exception e) {
-          LOG.error("Error while trying to infer geocoverage from source data", e);
+          LOG.error("Error while trying to infer metadata from source data", e);
         } finally {
           if (iter != null) {
             try {
@@ -2259,15 +2482,56 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
 
+    // finalize geocoverage
     InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
-    if (noValidData) {
+    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
+    if (!geoDataMappedForAtLeastOneMapping) {
+      inferredGeographicCoverage.addError(String.format("Data not mapped! One or both fields %s and %s not found", LATITUDE, LONGITUDE));
+    } else if (noValidDataGeo) {
       inferredGeographicCoverage.addError("No valid data!");
     } else {
       inferredGeographicCoverage.setInferred(true);
+//      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+//      geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
       inferredGeographicCoverage.setData(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
     }
 
-    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
+    // finalize taxcoverage
+    InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
+    inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
+    if (!taxDataMappedForAtLeastOneMapping) {
+      inferredTaxonomicCoverage.addError(String.format("Data not mapped! The following fields were not found: %s, %s, %s, %s, %s", KINGDOM, PHYLUM, CLASS, ORDER, FAMILY));
+    } else if (taxonItemsAdded == 0) {
+      inferredTaxonomicCoverage.addError("No valid data!");
+    } else {
+      TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
+      taxCoverage.setTaxonKeywords(new ArrayList<>(taxa));
+      OrganizedTaxonomicCoverage organizedTaxCoverage = constructOrganizedTaxonomicCoverage(taxCoverage);
+      inferredTaxonomicCoverage.setInferred(true);
+      inferredTaxonomicCoverage.setData(taxCoverage);
+      inferredTaxonomicCoverage.setOrganizedData(organizedTaxCoverage);
+    }
+
+    // finalize tempcoverage
+    InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
+    inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
+    if (!tempDataMappedForAtLeastOneMapping) {
+      inferredTemporalCoverage.addError(String.format("Data not mapped! Field %s was not found", EVENT_DATE));
+    } else if (noValidDataTemporal) {
+      inferredTemporalCoverage.addError("No valid data!");
+    } else {
+      TemporalCoverage tempCoverage = new TemporalCoverage();
+      try {
+        tempCoverage.setStart(startDateStr);
+        tempCoverage.setEnd(endDateStr);
+        inferredTemporalCoverage.setInferred(true);
+        inferredTemporalCoverage.setData(tempCoverage);
+      } catch (ParseException e) {
+        inferredTemporalCoverage.addError("Date parse exception!");
+      }
+    }
+
+    inferredMetadata.setLastModified(new Date());
 
     return inferredMetadata;
   }

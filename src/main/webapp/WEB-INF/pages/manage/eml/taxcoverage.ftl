@@ -93,27 +93,39 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-
-                            <p class="mb-0">
-                                <@s.text name='manage.metadata.taxcoverage.intro'/>
-                            </p>
-
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
                                     <@checkbox name="inferTaxonomicCoverageAutomatically" value="${inferTaxonomicCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a id="preview-inferred-taxonomic" class="text-smaller" href="">
+                                <div id="preview-links" class="col-md-6">
+                                    <div class="d-flex justify-content-end">
+                                        <a id="preview-inferred-taxonomic" class="text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                             </svg>
                                         </span>
-                                        <span><@s.text name="eml.previewInferred"/></span>
-                                    </a>
+                                            <span><@s.text name="eml.previewInferred"/></span>
+                                        </a>
+                                    </div>
+                                    <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
+                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
+                                        <a href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
+                                        <span>
+                                            <svg class="link-icon" viewBox="0 0 24 24">
+                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                            </svg>
+                                        </span>
+                                            <span><@s.text name="eml.reinfer"/></span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
+
+                            <p class="my-3 intro">
+                                <@s.text name='manage.metadata.taxcoverage.intro'/>
+                            </p>
 
                             <div id="items">
                                 <!-- Adding the taxonomic coverages that already exists on the file -->
@@ -216,6 +228,32 @@
                                     </span>
                                     <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></span>
                                 </a>
+                            </div>
+
+                            <!-- Static data -->
+                            <div id="static-taxanomic" class="mt-4" style="display: none;">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless">
+                                        <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
+                                            <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                <tr>
+                                                    <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
+                                                    <#if k.rank?lower_case == "class">
+                                                        <th class="col-4">Class</th>
+                                                    <#else>
+                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                    </#if>
+                                                    <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
+                                                    <td>
+                                                        <#list k.displayNames as name>
+                                                            &nbsp;${name}<#if name_has_next>,</#if>
+                                                        </#list>
+                                                    </td>
+                                                </tr>
+                                            </#if>
+                                        </#list>
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- internal parameter -->

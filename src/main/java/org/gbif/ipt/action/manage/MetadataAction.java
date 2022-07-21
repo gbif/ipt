@@ -295,6 +295,7 @@ public class MetadataAction extends ManagerBaseAction {
     if (reinferMetadata || resource.getInferredMetadata() == null) {
       inferredMetadata = resourceManager.inferMetadata(resource);
       resource.setInferredMetadata(inferredMetadata);
+      resourceManager.save(resource);
     } else {
       inferredMetadata = resource.getInferredMetadata();
     }

@@ -33,37 +33,58 @@ $(document).ready(function(){
             specimenPreservationMethodItemsCount = -1;
     }
 
+    if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+        $("[id^=item-]").remove();
+        $('.intro').hide();
+        $('#items').hide();
+        $('.addNew').hide();
+        $('#preview-inferred-taxonomic').hide();
+        $('#static-taxanomic').show();
+        $('#dateInferred').show();
+    }
+
+    $("#inferTaxonomicCoverageAutomatically").click(function() {
+        if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+            $("[id^=item-]").remove();
+            $('.intro').hide();
+            $('#items').hide();
+            $('.addNew').hide();
+            $('#preview-inferred-taxonomic').hide();
+            $('#static-taxanomic').show();
+            $('#dateInferred').show();
+        } else {
+            $('.intro').show();
+            $('#items').show();
+            $('.addNew').show();
+            $('#preview-inferred-taxonomic').show();
+            $('#static-taxanomic').hide();
+        }
+    });
+
+    $("#preview-inferred-taxonomic").click(function (e) {
+        e.preventDefault();
+        $("#dateInferred").show();
+    });
+
     $("#preview-inferred-taxonomic").click(function(event) {
         event.preventDefault();
 
-        <#if inferredTaxonomicCoverage?has_content>
+        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords?has_content)>
             // remove all current items
             $("[id^=item-]").remove();
 
             var subItemIndex = 0;
 
-            <#list inferredTaxonomicCoverage?keys as kingdom>
-                addNewItem(true);
+            addNewItem(true);
 
-                // add kingdom if present
-                <#if kingdom?has_content>
-                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[0\\]\\.scientificName').val("${kingdom}");
-                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[0\\]\\.rank').val("kingdom");
-                    subItemIndex++;
+            <#list inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords as taxon>
+                <#if !taxon?is_first>
+                    addNewSubItemByIndex(itemsCount, "");
                 </#if>
-
-                // add rest of the taxonomy
-                <#list inferredTaxonomicCoverage.get(kingdom) as taxon>
-                    addNewSubItemByIndex(itemsCount, true);
-                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.name}");
-                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.key}");
-                    subItemIndex++;
-                </#list>
-
-                subItemIndex = 0;
+                $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.scientificName}");
+                $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.rank}");
+                subItemIndex++;
             </#list>
-        <#else>
-            $("#taxcoverage-no-source-data-alert").show();
         </#if>
     });
 
