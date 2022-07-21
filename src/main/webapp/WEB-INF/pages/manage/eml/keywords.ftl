@@ -64,7 +64,6 @@
                             <div id="items">
                                 <#list eml.keywords as item>
                                     <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
-                                        <div class="newline"></div>
                                         <div class="d-flex justify-content-end mt-2">
                                             <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                 <span>
