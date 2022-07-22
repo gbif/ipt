@@ -67,6 +67,7 @@
 
             if ($("#globalCoverage").is(':checked')) {
                 $('#inferGeocoverageAutomaticallyWrapper').hide();
+                $('.intro').hide();
             }
 
             if ($("#inferGeocoverageAutomatically").is(':checked')) {
@@ -119,7 +120,7 @@
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude});
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude});
                 <#else>
-                    $("#geocoverage-no-source-data-alert").show();
+                    $("#geocoverage-no-available-data-warning").show();
                 </#if>
             }
 
@@ -300,15 +301,25 @@
         <div class="container pt-2">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <div id="geocoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+            <div id="geocoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
                 <div class="me-3 pt-1">
-                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                    <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                 </div>
                 <div class="overflow-x-hidden pt-1">
-                    <span><@s.text name="eml.noSourceData"/></span>
+                    <span><@s.text name="eml.reinfer.warning"/></span>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+
+<#--            <div id="geocoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">-->
+<#--                <div class="me-3 pt-1">-->
+<#--                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>-->
+<#--                </div>-->
+<#--                <div class="overflow-x-hidden pt-1">-->
+<#--                    <span><@s.text name="eml.noSourceData"/></span>-->
+<#--                </div>-->
+<#--                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<#--            </div>-->
         </div>
 
         <div class="container my-3 p-3">
@@ -375,7 +386,24 @@
                             </div>
                         </div>
 
-                        <p class="intro"><@s.text name='manage.metadata.geocoverage.intro'/></p>
+                        <div id="static-coordinates" class="mt-3" style="display: none;">
+                            <#if (inferredMetadata.inferredGeographicCoverage.data)??>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
+                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            <#else>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="eml.reinfer.warning"/>
+                                </div>
+                            </#if>
+                        </div>
+
+                        <p class="intro mt-1"><@s.text name='manage.metadata.geocoverage.intro'/></p>
 
                         <div id="map"></div>
 
@@ -402,19 +430,6 @@
                                         <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
                                     </div>
                                 </div>
-                            </div>
-
-                            <div id="static-coordinates" class="mt-3" style="display: none;">
-                                <#if (inferredMetadata.inferredGeographicCoverage.data)??>
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-borderless">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
-                                                <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </#if>
                             </div>
                         </div>
 

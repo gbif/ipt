@@ -47,15 +47,25 @@
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-                <div id="taxcoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+                <div id="taxcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
                     <div class="me-3 pt-1">
-                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
                     <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="eml.noSourceData"/></span>
+                        <span><@s.text name="eml.reinfer.warning"/></span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+
+<#--                <div id="taxcoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">-->
+<#--                    <div class="me-3 pt-1">-->
+<#--                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>-->
+<#--                    </div>-->
+<#--                    <div class="overflow-x-hidden pt-1">-->
+<#--                        <span><@s.text name="eml.noSourceData"/></span>-->
+<#--                    </div>-->
+<#--                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<#--                </div>-->
             </div>
 
             <div class="container my-3 p-3">
@@ -254,6 +264,10 @@
                                                 </#if>
                                             </#list>
                                         </table>
+                                    </div>
+                                <#else>
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="eml.reinfer.warning"/>
                                     </div>
                                 </#if>
                             </div>

@@ -85,6 +85,8 @@ $(document).ready(function(){
                 $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.rank}");
                 subItemIndex++;
             </#list>
+        <#else>
+            $("#taxcoverage-no-available-data-warning").show();
         </#if>
     });
 

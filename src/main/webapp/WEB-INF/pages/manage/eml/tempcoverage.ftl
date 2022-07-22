@@ -91,6 +91,8 @@
                 $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
                 $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
                 count++;
+                <#else>
+                $("#tempcoverage-no-available-data-warning").show();
                 </#if>
             });
 
@@ -269,6 +271,16 @@
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+                <div id="tempcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+                    <div class="me-3 pt-1">
+                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+                    </div>
+                    <div class="overflow-x-hidden pt-1">
+                        <span><@s.text name="eml.reinfer.warning"/></span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
 
             <div class="container my-3 p-3">
@@ -409,6 +421,10 @@
                                                 <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
                                             </tr>
                                         </table>
+                                    </div>
+                                <#else>
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="eml.reinfer.warning"/>
                                     </div>
                                 </#if>
                             </div>
