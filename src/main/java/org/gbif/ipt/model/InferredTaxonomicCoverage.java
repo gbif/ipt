@@ -55,7 +55,7 @@ public class InferredTaxonomicCoverage {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof  InferredTaxonomicCoverage)) return false;
     InferredTaxonomicCoverage that = (InferredTaxonomicCoverage) o;
     return inferred == that.inferred
         && Objects.equals(data, that.data)

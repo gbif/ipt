@@ -44,7 +44,7 @@ public class InferredGeographicCoverage {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof  InferredGeographicCoverage)) return false;
     InferredGeographicCoverage that = (InferredGeographicCoverage) o;
     return inferred == that.inferred
         && Objects.equals(data, that.data)

@@ -44,7 +44,7 @@ public class InferredTemporalCoverage {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof  InferredTemporalCoverage)) return false;
     InferredTemporalCoverage that = (InferredTemporalCoverage) o;
     return inferred == that.inferred
         && Objects.equals(data, that.data)

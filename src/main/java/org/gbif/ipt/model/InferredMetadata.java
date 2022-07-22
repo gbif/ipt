@@ -46,7 +46,7 @@ public class InferredMetadata {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof  InferredMetadata)) return false;
     InferredMetadata that = (InferredMetadata) o;
     return Objects.equals(inferredGeographicCoverage, that.inferredGeographicCoverage)
         && Objects.equals(inferredTaxonomicCoverage, that.inferredTaxonomicCoverage)
