@@ -398,22 +398,4 @@ public interface ResourceManager {
    * @return resource with updated geocoverage metadata from source
    */
   Resource updateGeocoverageWithInferredFromSourceData(Resource resource);
-
-  /**
-   * Infer taxonomic coverage from source data for the resource
-   *
-   * @param resource resource
-   *
-   * @return taxonomic coverage data grouped by kingdoms
-   */
-  Map<String, Set<KeyNamePair>> inferTaxonomicCoverageFromSourceData(Resource resource);
-
-  /**
-   * Infer temporal coverage from source data for the resource
-   *
-   * @param resource resource
-   *
-   * @return temporal coverage
-   */
-  KeyNamePair inferTemporalCoverageFromSourceData(Resource resource);
 }
