@@ -776,6 +776,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                                     ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter,
                                     PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
+    xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
 

@@ -225,6 +225,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    */
   private void defineXstreamMappingV1() {
     xstreamV1.addPermission(AnyTypePermission.ANY);
+    xstreamV1.ignoreUnknownElements();
     xstreamV1.omitField(LegacyRegistration.class, "associatedOrganisations");
     xstreamV1.alias("organisation", LegacyOrganisation.class);
     xstreamV1.alias("registry", LegacyRegistration.class);
@@ -237,6 +238,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    */
   private void defineXstreamMappingV2(PasswordEncrypter passwordEncrypter) {
     xstreamV2.addPermission(AnyTypePermission.ANY);
+    xstreamV2.ignoreUnknownElements();
     xstreamV2.omitField(Registration.class, "associatedOrganisations");
     xstreamV2.alias("organisation", Organisation.class);
     xstreamV2.alias("registry", Registration.class);
