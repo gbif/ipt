@@ -232,28 +232,30 @@
 
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                            <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
-                                                <tr>
-                                                    <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                    <#if k.rank?lower_case == "class">
-                                                        <th class="col-4">Class</th>
-                                                    <#else>
-                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                    </#if>
-                                                    <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
-                                                    <td>
-                                                        <#list k.displayNames as name>
-                                                            &nbsp;${name}<#if name_has_next>,</#if>
-                                                        </#list>
-                                                    </td>
-                                                </tr>
-                                            </#if>
-                                        </#list>
-                                    </table>
-                                </div>
+                                <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
+                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                    <tr>
+                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
+                                                        <#if k.rank?lower_case == "class">
+                                                            <th class="col-4">Class</th>
+                                                        <#else>
+                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                        </#if>
+                                                        <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
+                                                        <td>
+                                                            <#list k.displayNames as name>
+                                                                &nbsp;${name}<#if name_has_next>,</#if>
+                                                            </#list>
+                                                        </td>
+                                                    </tr>
+                                                </#if>
+                                            </#list>
+                                        </table>
+                                    </div>
+                                </#if>
                             </div>
 
                             <!-- internal parameter -->

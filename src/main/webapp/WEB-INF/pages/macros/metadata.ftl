@@ -69,7 +69,7 @@ $(document).ready(function(){
     $("#preview-inferred-taxonomic").click(function(event) {
         event.preventDefault();
 
-        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords?has_content)>
+        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
             // remove all current items
             $("[id^=item-]").remove();
 

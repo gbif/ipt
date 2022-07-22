@@ -72,7 +72,7 @@
             $("#preview-inferred-temporal").click(function(event) {
                 event.preventDefault();
 
-                <#if (inferredMetadata.inferredTemporalCoverage.data?has_content)>
+                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
                 count = 0;
                 // remove all current items
                 $("[id^=temporal-]").remove();
@@ -401,14 +401,16 @@
 
                             <!-- Static data -->
                             <div id="static-temporal" class="mt-4" style="display: none;">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                            <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
-                                        </tr>
-                                    </table>
-                                </div>
+                                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
+                                                <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </#if>
                             </div>
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->

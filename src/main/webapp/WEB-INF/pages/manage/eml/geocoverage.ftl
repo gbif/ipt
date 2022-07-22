@@ -405,14 +405,16 @@
                             </div>
 
                             <div id="static-coordinates" class="mt-3" style="display: none;">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
-                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude},&nbsp;${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude},&nbsp;${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude}&#93;</td>
-                                        </tr>
-                                    </table>
-                                </div>
+                                <#if (inferredMetadata.inferredGeographicCoverage.data)??>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
+                                                <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </#if>
                             </div>
                         </div>
 
