@@ -2066,16 +2066,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
     if (!resource.getMappings().isEmpty()) {
-      BBox inferredGeocoverage = inferMetadata(resource).getInferredGeographicCoverage().getData();
+      GeospatialCoverage inferredGeocoverage = inferMetadata(resource).getInferredGeographicCoverage().getData();
+
       // check object to preserve description
-      if (resource.getEml().getGeospatialCoverages().isEmpty()) {
-        GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-        geospatialCoverage.setDescription("Automatically inferred data");
-        geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
-        resource.getEml().addGeospatialCoverage(geospatialCoverage);
+      if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
+        inferredGeocoverage.setDescription(resource.getEml().getGeospatialCoverages().get(0).getDescription());
       } else {
-        resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
+        inferredGeocoverage.setDescription("Automatically inferred data");
       }
+
+      resource.getEml().addGeospatialCoverage(inferredGeocoverage);
     }
 
     return resource;
@@ -2492,9 +2492,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       inferredGeographicCoverage.addError("No valid data!");
     } else {
       inferredGeographicCoverage.setInferred(true);
-//      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-//      geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
-      inferredGeographicCoverage.setData(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
+      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+      geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
+      inferredGeographicCoverage.setData(geospatialCoverage);
     }
 
     // finalize taxcoverage

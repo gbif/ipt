@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.metadata.eml.BBox;
+import org.gbif.metadata.eml.GeospatialCoverage;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,15 +9,15 @@ import java.util.StringJoiner;
 
 public class InferredGeographicCoverage {
 
-  private BBox data;
+  private GeospatialCoverage data;
   private boolean inferred = false;
   private Set<String> errors = new HashSet<>();
 
-  public BBox getData() {
+  public GeospatialCoverage getData() {
     return data;
   }
 
-  public void setData(BBox data) {
+  public void setData(GeospatialCoverage data) {
     this.data = data;
   }
 
