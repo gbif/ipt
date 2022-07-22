@@ -246,11 +246,18 @@ public interface ResourceManager {
   void save(Resource resource) throws InvalidConfigException;
 
   /**
-   * Save the eml file of a resource only. Complementary method to @See save(Resource).
+   * Save the eml file of a resource only. Complementary method to {@link #save(Resource)}.
    *
    * @param resource Resource
    */
   void saveEml(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Save the inferred metadata file of a resource. Complementary method to {@link #save(Resource)}
+   *
+   * @param resource Resource
+   */
+  void saveInferredMetadata(Resource resource) throws InvalidConfigException;
 
   /**
    * Return status report of current task either running or on queue for the requested resource or null if none exists.

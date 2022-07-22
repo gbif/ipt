@@ -205,6 +205,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
   public static final String PERSISTENCE_FILE = "resource.xml";
+  public static final String INFERRED_METADATA_FILE = "inferredMetadata.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
@@ -807,6 +808,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.omitField(Resource.class, "shortname");
     xstream.omitField(Resource.class, "eml");
     xstream.omitField(Resource.class, "type");
+    // inferred metadata in the separate file
+    xstream.omitField(Resource.class, "inferredMetadata");
     // make files transient to allow moving the datadir
     xstream.omitField(TextFileSource.class, "file");
 
@@ -1167,6 +1170,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Loads a resource's inferred metadata from the xml file located inside its resource directory.
+   * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
+   *
+   * @param resource resource
+   */
+  private void loadInferredMetadata(Resource resource) {
+    File inferredMetadataFile = dataDir.resourceFile(resource.getShortname(), INFERRED_METADATA_FILE);
+    if (!inferredMetadataFile.exists()) {
+      resource.setInferredMetadata(new InferredMetadata());
+      return;
+    }
+
+    try {
+      InputStream input = new FileInputStream(inferredMetadataFile);
+      InferredMetadata inferredMetadata = (InferredMetadata) xstream.fromXML(input);
+      resource.setInferredMetadata(inferredMetadata);
+    } catch (Exception e) {
+      LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
+      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+          "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+    }
+  }
+
+  /**
    * Calls loadFromDir(File, User, ActionLogger), inserting a new instance of ActionLogger.
    *
    * @param resourceDir resource directory
@@ -1252,6 +1279,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // load eml (this must be done before trying to convert version below)
         loadEml(resource);
+
+        // load inferred metadata
+        loadInferredMetadata(resource);
 
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
         // also convert/rename eml, rtf, and dwca versioned files also
@@ -2693,6 +2723,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (IOException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write mapping configuration");
+    } finally {
+      if (writer != null) {
+        closeWriter(writer);
+      }
+    }
+  }
+
+  @Override
+  public synchronized void saveInferredMetadata(Resource resource) throws InvalidConfigException {
+    File cfgFile = dataDir.resourceFile(resource, INFERRED_METADATA_FILE);
+    Writer writer = null;
+    try {
+      // make sure resource dir exists
+      FileUtils.forceMkdir(cfgFile.getParentFile());
+      // persist data
+      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+      xstream.toXML(resource.getInferredMetadata(), writer);
+    } catch (IOException e) {
+      LOG.error(e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write inferred metadata file");
     } finally {
       if (writer != null) {
         closeWriter(writer);

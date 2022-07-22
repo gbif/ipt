@@ -295,7 +295,7 @@ public class MetadataAction extends ManagerBaseAction {
     if (reinferMetadata || resource.getInferredMetadata() == null) {
       inferredMetadata = resourceManager.inferMetadata(resource);
       resource.setInferredMetadata(inferredMetadata);
-      resourceManager.save(resource);
+      resourceManager.saveInferredMetadata(resource);
     } else {
       inferredMetadata = resource.getInferredMetadata();
     }
@@ -386,62 +386,12 @@ public class MetadataAction extends ManagerBaseAction {
         ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
         if (isHttpPost()) {
           resource.getEml().getTaxonomicCoverages().clear();
-        } else {
-          inferredTaxonomicCoverage = resourceManager.inferTaxonomicCoverageFromSourceData(resource);
-
-          // set inferred data if 'infer automatically' is checked
-          if (resource.isInferTaxonomicCoverageAutomatically()) {
-            resource.getEml().getTaxonomicCoverages().clear();
-            for (Map.Entry<String, Set<KeyNamePair>> inferredCoverage : inferredTaxonomicCoverage.entrySet()) {
-              TaxonomicCoverage taxonomicCoverage = new TaxonomicCoverage();
-
-              // set kingdom if present
-              if (StringUtils.isNotEmpty(inferredCoverage.getKey())) {
-                TaxonKeyword kingdom = new TaxonKeyword();
-                kingdom.setRank("kingdom");
-                kingdom.setScientificName(inferredCoverage.getKey());
-                taxonomicCoverage.addTaxonKeyword(kingdom);
-              }
-
-              // set rest of taxa
-              for (KeyNamePair pair : inferredCoverage.getValue()) {
-                TaxonKeyword taxonItem = new TaxonKeyword();
-                taxonItem.setRank(pair.getKey());
-                taxonItem.setScientificName(pair.getName());
-                taxonomicCoverage.addTaxonKeyword(taxonItem);
-              }
-
-              resource.getEml().getTaxonomicCoverages().add(taxonomicCoverage);
-            }
-          }
         }
         break;
 
       case TEMPORAL_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
-        } else {
-          inferredTemporalCoverage = resourceManager.inferTemporalCoverageFromSourceData(resource);
-
-          // set inferred data if 'infer automatically' is checked
-          if (resource.isInferTemporalCoverageAutomatically()) {
-            if (inferredTemporalCoverage == null) {
-              // TODO: 11/07/2022 log exception? inform user
-              break;
-            }
-
-            resource.getEml().getTemporalCoverages().clear();
-            TemporalCoverage temporalCoverage = new TemporalCoverage();
-
-            try {
-              temporalCoverage.setStart(inferredTemporalCoverage.getKey());
-              temporalCoverage.setEnd(inferredTemporalCoverage.getName());
-            } catch (ParseException e) {
-              // TODO: 11/07/2022 log exception and inform user about it somehow
-            }
-
-            resource.getEml().getTemporalCoverages().add(temporalCoverage);
-          }
         }
         break;
 
