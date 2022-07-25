@@ -284,8 +284,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <#if (inferredMetadata.inferredGeographicCoverage)??>
-                    <#list inferredMetadata.inferredGeographicCoverage.errors as error>
+                <#if (inferredMetadata.inferredTemporalCoverage)??>
+                    <#list inferredMetadata.inferredTemporalCoverage.errors as error>
                         <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3 pt-1">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
