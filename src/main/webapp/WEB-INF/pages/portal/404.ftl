@@ -4,13 +4,31 @@
 [#assign currentMenu = "manage"/]
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
+<div class="container-fluid bg-body border-bottom">
+    <div class="container my-3">
+        [#include "/WEB-INF/pages/inc/action_alerts_errors.ftl"]
+    </div>
+
+    <div class="container my-3 p-3">
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            [@s.text name="basic.error"/]
+        </div>
+
+        <div class="text-center">
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                [@s.text name="manage.404.title"/]
+            </h1>
+        </div>
+    </div>
+</div>
+
 <main class="container">
-
-    <div class="my-3 p-3 border rounded shadow-sm">
-        [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
-
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">[@s.text name="manage.404.title"/]</h5>
-        <p class="mx-md-4 mx-2 text-center">We are sorry, but the requested resource [#if version?has_content && (version > 0)]with version #${version} [/#if]does not exist</p>
+    <div class="my-3 p-3">
+        [#if version?has_content && (version > 0)]
+            <p class="text-center">[@s.text name="404.portal.resourceWithVersion"][@s.param]${version}[/@s.param][/@s.text]</p>
+        [#else]
+            <p class="text-center">[@s.text name="manage.404.body"/]</p>
+        [/#if]
     </div>
 </main>
 

@@ -116,6 +116,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   // mapping configs
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
+  private List<DataSchemaMapping> dataSchemaMappings = new ArrayList<>();
+  private String schemaIdentifier;
 
   private String changeSummary;
   private List<VersionHistory> versionHistory = new ArrayList<>();
@@ -206,6 +208,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  /**
+   * Adds a new data schema mapping to the resource.
+   * It returns the list index for this mapping according to getDataSchemaMapping(identifier)
+   *
+   * @return list index corresponding to getDataSchemaMapping(identifier) or null if the mapping couldn't be added
+   */
+  public Integer addDataSchemaMapping(@Nullable DataSchemaMapping mapping) {
+    if (mapping != null && mapping.getDataSchema() != null) {
+      Integer index = getDataSchemaMappings().size();
+      this.dataSchemaMappings.add(mapping);
+      return index;
+    }
+    return null;
+  }
+
   public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
     // make sure we talk about the same resource
     src.setResource(this);
@@ -269,6 +286,22 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
     }
     LOG.debug("Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    return false;
+  }
+
+  /**
+   * Delete a Resource's data schema mapping.
+   *
+   * @param mapping DataSchemaMapping
+   *
+   * @return if deletion was successful or not
+   */
+  public boolean deleteMapping(DataSchemaMapping mapping) {
+    if (mapping != null && dataSchemaMappings.contains(mapping)) {
+      return dataSchemaMappings.remove(mapping);
+    } else {
+      LOG.debug("Data Schema Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    }
     return false;
   }
 
@@ -340,6 +373,18 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
     }
     return null;
+  }
+
+  /**
+   * @return the schema identifier of the data schema
+   */
+  @Nullable
+  public String getSchemaIdentifier() {
+    return schemaIdentifier;
+  }
+
+  public void setSchemaIdentifier(String schemaIdentifier) {
+    this.schemaIdentifier = schemaIdentifier;
   }
 
   /**
@@ -569,6 +614,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public DataSchemaMapping getDataSchemaMapping(Integer index) {
+    if (index != null) {
+      List<DataSchemaMapping> maps = getDataSchemaMappings();
+      if (maps.size() >= index) {
+        return maps.get(index);
+      }
+    }
+    return null;
+  }
+
   public List<ExtensionMapping> getMappings() {
     return mappings;
   }
@@ -587,6 +642,30 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (rowType != null) {
       for (ExtensionMapping m : mappings) {
         if (rowType.equals(m.getExtension().getRowType())) {
+          maps.add(m);
+        }
+      }
+    }
+    return maps;
+  }
+
+  /**
+   * Get the list of data schema mappings for its data schema identifier.
+   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
+   * list.
+   *
+   * @return the list of mappings for the requested data schema identifier
+   */
+  public List<DataSchemaMapping> getDataSchemaMappings() {
+    List<DataSchemaMapping> maps = new ArrayList<>();
+
+    if (dataSchemaMappings == null) {
+      dataSchemaMappings = new ArrayList<>();
+    }
+
+    if (schemaIdentifier != null) {
+      for (DataSchemaMapping m : dataSchemaMappings) {
+        if (schemaIdentifier.equals(m.getDataSchema().getIdentifier())) {
           maps.add(m);
         }
       }
@@ -777,6 +856,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     for (ExtensionMapping cm : getCoreMappings()) {
       // test each core mapping if there is at least one field mapped
       if (!cm.getFields().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasSchemaMappedData() {
+    for (DataSchemaMapping dsm : getDataSchemaMappings()) {
+      if (!dsm.getFields().isEmpty()) {
         return true;
       }
     }

@@ -38,6 +38,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -54,6 +55,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -64,6 +66,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
@@ -224,6 +227,7 @@ public class ResourceManagerImplTest {
     Extension simpleImage = extensionFactory.build(simpleImageIs);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
+    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
@@ -238,10 +242,26 @@ public class ResourceManagerImplTest {
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
-      extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
-      conceptTermConverter, mockDwcaFactory, passwordEncrypter, mockEml2Rtf, mockVocabulariesManager,
-      mockSimpleTextProvider, mockRegistrationManager);
+    return new ResourceManagerImpl(
+        mockAppConfig,
+        mockedDataDir,
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        extensionRowTypeConverter,
+        mock(DataSchemaIdentifierConverter.class),
+        jdbcConverter,
+        mockSourceManager,
+        extensionManager,
+        mockSchemaManager,
+        mockRegistryManager,
+        conceptTermConverter,
+        mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
+        passwordEncrypter,
+        mockEml2Rtf,
+        mockVocabulariesManager,
+        mockSimpleTextProvider,
+        mockRegistrationManager);
   }
 
   /**
@@ -998,10 +1018,26 @@ public class ResourceManagerImplTest {
     // mock changing the the baseURL now (returning a different public resource URL)
     when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://192.38.28.24:7001/ipt/resource?r=bees");
 
-    manager = new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
-      mock(ExtensionRowTypeConverter.class), mockJdbcConverter, mockSourceManager, mock(ExtensionManager.class),
-      mockRegistryManager, mock(ConceptTermConverter.class), mockDwcaFactory, mockPasswordEncrypter, mockEml2Rtf,
-      mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
+    manager = new ResourceManagerImpl(
+        mockAppConfig,
+        mockedDataDir,
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionRowTypeConverter.class),
+        mock(DataSchemaIdentifierConverter.class),
+        mockJdbcConverter,
+        mockSourceManager,
+        mock(ExtensionManager.class),
+        mock(DataSchemaManager.class),
+        mockRegistryManager,
+        mock(ConceptTermConverter.class),
+        mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
+        mockPasswordEncrypter,
+        mockEml2Rtf,
+        mockVocabulariesManager,
+        mockSimpleTextProvider,
+        mockRegistrationManager);
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);

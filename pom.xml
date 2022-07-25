@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>2.5.8-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -42,14 +42,14 @@
     <dwca-io.version>2.11</dwca-io.version>
     <gbif-api.version>0.163</gbif-api.version>
     <gbif-common.version>0.53</gbif-common.version>
-    <gbif-doi.version>2.17</gbif-doi.version>
-    <gbif-metadata-profile.version>1.3</gbif-metadata-profile.version>
+    <gbif-doi.version>2.18</gbif-doi.version>
+    <gbif-metadata-profile.version>1.5</gbif-metadata-profile.version>
     <gbif-parsers.version>0.58</gbif-parsers.version>
     <gbif-registry-metadata.version>3.77</gbif-registry-metadata.version>
     <gbif-httputils.version>1.1</gbif-httputils.version>
 
     <!-- Third party dependencies -->
-    <apache-poi.version>3.17</apache-poi.version>
+    <apache-poi.version>5.2.2</apache-poi.version>
     <bcrypt.version>0.9.0</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-io.version>2.8.0</commons-io.version>
@@ -58,7 +58,7 @@
     <commons-validator.version>1.7</commons-validator.version>
     <commons-text.version>1.9</commons-text.version>
     <freemarker.version>2.3.31</freemarker.version>
-    <gson.version>2.8.2</gson.version>
+    <gson.version>2.9.0</gson.version>
     <guava.version>20.0</guava.version>
     <guice.version>4.2.0</guice.version>
     <httpclient.version>4.5.13</httpclient.version>
@@ -71,11 +71,11 @@
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.8.2</junit.version>
-    <log4j.version>2.17.1</log4j.version>
-    <mockito.version>4.3.1</mockito.version>
+    <log4j.version>2.17.2</log4j.version>
+    <mockito.version>4.6.1</mockito.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <struts2.version>2.5.29</struts2.version>
+    <struts2.version>2.5.30</struts2.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
@@ -86,13 +86,14 @@
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
     <mssql-jdbc.version>9.2.1.jre8</mssql-jdbc.version>
-    <mysql-connector-java.version>8.0.25</mysql-connector-java.version>
-    <ojdbc.version>21.1.0.0</ojdbc.version>
-    <postgresql.version>42.3.3</postgresql.version>
+    <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+    <ojdbc.version>21.5.0.0</ojdbc.version>
+    <postgresql.version>42.4.0</postgresql.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.2</buildnumber-maven-plugin.version>
     <native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
+    <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
   </properties>
 
   <developers>
@@ -145,6 +146,10 @@
     <repository>
       <id>gbif-thirdparty</id>
       <url>https://repository.gbif.org/content/repositories/thirdparty</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -491,6 +496,13 @@
       <scope>runtime</scope>
     </dependency>
 
+    <!-- Frictionless Data -->
+    <dependency>
+      <groupId>io.frictionlessdata</groupId>
+      <artifactId>datapackage-java</artifactId>
+      <version>0.1.7-gbif-SNAPSHOT</version>
+    </dependency>
+
     <!-- excel parsing -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -685,6 +697,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
+            <version>${maven-war-plugin.version}</version>
             <configuration>
               <!-- don't bundle local datadir.location file with generated war -->
               <packagingExcludes>**/datadir.location</packagingExcludes>
@@ -702,6 +715,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
+            <version>${maven-war-plugin.version}</version>
             <configuration>
               <!-- don't bundle local datadir.location file with generated war -->
               <packagingExcludes>**/datadir.location</packagingExcludes>

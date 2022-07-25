@@ -5,17 +5,30 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
-<main class="container" style="max-width: 400px;">
-    <div class="my-3 p-3 border rounded shadow-sm">
+<main class="container login-container">
+    <div class="my-3 px-4 px-sm-5 pb-3 pb-sm-4 pt-4 pt-sm-36p border rounded shadow-sm">
+        <div class="text-smaller">
+            <#include "/WEB-INF/pages/inc/action_alerts_messages.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts_errors.ftl">
+        </div>
 
-        <#include "/WEB-INF/pages/inc/action_alerts_messages.ftl">
-        <#include "/WEB-INF/pages/inc/action_alerts_errors.ftl">
+        <div class="row text-center">
+            <div class="col-sm-2 p-0">
+                <span>
+                    <img alt="GBIF" style="height: 50px;" src="${baseURL}/images/gbif-logo.svg"/>
+                </span>
+            </div>
+            <div class="col-sm-10 p-0 pt-1">
+                <div class="fs-6 fw-400 text-uppercase site-name">
+                    Integrated Publishing Toolkit
+                </div>
+                <div class="text-smaller" style="opacity: 0.75;">
+                    <@s.text name="admin.config.setup.common.tagline"/>
+                </div>
+            </div>
+        </div>
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-            <@s.text name="login.title"/>
-        </h5>
-
-        <p class="mx-md-4 mx-2 text-center">
+        <p class="text-center text-smaller mt-5">
             <@s.text name="login.intro">
                 <@s.param>${adminEmail}</@s.param>
             </@s.text>
@@ -23,18 +36,24 @@
 
         <form class="needs-validation" action="${baseURL}/login.do" method="post" novalidate>
             <input type="hidden" name="csrfToken" value="${newCsrfToken!}">
+            <#assign userEmail>
+                <@s.text name="user.email"/>
+            </#assign>
+            <#assign userPassword>
+                <@s.text name="user.password"/>
+            </#assign>
 
-            <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
+            <div class="row g-3 mt-0 mb-2">
                 <div class="col-12">
-                    <@input name="email" i18nkey="user.email" value="${email!}"/>
+                    <input class="form-control" type="text" id="email" name="email" value="${email!}" placeholder="${userEmail}">
                 </div>
 
                 <div class="col-12">
-                    <@input name="password" i18nkey="user.password" type="password" value="${password!}"/>
+                    <input class="form-control" type="password" id="password" name="password" value="${password!}" placeholder="${userPassword}">
                 </div>
 
                 <#if email?has_content>
-                    <p class="text-center">
+                    <p class="text-center text-smaller">
                         <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>

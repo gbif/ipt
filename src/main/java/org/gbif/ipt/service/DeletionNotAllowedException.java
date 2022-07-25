@@ -36,6 +36,10 @@ public class DeletionNotAllowedException extends Exception {
      */
     EXTENSION_MAPPED,
     /**
+     * Because the data schema has been mapped in at least one resource. Used while deleting an data schema.
+     */
+    DATA_SCHEMA_MAPPED,
+    /**
      * Because the vocabulary is a default vocabulary. Used while deleting a vocabulary.
      */
     BASE_VOCABULARY,

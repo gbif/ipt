@@ -31,6 +31,13 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataSchemaFieldConstraints;
+import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataSchemaFieldReference;
+import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.DataSubschemaForeignKey;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -48,6 +55,7 @@ import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -66,6 +74,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -75,6 +84,8 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackage;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.GeneratorException;
@@ -89,6 +100,9 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.EMLProfileVersion;
+import org.gbif.registry.metadata.EmlValidator;
+import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.registry.metadata.parse.DatasetParser;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
@@ -142,6 +156,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+import org.xml.sax.SAXException;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -154,9 +169,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
+  private DataSchemaManager schemaManager;
   private RegistryManager registryManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
+  private GenerateDataPackageFactory dataPackageFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
@@ -168,19 +185,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
                              OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-                             JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
-                             RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
+                             DataSchemaIdentifierConverter dataSchemaConverter,
+                             JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
+                             ExtensionManager extensionManager, DataSchemaManager schemaManager,
+                             RegistryManager registryManager, ConceptTermConverter conceptTermConverter,
+                             GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
+    this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
+    this.dataPackageFactory = dataPackageFactory;
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
+    defineXstreamMapping(userConverter, orgConverter, extensionConverter, dataSchemaConverter, conceptTermConverter, jdbcInfoConverter,
       passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
@@ -262,6 +284,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return eml;
+  }
+
+  /**
+   * Validates EML file
+   *
+   * @param emlFile EML file
+   * @throws SAXException if failed to create validator
+   * @throws IOException if failed to read EML file
+   * @throws InvalidEmlException if EML is invalid
+   */
+  private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
+      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_1);
+      String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
+      emlValidator.validate(emlString);
   }
 
   /**
@@ -499,6 +535,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setShortname(shortname.toLowerCase());
     res.setCreated(new Date());
     res.setCreator(creator);
+
+    String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
+    if (schemaIdentifier != null) {
+      res.setSchemaIdentifier(schemaIdentifier);
+    }
+
     res.setCoreType(type);
     // first and last published dates are nulls
     res.getEml().setDateStamp(((Date) null));
@@ -613,13 +655,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Replace the EML file in a resource by the provided file
+   * Replace the EML file in a resource by the provided file.
+   * Validation is optional.
    */
   @Override
-  public void replaceEml(Resource resource, File emlFile) throws ImportException {
-    Eml eml;
+  public void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException {
+    if (validate) {
+      validateEmlFile(emlFile);
+    }
     // copy eml file to data directory (with name eml.xml) and populate Eml instance
-    eml = copyMetadata(resource.getShortname(), emlFile);
+    Eml eml = copyMetadata(resource.getShortname(), emlFile);
     resource.setEml(eml);
     resource.setMetadataModified(new Date());
     save(resource);
@@ -685,8 +730,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-    ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
-    JdbcInfoConverter jdbcInfoConverter, PasswordEncrypter passwordEncrypter) {
+                                    ExtensionRowTypeConverter extensionConverter, DataSchemaIdentifierConverter dataSchemaConverter,
+                                    ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter,
+                                    PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
@@ -696,6 +742,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
+    xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
+    xstream.alias("dataSchemaFieldMapping", DataSchemaFieldMapping.class);
+    xstream.alias("subschema", DataSubschema.class);
+    xstream.alias("dataSchemaField", DataSchemaField.class);
+    xstream.alias("dataSubschemaForeignKey", DataSubschemaForeignKey.class);
+    xstream.alias("dataSchemaFieldReference", DataSchemaFieldReference.class);
+    xstream.alias("constraints", DataSchemaFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
 
@@ -710,6 +763,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(userConverter);
     // persist only rowtype
     xstream.registerConverter(extensionConverter);
+    // persist only schema identifier
+    xstream.registerConverter(dataSchemaConverter);
     // persist only qualified concept name
     xstream.registerConverter(conceptTermConverter);
     // encrypt passwords
@@ -754,6 +809,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
+    Future<Map<String, Integer>> f = executor.submit(worker);
+    processFutures.put(resource.getShortname(), f);
+    // make sure we have at least a first report for this resource
+    worker.report();
+  }
+
+  private void generateDataPackage(Resource resource) {
+    // use threads to run in the background as sql sources might take a long time
+    GenerateDataPackage worker = dataPackageFactory.create(resource, this);
     Future<Map<String, Integer>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
@@ -1362,18 +1426,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       processReports.remove(resource.getShortname());
     }
 
-    // (re)generate dwca asynchronously
-    boolean dwca = false;
-    if (resource.hasMappedData()) {
-      generateDwca(resource);
-      dwca = true;
-    } else {
-      // set number of records published
-      resource.setRecordsPublished(0);
-      // finish publication now
-      publishEnd(resource, action, version);
+    if (resource.getSchemaIdentifier() == null) { // DwC archive
+      // (re)generate dwca asynchronously
+      boolean dwca = false;
+      if (resource.hasMappedData()) {
+        generateDwca(resource);
+        dwca = true;
+      } else {
+        // set number of records published
+        resource.setRecordsPublished(0);
+        // finish publication now
+        publishEnd(resource, action, version);
+      }
+      return dwca;
+    } else { // Data Schema based package
+      boolean dataPackage = false;
+      if (resource.hasSchemaMappedData()) {
+        generateDataPackage(resource);
+        dataPackage = true;
+      } else {
+        // set number of records published
+        resource.setRecordsPublished(0);
+        // finish publication now
+        // TODO: 06/04/2022 check publishEnd works correctly (we can't register schema resources yet)
+        publishEnd(resource, action, version);
+      }
+      return dataPackage;
     }
-    return dwca;
   }
 
   /**

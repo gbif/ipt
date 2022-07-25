@@ -2,7 +2,7 @@
 	New styling since IPT v2.5.0 (Bootstrap 5).
 	If you consider the CSS and HTML could be improved for convenience
 	of theming, please report an enhancement request in the IPT project
-	site at https://github.com/gbif
+	site at https://github.com/gbif/ipt
 	Thank you very much!
 */
 
@@ -16,6 +16,19 @@ body {
 
 table {
     color: #4e565f !important;
+}
+
+/* Login container */
+.login-container {
+    max-width: 450px;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 576px) {
+    .pt-sm-36p {
+        padding-top: 36px !important;
+    }
 }
 
 
@@ -39,6 +52,14 @@ header, .dropdown-menu {
     background-color: #61a861 !important;
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: rgba(0,0,0,.04) !important;
+}
+
+.dropdown-item-active {
+    background-color: #00000014;
+}
+
 .bg-gbif-main-navbar {
     background: linear-gradient(#78b578, #71b171);
 }
@@ -52,7 +73,7 @@ header, .dropdown-menu {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
     .nav-item-border-bottom:not(no-border) {
         border-bottom: 1px solid #559a55;
     }
@@ -82,11 +103,11 @@ header, .dropdown-menu {
     fill: rgba(255, 255, 255, 0.55);
 }
 
-.gbif-heartbeat-icon:hover, .gbif-translate-icon:hover {
+.gbif-heartbeat-icon:hover:not(.gbif-heartbeat-icon.active), .gbif-translate-icon:hover:not(.gbif-translate-icon.active) {
     fill: rgba(255, 255, 255, 0.75);
 }
 
-.gbif-heartbeat-icon:active, .gbif-translate-icon:active {
+.gbif-heartbeat-icon.active, .gbif-translate-icon.active {
     fill: #fff;
 }
 
@@ -97,7 +118,84 @@ header, .dropdown-menu {
 .navbar-toggler:focus {
     box-shadow: none;
 }
+
+/* Health logo with red circle */
+/*.health-link::after {*/
+/*    content: ' ';*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    width: 10px;*/
+/*    height: 10px;*/
+/*    background: tomato;*/
+/*    border-radius: 50%;*/
+/*    top: 5px;*/
+/*    right: 5px;*/
+/*    pointer-events: none;*/
+/*}*/
+
+/*@media (max-width: 1200px) {*/
+/*    .health-link::after {*/
+/*        left: 15px;*/
+/*    }*/
+/*}*/
 /* Logo, header, menu etc. END */
+
+/* Material UI icons */
+a.icon-button, a.icon-button:hover {
+    color: rgb(78, 86, 95) !important;
+}
+
+.icon-button {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    text-align: center;
+    flex: 0 0 auto;
+    padding: 8px;
+    border-radius: 50%;
+    overflow: visible;
+    color: rgba(0, 0, 0, 0.54);
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-size: 1rem;
+}
+
+.icon-button-sm {
+    font-size: 0.875rem;
+}
+
+.icon-button-svg {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentColor;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.icon-button:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
 
 
 /* Admin page styles START */
@@ -178,13 +276,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button) {
     color: #4BA2CE !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button):hover {
     color: #2c79a1 !important;
     text-decoration: underline !important;
 }
@@ -237,16 +335,60 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #663c00;
 }
 
+.text-discreet {
+    color: #666666;
+}
+
 .bg-gbif-primary {
-  background-color: #61a861;
+    background-color: #61a861;
 }
 
 .bg-gbif-danger {
-  background-color: #e36370;
+    background-color: #e36370;
 }
 
 .bg-gbif-header {
-  background-color: #4E565F;
+    background-color: #4E565F;
+}
+
+.bg-blue {
+    background-color: #2196f3;
+}
+
+.bg-light-blue {
+    background-color: #4fc3f7;
+}
+
+.bg-red {
+    background-color: #ef5350;
+}
+
+.bg-teal {
+    background-color: #009688;
+}
+
+.bg-cyan {
+    background-color: #00bcd4;
+}
+
+.bg-purple {
+    background-color: #6f42c1;
+}
+
+.bg-indigo {
+    background-color: #3f51b5;
+}
+
+.bg-orange {
+    background-color: #ff9800;
+}
+
+.bg-amber {
+    background-color: #ffc107;
+}
+
+.bg-yellow {
+    background-color: #ffeb3b;
 }
 
 /* Custom alerts colors START */
@@ -293,7 +435,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: rgb(78, 86, 95) !important;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
-    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25) !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -309,7 +451,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: #61a861;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
     color: #fff !important;
@@ -642,41 +784,20 @@ img.latestVersionHidden {
 
 
 /* Data records chars styling START */
-ul.no_bullets li {
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    padding-left: 0;
-    margin-left: 0;
-}
-
-ul.horizontal_graph {
-    margin: 0;
-}
-
-ul.horizontal_graph .grey_bar {
+div#record_graph .color-bar {
     background-color: #a9e4ba;
     border-radius: 1px;
     display: inline-block;
     height: 3px;
-    margin: 0 0 2px;
+    margin-top: 10px;
 }
 
-ul.horizontal_graph li span {
-    display: inline-block;
-    width: 200px;
-    font-size: 0.9em;
-    word-wrap: break-word;
+#record_graph {
+    font-size: 0.875rem;
 }
 
-ul.no_bullets {
-    list-style: outside none none;
-}
-
-ul.horizontal_graph .value_label {
-    color: #cccccc;
-    display: inline-block;
-    font-size: 0.9em;
-    margin: 0 0 0 10px;
-    padding: 0;
+.value_label {
+    color: #CCCCCC;
 }
 /* Data records chars styling END */
 
@@ -922,11 +1043,14 @@ button.close {
 
 
 /* Sidebars and related (resource view, mapping, metadata) START */
+.bd-main {
+    grid-template-columns: 1fr 4fr;
+}
+
 @media (max-width: 768px) {
     .bd-main {
         grid-template-areas:
                 "toc content";
-        grid-template-columns: 1fr 4fr;
         grid-template-rows: 1fr auto;
     }
 }
@@ -963,13 +1087,6 @@ button.close {
                     "toc content";
         grid-template-rows: auto auto 1fr;
     }
-
-    .bd-main-right {
-        grid-template-areas:
-                    "content toc";
-        grid-template-columns: 1fr auto;
-    }
-
 
     #metadata-selector-container {
         display: none;
@@ -1018,7 +1135,7 @@ button.close {
     border-left: 2px solid #09c;
 }
 
-#additional {
+#additional, #managers {
     height: 100vh;
     min-height: 200px;
 }
@@ -1028,8 +1145,31 @@ button.close {
     margin-top: -59px;
 }
 
+.anchor-home-resource-page-2 {
+    height: 90px;
+    margin-top: -104px;
+}
+
 .logoImg>img {
-    max-height: 64px;
+    max-height: 100px;
+}
+
+@media (max-width: 1199px) {
+    .logoImg>img {
+        max-height: 120px;
+    }
+}
+
+@media (max-width: 991px) {
+    .logoImg>img {
+        max-height: 90px;
+    }
+}
+
+@media (max-width: 411px) {
+    .logoImg>img {
+        max-height: 70px;
+    }
 }
 
 dt, dd {
@@ -1123,5 +1263,47 @@ a.doi:hover span:first-of-type {
         padding-top: .5rem !important;
         padding-bottom: .5rem !important
     }
+
+    .pt-lg-max-3 {
+        padding-top: 1rem !important;
+    }
+
+    .pb-lg-max-3 {
+        padding-bottom: 1rem !important;
+    }
+
+    .mt-lg-max-3 {
+        margin-top: 1rem !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-1-5 {
+        width: 12.5%;
+    }
+
+    .col-lg-2-5 {
+        width: 20.83333%;
+    }
+
+    .col-lg-3-5 {
+        width: 29.16667%;
+    }
+}
+
+.text-collapse {
+    cursor: pointer;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.text-uncollapse {
+    -webkit-line-clamp: unset;
+}
+
+.top-button {
+    min-width: 100px;
 }
 

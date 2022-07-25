@@ -41,8 +41,8 @@
             var locationFilter = new L.LocationFilter({
                 enable: true,
                 enableButton: false,
-                adjustButton:false,
-                bounds:  L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal)))
+                adjustButton: false,
+                bounds:  L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal))
             }).addTo(map);
 
             // checks if global coverage is set. If on, coordinate input fields are hidden and the map disabled
@@ -78,20 +78,27 @@
                     $("#" + maxLatId).val(maxLatVal);
                     $("#coordinates").slideDown('slow');
                     locationFilter.enable();
-                    locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal))));
+                    locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)));
                 }
             });
 
+            var skipMapAdjustment = false;
+
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
-                var minLatVal = clamp(locationFilter.getBounds()._southWest.lat, MIN_LAT_VAL_LIMIT, MAX_LAT_VAL_LIMIT)
-                var minLngVal = datelineAdjust(locationFilter.getBounds()._southWest.lng)
-                var maxLatVal = clamp(locationFilter.getBounds()._northEast.lat, MIN_LAT_VAL_LIMIT, MAX_LAT_VAL_LIMIT)
-                var maxLngVal = datelineAdjust(locationFilter.getBounds()._northEast.lng)
-                $("#" + minLatId).val(minLatVal);
-                $("#" + minLngId).val(minLngVal);
-                $("#" + maxLatId).val(maxLatVal);
-                $("#" + maxLngId).val(maxLngVal);
+                if (!skipMapAdjustment) {
+                    var minLatVal = locationFilter.getBounds()._southWest.lat
+                    var minLngVal = locationFilter.getBounds()._southWest.lng
+                    var maxLatVal = locationFilter.getBounds()._northEast.lat
+                    var maxLngVal = locationFilter.getBounds()._northEast.lng
+
+                    $("#" + minLatId).val(minLatVal);
+                    $("#" + minLngId).val(minLngVal);
+                    $("#" + maxLatId).val(maxLatVal);
+                    $("#" + maxLngId).val(maxLngVal);
+                } else {
+                    skipMapAdjustment = false;
+                }
             });
 
             // lock map on disable
@@ -99,47 +106,10 @@
                 locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)))
             });
 
-            /**
-             * Adjusts longitude with respect to dateLine.
-             * Do not apply to 180.
-             *
-             * @param {number} lng The longitude value to adjust.
-             * @returns {number} The adjusted longitude value.
-             */
-            function datelineAdjust(lng) {
-                return lng === 180 ? lng : ((lng + 180) % 360) - 180;
-            }
-
-            /**
-             * Function adjusts max longitude as work-around for leaflet bug occurring when rendering map with max longitude
-             * smaller than min longitude.
-             *
-             * @param {number} maxLng The max longitude value.
-             * @param {number} minLng The min longitude value.
-             * @returns {number} The adjusted longitude value.
-             */
-            function maxLongitudeAdjust(maxLng, minLng) {
-                if (maxLng < minLng) {
-                    maxLng = maxLng + 360;
-                }
-                return maxLng;
-            }
-
-            /**
-             * Restricts latitude to be between min and max. Returns min if latitude is less than min.
-             * Returns max if latitude is greater than max.
-             *
-             * @param {number} lat The latitude value to adjust.
-             * @param {number} min The minimum latitude value permitted.
-             * @param {number} max The maximum latitude value permitted.
-             * @returns {number} The restricted latitude value.
-             */
-            function clamp(lat, min, max) {
-                return Math.min(Math.max(lat, min), max);
-            }
-
-            /** This function adjusts the map each time the user enters a  */
+            /** This function adjusts the map each time the user enters data */
             $("#bbox input").keyup(function() {
+                skipMapAdjustment = true;
+
                 var minLngStr = $("#" + minLngId).val();
                 var maxLngStr = $("#" + maxLngId).val();
                 var minLatStr = $("#" + minLatId).val();
@@ -170,12 +140,81 @@
                 if (isNaN(maxLatVal)) {
                     maxLatVal = MAX_LAT_VAL_LIMIT;
                 }
-                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal))))
+                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)));
             });
 
             $('#metadata-section').change(function () {
                 var metadataSection = $('#metadata-section').find(':selected').val()
                 $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+
+            function validateCoordinates(event) {
+                // prevent form submit
+                event.preventDefault();
+
+                // remove error messages and error classes before validation
+                $('.invalid-feedback').remove();
+                $('.form-control').removeClass('is-invalid');
+
+                var minLng = $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude")
+                var maxLng = $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude")
+                var minLat = $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude")
+                var maxLat = $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude")
+
+                // get error messages
+                var textLng = '${action.getText("validation.longitude.value")}';
+                var textLat = '${action.getText("validation.latitude.value")}';
+
+                var submitForm = true;
+
+                // validate
+                if (minLng) {
+                    var minLngVal = minLng.val();
+                    if (minLngVal < -180) {
+                        minLng.addClass("is-invalid");
+                        minLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLng + "</span></li></ul>")
+                        submitForm = false;
+                    }
+                }
+
+                if (maxLng) {
+                    var maxLngVal = maxLng.val();
+                    if (maxLngVal > 180) {
+                        maxLng.addClass("is-invalid");
+                        maxLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLng + "</span></li></ul>")
+                        submitForm = false;
+                    }
+                }
+
+                if (minLat) {
+                    var minLatVal = minLat.val();
+                    if (minLatVal < -90) {
+                        minLat.addClass("is-invalid");
+                        minLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLat + "</span></li></ul>")
+                        submitForm = false;
+                    }
+                }
+
+                if (maxLat) {
+                    var maxLatVal = maxLat.val();
+                    if (maxLatVal > 90) {
+                        maxLat.addClass("is-invalid");
+                        maxLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLat + "</span></li></ul>")
+                        submitForm = false;
+                    }
+                }
+
+                // submit form if no errors
+                if (submitForm) {
+                    $("#geocoverage-form").submit();
+                }
+            }
+
+            $("#save").click(function (event) {
+                validateCoordinates(event);
+            });
+            $("#top-save").click(function (event) {
+                validateCoordinates(event);
             });
         });
     </script>
@@ -183,22 +222,30 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="geocoverage-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container pt-2">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
         <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name="manage.overview.metadata"/>
+            </div>
 
             <div class="text-center">
-                <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name='manage.metadata.geocoverage.title'/>
-                </h5>
+                </h1>
             </div>
 
             <div class="text-center fs-smaller">
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+            </div>
+
+            <div class="text-center mt-2">
+                <input type="submit" value="Save" id="top-save" name="save" class="button btn btn-sm btn-outline-gbif-primary top-button">
+                <input type="submit" value="Back" id="top-cancel" name="cancel" class="button btn btn-sm btn-outline-secondary top-button">
             </div>
         </div>
     </div>
@@ -208,12 +255,12 @@
     <div class="container-fluid bg-body">
         <div class="container bd-layout">
 
-            <main class="bd-main bd-main-right">
+            <main class="bd-main bd-main">
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <#include "eml_sidebar.ftl"/>
                 </div>
 
-                <div class="bd-content ps-lg-4">
+                <div class="bd-content">
                     <div class="my-md-3 p-3">
                         <p><@s.text name='manage.metadata.geocoverage.intro'/></p>
 
@@ -246,11 +293,6 @@
                         <div class="row g-3 mt-2">
                             <div class="col-12">
                                 <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
-                            </div>
-
-                            <div class="col-12">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back" />
                             </div>
                         </div>
 

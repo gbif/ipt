@@ -42,6 +42,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.collections4.ListValuedMap;
 
 import com.google.inject.ImplementedBy;
+import org.gbif.registry.metadata.InvalidEmlException;
+import org.xml.sax.SAXException;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -371,6 +373,7 @@ public interface ResourceManager {
    *
    * @param resource
    * @param emlFile
+   * @param validate
    */
-  void replaceEml(Resource resource, File emlFile) throws ImportException;
+  void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
 }

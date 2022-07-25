@@ -1,27 +1,46 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<title><@s.text name='manage.source.title'/></title>
+<title><@s.text name='manage.history.title'/></title>
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
+<div class="container-fluid bg-body border-bottom">
+    <div class="container my-3 p-3">
+        <div class="text-center">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <span><@s.text name="resource"/></span>
+            </div>
+
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <@s.text name='manage.history.title'/>
+            </h1>
+
+            <div class="text-smaller">
+                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+            </div>
+
+            <div class="mt-2">
+                <#if resource?? && version?? && resource.versionHistory??>
+                    <@s.submit form="history" cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit form="history" cssClass="button btn btn-sm btn-outline-secondary top-button" name="back" key="button.cancel"/>
+                <#else>
+                    <@s.submit form="history" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                </#if>
+            </div>
+        </div>
+    </div>
+</div>
+
 <main class="container">
-
-    <form action="history.do" method="post">
-
-        <div class="my-3 p-3 border rounded shadow-sm">
-
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
+    <form id="history" action="history.do" method="post">
+        <div class="my-3 p-3">
             <#if resource?? && version?? && resource.versionHistory??>
                 <input type="hidden" name="r" value="${resource.shortname}" />
                 <input type="hidden" name="v" value="${version.toPlainString()}" />
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                    <@s.text name='manage.history.title'/>: <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </h5>
 
-                <p class="mx-md-4 mx-2">
+                <p>
                     <@s.text name="manage.history.intro"><@s.param>${version.toPlainString()}</@s.param><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                 </p>
 
@@ -34,7 +53,7 @@
                 <#assign none><@s.text name="basic.none"/></#assign>
                 <#assign emptyPlaceholder="-"/>
 
-                <div class="mx-md-4 mx-2">
+                <div>
                     <#list resource.versionHistory as history>
                         <#if history.version == version.toPlainString()>
                             <table id="${history.version}" class="table table-sm table-borderless">
@@ -62,10 +81,12 @@
                                         <td>${emptyPlaceholder}</td>
                                     </#if>
                                 </tr>
+                                <#if !resource.schemaIdentifier??>
                                 <tr>
                                     <th>${recordsTitle?cap_first}</th>
                                     <td>${history.recordsPublished}</td>
                                 </tr>
+                                </#if>
                                 <tr>
                                     <th>${modifiedTitle?cap_first}</th>
                                     <#if history.modifiedBy??>
@@ -84,27 +105,8 @@
                         </#if>
                     </#list>
                 </div>
-
-                <div class="row mx-md-3 mx-1">
-                    <div class="buttons col-12">
-                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-outline-secondary" name="back" key="button.cancel"/>
-                    </div>
-                </div>
-            <#else>
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </h5>
-
-                <div class="row mx-md-3 mx-1">
-                    <div class="buttons col-12">
-                        <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-                    </div>
-                </div>
             </#if>
-
         </div>
-
     </form>
 </main>
 

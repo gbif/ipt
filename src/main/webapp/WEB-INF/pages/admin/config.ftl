@@ -23,17 +23,33 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
-<main class="container">
-    <div class="my-3 p-3 border rounded shadow-sm">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+<form class="topForm half needs-validation" action="config.do" method="post" >
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-            <@s.text name="admin.home.editConfig"/>
-        </h5>
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="text-uppercase fw-bold fs-smaller-2">
+                    <span><@s.text name="menu.admin"/></span>
+                </div>
 
-        <form class="topForm half needs-validation" action="config.do" method="post" >
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="admin.home.editConfig"/>
+                </h1>
 
-            <div class="row g-3 mx-md-3 mx-1">
+                <div class="mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3 ">
+            <div class="row g-3">
                 <div class="col-lg-6">
                     <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
                 </div>
@@ -81,7 +97,7 @@
 
             </div>
 
-            <div id="location" class="row g-3 mx-md-3 mx-1 mb-3 mt-2">
+            <div id="location" class="row g-3 mb-3 mt-2">
                 <label for="latitude"><@s.text name="admin.config.server.location"/></label>
                 <div class="col-lg-6">
                     <@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
@@ -93,23 +109,14 @@
 
             <#if latitude?? && longitude??>
                 <#-- the map -->
-                <div id="locationMap" class="mx-md-4 mx-2 mt-0"></div>
+                <div id="locationMap" class="mt-0"></div>
             <#else>
-                <div class="mx-md-4 mx-2 mt-0" >
+                <div class="mt-0" >
                     <img src="${baseURL}/images/ipt_no_location_map.gif"/>
                 </div>
             </#if>
-
-            <div class="buttons row g-3 mx-md-3 mx-1 mt-1">
-                <div class="col-12">
-                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
-                </div>
-            </div>
-
-        </form>
-
-    </div>
-</main>
+        </div>
+    </main>
+</form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

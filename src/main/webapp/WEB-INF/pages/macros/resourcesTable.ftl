@@ -43,13 +43,14 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 '<#if r.status=='REGISTERED' && r.organisation??>${r.organisation.alias?replace("\'", "\\'")?replace("\"", '\\"')!r.organisation.name?replace("\'", "\\'")?replace("\"", '\\"')}<#elseif r.status=='REGISTERED'><@s.text name="manage.home.unknown.organisation"/><#else><@s.text name="manage.home.not.registered"/></#if>',
                 <#if r.coreType?has_content && types[r.coreType?lower_case]?has_content>'${types[r.coreType?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,
                 <#if r.subtype?has_content && datasetSubtypes[r.subtype?lower_case]?has_content >'${datasetSubtypes[r.subtype?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,
-                '<a target="_blank" href="${baseURL}/resource?r=${r.shortname}#anchor-dataRecords">${(r.recordsPublished?c)!0}</a>',
+                <#if r.schemaIdentifier??>'--'<#else>'<a target="_blank" href="${baseURL}/resource?r=${r.shortname}#anchor-dataRecords">${(r.recordsPublished?c)!0}</a>'</#if>,
                 '${r.modified?date}',
                 <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
                 '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm"))!'${emptyString}'}',
                 <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
                 <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>,
-                '${r.shortname}'
+                '${r.shortname}',
+                '${r.eml.subject!}'
             ]
             <#if r_has_next>,</#if>
             </#list>
@@ -61,7 +62,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             var urlParams = new URLSearchParams(window.location.search);
             var searchParam = urlParams.get(SEARCH_PARAM) ? urlParams.get(SEARCH_PARAM) : "";
 
-            $('#tableContainer').html( '<table  class="table table-sm" id="rtable"></table>' );
+            $('#tableContainer').html( '<table  class="table table-sm align-middle" id="rtable"></table>' );
             var dt = $('#rtable').DataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numResourcesShown},
@@ -92,7 +93,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},
                     { "sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "bVisible": <#if shownPublicly>false<#else>true</#if>},
                     { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    { "sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false}
+                    { "sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false},
+                    { "sTitle": "<@s.text name="portal.resource.summary.keywords"/>", "bVisible": false}
                 ],
                 "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
                 "aoColumnDefs": [

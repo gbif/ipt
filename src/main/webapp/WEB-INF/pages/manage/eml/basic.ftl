@@ -141,11 +141,14 @@
         </div>
 
         <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name="manage.overview.metadata"/>
+            </div>
 
             <div class="text-center">
-                <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name='manage.metadata.basic.title'/>
-                </h5>
+                </h1>
             </div>
 
             <div class="text-center fs-smaller">
@@ -157,6 +160,11 @@
                     </#if>
                 </a>
             </div>
+
+            <div class="text-center mt-2">
+                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+            </div>
         </div>
     </div>
 
@@ -165,12 +173,12 @@
     <div class="container-fluid bg-body">
         <div class="container bd-layout">
 
-            <main class="bd-main bd-main-right">
+            <main class="bd-main bd-main">
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <#include "eml_sidebar.ftl"/>
                 </div>
 
-                <div class="bd-content ps-lg-4">
+                <div class="bd-content">
 
                     <div class="my-md-3 p-3">
 
@@ -252,7 +260,7 @@
                             <#list eml.description as item>
                                 <div id="item-${item_index}" class="item paragraphk pb-4 border-bottom">
                                     <div class="mt-2 d-flex justify-content-end">
-                                        <a id="removeLink-${item_index}" class="removeLink mt-1" href="">
+                                        <a id="removeLink-${item_index}" class="removeLink text-smaller mt-1" href="">
                                             <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/>
                                         </a>
                                     </div>
@@ -261,14 +269,14 @@
                             </#list>
                         </div>
                         <div class="addNew mt-2">
-                            <a id="plus" href="">
+                            <a id="plus" href="" class="text-smaller">
                                 <@s.text name='manage.metadata.addnew'/> <@s.text name='eml.description.item'/>
                             </a>
                         </div>
 
                         <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
                             <div class="mt-1">
-                                <a id="removeLink" class="removeLink d-flex justify-content-end" href="">
+                                <a id="removeLink" class="removeLink text-smaller d-flex justify-content-end" href="">
                                     <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/>
                                 </a>
                             </div>
@@ -295,7 +303,7 @@
                                         <!-- Do not show copy-from-resource-contact link for for first contact -->
                                         <div>&nbsp;</div>
                                         <div>
-                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink" href="">${removeContactLink?lower_case?cap_first}</a>
+                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink text-smaller" href="">${removeContactLink?lower_case?cap_first}</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -353,16 +361,16 @@
                         </div>
 
                         <div class="addNew mt-2">
-                            <a id="plus-contact" href="">${addContactLink?lower_case?cap_first}</a>
+                            <a id="plus-contact" href="" class="text-smaller">${addContactLink?lower_case?cap_first}</a>
                         </div>
 
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks mt-3 d-flex justify-content-between">
                                 <div>
-                                    <a id="contact-copyDetails" href="">${copyLink?lower_case?cap_first}</a>
+                                    <a id="contact-copyDetails" class="text-smaller" href="">${copyLink?lower_case?cap_first}</a>
                                 </div>
                                 <div>
-                                    <a id="contact-removeLink" class="removeContactLink" href="">${removeContactLink?lower_case?cap_first}</a>
+                                    <a id="contact-removeLink" class="removeContactLink text-smaller" href="">${removeContactLink?lower_case?cap_first}</a>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -418,10 +426,10 @@
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="columnLinks mt-3 d-flex justify-content-between">
                                         <div>
-                                            <a id="creator-copyDetails-${creator_index}" href="">${copyLink?lower_case?cap_first}</a>
+                                            <a id="creator-copyDetails-${creator_index}" href="" class="text-smaller">${copyLink?lower_case?cap_first}</a>
                                         </div>
                                         <div>
-                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink" href="">${removeCreatorLink?lower_case?cap_first}</a>
+                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink text-smaller" href="">${removeCreatorLink?lower_case?cap_first}</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -479,7 +487,7 @@
                         </div>
 
                         <div class="addNew mt-2">
-                            <a id="plus-creator" href="">
+                            <a id="plus-creator" href="" class="text-smaller">
                                 ${addCreatorLink?lower_case?cap_first}
                             </a>
                         </div>
@@ -487,10 +495,10 @@
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks mt-3 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copyDetails" href="">${copyLink}</a>
+                                    <a id="creator-copyDetails" href="" class="text-smaller">${copyLink}</a>
                                 </div>
                                 <div>
-                                    <a id="creator-removeLink" class="removeCreatorLink" href="">${removeCreatorLink?lower_case?cap_first}</a>
+                                    <a id="creator-removeLink" class="removeCreatorLink text-smaller" href="">${removeCreatorLink?lower_case?cap_first}</a>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -546,10 +554,10 @@
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="columnLinks d-flex justify-content-between">
                                         <div>
-                                            <a id="metadataProvider-copyDetails-${metadataProvider_index}" href=""><@s.text name="eml.resourceCreator.copyLink" /></a>
+                                            <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="" class="text-smaller"><@s.text name="eml.resourceCreator.copyLink" /></a>
                                         </div>
                                         <div>
-                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink" href="">${removeMetadataProviderLink?lower_case?cap_first}</a>
+                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink text-smaller" href="">${removeMetadataProviderLink?lower_case?cap_first}</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -607,16 +615,16 @@
                         </div>
 
                         <div class="addNew mt-2">
-                            <a id="plus-metadataProvider" href="">${addMetadataProviderLink?lower_case?cap_first}</a>
+                            <a id="plus-metadataProvider" href="" class="text-smaller">${addMetadataProviderLink?lower_case?cap_first}</a>
                         </div>
 
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copyDetails" href="">${copyLink?lower_case?cap_first}</a>
+                                    <a id="metadataProvider-copyDetails" href="" class="text-smaller">${copyLink?lower_case?cap_first}</a>
                                 </div>
                                 <div>
-                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink" href="">${removeMetadataProviderLink?lower_case?cap_first}</a>
+                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink text-smaller" href="">${removeMetadataProviderLink?lower_case?cap_first}</a>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -660,13 +668,6 @@
                             </div>
                             <div class="col-md-6">
                                 <@input name="eml.metadataProvider.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
                             </div>
                         </div>
 

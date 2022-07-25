@@ -554,6 +554,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(FileSource src) {
+    String problem = null;
     File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
     try {
       FileUtils.deleteQuietly(logFile);
@@ -580,9 +581,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
     } catch (IOException e) {
       LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
+      problem = e.getMessage();
     }
 
-    return null;
+    return problem;
   }
 
   /**

@@ -29,7 +29,7 @@
             </#if>
         </div>
         <#-- we use this div to toggle the grouped information -->
-        <div class="text-smaller">
+        <div class="text-smaller text-discreet">
             <#if con.position?has_content>
                 <div class="contactPosition">
                     ${con.position!}
@@ -98,9 +98,9 @@
     <#if ext?? && ext.name?has_content>
         <#if ext.description?has_content>
             <#assign coreText><@s.text name='manage.overview.DwC.Mappings.cores.select'/></#assign>
-            <span class="ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></span>
+            <div class="col-lg-3 ps-0 ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></div>
         <#else>
-            <span>${ext.name}</span>
+            <div class="col-lg-3 ps-0">${ext.name}</div>
         </#if>
     </#if>
 </#macro>
@@ -157,7 +157,7 @@
 </script>
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -208,7 +208,7 @@
                 <div class="mt-2">
 
                     <#if managerRights>
-                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1" style="min-width: 100px">
+                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
                             <@s.text name='button.edit'/>
                         </a>
                     </#if>
@@ -225,43 +225,16 @@
     </div>
 </div>
 
-<#if (eml.description?size>0)>
-    <#assign resourceDescription = eml.description[0]>
-<#else>
-    <#assign resourceDescription><@s.text name='portal.resource.no.description'/></#assign>
-</#if>
-<#assign resourceDescriptionLength = resourceDescription?length>
-<#assign maxDescriptionLength = 800>
+<#assign isLogoPresent=eml.logoUrl?has_content/>
 
 <div class="container-fluid bg-light border-bottom">
     <div class="container">
-        <div class="my-4 p-3 pt-4 bg-body border rounded shadow-sm">
+        <div class="my-4 px-4 py-4 bg-body border rounded shadow-sm">
+            <span class="anchor anchor-home-resource-page-2 mb-3" id="anchor-downloads"></span>
             <div class="mx-md-4 mx-2">
                 <div class="row">
-                    <div class="col-lg-8 text-smaller">
-                        <#if (eml.description?size>0)>
-                            <div property="dc:abstract" class="overflow-x-auto">
-                                <#if (resourceDescriptionLength>maxDescriptionLength)>
-                                    ${resourceDescription?substring(0, maxDescriptionLength)}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                <#elseif (eml.description?size>1)>
-                                    ${resourceDescription}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                <#else>
-                                    ${resourceDescription}
-                                </#if>
-                            </div>
-                        <#else>
-                            <div class="mt-3">
-                                <p><@s.text name='portal.resource.no.description'/></p>
-                            </div>
-                        </#if>
-                    </div>
-                    <div class="col-lg-4 text-smaller">
-                        <#if eml.logoUrl?has_content>
-                            <div class="logoImg">
-                                <img src="${eml.logoUrl}"/>
-                            </div>
-                        </#if>
-                        <dl class="inline">
+                    <div class="<#if isLogoPresent>col-lg-3-5 col-md-10 col-sm-9 col-8<#else>col-lg-4</#if> text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
+                        <dl class="inline mb-0">
                             <#if eml.distributionUrl?has_content>
                                 <div>
                                     <dt><@s.text name='eml.distributionUrl.short'/>:</dt>
@@ -329,11 +302,74 @@
                                     </doi>
                                 </#if>
                             </div>
-
                         </dl>
                     </div>
-                </div>
 
+                    <#if isLogoPresent>
+                        <div class="col-lg-1-5 col-md-2 col-sm-3 col-4 text-smaller px-0 pb-lg-max-3 order-lg-3">
+                            <div class="logoImg text-end">
+                                <img src="${eml.logoUrl}"/>
+                            </div>
+                        </div>
+                    </#if>
+
+                    <div class="<#if isLogoPresent>col-lg-7<#else>col-lg-8</#if> text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
+                        <#if metadataOnly == true>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
+                        <#elseif resource.schemaIdentifier??>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.dataSchema.verbose'/></p>
+                        <#else>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.verbose'/></p>
+                        </#if>
+
+                        <div class="table-responsive">
+                            <table class="downloads text-smaller table table-sm table-borderless mb-0">
+                                <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
+                                <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
+                                <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
+                                <#if metadataOnly == false>
+                                    <tr>
+                                        <th class="col-4 p-0">
+                                            <#if resource.schemaIdentifier??>
+                                                <@s.text name='portal.resource.dataPackage.verbose'/>
+                                            <#else>
+                                                <@s.text name='portal.resource.dwca.verbose'/>
+                                            </#if>
+                                        </th>
+                                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
+                                            <td class="p-0">
+                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);">
+                                                    <@s.text name='portal.resource.download'/>
+                                                </a>
+                                                <#if !resource.schemaIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                            </td>
+                                        <#else>
+                                            <td class="p-0">
+                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished!0?c} ]);">
+                                                    <@s.text name='portal.resource.download'/>
+                                                </a>
+                                                <#if !resource.schemaIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                            </td>
+                                        </#if>
+                                    </tr>
+                                </#if>
+                                <tr>
+                                    <th class="p-0"><@s.text name='portal.resource.metadata.verbose'/></th>
+                                    <td class="p-0"><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="p-0"><@s.text name='portal.resource.rtf.verbose'/></th>
+                                    <td class="p-0"><a href="${download_rtf_url}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -347,14 +383,11 @@
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
-                        <#if (resourceDescriptionLength>maxDescriptionLength) || (eml.description?size>1)>
-                            <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
-                        </#if>
+                        <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
                         <#if resource.lastPublished??>
                             <#if metadataOnly != true>
                                 <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
                             </#if>
-                            <li><a href="#anchor-downloads" class="sidebar-navigation-link"><@s.text name='portal.resource.downloads'/></a></li>
                             <#if resource.versionHistory??>
                                 <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                             </#if>
@@ -402,27 +435,25 @@
             </div>
 
             <div class="bd-content ps-lg-4">
-                <#if (resourceDescriptionLength>maxDescriptionLength) || (eml.description?size>1)>
-                    <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                    <div id="description" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.description'/>
-                        </h4>
-                        <div property="dc:abstract" class="mt-3 overflow-x-auto">
-                            <#if (eml.description?size>0)>
-                                <#list eml.description as para>
-                                    <#if para?has_content>
-                                        <p>
-                                            <@para?interpret />
-                                        </p>
-                                    </#if>
-                                </#list>
-                            <#else>
-                                <p><@s.text name='portal.resource.no.description'/></p>
-                            </#if>
-                        </div>
+                <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
+                <div id="description" class="mt-5 section">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                        <@s.text name='portal.resource.description'/>
+                    </h4>
+                    <div property="dc:abstract" class="mt-3 overflow-x-auto">
+                        <#if (eml.description?size>0)>
+                            <#list eml.description as para>
+                                <#if para?has_content>
+                                    <p>
+                                        <@para?interpret />
+                                    </p>
+                                </#if>
+                            </#list>
+                        <#else>
+                            <p><@s.text name='portal.resource.no.description'/></p>
+                        </#if>
                     </div>
-                </#if>
+                </div>
 
 
                 <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
@@ -443,7 +474,11 @@
                             </h4>
 
                             <p>
-                                <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
+                                <#if resource.schemaIdentifier??>
+                                    <@s.text name='portal.resource.dataRecords.dataSchema.intro'/>
+                                <#else>
+                                    <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
+                                </#if>
                                 <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
                                     <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount}</@s.param></@s.text>
                                 </#if>
@@ -454,16 +489,16 @@
                                     <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
                                 </p>
 
-                                <div id="record_graph" class="mb-3 overflow-x-auto">
-                                    <ul class="no_bullets horizontal_graph">
+                                <div id="record_graph" class="mb-3 ps-sm-5 ps-3">
+                                    <div class="record_graph_inner">
                                         <!-- at top, show bar for core record count to enable comparison against extensions -->
                                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                            <li>
+                                            <div class="row record_graph_row">
                                                 <@extensionLink coreExt true/>
-                                                <div class="grey_bar">
+                                                <div class="col-lg-8 color-bar">
                                                     ${coreCount?c}
                                                 </div>
-                                            </li>
+                                            </div>
                                         </#if>
 
                                         <!-- below bar for core record count, show bars for extension record counts -->
@@ -471,15 +506,15 @@
                                             <#assign ext = action.getExtensionManager().get(k)!/>
                                             <#assign extCount = recordsByExtensionOrdered.get(k)!/>
                                             <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
-                                                <li>
+                                                <div class="row record_graph_row">
                                                     <@extensionLink ext/>
-                                                    <div class="grey_bar">
+                                                    <div class="col-lg-8 color-bar">
                                                         ${extCount?c}
                                                     </div>
-                                                </li>
+                                                </div>
                                             </#if>
                                         </#list>
-                                    </ul>
+                                    </div>
                                 </div>
                             </#if>
 
@@ -488,55 +523,6 @@
                             </p>
                         </div>
                     </#if>
-
-                    <!-- downloads section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-downloads"></span>
-                    <div id="downloads" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.downloads'/>
-                        </h4>
-
-                        <#if metadataOnly == true>
-                            <p><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
-                        <#else>
-                            <p><@s.text name='portal.resource.downloads.verbose'/></p>
-                        </#if>
-
-                        <div class="table-responsive">
-                            <table class="downloads text-smaller table table-sm table-borderless">
-                                <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
-                                <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
-                                <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
-                                <#if metadataOnly == false>
-                                    <tr>
-                                        <th class="col-4"><@s.text name='portal.resource.dwca.verbose'/></th>
-                                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
-                                            <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);"><@s.text name='portal.resource.download'/></a>
-                                                ${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
-                                            </td>
-                                        <#else>
-                                            <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished!0?c} ]);"><@s.text name='portal.resource.download'/></a>
-                                                ${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
-                                            </td>
-                                        </#if>
-                                    </tr>
-                                </#if>
-                                <tr>
-                                    <th><@s.text name='portal.resource.metadata.verbose'/></th>
-                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th><@s.text name='portal.resource.rtf.verbose'/></th>
-                                    <td><a href="${download_rtf_url}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
 
                     <!-- versions section -->
                     <#if resource.versionHistory??>
@@ -734,33 +720,33 @@
                             </h4>
 
                             <#list organizedCoverages as item>
-                                    <p><@textWithFormattedLink item.description!no_description/></p>
+                                <p><@textWithFormattedLink item.description!no_description/></p>
 
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <#list item.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
-                                                    <tr>
-                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                        <#if k.rank?lower_case == "class">
-                                                            <th class="col-4">Class</th>
-                                                        <#else>
-                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                        </#if>
-                                                        <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
-                                                        <td>
-                                                            <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
-                                                            </#list>
-                                                        </td>
-                                                    </tr>
-                                                </#if>
-                                            </#list>
-                                        </table>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#list item.keywords as k>
+                                            <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                <tr>
+                                                    <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
+                                                    <#if k.rank?lower_case == "class">
+                                                        <th class="col-4">Class</th>
+                                                    <#else>
+                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                    </#if>
+                                                    <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
+                                                    <td>
+                                                        <#list k.displayNames as name>
+                                                            &nbsp;${name}<#if name_has_next>,</#if>
+                                                        </#list>
+                                                    </td>
+                                                </tr>
+                                            </#if>
+                                        </#list>
+                                    </table>
+                                </div>
                                 <#-- give some space between taxonomic coverages -->
-                                    <#if item_has_next><br></#if>
-                                </#list>
+                                <#if item_has_next><br></#if>
+                            </#list>
                         </div>
                     </#if>
 
@@ -773,32 +759,32 @@
                             </h4>
 
                             <#list eml.temporalCoverages as item>
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
-                                                </tr>
-                                            <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
-                                                </tr>
-                                            <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
-                                                </tr>
-                                            <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
-                                                </tr>
-                                            </#if>
-                                        </table>
-                                    </div>
-                                </#list>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
+                                            </tr>
+                                        <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
+                                            </tr>
+                                        <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
+                                            </tr>
+                                        <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
+                                            </tr>
+                                        </#if>
+                                    </table>
+                                </div>
+                            </#list>
                         </div>
                     </#if>
 
@@ -915,32 +901,32 @@
 
                             <#list eml.collections as item>
                                 <div class="table-responsive">
-                                        <table class="table table-sm table-borderless">
-                                            <#if item.collectionName?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.collectionName'/></th>
-                                                    <td>${item.collectionName!}</td>
-                                                </tr>
-                                            </#if>
-                                            <#if item.collectionId?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.collectionId'/></th>
-                                                    <td>${item.collectionId!}</td>
-                                                </tr>
-                                            </#if>
-                                            <#if item.parentCollectionId?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.parentCollectionId'/></th>
-                                                    <td>${item.parentCollectionId!}</td>
-                                                </tr>
-                                            </#if>
-                                        </table>
-                                    </div>
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#if item.collectionName?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.collectionName'/></th>
+                                                <td>${item.collectionName!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if item.collectionId?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.collectionId'/></th>
+                                                <td>${item.collectionId!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if item.parentCollectionId?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.parentCollectionId'/></th>
+                                                <td>${item.parentCollectionId!}</td>
+                                            </tr>
+                                        </#if>
+                                    </table>
+                                </div>
                             </#list>
 
                             <#if eml.specimenPreservationMethods?? && (eml.specimenPreservationMethods?size>0) && eml.specimenPreservationMethods[0]?has_content >
                                 <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
+                                    <table class="text-smaller table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                                 <td>
@@ -950,12 +936,12 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>
+                                </div>
                             </#if>
 
                             <#if eml.jgtiCuratorialUnits?? && (eml.jgtiCuratorialUnits?size>0) && eml.jgtiCuratorialUnits[0]?has_content>
                                 <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
+                                    <table class="text-smaller table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
                                                 <td>
@@ -974,7 +960,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>
+                                </div>
                             </#if>
                         </div>
                     </#if>
@@ -1011,34 +997,34 @@
                         </h4>
 
                         <div>
-                                <#if eml.additionalInfo?has_content>
-                                    <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
-                                </#if>
-                                <div class="table-responsive">
-                                    <table class="text-smaller table table-sm table-borderless">
-                                        <#if eml.purpose?has_content>
+                            <#if eml.additionalInfo?has_content>
+                                <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
+                            </#if>
+                            <div class="table-responsive">
+                                <table class="text-smaller table table-sm table-borderless">
+                                    <#if eml.purpose?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.purpose'/></th>
+                                            <td><@textWithFormattedLink eml.purpose/></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.updateFrequencyDescription?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
+                                            <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
+                                        </tr>
+                                    </#if>
+                                    <#if (eml.alternateIdentifiers?size > 0)>
+                                        <#list eml.alternateIdentifiers as item>
                                             <tr>
-                                                <th class="col-4"><@s.text name='eml.purpose'/></th>
-                                                <td><@textWithFormattedLink eml.purpose/></td>
+                                                <th class="col-4"><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
+                                                <td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td>
                                             </tr>
-                                        </#if>
-                                        <#if eml.updateFrequencyDescription?has_content>
-                                            <tr>
-                                                <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
-                                                <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
-                                            </tr>
-                                        </#if>
-                                        <#if (eml.alternateIdentifiers?size > 0)>
-                                            <#list eml.alternateIdentifiers as item>
-                                                <tr>
-                                                    <th class="col-4"><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
-                                                    <td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td>
-                                                </tr>
-                                            </#list>
-                                        </#if>
-                                    </table>
-                                </div>
+                                        </#list>
+                                    </#if>
+                                </table>
                             </div>
+                        </div>
                     </div>
                 </#if>
 
@@ -1076,7 +1062,7 @@
         var graph = $("#record_graph");
         var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
         // max 350px
-        graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);
+        graph.bindRecordBars( (350-((maxRecords+"").length)*10) / maxRecords);
         </#if>
     });
 

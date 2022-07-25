@@ -29,22 +29,33 @@
     <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
     <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="admin.home.editOrganisations"/>
-            </h5>
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="text-uppercase fw-bold fs-smaller-2">
+                    <span><@s.text name="menu.admin"/></span>
+                </div>
 
-            <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
-            <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="admin.home.editOrganisations"/>
+                </h1>
 
-            <div class="mx-md-4 mx-2 mt-2">
-                <button id="add" class="btn btn-outline-gbif-primary"><@s.text name="button.add"/></button>
-                <button id="cancel" class="btn btn-outline-secondary"><@s.text name="button.cancel"/></button>
+                <div class="mt-2">
+                    <button id="add" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.add"/></button>
+                    <button id="cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></button>
+                </div>
             </div>
+        </div>
+    </div>
 
+    <main class="container">
+        <div class="my-3 p-3">
+            <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
+            <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
         </div>
     </main>
 

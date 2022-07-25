@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.struts2;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -81,18 +82,24 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
         }
       }
 
-      // is the resource currently private, or has it been deleted?
-      if (PublicationStatus.PRIVATE == resource.getStatus()) {
-        // user authorised?
-        if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.NOT_ALLOWED;
-        }
-      } else if (PublicationStatus.DELETED == resource.getStatus()) {
+      if (PublicationStatus.DELETED == resource.getStatus()) {
         // user authorised?
         if (user == null || !isAuthorized(user, resource)) {
           return BaseAction.GONE;
         }
       }
+
+      PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
+          ? resource.getVersionHistory().get(0).getPublicationStatus()
+          : resource.getStatus();
+
+      if (PublicationStatus.PRIVATE == resourceStatus) {
+        // user authorised?
+        if (user == null || !isAuthorized(user, resource)) {
+          return BaseAction.NOT_ALLOWED;
+        }
+      }
+
     }
     return invocation.invoke();
   }

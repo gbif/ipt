@@ -38,10 +38,12 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.UndeletNotAllowedException;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -49,6 +51,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -64,6 +67,7 @@ import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
@@ -89,11 +93,13 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
@@ -109,8 +115,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   private static final String PUBLISHING = "publishing";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
-  private final UserAccountManager userManager;
-  private final ExtensionManager extensionManager;
+
   private List<User> potentialManagers;
   private List<KeyNamePair> allNetworks;
   private List<KeyNamePair> potentialNetworks;
@@ -128,15 +133,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Map<String, String> autoPublishFrequencies;
   private StatusReport report;
   private Date now;
+  private File emlFile;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
+  private boolean validateEml = false;
   private String summary;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
+  private GenerateDataPackageFactory dataPackageFactory;
   private List<String> columns;
   private List<String[]> peek;
   private Integer mid;
@@ -144,19 +152,25 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
+  private final UserAccountManager userManager;
+  private final ExtensionManager extensionManager;
+  private final DataSchemaManager schemaManager;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager, RegistryManager registryManager) {
+    GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
+    RegistryManager registryManager, DataSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.dwcaFactory = dwcaFactory;
+    this.dataPackageFactory = dataPackageFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
+    this.schemaManager = schemaManager;
   }
 
   /**
@@ -1270,10 +1284,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           return PUBLISHING;
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
-          if (resource.getCoreType() != null &&
-              !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
+          if (resource.getCoreType() != null
+              && resource.getSchemaIdentifier() == null // not a data schema base resource
+              && !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
+
+          if (resource.getSchemaIdentifier() != null && CollectionUtils.isEmpty(resource.getDataSchemaMappings())) {
+            addActionWarning(getText("manage.overview.data.missing"));
+          }
+
           missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
           metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
           mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
@@ -1488,6 +1508,43 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.publish = StringUtils.trimToNull(publish) != null;
   }
 
+  public boolean isValidateEml() {
+    return validateEml;
+  }
+
+  public void setValidateEml(boolean validateEml) {
+    this.validateEml = validateEml;
+  }
+
+  public void setEmlFile(File emlFile) {
+    this.emlFile = emlFile;
+  }
+
+  public String replaceEml() {
+    try {
+      resourceManager.replaceEml(resource, emlFile, validateEml);
+      resourceManager.saveEml(resource);
+      addActionMessage(getText("manage.overview.success.replace.eml"));
+      return SUCCESS;
+    } catch (ImportException e) {
+      LOG.error("Failed to replace EML", e);
+      addActionError(getText("manage.overview.failed.replace.eml"));
+      return ERROR;
+    } catch (SAXException e) {
+      LOG.error("Failed to create EML validator", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validator"));
+      return ERROR;
+    } catch (IOException e) {
+      LOG.error("Failed to read EML from file", e);
+      addActionError(getText("manage.overview.failed.replace.eml.read"));
+      return ERROR;
+    } catch (InvalidEmlException e) {
+      LOG.error("Validation failed for EML document", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
+      return ERROR;
+    }
+  }
+
   /**
    * Log how many times publication has failed for a resource, also detailing when the failures occurred.
    *
@@ -1568,49 +1625,54 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       rowType = TERM_FACTORY.findTerm(id);
     }
 
-    if (rowType != null && mid != null) {
-      ExtensionMapping mapping = resource.getMappings(id).get(mid);
-      if (mapping != null) {
-        try {
-          GenerateDwca worker = dwcaFactory.create(resource, this);
-          worker.report();
-          File tmpDir = FileUtils.createTempDir();
-          worker.setDwcaFolder(tmpDir);
-          Archive archive = new Archive();
-          worker.setArchive(archive);
-          // create the data file inside the temp directory
-          List<ExtensionMapping> mappings = new ArrayList<>();
-          mappings.add(mapping);
-          worker.addDataFile(mappings, PEEK_ROWS);
-          // preview the data file, by writing header and rows
-          File[] files = tmpDir.listFiles();
-          if (files != null && files.length > 0) {
-            // file either represents a core file or an extension
-            ArchiveFile core = archive.getCore();
-            ArchiveFile ext = archive.getExtension(rowType);
-            String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
-            Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
-            int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
+    if (resource.getSchemaIdentifier() != null) {
+      // TODO: 06/04/2022 implement for schema resources?
+      // There are many files inside, how to display that?
+    } else {
+      if (rowType != null && mid != null) {
+        ExtensionMapping mapping = resource.getMappings(id).get(mid);
+        if (mapping != null) {
+          try {
+            GenerateDwca worker = dwcaFactory.create(resource, this);
+            worker.report();
+            File tmpDir = FileUtils.createTempDir();
+            worker.setDwcaFolder(tmpDir);
+            Archive archive = new Archive();
+            worker.setArchive(archive);
+            // create the data file inside the temp directory
+            List<ExtensionMapping> mappings = new ArrayList<>();
+            mappings.add(mapping);
+            worker.addDataFile(mappings, PEEK_ROWS);
+            // preview the data file, by writing header and rows
+            File[] files = tmpDir.listFiles();
+            if (files != null && files.length > 0) {
+              // file either represents a core file or an extension
+              ArchiveFile core = archive.getCore();
+              ArchiveFile ext = archive.getExtension(rowType);
+              String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
+              Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
+              int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
 
-            CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
-            while (reader.hasNext()) {
-              peek.add(reader.next());
-              if (columns.isEmpty()) {
-                columns = Arrays.asList(reader.header);
+              CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
+              while (reader.hasNext()) {
+                peek.add(reader.next());
+                if (columns.isEmpty()) {
+                  columns = Arrays.asList(reader.header);
+                }
               }
+            } else {
+              messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
             }
-          } else {
-            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
+          } catch (Exception e) {
+            exception = e;
+            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[]{e.getMessage()})));
           }
-        } catch (Exception e) {
-          exception = e;
-          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[] {e.getMessage()})));
+        } else {
+          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
         }
       } else {
-        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[] {id, String.valueOf(mid)})));
+        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
       }
-    } else {
-      messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
     }
 
     // add messages to those collected while generating preview
@@ -1667,5 +1729,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public String getSummary() {
     return StringUtils.trimToNull(summary);
+  }
+
+  public boolean isDataSchemaBased() {
+    return resource.getSchemaIdentifier() != null;
   }
 }

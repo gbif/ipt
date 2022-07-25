@@ -1,17 +1,17 @@
 /*
  * To draw data record line chart on resource homepage.
  */
-function drawGreyBars(ob, scale) {
-  jQuery("ul li", ob).each(function() {
-    var bar = $(this).find("div.grey_bar");
+function drawRecordBars(scale) {
+  $(".record_graph_row").each(function() {
+    var bar = $(this).find("div.color-bar");
     var value = bar.html();
-    $(this).append("<div class='value_label'>" + value + "</div>");
+    $(this).append("<div class='col-lg-1 ps-0 ms-lg-2 value_label'>" + value + "</div>");
     bar.empty();
     bar.css({width: value * scale});
     bar.show();
   });
 }
 
-$.fn.bindGreyBars = function(scale) {
-  drawGreyBars($(this), scale);
+$.fn.bindRecordBars = function(scale) {
+  drawRecordBars(scale);
 }

@@ -11,24 +11,44 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl">
 
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
+
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="text-uppercase fw-bold fs-smaller-2">
+                    <span><@s.text name="menu.admin"/></span>
+                </div>
+
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if>
+                </h1>
+
+                <div class="mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>
+                    <#if "${newUser!}"=="no">
+                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                    </#if>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if>
-            </h5>
-
-            <p class="mx-md-4 mx-2 mb-0">
+        <div class="my-3 p-3">
+            <p class="mb-0">
                 <@s.text name="admin.user.intro"/>
             </p>
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="admin.user.intro2"/>
             </p>
 
             <form id="newuser" class="needs-validation" action="user.do" method="post">
-                <div class="row g-3 mx-md-3 mx-1 mt-2">
+                <div class="row g-3 mt-2">
                     <@s.hidden name="id" value="${user.email!}" required="true"/>
 
                     <div class="col-md-6">
@@ -56,17 +76,7 @@
                         </div>
                     </#if>
                 </div>
-
-                <div class="mx-md-4 mx-2 mt-3">
-                    <@s.submit cssClass="button btn btn-outline-gbif-primary mt-1" name="save" key="button.save"/>
-                    <#if "${newUser!}"=="no">
-                        <@s.submit cssClass="confirm btn btn-outline-gbif-danger mt-1" name="delete" key="button.delete"/>
-                        <@s.submit cssClass="button btn btn-outline-gbif-danger mt-1" name="resetPassword" key="button.resetPassword" />
-                    </#if>
-                    <@s.submit cssClass="button btn btn-outline-secondary mt-1" name="cancel" key="button.cancel"/>
-                </div>
             </form>
-
         </div>
     </main>
 

@@ -24,15 +24,23 @@
             </div>
 
             <div class="container my-3 p-3">
+                <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                    <@s.text name="manage.overview.metadata"/>
+                </div>
 
                 <div class="text-center">
-                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                         <@s.text name='manage.metadata.physical.title'/>
-                    </h5>
+                    </h1>
                 </div>
 
                 <div class="text-center fs-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
                 </div>
             </div>
         </div>
@@ -42,12 +50,12 @@
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
-                <main class="bd-main bd-main-right">
+                <main class="bd-main bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
                         <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.physical.intro'/>
@@ -67,7 +75,7 @@
                                     <#list eml.physicalData as item>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
@@ -89,13 +97,8 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                    <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
                                 </div>
-                            </div>
-
-                            <div class="buttons col-12 mt-3">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back" />
                             </div>
 
                             <!-- internal parameter -->
@@ -103,7 +106,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />

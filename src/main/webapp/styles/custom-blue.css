@@ -38,7 +38,7 @@
 }
 
 /* Nav borders */
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
     .nav-item-border-bottom:not(no-border) {
         border-bottom: 1px solid #4F82BB;
     }
@@ -164,7 +164,7 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
 }
 
 /* Data records color */
-ul.horizontal_graph .grey_bar {
+div#record_graph .color-bar {
     background-color: rgba(29, 134, 200, 0.5);
 }
 

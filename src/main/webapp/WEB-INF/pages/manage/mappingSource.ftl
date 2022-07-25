@@ -5,43 +5,52 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<main class="container">
-    <form class="topForm" action="mapping.do" method="post">
-        <div class="my-3 p-3 border rounded shadow-sm">
+<div class="container-fluid bg-body border-bottom">
+    <div class="container my-3">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
 
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                ${mapping.extension.title}
-            </h5>
-
-            <p class="mx-md-4 mx-2">${mapping.extension.description}</p>
-            <#if mapping.extension.link?has_content>
-                <p class="mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
-            </#if>
-            <input type="hidden" name="r" value="${resource.shortname}" />
-            <input type="hidden" name="id" value="${mapping.extension.rowType}" />
-            <input type="hidden" name="mid" value="${mid!}" />
-            <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
+    <div class="container my-3 p-3">
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            <@s.text name="basic.resource"/>
         </div>
 
-        <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name='manage.mapping.source'/>
-            </h5>
+        <div class="text-center">
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <@s.text name="manage.mapping.title"/>
+            </h1>
 
-            <p class="mx-md-4 mx-2"><@s.text name='manage.mapping.source.help'/></p>
-
-            <div class="row mx-md-3 mx-1">
-                <div class="col-sm-6">
-                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
-                </div>
+            <div class="text-center fs-smaller">
+                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </div>
 
-            <div class="row mt-3 mx-md-3 mx-1">
-                <div class="col-12">
-                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" method="cancel"/>
+            <div class="my-2">
+                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel" method="cancel"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="container">
+    <form id="mapping" class="topForm" action="mapping.do" method="post">
+        <input type="hidden" name="r" value="${resource.shortname}" />
+        <input type="hidden" name="id" value="${mapping.extension.rowType}" />
+        <input type="hidden" name="mid" value="${mid!}" />
+        <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
+
+        <div class="my-3 p-3">
+            <p>${mapping.extension.description}</p>
+
+            <#if mapping.extension.link?has_content>
+                <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
+            </#if>
+
+            <p><@s.text name='manage.mapping.source.help'/></p>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
                 </div>
             </div>
         </div>

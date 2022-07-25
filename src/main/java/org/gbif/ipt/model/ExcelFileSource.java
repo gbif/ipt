@@ -17,7 +17,6 @@ import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -101,14 +101,13 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   private Workbook openBook() throws IOException {
     LOG.info("Opening excel workbook [" + file.getName() + "]");
     try {
-      FileInputStream fis = new FileInputStream(file);
-      return WorkbookFactory.create(fis);
-    } catch (InvalidFormatException e) {
-      throw new IOException("Cannot open invalid excel spreadsheet", e);
+      return WorkbookFactory.create(file);
+    } catch (POIXMLException e) {
+      throw new IOException(e);
     }
   }
 
-  private Sheet getSheet(Workbook book) throws IOException {
+  private Sheet getSheet(Workbook book) {
     return book.getSheetAt(sheetIdx);
   }
 
@@ -130,14 +129,15 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     // FormulaEvaluator evaluate any formula in Excel cell and returns result
     private FormulaEvaluator formulaEvaluator;
 
-    RowIterator(ExcelFileSource source) throws IOException, InvalidFormatException {
-      Workbook book = openBook();
-      sheet = getSheet(book);
-      // instantiate the appropriate FormulaEvaluator, depending on whether workbook is .xls or .xlsx
-      formulaEvaluator = (book instanceof XSSFWorkbook) ? new XSSFFormulaEvaluator((XSSFWorkbook) book)
-        : new HSSFFormulaEvaluator((HSSFWorkbook) book);
-      iter = sheet.rowIterator();
-      rowSize = source.getColumns();
+    RowIterator(ExcelFileSource source) throws IOException {
+      try (Workbook book = openBook()) {
+        sheet = getSheet(book);
+        // instantiate the appropriate FormulaEvaluator, depending on whether workbook is .xls or .xlsx
+        formulaEvaluator = (book instanceof XSSFWorkbook) ? new XSSFFormulaEvaluator((XSSFWorkbook) book)
+            : new HSSFFormulaEvaluator((HSSFWorkbook) book);
+        iter = sheet.rowIterator();
+        rowSize = source.getColumns();
+      }
     }
 
     RowIterator(ExcelFileSource source, int skipRows) throws IOException, InvalidFormatException {
@@ -223,12 +223,15 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   /**
    * @return list of available sheets, keyed on sheet index
    */
-  public Map<Integer, String> sheets() throws IOException {
-    Workbook book = openBook();
-    int cnt = book.getNumberOfSheets();
+  public Map<Integer, String> sheets() {
     Map<Integer, String> sheets = new HashMap<>();
-    for (int x = 0; x < cnt; x++) {
-      sheets.put(x, book.getSheetName(x));
+    try (Workbook book = openBook()) {
+      int cnt = book.getNumberOfSheets();
+      for (int x = 0; x < cnt; x++) {
+        sheets.put(x, book.getSheetName(x));
+      }
+    } catch (Exception e) {
+      LOG.error("Exception while reading excel source " + name, e);
     }
     return sheets;
   }
@@ -288,17 +291,18 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
     // find row size
-    Workbook book = openBook();
-    Sheet sheet = getSheet(book);
-    setRows(sheet.getPhysicalNumberOfRows());
+    try (Workbook book = openBook()) {
+      Sheet sheet = getSheet(book);
+      setRows(sheet.getPhysicalNumberOfRows());
 
-    Iterator<Row> iter = sheet.rowIterator();
-    if (iter.hasNext()) {
-      setColumns(iter.next().getLastCellNum());
-      setReadable(true);
-    } else {
-      setColumns(0);
-      setReadable(false);
+      Iterator<Row> iter = sheet.rowIterator();
+      if (iter.hasNext()) {
+        setColumns(iter.next().getLastCellNum());
+        setReadable(true);
+      } else {
+        setColumns(0);
+        setReadable(false);
+      }
     }
 
     //TODO: report empty or irregular rows

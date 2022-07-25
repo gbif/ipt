@@ -7,8 +7,15 @@
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            $("#buttonUpload").click(function () {
+            $("#buttonUpload").click(function (event) {
+                event.preventDefault()
                 return ajaxFileUpload();
+            });
+
+            $("#buttonRemove").click(function () {
+                $("#resourcelogo").remove();
+                $("#eml\\.logoUrl").val('');
+                $("#file").val('');
             });
 
             function ajaxFileUpload() {
@@ -73,15 +80,23 @@
             </div>
 
             <div class="container my-3 p-3">
+                <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                    <@s.text name="manage.overview.metadata"/>
+                </div>
 
                 <div class="text-center">
-                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                         <@s.text name='manage.metadata.additional.title'/>
-                    </h5>
+                    </h1>
                 </div>
 
                 <div class="text-center fs-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                 </div>
             </div>
         </div>
@@ -91,12 +106,12 @@
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
-                <main class="bd-main bd-main-right">
+                <main class="bd-main bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
                         <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.additional.intro'/>
@@ -120,12 +135,15 @@
                                     </#if>
                                 </div>
 
-                                <div class="col-lg-9">
+                                <div class="col-lg-6">
                                     <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
                                     <@s.file cssClass="form-control my-1" name="file"/>
-                                    <button class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                                    <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
                                         <@s.text name="button.upload"/>
-                                    </button>
+                                    </a>
+                                    <a href="#" class="button btn btn-outline-gbif-danger" id="buttonRemove">
+                                        <@s.text name="button.remove"/>
+                                    </a>
                                 </div>
 
                                 <div class="col-lg-3 d-flex justify-content-start align-items-center">
@@ -164,7 +182,7 @@
                                     <#list eml.alternateIdentifiers as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                             </div>
                                             <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
                                         </div>
@@ -172,14 +190,8 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                    <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
-
-                                <div id='buttons' class="buttons col-12 mt-3">
-                                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-                                </div>
-
                             </div>
 
                             <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
@@ -188,7 +200,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
                                 <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
                             </div>
