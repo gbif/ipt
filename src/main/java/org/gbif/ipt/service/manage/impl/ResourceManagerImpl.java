@@ -2153,6 +2153,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public InferredMetadata inferMetadata(Resource resource) {
     InferredMetadata inferredMetadata = new InferredMetadata();
 
+    boolean serverError = false;
+
     // geo coverage column indexes
     int decimalLongitudeSourceColumnIndex = -1;
     int decimalLatitudeSourceColumnIndex = -1;
@@ -2169,7 +2171,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // geo coverage variables
     boolean geoDataMappedForAtLeastOneMapping = false;
-    boolean geoDataMappedForThisMapping = false;
+    boolean geoDataMappedForThisMapping;
     boolean noValidDataGeo = true;
     Double minDecimalLongitude = -180.0D;
     Double maxDecimalLongitude = 180.0D;
@@ -2178,14 +2180,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // tax coverage variables
     boolean taxDataMappedForAtLeastOneMapping = false;
-    boolean taxDataMappedForThisMapping = false;
+    boolean taxDataMappedForThisMapping;
     int taxonItemsAdded = 0;
     final int maxNumberOfTaxonItems = 200;
     Set<TaxonKeyword> taxa = new HashSet<>();
 
     // temp coverage variables
     boolean tempDataMappedForAtLeastOneMapping = false;
-    boolean tempDataMappedForThisMapping = false;
+    boolean tempDataMappedForThisMapping;
     boolean noValidDataTemporal = true;
     String startDateStr = null;
     TemporalAccessor startDateTA = null;
@@ -2363,12 +2365,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           }
         } catch (Exception e) {
           LOG.error("Error while trying to infer metadata from source data", e);
+          serverError = true;
         } finally {
           if (iter != null) {
             try {
               iter.close();
             } catch (Exception e) {
               LOG.error("Error while closing iterator", e);
+              serverError = true;
             }
           }
         }
@@ -2378,7 +2382,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize geocoverage
     InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
     inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
-    if (isNoMappings) {
+    if (serverError) {
+      inferredGeographicCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
       inferredGeographicCoverage.addError("eml.error.noMappings");
     } else if (!geoDataMappedForAtLeastOneMapping) {
       inferredGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
@@ -2394,7 +2400,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize taxcoverage
     InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
     inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
-    if (isNoMappings) {
+    if (serverError) {
+      inferredTaxonomicCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
       inferredTaxonomicCoverage.addError("eml.error.noMappings");
     } else if (!taxDataMappedForAtLeastOneMapping) {
       inferredTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
@@ -2412,7 +2420,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize tempcoverage
     InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
     inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
-    if (isNoMappings) {
+    if (serverError) {
+      inferredTemporalCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
       inferredTemporalCoverage.addError("eml.error.noMappings");
     } else if (!tempDataMappedForAtLeastOneMapping) {
       inferredTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
