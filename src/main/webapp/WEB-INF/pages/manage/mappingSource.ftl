@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<main class="container" style="max-width: 600px;">
+<main class="container">
     <form id="mapping" class="topForm" action="mapping.do" method="post">
         <input type="hidden" name="r" value="${resource.shortname}" />
         <input type="hidden" name="id" value="${mapping.extension.rowType}" />
@@ -48,9 +48,11 @@
 
             <p><@s.text name='manage.mapping.source.help'/></p>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" withLabel=false />
+            <div class="container" style="max-width: 600px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" withLabel=false />
+                    </div>
                 </div>
             </div>
         </div>
