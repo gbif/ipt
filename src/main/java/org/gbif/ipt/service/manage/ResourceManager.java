@@ -396,13 +396,4 @@ public interface ResourceManager {
    * @return inferred metadata
    */
   InferredMetadata inferMetadata(Resource resource);
-
-  /**
-   * Update resource's metadata geocoverage with inferred from source data
-   *
-   * @param resource resource
-   *
-   * @return resource with updated geocoverage metadata from source
-   */
-  Resource updateGeocoverageWithInferredFromSourceData(Resource resource);
 }

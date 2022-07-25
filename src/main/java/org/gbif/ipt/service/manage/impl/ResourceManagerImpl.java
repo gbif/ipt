@@ -2002,9 +2002,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String citation = resource.generateResourceCitation(version, homepage);
       resource.getEml().getCitation().setCitation(citation);
     }
-    // update eml geocoverage with inferred data (if infer automatically is turned on)
-    if (resource.isInferGeocoverageAutomatically()) {
-      updateGeocoverageWithInferredFromSourceData(resource);
+    // update eml with inferred data (if infer automatically is turned on)
+    if (resource.isInferGeocoverageAutomatically()
+        || resource.isInferTaxonomicCoverageAutomatically()
+        || resource.isInferTemporalCoverageAutomatically()) {
+      InferredMetadata inferredMetadata = inferMetadata(resource);
+
+      if (resource.isInferGeocoverageAutomatically()) {
+        updateGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTaxonomicCoverageAutomatically()) {
+        updateTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTemporalCoverageAutomatically()) {
+        updateTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
     }
 
     // save all changes to Eml
@@ -2092,22 +2106,47 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return combined;
   }
 
-  @Override
-  public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
-    if (!resource.getMappings().isEmpty()) {
-      GeospatialCoverage inferredGeocoverage = inferMetadata(resource).getInferredGeographicCoverage().getData();
+  private void updateGeocoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredGeographicCoverage() != null
+        && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
+      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredGeographicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
         inferredGeocoverage.setDescription(resource.getEml().getGeospatialCoverages().get(0).getDescription());
       } else {
-        inferredGeocoverage.setDescription("Automatically inferred data");
+        inferredGeocoverage.setDescription("N/A");
       }
 
       resource.getEml().addGeospatialCoverage(inferredGeocoverage);
     }
+  }
 
-    return resource;
+  private void updateTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredTaxonomicCoverage() != null
+        && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
+      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
+
+      // check object to preserve description
+      if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
+        inferredTaxonomicCoverage.setDescription(resource.getEml().getTaxonomicCoverages().get(0).getDescription());
+      } else {
+        inferredTaxonomicCoverage.setDescription("N/A");
+      }
+
+      resource.getEml().addTaxonomicCoverage(inferredTaxonomicCoverage);
+    }
+  }
+
+  private void updateTemporalCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredTemporalCoverage() != null
+        && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
+      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
+      resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
+    }
   }
 
   @Override
