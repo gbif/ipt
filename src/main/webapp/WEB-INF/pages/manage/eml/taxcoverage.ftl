@@ -353,13 +353,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
                                     </div>
                                 </div>
 
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <div class="w-100 me-2">
                                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
                                     </div>
