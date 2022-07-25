@@ -52,20 +52,24 @@
                         <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
                     <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="eml.reinfer.warning"/></span>
+                        <span><@s.text name="eml.warning.reinfer"/></span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-<#--                <div id="taxcoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">-->
-<#--                    <div class="me-3 pt-1">-->
-<#--                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>-->
-<#--                    </div>-->
-<#--                    <div class="overflow-x-hidden pt-1">-->
-<#--                        <span><@s.text name="eml.noSourceData"/></span>-->
-<#--                    </div>-->
-<#--                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
-<#--                </div>-->
+                <#if (inferredMetadata.inferredTaxonomicCoverage)??>
+                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
+                        <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                            <div class="me-3 pt-1">
+                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                            </div>
+                            <div class="overflow-x-hidden pt-1">
+                                <span><@s.text name="${error}"/></span>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </#list>
+                </#if>
             </div>
 
             <div class="container my-3 p-3">
@@ -242,6 +246,7 @@
 
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
+                                <!-- Data is inferred, preview -->
                                 <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
@@ -265,9 +270,17 @@
                                             </#list>
                                         </table>
                                     </div>
+                                <!-- Data infer finished, but there are errors/warnings -->
+                                <#elseif (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0>
+                                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
+                                        <div class="callout callout-danger text-smaller">
+                                            <@s.text name="${error}"/>
+                                        </div>
+                                    </#list>
+                                <!-- Other -->
                                 <#else>
                                     <div class="callout callout-warning text-smaller">
-                                        <@s.text name="eml.reinfer.warning"/>
+                                        <@s.text name="eml.warning.reinfer"/>
                                     </div>
                                 </#if>
                             </div>

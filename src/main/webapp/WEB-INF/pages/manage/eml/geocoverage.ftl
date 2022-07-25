@@ -63,6 +63,9 @@
                 $("#dateInferred").show();
                 $("#globalCoverage").prop("checked", false);
                 adjustMapWithInferredCoordinates();
+                <#if (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size gt 0>
+                    $(".metadata-error-alert").show();
+                </#if>
             });
 
             if ($("#globalCoverage").is(':checked')) {
@@ -114,13 +117,11 @@
             }
 
             function setInferredCoordinatesToInputs() {
-                <#if inferredMetadata.inferredGeographicCoverage?has_content>
+                <#if (inferredMetadata.inferredGeographicCoverage.data)??>
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude});
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude});
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude});
                     $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude});
-                <#else>
-                    $("#geocoverage-no-available-data-warning").show();
                 </#if>
             }
 
@@ -306,20 +307,24 @@
                     <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                 </div>
                 <div class="overflow-x-hidden pt-1">
-                    <span><@s.text name="eml.reinfer.warning"/></span>
+                    <span><@s.text name="eml.warning.reinfer"/></span>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-<#--            <div id="geocoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">-->
-<#--                <div class="me-3 pt-1">-->
-<#--                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>-->
-<#--                </div>-->
-<#--                <div class="overflow-x-hidden pt-1">-->
-<#--                    <span><@s.text name="eml.noSourceData"/></span>-->
-<#--                </div>-->
-<#--                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
-<#--            </div>-->
+            <#if (inferredMetadata.inferredGeographicCoverage)??>
+                <#list inferredMetadata.inferredGeographicCoverage.errors as error>
+                    <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                        <div class="me-3 pt-1">
+                            <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                        </div>
+                        <div class="overflow-x-hidden pt-1">
+                            <span><@s.text name="${error}"/></span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </#list>
+            </#if>
         </div>
 
         <div class="container my-3 p-3">
@@ -387,6 +392,7 @@
                         </div>
 
                         <div id="static-coordinates" class="mt-3" style="display: none;">
+                            <!-- Data is inferred, preview -->
                             <#if (inferredMetadata.inferredGeographicCoverage.data)??>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-borderless">
@@ -396,9 +402,17 @@
                                         </tr>
                                     </table>
                                 </div>
+                            <!-- Data infer finished, but there are errors/warnings -->
+                            <#elseif (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size != 0>
+                                <#list inferredMetadata.inferredGeographicCoverage.errors as error>
+                                    <div class="callout callout-danger text-smaller">
+                                        <@s.text name="${error}"/>
+                                    </div>
+                                </#list>
+                            <!-- Other -->
                             <#else>
                                 <div class="callout callout-warning text-smaller">
-                                    <@s.text name="eml.reinfer.warning"/>
+                                    <@s.text name="eml.warning.reinfer"/>
                                 </div>
                             </#if>
                         </div>

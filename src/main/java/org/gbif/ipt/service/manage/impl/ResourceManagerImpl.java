@@ -2153,7 +2153,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     String endDateStr = null;
     TemporalAccessor endDateTA = null;
 
-    if (!resource.getMappings().isEmpty()) {
+    boolean isNoMappings = resource.getMappings().isEmpty();
+
+    if (!isNoMappings) {
       for (ExtensionMapping mapping : resource.getMappings()) {
 
         // calculate column indexes for mapping
@@ -2337,10 +2339,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize geocoverage
     InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
     inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
-    if (!geoDataMappedForAtLeastOneMapping) {
-      inferredGeographicCoverage.addError(String.format("Data not mapped! One or both fields %s and %s not found", LATITUDE, LONGITUDE));
+    if (isNoMappings) {
+      inferredGeographicCoverage.addError("eml.error.noMappings");
+    } else if (!geoDataMappedForAtLeastOneMapping) {
+      inferredGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
     } else if (noValidDataGeo) {
-      inferredGeographicCoverage.addError("No valid data!");
+      inferredGeographicCoverage.addError("eml.error.noValidData");
     } else {
       inferredGeographicCoverage.setInferred(true);
       GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
@@ -2351,10 +2355,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize taxcoverage
     InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
     inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
-    if (!taxDataMappedForAtLeastOneMapping) {
-      inferredTaxonomicCoverage.addError(String.format("Data not mapped! The following fields were not found: %s, %s, %s, %s, %s", KINGDOM, PHYLUM, CLASS, ORDER, FAMILY));
+    if (isNoMappings) {
+      inferredTaxonomicCoverage.addError("eml.error.noMappings");
+    } else if (!taxDataMappedForAtLeastOneMapping) {
+      inferredTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
     } else if (taxonItemsAdded == 0) {
-      inferredTaxonomicCoverage.addError("No valid data!");
+      inferredTaxonomicCoverage.addError("eml.error.noValidData");
     } else {
       TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
       taxCoverage.setTaxonKeywords(new ArrayList<>(taxa));
@@ -2367,10 +2373,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // finalize tempcoverage
     InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
     inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
-    if (!tempDataMappedForAtLeastOneMapping) {
-      inferredTemporalCoverage.addError(String.format("Data not mapped! Field %s was not found", EVENT_DATE));
+    if (isNoMappings) {
+      inferredTemporalCoverage.addError("eml.error.noMappings");
+    } else if (!tempDataMappedForAtLeastOneMapping) {
+      inferredTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
     } else if (noValidDataTemporal) {
-      inferredTemporalCoverage.addError("No valid data!");
+      inferredTemporalCoverage.addError("eml.error.noValidData");
     } else {
       TemporalCoverage tempCoverage = new TemporalCoverage();
       try {
@@ -2379,7 +2387,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         inferredTemporalCoverage.setInferred(true);
         inferredTemporalCoverage.setData(tempCoverage);
       } catch (ParseException e) {
-        inferredTemporalCoverage.addError("Date parse exception!");
+        LOG.error("Failed to parse date for temporal coverage", e);
+        inferredTemporalCoverage.addError("eml.temporalCoverages.error.dateParseException");
       }
     }
 

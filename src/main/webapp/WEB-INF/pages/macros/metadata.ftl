@@ -61,13 +61,12 @@ $(document).ready(function(){
         }
     });
 
-    $("#preview-inferred-taxonomic").click(function (e) {
-        e.preventDefault();
-        $("#dateInferred").show();
-    });
-
     $("#preview-inferred-taxonomic").click(function(event) {
         event.preventDefault();
+
+        <#if (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size gt 0>
+        $(".metadata-error-alert").show();
+        </#if>
 
         <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
             // remove all current items
@@ -85,8 +84,6 @@ $(document).ready(function(){
                 $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.rank}");
                 subItemIndex++;
             </#list>
-        <#else>
-            $("#taxcoverage-no-available-data-warning").show();
         </#if>
     });
 
