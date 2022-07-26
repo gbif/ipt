@@ -26,7 +26,7 @@
 
             <div class="my-2">
                 <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel" method="cancel"/>
+                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
             </div>
         </div>
     </div>

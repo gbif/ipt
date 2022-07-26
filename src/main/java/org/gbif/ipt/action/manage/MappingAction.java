@@ -181,6 +181,7 @@ public class MappingAction extends ManagerBaseAction {
     return automapped;
   }
 
+  @Override
   public String cancel() {
     resource.deleteMapping(mapping);
     // set mappings modified date
@@ -363,8 +364,8 @@ public class MappingAction extends ManagerBaseAction {
       notFound = true;
     }
 
-
-    if (mapping != null && mapping.getExtension() != null) {
+    // skip if it's cancel request
+    if (!cancel && mapping != null && mapping.getExtension() != null) {
 
       // is source assigned yet?
       if (mapping.getSource() == null) {

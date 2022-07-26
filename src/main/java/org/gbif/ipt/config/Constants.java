@@ -23,6 +23,7 @@ import java.util.UUID;
 
 public final class Constants {
 
+  public static final String CANCEL_RESULTNAME = "cancel";
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
   public static final String SESSION_URL = "url";

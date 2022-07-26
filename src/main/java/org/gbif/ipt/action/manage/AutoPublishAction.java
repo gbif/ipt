@@ -112,6 +112,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  @Override
   public String cancel() {
     return SUCCESS;
   }

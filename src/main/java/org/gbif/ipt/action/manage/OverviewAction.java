@@ -223,6 +223,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @return Struts2 result string
    */
+  @Override
   public String cancel() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
