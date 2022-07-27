@@ -32,6 +32,7 @@
                 $('#updateFrequencyBiMonthWrapper').hide();
                 $('#updateFrequencyDayWrapper').hide();
                 $('#updateFrequencyDayOfWeekWrapper').hide();
+                $('#updateFrequencyTimeWrapper').hide();
 
                 if (str === "annually") {
                     $('#introAnnually').show();
@@ -40,6 +41,7 @@
                     $('#updateFrequencyMonthWrapper').show();
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
+                    $('#updateFrequencyTimeWrapper').show();
                 } else if (str === "biannually") {
                     $('#introBiAnnually').show();
                     $('#helpBiAnnually').show();
@@ -47,27 +49,30 @@
                     $('#updateFrequencyBiMonthWrapper').show();
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
+                    $('#updateFrequencyTimeWrapper').show();
                 } else if (str === "monthly") {
                     $('#introMonthly').show();
                     $('#helpMonthly').show();
                     $('#frequencyDetailsEvery').show();
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
+                    $('#updateFrequencyTimeWrapper').show();
                 } else if (str === "weekly") {
                     $('#introWeekly').show();
                     $('#helpWeekly').show();
                     $('#frequencyDetailsEvery').show();
                     $('#updateFrequencyDayOfWeekWrapper').show();
                     $('#frequencyDetailsAt').show();
+                    $('#updateFrequencyTimeWrapper').show();
                 } else if (str === "daily") {
                     $('#introDaily').show();
                     $('#frequencyDetailsAt').show();
+                    $('#updateFrequencyTimeWrapper').show();
                 } else {
                     $('#introOff').show();
                 }
 
             }).change();
-
         });
 
     </script>
@@ -101,7 +106,7 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p><@s.text name='manage.autopublish.intro'/></p>
+            <p class="text-center"><@s.text name='manage.autopublish.intro'/></p>
 
             <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
@@ -148,8 +153,8 @@
                     <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
                 </#if>
 
-                <div class="row px-2">
-                    <div class="form-group col-md-6 col-lg-4 px-1">
+                <div class="row justify-content-center">
+                    <div class="form-group col-md-6 col-lg-4">
                         <label for="updateFrequency" class="form-label">
                             <@s.text name="manage.autopublish.frequency"/>
                         </label>
@@ -163,119 +168,78 @@
                     </div>
                 </div>
 
-                <p id="introAnnually">
+                <p id="introAnnually" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.annually"/>
                 </p>
-                <p id="introDaily">
+                <p id="introDaily" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.daily"/>
                 </p>
-                <p id="introBiAnnually">
+                <p id="introBiAnnually" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.biannually"/>
                 </p>
-                <p id="introMonthly">
+                <p id="introMonthly" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.monthly"/>
                 </p>
-                <p id="introWeekly">
+                <p id="introWeekly" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.weekly"/>
                 </p>
-                <p id="introOff">
+                <p id="introOff" class="text-center">
                     <br/>
                     <@s.text name="manage.autopublish.intro.off"/>
                 </p>
 
-
                 <div id="frequencyDetails" class="mt-2">
-                    <div id="frequencyDetailsEvery">
-                        <div id="helpWeekly" class="mb-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.weekly"/> <@s.text name="manage.autopublish.every"/>
+                    <div class="row g-2 justify-content-center">
+                        <div id="updateFrequencyDayOfWeekWrapper" class="col col-sm-3 col-lg-2">
+                            <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
+                                <#list daysOfWeek?keys as val>
+                                    <option value="${val}" <#if (updateFrequencyDayOfWeek!"")==val> selected="selected"</#if>>
+                                        <@s.text name="${daysOfWeek.get(val)}"/>
+                                    </option>
+                                </#list>
+                            </select>
                         </div>
 
-                        <div id="helpMonthly" class="mb-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.monthly"/> <@s.text name="manage.autopublish.every"/>
+                        <div id="updateFrequencyDayWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
+                            <#-- Day: 1, 2, 3, ...-->
+                            <select id="updateFrequencyDay" class="form-select" name="updateFrequencyDay" size="1">
+                                <#list days?keys as val>
+                                    <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
+                                        <@s.text name="${days.get(val)}"/>
+                                    </option>
+                                </#list>
+                            </select>
                         </div>
 
-                        <div id="helpBiAnnually" class="mb-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.biannually"/> <@s.text name="manage.autopublish.every"/>
+                        <div id="updateFrequencyMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <#-- Day: January, February, ... -->
+                            <select id="updateFrequencyMonth" class="form-select" name="updateFrequencyMonth" size="1">
+                                <#list months?keys as val>
+                                    <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
+                                        <@s.text name="${months.get(val)}"/>
+                                    </option>
+                                </#list>
+                            </select>
                         </div>
 
-                        <div id="helpAnnually" class="mb-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.annually"/> <@s.text name="manage.autopublish.every"/>
+                        <div id="updateFrequencyBiMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <#-- BiMonth: January/July, February/August, ... -->
+                            <select id="updateFrequencyBiMonth" class="form-select" name="updateFrequencyBiMonth" size="1">
+                                <#list biMonths?keys as val>
+                                    <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
+                                        <@s.text name="${biMonths.get(val)}"/>
+                                    </option>
+                                </#list>
+                            </select>
                         </div>
 
-                        <div class="row px-2">
-                            <div id="updateFrequencyDayOfWeekWrapper" class="col-md-2 px-1">
-                                <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
-                                    <#list daysOfWeek?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyDayOfWeek!"")==val> selected="selected"</#if>>
-                                            <@s.text name="${daysOfWeek.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div id="updateFrequencyDayWrapper" class="col-md-3 col-lg-2 px-1">
-                                <#-- Day: 1, 2, 3, ...-->
-                                <select id="updateFrequencyDay" class="form-select" name="updateFrequencyDay" size="1">
-                                    <#list days?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
-                                            <@s.text name="${days.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div id="updateFrequencyMonthWrapper" class="col-md-3 col-lg-2 px-1">
-                                <#-- Day: January, February, ... -->
-                                <select id="updateFrequencyMonth" class="form-select" name="updateFrequencyMonth" size="1">
-                                    <#list months?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
-                                            <@s.text name="${months.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div id="updateFrequencyBiMonthWrapper" class="col-md-3 col-lg-2 px-1">
-                                <#-- BiMonth: January/July, February/August, ... -->
-                                <select id="updateFrequencyBiMonth" class="form-select" name="updateFrequencyBiMonth" size="1">
-                                    <#list biMonths?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
-                                            <@s.text name="${biMonths.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="frequencyDetailsAt" class="mt-2">
-                        <div class="mb-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.hour"/> <@s.text name="manage.autopublish.at"/>
-                        </div>
-                        <div class="row px-2">
-                            <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
-                                <select id="updateFrequencyHour" class="form-select" name="updateFrequencyHour" size="1">
-                                    <#list hours?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyHour!"")?string==val?string> selected="selected"</#if>>
-                                            <@s.text name="${hours.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
-                            <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
-                                <select id="updateFrequencyMinute" class="form-select" name="updateFrequencyMinute" size="1">
-                                    <#list minutes?keys as val>
-                                        <option value="${val}" <#if (updateFrequencyMinute!"")?string==val?string> selected="selected"</#if>>
-                                            <@s.text name="${minutes.get(val)}"/>
-                                        </option>
-                                    </#list>
-                                </select>
-                            </div>
+                        <div id="updateFrequencyTimeWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
+                            <input type="time" id="updateFrequencyTime" name="updateFrequencyTime" class="form-control" value="${updateFrequencyTime!"12:00"}">
                         </div>
                     </div>
                 </div>

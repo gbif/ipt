@@ -1383,3 +1383,8 @@ code {
     height: 1em;
     vertical-align: -0.125em !important;
 }
+
+/* Disable chrome time input styling */
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}

@@ -40,6 +40,8 @@ public class AutoPublishAction extends ManagerBaseAction {
   private static final Logger LOG = LogManager.getLogger(AutoPublishAction.class);
 
   private static final String OFF_FREQUENCY = "off";
+  private static final String COLON = ":";
+  private static final String DEFAULT_TIME = "12:00";
 
   private final VocabulariesManager vocabManager;
 
@@ -48,8 +50,6 @@ public class AutoPublishAction extends ManagerBaseAction {
   private Map<String, String> biMonths;
   private Map<Integer, String> days;
   private Map<String, String> daysOfWeek;
-  private Map<Integer, String> hours;
-  private Map<Integer, String> minutes;
 
   @Inject
   public AutoPublishAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager, ResourceManager resourceManager,
@@ -67,8 +67,6 @@ public class AutoPublishAction extends ManagerBaseAction {
     populateBiMonths();
     populateDays();
     populateDaysOfWeek();
-    populateHours();
-    populateMinutes();
   }
 
   @Override
@@ -78,8 +76,11 @@ public class AutoPublishAction extends ManagerBaseAction {
     String updateFrequencyBiMonth = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_BIMONTH);
     int updateFrequencyDay = Integer.parseInt(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAY));
     String updateFrequencyDayOfWeek = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAYOFWEEK);
-    int updateFrequencyHour = Integer.parseInt(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_HOUR));
-    int updateFrequencyMinute = Integer.parseInt(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MINUTE));
+    String updateFrequencyTime = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_TIME);
+    String[] hoursAndMinutes = updateFrequencyTime != null && updateFrequencyTime.contains(COLON)
+        ? updateFrequencyTime.split(COLON) : DEFAULT_TIME.split(COLON);
+    int updateFrequencyHour = Integer.parseInt(hoursAndMinutes[0]);
+    int updateFrequencyMinute = Integer.parseInt(hoursAndMinutes[1]);
 
     if (OFF_FREQUENCY.equals(updateFrequency)) {
       LOG.debug("Turning off auto-publishing for [" + resource.getShortname() + "]");
@@ -97,7 +98,7 @@ public class AutoPublishAction extends ManagerBaseAction {
         updateFrequencyHour,
         updateFrequencyMinute);
     } else {
-      LOG.error("Cannot update auto-publishing setting for [" + resource.getShortname() + "]. Unkown frequency: " + updateFrequency);
+      LOG.error("Cannot update auto-publishing setting for [" + resource.getShortname() + "]. Unknown frequency: " + updateFrequency);
       return ERROR;
     }
 
@@ -135,14 +136,6 @@ public class AutoPublishAction extends ManagerBaseAction {
 
   public Map<String, String> getDaysOfWeek() {
     return daysOfWeek;
-  }
-
-  public Map<Integer, String> getHours() {
-    return hours;
-  }
-
-  public Map<Integer, String> getMinutes() {
-    return minutes;
   }
 
   /**
@@ -188,19 +181,4 @@ public class AutoPublishAction extends ManagerBaseAction {
       daysOfWeek.put(dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
     }
   }
-
-  private void populateHours() {
-    hours = new LinkedHashMap<>();
-    for (int i = 0; i <= 23; i++) {
-      hours.put(i, ((i < 10) ? "0" : "") + i);
-    }
-  }
-
-  private void populateMinutes() {
-    minutes = new LinkedHashMap<>();
-    for (int i = 0; i <= 59; i++) {
-      minutes.put(i, ((i < 10) ? "0" : "") + i);
-    }
-  }
-
 }
