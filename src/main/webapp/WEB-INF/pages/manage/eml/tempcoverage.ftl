@@ -275,7 +275,7 @@
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
                 <div id="tempcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
-                    <div class="me-3 pt-1">
+                    <div class="me-3">
                         <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
                     <div class="overflow-x-hidden pt-1">
@@ -287,7 +287,7 @@
                 <#if (inferredMetadata.inferredTemporalCoverage)??>
                     <#list inferredMetadata.inferredTemporalCoverage.errors as error>
                         <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-                            <div class="me-3 pt-1">
+                            <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
                             </div>
                             <div class="overflow-x-hidden pt-1">
