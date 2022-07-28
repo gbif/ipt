@@ -212,7 +212,11 @@ public class OrganisationsAction extends POSTAction {
       if (!isHttpPost()) {
         // load existing organisation from disk
         Organisation fromDisk = registrationManager.getFromDisk(id);
-        organisation = new Organisation(fromDisk);
+        if (fromDisk != null) {
+          organisation = new Organisation(fromDisk);
+        } else {
+          notFound = true;
+        }
       }
     }
   }
