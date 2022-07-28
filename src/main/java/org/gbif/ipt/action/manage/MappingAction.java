@@ -51,6 +51,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+
 /**
  * A rather complex action that deals with a single mapping configuration.
  * The {@link MappingAction#prepare} method does a lot of work.
@@ -183,12 +185,13 @@ public class MappingAction extends ManagerBaseAction {
 
   @Override
   public String cancel() {
-    resource.deleteMapping(mapping);
-    // set mappings modified date
-    resource.setMappingsModified(new Date());
-    // save resource
-    saveResource();
-    return SUCCESS;
+    // remove empty mapping on cancel
+    if (mapping != null && mapping.getSource() == null && mapping.getFields().isEmpty()) {
+      resource.deleteMapping(mapping);
+      // save resource
+      saveResource();
+    }
+    return CANCEL_RESULTNAME;
   }
 
   @Override
