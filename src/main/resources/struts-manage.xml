@@ -85,6 +85,7 @@
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
       <result name="input">/WEB-INF/pages/manage/autopublish.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
@@ -103,6 +104,7 @@
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
@@ -149,6 +151,7 @@
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
