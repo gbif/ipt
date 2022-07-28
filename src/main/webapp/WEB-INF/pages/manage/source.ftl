@@ -70,7 +70,7 @@
                             <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
                             <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="analyze" key="button.analyze"/>
                             <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete.source"/>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
                             </#if>
                             <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
                         <#else>

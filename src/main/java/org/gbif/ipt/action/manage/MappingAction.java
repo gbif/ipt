@@ -368,7 +368,7 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     // skip if it's cancel request
-    if (!cancel && mapping != null && mapping.getExtension() != null) {
+    if (!cancel && !delete && mapping != null && mapping.getExtension() != null) {
 
       // is source assigned yet?
       if (mapping.getSource() == null) {
