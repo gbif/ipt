@@ -412,7 +412,7 @@
     </div>
 </div>
 
-<div class="container-fluid bg-body">
+<div class="container-fluid bg-body mt-2">
     <div class="container bd-layout">
 
         <main class="bd-main">
