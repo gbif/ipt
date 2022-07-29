@@ -45,7 +45,9 @@
                 </h1>
 
                 <div class="mt-2">
-                    <button id="add" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.add"/></button>
+                    <#if registeredIpt?has_content>
+                        <button id="add" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.add"/></button>
+                    </#if>
                     <button id="cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></button>
                 </div>
             </div>
@@ -54,8 +56,14 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
-            <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
+            <#if !registeredIpt?has_content>
+                <div class="text-center">
+                    <@s.text name="admin.home.editOrganisations.disabled"/>
+                </div>
+            <#else>
+                <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
+                <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
+            </#if>
         </div>
     </main>
 

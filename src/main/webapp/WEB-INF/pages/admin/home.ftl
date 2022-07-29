@@ -58,31 +58,14 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<#if !registeredIpt?has_content>
-								<div href="javascript:void(0);" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom text-gbif-header admin-col-listing-item-disabled">
-									<i class="bi bi-building admin-icon text-gbif-header"></i>
-									<h5 class="admin-card-title fw-400">
-										<a tabindex="0" role="button"
-										   class="popover-link"
-										   data-bs-toggle="popover"
-										   data-bs-trigger="focus"
-										   data-bs-html="true"
-										   data-bs-content="<@s.text name="admin.home.editOrganisations.disabled" escapeHtml=true/>">
-											<i class="bi bi-exclamation-triangle-fill text-secondary"></i>
-										</a>
-										<@s.text name="admin.home.editOrganisations"/>
-									</h5>
+							<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-building admin-icon"></i>
 								</div>
-							<#else>
-								<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
-									<div class="admin-icon-wrapper">
-										<i class="bi bi-building admin-icon"></i>
-									</div>
-									<h5 class="admin-card-title fw-400">
-										<@s.text name="admin.home.editOrganisations"/>
-									</h5>
-								</a>
-							</#if>
+								<h5 class="admin-card-title fw-400">
+									<@s.text name="admin.home.editOrganisations"/>
+								</h5>
+							</a>
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
