@@ -7,12 +7,11 @@
             $('#organisation\\.key').click(function() {
                 $('#organisation\\.name').val($('#organisation\\.key :selected').text());
             });
-            //Hack needed for Internet Explorer X.*x
             $('#add').click(function() {
                 window.location='organisation.do';
             });
             $('#cancel').click(function() {
-                window.location='organisations.do?cancel=true';
+                window.location='home.do';
             });
             $('.edit').each(function() {
                 $(this).click(function() {

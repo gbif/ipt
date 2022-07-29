@@ -273,7 +273,7 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost()) {
+    if (isHttpPost() && !cancel) {
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!
