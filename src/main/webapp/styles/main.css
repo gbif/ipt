@@ -67,6 +67,38 @@ header, .dropdown-menu {
     background-color: #00000014;
 }
 
+.dropdown-menu-admin li {
+    box-sizing: border-box;
+    white-space: nowrap;
+    padding: 6px 16px;
+}
+
+.admin-icon-menu {
+    margin-right: 12px;
+}
+
+.dropdown-menu-admin li:hover {
+    background-color: rgba(0,0,0,.04) !important;
+}
+
+.dropdown-item-admin {
+    display: block;
+    width: 100%;
+    padding: 0;
+    clear: both;
+    font-weight: 400;
+    color: #4e565f;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item-admin:focus, .dropdown-item-admin:hover {
+    color: #1e2125;
+}
+
 .bg-gbif-main-navbar {
     background: linear-gradient(#78b578, #71b171);
 }
