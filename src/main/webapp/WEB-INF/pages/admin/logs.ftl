@@ -26,7 +26,7 @@
             </h1>
 
             <div class="mt-2">
-                <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button">
+                <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
                     <@s.text name="button.cancel"/>
                 </a>
             </div>

@@ -115,7 +115,7 @@
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="registration" name="cancel" key="button.cancel"/>
                     <#else>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
-                        <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary me-xl-1 top-button">
+                        <a href="${baseURL}" class="btn btn-sm btn-outline-secondary me-xl-1 top-button">
                             <@s.text name="button.cancel"/>
                         </a>
                     </#if>

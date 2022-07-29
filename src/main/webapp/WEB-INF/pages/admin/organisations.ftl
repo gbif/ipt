@@ -11,7 +11,7 @@
                 window.location='organisation.do';
             });
             $('#cancel').click(function() {
-                window.location='home.do';
+                window.location='/';
             });
             $('.edit').each(function() {
                 $(this).click(function() {

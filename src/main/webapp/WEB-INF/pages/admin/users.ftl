@@ -9,7 +9,7 @@
                 window.location='user.do';
             });
             $('#cancel').click(function() {
-                window.location='home.do';
+                window.location='/';
             });
         });
     </script>
