@@ -259,16 +259,18 @@
 </#macro>
 
 <#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
-    <div class="checkbox form-check">
-        <#-- use name if value was not supplied -->
-        <#if value == "-99999">
-            <#assign value><@s.property value="${name}"/></#assign>
-        </#if>
-        <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
-        <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
-        <#include "/WEB-INF/pages/macros/help_icon.ftl">
-        <#include "/WEB-INF/pages/macros/form_field_error.ftl">
-    </div>
+    <small>
+        <div class="checkbox form-check">
+            <#-- use name if value was not supplied -->
+            <#if value == "-99999">
+                <#assign value><@s.property value="${name}"/></#assign>
+            </#if>
+            <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
+            <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+        </div>
+    </small>
 </#macro>
 
 <#macro processSurroundedWithBackticksAsCode examples>
