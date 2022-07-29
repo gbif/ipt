@@ -181,13 +181,6 @@
                 activateDeactivateStaticInput($(this));
             });
 
-            //Hack needed for Internet Explorer X.*x
-            $('.add').each(function() {
-                $(this).click(function() {
-                    window.location = $(this).parent('a').attr('href');
-                });
-            });
-
             // Collapse/uncollapse source examples
             $(".sample").click(function() {
                 if ($(this).hasClass("text-uncollapse")) {
@@ -283,7 +276,7 @@
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
+    <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
@@ -348,7 +341,7 @@
                             <#if (((field.translation?size)!0)>0)>
                                 ${(field.translation?size)!0} terms
                             <#else>
-                                <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
+                                <@s.text name="button.add"/>
                             </#if>
                         </a>
                     </small>
