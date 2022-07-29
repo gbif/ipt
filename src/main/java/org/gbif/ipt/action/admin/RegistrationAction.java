@@ -244,7 +244,7 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost()) {
+    if (isHttpPost() && !cancel) {
       if (getRegisteredIpt() != null) {
         iptValidation.validateUpdate(this, getRegisteredIpt());
       } else {
