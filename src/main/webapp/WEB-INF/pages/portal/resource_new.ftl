@@ -214,7 +214,7 @@
                     </#if>
                     <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                         <#if adminRights>
-                            <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                            <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                 <@s.text name='button.delete.version'/>
                             </a>
                         </#if>
