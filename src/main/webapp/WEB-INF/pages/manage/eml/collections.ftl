@@ -171,10 +171,10 @@
                                             </div>
 
                                             <div class="col-lg-12 mt-3">
-                                                <div class="row">
+                                                <div class="row g-3">
                                                     <div id="subitem-${item_index}" class="subitem col-lg-6">
                                                         <#if type=="COUNT_RANGE">
-                                                            <div id="range-${item_index}" class="row">
+                                                            <div id="range-${item_index}" class="row g-3">
                                                                 <div class="col-lg-6">
                                                                     <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
                                                                 </div>
@@ -183,7 +183,7 @@
                                                                 </div>
                                                             </div>
                                                         <#elseif type=="COUNT_WITH_UNCERTAINTY">
-                                                            <div id="uncertainty-${item_index}" class="row">
+                                                            <div id="uncertainty-${item_index}" class="row g-3">
                                                                 <div class="col-lg-6">
                                                                     <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
                                                                 </div>
@@ -233,10 +233,10 @@
                                 </div>
 
                                 <div class="col-lg-12 mt-3">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="subitem col-lg-6">
                                             <!-- The sub-form is here -->
-                                            <div id="range-99999" class="row" style="display:none" >
+                                            <div id="range-99999" class="row g-3" style="display:none" >
                                                 <div class="col-lg-6">
                                                     <@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
                                                 </div>
@@ -292,7 +292,7 @@
                                 </div>
                             </div>
 
-                            <div id="range-99999" class="row" style="display:none" >
+                            <div id="range-99999" class="row g-3" style="display:none" >
                                 <div class="col-lg-6">
                                     <@input name="rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
                                 </div>
@@ -300,7 +300,7 @@
                                     <@input name="rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
                                 </div>
                             </div>
-                            <div id="uncertainty-99999" class="row" style="display:none" >
+                            <div id="uncertainty-99999" class="row g-3" style="display:none" >
                                 <div class="col-lg-6">
                                     <@input name="rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
                                 </div>
