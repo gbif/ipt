@@ -33,7 +33,6 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -45,7 +44,6 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -468,8 +466,6 @@ public class GenerateDwcaTest {
     PasswordEncrypter passwordEncrypter = injector.getInstance(PasswordEncrypter.class);
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
-    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
-
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(
       "/extensions/dwc_occurrence_2015-04-24.xml");
@@ -514,15 +510,12 @@ public class GenerateDwcaTest {
           mockEmailConverter,
           mockOrganisationKeyConverter,
           extensionRowTypeConverter,
-          mock(DataSchemaIdentifierConverter.class),
           jdbcConverter,
           mockSourceManager,
           extensionManager,
-          mockSchemaManager,
           mockRegistryManager,
           conceptTermConverter,
           mockDwcaFactory,
-          mock(GenerateDataPackageFactory.class),
           passwordEncrypter,
           mockEml2Rtf,
           mockVocabulariesManager,

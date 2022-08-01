@@ -18,14 +18,12 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationMode;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -33,7 +31,6 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
@@ -69,15 +66,12 @@ public class AutoPublishedTest {
       mock(UserEmailConverter.class),
       mock(OrganisationKeyConverter.class),
       mock(ExtensionRowTypeConverter.class),
-      mock(DataSchemaIdentifierConverter.class),
       mock(JdbcInfoConverter.class),
       mock(SourceManager.class),
       mock(ExtensionManager.class),
-      mock(DataSchemaManager.class),
       mock(RegistryManager.class),
       mock(ConceptTermConverter.class),
       mock(GenerateDwcaFactory.class),
-      mock(GenerateDataPackageFactory.class),
       mock(PasswordEncrypter.class),
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),

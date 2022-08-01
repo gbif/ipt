@@ -84,7 +84,6 @@ public class HomeAction extends BaseAction {
         publishedPublicVersion.setModified(current.getModified());
         publishedPublicVersion.setNextPublished(current.getNextPublished());
         publishedPublicVersion.setCoreType(current.getCoreType());
-        publishedPublicVersion.setSchemaIdentifier(current.getSchemaIdentifier());
         publishedPublicVersion.setSubtype(current.getSubtype());
         // was last published version later registered but never republished? Fix for issue #1319
         if (!publishedPublicVersion.isRegistered() && current.isRegistered() && current.getOrganisation() != null) {

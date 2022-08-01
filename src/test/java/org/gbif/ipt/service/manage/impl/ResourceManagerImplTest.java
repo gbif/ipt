@@ -38,7 +38,6 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -55,7 +54,6 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -66,7 +64,6 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
@@ -227,7 +224,6 @@ public class ResourceManagerImplTest {
     Extension simpleImage = extensionFactory.build(simpleImageIs);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
-    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
@@ -248,15 +244,12 @@ public class ResourceManagerImplTest {
         mockEmailConverter,
         mockOrganisationKeyConverter,
         extensionRowTypeConverter,
-        mock(DataSchemaIdentifierConverter.class),
         jdbcConverter,
         mockSourceManager,
         extensionManager,
-        mockSchemaManager,
         mockRegistryManager,
         conceptTermConverter,
         mockDwcaFactory,
-        mock(GenerateDataPackageFactory.class),
         passwordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
@@ -1024,15 +1017,12 @@ public class ResourceManagerImplTest {
         mockEmailConverter,
         mockOrganisationKeyConverter,
         mock(ExtensionRowTypeConverter.class),
-        mock(DataSchemaIdentifierConverter.class),
         mockJdbcConverter,
         mockSourceManager,
         mock(ExtensionManager.class),
-        mock(DataSchemaManager.class),
         mockRegistryManager,
         mock(ConceptTermConverter.class),
         mockDwcaFactory,
-        mock(GenerateDataPackageFactory.class),
         mockPasswordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,

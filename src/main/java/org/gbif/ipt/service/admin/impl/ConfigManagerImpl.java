@@ -25,7 +25,6 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -61,7 +60,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private final ResourceManager resourceManager;
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
-  private final DataSchemaManager schemaManager;
   private final RegistrationManager registrationManager;
   private final ConfigWarnings warnings;
   private final HttpClient client;
@@ -74,7 +72,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, UserAccountManager userManager,
                            ResourceManager resourceManager, ExtensionManager extensionManager,
-                           VocabulariesManager vocabManager, DataSchemaManager schemaManager,
+                           VocabulariesManager vocabManager,
                            RegistrationManager registrationManager, ConfigWarnings warnings, HttpClient client,
                            PublishingMonitor publishingMonitor) {
     super(cfg, dataDir);
@@ -82,7 +80,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.resourceManager = resourceManager;
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
-    this.schemaManager = schemaManager;
     this.registrationManager = registrationManager;
     this.warnings = warnings;
     this.client = client;
@@ -219,9 +216,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     LOG.info("Loading extensions ...");
     extensionManager.load();
-
-    LOG.info("Loading data schemas ...");
-    schemaManager.load();
 
     if (!dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2).exists()) {
       LOG.info("Perform 1-time event: migrate registration.xml into registration2.xml with passwords encrypted");

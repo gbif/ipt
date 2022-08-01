@@ -17,14 +17,12 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -67,18 +65,15 @@ public class CreateResourceAction extends POSTAction {
   private Map<String, String> types;
   private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
-  private final DataSchemaManager schemaManager;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
   public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                              ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager,
-                              DataSchemaManager schemaManager) {
+                              ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;
     this.vocabManager = vocabManager;
-    this.schemaManager = schemaManager;
   }
 
   public String getShortname() {
@@ -226,10 +221,6 @@ public class CreateResourceAction extends POSTAction {
     types = new LinkedHashMap<>();
     types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
-      types.put(installedSchema.getName(), installedSchema.getTitle());
-    }
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     return types;

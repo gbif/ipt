@@ -20,7 +20,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -258,15 +257,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         new TypeToken<Map<String, List<Extension>>>() {
         }.getType());
     return (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
-  }
-
-  @Override
-  public List<DataSchema> getDataSchemas() throws RegistryException {
-    Map<String, List<DataSchema>> jSONDataSchemas = gson
-        .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
-            new TypeToken<Map<String, List<DataSchema>>>() {
-            }.getType());
-    return (jSONDataSchemas.get("schemas") == null) ? new ArrayList<>() : jSONDataSchemas.get("schemas");
   }
 
   /**

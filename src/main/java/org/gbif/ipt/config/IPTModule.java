@@ -17,8 +17,6 @@ import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.task.GenerateDataPackage;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportingTask;
@@ -81,9 +79,6 @@ public class IPTModule extends AbstractModule {
     // assisted inject factories
     install(
       new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDwca.class).build(GenerateDwcaFactory.class));
-    install(
-        new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDataPackage.class).build(GenerateDataPackageFactory.class));
-
   }
 
   @Provides
