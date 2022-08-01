@@ -91,9 +91,9 @@
                                 <@s.text name='manage.metadata.citations.intro'/>
                             </p>
 
-                            <p class="mb-0">
-                                <strong><@s.text name='manage.metadata.citations.warning'/></strong>
-                            </p>
+                            <div class="callout callout-info text-smaller">
+                                <@s.text name='manage.metadata.citations.warning'/>
+                            </div>
 
                             <!-- retrieve some link names one time -->
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/></#assign>
@@ -134,6 +134,11 @@
                         <div class="my-md-3 p-3">
                             <div class="listBlock">
                                 <@textinline name="manage.metadata.citations.bibliography" help="i18n"/>
+
+                                <div id="bibliographic-citations-info" class="callout callout-info text-smaller">
+                                    <@s.text name="manage.metadata.citations.warning.doNotNumber"/>
+                                </div>
+
                                 <div id="items">
                                     <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
