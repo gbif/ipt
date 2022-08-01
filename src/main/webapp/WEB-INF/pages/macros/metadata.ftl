@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function(){
-    var	itemsCount=-1;
+    var itemsCount = -1;
     var personnelItemsCount = -1;
     var collectionItemsCount = -1;
     var specimenPreservationMethodItemsCount = -1;
@@ -9,17 +9,17 @@ $(document).ready(function(){
     calcNumberOfCollectionItems();
     calcNumberOfSpecimenPreservationMethodItems();
 
-    function calcNumberOfItems(){
+    function calcNumberOfItems() {
         var lastItem = $("#items .item:last-child").attr("id");
-        if(lastItem != undefined)
-            itemsCount=parseInt(lastItem.split("-")[1]);
+        if (lastItem !== undefined)
+            itemsCount = parseInt(lastItem.split("-")[1]);
         else
-            itemsCount=-1;
+            itemsCount = -1;
     }
 
     function calcNumberOfCollectionItems() {
         var lastItem = $("#collection-items .item:last-child").attr("id");
-        if (lastItem != undefined)
+        if (lastItem !== undefined)
             collectionItemsCount = parseInt(lastItem.split("-")[2]);
         else
             collectionItemsCount = -1;
@@ -27,11 +27,65 @@ $(document).ready(function(){
 
     function calcNumberOfSpecimenPreservationMethodItems() {
         var lastItem = $("#specimenPreservationMethod-items .item:last-child").attr("id");
-        if (lastItem != undefined)
+        if (lastItem !== undefined)
             specimenPreservationMethodItemsCount = parseInt(lastItem.split("-")[2]);
         else
             specimenPreservationMethodItemsCount = -1;
     }
+
+    if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+        $("[id^=item-]").remove();
+        $('.intro').hide();
+        $('#items').hide();
+        $('.addNew').hide();
+        $('#preview-inferred-taxonomic').hide();
+        $('#static-taxanomic').show();
+        $('#dateInferred').show();
+    }
+
+    $("#inferTaxonomicCoverageAutomatically").click(function() {
+        if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+            $("[id^=item-]").remove();
+            $('.intro').hide();
+            $('#items').hide();
+            $('.addNew').hide();
+            $('#preview-inferred-taxonomic').hide();
+            $('#static-taxanomic').show();
+            $('#dateInferred').show();
+        } else {
+            $('.intro').show();
+            $('#items').show();
+            $('.addNew').show();
+            $('#preview-inferred-taxonomic').show();
+            $('#static-taxanomic').hide();
+        }
+    });
+
+    $("#preview-inferred-taxonomic").click(function(event) {
+        event.preventDefault();
+
+        <#if (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size gt 0>
+        $(".metadata-error-alert").show();
+        </#if>
+
+        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
+            // remove all current items
+            $("[id^=item-]").remove();
+
+            var subItemIndex = 0;
+
+            addNewItem(true);
+
+            <#list inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords as taxon>
+                <#if !taxon?is_first>
+                    addNewSubItemByIndex(itemsCount, "");
+                </#if>
+                $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.scientificName}");
+                $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.rank}");
+                subItemIndex++;
+            </#list>
+        </#if>
+    });
 
     $("#plus").click(function(event) {
         event.preventDefault();
@@ -75,68 +129,87 @@ $(document).ready(function(){
 	$("[id^=add-button]").click(function(event) {
 		createTaxons(event);
 	});
-	
-	function addNewSubItem(event, text) {
-		event.preventDefault();		
-		var baseItem = $("#item-"+$(event.target).attr("id").split("-")[2]);
-		// calculating the last taxon index.
-		var idBaseItem = baseItem.attr("id");		
-		var lastIndex = $("#"+idBaseItem+" .sub-item:last-child").attr("id");
-		if(lastIndex == undefined) {
-			lastIndex = 0;
-		} else {
-			lastIndex = parseInt(lastIndex.split("-")[1])+1;
-		}			
-		// cloning the taxonItem and setting the corresponding id.
-		var subBaseItem = $("#subItem-9999").clone();
-		// setting the ids to the rest of the components of the taxomItem
-		$("#"+idBaseItem+" #subItems").append(subBaseItem);						
-		// setting the ids to the rest of the components of the taxonItem.
-		setSubItemIndex(baseItem, subBaseItem, lastIndex);
-		if(text == undefined) {		
-			subBaseItem.slideDown('slow');
-		} else {
-			$("#"+baseItem.attr("id")+" #"+subBaseItem.attr("id")).find("[id$='scientificName']").val(text);
-			subBaseItem.show();
-		}
-	}
+
+    function addNewSubItem(event, text) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        addNewSubItemByIndex($target.attr("id").split("-")[2],text);
+    }
+
+    function addNewSubItemByIndex(itemIndex, text) {
+        var baseItem = $("#item-" + itemIndex);
+        // calculating the last taxon index.
+        var idBaseItem = baseItem.attr("id");
+        var lastIndex = $("#" + idBaseItem + " .sub-item:last-child").attr("id");
+        if (lastIndex === undefined) {
+            lastIndex = 0;
+        } else {
+            lastIndex = parseInt(lastIndex.split("-")[1]) + 1;
+        }
+        // cloning the taxonItem and setting the corresponding id.
+        var subBaseItem = $("#subItem-9999").clone();
+        // setting the ids to the rest of the components of the taxomItem
+        $("#" + idBaseItem + " #subItems").append(subBaseItem);
+        // setting the ids to the rest of the components of the taxonItem.
+        setSubItemIndex(baseItem, subBaseItem, lastIndex);
+        if (text === undefined) {
+            subBaseItem.slideDown('slow');
+        } else {
+            $("#" + baseItem.attr("id") + " #" + subBaseItem.attr("id")).find("[id$='scientificName']").val(text);
+            subBaseItem.show();
+        }
+    }
 		
 	function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 		<#switch "${section}">
   			<#case "taxcoverage">
-				subItem.attr("id", "subItem-"+subBaseIndex);
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='scientificName']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='commonName']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='commonName']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='rank']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='rank']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id^='trash']").attr("id", "trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).attr("name", function() {return $(this).attr("id");});
-				$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).click(function(event) {
-					removeSubItem(event);
-				});
-				if(subBaseIndex != 0) {
-					$("#trash-"+baseItem.attr("id").split("-")[1]+"-0").show();
-				} else {
-					$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).hide();
-				}				
+                subItem.attr("id", "subItem-" + subBaseIndex);
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='scientificName']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='commonName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].commonName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='commonName']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].commonName");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='rank']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].rank").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='rank']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].rank");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id^='trash']").attr("id", "trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).click(function (event) {
+                    removeSubItem(event);
+                });
+                if (subBaseIndex !== 0) {
+                    $("#trash-" + baseItem.attr("id").split("-")[1] + "-0").show();
+                } else {
+                    $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).hide();
+                }
 				<#break>
 			<#default>
 		</#switch>		
 		}
-		
-		function removeSubItem(event) {
-			event.preventDefault();
-			var $target = $(event.target);
-			$("#item-"+$target.attr("id").split("-")[1]+" #subItem-"+$target.attr("id").split("-")[2]).slideUp("fast", function() {
-				var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
-				$(this).remove();
-				$("#item-"+indexItem+" .sub-item").each(function(index) {
-					var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];					
-					setSubItemIndex($("#item-"+indexItem), $(this), index);					
-				});
-			});
-		}
+
+    function removeSubItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $("#item-" + $target.attr("id").split("-")[1] + " #subItem-" + $target.attr("id").split("-")[2]).slideUp("fast", function () {
+            var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
+            $(this).remove();
+            $("#item-" + indexItem + " .sub-item").each(function (index) {
+                var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
+                setSubItemIndex($("#item-" + indexItem), $(this), index);
+            });
+        });
+    }
 
     function addNewItem(effects){
         var newItem=$('#baseItem').clone();
@@ -183,6 +256,9 @@ $(document).ready(function(){
     function removeItem(event){
         event.preventDefault();
         var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
         $('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() {
             $(this).remove();
             $("#items .item").each(function(index) {
@@ -195,6 +271,9 @@ $(document).ready(function(){
     function removeCollectionItem(event) {
         event.preventDefault();
         var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
         $('#collection-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
             $(this).remove();
             $("#collection-items .item").each(function(index) {
@@ -207,6 +286,9 @@ $(document).ready(function(){
     function removeSpecimenPreservationMethodItem(event) {
         event.preventDefault();
         var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
         $('#specimenPreservationMethod-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
             $(this).remove();
             $("#specimenPreservationMethod-items .item").each(function(index) {
@@ -218,32 +300,35 @@ $(document).ready(function(){
 	
 	function showList(event) {
 		event.preventDefault();
-		var $target = $(event.target);			
+		var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
 		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
 			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
 			$target.parent().children("img").hide();
 			$target.parent().children("span").hide();
 		});
 	}
-	
-	function createTaxons(event) {
-		event.preventDefault();
-		var $target = $(event.target);
-		var index = $target.attr("id").split("-")[2];
-		var lines = $("#taxon-list-"+index).val().split("\n");
-		var line;
-		for(var count in lines) {
-			line = $.trim(lines[count]);
-			if(line != "undefined" && line != "") {
-				addNewSubItem(event, line);	
-			}
-		}
-		$("#taxon-list-"+index).val("");
-		$("#list-"+index).slideUp('slow', function() {
-			$("#taxonsLink-"+index).show();
-			$("#taxonsLink-"+index).parent().children("img").show();
-		});
-	}
+
+    function createTaxons(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        var index = $target.attr("id").split("-")[2];
+        var lines = $("#taxon-list-" + index).val().split("\n");
+        var line;
+        for (var count in lines) {
+            line = $.trim(lines[count]);
+            if (line !== "undefined" && line !== "") {
+                addNewSubItem(event, line);
+            }
+        }
+        $("#taxon-list-" + index).val("");
+        $("#list-" + index).slideUp('slow', function () {
+            $("#taxonsLink-" + index).show();
+            $("#taxonsLink-" + index).parent().children("img").show();
+        });
+    }
 	
 	function setItemIndex(item, index){
 		item.attr("id","item-"+index);

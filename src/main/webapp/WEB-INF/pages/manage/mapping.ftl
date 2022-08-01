@@ -71,10 +71,15 @@
                 showAllGroups=false;
                 $("#showAllGroupsValue").val("false");
                 $("#toggleGroups").text("<@s.text name="manage.mapping.showAllGroups" />");
+                // hide redundant sections
                 $('div.redundant').each(function(index) {
                     $(this).hide();
                 });
-                // hide sidebar links too
+                // hide anchors
+                $('span.redundant').each(function(index) {
+                    $(this).hide();
+                });
+                // hide sidebar links
                 $('li.redundant').each(function(index) {
                     $(this).hide();
                 });
@@ -94,7 +99,7 @@
                 hideRedundantGroups();
             }
 
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
 
             // show only required and mapped fields
             $("#toggleFields").click(function() {
@@ -118,8 +123,12 @@
                     showAllGroups=true;
                     $("#showAllGroupsValue").val("true");
                     $("#toggleGroups").text("<@s.text name="manage.mapping.hideGroups"/>");
-                    // show sidebar links too
+                    // show sidebar links
                     $('li.redundant').each(function(index) {
+                        $(this).show();
+                    });
+                    // show anchors
+                    $('span.redundant').each(function(index) {
                         $(this).show();
                     });
                     // show redundant sections
@@ -170,13 +179,6 @@
 
             $(".fidx").change(function() {
                 activateDeactivateStaticInput($(this));
-            });
-
-            //Hack needed for Internet Explorer X.*x
-            $('.add').each(function() {
-                $(this).click(function() {
-                    window.location = $(this).parent('a').attr('href');
-                });
             });
 
             // Collapse/uncollapse source examples
@@ -250,30 +252,39 @@
 </#macro>
 
 <#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
-    <div class="checkbox form-check">
-        <#-- use name if value was not supplied -->
-        <#if value == "-99999">
-            <#assign value><@s.property value="${name}"/></#assign>
-        </#if>
-        <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
-        <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
-        <#include "/WEB-INF/pages/macros/help_icon.ftl">
-        <#include "/WEB-INF/pages/macros/form_field_error.ftl">
-    </div>
+    <small>
+        <div class="checkbox form-check">
+            <#-- use name if value was not supplied -->
+            <#if value == "-99999">
+                <#assign value><@s.property value="${name}"/></#assign>
+            </#if>
+            <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
+            <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+        </div>
+    </small>
+</#macro>
+
+<#macro processSurroundedWithBackticksAsCode examples>
+    <#noescape>
+        ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
+    </#noescape>
 </#macro>
 
 <#macro showField field index>
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
+    <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
                     <#if p.examples?has_content>
-                        <em><@s.text name="basic.examples"/></em>: <code>${p.examples}</code>
+                        <em><@s.text name="basic.examples"/></em>:
+                        <@processSurroundedWithBackticksAsCode p.examples />
                     </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
@@ -330,7 +341,7 @@
                             <#if (((field.translation?size)!0)>0)>
                                 ${(field.translation?size)!0} terms
                             <#else>
-                                <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
+                                <@s.text name="button.add"/>
                             </#if>
                         </a>
                     </small>
@@ -396,7 +407,7 @@
     </div>
 </div>
 
-<div class="container-fluid bg-body">
+<div class="container-fluid bg-body mt-2">
     <div class="container bd-layout">
 
         <main class="bd-main">
@@ -435,7 +446,7 @@
                         </#if>
                     </ul>
 
-                    <div class="d-flex align-content-between">
+                    <div class="d-flex align-content-between" style="margin-left: -10px;">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
                         <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="delete" key="button.delete"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
@@ -557,7 +568,7 @@
                         <#list fieldsByGroup?keys as g>
                             <#assign groupsFields = fieldsByGroup.get(g)/>
                             <#if (groupsFields?size>0)>
-                                <span class="anchor anchor-base" id="anchor-group_${g?replace(' ', '_')}"></span>
+                                <span class="anchor anchor-base <#if redundants?seq_contains(g)>redundant</#if> " id="anchor-group_${g?replace(' ', '_')}"></span>
                                 <div class="mt-5 <#if redundants?seq_contains(g)>redundant</#if>">
                                     <div id="group_${g?replace(' ', '_')}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
                                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
@@ -604,7 +615,7 @@
                             <div class="text-smaller">
                                 <#list nonMapped as col>
                                     <#if col?has_content>
-                                        <code>${col}<#sep>;</#sep></code>
+                                        <span class="unmapped-field"><strong>${col}</strong></span><#sep> </#sep>
                                     </#if>
                                 </#list>
                             </div>
@@ -621,7 +632,7 @@
 
                             <div class="text-smaller">
                                 <#list redundants as gr>
-                                    <code>${gr}<#sep>;</#sep></code>
+                                    <span class="redundant-section"><strong>${gr}</strong></span><#sep> </#sep>
                                 </#list>
                             </div>
                         </div>

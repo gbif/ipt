@@ -220,6 +220,9 @@ public class RegistrationAction extends POSTAction {
 
   public String update() {
     try {
+      if (cancel) {
+        return cancel();
+      }
       registryManager.updateIpt(getRegisteredIpt());
       registrationManager.save();
       addActionMessage(getText("admin.registration.success.update"));
@@ -234,7 +237,7 @@ public class RegistrationAction extends POSTAction {
       addActionError(msg);
       LOG.error(msg);
       return INPUT;
-    } catch (IOException e) {
+    } catch (Exception e) {
       addActionError(e.getMessage());
       LOG.error("Exception caught", e);
       return INPUT;
@@ -244,7 +247,7 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost()) {
+    if (isHttpPost() && !cancel) {
       if (getRegisteredIpt() != null) {
         iptValidation.validateUpdate(this, getRegisteredIpt());
       } else {

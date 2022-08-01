@@ -14,7 +14,6 @@
 package org.gbif.ipt.service.registry;
 
 import org.gbif.api.model.registry.Network;
-import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -49,15 +48,6 @@ public interface RegistryManager {
    * @throws RegistryException if the list of extensions couldn't be populated
    */
   List<Extension> getExtensions() throws RegistryException;
-
-  /**
-   * Gets list of all registered data schemas from the Registry.
-   *
-   * @return list of data schemas, or an empty list if none were retrieved from valid response
-   *
-   * @throws RegistryException if the list of data schemas couldn't be populated
-   */
-  List<DataSchema> getDataSchemas() throws RegistryException;
 
   /**
    * Retrieves a list of Organisation from the Registry.

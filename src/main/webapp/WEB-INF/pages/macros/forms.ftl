@@ -78,7 +78,7 @@
 
     <#macro textinline name value="-99999" i18nkey="" errorfield="" help="" requiredField=false>
         <div class="textinline">
-            <h5 class="pb-2 mb-0 pt-2 text-gbif-header fw-400">
+            <h5 class="py-2 mb-0 text-gbif-header fw-400">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
                 <span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span>
             </h5>
@@ -112,12 +112,14 @@
         </div>
     </#macro>
 
-    <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false>
+    <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false withLabel=true>
         <div>
-            <div class="d-flex">
-                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-                <#include "/WEB-INF/pages/macros/help_icon.ftl">
-            </div>
+            <#if withLabel>
+                <div class="d-flex">
+                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                    <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                </div>
+            </#if>
             <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
             <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>

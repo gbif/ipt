@@ -15,7 +15,6 @@ package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
-import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
@@ -25,11 +24,9 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
@@ -64,7 +61,6 @@ public class SetupAction extends BaseAction {
   private final UserAccountManager userManager;
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
-  private final DataSchemaManager schemaManager;
   private final HttpClient client;
 
   private final UserValidator userValidation = new UserValidator();
@@ -88,13 +84,12 @@ public class SetupAction extends BaseAction {
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
                      ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-                     ExtensionManager extensionManager, DataSchemaManager schemaManager, HttpClient client) {
+                     ExtensionManager extensionManager, HttpClient client) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
-    this.schemaManager = schemaManager;
     this.client = client;
   }
 
@@ -385,16 +380,6 @@ public class SetupAction extends BaseAction {
       } catch (InvalidConfigException e) {
         LOG.error(e);
         addActionWarning(getText("admin.extension.couldnt.install.coreTypes"), e);
-      }
-    }
-
-    List<DataSchema> schemas = schemaManager.list();
-    if (schemas.isEmpty()) {
-      try {
-        schemaManager.installBaseSchemas();
-      } catch (InvalidConfigException e) {
-        LOG.error(e);
-        addActionWarning(getText("admin.schemas.couldnt.install"), e);
       }
     }
 

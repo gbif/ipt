@@ -14,23 +14,21 @@
         $(document).ready(function(){
             $('#organisation\\.key').change(function() {
 
-                var orgName = $('#organisation\\.key :selected').text();
-                $('#organisation\\.name').val(orgName);
-                $('#ipt\\.organisationKey').val($('#organisation\\.key :selected').val());
+                var organisationSelected = $('#organisation\\.key :selected');
+                var organisationKey = organisationSelected.val();
+                var orgName = organisationSelected.text();
 
-                var emailContent = '<@s.text name="emails.request.organisation.association1"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association2"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association3"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association4"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association5"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>';
-                emailContent += $("#organisation\\.key :selected").val();
-                emailContent += '</@s.param></@s.text>';
-                emailContent += '<@s.text name="emails.request.organisation.association7"/>';
+                $('#organisation\\.name').val(orgName);
+                $('#ipt\\.organisationKey').val(organisationKey);
+
+                var emailContent = 'Dear sir/madam,%0d%0d';
+                emailContent += 'I am trying to install an Integrated Publishing Toolkit (IPT), which is going to be hosted under your institution/organization.%0d';
+                emailContent += 'To continue with the installation, I will need to kindly ask you to provide me with your organization\'s shared token, as this is needed to complete the process%0d';
+                emailContent += 'In case you don\'t know this information, you can open the following link in your browser to receive this information%0d%0d';
+                emailContent += 'https://gbrds.gbif.org/registry/organisation/' + organisationKey + '?op=password%0d%0d';
+                emailContent += 'Thank you for your attention.';
 
                 $('#organisation\\.alias').val(orgName);
-
-                var organisationKey = $('#organisation\\.key :selected').val();
 
                 if(organisationKey) {
                     var url = '${registryURL}organisation/' + organisationKey + ".json";
@@ -46,13 +44,12 @@
                         var contactLink = '<div class="mt-2"><a href=\"mailto:';
                         contactLink += data.primaryContactEmail;
                         contactLink += '?subject=';
-                        contactLink += '<@s.text name="emails.request.ipt.registration.subject"><@s.param>';
+                        contactLink += 'Shared token request for ';
                         contactLink += orgName;
-                        contactLink += '</@s.param></@s.text>';
                         contactLink += '&body=';
                         contactLink += emailContent;
                         contactLink += '\">';
-                        contactLink += '<@s.text name="emails.request.ipt.registration.footer"/>';
+                        contactLink += 'Click here to contact';
                         contactLink += '</a> ';
                         contactLink += orgName;
                         contactLink += "</div>";
@@ -118,7 +115,7 @@
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="registration" name="cancel" key="button.cancel"/>
                     <#else>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
-                        <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary me-xl-1 top-button">
+                        <a href="${baseURL}" class="btn btn-sm btn-outline-secondary me-xl-1 top-button">
                             <@s.text name="button.cancel"/>
                         </a>
                     </#if>
@@ -182,15 +179,15 @@
                         </div>
 
                         <div class="col-12">
-                            <div id="validation-success" class="text-gbif-primary" style="display: none">
+                            <div id="validation-success" class="callout callout-info" style="display: none;">
                                 <@s.text name="admin.registration.validate.success"/>
                             </div>
 
-                            <div id="validation-failed-development" class="text-gbif-danger" style="display: none">
+                            <div id="validation-failed-development" class="callout callout-danger" style="display: none;">
                                 <@s.text name="admin.registration.validate.failed.development"/>
                             </div>
 
-                            <div id="validation-failed" class="text-gbif-danger" style="display: none">
+                            <div id="validation-failed" class="callout callout-danger" style="display: none;">
                                 <@s.text name="admin.registration.validate.failed"/>
                             </div>
                         </div>

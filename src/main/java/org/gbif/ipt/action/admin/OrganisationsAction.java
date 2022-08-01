@@ -212,7 +212,11 @@ public class OrganisationsAction extends POSTAction {
       if (!isHttpPost()) {
         // load existing organisation from disk
         Organisation fromDisk = registrationManager.getFromDisk(id);
-        organisation = new Organisation(fromDisk);
+        if (fromDisk != null) {
+          organisation = new Organisation(fromDisk);
+        } else {
+          notFound = true;
+        }
       }
     }
   }
@@ -269,7 +273,7 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost()) {
+    if (isHttpPost() && !cancel) {
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!

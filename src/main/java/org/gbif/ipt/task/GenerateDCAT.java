@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
@@ -160,7 +162,18 @@ public class GenerateDCAT {
       String organisation =
         encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
       if (org.getHomepageURL() != null) {
-        organisation += " ; foaf:homepage " + encapsulateObject(org.getHomepageURL(), ObjectTypes.RESOURCE);
+        String homepagesStrWithoutBrackets = StringUtils.substringBetween(org.getHomepageURL(), "[", "]");
+
+        if (StringUtils.isNotBlank(homepagesStrWithoutBrackets)) {
+          String[] homepages = homepagesStrWithoutBrackets.split(",");
+
+          String homepagesStr = Arrays.stream(homepages)
+              .map(String::trim)
+              .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
+              .collect(Collectors.joining(" , "));
+
+          organisation += " ; foaf:homepage " + homepagesStr;
+        }
       }
       organisation += " .";
       organisations.add(organisation);
@@ -202,10 +215,21 @@ public class GenerateDCAT {
               encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
                 .getOrganisation().getName() + "\"";
             if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
-              organisation +=
-                " ; foaf:homepage " + encapsulateObject(publishedPublicVersion.getOrganisation().getHomepageURL(),
-                  ObjectTypes.RESOURCE);
+              String homepagesStrWithoutBrackets = StringUtils.substringBetween(
+                  publishedPublicVersion.getOrganisation().getHomepageURL(), "[", "]");
+
+              if (StringUtils.isNotBlank(homepagesStrWithoutBrackets)) {
+                String[] homepages = homepagesStrWithoutBrackets.split(",");
+
+                String homepagesStr = Arrays.stream(homepages)
+                    .map(String::trim)
+                    .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
+                    .collect(Collectors.joining(" , "));
+
+                organisation += " ; foaf:homepage " + homepagesStr;
+              }
             }
+
             organisation += " .";
             organisations.add(organisation);
           }

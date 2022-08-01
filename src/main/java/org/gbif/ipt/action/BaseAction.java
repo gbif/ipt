@@ -47,6 +47,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 
+import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
  * logged in user, and hosting organization information.
@@ -72,6 +74,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   protected HttpServletResponse response;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id;
+  protected boolean cancel = false;
 
   protected SimpleTextProvider textProvider;
   protected AppConfig cfg;
@@ -320,6 +323,21 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     // so we investigate the request object directly BEFORE the param interceptor is called
     // this allows us to load any existing instances that should be modified
     id = StringUtils.trimToNull(req.getParameter("id"));
+  }
+
+  /**
+   * Override this method if you need to cancel action.
+   */
+  public String cancel() throws Exception {
+    return CANCEL_RESULTNAME;
+  }
+
+  public void setCancel(String cancel) {
+    this.cancel = StringUtils.trimToNull(cancel) != null;
+  }
+
+  public boolean isCancel() {
+    return cancel;
   }
 
   @Override

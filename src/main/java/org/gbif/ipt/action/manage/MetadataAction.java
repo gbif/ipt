@@ -20,6 +20,8 @@ import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.InferredMetadata;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -35,12 +37,17 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.TaxonKeyword;
+import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -48,6 +55,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +97,10 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
+  private InferredMetadata inferredMetadata;
+  private BBox inferredGeocoverage;
+  private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
+  private KeyNamePair inferredTemporalCoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -118,6 +130,30 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Eml getEml() {
     return resource.getEml();
+  }
+
+  public boolean isInferGeocoverageAutomatically() {
+    return resource.isInferGeocoverageAutomatically();
+  }
+
+  public void setInferGeocoverageAutomatically(boolean inferGeocoverageAutomatically) {
+    resource.setInferGeocoverageAutomatically(inferGeocoverageAutomatically);
+  }
+
+  public boolean isInferTaxonomicCoverageAutomatically() {
+    return resource.isInferTaxonomicCoverageAutomatically();
+  }
+
+  public void setInferTaxonomicCoverageAutomatically(boolean inferTaxonomicCoverageAutomatically) {
+    resource.setInferTaxonomicCoverageAutomatically(inferTaxonomicCoverageAutomatically);
+  }
+
+  public boolean isInferTemporalCoverageAutomatically() {
+    return resource.isInferTemporalCoverageAutomatically();
+  }
+
+  public void setInferTemporalCoverageAutomatically(boolean inferTemporalCoverageAutomatically) {
+    resource.setInferTemporalCoverageAutomatically(inferTemporalCoverageAutomatically);
   }
 
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
@@ -253,6 +289,16 @@ public class MetadataAction extends ManagerBaseAction {
 
     // take the section parameter from the requested url
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
+    boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
+
+    // infer metadata if absent or re-infer if requested
+    if (reinferMetadata || resource.getInferredMetadata() == null) {
+      inferredMetadata = resourceManager.inferMetadata(resource);
+      resource.setInferredMetadata(inferredMetadata);
+      resourceManager.saveInferredMetadata(resource);
+    } else {
+      inferredMetadata = resource.getInferredMetadata();
+    }
 
     switch (section) {
       case BASIC_SECTION:
@@ -891,5 +937,17 @@ public class MetadataAction extends ManagerBaseAction {
       s = s.replaceAll("\\r\\n|\\r|\\n", " ");
     }
     return s;
+  }
+
+  public InferredMetadata getInferredMetadata() {
+    return inferredMetadata;
+  }
+
+  public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
+    return inferredTaxonomicCoverage;
+  }
+
+  public KeyNamePair getInferredTemporalCoverage() {
+    return inferredTemporalCoverage;
   }
 }

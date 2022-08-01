@@ -13,7 +13,7 @@
     <default-action-ref name="home"/>
 
     <global-results>
-      <result name="cancel" type="redirect">${baseURL}/admin/home.do</result>
+      <result name="cancel" type="redirect">${baseURL}/home.do</result>
     </global-results>
 
     <action name="home" class="org.gbif.ipt.action.admin.HomeAction">
@@ -24,11 +24,11 @@
     <!-- IPT MAIN CONFIGURATION -->
     <action name="config" class="org.gbif.ipt.action.admin.ConfigAction">
       <result name="input">/WEB-INF/pages/admin/config.ftl</result>
-      <result name="success">/WEB-INF/pages/admin/home.ftl</result>
-      <result name="home" type="redirect">${baseURL}/admin/home.do</result>
+      <result name="success" type="redirect">${baseURL}/home.do</result>
+      <result name="home" type="redirect">${baseURL}/home.do</result>
     </action>
     <action name="publishAll" class="org.gbif.ipt.action.admin.PublishAllResourcesAction">
-      <result type="redirect">${baseURL}/admin/home.do</result>
+      <result type="redirect">${baseURL}/home.do</result>
     </action>
     <action name="bulk-publication" class="org.gbif.ipt.action.admin.BulkPublicationAction">
       <result>/WEB-INF/pages/admin/bulk_publication.ftl</result>
@@ -63,18 +63,6 @@
       <result>/WEB-INF/pages/admin/vocabulary.ftl</result>
     </action>
 
-    <!-- DATA SCHEMA MANAGEMENT -->
-    <action name="schemas" class="org.gbif.ipt.action.admin.DataSchemaAction" method="list">
-      <result>/WEB-INF/pages/admin/schemas.ftl</result>
-    </action>
-    <action name="updateSchema" class="org.gbif.ipt.action.admin.DataSchemaAction" method="update">
-      <result type="redirect">${baseURL}/admin/schemas.do</result>
-    </action>
-    <action name="schema" class="org.gbif.ipt.action.admin.DataSchemaAction">
-      <result name="input">/WEB-INF/pages/admin/schema.ftl</result>
-      <result type="redirect">${baseURL}/admin/schemas.do</result>
-    </action>
-
     <!-- LOGS -->
     <action name="logs" class="org.gbif.ipt.action.admin.LogsAction">
       <result>/WEB-INF/pages/admin/logs.ftl</result>
@@ -91,11 +79,11 @@
 
     <!-- REGISTRY ACTIONS -->
     <action name="registration" class="org.gbif.ipt.action.admin.RegistrationAction">
-      <result name="success">/WEB-INF/pages/admin/home.ftl</result>
+      <result name="success" type="redirect">${baseURL}/home.do</result>
       <result name="input">/WEB-INF/pages/admin/registration.ftl</result>
     </action>
     <action name="updateRegistration" class="org.gbif.ipt.action.admin.RegistrationAction" method="update">
-      <result name="success">/WEB-INF/pages/admin/home.ftl</result>
+      <result name="success" type="redirect">${baseURL}/home.do</result>
       <result name="input">/WEB-INF/pages/admin/registration.ftl</result>
     </action>
 

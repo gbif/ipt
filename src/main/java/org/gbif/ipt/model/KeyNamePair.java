@@ -23,6 +23,14 @@ public class KeyNamePair {
   private String key;
   private String name;
 
+  public KeyNamePair() {
+  }
+
+  public KeyNamePair(String key, String name) {
+    this.key = key;
+    this.name = name;
+  }
+
   @NotNull
   public String getKey() {
     return key;

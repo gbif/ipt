@@ -28,9 +28,71 @@
                         </li>
                     [/#if]
                     [#if adminRights]
-                        <li class="nav-item nav-item-border-bottom">
-                            <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a>
-                        </li>
+                        <ul class="navbar-nav nav-item-border-bottom">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="#" id="adminDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    [@s.text name="menu.admin"/]
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-admin dropdown-menu-light text-light" aria-labelledby="adminDropdownLink">
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/config.do">
+                                            <span>
+                                                <i class="bi bi-gear-fill text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.editConfig"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/bulk-publication.do">
+                                            <span>
+                                                <i class="bi bi-stack text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.bulkPublication"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/users.do">
+                                            <span>
+                                                <i class="bi bi-person-lines-fill text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.manageUsers"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/registration.do">
+                                            <span>
+                                                <i class="bi bi-cloud-arrow-up-fill text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.editRegistration"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/organisations.do">
+                                            <span>
+                                                <i class="bi bi-building text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.editOrganisations"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/extensions.do">
+                                            <span>
+                                                <i class="bi bi-collection-fill text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.manageExtensions"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/logs.do">
+                                            <span>
+                                                <i class="bi bi-journal-text text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.manageLogs"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     [/#if]
                     <li class="nav-item nav-item-border-bottom">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>

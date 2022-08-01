@@ -26,7 +26,7 @@
 
             <div class="my-2">
                 <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel" method="cancel"/>
+                <@s.submit form="mapping" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
             </div>
         </div>
     </div>
@@ -39,8 +39,8 @@
         <input type="hidden" name="mid" value="${mid!}" />
         <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
-        <div class="my-3 p-3">
-            <p>${mapping.extension.description}</p>
+        <div class="my-3 p-3 text-center">
+            <p class="fst-italic">${mapping.extension.description}</p>
 
             <#if mapping.extension.link?has_content>
                 <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
@@ -48,9 +48,11 @@
 
             <p><@s.text name='manage.mapping.source.help'/></p>
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+            <div class="container" style="max-width: 600px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" withLabel=false />
+                    </div>
                 </div>
             </div>
         </div>

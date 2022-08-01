@@ -130,6 +130,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   private void defineXstreamMapping() {
     xstream.addPermission(AnyTypePermission.ANY);
+    xstream.ignoreUnknownElements();
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
     xstream.useAttributeFor(User.class, "password");

@@ -56,6 +56,11 @@ public class PublishAllResourcesAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    // if cancel was set to true - call cancel method
+    if (cancel) {
+      return cancel();
+    }
+
     // start with IPT registration update, provided the IPT has been registered already
     try {
       if (registrationManager.getIpt() != null) {

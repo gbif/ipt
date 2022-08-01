@@ -23,6 +23,7 @@ import java.util.UUID;
 
 public final class Constants {
 
+  public static final String CANCEL_RESULTNAME = "cancel";
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
   public static final String SESSION_URL = "url";
@@ -38,6 +39,7 @@ public final class Constants {
   public static final String REQ_PATH_DWCA = "archive.do";
   public static final String REQ_PATH_LOGO = "logo.do";
   public static final String REQ_PARAM_RESOURCE = "r";
+  public static final String REQ_PARAM_REINFER_METADATA = "reinferMetadata";
   public static final String REQ_PARAM_ID = "id";
   public static final String REQ_PARAM_SOURCE = "s";
   public static final String REQ_PARAM_VERSION = "v";
@@ -48,6 +50,7 @@ public final class Constants {
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAYOFWEEK = "updateFrequencyDayOfWeek";
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_HOUR = "updateFrequencyHour";
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MINUTE = "updateFrequencyMinute";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_TIME = "updateFrequencyTime";
   public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
   public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
   public static final String DWC_ROWTYPE_EVENT = DwcTerm.Event.qualifiedName();
@@ -66,6 +69,23 @@ public final class Constants {
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String VOCAB_URI_BASIS_OF_RECORDS = "http://rs.tdwg.org/dwc/dwctype/";
+  public static final String VOCAB_DECIMAL_LONGITUDE = "http://rs.tdwg.org/dwc/terms/decimalLongitude";
+  public static final String VOCAB_DECIMAL_LATITUDE = "http://rs.tdwg.org/dwc/terms/decimalLatitude";
+  public static final String LONGITUDE = "decimalLongitude";
+  public static final String LATITUDE = "decimalLatitude";
+  public static final String VOCAB_SCIENTIFIC_NAME = "http://rs.tdwg.org/dwc/terms/scientificName";
+  public static final String VOCAB_KINGDOM = "http://rs.tdwg.org/dwc/terms/kingdom";
+  public static final String VOCAB_PHYLUM = "http://rs.tdwg.org/dwc/terms/phylum";
+  public static final String VOCAB_CLASS = "http://rs.tdwg.org/dwc/terms/class";
+  public static final String VOCAB_ORDER = "http://rs.tdwg.org/dwc/terms/order";
+  public static final String VOCAB_FAMILY = "http://rs.tdwg.org/dwc/terms/family";
+  public static final String KINGDOM = "kingdom";
+  public static final String PHYLUM = "phylum";
+  public static final String CLASS = "class";
+  public static final String ORDER = "order";
+  public static final String FAMILY = "family";
+  public static final String VOCAB_EVENT_DATE = "http://rs.tdwg.org/dwc/terms/eventDate";
+  public static final String EVENT_DATE = "eventDate";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "https://www.gbif.org";
   public static final String THESAURUS_DATASET_TYPE =

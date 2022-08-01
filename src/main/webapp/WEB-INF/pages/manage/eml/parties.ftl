@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
                         <@s.text name='manage.metadata.parties.title'/>
                     </h1>
                 </div>
@@ -75,12 +75,26 @@
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                        <div class="columnLinks mt-3 d-flex justify-content-between">
+                                        <div class="columnLinks mt-2 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copyDetails-${item_index}" href="" class="text-smaller">${copyLink?lower_case?cap_first}</a>
+                                                <a id="associatedParty-copyDetails-${item_index}" href="" class="text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${copyLink?lower_case?cap_first}</span>
+                                                </a>
                                             </div>
-                                            <div>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink text-smaller" href="">${removeLink?lower_case?cap_first}</a>
+                                            <div class="text-end">
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink text-smaller" href="">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeLink?lower_case?cap_first}</span>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -140,8 +154,15 @@
                                 </#list>
                             </div>
 
-                            <div class="addNew col-12 mt-1">
-                                <a id="plus-associatedParty" href="" class="text-smaller">${addLink?lower_case?cap_first}</a>
+                            <div class="addNew col-12 mt-2">
+                                <a id="plus-associatedParty" href="" class="text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>${addLink?lower_case?cap_first}</span>
+                                </a>
                             </div>
 
                             <!-- internal parameter -->
@@ -149,12 +170,26 @@
 
 
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="columnLinks mt-3 d-flex justify-content-between">
+                                <div class="columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copyDetails" href="" class="text-smaller">${copyLink}</a>
+                                        <a id="associatedParty-copyDetails" href="" class="text-smaller">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${copyLink?lower_case?cap_first}</span>
+                                        </a>
                                     </div>
-                                    <div>
-                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink text-smaller" href="">${removeLink?lower_case?cap_first}</a>
+                                    <div class="text-end">
+                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink text-smaller" href="">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${removeLink?lower_case?cap_first}</span>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

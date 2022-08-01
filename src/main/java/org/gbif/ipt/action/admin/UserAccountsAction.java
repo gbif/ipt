@@ -131,23 +131,9 @@ public class UserAccountsAction extends POSTAction {
       // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
       // submitting non-validating data
       user = userManager.get(id);
-    }
 
-    // if no id was submitted we wanted to create a new account
-    // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
-    // matching user.
-    // in that case again provide a new, empty user instance
-    if (user == null) {
-      // reset id
-      id = null;
-      // create new user
-      user = new User();
-      newUser = true;
-    } else {
-      try {
-        user = (User) user.clone();
-      } catch (CloneNotSupportedException e) {
-        LOG.error("An exception occurred while retrieving user: " + e.getMessage(), e);
+      if (user == null) {
+        notFound = true;
       }
     }
   }

@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <p class="text-center text-smaller mt-5">
+        <p class="text-center text-smaller mt-5 mb-4">
             <@s.text name="login.intro">
                 <@s.param>${adminEmail}</@s.param>
             </@s.text>
@@ -53,12 +53,12 @@
                 </div>
 
                 <#if email?has_content>
-                    <p class="text-center text-smaller">
+                    <p class="text-center text-smaller pt-3">
                         <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>
 
-                <div class="col-12 pt-3">
+                <div class="col-12">
                     <@s.submit cssClass="btn btn-outline-gbif-primary w-100 text-capitalize" name="login" key="portal.login"/>
                 </div>
             </div>

@@ -137,14 +137,14 @@ L.LocationFilter = L.Class.extend({
         return new L.LatLngBounds(this._sw, this._ne); 
     },
 
-    setBounds: function(bounds) {
+    setBounds: function(bounds, skipMapAdjustment) {
         this._nw = bounds.getNorthWest();
         this._ne = bounds.getNorthEast();
         this._sw = bounds.getSouthWest();
         this._se = bounds.getSouthEast();
         if (this.isEnabled()) {
             this._draw();
-            this.fire("change", {bounds: bounds});
+            this.fire("change", {bounds: bounds, skipMapAdjustment: skipMapAdjustment});
         }
     },
 

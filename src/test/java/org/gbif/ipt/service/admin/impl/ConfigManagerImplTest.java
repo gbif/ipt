@@ -23,7 +23,6 @@ import org.gbif.ipt.mock.MockResourceManager;
 import org.gbif.ipt.mock.MockUserAccountManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -58,7 +57,6 @@ public class ConfigManagerImplTest {
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
     ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
     VocabulariesManager mockedVocabularies = mock(VocabulariesManager.class);
-    DataSchemaManager mockedSchemaManager = mock(DataSchemaManager.class);
     RegistrationManager mockedRegistrationManager = MockRegistrationManager.buildMock();
     UserAccountManager mockedUserManager = MockUserAccountManager.buildMock();
     ConfigWarnings warnings = new ConfigWarnings();
@@ -68,7 +66,7 @@ public class ConfigManagerImplTest {
     appConfig = new AppConfig(mockedDataDir);
 
     return new ConfigManagerImpl(mockedDataDir, appConfig, mockedUserManager, mockedResourceManager,
-        mockedExtensionManager, mockedVocabularies, mockedSchemaManager, mockedRegistrationManager, warnings, client,
+        mockedExtensionManager, mockedVocabularies, mockedRegistrationManager, warnings, client,
         mockPublishingMonitor);
   }
 

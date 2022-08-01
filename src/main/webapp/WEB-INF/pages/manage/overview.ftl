@@ -15,65 +15,24 @@
     the mandatory metadata must have been filled in,
     and the user must have registration rights for any DOI operation made possible -->
     <#if !organisationWithPrimaryDoiAccount??>
-
-        <a tabindex="0" role="button"
-           class="popover-link"
-           data-bs-toggle="popover"
-           data-bs-trigger="focus"
-           data-bs-html="true"
-           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
-            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-        </a>
-
+        -
     <#elseif !currentUser.hasRegistrationRights()>
-
-        <a tabindex="0" role="button"
-           class="popover-link"
-           data-bs-toggle="popover"
-           data-bs-trigger="focus"
-           data-bs-html="true"
-           data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>">
-            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-        </a>
-
+        -
     <#elseif resource.identifierStatus == "UNRESERVED">
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
-            </div>
+            <@s.submit cssClass="confirmReserveDoi button-link text-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
         </form>
-
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-
         <form action='resource-deleteDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-danger" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
-            </div>
+            <@s.submit cssClass="confirmDeleteDoi button-link text-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
         </form>
-
     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
-            </div>
+            <@s.submit cssClass="confirmReserveDoi button-link text-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
         </form>
-
     </#if>
 </#macro>
 
@@ -127,6 +86,9 @@
         $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary"});
         $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+
+        $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+        $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
 
         // spy scroll and manage sidebar menu
         $(window).scroll(function () {
@@ -405,17 +367,13 @@
 
         <div class="container my-3 p-3">
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <span><@s.text name="basic.resource"/></span>
+                <span><@s.text name="manage.overview.title"/></span>
             </div>
 
             <div class="text-center">
                 <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="manage.overview.title"/>
+                    ${resource.title!resource.shortname}
                 </h1>
-
-                <div class="text-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </div>
 
                 <div class="mt-2">
                     <#if resource.status == "DELETED">
@@ -459,9 +417,7 @@
                 </div>
 
                 <p class="mt-3 mb-0 text-smaller fst-italic">
-                    <#if dataSchemaBased>
-                        <@s.text name="manage.overview.dataSchema.description"/>
-                    <#elseif resource.coreType?has_content && resource.coreType==metadataType>
+                    <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.description.metadataOnly"/>
                     <#else>
                         <@s.text name="manage.overview.description"/>
@@ -484,11 +440,7 @@
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <#if dataSchemaBased>
-                                    <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.mappings'/></a></li>
-                                <#else>
-                                    <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.DwC.Mappings'/></a></li>
-                                </#if>
+                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.DwC.Mappings'/></a></li>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
                             <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
@@ -538,17 +490,15 @@
 
                                 <!-- resources cannot be published if the mandatory metadata is missing -->
                                 <#if missingMetadata>
-                                    <p class="text-gbif-warning fst-italic">
-                                        <i class="bi bi-exclamation-triangle"></i>
+                                    <div class="callout callout-warning text-smaller">
                                         <@s.text name="manage.overview.published.missing.metadata"/>
-                                    </p>
+                                    </div>
 
                                     <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
                                 <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                                    <p class="text-gbif-warning fst-italic">
-                                        <i class="bi bi-exclamation-triangle"></i>
+                                    <div class="callout callout-warning text-smaller">
                                         <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                                    </p>
+                                    </div>
 
                                     <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
                                 <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
@@ -556,21 +506,18 @@
                                 || resource.status == "REGISTERED">
                                     <!-- the user must have registration rights -->
                                     <#if !currentUser.hasRegistrationRights()>
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.resource.status.publication.forbidden"/>
                                             &nbsp;<@s.text name="manage.resource.role.change"/>
-                                        </p>
+                                        </div>
 
                                         <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
                                     <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
                                     || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
                                     && !organisationWithPrimaryDoiAccount??>
-
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                                        </p>
+                                        </div>
 
                                         <!-- when a DOI is reserved.. -->
                                     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
@@ -578,23 +525,23 @@
                                         <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                                             <!-- and the resource has never been published before, the first publication is a new major version -->
                                             <#if !resource.lastPublished??>
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                                </p>
+                                                </div>
 
                                                 <!-- and the resource has been published before, the next publication is a new minor version -->
                                             <#else>
-                                                <p class="text-gbif-primary fst-italic">
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                                </p>
+                                                </div>
                                             </#if>
 
                                             <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
                                         <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                                            <p class="text-gbif-primary fst-italic">
+                                            <div class="callout callout-info text-smaller">
                                                 <@s.text name="manage.overview.publishing.doi.register.help"/>
-                                            </p>
+                                            </div>
+
                                         </#if>
                                     </#if>
                                 </#if>
@@ -685,33 +632,83 @@
                                                 </tr>
                                             </#if>
                                             <!-- hide DOI row if no organisation with DOI account has been activated yet -->
-                                            <#if organisationWithPrimaryDoiAccount??>
-                                                <tr>
-                                                    <th>DOI</th>
-                                                    <#if resource.lastPublished??>
-                                                        <td class="separator text-gbif-primary">
-                                                            <#if resource.isAlreadyAssignedDoi()>
-                                                                ${resource.versionHistory[0].doi!}
-                                                            <#else>
-                                                                ${emptyCell}
-                                                            </#if>
-                                                        </td>
-                                                        <td class="left_padding">
-                                                            <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
-                                                                <em>${resource.doi!emptyCell}</em>&nbsp;
-                                                            </#if>
-                                                            <@nextDoiButtonTD/>
-                                                        </td>
-                                                    <#else>
-                                                        <td>
-                                                            <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
-                                                                <em>${resource.doi!emptyCell}</em>&nbsp;
-                                                            </#if>
-                                                            <@nextDoiButtonTD/>
-                                                        </td>
+                                            <tr>
+                                                <th>
+                                                    DOI
+                                                    <#if !organisationWithPrimaryDoiAccount??>
+                                                        <a tabindex="0" role="button"
+                                                           class="popover-link"
+                                                           data-bs-toggle="popover"
+                                                           data-bs-trigger="focus"
+                                                           data-bs-html="true"
+                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
+                                                            <i class="bi bi-info-circle text-warning"></i>
+                                                        </a>
+                                                    <#elseif !currentUser.hasRegistrationRights()>
+                                                        <a tabindex="0" role="button"
+                                                           class="popover-link"
+                                                           data-bs-toggle="popover"
+                                                           data-bs-trigger="focus"
+                                                           data-bs-html="true"
+                                                           data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>">
+                                                            <i class="bi bi-info-circle text-warning"></i>
+                                                        </a>
+                                                    <#elseif resource.identifierStatus == "UNRESERVED">
+                                                        <a tabindex="0" role="button"
+                                                           class="popover-link"
+                                                           data-bs-trigger="focus"
+                                                           data-bs-toggle="popover"
+                                                           data-bs-placement="top"
+                                                           data-bs-html="true"
+                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
+                                                            <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                        </a>
+                                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                                                        <a tabindex="0" role="button"
+                                                           class="popover-link"
+                                                           data-bs-trigger="focus"
+                                                           data-bs-toggle="popover"
+                                                           data-bs-placement="top"
+                                                           data-bs-html="true"
+                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
+                                                            <i class="bi bi-info-circle text-gbif-danger"></i>
+                                                        </a>
+                                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
+                                                        <a tabindex="0" role="button"
+                                                           class="popover-link"
+                                                           data-bs-trigger="focus"
+                                                           data-bs-toggle="popover"
+                                                           data-bs-placement="top"
+                                                           data-bs-html="true"
+                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
+                                                            <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                        </a>
                                                     </#if>
-                                                </tr>
-                                            </#if>
+
+                                                </th>
+                                                <#if resource.lastPublished??>
+                                                    <td class="separator text-gbif-primary">
+                                                        <#if resource.isAlreadyAssignedDoi()>
+                                                            ${resource.versionHistory[0].doi!}
+                                                        <#else>
+                                                            ${emptyCell}
+                                                        </#if>
+                                                    </td>
+                                                    <td class="left_padding">
+                                                        <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
+                                                            <em>${resource.doi!emptyCell}</em>&nbsp;
+                                                        </#if>
+                                                        <@nextDoiButtonTD/>
+                                                    </td>
+                                                <#else>
+                                                    <td>
+                                                        <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
+                                                            <em>${resource.doi!emptyCell}</em>&nbsp;
+                                                        </#if>
+                                                        <@nextDoiButtonTD/>
+                                                    </td>
+                                                </#if>
+                                            </tr>
                                             <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
                                             <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
                                                 <tr>
@@ -767,13 +764,12 @@
                                             <#if report??>
                                                 <tr>
                                                     <th>${pubRepTitle?cap_first}</th>
-                                                    <td class="separator">
+                                                    <td>
                                                         <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
                                                             <em>${report.state}</em>&nbsp;
                                                         </#if>
                                                         <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
                                                     </td>
-                                                    <td class="left_padding">${emptyCell}</td>
                                                 </tr>
                                             </#if>
                                         </table>
@@ -832,10 +828,9 @@
                                     </p>
 
                                     <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                        </p>
+                                        </div>
                                     </#if>
 
                                     <#if resource.usesAutoPublishing()>
@@ -898,10 +893,9 @@
                                         </p>
 
                                         <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                                            <p class="text-gbif-danger">
-                                                <i class="bi bi-exclamation-triangle"></i>
-                                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                                            </p>
+                                            <div class="callout callout-warning text-smaller">
+                                                <@s.text name="manage.overview.published.testmode.warning"/>
+                                            </div>
                                         </#if>
 
                                         <#if resource.status=="REGISTERED" && resource.key??>
@@ -945,34 +939,29 @@
                                         <#if resource.status=="PUBLIC">
                                             <#if !currentUser.hasRegistrationRights()>
                                                 <!-- Show warning: user must have registration rights -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                                </p>
+                                                </div>
                                             <#elseif missingValidPublishingOrganisation?string == "true">
                                                 <!-- Show warning: user must assign valid publishing organisation -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.visibility.missing.organisation"/>
-                                                </p>
+                                                </div>
                                             <#elseif missingRegistrationMetadata?string == "true">
                                                 <!-- Show warning: user must fill in minimum registration metadata -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.visibility.missing.metadata" />
-                                                </p>
+                                                </div>
                                             <#elseif !resource.isLastPublishedVersionPublic()>
                                                 <!-- Show warning: last published version must be publicly available to register -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                                                </p>
+                                                </div>
                                             <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                                 <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                                                </p>
+                                                </div>
                                             </#if>
                                         </#if>
                                     </div>
@@ -1089,10 +1078,9 @@
                                             </p>
                                         </#if>
                                     <#else>
-                                        <p class="text-gbif-warning">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                            <em><@s.text name="manage.overview.networks.not.registered"/></em>
-                                        </p>
+                                        <div class="callout callout-warning text-smaller">
+                                            <@s.text name="manage.overview.networks.not.registered"/>
+                                        </div>
                                     </#if>
                                 </div>
                             </div>

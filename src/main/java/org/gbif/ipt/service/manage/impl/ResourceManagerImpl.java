@@ -15,6 +15,12 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
+import org.gbif.common.parsers.core.OccurrenceParseResult;
+import org.gbif.common.parsers.core.ParseResult;
+import org.gbif.common.parsers.date.DateParsers;
+import org.gbif.common.parsers.date.TemporalParser;
+import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
+import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -28,21 +34,20 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
+import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchemaField;
-import org.gbif.ipt.model.DataSchemaFieldConstraints;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaFieldReference;
-import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschema;
-import org.gbif.ipt.model.DataSubschemaForeignKey;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredMetadata;
+import org.gbif.ipt.model.InferredGeographicCoverage;
+import org.gbif.ipt.model.InferredTaxonomicCoverage;
+import org.gbif.ipt.model.InferredTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -55,7 +60,6 @@ import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -74,7 +78,6 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -84,8 +87,6 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDataPackage;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.GeneratorException;
@@ -96,14 +97,21 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.Point;
+import org.gbif.metadata.eml.TaxonKeyword;
+import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.registry.metadata.EMLProfileVersion;
 import org.gbif.registry.metadata.EmlValidator;
 import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.registry.metadata.parse.DatasetParser;
+import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -120,12 +128,17 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -158,22 +171,35 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xml.sax.SAXException;
 
+import static org.gbif.ipt.config.Constants.CLASS;
+import static org.gbif.ipt.config.Constants.FAMILY;
+import static org.gbif.ipt.config.Constants.KINGDOM;
+import static org.gbif.ipt.config.Constants.ORDER;
+import static org.gbif.ipt.config.Constants.PHYLUM;
+import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
+import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
+import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
+import static org.gbif.ipt.config.Constants.VOCAB_EVENT_DATE;
+import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
+import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
+import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
+import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
+
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
   public static final String PERSISTENCE_FILE = "resource.xml";
+  public static final String INFERRED_METADATA_FILE = "inferredMetadata.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
-  private DataSchemaManager schemaManager;
   private RegistryManager registryManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
-  private GenerateDataPackageFactory dataPackageFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
@@ -185,24 +211,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
                              OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-                             DataSchemaIdentifierConverter dataSchemaConverter,
                              JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-                             ExtensionManager extensionManager, DataSchemaManager schemaManager,
+                             ExtensionManager extensionManager,
                              RegistryManager registryManager, ConceptTermConverter conceptTermConverter,
-                             GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
+                             GenerateDwcaFactory dwcaFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
-    this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
-    this.dataPackageFactory = dataPackageFactory;
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, dataSchemaConverter, conceptTermConverter, jdbcInfoConverter,
+    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
       passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
@@ -535,12 +558,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setShortname(shortname.toLowerCase());
     res.setCreated(new Date());
     res.setCreator(creator);
-
-    String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
-    if (schemaIdentifier != null) {
-      res.setSchemaIdentifier(schemaIdentifier);
-    }
-
     res.setCoreType(type);
     // first and last published dates are nulls
     res.getEml().setDateStamp(((Date) null));
@@ -730,25 +747,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-                                    ExtensionRowTypeConverter extensionConverter, DataSchemaIdentifierConverter dataSchemaConverter,
+                                    ExtensionRowTypeConverter extensionConverter,
                                     ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter,
                                     PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
+    xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
+
+    // aliases for inferred metadata
+    xstream.alias("inferredMetadata", InferredMetadata.class);
+    xstream.alias("inferredGeographicCoverage", InferredGeographicCoverage.class);
+    xstream.alias("inferredTaxonomicCoverage", InferredTaxonomicCoverage.class);
+    xstream.alias("inferredTemporalCoverage", InferredTemporalCoverage.class);
+    xstream.alias("taxonKeyword", TaxonKeyword.class);
+    xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
+
     xstream.alias("filesource", TextFileSource.class);
     xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
     xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
-    xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
-    xstream.alias("dataSchemaFieldMapping", DataSchemaFieldMapping.class);
-    xstream.alias("subschema", DataSubschema.class);
-    xstream.alias("dataSchemaField", DataSchemaField.class);
-    xstream.alias("dataSubschemaForeignKey", DataSubschemaForeignKey.class);
-    xstream.alias("dataSchemaFieldReference", DataSchemaFieldReference.class);
-    xstream.alias("constraints", DataSchemaFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
 
@@ -756,6 +776,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.omitField(Resource.class, "shortname");
     xstream.omitField(Resource.class, "eml");
     xstream.omitField(Resource.class, "type");
+    // inferred metadata in the separate file
+    xstream.omitField(Resource.class, "inferredMetadata");
     // make files transient to allow moving the datadir
     xstream.omitField(TextFileSource.class, "file");
 
@@ -763,8 +785,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(userConverter);
     // persist only rowtype
     xstream.registerConverter(extensionConverter);
-    // persist only schema identifier
-    xstream.registerConverter(dataSchemaConverter);
     // persist only qualified concept name
     xstream.registerConverter(conceptTermConverter);
     // encrypt passwords
@@ -809,15 +829,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
-    Future<Map<String, Integer>> f = executor.submit(worker);
-    processFutures.put(resource.getShortname(), f);
-    // make sure we have at least a first report for this resource
-    worker.report();
-  }
-
-  private void generateDataPackage(Resource resource) {
-    // use threads to run in the background as sql sources might take a long time
-    GenerateDataPackage worker = dataPackageFactory.create(resource, this);
     Future<Map<String, Integer>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
@@ -1116,6 +1127,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Loads a resource's inferred metadata from the xml file located inside its resource directory.
+   * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
+   *
+   * @param resource resource
+   */
+  private void loadInferredMetadata(Resource resource) {
+    File inferredMetadataFile = dataDir.resourceFile(resource.getShortname(), INFERRED_METADATA_FILE);
+    if (!inferredMetadataFile.exists()) {
+      resource.setInferredMetadata(new InferredMetadata());
+      return;
+    }
+
+    try {
+      InputStream input = new FileInputStream(inferredMetadataFile);
+      InferredMetadata inferredMetadata = (InferredMetadata) xstream.fromXML(input);
+      resource.setInferredMetadata(inferredMetadata);
+    } catch (Exception e) {
+      LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
+      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+          "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+    }
+  }
+
+  /**
    * Calls loadFromDir(File, User, ActionLogger), inserting a new instance of ActionLogger.
    *
    * @param resourceDir resource directory
@@ -1201,6 +1236,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // load eml (this must be done before trying to convert version below)
         loadEml(resource);
+
+        // load inferred metadata
+        loadInferredMetadata(resource);
 
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
         // also convert/rename eml, rtf, and dwca versioned files also
@@ -1426,33 +1464,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       processReports.remove(resource.getShortname());
     }
 
-    if (resource.getSchemaIdentifier() == null) { // DwC archive
-      // (re)generate dwca asynchronously
-      boolean dwca = false;
-      if (resource.hasMappedData()) {
-        generateDwca(resource);
-        dwca = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        publishEnd(resource, action, version);
-      }
-      return dwca;
-    } else { // Data Schema based package
-      boolean dataPackage = false;
-      if (resource.hasSchemaMappedData()) {
-        generateDataPackage(resource);
-        dataPackage = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        // TODO: 06/04/2022 check publishEnd works correctly (we can't register schema resources yet)
-        publishEnd(resource, action, version);
-      }
-      return dataPackage;
+    // (re)generate dwca asynchronously
+    boolean dwca = false;
+    if (resource.hasMappedData()) {
+      generateDwca(resource);
+      dwca = true;
+    } else {
+      // set number of records published
+      resource.setRecordsPublished(0);
+      // finish publication now
+      publishEnd(resource, action, version);
     }
+    return dwca;
   }
 
   /**
@@ -1921,6 +1944,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String citation = resource.generateResourceCitation(version, homepage);
       resource.getEml().getCitation().setCitation(citation);
     }
+    // update eml with inferred data (if infer automatically is turned on)
+    if (resource.isInferGeocoverageAutomatically()
+        || resource.isInferTaxonomicCoverageAutomatically()
+        || resource.isInferTemporalCoverageAutomatically()) {
+      InferredMetadata inferredMetadata = inferMetadata(resource);
+
+      if (resource.isInferGeocoverageAutomatically()) {
+        updateGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTaxonomicCoverageAutomatically()) {
+        updateTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTemporalCoverageAutomatically()) {
+        updateTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
+      }
+    }
 
     // save all changes to Eml
     saveEml(resource);
@@ -1934,6 +1975,417 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new PublicationException(PublicationException.TYPE.EML,
         "Can't publish eml file for resource " + resource.getShortname(), e);
     }
+  }
+
+  public List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
+    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
+    for (TaxonomicCoverage coverage : coverages) {
+      OrganizedTaxonomicCoverage organizedCoverage = constructOrganizedTaxonomicCoverage(coverage);
+      organizedTaxonomicCoverages.add(organizedCoverage);
+    }
+    return organizedTaxonomicCoverages;
+  }
+
+  public OrganizedTaxonomicCoverage constructOrganizedTaxonomicCoverage(TaxonomicCoverage coverage) {
+    OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
+    organizedCoverage.setDescription(coverage.getDescription());
+    organizedCoverage.setKeywords(setOrganizedTaxonomicKeywords(coverage.getTaxonKeywords()));
+    return organizedCoverage;
+  }
+
+  private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
+    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
+
+    // also, we want a unique set of names corresponding to empty rank
+    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
+
+    Map<String, String> ranks = new LinkedHashMap<>(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.ENGLISH.getLanguage(), false));
+
+    for (String rank : ranks.keySet()) {
+      OrganizedTaxonomicKeywords organizedKeywords = new OrganizedTaxonomicKeywords();
+      // set rank
+      organizedKeywords.setRank(rank);
+      // construct display name for each TaxonKeyword, and add display name to organized keywords list
+      for (TaxonKeyword keyword : keywords) {
+        // add display name to appropriate list if it isn't null
+        String displayName = createKeywordDisplayName(keyword);
+        if (displayName != null) {
+          if (rank.equalsIgnoreCase(keyword.getRank())) {
+            organizedKeywords.getDisplayNames().add(displayName);
+          } else if (StringUtils.trimToNull(keyword.getRank()) == null) {
+            uniqueNamesForEmptyRank.add(displayName);
+          }
+        }
+      }
+      // add to list
+      organizedTaxonomicKeywordsList.add(organizedKeywords);
+    }
+    // if there were actually some names with empty ranks, add the special OrganizedTaxonomicKeywords for empty rank
+    if (!uniqueNamesForEmptyRank.isEmpty()) {
+      // create special OrganizedTaxonomicKeywords for empty rank
+      OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
+      emptyRankKeywords.setRank("Unranked");
+      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
+      organizedTaxonomicKeywordsList.add(emptyRankKeywords);
+    }
+    // return list
+    return organizedTaxonomicKeywordsList;
+  }
+
+  private String createKeywordDisplayName(TaxonKeyword keyword) {
+    String combined = null;
+    if (keyword != null) {
+      String scientificName = StringUtils.trimToNull(keyword.getScientificName());
+      String commonName = StringUtils.trimToNull(keyword.getCommonName());
+      if (scientificName != null && commonName != null) {
+        combined = scientificName + " (" + commonName + ")";
+      } else if (scientificName != null) {
+        combined = scientificName;
+      } else if (commonName != null) {
+        combined = commonName;
+      }
+    }
+    return combined;
+  }
+
+  private void updateGeocoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredGeographicCoverage() != null
+        && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
+      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredGeographicCoverage().getData();
+
+      // check object to preserve description
+      if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
+        inferredGeocoverage.setDescription(resource.getEml().getGeospatialCoverages().get(0).getDescription());
+      } else {
+        inferredGeocoverage.setDescription("N/A");
+      }
+
+      resource.getEml().addGeospatialCoverage(inferredGeocoverage);
+    }
+  }
+
+  private void updateTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredTaxonomicCoverage() != null
+        && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
+      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
+
+      // check object to preserve description
+      if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
+        inferredTaxonomicCoverage.setDescription(resource.getEml().getTaxonomicCoverages().get(0).getDescription());
+      } else {
+        inferredTaxonomicCoverage.setDescription("N/A");
+      }
+
+      resource.getEml().addTaxonomicCoverage(inferredTaxonomicCoverage);
+    }
+  }
+
+  private void updateTemporalCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+    if (!resource.getMappings().isEmpty()
+        && inferredMetadata.getInferredTemporalCoverage() != null
+        && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
+      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
+      resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
+    }
+  }
+
+  @Override
+  public InferredMetadata inferMetadata(Resource resource) {
+    InferredMetadata inferredMetadata = new InferredMetadata();
+
+    boolean serverError = false;
+
+    // geo coverage column indexes
+    int decimalLongitudeSourceColumnIndex = -1;
+    int decimalLatitudeSourceColumnIndex = -1;
+
+    // tax coverage column indexes
+    int kingdomSourceColumnIndex = -1;
+    int phylumSourceColumnIndex = -1;
+    int classSourceColumnIndex = -1;
+    int orderSourceColumnIndex = -1;
+    int familySourceColumnIndex = -1;
+
+    // temp coverage column indexes
+    int eventDataSourceColumnIndex = -1;
+
+    // geo coverage variables
+    boolean geoDataMappedForAtLeastOneMapping = false;
+    boolean geoDataMappedForThisMapping;
+    boolean noValidDataGeo = true;
+    Double minDecimalLongitude = -180.0D;
+    Double maxDecimalLongitude = 180.0D;
+    Double minDecimalLatitude = -90.0D;
+    Double maxDecimalLatitude = 90.0D;
+
+    // tax coverage variables
+    boolean taxDataMappedForAtLeastOneMapping = false;
+    boolean taxDataMappedForThisMapping;
+    int taxonItemsAdded = 0;
+    final int maxNumberOfTaxonItems = 200;
+    Set<TaxonKeyword> taxa = new HashSet<>();
+
+    // temp coverage variables
+    boolean tempDataMappedForAtLeastOneMapping = false;
+    boolean tempDataMappedForThisMapping;
+    boolean noValidDataTemporal = true;
+    String startDateStr = null;
+    TemporalAccessor startDateTA = null;
+    String endDateStr = null;
+    TemporalAccessor endDateTA = null;
+
+    boolean isNoMappings = resource.getMappings().isEmpty();
+
+    if (!isNoMappings) {
+      for (ExtensionMapping mapping : resource.getMappings()) {
+
+        // calculate column indexes for mapping
+        for (PropertyMapping field : mapping.getFields()) {
+          if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
+            decimalLongitudeSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
+            decimalLatitudeSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
+            kingdomSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
+            phylumSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
+            classSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
+            orderSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
+            familySourceColumnIndex = field.getIndex();
+          } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
+            eventDataSourceColumnIndex = field.getIndex();
+          }
+        }
+
+        // both fields should be present
+        if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
+          geoDataMappedForThisMapping = true;
+          geoDataMappedForAtLeastOneMapping = true;
+        } else {
+          geoDataMappedForThisMapping = false;
+        }
+
+        // at least one field should be present
+        if (kingdomSourceColumnIndex != -1
+            || phylumSourceColumnIndex != -1
+            || classSourceColumnIndex != -1
+            || orderSourceColumnIndex != -1
+            || familySourceColumnIndex != -1) {
+          taxDataMappedForThisMapping = true;
+          taxDataMappedForAtLeastOneMapping = true;
+        } else {
+          taxDataMappedForThisMapping = false;
+        }
+
+        // field should be present
+        if (eventDataSourceColumnIndex != -1) {
+          tempDataMappedForThisMapping = true;
+          tempDataMappedForAtLeastOneMapping = true;
+        } else {
+          tempDataMappedForThisMapping = false;
+        }
+
+        ClosableReportingIterator<String[]> iter = null;
+        try {
+          // get the source iterator
+          iter = sourceManager.rowIterator(mapping.getSource());
+          boolean initializeExtremeValues = true;
+
+          while (iter.hasNext()) {
+            String[] in = iter.next();
+            if (in == null || in.length == 0) {
+              continue;
+            }
+
+            // geographic coverage section
+            if (geoDataMappedForThisMapping) {
+              String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
+              String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
+
+              OccurrenceParseResult<LatLng> latLngParseResult =
+                  CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
+              LatLng latLng = latLngParseResult.getPayload();
+
+              // skip erratic records
+              if (latLng != null && latLngParseResult.isSuccessful()) {
+                noValidDataGeo = false;
+
+                // initialize min and max values
+                if (initializeExtremeValues) {
+                  minDecimalLatitude = latLng.getLat();
+                  maxDecimalLatitude = latLng.getLat();
+                  minDecimalLongitude = latLng.getLng();
+                  maxDecimalLongitude = latLng.getLng();
+                  initializeExtremeValues = false;
+                }
+
+                if (latLng.getLat() > maxDecimalLatitude) {
+                  maxDecimalLatitude = latLng.getLat();
+                }
+                if (latLng.getLat() < minDecimalLatitude) {
+                  minDecimalLatitude = latLng.getLat();
+                }
+
+                if (latLng.getLng() > maxDecimalLongitude) {
+                  maxDecimalLongitude = latLng.getLng();
+                }
+                if (latLng.getLng() < minDecimalLongitude) {
+                  minDecimalLongitude = latLng.getLng();
+                }
+              }
+            }
+
+            // taxonomic coverage section
+            if (taxDataMappedForThisMapping && taxonItemsAdded < maxNumberOfTaxonItems) {
+              if (kingdomSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[kingdomSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[kingdomSourceColumnIndex], KINGDOM, null));
+                taxonItemsAdded++;
+              }
+              if (phylumSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[phylumSourceColumnIndex], PHYLUM, null));
+                taxonItemsAdded++;
+              }
+              if (classSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[classSourceColumnIndex], CLASS, null));
+                taxonItemsAdded++;
+              }
+              if (orderSourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[orderSourceColumnIndex], ORDER, null));
+                taxonItemsAdded++;
+              }
+              if (familySourceColumnIndex != -1
+                  && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
+                taxa.add(new TaxonKeyword(in[familySourceColumnIndex], FAMILY, null));
+                taxonItemsAdded++;
+              }
+            }
+
+            // temporal coverage section
+            if (tempDataMappedForThisMapping) {
+              String rawEventDateValue = in[eventDataSourceColumnIndex];
+
+              TemporalParser temporalParser = DateParsers.defaultTemporalParser();
+              ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
+              TemporalAccessor parsedEventDateTA = parsedEventDateResult.getPayload();
+
+              // skip erratic records
+              if (!parsedEventDateResult.isSuccessful() || parsedEventDateTA == null || !parsedEventDateTA.isSupported(ChronoField.YEAR)) {
+                continue;
+              } else {
+                noValidDataTemporal = false;
+              }
+
+              if (startDateTA == null) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+              if (endDateTA == null) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+                startDateTA = parsedEventDateTA;
+                startDateStr = rawEventDateValue;
+              }
+
+              if (((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+                endDateTA = parsedEventDateTA;
+                endDateStr = rawEventDateValue;
+              }
+            }
+
+          }
+        } catch (Exception e) {
+          LOG.error("Error while trying to infer metadata from source data", e);
+          serverError = true;
+        } finally {
+          if (iter != null) {
+            try {
+              iter.close();
+            } catch (Exception e) {
+              LOG.error("Error while closing iterator", e);
+              serverError = true;
+            }
+          }
+        }
+      }
+    }
+
+    // finalize geocoverage
+    InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
+    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
+    if (serverError) {
+      inferredGeographicCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
+      inferredGeographicCoverage.addError("eml.error.noMappings");
+    } else if (!geoDataMappedForAtLeastOneMapping) {
+      inferredGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
+    } else if (noValidDataGeo) {
+      inferredGeographicCoverage.addError("eml.error.noValidData");
+    } else {
+      inferredGeographicCoverage.setInferred(true);
+      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+      geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
+      inferredGeographicCoverage.setData(geospatialCoverage);
+    }
+
+    // finalize taxcoverage
+    InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
+    inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
+    if (serverError) {
+      inferredTaxonomicCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
+      inferredTaxonomicCoverage.addError("eml.error.noMappings");
+    } else if (!taxDataMappedForAtLeastOneMapping) {
+      inferredTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
+    } else if (taxonItemsAdded == 0) {
+      inferredTaxonomicCoverage.addError("eml.error.noValidData");
+    } else {
+      TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
+      taxCoverage.setTaxonKeywords(new ArrayList<>(taxa));
+      OrganizedTaxonomicCoverage organizedTaxCoverage = constructOrganizedTaxonomicCoverage(taxCoverage);
+      inferredTaxonomicCoverage.setInferred(true);
+      inferredTaxonomicCoverage.setData(taxCoverage);
+      inferredTaxonomicCoverage.setOrganizedData(organizedTaxCoverage);
+    }
+
+    // finalize tempcoverage
+    InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
+    inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
+    if (serverError) {
+      inferredTemporalCoverage.addError("eml.error.serverError");
+    } else if (isNoMappings) {
+      inferredTemporalCoverage.addError("eml.error.noMappings");
+    } else if (!tempDataMappedForAtLeastOneMapping) {
+      inferredTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
+    } else if (noValidDataTemporal) {
+      inferredTemporalCoverage.addError("eml.error.noValidData");
+    } else {
+      TemporalCoverage tempCoverage = new TemporalCoverage();
+      try {
+        tempCoverage.setStart(startDateStr);
+        tempCoverage.setEnd(endDateStr);
+        inferredTemporalCoverage.setInferred(true);
+        inferredTemporalCoverage.setData(tempCoverage);
+      } catch (ParseException e) {
+        LOG.error("Failed to parse date for temporal coverage", e);
+        inferredTemporalCoverage.addError("eml.temporalCoverages.error.dateParseException");
+      }
+    }
+
+    inferredMetadata.setLastModified(new Date());
+
+    return inferredMetadata;
   }
 
   /**
@@ -2271,6 +2723,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (IOException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write mapping configuration");
+    } finally {
+      if (writer != null) {
+        closeWriter(writer);
+      }
+    }
+  }
+
+  @Override
+  public synchronized void saveInferredMetadata(Resource resource) throws InvalidConfigException {
+    File cfgFile = dataDir.resourceFile(resource, INFERRED_METADATA_FILE);
+    Writer writer = null;
+    try {
+      // make sure resource dir exists
+      FileUtils.forceMkdir(cfgFile.getParentFile());
+      // persist data
+      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+      xstream.toXML(resource.getInferredMetadata(), writer);
+    } catch (IOException e) {
+      LOG.error(e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write inferred metadata file");
     } finally {
       if (writer != null) {
         closeWriter(writer);

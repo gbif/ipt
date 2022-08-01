@@ -93,7 +93,7 @@
                 </h1>
 
                 <div class="mt-2">
-                    <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button">
+                    <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
                         <@s.text name="button.cancel"/>
                     </a>
                 </div>
@@ -128,15 +128,10 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-danger mb-0">
+                <div class="callout callout-warning">
                     <@s.text name="admin.extension.no.coreTypes.installed"/>
-                </p>
-                <p>
-                    <span class="text-gbif-warning">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                    </span>
-                </p>
+                    <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+                </div>
             </#if>
 
         </div>
@@ -166,9 +161,9 @@
                 </#if>
             </#list>
             <#if count=0>
-                <p class="text-gbif-danger">
+                <div class="callout callout-warning">
                     <@s.text name="admin.extension.no.extensions.installed"/>
-                </p>
+                </div>
             </#if>
         </div>
 
@@ -238,9 +233,9 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-primary mt-2">
+                <div class="callout callout-info">
                     <@s.text name="extension.already.installed"/>
-                </p>
+                </div>
             </#if>
 
         </div>

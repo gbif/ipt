@@ -14,7 +14,9 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -27,6 +29,8 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
+import org.gbif.metadata.eml.BBox;
+import org.gbif.registry.metadata.InvalidEmlException;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,16 +38,16 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.collections4.ListValuedMap;
+import org.xml.sax.SAXException;
 
 import com.google.inject.ImplementedBy;
-import org.gbif.registry.metadata.InvalidEmlException;
-import org.xml.sax.SAXException;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -242,11 +246,18 @@ public interface ResourceManager {
   void save(Resource resource) throws InvalidConfigException;
 
   /**
-   * Save the eml file of a resource only. Complementary method to @See save(Resource).
+   * Save the eml file of a resource only. Complementary method to {@link #save(Resource)}.
    *
    * @param resource Resource
    */
   void saveEml(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Save the inferred metadata file of a resource. Complementary method to {@link #save(Resource)}
+   *
+   * @param resource Resource
+   */
+  void saveInferredMetadata(Resource resource) throws InvalidConfigException;
 
   /**
    * Return status report of current task either running or on queue for the requested resource or null if none exists.
@@ -376,4 +387,13 @@ public interface ResourceManager {
    * @param validate
    */
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
+
+  /**
+   * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
+   *
+   * @param resource resource
+   *
+   * @return inferred metadata
+   */
+  InferredMetadata inferMetadata(Resource resource);
 }

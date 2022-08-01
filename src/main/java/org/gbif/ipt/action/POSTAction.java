@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 
 public class POSTAction extends BaseAction {
 
+  private static final long serialVersionUID = 2236168478005348993L;
   protected boolean delete = false;
   protected boolean notFound = false;
   protected boolean validate = true;
@@ -46,6 +47,12 @@ public class POSTAction extends BaseAction {
     if (notFound) {
       return NOT_FOUND;
     }
+
+    // if cancel was set to true - call cancel method
+    if (cancel) {
+      return cancel();
+    }
+
     // if this is a GET request we request the INPUT form
     if (isHttpPost()) {
       // if its a POST we either save or delete
@@ -72,6 +79,14 @@ public class POSTAction extends BaseAction {
   public void setDelete(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
     if (this.delete) {
+      validate = false;
+    }
+  }
+
+  @Override
+  public void setCancel(String cancel) {
+    this.cancel = StringUtils.trimToNull(cancel) != null;
+    if (this.cancel) {
       validate = false;
     }
   }
