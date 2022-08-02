@@ -54,7 +54,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EmlValidatorTest {
-
   private EmlValidator validator;
   private Resource resource;
   private Eml eml;
@@ -495,11 +494,11 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testProjectPartPersonnelMissing() {
+  public void testProjectPartPersonnelOptional() {
     assertNotNull(eml.getProject().getTitle());
     eml.getProject().getPersonnel().clear();
     assertTrue(eml.getProject().getPersonnel().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test

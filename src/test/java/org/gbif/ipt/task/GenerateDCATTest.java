@@ -34,9 +34,6 @@ import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
-import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -54,17 +51,14 @@ import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -151,9 +145,7 @@ public class GenerateDCATTest {
   }
 
   @Test
-  public void testCreateDCATDataset()
-    throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,
-    AlreadyExistingException, SAXException {
+  public void testCreateDCATDataset() throws Exception {
     // create resource from single source file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
@@ -177,9 +169,7 @@ public class GenerateDCATTest {
    * Test that turtle format requiring line breaks to be escaped is honored.
    */
   @Test
-  public void testCreateDCATDatasetNewline()
-    throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,
-    AlreadyExistingException, SAXException {
+  public void testCreateDCATDatasetNewline() throws Exception {
     // create resource from single source file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
@@ -199,9 +189,7 @@ public class GenerateDCATTest {
    * Test that turtle format requiring three double quotes for string literals with CR or LF.
    */
   @Test
-  public void testCreateDCATDatasetNewlineInsideParagraph()
-      throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,
-      AlreadyExistingException, SAXException {
+  public void testCreateDCATDatasetNewlineInsideParagraph() throws Exception {
     // create resource from single source file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
@@ -219,9 +207,7 @@ public class GenerateDCATTest {
   }
 
   @Test
-  public void testCreateDCATDistribution()
-    throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,
-    AlreadyExistingException, SAXException {
+  public void testCreateDCATDistribution() throws Exception {
     // create resource from single source file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
@@ -235,7 +221,6 @@ public class GenerateDCATTest {
     assertTrue(dcat.contains("dcat:downloadURL <distributionURL>"));
   }
 
-
   /**
    * Generates a test Resource from zipped resource folder, and populates resource with license, contacts, etc.
    *
@@ -243,9 +228,7 @@ public class GenerateDCATTest {
    *
    * @return test Resource
    */
-  private Resource getResource(@NotNull File resourceXML)
-    throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException, ImportException,
-    InvalidFilenameException {
+  private Resource getResource(@NotNull File resourceXML) throws Exception {
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
@@ -255,7 +238,6 @@ public class GenerateDCATTest {
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
-
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
@@ -280,7 +262,10 @@ public class GenerateDCATTest {
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     // mock finding resource.xml file
-    when(mockDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+    when(mockDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+
+    // mock finding inferredMetadata.xml file
+    when(mockDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
 
     // retrieve sample zipped resource folder
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
