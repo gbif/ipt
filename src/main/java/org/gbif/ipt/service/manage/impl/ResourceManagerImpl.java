@@ -190,8 +190,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
-  public static final String PERSISTENCE_FILE = "resource.xml";
-  public static final String INFERRED_METADATA_FILE = "inferredMetadata.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
@@ -529,7 +527,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private boolean isIPTResourceFolder(File dir) {
     if (dir.exists() && dir.isDirectory()) {
-      File persistenceFile = new File(dir, PERSISTENCE_FILE);
+      File persistenceFile = new File(dir, DataDir.PERSISTENCE_FILENAME);
       File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
       return persistenceFile.isFile() && emlFile.isFile();
     }
@@ -1133,7 +1131,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource resource
    */
   private void loadInferredMetadata(Resource resource) {
-    File inferredMetadataFile = dataDir.resourceFile(resource.getShortname(), INFERRED_METADATA_FILE);
+    File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
     if (!inferredMetadataFile.exists()) {
       resource.setInferredMetadata(new InferredMetadata());
       return;
@@ -1171,7 +1169,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();
       try {
-        File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
+        File cfgFile = dataDir.resourceFile(shortname);
         InputStream input = new FileInputStream(cfgFile);
         Resource resource = (Resource) xstream.fromXML(input);
 
@@ -2710,7 +2708,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public synchronized void save(Resource resource) throws InvalidConfigException {
-    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
+    File cfgFile = dataDir.resourceFile(resource);
     Writer writer = null;
     try {
       // make sure resource dir exists
@@ -2732,7 +2730,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public synchronized void saveInferredMetadata(Resource resource) throws InvalidConfigException {
-    File cfgFile = dataDir.resourceFile(resource, INFERRED_METADATA_FILE);
+    File cfgFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
     Writer writer = null;
     try {
       // make sure resource dir exists

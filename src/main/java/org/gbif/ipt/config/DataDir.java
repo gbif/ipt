@@ -46,6 +46,8 @@ public class DataDir {
   public static final String CONFIG_DIR = "config";
   public static final String RESOURCES_DIR = "resources";
   public static final String TMP_DIR = "tmp";
+  public static final String PERSISTENCE_FILENAME = "resource.xml";
+  public static final String INFERRED_METADATA_FILENAME = "inferredMetadata.xml";
   public static final String EML_XML_FILENAME = "eml.xml";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
@@ -295,6 +297,36 @@ public class DataDir {
    */
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
+  }
+
+  /**
+   * Constructs an absolute path to a resource.xml file inside the data dir.
+   *
+   * @param resourceName resource name
+   * @return absolute path to the resource.xml
+   */
+  public File resourceFile(String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + PERSISTENCE_FILENAME);
+  }
+
+  /**
+   * Constructs an absolute path to a resource.xml file inside the data dir.
+   *
+   * @param resource resource
+   * @return absolute path to the resource.xml
+   */
+  public File resourceFile(Resource resource) {
+    return resource == null ? null : dataFile(RESOURCES_DIR + "/" + resource.getShortname() + "/" + PERSISTENCE_FILENAME);
+  }
+
+  /**
+   * Constructs an absolute path to a inferredMetadata.xml file inside the data dir.
+   *
+   * @param resourceName resource name
+   * @return absolute path to the inferredMetadata.xml
+   */
+  public File resourceInferredMetadataFile(String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + INFERRED_METADATA_FILENAME);
   }
 
   /**

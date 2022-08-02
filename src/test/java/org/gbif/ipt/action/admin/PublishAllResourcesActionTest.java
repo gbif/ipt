@@ -21,9 +21,6 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
@@ -37,17 +34,13 @@ import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -63,9 +56,7 @@ public class PublishAllResourcesActionTest {
   private PublishAllResourcesAction action;
 
   @BeforeEach
-  public void setup()
-    throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException,
-    InvalidFilenameException {
+  public void setup() throws Exception {
 
     ResourceManagerImplTest test = new ResourceManagerImplTest();
     ResourceManagerImpl mockResourceManager = test.getResourceManagerImpl();
