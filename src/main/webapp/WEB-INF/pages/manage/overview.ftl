@@ -397,13 +397,13 @@
                                     <li>
                                         <form action="resource-delete.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" name="delete" key="button.delete.fromIpt"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
                                         </form>
                                     </li>
                                 </ul>
