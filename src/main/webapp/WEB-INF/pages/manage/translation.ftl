@@ -60,6 +60,10 @@
                 </h1>
             </div>
 
+            <div class="text-center fs-smaller">
+                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+            </div>
+
             <div class="mt-2 text-center">
                 <div>
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
@@ -97,10 +101,10 @@
             <p>&quot;${property.description!}&quot;</p>
 
             <#if property.vocabulary?has_content>
-                <p>
+                <div class="callout callout-info text-smaller">
                     <strong><@s.text name="manage.translation.vocabulary.required"/></strong>:
                     <@s.text name="manage.translation.vocabulary.required.intro"/>
-                </p>
+                </div>
                 <p>
                     <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
                     <a href="vocabulary.do?id=${property.vocabulary.uriString}" class="no-text-decoration" target="_blank">
