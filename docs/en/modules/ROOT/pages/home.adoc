@@ -45,3 +45,9 @@ Following are explanations of the table columns:
 * **Change summary** - a summary of what has changed since the last published version.
 * **DOI handle** - the DOI handle assigned to the published version. **Note**: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.
 * **Last modified by** - the IPT user that last modified the published version.
+
+=== Deletion of a version
+
+Resource managers and administrators can delete old published versions of a dataset.
+
+First use the version history table to find and open the version to be deleted, then click *Delete version* at the top of the page. The latest published version of a resource cannot be deleted.
