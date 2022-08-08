@@ -98,7 +98,7 @@
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
 
-            <p>&quot;${property.description!}&quot;</p>
+            <span class="fst-italic">${property.description!}</span>
 
             <#if property.vocabulary?has_content>
                 <div class="callout callout-info text-smaller">
@@ -106,11 +106,13 @@
                     <@s.text name="manage.translation.vocabulary.required.intro"/>
                 </div>
                 <p>
-                    <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
                     <a href="vocabulary.do?id=${property.vocabulary.uriString}" class="no-text-decoration" target="_blank">
                         <i class="bi bi-book"></i>
+                        <span>${property.vocabulary.title!property.vocabulary.uriString}</span>
                     </a>
-                    &quot;${property.vocabulary.description!}&quot;
+                </p>
+                <p>
+                    <span class="fst-italic">${property.vocabulary.description!}</span>
                 </p>
             </#if>
         </div>
