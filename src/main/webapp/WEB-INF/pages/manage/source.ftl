@@ -215,9 +215,11 @@
                                 <div class="col-12">
                                     <@text name="sqlSource.sql" help="i18n"/>
                                     <#if sqlSource.sql?has_content>
-                                        <@label i18nkey="sqlSource.sqlLimited" >
-                                            ${sqlSource.getSqlLimited(10)}
-                                        </@label>
+                                        <div class="px-1 mt-2 text-smaller">
+                                            <@s.text name="sqlSource.sqlLimited"/>
+                                            <br>
+                                            <code>${sqlSource.getSqlLimited(10)!}</code>
+                                        </div>
                                     </#if>
                                 </div>
                                 <div class="col-lg-6">
