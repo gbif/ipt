@@ -215,10 +215,11 @@
                                 <div class="col-12">
                                     <@text name="sqlSource.sql" help="i18n"/>
                                     <#if sqlSource.sql?has_content>
-                                        <div class="px-1 mt-2 text-smaller">
+                                        <div class="px-1 mt-3">
                                             <@s.text name="sqlSource.sqlLimited"/>
-                                            <br>
-                                            <code>${sqlSource.getSqlLimited(10)!}</code>
+                                        </div>
+                                        <div class="px-1 mt-2 text-smaller">
+                                            <pre>${sqlSource.getSqlLimited(10)!}</pre>
                                         </div>
                                     </#if>
                                 </div>
