@@ -30,13 +30,6 @@
             });
         });
         // end hack
-        <#-- use vocabulary -->
-        <#if (vocabTermsSize>0)>
-        var vocab = [<#list vocabTermsKeys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
-        $("#translation input").autocomplete({
-            source: vocab
-        })
-        </#if>
 
         $('#plus').click(function (e) {
             e.preventDefault();
@@ -199,8 +192,7 @@
 
             <#if property.vocabulary?has_content>
                 <div class="callout callout-info text-smaller">
-                    <strong><@s.text name="manage.translation.vocabulary.required"/></strong>:
-                    <@s.text name="manage.translation.vocabulary.required.intro"/>
+                    <strong><@s.text name="manage.translation.vocabulary.required"/></strong>
                 </div>
                 <p>
                     <a href="vocabulary.do?id=${property.vocabulary.uriString}" class="no-text-decoration" target="_blank">
@@ -221,38 +213,51 @@
                 <input type="hidden" name="mid" value="${mid}"/>
                 <input type="hidden" name="term" value="${property.qualname}"/>
 
-                <div id="translation" class="text-smaller">
+                <div id="translation">
                     <div class="row g-2 border-bottom pb-2">
                         <div class="col-6">
-                            <strong>Source Value</strong>
+                            <strong><@s.text name="manage.translation.source.value"/></strong>
                         </div>
 
                         <div class="col-6" >
-                            <strong>Translated Value</strong>
+                            <strong><@s.text name="manage.translation.translated.value"/></strong>
                         </div>
                     </div>
 
                     <#list sourceValuesMap?keys as k>
                         <#if (tmap.get(k))??>
                             <div id="item-${k}" class="item row g-2 border-bottom pb-2">
-                                <div class="d-flex justify-content-end mt-1">
-                                    <a id="removeLink-${k}" class="removeLink" href="">
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a id="removeLink-${k}" class="removeLink text-smaller" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                 </svg>
                                             </span>
-                                        <span>Remove this translation</span>
+                                        <span><@s.text name="manage.translation.remove"/></span>
                                     </a>
                                 </div>
 
                                 <div class="col-6">
-                                    <input type="text" class="value form-control form-control-sm" value="${sourceValuesMap.get(k)!}" disabled/>
+                                    <input type="text" class="value form-control" value="${sourceValuesMap.get(k)!}" disabled/>
                                 </div>
 
-                                <div class="col-6" >
-                                    <input type="text" class="translatedValue form-control form-control-sm" name="tmap['${k}']" value="${tmap.get(k)!}"/>
-                                </div>
+                                <#if (vocabTermsSize>0)>
+                                    <div class="col-6">
+                                        <select name="tmap['${k}']" class="form-select">
+                                            <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
+                                            <#list vocabTermsKeys as code>
+                                                <option value="${code?replace('"','\"')}" <#if tmap.get(k) == code>selected</#if> >
+                                                    ${vocabTerms[code]}
+                                                </option>
+                                            </#list>
+                                        </select>
+                                    </div>
+                                <#else>
+                                    <div class="col-6">
+                                        <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translatedValue form-control" name="tmap['${k}']" value="${tmap.get(k)!}"/>
+                                    </div>
+                                </#if>
                             </div>
                         </#if>
                     </#list>
@@ -268,7 +273,7 @@
                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                 </svg>
                             </span>
-                            <span>Add new translation</span>
+                            <span><@s.text name="manage.translation.addNew"/></span>
                         </a>
                     </div>
                 </div>
@@ -277,41 +282,49 @@
     </main>
 
 <div id="baseItem" class="item row g-2 border-bottom pb-2" style="display:none">
-    <div class="d-flex justify-content-end mt-2">
+    <div class="d-flex justify-content-end mt-3">
         <a id="removeLink" class="removeLink text-smaller" href="">
             <span>
                 <svg viewBox="0 0 24 24" class="link-icon">
                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                 </svg>
             </span>
-            <span>Remove this translation</span>
+            <span><@s.text name="manage.translation.remove"/></span>
         </a>
     </div>
     <div class="col-6">
-        <input type="text" class="value form-control form-control-sm" value="" disabled/>
+        <input type="text" class="value form-control" value="" disabled/>
     </div>
 
-    <div class="col-6" >
-        <input type="text" class="translated-value form-control form-control-sm" name="tmap" value=""/>
-    </div>
+    <#if (vocabTermsSize>0)>
+        <div class="col-6">
+            <select name="tmap" class="translated-value form-select">
+                <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
+                <#list vocabTermsKeys as code>
+                    <option value="${code?replace('"','\"')}">
+                        ${vocabTerms[code]}
+                    </option>
+                </#list>
+            </select>
+        </div>
+    <#else>
+        <div class="col-6" >
+            <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translated-value form-control" name="tmap" value=""/>
+        </div>
+    </#if>
 </div>
 
 <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-confirm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header flex-column">
-                <h5 class="modal-title w-100" id="staticBackdropLabel">Value Translation</h5>
+                <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.translation.title"/></h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
             </div>
             <div class="modal-body">
                 <div>
-                    <div class="d-flex">
-                        <label for="addNewTranslation" class="form-label">
-                            Source value
-                        </label>
-                    </div>
                     <select name="addNewTranslation" id="addNewTranslation" class="form-select">
-                        <option value="">Select source value to translate</option>
+                        <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
                         <#list sourceValuesMap as key, val>
                             <#if tmap?? && tmap['${key}']??>
                             <#else>
@@ -324,7 +337,7 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button id="add-button" type="button" class="btn btn-outline-gbif-primary">Add</button>
+                <button id="add-button" type="button" class="btn btn-outline-gbif-primary"><@s.text name="button.add"/></button>
             </div>
         </div>
     </div>
