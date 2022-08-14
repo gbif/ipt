@@ -74,13 +74,11 @@
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
                                                     <@s.text name='manage.source.readable'/>&nbsp;
                                                     <#if src.readable>
-                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
+                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
                                                     <#else>
-                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
+                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
                                                     </#if>
                                                 </td>
                                             <#elseif src.isExcelSource()>
@@ -90,13 +88,11 @@
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
                                                     <@s.text name='manage.source.readable'/>&nbsp;
                                                     <#if src.readable>
-                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
+                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
                                                     <#else>
-                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
+                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
                                                     </#if>
                                                 </td>
                                             <#elseif src.isUrlSource()>
@@ -107,13 +103,11 @@
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
                                                     <@s.text name='manage.source.readable'/>&nbsp;
                                                     <#if src.readable>
-                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
+                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
                                                     <#else>
-                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
+                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
                                                     </#if>
                                                 </td>
                                             <#else>
@@ -123,13 +117,11 @@
                                                     ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
                                                     <@s.text name='manage.source.readable'/>&nbsp;
                                                     <#if src.readable>
-                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
+                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
                                                     <#else>
-                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                                        </svg>
+                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
+                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
                                                     </#if>
                                                 </td>
                                             </#if>
