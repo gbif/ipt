@@ -566,7 +566,7 @@
                                             <tr>
                                                 <th></th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="text-gbif-primary">${lastPublishedTitle?cap_first}</td>
+                                                    <td class="fw-bold">${lastPublishedTitle?cap_first}</td>
                                                     <td class="left_padding">
                                                         ${nextPublishedTitle?cap_first}
                                                     </td>
@@ -579,10 +579,10 @@
                                             <tr>
                                                 <th class="col-4">${versionTitle?cap_first}</th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary py-0">
+                                                    <td class="separator py-0">
                                                         ${resource.emlVersion.toPlainString()}&nbsp;
                                                         <a class="icon-button icon-button-sm" type="button" href="${baseURL}/resource?r=${resource.shortname}">
-                                                            <svg class="icon-button-svg icon-material-eye mb-1 text-gbif-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <svg class="icon-button-svg icon-material-eye mb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                             </svg>
@@ -618,7 +618,7 @@
                                                 <tr>
                                                     <th>${visibilityTitle?cap_first}</th>
                                                     <#if resource.lastPublished??>
-                                                        <td class="separator text-gbif-primary">
+                                                        <td class="separator">
                                                             ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
                                                         </td>
                                                         <td class="left_padding">
@@ -687,7 +687,7 @@
 
                                                 </th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary">
+                                                    <td class="separator">
                                                         <#if resource.isAlreadyAssignedDoi()>
                                                             ${resource.versionHistory[0].doi!}
                                                         <#else>
@@ -714,7 +714,7 @@
                                                 <tr>
                                                     <th>${licenseTitle?cap_first}</th>
                                                     <#if resource.lastPublished??>
-                                                        <td class="separator text-gbif-primary">
+                                                        <td class="separator">
                                                             <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
                                                         </td>
                                                         <td class="left_padding">
@@ -730,7 +730,7 @@
                                             <tr>
                                                 <th>${releasedTitle?cap_first}</th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary">
+                                                    <td class="separator">
                                                         ${resource.lastPublished?datetime?string.long_short}
                                                     </td>
                                                     <td class="left_padding">
