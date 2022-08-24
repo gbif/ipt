@@ -7,17 +7,6 @@
 */
 
 :root {
-    --color-gbif-primary: 97, 168, 97;
-    --color-gbif-danger: 227, 99, 112;
-    --color-gbif-secondary: 78, 86, 95;
-    --color-gbif-warning: 255, 193, 7;
-
-    --navbar-color: 120, 181, 120;
-    --navbar-color-2: 113, 177, 113;
-    --navbar-link-color: 255, 255, 255;
-
-    --link-color: 75, 162, 206;
-
     --alert-success-background-color: 237, 247, 237;
     --alert-success-text-color: 30, 70, 32;
     --alert-success-icon-color: 76, 175, 80;
@@ -48,6 +37,11 @@ table {
     align-items: center;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+#login-page-logo {
+    height: 50px;
+    width: 50px;
 }
 
 @media (min-width: 576px) {
@@ -123,28 +117,31 @@ header, .dropdown-menu {
 }
 
 .bg-gbif-main-navbar {
-    background: linear-gradient(rgb(var(--navbar-color)), rgb(var(--navbar-color)));
+    background-image: linear-gradient(to bottom, rgba(var(--navbar-color), 1), rgba(var(--navbar-color), 0.85));
 }
 
 .navbar-button {
-    color: rgb(var(--navbar-color)) !important;
-    background: white;
+    color: rgba(var(--navbar-link-color), 0.7) !important;
+    border-color: rgba(var(--navbar-link-color), 0.7) !important;
+    font-weight: 400 !important;
 }
 
 .navbar-button:hover, .navbar-button:focus {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    color: rgba(var(--navbar-link-color), 0.85) !important;
+    border-color: rgba(var(--navbar-link-color), 0.85) !important;
 }
 
 .nav-link {
-    color: rgba(var(--navbar-link-color), 0.55);
+    color: rgba(var(--navbar-link-color), 0.7) !important;
 }
 
 .nav-link.active {
-    color: rgb(var(--navbar-link-color));
+    color: rgb(var(--navbar-link-color)) !important;
 }
 
 .nav-link:hover {
-    color: rgba(var(--navbar-link-color), 0.75);
+    color: rgba(var(--navbar-link-color), 0.85) !important;
+    text-shadow: 0 0 var(--navbar-link-color);
 }
 
 .nav-link-account {
@@ -152,11 +149,11 @@ header, .dropdown-menu {
 }
 
 .gbif-heartbeat-icon, .gbif-translate-icon {
-    fill: rgba(var(--navbar-link-color), 0.55);
+    fill: rgba(var(--navbar-link-color), 0.7);
 }
 
 .gbif-heartbeat-icon:hover:not(.gbif-heartbeat-icon.active), .gbif-translate-icon:hover:not(.gbif-translate-icon.active) {
-    fill: rgba(var(--navbar-link-color), 0.75);
+    fill: rgba(var(--navbar-link-color), 0.85);
 }
 
 .gbif-heartbeat-icon.active, .gbif-translate-icon.active {
@@ -957,6 +954,10 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 .btn-sm {
     font-size: 0.75rem !important;
     padding: 0.25rem 0.5rem;
+}
+
+.btn:focus {
+    box-shadow: none;
 }
 
 #accountDropdownLink{
