@@ -78,6 +78,16 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/uiManagement.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-tv admin-icon"></i>
+								</div>
+								<h5 class="admin-card-title fw-400">
+									<@s.text name="admin.home.manageUI"/>
+								</h5>
+							</a>
+						</div>
+						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-journal-text admin-icon"></i>

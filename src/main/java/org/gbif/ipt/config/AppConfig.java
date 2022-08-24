@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -28,6 +29,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,6 +61,8 @@ public class AppConfig {
     PRODUCTION, DEVELOPMENT
   }
 
+  private static final String UI_SETTINGS_FOLDER = ".uiSettings";
+  private static final String COLOR_SCHEME_PROPFILE = "ipt-color-scheme.properties";
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
@@ -79,6 +83,7 @@ public class AppConfig {
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
   private Properties properties = new Properties();
+  private IptColorScheme colorScheme;
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   private DataDir dataDir;
   private REGISTRY_TYPE type;
@@ -222,7 +227,7 @@ public class AppConfig {
   public int getSessionTimeout() {
     String sessionTimeout = properties.getProperty(SESSION_TIMEOUT_PROPERTY);
     if (sessionTimeout != null) {
-      return Integer.valueOf(sessionTimeout) * 60;
+      return Integer.parseInt(sessionTimeout) * 60;
     }
     else {
       return SESSION_TIMEOUT;
@@ -417,13 +422,45 @@ public class AppConfig {
   }
 
   /**
-   * Load application configuration from application properties file (application.properties) and from
-   * user configuration file (ipt.properties), which includes populating core configuration.
+   * Load application configuration from application properties file (application.properties), from
+   * user configuration file (ipt.properties) and color configuration file (ipt-color-scheme.properties),
+   * which includes populating core configuration.
    */
   public void loadConfig() throws InvalidConfigException {
+    // load (and create if absent) default colors configuration from ipt-color.scheme.properties
+    File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
+    if (!cfgFile.exists()) {
+      Path parentDir = cfgFile.getParentFile().toPath();
+      if (!Files.exists(parentDir)) {
+        try {
+          Files.createDirectories(parentDir);
+        } catch (IOException e) {
+          LOG.error("Failed to create .uiSettings directory", e);
+        }
+      }
+
+      // populate properties with default values and store
+      try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
+        // create object with default values
+        colorScheme = new IptColorScheme();
+        Properties props = colorScheme.toProperties();
+        props.store(out, "Default IPT color scheme configuration, last saved " + new Date());
+      } catch (IOException e) {
+        LOG.error("Failed to load the default application configuration from ipt-color-scheme.properties", e);
+      }
+    } else {
+      try (InputStream in = Files.newInputStream(cfgFile.toPath())) {
+        Properties props = new Properties();
+        props.load(in);
+        colorScheme = new IptColorScheme(props);
+      } catch (IOException e) {
+        LOG.error("Failed to load the application configuration from ipt-color-scheme.properties", e);
+      }
+    }
+
+    // load default configuration from application.properties
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
-    // load default configuration from application.properties
     try {
       Properties props = new Properties();
       if (configStream == null) {
@@ -530,6 +567,24 @@ public class AppConfig {
     } else {
       LOG.warn("Registry lock file not found meaning the DataDir is NOT locked to a registry yet!");
     }
+  }
+
+  /**
+   * Store color scheme configuration to the property file.
+   *
+   * @param colorScheme IPT color scheme
+   */
+  public void saveColorSchemeConfig(IptColorScheme colorScheme) throws IOException {
+    this.colorScheme = colorScheme;
+    File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
+    try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
+      Properties props = colorScheme.toProperties();
+      props.store(out, "IPT color scheme configuration, last saved " + new Date());
+    }
+  }
+
+  public IptColorScheme getColorSchemeConfig() {
+    return colorScheme;
   }
 
   // public to be accessible by ConfigManager

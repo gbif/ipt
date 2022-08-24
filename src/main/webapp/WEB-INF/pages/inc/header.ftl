@@ -17,6 +17,17 @@
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
 
     <!-- IPT CSS -->
+    <style>
+        :root {
+            --color-gbif-primary: ${primaryColor};
+            --color-gbif-danger: ${dangerColor};
+            --color-gbif-secondary: ${secondaryColor};
+            --color-gbif-warning: ${warningColor};
+            --navbar-color: ${navbarColor};
+            --navbar-link-color: ${navbarLinkColor};
+            --link-color: ${linkColor};
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 
     <!-- Custom CSS for customizations -->

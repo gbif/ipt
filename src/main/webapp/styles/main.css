@@ -1467,3 +1467,31 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .ipt-icon-piece {
     fill: rgb(var(--navbar-link-color)) !important;
 }
+
+
+.input-group-append {
+    margin-left: 0 !important;
+}
+
+.input-group-append, .input-group-prepend {
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.input-group>.input-group-append>.btn, .input-group>.input-group-append>.input-group-text, .input-group>.input-group-prepend:first-child>.btn:not(:first-child), .input-group>.input-group-prepend:first-child>.input-group-text:not(:first-child), .input-group>.input-group-prepend:not(:first-child)>.btn, .input-group>.input-group-prepend:not(:first-child)>.input-group-text {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.colorpicker-input-addon {
+    position: relative;
+    border-left-width: 0;
+}
+
+.colorpicker-input-addon i {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: text-top;
+    height: 16px;
+    width: 16px;
+    position: relative;
+}

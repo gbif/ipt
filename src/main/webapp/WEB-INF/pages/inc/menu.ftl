@@ -83,6 +83,14 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/uiManagement.do">
+                                            <span>
+                                                <i class="bi bi-tv text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.manageUI"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/logs.do">
                                             <span>
                                                 <i class="bi bi-journal-text text-gbif-primary admin-icon-menu"></i>
