@@ -52,7 +52,7 @@ table {
 
 
 /* Logo, header, menu etc. START */
-.gbif-logo {
+#gbif-logo {
     height: 32px;
     position: relative;
     line-height: 32px;
@@ -1465,8 +1465,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 /* Main icon color */
-.ipt-icon-piece {
+#gbif-logo .ipt-icon-piece {
     fill: rgb(var(--navbar-link-color)) !important;
+}
+
+/* Login icon color */
+#login-page-logo .ipt-icon-piece {
+    fill: rgb(var(--color-gbif-primary)) !important;
 }
 
 
