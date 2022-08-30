@@ -24,7 +24,7 @@ public class IptColorScheme {
   public static final String SECONDARY_COLOR_PROPERTY = "secondaryColor";
   public static final String SECONDARY_COLOR_DEFAULT_VALUE = "#4e565f";
   public static final String WARNING_COLOR_PROPERTY = "warningColor";
-  public static final String WARNING_COLOR_DEFAULT_VALUE = "#ffc107";
+  public static final String WARNING_COLOR_DEFAULT_VALUE = "#ffc108";
   public static final String DANGER_COLOR_PROPERTY = "dangerColor";
   public static final String DANGER_COLOR_DEFAULT_VALUE = "#e36370";
   public static final String NAVBAR_COLOR_PROPERTY = "navbarColor";
@@ -36,7 +36,7 @@ public class IptColorScheme {
 
   private String primaryColor = "#61a861";
   private String secondaryColor = "#4e565f";
-  private String warningColor = "#ffc107";
+  private String warningColor = "#ffc108";
   private String dangerColor = "#e36370";
   private String navbarColor = "#78b578";
   private String navbarLinkColor = "#ffffff";
