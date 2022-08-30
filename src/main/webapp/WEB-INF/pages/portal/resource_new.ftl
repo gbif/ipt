@@ -726,7 +726,7 @@
                                                     <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                     <td>
                                                         <#list k.displayNames as name>
-                                                            &nbsp;${name}<#if name_has_next>,</#if>
+                                                            ${name}<#if name_has_next>,</#if>
                                                         </#list>
                                                     </td>
                                                 </tr>
