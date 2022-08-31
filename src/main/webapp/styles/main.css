@@ -1704,8 +1704,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .test-mode-banner {
     width: 100px;
     color: rgb(var(--color-gbif-danger));
-    border: 1px solid rgb(var(--color-gbif-danger));
-    border-radius: 0.25rem;
     padding: 5px;
     font-size: 14px;
     font-weight: bold;
