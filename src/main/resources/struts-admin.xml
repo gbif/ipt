@@ -82,6 +82,17 @@
       <result name="input">/WEB-INF/pages/admin/ui_management.ftl</result>
     </action>
 
+    <action name="appLogoUpload" class="org.gbif.ipt.action.admin.UIManagementAction" method="uploadLogo">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">209715200</param>
+        <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
+      </interceptor-ref>
+      <interceptor-ref name="adminStack"/>
+      <result name="success">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <!-- REGISTRY ACTIONS -->
     <action name="registration" class="org.gbif.ipt.action.admin.RegistrationAction">
       <result name="success" type="redirect">${baseURL}/home.do</result>

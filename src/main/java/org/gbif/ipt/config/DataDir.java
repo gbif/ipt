@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 
@@ -340,6 +341,29 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/logo." + suffix);
   }
 
+  /**
+   * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
+   */
+  public File appLogoFile(String suffix) {
+    if (suffix == null) {
+      suffix = "jpeg";
+    }
+    suffix = suffix.toLowerCase();
+    return dataFile(CONFIG_DIR + "/.uiSettings/logos/logo." + suffix);
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void removeLogoFile() {
+    File logosDirectory = new File(dataDir, CONFIG_DIR + "/.uiSettings/logos");
+    File[] logoFiles = logosDirectory.listFiles();
+    if (logoFiles != null) {
+      Stream.of(logoFiles)
+          .filter(file -> !file.isDirectory())
+          .filter(file -> file.getName().startsWith("logo"))
+          .forEach(File::delete);
+    }
+  }
+
   public File resourcePublicationLogFile(String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + PUBLICATION_LOG_FILENAME);
   }
@@ -350,7 +374,7 @@ public class DataDir {
    * @param resourceName resource short name
    * @param version      version
    *
-   * @return RTF file having specific version, defaulting to latest published version if no version specified
+   * @return RTF file having specific version, defaulting to the latest published version if no version specified
    */
   public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = resourceName + "-" + version.toPlainString() + ".rtf";

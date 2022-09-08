@@ -1164,6 +1164,11 @@ div#record_graph .color-bar {
     max-width: 150px;
 }
 
+/* IPT logo image size */
+#applogo img {
+    max-width: 100px;
+}
+
 
 /* Resource mini logo in the table */
 .resourceminilogo {

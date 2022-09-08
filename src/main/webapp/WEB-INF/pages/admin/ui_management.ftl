@@ -1,6 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/ajaxfileupload.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
@@ -161,7 +162,7 @@
             // initialize absent values (values chosen from color picker and not present in the list)
             function initializeSelectAbsentValues() {
                 <#if !colors['${colorScheme.primaryColor}']??>
-                    initializeSelectAbsentValue("primaryColor", "${colorScheme.primaryColor}")
+                initializeSelectAbsentValue("primaryColor", "${colorScheme.primaryColor}")
                 </#if>
 
                 <#if !colors['${colorScheme.secondaryColor}']??>
@@ -243,6 +244,61 @@
                 $linkColorSelect.trigger('change');
                 $("#linkColor-colorBox").css("background", "#4ba2ce");
             })
+
+            function urlExists(url, cb) {
+                jQuery.ajax({
+                    url: url,
+                    dataType: 'text',
+                    type: 'GET',
+                    complete: function (xhr) {
+                        if (typeof cb === 'function')
+                            cb.apply(this, [xhr.status]);
+                    }
+                });
+            }
+
+            $("#buttonUpload").click(function (event) {
+                event.preventDefault()
+                return ajaxFileUpload();
+            });
+
+            $("#buttonRemove").click(function () {
+                $("#applogo").remove();
+                $("#file").val('');
+                $("#removeLogo").val('true');
+            });
+
+            function ajaxFileUpload() {
+                $.ajaxFileUpload
+                (
+                    {
+                        url: 'appLogoUpload.do',
+                        secureuri: false,
+                        fileElementId: 'file',
+                        dataType: 'json',
+                        done: function (data, status) {
+                            if (typeof (data.error) != 'undefined') {
+                                if (data.error !== '') {
+                                    alert(data.error);
+                                } else {
+                                    alert(data.msg);
+                                }
+                            }
+                        },
+                        fail: function (data, status, e) {
+                            alert(e);
+                        }
+                    }
+                )
+                return false;
+            }
+
+            urlExists('${baseURL}/appLogo.do', function (status) {
+                if (status === 404) {
+                    // hide logo file
+                    $("#applogo-image").hide();
+                }
+            });
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -278,7 +334,30 @@
         <div class="my-3 p-3">
             <div id="ui-management-form-wrapper" class="mt-4">
                 <form id="ui-management-form" class="needs-validation" action="uiManagement.do" method="post" novalidate>
-                    <div class="row g-3">
+                    <@s.hidden name="removeLogo" id="removeLogo" value="false" required="true" />
+
+                    <!-- App Logo -->
+                    <div id="logofields" class="row g-3">
+                        <div class="col-lg-6">
+                            <@s.label for="file" value="IPT logo" />
+                            <@s.file cssClass="form-control my-1" name="file"/>
+                            <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                                <@s.text name="button.upload"/>
+                            </a>
+                            <a href="#" class="button btn btn-outline-gbif-danger" id="buttonRemove">
+                                <@s.text name="button.remove"/>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-3 d-flex justify-content-start align-items-center">
+                            <div id="applogo">
+                                <img id="applogo-image" src="${baseURL}/appLogo.do" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- App colors -->
+                    <div class="row g-3 mt-5">
                         <div class="col-lg-6">
                             <label for="primaryColor-select" class="form-label">
                                 <@s.text name="admin.uiManagement.primaryColor"/>

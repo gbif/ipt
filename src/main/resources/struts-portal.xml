@@ -56,6 +56,15 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
+    <action name="appLogo" class="org.gbif.ipt.action.portal.AppFileAction" method="logo">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
     <action name="publicationlog" class="org.gbif.ipt.action.portal.ResourceFileAction" method="publicationLog">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
