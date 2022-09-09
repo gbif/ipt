@@ -258,7 +258,7 @@
 
                             <#if resource.organisation??>
                                 <div>
-                                    <dt><@s.text name='portal.resource.hostedBy'/>:</dt>
+                                    <dt><@s.text name='portal.resource.publishedBy'/>:</dt>
                                     <dd>
                                         <a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a>
                                     </dd>
