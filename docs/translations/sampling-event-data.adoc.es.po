@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-02-24 13:29\n"
+"POT-Creation-Date: 2022-09-15 07:03+0000\n"
+"PO-Revision-Date: 2022-09-15 07:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -252,37 +252,37 @@ msgstr "P. ¿Cómo puedo publicar datos de ausencia?"
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:68
 #, no-wrap
-msgid "*A.* *Step 1*: Include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks.\n"
-msgstr "*A.* *Paso 1*: Incluir los registros de eventos de muestreo, incluso si el muestreo no produjo registros biológicos derivados. Esto permite inferir la ausencia de especies. Este http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[ejemplo de conjunto de datos de eventos de muestreo de Noruega] muestra cómo se ve dicho caso.\n"
+msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:70
-msgid "Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:"
-msgstr "Alternativamente, puede hacer explícitas las ausencias de especies añadiendo un registro biológico de especies para cada especie que podría haber sido observada en el momento y lugar del muestreo, pero que no fue observada, estableciendo los siguientes campos:"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:72
 msgid "Mandatory:"
 msgstr "Obligatorio:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:74
+#: en/modules/ROOT/pages/sampling-event-data.adoc:72
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[absent]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:76
+#: en/modules/ROOT/pages/sampling-event-data.adoc:74
 msgid "Optional (provide one or both):"
 msgstr "Opcional (documente uno o ambos):"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:78
+#: en/modules/ROOT/pages/sampling-event-data.adoc:76
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:79
+#: en/modules/ROOT/pages/sampling-event-data.adoc:77
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: \"0\", \"individuals\""
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/sampling-event-data.adoc:79
+msgid "Alternatively, include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks."
 msgstr ""
 
 #. type: Plain text
