@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-10 21:44\n"
+"POT-Creation-Date: 2022-09-19 13:12+0000\n"
+"PO-Revision-Date: 2022-09-19 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,8 +36,8 @@ msgstr "El IPT almacena la configuración, los recursos, los usuarios y la activ
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
-msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems."
-msgstr "Una ubicación típica en Linux es `/var/lib/ipt` (instalado desde los paquetes) o `/srv/ipt` (ejecutado en Tomcat).  En Windows, `C:\\ipt-data` es apropiado.  El IPT debe tener permiso de escritura en la ubicación elegida, consulte esta xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[entrada de Preguntas Frecuentes] si tiene problemas."
+msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#file-permissions[FAQ entry] if you have problems."
+msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:12
