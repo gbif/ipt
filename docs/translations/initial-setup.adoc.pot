@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2022-09-19 13:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,8 +90,7 @@ msgstr ""
 #: en/modules/ROOT/pages/initial-setup.adoc:14
 msgid ""
 "If you receive an error stating the location is not writable, see xref:faq."
-"adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-"
-"what-should-i-do[the FAQ item on this]."
+"adoc#file-permissions[the FAQ item on this]."
 msgstr ""
 
 #. type: Plain text
