@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-12-20 21:35\n"
+"POT-Creation-Date: 2022-09-19 13:12+0000\n"
+"PO-Revision-Date: 2022-09-19 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -58,8 +58,8 @@ msgstr "Si tiene un directorio de datos de un IPT que estaba ejecutando anterior
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
-msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this]."
-msgstr "Si recibe un error que indica que la ubicación no tiene permisos de escritura, consulte el xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[elemento de preguntas frecuentes sobre este tema]."
+msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#file-permissions[the FAQ item on this]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:16
