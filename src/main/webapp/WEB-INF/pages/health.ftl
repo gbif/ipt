@@ -36,7 +36,7 @@
                 <tbody>
                 <tr>
                   <td><@s.text name="portal.health.network.registry.url"/></td>
-                  <td class="text-end"><a href="${networkRegistryURL}">${networkRegistryURL}</a></td>
+                  <td class="text-end"><a href="${networkRegistryURL!}">${networkRegistryURL!}</a></td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.registry.access"/></td>
@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.repository.url"/></td>
-                  <td class="text-end"><a href="${networkRepositoryURL}">${networkRepositoryURL}</a></td>
+                  <td class="text-end"><a href="${networkRepositoryURL!}">${networkRepositoryURL!}</a></td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.repository.access"/></td>
@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.public.access.url"/></td>
-                  <td class="text-end"><a href="${networkPublicAccessURL}">${networkPublicAccessURL}</a></td>
+                  <td class="text-end"><a href="${networkPublicAccessURL!}">${networkPublicAccessURL!}</a></td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.public.access.access"/></td>
@@ -96,21 +96,21 @@
                   <td><@s.text name="portal.health.disk.usage.used.ratio"/></td>
                   <td>
                     <div class="progress">
-                      <div class="progress-bar <#if diskUsedRatio gt 80>bg-gbif-danger<#else>bg-gbif-primary</#if>" role="progressbar" style="width: ${diskUsedRatio}%;" aria-valuenow="${diskUsedRatio}" aria-valuemin="0" aria-valuemax="100">${diskUsedRatio}%</div>
+                      <div class="progress-bar <#if diskUsedRatio gt 80>bg-gbif-danger<#else>bg-gbif-primary</#if>" role="progressbar" style="width: ${diskUsedRatio!}%;" aria-valuenow="${diskUsedRatio!}" aria-valuemin="0" aria-valuemax="100">${diskUsedRatio!}%</div>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.disk.usage.total.size"/></td>
-                  <td class="text-end">${hrDiskTotal}</td>
+                  <td class="text-end">${hrDiskTotal!}</td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.disk.usage.used.size"/></td>
-                  <td class="text-end">${hrDiskUsed}</td>
+                  <td class="text-end">${hrDiskUsed!}</td>
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.disk.usage.free.size"/></td>
-                  <td class="text-end">${hrDiskFree}</td>
+                  <td class="text-end">${hrDiskFree!}</td>
                 </tr>
                 </tbody>
               </table>
@@ -199,7 +199,7 @@
                     <#if !loggedIn>
                       <@s.text name="portal.health.please.log.in"/>
                     <#else>
-                      ${osName} ${osVersion}
+                      ${osName!} ${osVersion!}
                     </#if>
                   </td>
                 </tr>
@@ -209,7 +209,7 @@
                     <#if !loggedIn>
                       <@s.text name="portal.health.please.log.in"/>
                     <#else>
-                      ${javaVersion}
+                      ${javaVersion!}
                     </#if>
                   </td>
                 </tr>
@@ -219,7 +219,7 @@
                     <#if !loggedIn>
                       <@s.text name="portal.health.please.log.in"/>
                     <#else>
-                      ${appServerVersion}
+                      ${appServerVersion!}
                     </#if>
                   </td>
                 </tr>
@@ -229,7 +229,7 @@
                     <#if !loggedIn>
                       <@s.text name="portal.health.please.log.in"/>
                     <#else>
-                      ${iptMode}
+                      ${iptMode!}
                     </#if>
                   </td>
                 </tr>
