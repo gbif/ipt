@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-08-05 14:53+0000\n"
-"PO-Revision-Date: 2022-08-05 14:58\n"
+"PO-Revision-Date: 2022-09-21 03:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,19 +42,19 @@ msgstr "Tabla de Recursos Públicos"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:9
 msgid "If there are any public resources, they will appear in a table having the following columns:"
-msgstr "Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:"
+msgstr "Si hay recursos públicos, estos serán mostrados en una tabla que tiene las siguientes columnas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:11
 #, no-wrap
 msgid "**Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)\n"
-msgstr "*Logo* - El logo del recurso (se puede configurar en la página \"Metadatos Adicionales\" de los metadatos del recurso).\n"
+msgstr "**Logo**: el logo del recurso (se puede configurar en la página \"Metadatos adicionales\" de los metadatos del recurso).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:12
 #, no-wrap
 msgid "**Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).\n"
-msgstr "*Nombre* - El título del recurso tal como figura en el Título de la entrada de los metadatos del recurso. El nombre aparece como un enlace, que abrirá una \"Página Visualización de Metadatos\" (ver más adelante) para el recurso seleccionado.\n"
+msgstr "**Nombre**: el título del recurso tal como figura en el Título de la entrada de los metadatos del recurso. El nombre aparece como un enlace, que abrirá una \"Página visualización de metadatos\" (ver más adelante) para el recurso seleccionado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:13
