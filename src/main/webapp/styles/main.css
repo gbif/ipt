@@ -299,7 +299,7 @@ table {
 }
 
 #login-button {
-    font-size: 0.875rem !important;
+    font-size: 0.75rem !important;
     font-weight: 400 !important;
 }
 
@@ -1207,7 +1207,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 .btn {
     text-transform: uppercase !important;
     font-weight: 500 !important;
-    font-size: 0.875rem !important;
+    font-size: 0.75rem !important;
     padding: 0.375rem 0.75rem;
 }
 
