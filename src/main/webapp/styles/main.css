@@ -294,6 +294,10 @@ table {
 }
 
 #login-page-logo {
+    display: none;
+}
+
+#login-page-logo, #login-page-logo-custom {
     height: 50px;
     width: 50px;
 }
@@ -312,6 +316,10 @@ table {
 
 /* Logo, header, menu etc. START */
 #gbif-logo {
+    display: none;
+}
+
+#gbif-logo, #gbif-logo-custom {
     height: 32px;
     position: relative;
     line-height: 32px;

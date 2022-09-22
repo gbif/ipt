@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.struts2;
 
+import org.gbif.ipt.action.portal.AppFileAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 
@@ -49,6 +50,11 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
     ActionContext ac = invocation.getInvocationContext();
     HttpServletResponse resp = (HttpServletResponse) ac.get(StrutsStatics.HTTP_RESPONSE);
     Map<String, Object> session = ac.getSession();
+
+    // skip for logos and files
+    if (invocation.getAction() instanceof AppFileAction) {
+      return invocation.invoke();
+    }
 
     Cookie csrfCookie = new Cookie(CSRFtoken, null);
     if (session.containsKey(Constants.SESSION_USER)) {
