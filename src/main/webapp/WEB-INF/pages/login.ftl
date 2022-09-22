@@ -50,11 +50,11 @@
 
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-12">
-                    <input class="form-control" type="text" id="email" name="email" value="${email!"admin"}" placeholder="${userEmail}">
+                    <input class="form-control" type="text" id="email" name="email" value="${email!}" placeholder="${userEmail}">
                 </div>
 
                 <div class="col-12">
-                    <input class="form-control" type="password" id="password" name="password" value="${password!"password"}" placeholder="${userPassword}">
+                    <input class="form-control" type="password" id="password" name="password" value="${password!}" placeholder="${userPassword}">
                 </div>
 
                 <#if email?has_content>
