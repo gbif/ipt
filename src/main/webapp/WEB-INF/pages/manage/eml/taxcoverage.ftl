@@ -179,7 +179,7 @@
                                         <div id="list-${item_index}" class="half addSeveralTaxa mt-2" style="display:none">
                                             <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
                                             <div id="addSeveralTaxaButtons" class="buttons mt-2">
-                                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button-${item_index}" key="button.add"/>
+                                                <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
                                         <div id="subItems" class="mt-2">
@@ -320,7 +320,7 @@
                                 <div id="list" class="mt-2" style="display:none">
                                     <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
                                     <div class="buttons taxon-list my-2">
-                                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button" key="button.add"/>
+                                        <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
                                     </div>
                                 </div>
                                 <div id="subItems" class="my-2"></div>
