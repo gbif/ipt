@@ -1308,11 +1308,11 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     border-radius: 50%;
     z-index: 9;
     text-align: center;
-    border: 3px solid var(--color-gbif-danger);
+    border: 3px solid rgb(var(--color-gbif-danger));
 }
 
 .modal-confirm .icon-box i {
-    color: var(--color-gbif-danger);
+    color: rgb(var(--color-gbif-danger));
     font-size: 46px;
     display: inline-block;
     margin-top: 13px;
