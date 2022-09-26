@@ -10,11 +10,11 @@
     </script>
 
     <#macro extensionRow ext currentIndex numberOfExtensions>
-        <div class="row py-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
-            <div class="col-md-3">
+        <div class="row py-2 pb-2 g-2 border-bottom">
+            <div class="col-md-2 col-lg-3">
                 <div class="title">
                     <div class="head">
-                        <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
+                        <a href="extension.do?id=${ext.rowType?url}" class="fw-bold">${ext.title}</a>
                         <#if !ext.isLatest()>
                             <a tabindex="0" role="button"
                                class="popover-link"
@@ -26,22 +26,10 @@
                             </a>
                         </#if>
                     </div>
-                    <div class="actions d-flex">
-                        <#if !ext.isLatest()>
-                            <form action='updateExtension.do' method='post'>
-                                <input type='hidden' name='id' value='${ext.rowType}' />
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary mt-1 me-1" name="update" key="button.update"/>
-                            </form>
-                        </#if>
-                        <form action='extension.do' method='post'>
-                            <input type='hidden' name='id' value='${ext.rowType}' />
-                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger mt-1" key="button.remove"/>
-                        </form>
-                    </div>
                 </div>
             </div>
 
-            <div class="col-md-9 text-smaller">
+            <div class="col-md-7 col-lg-7 text-smaller">
                 <div class="definition">
                     <div class="body">
                         <div>
@@ -69,6 +57,21 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-2 text-smaller">
+                <div class="actions d-flex justify-content-end">
+                    <#if !ext.isLatest()>
+                        <form action='updateExtension.do' method='post'>
+                            <input type='hidden' name='id' value='${ext.rowType}' />
+                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary me-1" name="update" key="button.update"/>
+                        </form>
+                    </#if>
+                    <form action='extension.do' method='post'>
+                        <input type='hidden' name='id' value='${ext.rowType}' />
+                        <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger" key="button.remove"/>
+                    </form>
                 </div>
             </div>
         </div>
@@ -199,22 +202,16 @@
             <#assign count=0>
             <#list newExtensions as ext>
                 <#assign count=count+1>
-                <div class="row py-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                <div class="row py-2 pb-2 g-2 border-bottom">
                     <div class="col-md-3">
                         <div class="title">
-                            <div class="head">
+                            <div class="head fw-bold">
                                 ${ext.title}
-                            </div>
-                            <div class="actions">
-                                <form action='extension.do' method='post'>
-                                    <input type='hidden' name='url' value='${ext.url}' />
-                                    <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
-                                </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-9 text-smaller">
+                    <div class="col-md-8 text-smaller">
                         <div class="definition">
                             <div class="body">
                                 <div>
@@ -227,6 +224,15 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 text-smaller">
+                        <div class="actions d-flex justify-content-end">
+                            <form action='extension.do' method='post'>
+                                <input type='hidden' name='url' value='${ext.url}' />
+                                <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
+                            </form>
                         </div>
                     </div>
                 </div>
