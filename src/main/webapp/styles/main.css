@@ -1770,3 +1770,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     width: 16px;
     position: relative;
 }
+
+/* Breadcrumb */
+.breadcrumb-item.active {
+    color: #4e565f;
+}
