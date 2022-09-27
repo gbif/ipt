@@ -208,6 +208,7 @@ public class TranslationActionTest {
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_ROWTYPE)).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_TERM)).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
     when(mockRequest.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(resourceShortName);
+    when(mockRequest.getMethod()).thenReturn("GET");
     action.setServletRequest(mockRequest);
 
     // ensure the resource is set
@@ -275,7 +276,7 @@ public class TranslationActionTest {
     action.save();
     // ensure it has been saved to the PropertyMapping (field)
     // only 4 should be present, since those translations with empty string values get removed
-    assertEquals(4, action.getField().getTranslation().entrySet().size());
+    assertEquals(5, action.getField().getTranslation().entrySet().size());
   }
 
   @Test
