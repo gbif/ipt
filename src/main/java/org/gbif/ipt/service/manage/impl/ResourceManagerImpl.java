@@ -129,6 +129,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.time.YearMonth;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
@@ -1179,11 +1180,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           LOG.warn("On load, populated missing creator for resource: " + shortname);
         }
 
-        // non existing users end up being a NULL in the set, so remove them
-        // shouldnt really happen - but people can even manually cause a mess
+        // non-existing users end up being a NULL in the set, so remove them
+        // shouldn't really happen - but people can even manually cause a mess
         resource.getManagers().remove(null);
 
-        // 1. Non existent Extension end up being NULL
+        // 1. Non-existent Extension end up being NULL
         // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
         // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
         // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
@@ -1256,7 +1257,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
         }
 
-        // update EML with latest resource basics (version and GUID)
+        // update EML with the latest resource basics (version and GUID)
         syncEmlWithResource(resource);
 
         LOG.debug("Read resource configuration for " + shortname);
@@ -1947,6 +1948,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         || resource.isInferTaxonomicCoverageAutomatically()
         || resource.isInferTemporalCoverageAutomatically()) {
       InferredMetadata inferredMetadata = inferMetadata(resource);
+      // save inferred metadata
+      resource.setInferredMetadata(inferredMetadata);
+      saveInferredMetadata(resource);
 
       if (resource.isInferGeocoverageAutomatically()) {
         updateGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
@@ -2058,7 +2062,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } else {
         inferredGeocoverage.setDescription("N/A");
       }
-
+      resource.getEml().getGeospatialCoverages().clear();
       resource.getEml().addGeospatialCoverage(inferredGeocoverage);
     }
   }
@@ -2075,7 +2079,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } else {
         inferredTaxonomicCoverage.setDescription("N/A");
       }
-
+      resource.getEml().getTaxonomicCoverages().clear();
       resource.getEml().addTaxonomicCoverage(inferredTaxonomicCoverage);
     }
   }
@@ -2085,6 +2089,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         && inferredMetadata.getInferredTemporalCoverage() != null
         && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
       TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
+      resource.getEml().getTemporalCoverages().clear();
       resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
     }
   }
@@ -2291,12 +2296,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 endDateStr = rawEventDateValue;
               }
 
-              if (((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof YearMonth) {
+                parsedEventDateTA = ((YearMonth) parsedEventDateTA).atEndOfMonth();
+              }
+
+              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
                 startDateTA = parsedEventDateTA;
                 startDateStr = rawEventDateValue;
               }
 
-              if (((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
                 endDateTA = parsedEventDateTA;
                 endDateStr = rawEventDateValue;
               }
