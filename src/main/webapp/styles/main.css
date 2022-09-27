@@ -319,7 +319,7 @@ table {
     display: none;
 }
 
-#gbif-logo, #gbif-logo-custom {
+#gbif-logo, #gbif-logo-setup, #gbif-logo-custom {
     height: 32px;
     position: relative;
     line-height: 32px;
@@ -681,6 +681,10 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 .text-gbif-header {
     color: #4E565F;
+}
+
+.text-gbif-header-light {
+    color: rgba(78, 86, 95, 0.75);
 }
 
 .text-gbif-header-2 {
@@ -1745,7 +1749,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 /* Main icon color */
-#gbif-logo .ipt-icon-piece {
+#gbif-logo .ipt-icon-piece, #gbif-logo-setup .ipt-icon-piece  {
     fill: rgb(var(--navbar-link-color)) !important;
 }
 

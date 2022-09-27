@@ -17,7 +17,7 @@
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     [@s.text name="admin.config.setup.common.ipt"/]
                 </h1>
-                <h1 class="pb-2 mb-0 text-gbif-header fs-5 fw-normal">
+                <h1 class="pb-2 mb-0 ttext-gbif-header-light fs-5 fw-normal">
                     [@s.text name="admin.config.setup.common.tagline"/]
                 </h1>
 
