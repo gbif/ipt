@@ -1228,22 +1228,33 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     box-shadow: none;
 }
 
-#accountDropdownLink{
+#accountDropdownLink {
     text-transform: none !important;
     border: 1px solid rgb(var(--navbar-link-color));
-    border-radius: 0.25rem;
+    border-radius: 50%;
     padding: 5px;
+}
+
+.account-dropdown-icon {
+    width: 1em;
+    height: 1em;
+    fill: rgb(var(--color-gbif-primary));
+    margin-right: 8px;
+}
+
+#account-dropdown-email {
+    color: rgba(78, 86, 95, 0.75);
 }
 
 
 /* Utilities */
-@media (min-width: 1200px){
+@media (min-width: 1200px) {
     .show-xl-smaller {
         display: none;
     }
 }
 
-@media (max-width: 1199px){
+@media (max-width: 1199px) {
     .show-xl-bigger {
         display: none;
     }
