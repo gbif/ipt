@@ -162,6 +162,9 @@ public class HealthAction extends BaseAction {
     osName = System.getProperty("os.name");
     osVersion = System.getProperty("os.version");
     javaVersion = Runtime.class.getPackage().getImplementationVersion();
+    if (javaVersion == null) {
+      javaVersion = System.getProperty("java.version");
+    }
     appServerVersion = ServletActionContext.getServletContext().getServerInfo();
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }

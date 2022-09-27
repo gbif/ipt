@@ -42,7 +42,7 @@
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>
-            <p class="pt-2">
+            <p class="pt-2 text-center">
                 <i class="bi bi-rss"></i>
                 <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text>
             </p>

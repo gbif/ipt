@@ -367,7 +367,12 @@
 
         <div class="container my-3 p-3">
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <span><@s.text name="manage.overview.title"/></span>
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
+                    </ol>
+                </nav>
             </div>
 
             <div class="text-center">
@@ -397,13 +402,13 @@
                                     <li>
                                         <form action="resource-delete.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" name="delete" key="button.delete.fromIpt"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
                                         </form>
                                     </li>
                                 </ul>
@@ -566,7 +571,7 @@
                                             <tr>
                                                 <th></th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="text-gbif-primary">${lastPublishedTitle?cap_first}</td>
+                                                    <td class="fw-bold">${lastPublishedTitle?cap_first}</td>
                                                     <td class="left_padding">
                                                         ${nextPublishedTitle?cap_first}
                                                     </td>
@@ -579,10 +584,10 @@
                                             <tr>
                                                 <th class="col-4">${versionTitle?cap_first}</th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary py-0">
+                                                    <td class="separator py-0">
                                                         ${resource.emlVersion.toPlainString()}&nbsp;
                                                         <a class="icon-button icon-button-sm" type="button" href="${baseURL}/resource?r=${resource.shortname}">
-                                                            <svg class="icon-button-svg icon-material-eye mb-1 text-gbif-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <svg class="icon-button-svg icon-material-eye mb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                             </svg>
@@ -618,7 +623,7 @@
                                                 <tr>
                                                     <th>${visibilityTitle?cap_first}</th>
                                                     <#if resource.lastPublished??>
-                                                        <td class="separator text-gbif-primary">
+                                                        <td class="separator">
                                                             ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
                                                         </td>
                                                         <td class="left_padding">
@@ -687,7 +692,7 @@
 
                                                 </th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary">
+                                                    <td class="separator">
                                                         <#if resource.isAlreadyAssignedDoi()>
                                                             ${resource.versionHistory[0].doi!}
                                                         <#else>
@@ -714,7 +719,7 @@
                                                 <tr>
                                                     <th>${licenseTitle?cap_first}</th>
                                                     <#if resource.lastPublished??>
-                                                        <td class="separator text-gbif-primary">
+                                                        <td class="separator">
                                                             <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
                                                         </td>
                                                         <td class="left_padding">
@@ -730,7 +735,7 @@
                                             <tr>
                                                 <th>${releasedTitle?cap_first}</th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary">
+                                                    <td class="separator">
                                                         ${resource.lastPublished?datetime?string.long_short}
                                                     </td>
                                                     <td class="left_padding">

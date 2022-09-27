@@ -119,7 +119,7 @@ $(document).ready(function(){
 	});
 	
 	$("[id^=trash]").click(function(event) {
-		removeSubItem(event);			
+		removeSubItem(event);
 	});
 	
 	$(".show-taxonList").click(function(event) {
@@ -136,7 +136,11 @@ $(document).ready(function(){
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        addNewSubItemByIndex($target.attr("id").split("-")[2],text);
+        var targetId = $target.attr("id")
+        if (!targetId) {
+            targetId = $target.prevObject.attr("id");
+        }
+        addNewSubItemByIndex(targetId.split("-")[2], text);
     }
 
     function addNewSubItemByIndex(itemIndex, text) {
@@ -297,19 +301,20 @@ $(document).ready(function(){
             calcNumberOfSpecimenPreservationMethodItems();
         });
     }
-	
-	function showList(event) {
-		event.preventDefault();
-		var $target = $(event.target);
+
+    function showList(event) {
+        event.preventDefault();
+        var $target = $(event.target);
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
-			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
-			$target.parent().children("img").hide();
-			$target.parent().children("span").hide();
-		});
-	}
+        var targetId = $target.attr("id").split("-")[1];
+        $("#list-" + targetId).slideDown('slow', function () {
+            $("#taxonsLink-" + targetId).hide();
+            $target.parent().children("img").hide();
+            $target.parent().children("span").hide();
+        });
+    }
 
     function createTaxons(event) {
         event.preventDefault();

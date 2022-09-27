@@ -65,9 +65,7 @@ public class TranslationAction extends ManagerBaseAction {
     public Map<String, String> getPersistentMap() {
       Map<String, String> m = new HashMap<>();
       for (Entry<String, String> translatedValueEntry: translatedValues.entrySet()) {
-        if (StringUtils.isNotBlank(translatedValueEntry.getValue())) {
-         m.put(sourceValues.get(translatedValueEntry.getKey()), translatedValueEntry.getValue().trim());
-        }
+        m.put(sourceValues.get(translatedValueEntry.getKey()), StringUtils.trimToEmpty(translatedValueEntry.getValue()));
       }
       return m;
     }
@@ -220,6 +218,11 @@ public class TranslationAction extends ManagerBaseAction {
         if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
         }
+
+        // empty translation before POST
+        if (isHttpPost()) {
+          trans.getTranslatedValues().clear();
+        }
       }
     }
   }
@@ -252,10 +255,8 @@ public class TranslationAction extends ManagerBaseAction {
       // reload new values
       int i = 1;
       for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000, 10000)) {
-        StringBuilder key = new StringBuilder();
-        key.append('k');
-        key.append(i);
-        getSourceValuesMap().put(key.toString(), val);
+        String key = "k" + i;
+        getSourceValuesMap().put(key, val);
         i++;
       }
       // keep existing translations

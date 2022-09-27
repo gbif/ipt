@@ -64,19 +64,24 @@ public class FileUtils {
   }
 
   public static String formatSize(long longSize, int decimalPos) {
+    return formatSize(longSize, decimalPos, false);
+  }
+
+  public static String formatSize(long longSize, int decimalPos, boolean inseparableDelimiter) {
+    String delimiter = inseparableDelimiter ? "&nbsp;" : " ";
     NumberFormat fmt = NumberFormat.getNumberInstance();
     if (decimalPos >= 0) {
       fmt.setMaximumFractionDigits(decimalPos);
     }
     double val = longSize / (1000f * 1000f);
     if (val > 1) {
-      return fmt.format(val) + " MB";
+      return fmt.format(val) + delimiter + "MB";
     }
     val = longSize / 1000f;
     if (val > 1) {
-      return fmt.format(val) + " kB";
+      return fmt.format(val) + delimiter +  "KB";
     }
-    return longSize + " bytes";
+    return longSize + delimiter + "bytes";
   }
 
   public static Reader getUtf8Reader(File file) throws FileNotFoundException {

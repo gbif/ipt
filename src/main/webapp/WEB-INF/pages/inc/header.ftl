@@ -17,11 +17,23 @@
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
 
     <!-- IPT CSS -->
+    <style>
+        :root {
+            --color-gbif-primary: ${primaryColor};
+            --color-gbif-danger: ${dangerColor};
+            --color-gbif-secondary: ${secondaryColor};
+            --color-gbif-warning: ${warningColor};
+            --navbar-color: ${navbarColor};
+            --navbar-link-color: ${navbarLinkColor};
+            --link-color: ${linkColor};
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 
     <!-- Custom CSS for customizations -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
 
+[#--    <link rel="shortcut icon" href="${baseURL}/appLogo.do" type="image/x-icon" />--]
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />

@@ -136,6 +136,62 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     return cfg.getBaseUrl();
   }
 
+  public String getPrimaryColor() {
+    String primaryColorHex = cfg.getColorSchemeConfig().getPrimaryColor();
+    return ""
+        + Integer.valueOf(primaryColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(primaryColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(primaryColorHex.substring(5, 7), 16);
+  }
+
+  public String getSecondaryColor() {
+    String secondaryColorHex = cfg.getColorSchemeConfig().getSecondaryColor();
+    return ""
+        + Integer.valueOf(secondaryColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(secondaryColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(secondaryColorHex.substring(5, 7), 16);
+  }
+
+  public String getWarningColor() {
+    String warningColorHex = cfg.getColorSchemeConfig().getWarningColor();
+    return ""
+        + Integer.valueOf(warningColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(warningColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(warningColorHex.substring(5, 7), 16);
+  }
+
+  public String getDangerColor() {
+    String dangerColorHex = cfg.getColorSchemeConfig().getDangerColor();
+    return ""
+        + Integer.valueOf(dangerColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(dangerColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(dangerColorHex.substring(5, 7), 16);
+  }
+
+  public String getNavbarColor() {
+    String navbarColorHex = cfg.getColorSchemeConfig().getNavbarColor();
+    return ""
+        + Integer.valueOf(navbarColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(navbarColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(navbarColorHex.substring(5, 7), 16);
+  }
+
+  public String getNavbarLinkColor() {
+    String navbarLinkColorHex = cfg.getColorSchemeConfig().getNavbarLinkColor();
+    return ""
+        + Integer.valueOf(navbarLinkColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(navbarLinkColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(navbarLinkColorHex.substring(5, 7), 16);
+  }
+
+  public String getLinkColor() {
+    String linkColorHex = cfg.getColorSchemeConfig().getLinkColor();
+    return ""
+        + Integer.valueOf(linkColorHex.substring(1, 3), 16) + ","
+        + Integer.valueOf(linkColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(linkColorHex.substring(5, 7), 16);
+  }
+
   /**
    * @return the requested URL using the configured base url including all query parameters but a potentially existing request_locale parameter.
    * Returns baseURL in case of errors reconstructing the correct URL.

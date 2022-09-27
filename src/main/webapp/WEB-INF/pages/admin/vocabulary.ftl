@@ -18,11 +18,9 @@
                 ${vocabulary.title}
             </h1>
 
-            <#if vocabulary.link?has_content>
-                <div class="text-smaller mb-2">
-                    <a href="${vocabulary.link}">${vocabulary.link}</a>
-                </div>
-            </#if>
+            <div class="text-smaller mb-2">
+                <a href="${vocabulary.link!vocabulary.uriString}">${vocabulary.link!vocabulary.uriString}</a>
+            </div>
 
             <#if vocabulary.issued??>
                 <div class="text-smaller text-gbif-primary">
@@ -58,7 +56,7 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.identifier"/></strong>
             </div>
-            <div class="col-lg-9 overflow-x-auto">${vocabulary.uriString}</div>
+            <div class="col-lg-9 overflow-x-auto"><a href="${vocabulary.uriString}">${vocabulary.uriString}</a></div>
         </div>
 
         <#if vocabulary.subject??>
@@ -83,43 +81,43 @@
             <@s.text name="vocabulary.concepts"/>
         </h5>
 
-        <div class="mt-3 overflow-x-auto">
-            <div id="tableContainer" class="table-responsive text-smaller pt-2">
-                <table class="table table-sm dataTable no-footer"  role="grid">
-                    <thead>
-                    <tr role="row">
-                        <th><@s.text name='basic.name'/></th>
-                        <th><@s.text name='basic.description'/></th>
-                        <th><@s.text name="vocabulary.terms.pref"/></th>
-                        <th><@s.text name="vocabulary.terms.alt"/></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#list vocabulary.concepts as c>
-                        <tr>
-                            <td>
+        <div class="mt-3">
+            <#list vocabulary.concepts as c>
+                <div class="row py-2 g-2 text-smaller <#sep>border-bottom</#sep>">
+                    <div class="col-lg-3 mt-1">
+                        <div class="title">
+                            <div class="head">
                                 <a href="${c.uri}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${c.identifier}</b></a>
-                            </td>
-                            <td>
-                                <#if c.description?has_content>
-                                    <span class="fst-italic">${c.description}</span>
-                                <#else>
-                                    --
-                                </#if>
-                            </td>
-                            <td><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span><#sep>;</#sep> </#list></td>
-                            <td>
-                                <#if c.alternativeTerms?has_content>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9 mt-1">
+                        <div class="body">
+                            <#if c.description?has_content>
+                                <p class="overflow-x-auto fst-italic">
+                                    ${c.description!}
+                                </p>
+                            </#if>
+                            <#if c.link?has_content>
+                                <p class="overflow-x-auto">
+                                    <@s.text name="basic.seealso"/>: <a href="${c.link}">${c.link}</a>
+                                </p>
+                            </#if>
+                            <div>
+                                <@s.text name="vocabulary.terms.pref"/>:
+                                <em><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span><#sep>;</#sep> </#list></em>
+                            </div>
+                            <#if c.alternativeTerms?has_content>
+                                <div>
+                                    <@s.text name="vocabulary.terms.alt"/>:
                                     <em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span><#sep>;</#sep> </#list></em>
-                                <#else>
-                                    --
-                                </#if>
-                            </td>
-                        </tr>
-                    </#list>
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </#if>
+                        </div>
+                    </div>
+                </div>
+            </#list>
         </div>
     </div>
 </main>

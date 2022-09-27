@@ -86,7 +86,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
   }
 
   public String getFileSizeFormatted() {
-    return FileUtils.formatSize(fileSize, 1);
+    return FileUtils.formatSize(fileSize, 1, true);
   }
 
   public int getRows() {

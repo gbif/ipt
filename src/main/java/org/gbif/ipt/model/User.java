@@ -78,6 +78,14 @@ public class User implements Serializable, Cloneable {
     return StringUtils.trimToNull(StringUtils.trimToEmpty(firstname) + " " + StringUtils.trimToEmpty(lastname));
   }
 
+  public String getInitials() {
+    String initials = "A";
+    if (StringUtils.isNotEmpty(firstname) && StringUtils.isNotEmpty(lastname)) {
+      initials = "" + firstname.charAt(0) + lastname.charAt(0);
+    }
+    return initials.toUpperCase();
+  }
+
   /**
    * Called in login page, redirected to on failed logins.
    */

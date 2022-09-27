@@ -74,7 +74,13 @@
 
             <div class="container my-3 p-3">
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                    <@s.text name="manage.overview.metadata"/>
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                        </ol>
+                    </nav>
                 </div>
 
                 <div class="text-center">
@@ -179,7 +185,7 @@
                                         <div id="list-${item_index}" class="half addSeveralTaxa mt-2" style="display:none">
                                             <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
                                             <div id="addSeveralTaxaButtons" class="buttons mt-2">
-                                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button-${item_index}" key="button.add"/>
+                                                <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
                                         <div id="subItems" class="mt-2">
@@ -320,7 +326,7 @@
                                 <div id="list" class="mt-2" style="display:none">
                                     <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
                                     <div class="buttons taxon-list my-2">
-                                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button" key="button.add"/>
+                                        <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
                                     </div>
                                 </div>
                                 <div id="subItems" class="my-2"></div>

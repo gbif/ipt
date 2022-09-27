@@ -168,56 +168,59 @@
                                 ${group}
                             </h6>
                         </#if>
-                        <div class="mt-3 overflow-x-auto">
-                            <div class="table-responsive text-smaller pt-2">
-                            <table class="table table-sm dataTable no-footer"  role="grid">
-                                <thead>
-                                <tr role="row">
-                                    <th><@s.text name='basic.name'/></th>
-                                    <th><@s.text name='basic.description'/></th>
-                                    <th><@s.text name='extension.prop.type'/></th>
-                                    <th><@s.text name='extension.prop.required'/></th>
-                                    <th><@s.text name='extension.vocabulary'/></th>
-                                    <th><@s.text name='basic.examples'/></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <#list groupProperties as p>
-                                    <tr>
-                                        <td>
-                                            <#if p.link?has_content>
-                                                <a href="${p.link}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${p.name}</b></a>
-                                            <#else>
-                                                <span class="fst-italic"><b>${p.name}</b></span>
-                                            </#if>
-                                        </td>
-                                        <td>
-                                            <#if p.description?has_content>
-                                                <span class="fst-italic">${p.description}</span>
-                                            <#else>
-                                                --
-                                            </#if>
-                                        </td>
-                                        <td><@dataBage p.type/></td>
-                                        <td><#if p.required><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if></td>
-                                        <td>
-                                            <#if p.vocabulary??>
-                                                <a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank">${p.vocabulary.title}</a>
-                                            <#else>
-                                                --
-                                            </#if>
-                                        </td>
-                                        <td>
-                                            <#if p.examples?has_content>
-                                                <@processSurroundedWithBackticksAsCode p.examples />
-                                            </#if>
-                                        </td>
-                                    </tr>
-                                </#list>
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
+                        <idv class="mt-3 overflow-x-auto">
+                            <#list groupProperties as p>
+                                <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
+                                    <div class="col-lg-3 mt-1">
+                                        <div class="title">
+                                            <div class="head overflow-x-auto text-smaller">
+                                                <#if p.link?has_content>
+                                                    <a href="${p.link}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${p.name}</b></a>
+                                                <#else>
+                                                    <span class="fst-italic"><b>${p.name}</b></span>
+                                                </#if>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-9 mt-1">
+                                        <div class="definition text-smaller">
+                                            <div class="body">
+                                                <#if p.description?has_content>
+                                                    <p class="overflow-x-auto fst-italic">
+                                                        ${p.description}
+                                                    </p>
+                                                </#if>
+                                                <#if p.link?has_content>
+                                                    <p class="overflow-x-auto">
+                                                        <@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a>
+                                                    </p>
+                                                </#if>
+                                                <#if p.examples?has_content>
+                                                    <p class="overflow-x-auto">
+                                                        <em><@s.text name="basic.examples"/></em>: <@processSurroundedWithBackticksAsCode p.examples />
+                                                    </p>
+                                                </#if>
+                                                <#if p.vocabulary??>
+                                                    <p class="overflow-x-auto">
+                                                        <em><@s.text name="extension.vocabulary"/></em>:
+                                                        <a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
+                                                    </p>
+                                                </#if>
+                                                <div class="details table-responsive">
+                                                    <table>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="basic.namespace"/></th><td>${p.namespace()}</td></tr>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td><@dataBage p.type/></td></tr>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.required"/></th><td><#if p.required><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if></td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </#list>
+                        </idv>
                     </div>
                 </#list>
             </div>
