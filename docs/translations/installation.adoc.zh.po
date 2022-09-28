@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 13:22\n"
+"POT-Creation-Date: 2022-09-19 13:12+0000\n"
+"PO-Revision-Date: 2022-09-19 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -36,7 +36,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
-msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems."
+msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#file-permissions[FAQ entry] if you have problems."
 msgstr ""
 
 #. type: delimited block =

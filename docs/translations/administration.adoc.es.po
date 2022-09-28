@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:06+0000\n"
-"PO-Revision-Date: 2022-02-24 12:21\n"
+"PO-Revision-Date: 2022-09-21 03:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -107,19 +107,19 @@ msgstr "*URL del proxy institucional*: si el servidor en el que está instalado 
 #: en/modules/ROOT/pages/administration.adoc:32
 #, no-wrap
 msgid "*Google Analytics key* - If you would like to track the use of your instance of the IPT with Google Analytics, you can enable it to do so by entering your Google Analytics key in this text box. This is distinct from enabling GBIF to track the use of this instance of the IPT, which can be enabled using the check box described below. For more information about Google Analytics, see https://www.google.com/intl/en/analytics/.\n"
-msgstr "*Clave de Google Analytics* - si desea realizar un seguimiento del IPT con Google Analytics, puede hacerlo ingresando en el cuadro de texto su clave de Google Analytics. Este monitoreo es diferente al que puede hacer GBIF, el cual puede ser habilitado marcando el cuadro descrito a continuación. Para más información acerca de Google Analytics, véase https://www.google.com/intl/es/analytics/.\n"
+msgstr "*Clave de Google Analytics*: si desea realizar un seguimiento del uso de su instancia del IPT con Google Analytics, puede hacerlo ingresando en el cuadro de texto su clave de Google Analytics. Este monitoreo es diferente al que puede hacer GBIF, el cual puede ser habilitado marcando el cuadro descrito a continuación. Para más información acerca de Google Analytics consulte https://www.google.com/intl/es/analytics/.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:33
 #, no-wrap
 msgid "*Enable GBIF Analytics* - Check this box if you would like to enable GBIF to track this instance of the IPT with Google Analytics.\n"
-msgstr "*Habilitar GBIF Analytics* - Marque este cuadro si desea que GBIF monitoree el IPT con Google Analytics.\n"
+msgstr "*Habilitar GBIF Analytics*: marque este cuadro si desea que GBIF monitoree el IPT con Google Analytics.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:34
 #, no-wrap
 msgid "*Debugging Mode* - Check this box if you would like the IPT to begin logging in the verbose debugging mode. Debugging mode is generally unnecessary unless you are trying to track a problem with the IPT. The IPT log file is located in the file debug.log in the IPT's data directory. The data directory is set during the first step in the installation process (see the Getting Started Guide). Refer to the information under the \"View IPT logs\" heading of the \"Administration Menus\" section for an easy way for users having the Admin role to view the debug.log file.\n"
-msgstr "*Modo Corrección de Errores* - Marque este cuadro si desea iniciar el IPT en modo corrección de errores. El Modo Corrección de Errores generalmente es innecesario, a menos que esté tratando de monitorear un problema con el IPT. La actividad del sistema del IPT está ubicada en el archivo debug.log del directorio de datos del IPT. El directorio de datos se establece durante el primer paso del proceso de instalación (véase \"Guía de Instalación\"). Si tiene el rol Administrador, consulte la información en “Ver actividad del sistema del IPT” de la sección “Menú Administración” para ver fácilmente el archivo debug.log.\n"
+msgstr "*Modo corrección de errores*: marque este cuadro si desea iniciar el IPT en modo corrección de errores. El \"Modo corrección de errores\" generalmente es innecesario, a menos que esté tratando de monitorear un problema con el IPT. La actividad del sistema del IPT está ubicada en el archivo debug.log del directorio de datos del IPT. El directorio de datos se establece durante el primer paso del proceso de instalación (ver \"Primeros pasos: instalación y configuración inicial\"). Si tiene el rol Administrador, consulte la información en “Ver actividad del sistema del IPT” de la sección “Menú administración” para ver fácilmente el archivo debug.log.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:35

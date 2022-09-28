@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2022-02-04 00:53\n"
+"PO-Revision-Date: 2022-09-21 03:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -59,7 +59,7 @@ msgstr "Datos primarios sobre registros biológicos"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
 msgid "taxon checklists"
-msgstr "Listados taxonómicos"
+msgstr "Listas de chequeo taxonómico"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:10
