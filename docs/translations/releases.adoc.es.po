@@ -363,7 +363,7 @@ msgstr "link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.4.0]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:147
 msgid "Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues]."
-msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias].\n"
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias]."
 " "
 
 #. type: Plain text
