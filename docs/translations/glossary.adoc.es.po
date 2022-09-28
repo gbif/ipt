@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-02-04 00:53\n"
+"PO-Revision-Date: 2022-09-21 03:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -86,7 +86,7 @@ msgstr "*Metadatos*: en este manual de usuario, los metadatos se refieren a la i
 #: en/modules/ROOT/pages/glossary.adoc:13
 #, no-wrap
 msgid "*Metadata Resource* - a resource having information about a data set, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.\n"
-msgstr "*Recurso de Metadatos* - un recurso que contiene información sobre un conjunto de datos, pero sin tener el conjunto de datos primario. Un recurso de metadatos podría ofrecer información sobre una colección que aún no ha sido digitalizada, por ejemplo.\n"
+msgstr "*Recurso de metadatos*: un recurso que contiene información sobre un conjunto de datos, pero sin tener el conjunto de datos primario. Un recurso de metadatos podría ofrecer información sobre una colecta que aún no ha sido digitalizada, por ejemplo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:14
@@ -98,7 +98,7 @@ msgstr "*Recurso de registros biológicos*: un recurso que contiene información
 #: en/modules/ROOT/pages/glossary.adoc:15
 #, no-wrap
 msgid "*Private* - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.\n"
-msgstr "*Privado* - estado de un recurso en el que solo el creador, administradores invitados y los administradores del IPT pueden verlo.\n"
+msgstr "*Privado*: estado de un recurso en el que solo el creador, administradores invitados y los administradores del IPT pueden verlo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:16
