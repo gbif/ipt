@@ -104,6 +104,14 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/schemas.do">
+                                            <span>
+                                                <i class="bi bi-columns-gap text-gbif-primary admin-icon-menu"></i>
+                                                [@s.text name="admin.home.manageSchemas"/]
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/uiManagement.do">
                                             <span>
                                                 <i class="bi bi-tv text-gbif-primary admin-icon-menu"></i>
