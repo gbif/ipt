@@ -16,8 +16,10 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -37,16 +39,18 @@ public class HomeAction extends BaseAction {
 
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
+  private final DataSchemaManager schemaManager;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
   private List<Organisation> organisations;
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+                    ResourceManager resourceManager, VocabulariesManager vocabManager, DataSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.vocabManager = vocabManager;
+    this.schemaManager = schemaManager;
   }
 
   @Override
@@ -56,6 +60,10 @@ public class HomeAction extends BaseAction {
     // Dataset core type list, derived from XML vocabulary
     types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
+    List<DataSchema> installedSchemas = schemaManager.list();
+    for (DataSchema installedSchema : installedSchemas) {
+      types.put(installedSchema.getName(), installedSchema.getTitle());
+    }
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     // Dataset Subtypes list, derived from XML vocabulary

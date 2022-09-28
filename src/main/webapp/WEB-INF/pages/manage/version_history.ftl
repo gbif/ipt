@@ -87,10 +87,12 @@
                                         <td>${emptyPlaceholder}</td>
                                     </#if>
                                 </tr>
+                                <#if !resource.schemaIdentifier??>
                                 <tr>
                                     <th>${recordsTitle?cap_first}</th>
                                     <td>${history.recordsPublished}</td>
                                 </tr>
+                                </#if>
                                 <tr>
                                     <th>${modifiedTitle?cap_first}</th>
                                     <#if history.modifiedBy??>
