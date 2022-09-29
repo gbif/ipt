@@ -8,7 +8,7 @@
             <div class="col-md-3">
                 <div class="title">
                     <div class="head">
-                        <a href="schema.do?id=${ds.identifier}">${ds.title}</a>
+                        <a class="fw-bold" href="schema.do?id=${ds.identifier}">${ds.title}</a>
                         <#if !ds.isLatest()>
                             <a tabindex="0" role="button"
                                class="popover-link"
@@ -20,23 +20,10 @@
                             </a>
                         </#if>
                     </div>
-                    <div class="actions d-flex">
-                        <#if !ds.isLatest()>
-                            <form action='updateSchema.do' method='post'>
-                                <input type='hidden' name='id' value='${ds.identifier}' />
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary mt-1 me-1" name="update" key="button.update"/>
-                            </form>
-                        </#if>
-                        <form action='schema.do' method='post'>
-                            <input type='hidden' name='id' value='${ds.identifier}' />
-                            <input type='hidden' name='schemaName' value='${ds.name}' />
-                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger mt-1" key="button.remove"/>
-                        </form>
-                    </div>
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-7">
                 <div class="definition">
                     <div class="body">
                         <div>
@@ -57,6 +44,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="actions d-flex justify-content-end">
+                        <#if !ds.isLatest()>
+                            <form action='updateSchema.do' method='post'>
+                                <input type='hidden' name='id' value='${ds.identifier}' />
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary mt-1 me-1" name="update" key="button.update"/>
+                            </form>
+                        </#if>
+                        <form action='schema.do' method='post'>
+                            <input type='hidden' name='id' value='${ds.identifier}' />
+                            <input type='hidden' name='schemaName' value='${ds.name}' />
+                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger mt-1" key="button.remove"/>
+                        </form>
+                    </div>
             </div>
         </div>
     </#macro>
@@ -137,19 +140,13 @@
                     <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                         <div class="col-md-3">
                             <div class="title">
-                                <div class="head">
+                                <div class="head fw-bold">
                                     ${schema.title}
-                                </div>
-                                <div class="actions">
-                                    <form action='schema.do' method='post'>
-                                        <input type='hidden' name='id' value='${schema.identifier}' />
-                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
-                                    </form>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <div class="definition">
                                 <div class="body">
                                     <div>
@@ -161,6 +158,15 @@
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="actions d-flex justify-content-end">
+                                <form action='schema.do' method='post'>
+                                    <input type='hidden' name='id' value='${schema.identifier}' />
+                                    <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
+                                </form>
                             </div>
                         </div>
                     </div>
