@@ -50,7 +50,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
                 <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>,
                 '${r.shortname}',
-                '${(r.eml.subject?replace("(\r\n)+", "<br>", "r")?replace("\'", "\\'")?replace("\"", '\\"'))!}'
+                '${(r.eml.subject?replace("[\r\n]+", "<br>", "r")?replace("\'", "\\'")?replace("\"", '\\"'))!}'
             ]
             <#if r_has_next>,</#if>
             </#list>
