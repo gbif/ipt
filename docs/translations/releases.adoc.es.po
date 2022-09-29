@@ -50,12 +50,12 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:18
 #, no-wrap
 msgid "*2.6.0* – September 2022"
-msgstr "*2.6.0* – Septiembre 2022\n"
+msgstr "*2.6.0* – Septiembre 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.0/ipt-2.6.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.0/ipt-2.6.0.war[descargar WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[usar Docker]\n"
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.0/ipt-2.6.0.war[descargar WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
@@ -392,7 +392,7 @@ msgstr "link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.4.0]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:159
 msgid "Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues]."
-msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias].\n"
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias]."
 " "
 
 #. type: Plain text
