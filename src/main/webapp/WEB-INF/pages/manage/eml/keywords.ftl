@@ -66,6 +66,9 @@
                                 <@s.text name='manage.metadata.keywords.intro'/>
                             </p>
 
+                            <div class="callout callout-info text-smaller">
+                                <@s.text name="manage.metadata.keywords.warning"/>
+                            </div>
 
                             <div id="items">
                                 <#list eml.keywords as item>
