@@ -14,7 +14,7 @@ docker run --rm \
        -v $CURRENT_DIR/SPECS:/home/rpmbuilder/rpmbuild/SPECS/ \
        -v $CURRENT_DIR/SRPMS:/home/rpmbuilder/rpmbuild/SRPMS/ \
        jc21/rpmbuild-centos7 \
-       "rpmbuild/SPECS/rpm-build.sh"
+       /bin/build-spec -u jc21-yum -m /home/rpmbuilder/rpmbuild/SPECS/ipt.spec
 
 echo "EL 8 build"
 docker run --rm \
@@ -23,6 +23,6 @@ docker run --rm \
        -v $CURRENT_DIR/SPECS:/home/rpmbuilder/rpmbuild/SPECS/ \
        -v $CURRENT_DIR/SRPMS:/home/rpmbuilder/rpmbuild/SRPMS/ \
        jc21/rpmbuild-centos8 \
-       "rpmbuild/SPECS/rpm-build.sh"
+       /bin/build-spec -u jc21-yum -m /home/rpmbuilder/rpmbuild/SPECS/ipt.spec
 
 chmod 755 $CURRENT_DIR/{RPMS,SOURCES,SRPMS}

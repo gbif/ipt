@@ -87,7 +87,7 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 - Publish IPT 2.5.4 release.
 * Mon Dec 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.3-1
 - Publish IPT 2.5.3 release.
-* Mon Nov 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.2-1
+* Fri Nov 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.2-1
 - Publish IPT 2.5.2 release.
 * Mon Sep 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.1-1
 - Publish IPT 2.5.1 release.

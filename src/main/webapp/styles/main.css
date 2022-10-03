@@ -1533,6 +1533,7 @@ button.close {
 
 .logoImg>img {
     max-height: 100px;
+    max-width: 100px;
 }
 
 @media (max-width: 1199px) {
@@ -1789,4 +1790,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 /* Breadcrumb */
 .breadcrumb-item.active {
     color: #4e565f;
+}
+
+.contact {
+    margin: 10px;
+    padding: 5px;
+}
+
+/* Temp fix to align headers */
+@media (min-width: 991px) {
+    .invisible-dash {
+        color: white;
+    }
+}
+
+@media (max-width: 992px) {
+    .invisible-dash {
+        display: none;
+    }
+}
+
+/* Orcid icon */
+.orcid-small {
+    margin-right: 4px;
+    margin-bottom: 2px;
 }

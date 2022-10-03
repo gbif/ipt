@@ -84,7 +84,7 @@
             // Here down: related to intellectual rights
             function exists(value) {
                 return (typeof value != 'undefined' && value);
-            };
+            }
 
             if (exists("${eml.intellectualRights!}")) {
                 $("#intellectualRightsDiv").show();
@@ -126,6 +126,16 @@
                 var metadataSection = $('#metadata-section').find(':selected').val()
                 $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
             });
+
+            // scroll to the error if present
+            var invalidElements = $(".is-invalid");
+
+            if (invalidElements !== undefined && invalidElements.length > 0) {
+                var invalidElement = invalidElements.first();
+                var pos = invalidElement.offset().top - 100;
+                // scroll to the element
+                $('body, html').animate({scrollTop: pos});
+            }
         });
 
     </script>
@@ -373,8 +383,8 @@
                                         <@input name="eml.contacts[${contact_index}].homepage" i18nkey="eml.contact.homepage" type="url" />
                                     </div>
                                     <div class="col-md-6">
-                                        <#if eml.contacts[contact_index].userIds[0]??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory!}"/>
+                                        <#if (eml.contacts[contact_index].userIds[0].directory)??>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
