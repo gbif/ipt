@@ -383,8 +383,8 @@
                                         <@input name="eml.contacts[${contact_index}].homepage" i18nkey="eml.contact.homepage" type="url" />
                                     </div>
                                     <div class="col-md-6">
-                                        <#if eml.contacts[contact_index].userIds[0]??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory!}"/>
+                                        <#if (eml.contacts[contact_index].userIds[0].directory)??>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
