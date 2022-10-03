@@ -1533,6 +1533,7 @@ button.close {
 
 .logoImg>img {
     max-height: 100px;
+    max-width: 100px;
 }
 
 @media (max-width: 1199px) {
