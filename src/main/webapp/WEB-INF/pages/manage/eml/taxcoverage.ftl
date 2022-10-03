@@ -33,6 +33,16 @@
                 var metadataSection = $('#metadata-section').find(':selected').val()
                 $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
             });
+
+            // scroll to the error if present
+            var invalidElements = $(".is-invalid");
+
+            if (invalidElements !== undefined && invalidElements.length > 0) {
+                var invalidElement = invalidElements.first();
+                var pos = invalidElement.offset().top - 100;
+                // scroll to the element
+                $('body, html').animate({scrollTop: pos});
+            }
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
