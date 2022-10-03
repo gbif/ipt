@@ -684,6 +684,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setEml(eml);
     resource.setMetadataModified(new Date());
     save(resource);
+    saveEml(resource, true);
   }
 
   /**
@@ -2762,8 +2763,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @Override
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
-    // update EML with latest resource basics (version and GUID)
-    syncEmlWithResource(resource);
+    saveEml(resource, false);
+  }
+
+  private synchronized void saveEml(Resource resource, boolean preserveKeywords) throws InvalidConfigException {
+    // update EML with the latest resource basics (version and GUID)
+    syncEmlWithResource(resource, preserveKeywords);
     // set modified date
     resource.setModified(new Date());
     // save into data dir
@@ -2788,8 +2793,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
    *
    * @param resource Resource
+   * @param preserveKeywords perform keywords update or not
    */
-  private void syncEmlWithResource(Resource resource) {
+  private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
     // set EML version
     resource.getEml().setEmlVersion(resource.getEmlVersion());
     // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
@@ -2798,8 +2804,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       resource.getEml().setGuid(cfg.getResourceGuid(resource.getShortname()));
     }
-    // add/update KeywordSet for dataset type and subtype
-    updateKeywordsWithDatasetTypeAndSubtype(resource);
+    if (!preserveKeywords) {
+      // add/update KeywordSet for dataset type and subtype
+      updateKeywordsWithDatasetTypeAndSubtype(resource);
+    }
+  }
+
+  private void syncEmlWithResource(Resource resource) {
+    syncEmlWithResource(resource, false);
   }
 
   @Override

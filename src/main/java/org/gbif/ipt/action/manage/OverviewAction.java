@@ -1511,7 +1511,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   public String replaceEml() {
     try {
       resourceManager.replaceEml(resource, emlFile, validateEml);
-      resourceManager.saveEml(resource);
       addActionMessage(getText("manage.overview.success.replace.eml"));
       return SUCCESS;
     } catch (ImportException e) {
