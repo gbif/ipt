@@ -10,14 +10,6 @@
 <#macro contact con type dcPropertyType>
     <div class="contact">
 
-        <div class="contactType">
-            <#if con.role?? && con.role?has_content && roles[con.role]??>
-                ${roles[con.role]?cap_first!}
-            <#elseif type?has_content>
-                ${type}
-            </#if>
-        </div>
-
         <#-- minimum info is the last name, organisation name, or position name -->
         <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName mb-1">
             <#if con.lastName?has_content>
@@ -30,6 +22,13 @@
         </div>
         <#-- we use this div to toggle the grouped information -->
         <div class="text-smaller text-discreet">
+            <div class="contactType fst-italic">
+                <#if con.role?? && con.role?has_content && roles[con.role]??>
+                    ${roles[con.role]?cap_first!}
+                <#elseif type?has_content>
+                    ${type}
+                </#if>
+            </div>
             <#if con.position?has_content>
                 <div class="contactPosition">
                     ${con.position!}
@@ -78,7 +77,12 @@
                 <#assign identifier>${con.userIds[0].identifier}</#assign>
                 <#if directory?has_content && identifier?has_content>
                     <div>
-                        <a href="${directory}${identifier}" target="_blank">${directory}${identifier}</a>
+                        <a href="${directory}${identifier}" target="_blank">
+                            <#if directory?contains("orcid.org")>
+                                <img src="${baseURL}/images/icons/orcid_16x16.gif" class="orcid-small">
+                            </#if>
+                            ${directory}${identifier}
+                        </a>
                     </div>
                 </#if>
             </#if>
@@ -642,37 +646,39 @@
                     <#if (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)>
                         <span class="anchor anchor-resource-page" id="anchor-contacts"></span>
                         <div id="contacts" class="mt-5 section">
-                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                            <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.contacts'/>
                             </h4>
 
-                            <div class="row g-3 overflow-x-auto">
-                                <div class="col-lg-6 col-xl-4">
-                                    <p class="text-smaller fw-bold"><@s.text name='portal.resource.creator.intro'/>:</p>
+                            <div class="row g-3 border">
+                                <div class="col-lg-4">
+                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.resource.creator.intro'/>:<br><span class="invisible-dash">-</span></p>
                                     <div>
                                         <@contactList contacts=eml.creators dcPropertyType='creator'/>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-xl-4">
-                                    <p class="text-smaller fw-bold"><@s.text name='portal.resource.contact.intro'/>:</p>
+                                <div class="col-lg-4">
+                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.resource.contact.intro'/>:</p>
                                     <div>
                                         <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-xl-4">
-                                    <p class="text-smaller fw-bold"><@s.text name='portal.metadata.provider.intro'/>:</p>
+                                <div class="col-lg-4">
+                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.metadata.provider.intro'/>:<br><span class="invisible-dash">-</span></p>
                                     <div>
                                         <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
                                     </div>
                                 </div>
 
                                 <#if (eml.associatedParties?size>0)>
-                                    <div class="col-lg-6 col-xl-4">
-                                        <p class="text-smaller fw-bold"><@s.text name='portal.associatedParties.intro'/>:</p>
-                                        <div>
-                                            <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
+                                    <div class="col">
+                                        <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.associatedParties.intro'/>:</p>
+                                        <div class="row">
+                                            <#list eml.associatedParties as c>
+                                                <div class="col-lg-4"><@contact con=c type="" dcPropertyType='contributor' /></div>
+                                            </#list>
                                         </div>
                                     </div>
                                 </#if>
@@ -1031,14 +1037,7 @@
 
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
-<!-- Menu Toggle Script -->
 <script>
-    // hide and make contact addresses toggable
-    $(".contactName").next().hide();
-    $(".contactName").click(function(e){
-        $(this).next().slideToggle("fast");
-    });
-
     $('.confirmDeleteVersion').jConfirmAction({
         titleQuestion : "<@s.text name="basic.confirm"/>",
         question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
