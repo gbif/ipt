@@ -131,8 +131,6 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         if (ds != null) {
           mapping = new DataSchemaMapping();
           mapping.setDataSchema(ds);
-          // TODO: 03/10/2022 set subschema (file)
-          mapping.setDataSchemaFile("deployments");
         }
         // The data schema could have been null if:
         // 1. The user tried to add a mapping with the select help option, no schema would have been found
@@ -164,6 +162,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
         String source = StringUtils.trimToNull(req.getParameter("source"));
+        String schemaFile = StringUtils.trimToNull(req.getParameter("schemaFile"));
+        if (schemaFile != null) {
+          mapping.setDataSchemaFile(schemaFile);
+        }
+
         if (source != null) {
           Source src = resource.getSource(source);
           mapping.setSource(src);
