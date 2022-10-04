@@ -856,8 +856,12 @@
                             <#if (eml.project.personnel?size >0)>
                                 <br>
                                 <p class="text-smaller fw-bold"><@s.text name='eml.project.personnel.intro'/>:</p>
-                                <div>
-                                    <@contactList eml.project.personnel/>
+                                <div class="row border">
+                                    <#list eml.project.personnel as c>
+                                        <div class="col-lg-4">
+                                            <@contact con=c type="" dcPropertyType="" />
+                                        </div>
+                                    </#list>
                                 </div>
                                 <div class="clearfix"></div>
                             </#if>
