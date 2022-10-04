@@ -26,31 +26,6 @@
 
             activateDeactivateAllStaticInputs();
 
-            // spy scroll and manage sidebar menu
-            $(window).scroll(function () {
-                var scrollPosition = $(document).scrollTop();
-
-                $('.bd-toc nav a.sidebar-navigation-link').each(function () {
-                    var currentLink = $(this);
-                    var anchor = $(currentLink.attr("href"));
-                    var sectionId = anchor[0].id.replace("anchor-", "");
-                    var section = $("#" + sectionId);
-                    var sectionsContainer = $("#sections");
-
-                    if (sectionsContainer.position().top - 100 > scrollPosition) {
-                        var removeActiveFromThisLink = $('.bd-toc nav a.active');
-                        removeActiveFromThisLink.removeClass('active');
-                    } else if (section.position().top - 100  <= scrollPosition
-                        && section.position().top + section.height() > scrollPosition) {
-                        if (!currentLink.hasClass("active")) {
-                            var removeFromThisLink = $('.bd-toc nav a.active');
-                            removeFromThisLink.removeClass('active');
-                            $(this).addClass('active');
-                        }
-                    }
-                });
-            })
-
             function hideFields() {
                 showAll = false;
                 $("#showAllValue").val("false");
@@ -243,14 +218,6 @@
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <nav id="sidebar-content">
                             <ul>
-                                <#list dataSchema.subSchemas as subSchema>
-                                    <li>
-                                        <a href="#anchor-${subSchema.name}" class="sidebar-navigation-link">${subSchema.title}</a>
-                                    </li>
-                                </#list>
-                            </ul>
-
-                            <ul>
                                 <li><a id="toggleFields" class="sidebar-link"><@s.text name='manage.mapping.hideEmpty'/></a></li>
                             </ul>
 
@@ -271,15 +238,17 @@
 
                         <div id="sections" class="mt-4">
                             <#list dataSchema.subSchemas as subSchema>
-                                <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
-                                <div id="${subSchema.name}" <#if !subSchema_has_next>style="height: 100vh; min-height: 200px;"</#if> class="mt-5">
-                                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                        ${subSchema.title}
-                                    </h4>
-                                    <#list fields[subSchema.name] as field>
-                                        <@showField subSchema field field_index/>
-                                    </#list>
-                                </div>
+                                <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
+                                    <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
+                                    <div id="${subSchema.name}" <#if !subSchema_has_next>style="height: 100vh; min-height: 200px;"</#if> class="mt-5">
+                                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                            ${subSchema.title}
+                                        </h4>
+                                        <#list fields[subSchema.name] as field>
+                                            <@showField subSchema field field_index/>
+                                        </#list>
+                                    </div>
+                                </#if>
                             </#list>
                         </div>
                     </div>

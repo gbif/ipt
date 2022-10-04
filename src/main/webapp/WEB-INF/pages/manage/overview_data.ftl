@@ -1,6 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 
-<!-- Represents source data and mapping data sections on resource overview page -->
+<!-- Represents source data section on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
 <div class="py-5 border-bottom section" id="sources">
     <div class="titleOverview">
@@ -162,6 +162,7 @@
 
 </div>
 
+<!-- Represents mapping data section on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
     <#if dataSchemaBased>

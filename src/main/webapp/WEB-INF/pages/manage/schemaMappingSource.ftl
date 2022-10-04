@@ -47,7 +47,7 @@
 
             <div class="container-fluid bg-body">
                 <div class="container pt-4">
-                    <p>${mapping.dataSchema.description}</p>
+                    <p class="fst-italic text-center">${mapping.dataSchema.description}</p>
 
                     <input type="hidden" name="r" value="${resource.shortname}" />
                     <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
@@ -55,9 +55,12 @@
                     <input type="hidden" name="mid" value="${mid!}" />
                     <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
-                    <p><@s.text name='manage.mapping.source.help'/></p>
+                    <p class="text-center"><@s.text name='manage.mapping.source.help'/></p>
 
                     <div class="row">
+                        <div class="col-sm-6">
+                            <@selectList name="schemaFile" options=dataSchema.subSchemas objValue="name" objTitle="name" i18nkey="manage.mapping.schemaFile" />
+                        </div>
                         <div class="col-sm-6">
                             <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
                         </div>

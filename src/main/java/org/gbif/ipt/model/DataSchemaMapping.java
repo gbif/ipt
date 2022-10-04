@@ -26,6 +26,7 @@ public class DataSchemaMapping implements Serializable {
 
   private Source source;
   private DataSchema dataSchema;
+  private String dataSchemaFile;
   // TreeSet will ensure set of PropertyMappings remain ordered
   private Map<String, ArrayList<DataSchemaFieldMapping>> fields = new TreeMap<>();
   private Date lastModified;
@@ -86,6 +87,14 @@ public class DataSchemaMapping implements Serializable {
 
   public void setDataSchema(DataSchema dataSchema) {
     this.dataSchema = dataSchema;
+  }
+
+  public String getDataSchemaFile() {
+    return dataSchemaFile;
+  }
+
+  public void setDataSchemaFile(String dataSchemaFile) {
+    this.dataSchemaFile = dataSchemaFile;
   }
 
   public Map<String, ArrayList<DataSchemaFieldMapping>> getFields() {
