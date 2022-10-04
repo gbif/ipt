@@ -74,13 +74,13 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
     <#macro sourceSample index subschemaName fieldsIndex>
-        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="sample mappingText mx-3 overflow-x-auto">
+        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
             <@s.text name='manage.mapping.sourceSample' />:
             <em>
                 <#list peek as row>
                     <#if row??>
                         <#if row[index]?has_content && row[index]!=" ">
-                            ${row[index]}
+                            <code>${row[index]}</code>
                         <#else>
                             &nbsp;
                         </#if>
@@ -94,7 +94,7 @@
     <#macro showField subschema field index>
         <#assign fieldsIndex = action.getFieldsSchemaIndices().get(subschema.name).get(field.field.name)/>
 
-        <div class="row py-1 g-2 mappingRow border-bottom">
+        <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1 fs-smaller">
                 <#assign fieldPopoverInfo>
                     <#if field.field.description?has_content>${field.field.description}</#if>
@@ -136,7 +136,10 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong>${field.field.name}</strong>
+                <strong>
+                    ${field.field.name}
+                    <#if (field.field.constraints.required)?? && (field.field.constraints.required?string) == "true">&#42;</#if>
+                </strong>
             </div>
 
             <div class="col-lg-4">
