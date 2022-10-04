@@ -142,6 +142,11 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
+    <action name="delete-schemaMapping" class="org.gbif.ipt.action.manage.DataSchemaMappingAction" method="delete">
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">2097152</param>
