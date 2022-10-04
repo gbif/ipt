@@ -49,7 +49,7 @@
 
             <form id="newuser" class="needs-validation" action="user.do" method="post">
                 <div class="row g-3 mt-2">
-                    <@s.hidden name="id" value="${user.email!}" required="true"/>
+                    <@s.hidden name="id" value="${(user.email)!}" required="true"/>
 
                     <div class="col-md-6">
                         <@input name="user.firstname" />
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <@select name="user.role" value=user.role javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
+                        <@select name="user.role" value=(user.role)! javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
                     </div>
 
                     <#if "${newUser!}"!="no">
