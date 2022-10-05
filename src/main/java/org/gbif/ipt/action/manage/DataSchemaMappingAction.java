@@ -29,10 +29,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -59,8 +57,8 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private Map<String, ArrayList<DataSchemaFieldMapping>> fields;
-  private Map<String, Map<String, Integer>> fieldsSchemaIndices;
+  private List<DataSchemaFieldMapping> fields;
+  private Map<String, Integer> fieldsIndices;
 
   @Inject
   public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -173,38 +171,30 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         } else {
           // show set source form
           defaultResult = "source";
+          return;
         }
       }
 
-      fields = new LinkedHashMap<>();
-      fieldsSchemaIndices = new HashMap<>();
+      fields = new ArrayList<>();
+      fieldsIndices = new HashMap<>();
 
       // inspect source
       readSource();
 
       // prepare fields
-      for (DataSubschema dataSubschema : mapping.getDataSchema().getSubSchemas()) {
-        ArrayList<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
-        Map<String, Integer> indicesMap = new HashMap<>();
-        int index = 0;
-        for (DataSchemaField field : dataSubschema.getFields()) {
-          DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(dataSubschema.getName(), field);
-          fieldMappings.add(pm);
-          indicesMap.put(field.getName(), index++);
-        }
-        fields.put(dataSubschema.getName(), fieldMappings);
-        fieldsSchemaIndices.put(dataSubschema.getName(), indicesMap);
+      DataSubschema dataSubschema = mapping.getDataSchema().subschemaByName(mapping.getDataSchemaFile());
+      fieldsIndices = new HashMap<>();
+      int index = 0;
+      for (DataSchemaField field : dataSubschema.getFields()) {
+        DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
+        fields.add(pm);
+        fieldsIndices.put(field.getName(), index++);
       }
 
       // do automapping if no fields are found
-      Collection<ArrayList<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
+      // TODO: 05/10/2022 auto-mapping only for one subschema
+      List<DataSchemaFieldMapping> fieldsBySchema = mapping.getFields();
       boolean mappingEmpty = fieldsBySchema.isEmpty();
-      for (ArrayList<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
-        if (schemaFields.isEmpty()) {
-          mappingEmpty = true;
-          break;
-        }
-      }
 
       if (mappingEmpty) {
         int automapped = automap();
@@ -225,19 +215,17 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     int automapped = 0;
 
     // next, try to automap the source's remaining columns against the data schema fields
-    for (String subschemaName : fields.keySet()) {
-      for (DataSchemaFieldMapping f : fields.get(subschemaName)) {
-        int idx2 = 0;
-        for (String col : columns) {
-          String normCol = normalizeColumnName(col);
-          if (f.getField().getName().equalsIgnoreCase(normCol)) {
-            f.setIndex(idx2);
-            // we have automapped the field, so increment automapped counter and exit
-            automapped++;
-            break;
-          }
-          idx2++;
+    for (DataSchemaFieldMapping f : fields) {
+      int idx2 = 0;
+      for (String col : columns) {
+        String normCol = normalizeColumnName(col);
+        if (f.getField().getName().equalsIgnoreCase(normCol)) {
+          f.setIndex(idx2);
+          // we have automapped the field, so increment automapped counter and exit
+          automapped++;
+          break;
         }
+        idx2++;
       }
     }
 
@@ -268,14 +256,13 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
    * Populate a DataSchemaFieldMapping from an DataSchemaField. If the DataSchemaField is already mapped, preserves
    * the existing DataSchemaFieldMapping. Otherwise, creates a brand new DataSchemaFieldMapping.
    *
-   * @param subschemaName name of the subschema
    * @param field DataSchemaField
    *
    * @return DataSchemaFieldMapping created
    */
-  private DataSchemaFieldMapping populateDataSchemaFieldMapping(String subschemaName, DataSchemaField field) {
+  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataSchemaField field) {
     // mapped already?
-    DataSchemaFieldMapping fm = mapping.getField(subschemaName, field.getName());
+    DataSchemaFieldMapping fm = mapping.getField(field.getName());
     if (fm == null) {
       // no, create brand new DataSchemaFieldMapping
       fm = new DataSchemaFieldMapping();
@@ -314,16 +301,16 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public Map<String, ArrayList<DataSchemaFieldMapping>> getFields() {
+  public List<DataSchemaFieldMapping> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, ArrayList<DataSchemaFieldMapping>> fields) {
+  public void setFields(List<DataSchemaFieldMapping> fields) {
     this.fields = fields;
   }
 
-  public Map<String, Map<String, Integer>> getFieldsSchemaIndices() {
-    return fieldsSchemaIndices;
+  public Map<String, Integer> getFieldsIndices() {
+    return fieldsIndices;
   }
 
   public List<String[]> getPeek() {

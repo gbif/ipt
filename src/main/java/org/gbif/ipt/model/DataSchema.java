@@ -38,6 +38,12 @@ public class DataSchema implements Serializable {
   private boolean isLatest;
   private Date issued;
 
+  public DataSubschema subschemaByName(String subSchemaName) {
+    return subSchemas.stream()
+        .filter(ds -> ds.getName().equals(subSchemaName))
+        .findFirst().orElse(null);
+  }
+
   public String getIdentifier() {
     return identifier;
   }

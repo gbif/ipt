@@ -30,7 +30,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -353,15 +352,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       boolean headerWritten = false;
 
       for (DataSchemaMapping dataSchemaMapping : allMappings) {
-        ArrayList<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
+        if (dataSchemaMapping.getDataSchemaFile().equals(subschema.getName())) {
+          // write header line 1 time only to file
+          if (!headerWritten) {
+            writer.write(header);
+            headerWritten = true;
+          }
 
-        // write header line 1 time only to file
-        if (!headerWritten) {
-          writer.write(header);
-          headerWritten = true;
+          dumpData(writer, dataSchemaMapping, dataSchemaMapping.getFields(), totalColumns);
         }
-
-        dumpData(writer, dataSchemaMapping, subschemaFieldMappings, totalColumns);
       }
     } catch (IOException e) {
       // some error writing this file, report
@@ -422,7 +421,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataSchemaMapping schemaMapping,
-                        ArrayList<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
+                        List<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
@@ -542,7 +541,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    *
    * @return the comma delimited String, {@code null} if provided array only contained null values
    */
-  protected String commaRow(String[] columns, ArrayList<DataSchemaFieldMapping> subschemaFieldMappings) {
+  protected String commaRow(String[] columns, List<DataSchemaFieldMapping> subschemaFieldMappings) {
     Objects.requireNonNull(columns);
     StringBuilder sb = new StringBuilder();
     Iterator<DataSchemaFieldMapping> iter = subschemaFieldMappings.iterator();

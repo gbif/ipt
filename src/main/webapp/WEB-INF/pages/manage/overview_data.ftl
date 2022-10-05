@@ -204,8 +204,10 @@
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4">${m.dataSchemaFile!}</th>
                                             <td>
-                                                ${m.fields?size} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!} <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
-                                                ${(m.lastModified?datetime?string.medium)!}
+<#--                                                ${m_index}:${m.dataSchemaFile}:${m.fields?size}-->
+<#--                                                ${m.fields['deployments']}-->
+<#--                                                ${m.fields?size} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!} <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>-->
+<#--                                                ${(m.lastModified?datetime?string.medium)!}-->
                                             </td>
                                             <td class="d-flex justify-content-end py-0">
                                                 <a class="icon-button icon-button-sm" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">

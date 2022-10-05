@@ -92,7 +92,7 @@
     </#macro>
 
     <#macro showField subschema field index>
-        <#assign fieldsIndex = action.getFieldsSchemaIndices().get(subschema.name).get(field.field.name)/>
+        <#assign fieldsIndex = action.getFieldsIndices().get(field.field.name)/>
 
         <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1 fs-smaller">
@@ -157,7 +157,7 @@
                         <label class="input-group-text" for="fVal_${subschema.name}_${index}">
                             <i class="bi bi-book"></i>
                         </label>
-                        <select id="fVal_${subschema.name}_${index}" class="fval form-select form-select-sm" name="fields['${subschema.name}'][${index}].defaultValue">
+                        <select id="fVal_${subschema.name}_${index}" class="fval form-select form-select-sm" name="fields[${index}].defaultValue">
                             <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                             <#list field.field.constraints.vocabulary as code>
                                 <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${code}</option>
@@ -165,7 +165,7 @@
                         </select>
                     </div>
                 <#else>
-                    <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
+                    <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
                 </#if>
             </div>
 
@@ -178,11 +178,11 @@
     <form id="mappingForm" class="needs-validation" action="schemaMapping.do" method="post">
         <div class="container-fluid bg-body border-bottom">
 
-            <div class="container pt-2">
+            <div class="container my-3">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
             </div>
 
-            <div class="container p-3 my-3">
+            <div class="container p-3">
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
@@ -209,6 +209,18 @@
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                     </div>
 
+                    <p class="mt-3 text-smaller fst-italic">
+                        <@s.text var="adminSchemaTitle" name="admin.schema.title"/>
+                        <@s.text name='manage.mapping.intro1'>
+                            <@s.param>
+                                <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">
+                                    ${mapping.source.name}
+                                </a>
+                            </@s.param>
+                            <@s.param><@s.property value="#adminSchemaTitle.toLowerCase()"/></@s.param>
+                            <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataSchema.identifier!}#anchor-${mapping.dataSchemaFile!}" target="_blank">${mapping.dataSchema.name!}/${mapping.dataSchemaFile!}</a></@s.param>
+                        </@s.text>
+                    </p>
                 </div>
             </div>
         </div>
@@ -247,7 +259,7 @@
                                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                             ${subSchema.title}
                                         </h4>
-                                        <#list fields[subSchema.name] as field>
+                                        <#list fields as field>
                                             <@showField subSchema field field_index/>
                                         </#list>
                                     </div>

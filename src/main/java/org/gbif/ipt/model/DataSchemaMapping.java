@@ -17,8 +17,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class DataSchemaMapping implements Serializable {
 
@@ -27,8 +25,8 @@ public class DataSchemaMapping implements Serializable {
   private Source source;
   private DataSchema dataSchema;
   private String dataSchemaFile;
-  // TreeSet will ensure set of PropertyMappings remain ordered
-  private Map<String, ArrayList<DataSchemaFieldMapping>> fields = new TreeMap<>();
+  private List<DataSchemaFieldMapping> fields = new ArrayList<>();
+  private int fieldsMapped;
   private Date lastModified;
 
   /**
@@ -61,10 +59,9 @@ public class DataSchemaMapping implements Serializable {
     return new ArrayList<>();
   }
 
-  public DataSchemaFieldMapping getField(String subschemaName, String name) {
-    List<DataSchemaFieldMapping> mappingsList = fields.get(subschemaName);
-    if (mappingsList != null) {
-      for (DataSchemaFieldMapping dsfm : mappingsList) {
+  public DataSchemaFieldMapping getField(String name) {
+    if (fields != null) {
+      for (DataSchemaFieldMapping dsfm : fields) {
         if (dsfm.getField().getName().equals(name)) {
           return dsfm;
         }
@@ -97,11 +94,11 @@ public class DataSchemaMapping implements Serializable {
     this.dataSchemaFile = dataSchemaFile;
   }
 
-  public Map<String, ArrayList<DataSchemaFieldMapping>> getFields() {
+  public List<DataSchemaFieldMapping> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, ArrayList<DataSchemaFieldMapping>> fields) {
+  public void setFields(List<DataSchemaFieldMapping> fields) {
     this.fields = fields;
   }
 
