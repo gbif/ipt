@@ -55,6 +55,15 @@
                 }
             });
 
+            // Collapse/uncollapse source examples
+            $(".sample").click(function() {
+                if ($(this).hasClass("text-uncollapse")) {
+                    $(this).removeClass("text-uncollapse")
+                } else {
+                    $(this).addClass("text-uncollapse")
+                }
+            });
+
             $(".fidx").change(function() {
                 activateDeactivateStaticInput($(this));
             });
@@ -74,7 +83,7 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
     <#macro sourceSample index subschemaName fieldsIndex>
-        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
+        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-3">
             <@s.text name='manage.mapping.sourceSample' />:
             <em>
                 <#list peek as row>
@@ -170,7 +179,7 @@
             </div>
 
             <#if field.index??>
-                <small class="text-truncate"><@sourceSample field.index subschema.name fieldsIndex/></small>
+                <small><@sourceSample field.index subschema.name fieldsIndex/></small>
             </#if>
         </div>
     </#macro>
