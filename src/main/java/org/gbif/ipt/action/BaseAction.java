@@ -47,7 +47,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 
-import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -385,7 +385,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * Override this method if you need to cancel action.
    */
   public String cancel() throws Exception {
-    return CANCEL_RESULTNAME;
+    return CANCEL;
   }
 
   public void setCancel(String cancel) {

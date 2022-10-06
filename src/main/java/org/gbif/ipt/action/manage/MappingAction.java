@@ -51,7 +51,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
-import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
@@ -191,7 +191,7 @@ public class MappingAction extends ManagerBaseAction {
       // save resource
       saveResource();
     }
-    return CANCEL_RESULTNAME;
+    return CANCEL;
   }
 
   @Override
