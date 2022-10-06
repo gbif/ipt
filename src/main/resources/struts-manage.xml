@@ -174,6 +174,7 @@
       <result name="input">/WEB-INF/pages/manage/schemaMapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/schemaMappingSource.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 

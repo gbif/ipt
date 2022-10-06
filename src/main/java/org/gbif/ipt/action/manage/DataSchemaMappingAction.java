@@ -40,6 +40,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CANCEL;
+
 /**
  * Similar to {@link MappingAction}, but manage data schema mappings.
  */
@@ -148,7 +150,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       notFound = true;
     }
 
-    if (mapping != null && mapping.getDataSchema() != null) {
+    if (!cancel && mapping != null && mapping.getDataSchema() != null) {
       dataSchema = mapping.getDataSchema();
 
       // reload schema if sub-schemas are empty
@@ -269,6 +271,17 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
     fm.setField(field);
     return fm;
+  }
+
+  @Override
+  public String cancel() {
+    // remove empty mapping on cancel
+    if (mapping != null && mapping.getSource() == null && mapping.getFields().isEmpty()) {
+      resource.deleteMapping(mapping);
+      // save resource
+      saveResource();
+    }
+    return CANCEL;
   }
 
   @Override
