@@ -35,6 +35,14 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/data_bage.ftl">
 
+<#--    1. Interpret backticked text as code-->
+<#--    2. Interpret text like []() as a link-->
+    <#macro processDescription description>
+        <#noescape>
+            ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
+        </#noescape>
+    </#macro>
+
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -90,98 +98,83 @@
                                 ${subSchema.title}
                             </h4>
                             <div class="mt-3 overflow-x-auto">
-                                <div id="tableContainer" class="table-responsive text-smaller pt-2">
-                                    <table class="table table-sm dataTable no-footer"  role="grid">
-                                        <thead>
-                                        <tr role="row">
-                                            <th><@s.text name='basic.name'/></th>
-                                            <th><@s.text name='basic.description'/></th>
-                                            <th><@s.text name='schema.field.type'/></th>
-                                            <th><@s.text name='schema.field.format'/></th>
-                                            <th><@s.text name='schema.field.constraints'/></th>
-                                            <th><@s.text name='schema.field.foreignKeys'/></th>
-                                            <th><@s.text name='basic.examples'/></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <#list subSchema.fields as field>
-                                            <tr>
-                                                <td>
-                                                    <span class="fst-italic"><b>${field.name}</b></span>
-                                                </td>
-                                                <td>
-                                                    <#if field.description?has_content>
-                                                        <span class="fst-italic">${field.description}</span>
-                                                    <#else>
-                                                        --
-                                                    </#if>
-                                                </td>
-                                                <td>
-                                                    <@dataBage field.type/>
-                                                </td>
-                                                <td>
-                                                    <#if field.format??>
-                                                        ${field.format}
-                                                    <#else>
-                                                        --
-                                                    </#if>
-                                                </td>
-                                                <td>
-                                                    <#if subSchema.primaryKey?? && subSchema.primaryKey == field.name>
-                                                        primary key <code>true</code><br>
-                                                    </#if>
-                                                    <#if field.constraints??>
-                                                        <#if field.constraints.required??>
-                                                            required <code>${field.constraints.required?string}</code><br>
-                                                        </#if>
-                                                        <#if field.constraints.unique??>
-                                                            unique <code>${field.constraints.unique?string}</code><br>
-                                                        </#if>
-                                                        <#if field.constraints.maximum??>
-                                                            maximum <code>${field.constraints.maximum}</code><br>
-                                                        </#if>
-                                                        <#if field.constraints.minimum??>
-                                                            minimum <code>${field.constraints.minimum}</code><br>
-                                                        </#if>
-                                                        <#if field.constraints.pattern??>
-                                                            pattern <code>${field.constraints.pattern}</code><br>
-                                                        </#if>
-                                                        <#if field.constraints.vocabulary??>
-                                                            enum <code>${field.constraints.vocabulary}</code><br>
-                                                        </#if>
-                                                    <#else>
-                                                        --
-                                                    </#if>
-                                                </td>
-                                                <td>
-                                                    <#if subSchema.foreignKeys?has_content>
-                                                        <#list subSchema.foreignKeys as foreignKey>
-                                                            <#if foreignKey.fields == field.name>
-                                                                <a href="#anchor-${foreignKey.reference.resource}">${foreignKey.reference.resource}#${foreignKey.reference.fields}</a>
+                                <#list subSchema.fields as field>
+                                    <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
+                                        <div class="col-lg-3 mt-1">
+                                            <div class="title">
+                                                <div class="head overflow-x-auto text-smaller">
+                                                    <span class="fst-italic">
+                                                        <b>
+                                                            ${field.name}
+                                                            <#if (field.constraints.required)?? && field.constraints.required?string == "true">
+                                                                *
                                                             </#if>
-                                                        </#list>
-                                                    <#else>
-                                                        --
+                                                        </b>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-9 mt-1">
+                                            <div class="definition text-smaller">
+                                                <div class="body">
+                                                    <#if field.description?has_content>
+                                                        <p class="overflow-x-auto fst-italic">
+                                                            <span class="fst-italic">
+                                                                <@processDescription field.description/>
+                                                            </span>
+                                                        </p>
                                                     </#if>
-                                                </td>
-                                                <td>
-                                                    <#if field.example??>
-                                                        <#if field.example?is_collection>
-                                                            <#list field.example as ex>
-                                                                <code>${ex}</code><#sep>, </#sep>
+                                                    <#if field.constraints?? && (field.constraints.unique?? || field.constraints.maximum?? || field.constraints.minimum?? || field.constraints.pattern??)>
+                                                        <em><@s.text name="schema.field.constraints"/>:</em>
+                                                        <ul>
+                                                            <#if field.constraints.unique??>
+                                                                <li>unique <code>${field.constraints.unique?string}</code></li>
+                                                            </#if>
+                                                            <#if field.constraints.maximum??>
+                                                                <li>maximum <code>${field.constraints.maximum}</code></li>
+                                                            </#if>
+                                                            <#if field.constraints.minimum??>
+                                                                <li>minimum <code>${field.constraints.minimum}</code></li>
+                                                            </#if>
+                                                            <#if field.constraints.pattern??>
+                                                                <li>pattern <code>${field.constraints.pattern}</code></li>
+                                                            </#if>
+                                                        </ul>
+                                                    </#if>
+                                                    <p class="overflow-x-auto">
+                                                        <em><@s.text name="schema.field.type"/></em> <@dataBage field.type/>
+                                                    </p>
+                                                    <#if field.format?? && field.format != 'default'>
+                                                        <p class="overflow-x-auto">
+                                                            <em><@s.text name="schema.field.format"/></em> <code>${field.format}</code>
+                                                        </p>
+                                                    </#if>
+                                                    <#if field.example?has_content>
+                                                        <p class="overflow-x-auto">
+                                                            <em><@s.text name="basic.examples"/></em>:
+                                                            <#if field.example?is_collection>
+                                                                <#list field.example as ex>
+                                                                    <code>${ex}</code><#sep>, </#sep>
+                                                                </#list>
+                                                            <#else>
+                                                                <code>${field.example}</code>
+                                                            </#if>
+                                                        </p>
+                                                    </#if>
+                                                    <#if field.constraints?? && field.constraints.vocabulary??>
+                                                        <p class="overflow-x-auto">
+                                                            <em><@s.text name="extension.vocabulary"/></em>:
+                                                            <#list field.constraints.vocabulary as item>
+                                                                ${item}<#sep>,</#sep>
                                                             </#list>
-                                                        <#else>
-                                                            <code>${field.example}</code>
-                                                        </#if>
-                                                    <#else>
-                                                        --
+                                                        </p>
                                                     </#if>
-                                                </td>
-                                            </tr>
-                                        </#list>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#list>
                             </div>
                         </div>
                     </#list>
