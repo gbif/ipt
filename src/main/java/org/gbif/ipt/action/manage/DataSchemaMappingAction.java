@@ -252,7 +252,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private String normalizeColumnName(String col) {
     String result;
     if (StringUtils.isNotBlank(col)) {
-      result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
+      // exclude _id field
+      if (!"_id".equals(col.trim())) {
+        result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
+      } else {
+        result = col.trim();
+      }
       if (result.contains(":")) {
         result = StringUtils.substringAfter(col, ":");
       }
