@@ -297,7 +297,12 @@ table {
     display: none;
 }
 
-#login-page-logo, #login-page-logo-custom {
+#login-page-logo-custom {
+    max-height: 75px;
+    max-width: 100px;
+}
+
+#login-page-logo {
     height: 50px;
     width: 50px;
 }
