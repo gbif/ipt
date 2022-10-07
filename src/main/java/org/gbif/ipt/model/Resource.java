@@ -317,12 +317,20 @@ public class Resource implements Serializable, Comparable<Resource> {
     boolean result = false;
     if (src != null) {
       result = sources.remove(src);
-      // also remove existing mappings
+      // remove existing DwC mappings
       List<ExtensionMapping> ems = new ArrayList<>(mappings);
       for (ExtensionMapping em : ems) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
           LOG.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
+        }
+      }
+      // remove schema mappings
+      List<DataSchemaMapping> dsms = new ArrayList<>(dataSchemaMappings);
+      for (DataSchemaMapping dsm : dsms) {
+        if (dsm.getSource() != null && src.equals(dsm.getSource())) {
+          deleteMapping(dsm);
+          LOG.debug("Cascading source delete to schema mapping " + dsm.getDataSchema().getName());
         }
       }
     }
