@@ -168,7 +168,7 @@
                                 ${group}
                             </h6>
                         </#if>
-                        <idv class="mt-3 overflow-x-auto">
+                        <div class="mt-3 overflow-x-auto">
                             <#list groupProperties as p>
                                 <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                     <div class="col-lg-3 mt-1">
@@ -220,7 +220,7 @@
                                     </div>
                                 </div>
                             </#list>
-                        </idv>
+                        </div>
                     </div>
                 </#list>
             </div>
