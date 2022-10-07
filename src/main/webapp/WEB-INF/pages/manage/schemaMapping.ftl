@@ -81,6 +81,13 @@
     <#include "/WEB-INF/pages/inc/menu.ftl"/>
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
+<#--    1. Interpret backticked text as code-->
+<#--    2. Interpret text like []() as a link-->
+    <#macro processDescription description>
+        <#noescape>
+            ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
+        </#noescape>
+    </#macro>
 
     <#macro sourceSample index subschemaName fieldsIndex>
         <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-3">
@@ -106,9 +113,34 @@
         <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1 fs-smaller">
                 <#assign fieldPopoverInfo>
-                    <#if field.field.description?has_content>${field.field.description}</#if>
-                    <#if field.field.example?has_content>
+                    <#if field.field.description?has_content>
+                        <@processDescription field.field.description />
+                    </#if>
+                    <#if field.field.constraints?? && (field.field.constraints.unique?? || field.field.constraints.maximum?? || field.field.constraints.minimum?? || field.field.constraints.pattern??)>
                         <br/><br/>
+                        <em><@s.text name="schema.field.constraints"/>:</em>
+                        <ul>
+                            <#if field.field.constraints.unique??>
+                                <li>unique <code>${field.field.constraints.unique?string}</code></li>
+                            </#if>
+                            <#if field.field.constraints.maximum??>
+                                <li>maximum <code>${field.field.constraints.maximum}</code></li>
+                            </#if>
+                            <#if field.field.constraints.minimum??>
+                                <li>minimum <code>${field.field.constraints.minimum}</code></li>
+                            </#if>
+                            <#if field.field.constraints.pattern??>
+                                <li>pattern <code>${field.field.constraints.pattern}</code></li>
+                            </#if>
+                        </ul>
+                        <#assign noBrakeForExamples = true />
+                    <#else>
+                        <#assign noBrakeForExamples = false />
+                    </#if>
+                    <#if field.field.example?has_content>
+                        <#if !noBrakeForExamples>
+                            <br/><br/>
+                        </#if>
                         <em><@s.text name="basic.examples"/></em>:
                         <#if field.field.example?is_collection>
                             <#list field.field.example as ex>
@@ -119,28 +151,6 @@
                         </#if>
                     <#else>
                         <@s.text name="basic.no.description"/>
-                    </#if>
-                    <#if field.field.constraints?has_content>
-                        <br/><br/>
-                        <em><@s.text name="schema.field.constraints"/></em>:
-                        <#if field.field.constraints.required??>
-                            required <code>${field.field.constraints.required?string}</code><br>
-                        </#if>
-                        <#if field.field.constraints.unique??>
-                            unique <code>${field.field.constraints.unique?string}</code><br>
-                        </#if>
-                        <#if field.field.constraints.maximum??>
-                            maximum <code>${field.field.constraints.maximum}</code><br>
-                        </#if>
-                        <#if field.field.constraints.minimum??>
-                            minimum <code>${field.field.constraints.minimum}</code><br>
-                        </#if>
-                        <#if field.field.constraints.pattern??>
-                            pattern <code>${field.field.constraints.pattern}</code><br>
-                        </#if>
-                        <#if field.field.constraints.vocabulary??>
-                            enum <code>${field.field.constraints.vocabulary}</code><br>
-                        </#if>
                     </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
