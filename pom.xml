@@ -500,7 +500,7 @@
     <dependency>
       <groupId>io.frictionlessdata</groupId>
       <artifactId>datapackage-java</artifactId>
-      <version>0.1.7-gbif-SNAPSHOT</version>
+      <version>0.2.2-gbif-SNAPSHOT</version>
     </dependency>
 
     <!-- excel parsing -->
