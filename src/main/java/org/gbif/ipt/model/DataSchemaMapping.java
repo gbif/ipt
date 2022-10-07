@@ -102,6 +102,14 @@ public class DataSchemaMapping implements Serializable {
     this.fields = fields;
   }
 
+  public int getFieldsMapped() {
+    return fieldsMapped;
+  }
+
+  public void setFieldsMapped(int fieldsMapped) {
+    this.fieldsMapped = fieldsMapped;
+  }
+
   public Date getLastModified() {
     return lastModified;
   }

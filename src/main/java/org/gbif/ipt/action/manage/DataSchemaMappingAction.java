@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -83,6 +84,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     } else {
       // save field mappings
       mapping.setFields(fields);
+      int fieldsMapped = fields.stream()
+          .map(DataSchemaFieldMapping::getIndex)
+          .filter(Objects::nonNull)
+          .map(f -> 1)
+          .reduce(0, Integer::sum);
+      mapping.setFieldsMapped(fieldsMapped);
     }
     // update last modified dates
     Date lastModified = new Date();
