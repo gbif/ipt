@@ -162,7 +162,7 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx_${subschema.name}_${index}" class="fidx form-select form-select-sm" name="fields['${subschema.name}'][${index}].index">
+                <select id="fIdx_${subschema.name}_${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
                         <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
