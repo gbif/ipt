@@ -70,7 +70,7 @@
 
             </div>
             <#if con.homepage?has_content>
-                <div class="text-collapse">
+                <div class="overflow-wrap">
                     <a href="${con.homepage}">${con.homepage}</a>
                 </div>
             </#if>
@@ -78,7 +78,7 @@
                 <#assign directory>${con.userIds[0].directory}</#assign>
                 <#assign identifier>${con.userIds[0].identifier}</#assign>
                 <#if directory?has_content && identifier?has_content>
-                    <div class="text-collapse">
+                    <div class="overflow-wrap">
                         <a href="${directory}${identifier}" target="_blank">
                             <#if directory?contains("orcid.org")>
                                 <img src="${baseURL}/images/icons/orcid_16x16.gif" class="orcid-small">

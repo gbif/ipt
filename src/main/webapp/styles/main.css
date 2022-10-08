@@ -1691,6 +1691,11 @@ a.doi:hover span:first-of-type {
     -webkit-line-clamp: unset;
 }
 
+.overflow-wrap {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
 .top-button {
     min-width: 100px;
     margin-top: 4px;
