@@ -13,7 +13,7 @@
         </div>
 
         <div class="row text-center">
-            <div class="col-sm-2 p-0">
+            <div class="col-12 p-0">
                 <span>
                     <svg id="login-page-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="90 239.1 539.7 523.9" width="16px" height="16px" style="enable-background:new 90 239.1 539.7 523.9;" xml:space="preserve">
@@ -23,7 +23,7 @@
                     <img id="login-page-logo-custom" src="${baseURL}/appLogo.do" onerror="handleCustomLogoError()" />
                 </span>
             </div>
-            <div class="col-sm-10 p-0 pt-1">
+            <div class="col-12 p-0 pt-1">
                 <div class="fs-6 fw-400 text-uppercase site-name">
                     Integrated Publishing Toolkit
                 </div>

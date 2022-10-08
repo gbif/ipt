@@ -70,13 +70,15 @@
 
             </div>
             <#if con.homepage?has_content>
-                <a href="${con.homepage}">${con.homepage}</a>
+                <div class="text-collapse">
+                    <a href="${con.homepage}">${con.homepage}</a>
+                </div>
             </#if>
             <#if (con.userIds?size > 0)>
                 <#assign directory>${con.userIds[0].directory}</#assign>
                 <#assign identifier>${con.userIds[0].identifier}</#assign>
                 <#if directory?has_content && identifier?has_content>
-                    <div>
+                    <div class="text-collapse">
                         <a href="${directory}${identifier}" target="_blank">
                             <#if directory?contains("orcid.org")>
                                 <img src="${baseURL}/images/icons/orcid_16x16.gif" class="orcid-small">
@@ -619,7 +621,13 @@
                                 <@s.text name='portal.resource.summary.keywords'/>
                             </h4>
 
-                            <p property="dc:subject"><@textWithFormattedLink eml.subject!no_description/></p>
+                            <p property="dc:subject">
+                                <#if (eml.subject)??>
+                                    <@eml.subject?interpret />
+                                <#else>
+                                    ${no_description}
+                                </#if>
+                            </p>
                         </div>
                     </#if>
 
@@ -704,7 +712,13 @@
                                 <@s.text name='portal.resource.summary.geocoverage'/>
                             </h4>
 
-                            <p property="dc:spatial"><@textWithFormattedLink eml.geospatialCoverages[0].description!no_description/></p>
+                            <p property="dc:spatial">
+                                <#if (eml.geospatialCoverages[0].description)??>
+                                    <@eml.geospatialCoverages[0].description?interpret />
+                                <#else>
+                                    ${no_description}
+                                </#if>
+                            </p>
 
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
@@ -726,7 +740,13 @@
                             </h4>
 
                             <#list organizedCoverages as item>
-                                <p><@textWithFormattedLink item.description!no_description/></p>
+                                <p>
+                                    <#if (item.description)??>
+                                        <@item.description?interpret />
+                                    <#else>
+                                        ${no_description}
+                                    </#if>
+                                </p>
 
                                 <div class="table-responsive">
                                     <table class="text-smaller table table-sm table-borderless">
@@ -802,38 +822,44 @@
                                 <@s.text name='manage.metadata.project.title'/>
                             </h4>
 
-                            <p><@textWithFormattedLink eml.project.description!no_description/></p>
+                            <p>
+                                <#if (eml.project.description)??>
+                                    <@eml.project.description?interpret />
+                                <#else>
+                                    ${no_description}
+                                </#if>
+                            </p>
 
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <#if eml.project.title?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.title'/></th>
-                                            <td><@textWithFormattedLink eml.project.title!/></td>
+                                            <td><@eml.project.title?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.identifier?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.identifier'/></th>
-                                            <td><@textWithFormattedLink eml.project.identifier!/></td>
+                                            <td><@eml.project.identifier?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.funding?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.funding'/></th>
-                                            <td><@textWithFormattedLink eml.project.funding/></td>
+                                            <td><@eml.project.funding?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.studyAreaDescription.descriptorValue?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th>
-                                            <td><@textWithFormattedLink eml.project.studyAreaDescription.descriptorValue/></td>
+                                            <td><@eml.project.studyAreaDescription.descriptorValue?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.designDescription?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.designDescription'/></th>
-                                            <td><@textWithFormattedLink eml.project.designDescription/></td>
+                                            <td><@eml.project.designDescription?interpret /></td>
                                         </tr>
                                     </#if>
                                 </table>
@@ -842,8 +868,12 @@
                             <#if (eml.project.personnel?size >0)>
                                 <br>
                                 <p class="text-smaller fw-bold"><@s.text name='eml.project.personnel.intro'/>:</p>
-                                <div>
-                                    <@contactList eml.project.personnel/>
+                                <div class="row border">
+                                    <#list eml.project.personnel as c>
+                                        <div class="col-lg-4">
+                                            <@contact con=c type="" dcPropertyType="" />
+                                        </div>
+                                    </#list>
                                 </div>
                                 <div class="clearfix"></div>
                             </#if>
@@ -859,7 +889,11 @@
                             </h4>
 
                             <p class="overflow-x-auto">
-                                <@textWithFormattedLink eml.sampleDescription!no_description/>
+                                <#if (eml.sampleDescription)??>
+                                    <@eml.sampleDescription?interpret />
+                                <#else>
+                                    ${no_description}
+                                </#if>
                             </p>
 
                             <div class="table-responsive">
@@ -867,14 +901,14 @@
                                     <#if eml.studyExtent?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.studyExtent'/></th>
-                                            <td><@textWithFormattedLink eml.studyExtent/></td>
+                                            <td><@eml.studyExtent?interpret /></td>
                                         </tr>
                                     </#if>
 
                                     <#if eml.qualityControl?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.qualityControl'/></th>
-                                            <td><@textWithFormattedLink eml.qualityControl/></td>
+                                            <td><@eml.qualityControl?interpret /></td>
                                         </tr>
                                     </#if>
                                 </table>
@@ -888,7 +922,7 @@
                                     <#list eml.methodSteps as item>
                                         <#if (eml.methodSteps[item_index]?has_content)>
                                             <li>
-                                                <@textWithFormattedLink eml.methodSteps[item_index]/>
+                                                <@eml.methodSteps[item_index]?interpret />
                                             </li>
                                         </#if>
                                     </#list>
@@ -983,8 +1017,7 @@
                                 <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                     <#if item.citation?has_content>
                                         <li property="dc:references">
-                                            <@textWithFormattedLink item.citation/>
-                                            <@textWithFormattedLink item.identifier!/>
+                                            <@item.citation?interpret /> <@textWithFormattedLink item.identifier!/>
                                         </li>
                                     </#if>
                                 </#list>
@@ -1003,21 +1036,21 @@
                         </h4>
 
                         <div>
-                            <#if eml.additionalInfo?has_content>
-                                <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
+                            <#if (eml.additionalInfo)?has_content>
+                                <p class="overflow-x-auto"><@eml.additionalInfo?interpret /></p>
                             </#if>
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <#if eml.purpose?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.purpose'/></th>
-                                            <td><@textWithFormattedLink eml.purpose/></td>
+                                            <td><@eml.purpose?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if eml.updateFrequencyDescription?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
-                                            <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
+                                            <td><@eml.updateFrequencyDescription?interpret /></td>
                                         </tr>
                                     </#if>
                                     <#if (eml.alternateIdentifiers?size > 0)>
