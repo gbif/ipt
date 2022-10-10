@@ -30,6 +30,8 @@
 
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
+    <Logger name="com.networknt.schema" level="ERROR" />
+
     <Root level="DEBUG">
       <AppenderRef ref="CONSOLE"/>
     </Root>
