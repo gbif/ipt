@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.StrutsStatics;
 
 import com.google.inject.Inject;
@@ -75,7 +76,7 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
 
       try {
         URI iptUri = URI.create(cfg.getBaseUrl());
-        csrfCookie.setPath(iptUri.getPath());
+        csrfCookie.setPath(StringUtils.isEmpty(iptUri.getPath()) ? "/" : iptUri.getPath());
         csrfCookie.setDomain(iptUri.getHost());
         csrfCookie.setSecure(iptUri.getScheme().equalsIgnoreCase("https"));
       } catch (Exception e) {
