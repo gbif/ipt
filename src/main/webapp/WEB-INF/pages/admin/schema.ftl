@@ -65,6 +65,12 @@
                     </span>
                 </div>
 
+                <#if dataSchema.url??>
+                    <div class="text-center fs-smaller">
+                        <a href="${dataSchema.url}">${dataSchema.url}</a>
+                    </div>
+                </#if>
+
                 <div class="mt-2">
                     <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
                         <@s.text name="button.back"/>
@@ -98,6 +104,12 @@
                                 ${subSchema.title}
                             </h4>
                             <div class="mt-3 overflow-x-auto">
+                                <#if subSchema.description?has_content>
+                                    <p class="mb-4">
+                                        <@processDescription subSchema.description />
+                                    </p>
+                                </#if>
+
                                 <#list subSchema.fields as field>
                                     <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                         <div class="col-lg-3 mt-1">
