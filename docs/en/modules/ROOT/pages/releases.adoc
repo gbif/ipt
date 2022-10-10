@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-6-1-september-2022,2.6.1>>.
+The current, stable release is version <<2-6-2-october-2022,2.6.2>>.
 
 You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -14,6 +14,22 @@ endif::[]
 // Next release text kept for reuse, as it will be part of the Crowdin translation memory.
 //Version 2.5.2 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.2-RC1 is now available.
 //CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
+
+== *2.6.2* – October 2022
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.2/ipt-2.6.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:2.5@release-notes.adoc[IPT v2.6.2 Release Notes]
+* xref:2.5@index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/40?closed=1[7 issues].
+* Translated into 7 languages
+
+Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+This release includes a bug fix for user creation.
+
+No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
 
 == *2.6.1* – September 2022
 
@@ -27,9 +43,6 @@ Existing users may upgrade to this version following the instructions in the xre
 
 This release includes a bug fix for empty resource tables.
 
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *2.6.0* – September 2022
 
