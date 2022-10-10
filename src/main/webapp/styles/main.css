@@ -339,6 +339,10 @@ header, .dropdown-menu {
     font-size: 0.875rem !important;
 }
 
+.dropdown-menu[data-bs-popper] {
+    margin-top: 6px !important;
+}
+
 .dropdown-item {
     color: #4e565f;
 }
@@ -1242,6 +1246,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     border: 2px solid rgb(var(--navbar-link-color));
     border-radius: 50%;
     padding: 5px;
+    min-width: 32px;
 }
 
 .account-dropdown-icon {
