@@ -449,6 +449,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     return eml;
   }
 
+  public DataPackageMetadata getDataPackageMetadata() {
+    return dataPackageMetadata;
+  }
+
   /**
    * Get resource version. Same as EML version.
    *

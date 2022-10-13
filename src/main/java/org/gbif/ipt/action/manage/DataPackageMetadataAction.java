@@ -13,18 +13,18 @@
  */
 package org.gbif.ipt.action.manage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
-import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -135,5 +135,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public String getSection() {
     return section.getName();
+  }
+
+  public DataPackageMetadata getMetadata() {
+    return resource.getDataPackageMetadata();
   }
 }

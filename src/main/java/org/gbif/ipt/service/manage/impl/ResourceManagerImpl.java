@@ -1208,6 +1208,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Loads a resource's metadata from its datapackage.json file located inside its resource directory.
+   * If no datapackage.json file was found, the resource is loaded with an empty DataPackageMetadata instance.
+   *
+   * @param resource resource
+   */
+  private void loadDatapackageMetadata(Resource resource) {
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    ObjectMapper objectMapper = new ObjectMapper();
+    DataPackageMetadata metadata = null;
+    try {
+      metadata = objectMapper.readValue(metadataFile, DataPackageMetadata.class);
+    } catch (IOException e) {
+      // TODO: 13/10/2022 implement exception handling
+      throw new RuntimeException(e);
+    }
+    resource.setDataPackageMetadata(metadata);
+  }
+
+  /**
    * Loads a resource's inferred metadata from the xml file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
    *
@@ -1315,8 +1334,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
         }
 
+        // TODO: 13/10/2022 load eml or datapackage metadata, not both
         // load eml (this must be done before trying to convert version below)
         loadEml(resource);
+        loadDatapackageMetadata(resource);
+
 
         // load inferred metadata
         loadInferredMetadata(resource);
