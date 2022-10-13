@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,8 +26,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Contributor
@@ -34,13 +33,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * A contributor to this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "title",
-    "path",
-    "email",
-    "organization",
-    "role"
-})
 public class Contributor implements Serializable {
 
   private final static long serialVersionUID = -288140518286006582L;
@@ -52,7 +44,6 @@ public class Contributor implements Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("A human-readable title.")
   @NotNull
   private String title;
 
@@ -62,7 +53,6 @@ public class Contributor implements Serializable {
    * A fully qualified URL, or a POSIX file path.
    */
   @JsonProperty("path")
-  @JsonPropertyDescription("A fully qualified URL, or a POSIX file path.")
   @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$")
   private String path;
 
@@ -72,7 +62,6 @@ public class Contributor implements Serializable {
    * An email address.
    */
   @JsonProperty("email")
-  @JsonPropertyDescription("An email address.")
   private String email;
 
   /**
@@ -81,12 +70,12 @@ public class Contributor implements Serializable {
    * An organizational affiliation for this contributor.
    */
   @JsonProperty("organization")
-  @JsonPropertyDescription("An organizational affiliation for this contributor.")
   private String organization;
 
   @JsonProperty("role")
   private String role = "contributor";
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -193,4 +182,15 @@ public class Contributor implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Contributor.class.getSimpleName() + "[", "]")
+        .add("title='" + title + "'")
+        .add("path='" + path + "'")
+        .add("email='" + email + "'")
+        .add("organization='" + organization + "'")
+        .add("role='" + role + "'")
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

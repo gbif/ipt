@@ -26,24 +26,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "taxonID",
-    "taxonIDReference",
-    "scientificName",
-    "taxonRank",
-    "kingdom",
-    "phylum",
-    "class",
-    "order",
-    "family",
-    "genus",
-    "vernacularNames"
-})
 public class Taxonomic implements Serializable {
 
   private final static long serialVersionUID = 2951714488879146221L;
@@ -53,7 +38,6 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonID")
-  @JsonPropertyDescription("Unique identifier of the taxon according to the taxonomic reference list defined by `taxonIDReference`.")
   @NotNull
   private String taxonID;
 
@@ -62,7 +46,6 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonIDReference")
-  @JsonPropertyDescription("URL of the source (reference list) of the `taxonID`.")
   @NotNull
   private URI taxonIDReference;
 
@@ -71,7 +54,6 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("scientificName")
-  @JsonPropertyDescription("Scientific name of the taxon.")
   @NotNull
   private String scientificName;
 
@@ -79,49 +61,42 @@ public class Taxonomic implements Serializable {
    * Taxonomic rank of the scientific name.
    */
   @JsonProperty("taxonRank")
-  @JsonPropertyDescription("Taxonomic rank of the scientific name.")
   private Taxonomic.TaxonRank taxonRank;
 
   /**
    * Kingdom in which the taxon is classified.
    */
   @JsonProperty("kingdom")
-  @JsonPropertyDescription("Kingdom in which the taxon is classified.")
   private String kingdom;
 
   /**
    * Phylum or division in which the taxon is classified
    */
   @JsonProperty("phylum")
-  @JsonPropertyDescription("Phylum or division in which the taxon is classified")
   private String phylum;
 
   /**
    * Class in which the taxon is classified.
    */
   @JsonProperty("class")
-  @JsonPropertyDescription("Class in which the taxon is classified.")
   private String _class;
 
   /**
    * Order in which the taxon is classified.
    */
   @JsonProperty("order")
-  @JsonPropertyDescription("Order in which the taxon is classified.")
   private String order;
 
   /**
    * Family in which the taxon is classified.
    */
   @JsonProperty("family")
-  @JsonPropertyDescription("Family in which the taxon is classified.")
   private String family;
 
   /**
    * Genus in which the taxon is classified.
    */
   @JsonProperty("genus")
-  @JsonPropertyDescription("Genus in which the taxon is classified.")
   private String genus;
 
   // TODO: 12/10/2022 validate keys ^[a-z]{2}$
@@ -129,10 +104,10 @@ public class Taxonomic implements Serializable {
    * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 639-1 (e.g. `en` for English).
    */
   @JsonProperty("vernacularNames")
-  @JsonPropertyDescription("Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 639-1 (e.g. `en` for English).")
   @Valid
   private Map<String, String> vernacularNames;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();

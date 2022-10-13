@@ -28,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -37,18 +35,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Camera trap project or study that originated the package.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "id",
-    "title",
-    "acronym",
-    "description",
-    "path",
-    "samplingDesign",
-    "captureMethod",
-    "individualAnimals",
-    "classificationLevel",
-    "sequenceInterval"
-})
 public class Project implements Serializable {
 
   private final static long serialVersionUID = 926360715052617217L;
@@ -57,7 +43,6 @@ public class Project implements Serializable {
    * Unique identifier of the project.
    */
   @JsonProperty("id")
-  @JsonPropertyDescription("Unique identifier of the project.")
   private String id;
 
   /**
@@ -65,7 +50,6 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("Title of the project. Not to be confused with the title of the package (`package.title`).")
   @NotNull
   private String title;
 
@@ -73,21 +57,18 @@ public class Project implements Serializable {
    * Project acronym.
    */
   @JsonProperty("acronym")
-  @JsonPropertyDescription("Project acronym.")
   private String acronym;
 
   /**
    * Description of the project, ideally <a href="http://commonmark.org/">Markdown</a> formatted. Not to be confused with the description of the package (`package.description`).
    */
   @JsonProperty("description")
-  @JsonPropertyDescription("Description of the project, ideally [Markdown](http://commonmark.org/) formatted. Not to be confused with the description of the package (`package.description`).")
   private String description;
 
   /**
    * Project website.
    */
   @JsonProperty("path")
-  @JsonPropertyDescription("Project website.")
   private URI path;
 
   /**
@@ -95,7 +76,6 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("samplingDesign")
-  @JsonPropertyDescription("Type of a sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <https://doi.org/10.13140/RG.2.2.23409.17767>), pages 80-82: `simple random`: random distribution of sampling locations; `systematic random`: random distribution of sampling locations, but arranged in a regular pattern; `clustered random`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).")
   @NotNull
   private Project.SamplingDesign samplingDesign;
 
@@ -105,7 +85,6 @@ public class Project implements Serializable {
    */
   @JsonProperty("captureMethod")
   @JsonDeserialize(as = java.util.LinkedHashSet.class)
-  @JsonPropertyDescription("Method(s) used to capture the media files.")
   @Size(min = 1)
   @Valid
   @NotNull
@@ -116,7 +95,6 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("individualAnimals")
-  @JsonPropertyDescription("`true` if the project includes marked or recognizable individuals. See also `observations.individualID`.")
   @NotNull
   private Boolean individualAnimals;
 
@@ -125,7 +103,6 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("classificationLevel")
-  @JsonPropertyDescription("Information about a focal level of the classification process. `sequence`: classifications (i.e. rows in the `observations` resource) are provided at a sequence level (multiple media files can be part of one sequence); `media`: classifications are available for each single media file.")
   @NotNull
   private Project.ClassificationLevel classificationLevel;
 
@@ -134,10 +111,10 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("sequenceInterval")
-  @JsonPropertyDescription("Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.")
   @NotNull
   private Integer sequenceInterval;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();

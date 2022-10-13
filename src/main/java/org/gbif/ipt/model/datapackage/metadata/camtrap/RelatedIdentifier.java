@@ -25,20 +25,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Related identifier.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "relationType",
-    "relatedIdentifier",
-    "resourceTypeGeneral",
-    "relatedIdentifierType"
-})
 public class RelatedIdentifier implements Serializable {
 
   private final static long serialVersionUID = 3596514384020747828L;
@@ -48,7 +40,6 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relationType")
-  @JsonPropertyDescription("Description of the relationship between the resource (the package) and the related resource.")
   @NotNull
   private RelatedIdentifier.RelationType relationType;
 
@@ -57,7 +48,6 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relatedIdentifier")
-  @JsonPropertyDescription("Unique identifier of the related resource (e.g. a DOI or URL).")
   @NotNull
   private String relatedIdentifier;
 
@@ -65,7 +55,6 @@ public class RelatedIdentifier implements Serializable {
    * General type of the related resource.
    */
   @JsonProperty("resourceTypeGeneral")
-  @JsonPropertyDescription("General type of the related resource.")
   private RelatedIdentifier.ResourceTypeGeneral resourceTypeGeneral;
 
   /**
@@ -73,10 +62,10 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relatedIdentifierType")
-  @JsonPropertyDescription("Type of the `RelatedIdentifier`.")
   @NotNull
   private RelatedIdentifier.RelatedIdentifierType relatedIdentifierType;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();

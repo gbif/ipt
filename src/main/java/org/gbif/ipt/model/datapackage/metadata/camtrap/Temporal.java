@@ -24,17 +24,11 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Temporal coverage of the package.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "start",
-    "end"
-})
 public class Temporal implements Serializable {
 
   private final static long serialVersionUID = 1939846711591134405L;
@@ -44,7 +38,6 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("start")
-  @JsonPropertyDescription("Start date of the first deployment, as an ISO 8601 formatted string (`YYYY-MM-DD`).")
   @NotNull
   private String start;
 
@@ -53,10 +46,10 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("end")
-  @JsonPropertyDescription("End date of the last (completed) deployment, as an ISO 8601 formatted string (`YYYY-MM-DD`).")
   @NotNull
   private String end;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();

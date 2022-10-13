@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -29,8 +30,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Data Package
@@ -38,21 +37,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Data Package is a simple specification for data access and delivery.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "profile",
-    "name",
-    "id",
-    "title",
-    "description",
-    "homepage",
-    "created",
-    "contributors",
-    "keywords",
-    "image",
-    "licenses",
-    "resources",
-    "sources"
-})
 public class DataPackageMetadata implements Serializable {
 
   private final static long serialVersionUID = 5948080618683312611L;
@@ -63,7 +47,6 @@ public class DataPackageMetadata implements Serializable {
    * The profile of this descriptor.
    */
   @JsonProperty("profile")
-  @JsonPropertyDescription("The profile of this descriptor.")
   private String profile = "data-package";
 
   /**
@@ -72,7 +55,6 @@ public class DataPackageMetadata implements Serializable {
    * An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.
    */
   @JsonProperty("name")
-  @JsonPropertyDescription("An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.")
   @Pattern(regexp = "^([-a-z0-9._/])+$")
   private String name;
 
@@ -82,7 +64,6 @@ public class DataPackageMetadata implements Serializable {
    * A property reserved for globally unique identifiers. Examples of identifiers that are unique include UUIDs and DOIs.
    */
   @JsonProperty("id")
-  @JsonPropertyDescription("A property reserved for globally unique identifiers. Examples of identifiers that are unique include UUIDs and DOIs.")
   private String id;
 
   /**
@@ -91,7 +72,6 @@ public class DataPackageMetadata implements Serializable {
    * A human-readable title.
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("A human-readable title.")
   private String title;
 
   /**
@@ -100,7 +80,6 @@ public class DataPackageMetadata implements Serializable {
    * A text description. Markdown is encouraged.
    */
   @JsonProperty("description")
-  @JsonPropertyDescription("A text description. Markdown is encouraged.")
   private String description;
 
   /**
@@ -109,8 +88,15 @@ public class DataPackageMetadata implements Serializable {
    * The home on the web that is related to this data package.
    */
   @JsonProperty("homepage")
-  @JsonPropertyDescription("The home on the web that is related to this data package.")
   private URI homepage;
+
+  /**
+   * Version
+   * <p>
+   * A version string identifying the version of the package.
+   */
+  @JsonProperty("version")
+  private Object version;
 
   /**
    * Created
@@ -118,7 +104,6 @@ public class DataPackageMetadata implements Serializable {
    * The datetime on which this descriptor was created.
    */
   @JsonProperty("created")
-  @JsonPropertyDescription("The datetime on which this descriptor was created.")
   private Date created;
 
   /**
@@ -127,7 +112,6 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  @JsonPropertyDescription("The contributors to this descriptor.")
   @Size(min = 1)
   @Valid
   private List<Contributor> contributors = null;
@@ -138,7 +122,6 @@ public class DataPackageMetadata implements Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
-  @JsonPropertyDescription("A list of keywords that describe this package.")
   @Size(min = 1)
   @Valid
   private List<String> keywords = null;
@@ -149,7 +132,6 @@ public class DataPackageMetadata implements Serializable {
    * An image to represent this package.
    */
   @JsonProperty("image")
-  @JsonPropertyDescription("A image to represent this package.")
   private String image;
 
   /**
@@ -158,7 +140,6 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  @JsonPropertyDescription("The license(s) under which this package is published.")
   @Size(min = 1)
   @Valid
   private List<License> licenses = null;
@@ -170,7 +151,6 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
-  @JsonPropertyDescription("An `array` of Data Resource objects, each compliant with the [Data Resource](/data-resource/) specification.")
   @Size(min = 1)
   @Valid
   @NotNull
@@ -182,11 +162,11 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @JsonPropertyDescription("The raw sources for this resource.")
   @Size()
   @Valid
   private List<Source> sources = null;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -309,6 +289,26 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("homepage")
   public void setHomepage(URI homepage) {
     this.homepage = homepage;
+  }
+
+  /**
+   * Version
+   * <p>
+   * A version string identifying the version of the package.
+   */
+  @JsonProperty("version")
+  public Object getVersion() {
+    return version;
+  }
+
+  /**
+   * Version
+   * <p>
+   * A version string identifying the version of the package.
+   */
+  @JsonProperty("version")
+  public void setVersion(Object version) {
+    this.version = version;
   }
 
   /**
@@ -463,4 +463,24 @@ public class DataPackageMetadata implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DataPackageMetadata.class.getSimpleName() + "[", "]")
+        .add("profile='" + profile + "'")
+        .add("name='" + name + "'")
+        .add("id='" + id + "'")
+        .add("title='" + title + "'")
+        .add("description='" + description + "'")
+        .add("homepage=" + homepage)
+        .add("version=" + version)
+        .add("created=" + created)
+        .add("contributors=" + contributors)
+        .add("keywords=" + keywords)
+        .add("image='" + image + "'")
+        .add("licenses=" + licenses)
+        .add("resources=" + resources)
+        .add("sources=" + sources)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

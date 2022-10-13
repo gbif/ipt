@@ -13,24 +13,15 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.Valid;
+import org.gbif.ipt.model.datapackage.metadata.Source;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.StringJoiner;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "version"
-})
-public class Source implements Serializable {
+public class CamtrapSource extends Source {
 
   private final static long serialVersionUID = -86921756591701358L;
 
@@ -38,12 +29,7 @@ public class Source implements Serializable {
    * Version of the source.
    */
   @JsonProperty("version")
-  @JsonPropertyDescription("Version of the source.")
   private String version;
-
-  @JsonIgnore
-  @Valid
-  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * Version of the source.
@@ -61,14 +47,10 @@ public class Source implements Serializable {
     this.version = version;
   }
 
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", CamtrapSource.class.getSimpleName() + "[", "]")
+        .add("version='" + version + "'")
+        .toString();
   }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
 }

@@ -13,27 +13,20 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import java.io.Serializable;
+import org.gbif.ipt.model.datapackage.metadata.License;
+
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
+import java.util.StringJoiner;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "scope"
-})
-public class License implements Serializable {
+public class CamtrapLicense extends License {
 
   private final static long serialVersionUID = -6253983938937199264L;
 
@@ -42,20 +35,15 @@ public class License implements Serializable {
    * (Required)
    */
   @JsonProperty("scope")
-  @JsonPropertyDescription("Scope of the license. `data` applies to the content of the package and resources, `media` to the (locally or externally hosted) media files referenced in `media.filePath`.")
   @NotNull
-  private License.Scope scope;
-
-  @JsonIgnore
-  @Valid
-  private Map<String, Object> additionalProperties = new HashMap<>();
+  private CamtrapLicense.Scope scope;
 
   /**
    * Scope of the license. `data` applies to the content of the package and resources, `media` to the (locally or externally hosted) media files referenced in `media.filePath`.
    * (Required)
    */
   @JsonProperty("scope")
-  public License.Scope getScope() {
+  public CamtrapLicense.Scope getScope() {
     return scope;
   }
 
@@ -64,20 +52,9 @@ public class License implements Serializable {
    * (Required)
    */
   @JsonProperty("scope")
-  public void setScope(License.Scope scope) {
+  public void setScope(CamtrapLicense.Scope scope) {
     this.scope = scope;
   }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
 
   /**
    * Scope of the license. `data` applies to the content of the package and resources, `media` to the (locally or externally hosted) media files referenced in `media.filePath`.
@@ -87,10 +64,10 @@ public class License implements Serializable {
     DATA("data"),
     MEDIA("media");
     private final String value;
-    private final static Map<String, License.Scope> CONSTANTS = new HashMap<String, License.Scope>();
+    private final static Map<String, CamtrapLicense.Scope> CONSTANTS = new HashMap<>();
 
     static {
-      for (License.Scope c : values()) {
+      for (CamtrapLicense.Scope c : values()) {
         CONSTANTS.put(c.value, c);
       }
     }
@@ -110,8 +87,8 @@ public class License implements Serializable {
     }
 
     @JsonCreator
-    public static License.Scope fromValue(String value) {
-      License.Scope constant = CONSTANTS.get(value);
+    public static CamtrapLicense.Scope fromValue(String value) {
+      CamtrapLicense.Scope constant = CONSTANTS.get(value);
       if (constant == null) {
         throw new IllegalArgumentException(value);
       } else {
@@ -121,4 +98,10 @@ public class License implements Serializable {
 
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", CamtrapLicense.class.getSimpleName() + "[", "]")
+        .add("scope=" + scope)
+        .toString();
+  }
 }

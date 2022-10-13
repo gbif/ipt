@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -27,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Data Resource
@@ -36,23 +35,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Data Resource.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "profile",
-    "name",
-    "path",
-    "data",
-    "schema",
-    "title",
-    "description",
-    "homepage",
-    "sources",
-    "licenses",
-    "format",
-    "mediatype",
-    "encoding",
-    "bytes",
-    "hash"
-})
 public class Resource implements Serializable {
 
   private final static long serialVersionUID = -7790507710447205789L;
@@ -63,7 +45,6 @@ public class Resource implements Serializable {
    * The profile of this descriptor.
    */
   @JsonProperty("profile")
-  @JsonPropertyDescription("The profile of this descriptor.")
   private String profile = "data-resource";
 
   /**
@@ -72,9 +53,8 @@ public class Resource implements Serializable {
    * An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.
    */
   @JsonProperty("name")
-  @JsonPropertyDescription("An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.")
   @Pattern(regexp = "^([-a-z0-9._/])+$")
-  private String name;
+  private CharSequence name;
 
   /**
    * Path
@@ -82,7 +62,6 @@ public class Resource implements Serializable {
    * A reference to the data for this resource, as either a path as a string, or an array of paths as strings. of valid URIs.
    */
   @JsonProperty("path")
-  @JsonPropertyDescription("A reference to the data for this resource, as either a path as a string, or an array of paths as strings. of valid URIs.")
   private Object path;
 
   /**
@@ -91,7 +70,6 @@ public class Resource implements Serializable {
    * Inline data for this resource.
    */
   @JsonProperty("data")
-  @JsonPropertyDescription("Inline data for this resource.")
   private Object data;
 
   /**
@@ -100,7 +78,6 @@ public class Resource implements Serializable {
    * A schema for this resource.
    */
   @JsonProperty("schema")
-  @JsonPropertyDescription("A schema for this resource.")
   private String schema;
 
   /**
@@ -109,7 +86,6 @@ public class Resource implements Serializable {
    * A human-readable title.
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("A human-readable title.")
   private String title;
 
   /**
@@ -118,7 +94,6 @@ public class Resource implements Serializable {
    * A text description. Markdown is encouraged.
    */
   @JsonProperty("description")
-  @JsonPropertyDescription("A text description. Markdown is encouraged.")
   private String description;
 
   /**
@@ -127,7 +102,6 @@ public class Resource implements Serializable {
    * The home on the web that is related to this data package.
    */
   @JsonProperty("homepage")
-  @JsonPropertyDescription("The home on the web that is related to this data package.")
   private URI homepage;
 
   /**
@@ -136,7 +110,6 @@ public class Resource implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @JsonPropertyDescription("The raw sources for this resource.")
   @Size()
   @Valid
   private List<Source> sources = null;
@@ -147,7 +120,6 @@ public class Resource implements Serializable {
    * The license(s) under which the resource is published.
    */
   @JsonProperty("licenses")
-  @JsonPropertyDescription("The license(s) under which the resource is published.")
   @Size(min = 1)
   @Valid
   private List<License> licenses = null;
@@ -158,7 +130,6 @@ public class Resource implements Serializable {
    * The file format of this resource.
    */
   @JsonProperty("format")
-  @JsonPropertyDescription("The file format of this resource.")
   private String format;
 
   /**
@@ -167,7 +138,6 @@ public class Resource implements Serializable {
    * The media type of this resource. Can be any valid media type listed with <a href="https://www.iana.org/assignments/media-types/media-types.xhtml">IANA</a>.
    */
   @JsonProperty("mediatype")
-  @JsonPropertyDescription("The media type of this resource. Can be any valid media type listed with [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml).")
   @Pattern(regexp = "^(.+)/(.+)$")
   private String mediatype;
 
@@ -177,7 +147,6 @@ public class Resource implements Serializable {
    * The file encoding of this resource.
    */
   @JsonProperty("encoding")
-  @JsonPropertyDescription("The file encoding of this resource.")
   private String encoding = "utf-8";
 
   /**
@@ -186,7 +155,6 @@ public class Resource implements Serializable {
    * The size of this resource in bytes.
    */
   @JsonProperty("bytes")
-  @JsonPropertyDescription("The size of this resource in bytes.")
   private Integer bytes;
 
   /**
@@ -195,10 +163,10 @@ public class Resource implements Serializable {
    * The MD5 hash of this resource. Indicate other hashing algorithms with the {algorithm}:{hash} format.
    */
   @JsonProperty("hash")
-  @JsonPropertyDescription("The MD5 hash of this resource. Indicate other hashing algorithms with the {algorithm}:{hash} format.")
   @Pattern(regexp = "^([^:]+:[a-fA-F0-9]+|[a-fA-F0-9]{32}|)$")
   private String hash;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -229,7 +197,7 @@ public class Resource implements Serializable {
    * An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.
    */
   @JsonProperty("name")
-  public String getName() {
+  public CharSequence getName() {
     return name;
   }
 
@@ -239,7 +207,7 @@ public class Resource implements Serializable {
    * An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.
    */
   @JsonProperty("name")
-  public void setName(String name) {
+  public void setName(CharSequence name) {
     this.name = name;
   }
 
@@ -513,4 +481,25 @@ public class Resource implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Resource.class.getSimpleName() + "[", "]")
+        .add("profile='" + profile + "'")
+        .add("name=" + name)
+        .add("path=" + path)
+        .add("data=" + data)
+        .add("schema='" + schema + "'")
+        .add("title='" + title + "'")
+        .add("description='" + description + "'")
+        .add("homepage=" + homepage)
+        .add("sources=" + sources)
+        .add("licenses=" + licenses)
+        .add("format='" + format + "'")
+        .add("mediatype='" + mediatype + "'")
+        .add("encoding='" + encoding + "'")
+        .add("bytes=" + bytes)
+        .add("hash='" + hash + "'")
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

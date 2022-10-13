@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -24,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * License
@@ -33,11 +32,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "name",
-    "path",
-    "title"
-})
 public class License implements Serializable {
 
   private final static long serialVersionUID = 5529108333342991396L;
@@ -48,7 +42,6 @@ public class License implements Serializable {
    * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
   @JsonProperty("name")
-  @JsonPropertyDescription("MUST be an Open Definition license identifier, see http://licenses.opendefinition.org/")
   @Pattern(regexp = "^([-a-zA-Z0-9._])+$")
   private String name;
 
@@ -58,7 +51,6 @@ public class License implements Serializable {
    * A fully qualified URL, or a POSIX file path.
    */
   @JsonProperty("path")
-  @JsonPropertyDescription("A fully qualified URL, or a POSIX file path.")
   @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$")
   private String path;
 
@@ -68,9 +60,9 @@ public class License implements Serializable {
    * A human-readable title.
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("A human-readable title.")
   private String title;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -145,4 +137,13 @@ public class License implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", License.class.getSimpleName() + "[", "]")
+        .add("name='" + name + "'")
+        .add("path='" + path + "'")
+        .add("title='" + title + "'")
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

@@ -13,140 +13,115 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import java.io.Serializable;
+import org.gbif.ipt.model.datapackage.metadata.Resource;
+
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Data Resource
- * <p>
- * Data Resource.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "name",
-    "profile",
-    "schema"
-})
-public class Resource implements Serializable {
+public class CamtrapResource extends Resource {
 
   private final static long serialVersionUID = -5654049327007100865L;
 
   /**
    * Identifier of the resource.
    */
+  @Override
   @JsonProperty("name")
-  @JsonPropertyDescription("Identifier of the resource.")
-  private Resource.Name name;
+  public CamtrapResource.Name getName() {
+    return ((Name) super.getName());
+  }
+
+  /**
+   * Identifier of the resource.
+   */
+  @JsonProperty("name")
+  public void setName(CamtrapResource.Name name) {
+    super.setName(name);
+  }
 
   /**
    * (Required)
    */
+  @Override
   @JsonProperty("profile")
   @NotNull
-  private Object profile;
+  public String getProfile() {
+    return super.getProfile();
+  }
 
   /**
    * (Required)
    */
+  @Override
+  @JsonProperty("profile")
+  public void setProfile(String profile) {
+    super.setProfile(profile);
+  }
+
+  /**
+   * (Required)
+   */
+  @Override
   @JsonProperty("schema")
   @NotNull
-  private Object schema;
-
-  @JsonIgnore
-  @Valid
-  private Map<String, Object> additionalProperties = new HashMap<>();
-
-  /**
-   * Identifier of the resource.
-   */
-  @JsonProperty("name")
-  public Resource.Name getName() {
-    return name;
-  }
-
-  /**
-   * Identifier of the resource.
-   */
-  @JsonProperty("name")
-  public void setName(Resource.Name name) {
-    this.name = name;
+  public String getSchema() {
+    return super.getSchema();
   }
 
   /**
    * (Required)
    */
-  @JsonProperty("profile")
-  public Object getProfile() {
-    return profile;
-  }
-
-  /**
-   * (Required)
-   */
-  @JsonProperty("profile")
-  public void setProfile(Object profile) {
-    this.profile = profile;
-  }
-
-  /**
-   * (Required)
-   */
+  @Override
   @JsonProperty("schema")
-  public Object getSchema() {
-    return schema;
+  public void setSchema(String schema) {
+    super.setSchema(schema);
   }
-
-  /**
-   * (Required)
-   */
-  @JsonProperty("schema")
-  public void setSchema(Object schema) {
-    this.schema = schema;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
 
   /**
    * Identifier of the resource.
    */
-  public enum Name {
+  public enum Name implements CharSequence {
 
     DEPLOYMENTS("deployments"),
     MEDIA("media"),
     OBSERVATIONS("observations");
     private final String value;
-    private final static Map<String, Resource.Name> CONSTANTS = new HashMap<>();
+    private final static Map<String, CamtrapResource.Name> CONSTANTS = new HashMap<>();
 
     static {
-      for (Resource.Name c : values()) {
+      for (CamtrapResource.Name c : values()) {
         CONSTANTS.put(c.value, c);
       }
     }
 
     Name(String value) {
       this.value = value;
+    }
+
+    @Override
+    public int length() {
+      return this.value.length();
+    }
+
+    @Override
+    public char charAt(int index) {
+      return this.value.charAt(index);
+    }
+
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public CharSequence subSequence(int start, int end) {
+      return this.value.subSequence(start, end);
     }
 
     @Override
@@ -160,8 +135,8 @@ public class Resource implements Serializable {
     }
 
     @JsonCreator
-    public static Resource.Name fromValue(String value) {
-      Resource.Name constant = CONSTANTS.get(value);
+    public static CamtrapResource.Name fromValue(String value) {
+      CamtrapResource.Name constant = CONSTANTS.get(value);
       if (constant == null) {
         throw new IllegalArgumentException(value);
       } else {

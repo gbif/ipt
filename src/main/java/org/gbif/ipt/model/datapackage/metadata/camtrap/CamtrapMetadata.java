@@ -13,166 +13,32 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import java.io.Serializable;
+import org.gbif.ipt.model.datapackage.metadata.Contributor;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.License;
+import org.gbif.ipt.model.datapackage.metadata.Resource;
+import org.gbif.ipt.model.datapackage.metadata.Source;
+
 import java.net.URI;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "resources",
-    "profile",
-    "name",
-    "id",
-    "created",
-    "title",
-    "contributors",
-    "description",
-    "version",
-    "keywords",
-    "image",
-    "homepage",
-    "sources",
-    "licenses",
-    "bibliographicCitation",
-    "project",
-    "coordinatePrecision",
-    "spatial",
-    "temporal",
-    "taxonomic",
-    "relatedIdentifiers",
-    "references"
-})
-public class CamtrapMetadata implements Serializable {
+public class CamtrapMetadata extends DataPackageMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for the requirements for those resources.
-   */
-  @JsonProperty("resources")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#resource-information). Camtrap DP further requires each object to be a [Tabular Data Resource](https://specs.frictionlessdata.io/tabular-data-resource/) with a specific `name` and `schema`. See [Data](../data) for the requirements for those resources.")
-  @Size(min = 3, max = 3)
-  @Valid
-  private List<Resource> resources = null;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
-   * (Required)
-   */
-  @JsonProperty("profile")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#profile). Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).")
-  @NotNull
-  private URI profile;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#name">Data Package specification</a>.
-   */
-  @JsonProperty("name")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#name).")
-  private Object name;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#id">Data Package specification</a>.
-   */
-  @JsonProperty("id")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#id).")
-  private Object id;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>. Camtrap DP makes this a required property.
-   * (Required)
-   */
-  @JsonProperty("created")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#created). Camtrap DP makes this a required property.")
-  @NotNull
-  private Object created;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>. Not to be confused with the title of the project that originated the package (`package.project.title`).
-   */
-  @JsonProperty("title")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#title). Not to be confused with the title of the project that originated the package (`package.project.title`).")
-  private Object title;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property. Can include people and organizations.
-   * (Required)
-   */
-  @JsonProperty("contributors")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#contributors). Camtrap DP makes this a required property. Can include people and organizations.")
-  @NotNull
-  private Object contributors;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>. Not to be confused with the description of the project that originated the package (`package.project.description`).
-   */
-  @JsonProperty("description")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#description). Not to be confused with the description of the project that originated the package (`package.project.description`).")
-  private Object description;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#version">Data Package specification</a>.
-   */
-  @JsonProperty("version")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#version).")
-  private Object version;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#keywords">Data Package specification</a>.
-   */
-  @JsonProperty("keywords")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#keywords).")
-  private Object keywords;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#image">Data Package specification</a>.
-   */
-  @JsonProperty("image")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#image).")
-  private Object image;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#homepage">Data Package specification</a>.
-   */
-  @JsonProperty("homepage")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#homepage).")
-  private Object homepage;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>. Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
-   */
-  @JsonProperty("sources")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#sources). Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).")
-  @Valid
-  private List<Source> sources = null;
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>. If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
-   */
-  @JsonProperty("licenses")
-  @JsonPropertyDescription("See [Data Package specification](https://specs.frictionlessdata.io/data-package/#licenses). If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.")
-  @Size(min = 2)
-  @Valid
-  private List<License> licenses = null;
 
   /**
    * Bibliographic/recommended citation for the package.
    */
   @JsonProperty("bibliographicCitation")
-  @JsonPropertyDescription("Bibliographic/recommended citation for the package.")
   private String bibliographicCitation;
 
   /**
@@ -180,7 +46,6 @@ public class CamtrapMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("project")
-  @JsonPropertyDescription("Camera trap project or study that originated the package.")
   @Valid
   @NotNull
   private Project project;
@@ -189,7 +54,6 @@ public class CamtrapMetadata implements Serializable {
    * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude` (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree). Especially relevant when coordinates have been rounded to protect sensitive species.
    */
   @JsonProperty("coordinatePrecision")
-  @JsonPropertyDescription("Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude` (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree). Especially relevant when coordinates have been rounded to protect sensitive species.")
   private Double coordinatePrecision;
 
   /**
@@ -199,7 +63,6 @@ public class CamtrapMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("spatial")
-  @JsonPropertyDescription("This object represents a geometry, feature, or collection of features.")
   @Valid
   @NotNull
   private Geojson spatial;
@@ -209,7 +72,6 @@ public class CamtrapMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("temporal")
-  @JsonPropertyDescription("Temporal coverage of the package.")
   @Valid
   @NotNull
   private Temporal temporal;
@@ -219,7 +81,6 @@ public class CamtrapMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonomic")
-  @JsonPropertyDescription("Taxonomic coverage of the package, based on the unique `observations.scientificName`.")
   @Valid
   @NotNull
   private List<Taxonomic> taxonomic = null;
@@ -228,7 +89,6 @@ public class CamtrapMetadata implements Serializable {
    * Identifiers of resources related to the package (e.g. papers, project pages, derived datasets, APIs, etc.).
    */
   @JsonProperty("relatedIdentifiers")
-  @JsonPropertyDescription("Identifiers of resources related to the package (e.g. papers, project pages, derived datasets, APIs, etc.).")
   @Valid
   private List<RelatedIdentifier> relatedIdentifiers = null;
 
@@ -236,242 +96,272 @@ public class CamtrapMetadata implements Serializable {
    * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
    */
   @JsonProperty("references")
-  @JsonPropertyDescription("List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.")
   @Valid
   private List<String> references = null;
 
-  @JsonIgnore
-  @Valid
-  private Map<String, Object> additionalProperties = new HashMap<>();
-
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See [Data](../data) for the requirements for those resources.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for the requirements for those resources.
    */
+  @Override
   @JsonProperty("resources")
+  @Size(min = 3, max = 3)
+  @Valid
   public List<Resource> getResources() {
-    return resources;
+    return super.getResources();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See [Data](../data) for the requirements for those resources.
    */
+  @Override
   @JsonProperty("resources")
   public void setResources(List<Resource> resources) {
-    this.resources = resources;
+    super.setResources(resources);
+  }
+
+  // TODO: 13/10/2022 parent profile is String, camtrap is URI. Keep it String, but validate it is a valid URL?
+  /**
+   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
+   * (Required)
+   */
+  @Override
+  @JsonProperty("profile")
+  public String getProfile() {
+    return super.getProfile();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
    * (Required)
    */
+  @Override
   @JsonProperty("profile")
-  public URI getProfile() {
-    return profile;
-  }
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
-   * (Required)
-   */
-  @JsonProperty("profile")
-  public void setProfile(URI profile) {
-    this.profile = profile;
+  public void setProfile(String profile) {
+    super.setProfile(profile);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#name">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("name")
-  public Object getName() {
-    return name;
+  public String getName() {
+    return super.getName();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#name">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("name")
-  public void setName(Object name) {
-    this.name = name;
+  public void setName(String name) {
+    super.setName(name);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#id">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("id")
-  public Object getId() {
-    return id;
+  public String getId() {
+    return super.getId();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#id">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("id")
-  public void setId(Object id) {
-    this.id = id;
+  public void setId(String id) {
+    super.setId(id);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>. Camtrap DP makes this a required property.
    * (Required)
    */
+  @Override
   @JsonProperty("created")
-  public Object getCreated() {
-    return created;
+  public Date getCreated() {
+    return super.getCreated();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>. Camtrap DP makes this a required property.
    * (Required)
    */
+  @Override
   @JsonProperty("created")
-  public void setCreated(Object created) {
-    this.created = created;
+  public void setCreated(Date created) {
+    super.setCreated(created);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>. Not to be confused with the title of the project that originated the package (`package.project.title`).
    */
+  @Override
   @JsonProperty("title")
-  public Object getTitle() {
-    return title;
+  public String getTitle() {
+    return super.getTitle();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>. Not to be confused with the title of the project that originated the package (`package.project.title`).
    */
+  @Override
   @JsonProperty("title")
-  public void setTitle(Object title) {
-    this.title = title;
+  public void setTitle(String title) {
+    super.setTitle(title);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property. Can include people and organizations.
    * (Required)
    */
+  @Override
   @JsonProperty("contributors")
-  public Object getContributors() {
-    return contributors;
+  @NotNull
+  public List<Contributor> getContributors() {
+    return super.getContributors();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property. Can include people and organizations.
    * (Required)
    */
+  @Override
   @JsonProperty("contributors")
-  public void setContributors(Object contributors) {
-    this.contributors = contributors;
+  public void setContributors(List<Contributor> contributors) {
+    super.setContributors(contributors);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>. Not to be confused with the description of the project that originated the package (`package.project.description`).
    */
+  @Override
   @JsonProperty("description")
-  public Object getDescription() {
-    return description;
+  public String getDescription() {
+    return super.getDescription();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>. Not to be confused with the description of the project that originated the package (`package.project.description`).
    */
+  @Override
   @JsonProperty("description")
-  public void setDescription(Object description) {
-    this.description = description;
+  public void setDescription(String description) {
+    super.setDescription(description);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#version">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("version")
   public Object getVersion() {
-    return version;
+    return super.getVersion();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#version">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("version")
   public void setVersion(Object version) {
-    this.version = version;
+    super.setVersion(version);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#keywords">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("keywords")
-  public Object getKeywords() {
-    return keywords;
+  public List<String> getKeywords() {
+    return super.getKeywords();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#keywords">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("keywords")
-  public void setKeywords(Object keywords) {
-    this.keywords = keywords;
+  public void setKeywords(List<String> keywords) {
+    super.setKeywords(keywords);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#image">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("image")
-  public Object getImage() {
-    return image;
+  public String getImage() {
+    return super.getImage();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#image">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("image")
-  public void setImage(Object image) {
-    this.image = image;
+  public void setImage(String image) {
+    super.setImage(image);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#homepage">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("homepage")
-  public Object getHomepage() {
-    return homepage;
+  public URI getHomepage() {
+    return super.getHomepage();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#homepage">Data Package specification</a>.
    */
+  @Override
   @JsonProperty("homepage")
-  public void setHomepage(Object homepage) {
-    this.homepage = homepage;
+  public void setHomepage(URI homepage) {
+    super.setHomepage(homepage);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>. Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
    */
+  @Override
   @JsonProperty("sources")
+  @Valid
   public List<Source> getSources() {
-    return sources;
+    return super.getSources();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>. Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
    */
+  @Override
   @JsonProperty("sources")
   public void setSources(List<Source> sources) {
-    this.sources = sources;
+    super.setSources(sources);
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>. If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
    */
+  @Override
   @JsonProperty("licenses")
+  @Size(min = 2)
+  @Valid
   public List<License> getLicenses() {
-    return licenses;
+    return super.getLicenses();
   }
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>. If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
    */
+  @Override
   @JsonProperty("licenses")
   public void setLicenses(List<License> licenses) {
-    this.licenses = licenses;
+    super.setLicenses(licenses);
   }
 
   /**
@@ -614,14 +504,17 @@ public class CamtrapMetadata implements Serializable {
     this.references = references;
   }
 
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", CamtrapMetadata.class.getSimpleName() + "[", "]")
+        .add("bibliographicCitation='" + bibliographicCitation + "'")
+        .add("project=" + project)
+        .add("coordinatePrecision=" + coordinatePrecision)
+        .add("spatial=" + spatial)
+        .add("temporal=" + temporal)
+        .add("taxonomic=" + taxonomic)
+        .add("relatedIdentifiers=" + relatedIdentifiers)
+        .add("references=" + references)
+        .toString();
   }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
 }

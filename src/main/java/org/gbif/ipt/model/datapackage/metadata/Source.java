@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,8 +26,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Source
@@ -34,11 +33,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * A source file.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "title",
-    "path",
-    "email"
-})
 public class Source implements Serializable {
 
   private final static long serialVersionUID = -3013088705460436883L;
@@ -50,7 +44,6 @@ public class Source implements Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @JsonPropertyDescription("A human-readable title.")
   @NotNull
   private String title;
 
@@ -60,7 +53,6 @@ public class Source implements Serializable {
    * A fully qualified URL, or a POSIX file path.
    */
   @JsonProperty("path")
-  @JsonPropertyDescription("A fully qualified URL, or a POSIX file path.")
   @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$")
   private String path;
 
@@ -70,9 +62,9 @@ public class Source implements Serializable {
    * An email address.
    */
   @JsonProperty("email")
-  @JsonPropertyDescription("An email address.")
   private String email;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
@@ -149,4 +141,13 @@ public class Source implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Source.class.getSimpleName() + "[", "]")
+        .add("title='" + title + "'")
+        .add("path='" + path + "'")
+        .add("email='" + email + "'")
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

@@ -27,8 +27,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -37,11 +35,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * This object represents a geometry, feature, or collection of features.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "type",
-    "crs",
-    "bbox"
-})
 public class Geojson implements Serializable {
 
   private final static long serialVersionUID = -7011418636212199463L;
@@ -53,7 +46,6 @@ public class Geojson implements Serializable {
    * (Required)
    */
   @JsonProperty("type")
-  @JsonPropertyDescription("The type of GeoJSON object.")
   @NotNull
   private Geojson.Type type;
 
@@ -77,7 +69,6 @@ public class Geojson implements Serializable {
    * * CRS shall not change coordinate ordering.
    */
   @JsonProperty("crs")
-  @JsonPropertyDescription("The coordinate reference system (CRS) of a GeoJSON object is determined by its `crs` member (referred to as the CRS object below). If an object has no crs member, then its parent or grandparent object's crs member may be acquired. If no crs member can be so acquired, the default CRS shall apply to the GeoJSON object.\n\n* The default CRS is a geographic coordinate reference system, using the WGS84 datum, and with longitude and latitude units of decimal degrees.\n\n* The value of a member named `crs` must be a JSON object (referred to as the CRS object below) or JSON null. If the value of CRS is null, no CRS can be assumed.\n\n* The crs member should be on the top-level GeoJSON object in a hierarchy (in feature collection, feature, geometry order) and should not be repeated or overridden on children or grandchildren of the object.\n\n* A non-null CRS object has two mandatory members: `type` and `properties`.\n\n* The value of the type member must be a string, indicating the type of CRS object.\n\n* The value of the properties member must be an object.\n\n* CRS shall not change coordinate ordering.")
   private Object crs;
 
   /**
@@ -86,11 +77,11 @@ public class Geojson implements Serializable {
    * To include information on the coordinate range for geometries, features, or feature collections, a GeoJSON object may have a member named `bbox`. The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the contained geometries, with the lowest values for all axes followed by the highest values. The axes order of a bbox follows the axes order of geometries. In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference system of the GeoJSON object of which it is a member.
    */
   @JsonProperty("bbox")
-  @JsonPropertyDescription("To include information on the coordinate range for geometries, features, or feature collections, a GeoJSON object may have a member named `bbox`. The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the contained geometries, with the lowest values for all axes followed by the highest values. The axes order of a bbox follows the axes order of geometries. In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference system of the GeoJSON object of which it is a member.")
   @Size(min = 4)
   @Valid
   private List<Double> bbox = null;
 
+  @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
   @Valid
   private Map<String, Object> additionalProperties = new HashMap<>();
