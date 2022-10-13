@@ -58,6 +58,17 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
+    <action name="replace-datapackage-metadata" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceDatapackageMetadata">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">209715200</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
@@ -99,6 +110,11 @@
       <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
       <!-- on sucess redirect to the next metadata form page -->
       <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="datapackage-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+      <result name="input">/WEB-INF/pages/manage/dp-metadata/{1}.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/datapackage-metadata-${next}.do?r=${resource.shortname}</result>
     </action>
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">

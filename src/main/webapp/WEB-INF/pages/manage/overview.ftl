@@ -149,6 +149,15 @@
             }
         });
 
+        $("#datapackageMetadataFile").change(function() {
+            var usedFileName = $("#datapackageMetadataFile").prop("value");
+            if(usedFileName !== "") {
+                $("#datapackageMetadataReplace").show();
+                $("#datapackageMetadataCancel").show();
+                $("#datapackage-metadata-validate").show();
+            }
+        });
+
         $("#emlCancel").click(function(event) {
             event.preventDefault();
             $("#emlFile").prop("value", "");
