@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
@@ -66,7 +67,134 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>Data package: ${section} metadata</p>
+                            <p>
+                                <strong>Profile</strong>
+                                <br>
+                                ${metadata.profile!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Resources</strong>
+                                <br>
+                                <#if metadata.resources??>
+                                    <ul>
+                                        <#list metadata.resources as resource>
+                                            <li>${resource}</li>
+                                        </#list>
+                                    </ul>
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Name</strong>
+                                <br>
+                                ${metadata.name!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Id</strong>
+                                <br>
+                                ${metadata.id!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Created</strong>
+                                <br>
+                                <#if metadata.created??>
+                                    ${metadata.created?datetime?string.medium}
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Version</strong>
+                                <br>
+                                ${metadata.version!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Title</strong>
+                                <br>
+                                ${metadata.title!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Description</strong>
+                                <br>
+                                ${metadata.description!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Keywords</strong>
+                                <br>
+                                ${metadata.keywords!"-"}
+                            </p>
+
+                            <p>
+                                <strong>Contributors</strong>
+                                <br>
+                                <#if metadata.contributors??>
+                                    <ul>
+                                        <#list metadata.contributors as contributor>
+                                            <li>${contributor}</li>
+                                        </#list>
+                                    </ul>
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Homepage</strong>
+                                <br>
+                                <#if metadata.homepage?has_content>
+                                    ${metadata.homepage}
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Image</strong>
+                                <br>
+                                <#if metadata.image?has_content>
+                                    ${metadata.image}
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Sources</strong>
+                                <br>
+                                <#if metadata.sources??>
+                                    <ul>
+                                        <#list metadata.sources as source>
+                                            <li>${source}</li>
+                                        </#list>
+                                    </ul>
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
+                            <p>
+                                <strong>Licenses</strong>
+                                <br>
+                                <#if metadata.licenses??>
+                                    <ul>
+                                        <#list metadata.licenses as license>
+                                            <li>${license}</li>
+                                        </#list>
+                                    </ul>
+                                <#else>
+                                    -
+                                </#if>
+                            </p>
+
                         </div>
                     </div>
                 </main>
