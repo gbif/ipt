@@ -844,6 +844,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // transient properties
     xstream.omitField(Resource.class, "shortname");
     xstream.omitField(Resource.class, "eml");
+    xstream.omitField(Resource.class, "dataPackageMetadata");
     xstream.omitField(Resource.class, "type");
     // inferred metadata in the separate file
     xstream.omitField(Resource.class, "inferredMetadata");
