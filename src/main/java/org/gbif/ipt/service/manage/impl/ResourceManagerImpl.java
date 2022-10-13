@@ -73,6 +73,7 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -173,7 +174,9 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
+import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -181,14 +184,10 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
-import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.Constants.CLASS;
-import static org.gbif.ipt.config.Constants.EVENT_DATE;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
-import static org.gbif.ipt.config.Constants.LATITUDE;
-import static org.gbif.ipt.config.Constants.LONGITUDE;
 import static org.gbif.ipt.config.Constants.ORDER;
 import static org.gbif.ipt.config.Constants.PHYLUM;
 import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
@@ -341,6 +340,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       emlValidator.validate(emlString);
   }
 
+  private void validateDatapackageMetadataFile(File metadataFile) {
+    // TODO: 12/10/2022 implement 
+  }
+
   /**
    * Copies incoming eml file to resource directory with name eml.xml.
    * </br>
@@ -375,6 +378,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new ImportException("Invalid EML document", e);
     }
     return eml;
+  }
+
+  private DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile) throws ImportException {
+    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname);
+    try {
+      FileUtils.copyFile(metadataFile, dataDirMetadataFile);
+    } catch (IOException e) {
+      LOG.error("Unable to copy datapackage metadata file");
+    }
+
+    // TODO: 12/10/2022 do not create object mapper every time
+    DataPackageMetadata metadata;
+    ObjectMapper jsonObjectMapper = new ObjectMapper();
+    try {
+      metadata = jsonObjectMapper.readValue(dataDirMetadataFile, DataPackageMetadata.class);
+    } catch (Exception e) {
+      deleteDirectoryContainingSingleFile(dataDirMetadataFile);
+      throw new ImportException("Invalid metadata document", e);
+    }
+
+    return metadata;
   }
 
   /**
@@ -710,6 +734,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setMetadataModified(new Date());
     save(resource);
     saveEml(resource, true);
+  }
+
+  @Override
+  public void replaceDatapackageMetadata(Resource resource, File metadataFile, boolean validate) throws ImportException {
+    if (validate) {
+      validateDatapackageMetadataFile(metadataFile);
+    }
+    // copy metadata file to data directory (with name datapackage.json) and populate Eml instance
+    DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile);
+    resource.setDataPackageMetadata(metadata);
+    resource.setMetadataModified(new Date());
+    save(resource);
+    saveDatapackageMetadata(resource);
   }
 
   /**
@@ -2834,6 +2871,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // Locale.US it's used because uses '.' as the decimal separator
     EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
     LOG.debug("Updated EML file for " + resource);
+  }
+
+  @Override
+  public synchronized void saveDatapackageMetadata(Resource resource) {
+    // TODO: 12/10/2022 erase some internally set fields? 
+    // set modified date
+    resource.setModified(new Date());
+    // save into data dir
+//    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    // TODO: 12/10/2022 implement: what exactly do we need to do here?
+    LOG.debug("Updated metadata file for " + resource);
   }
 
   @Override

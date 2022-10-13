@@ -50,6 +50,7 @@ public class DataDir {
   public static final String PERSISTENCE_FILENAME = "resource.xml";
   public static final String INFERRED_METADATA_FILENAME = "inferredMetadata.xml";
   public static final String EML_XML_FILENAME = "eml.xml";
+  public static final String DATAPACKAGE_METADATA_JSON_FILENAME = "datapackage.json";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
@@ -282,6 +283,10 @@ public class DataDir {
    */
   public File resourceEmlFile(@NotNull String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + EML_XML_FILENAME);
+  }
+
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATAPACKAGE_METADATA_JSON_FILENAME);
   }
 
   public File resourceFile(Resource resource, String path) {

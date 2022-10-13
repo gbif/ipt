@@ -134,12 +134,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private StatusReport report;
   private Date now;
   private File emlFile;
+  private File datapackageMetadataFile;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
   private boolean validateEml = false;
+
+  private boolean validateDatapackageMetadata = false;
   private String summary;
 
   // preview
@@ -1517,8 +1520,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.validateEml = validateEml;
   }
 
+  public boolean isValidateDatapackageMetadata() {
+    return validateDatapackageMetadata;
+  }
+
+  public void setValidateDatapackageMetadata(boolean validateDatapackageMetadata) {
+    this.validateDatapackageMetadata = validateDatapackageMetadata;
+  }
+
   public void setEmlFile(File emlFile) {
     this.emlFile = emlFile;
+  }
+
+  public void setDatapackageMetadataFile(File datapackageMetadataFile) {
+    this.datapackageMetadataFile = datapackageMetadataFile;
   }
 
   public String replaceEml() {
@@ -1541,6 +1556,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     } catch (InvalidEmlException e) {
       LOG.error("Validation failed for EML document", e);
       addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
+      return ERROR;
+    }
+  }
+
+  public String replaceDatapackageMetadata() {
+    try {
+      resourceManager.replaceDatapackageMetadata(resource, datapackageMetadataFile, validateDatapackageMetadata);
+      // TODO: 12/10/2022 add action message?
+      return SUCCESS;
+    } catch (ImportException e) {
+      // TODO: 12/10/2022 log exception, add action error
       return ERROR;
     }
   }

@@ -253,6 +253,13 @@ public interface ResourceManager {
   void saveEml(Resource resource) throws InvalidConfigException;
 
   /**
+   * Save the metadata file of a resource only. Complementary method to {@link #save(Resource)}.
+   *
+   * @param resource Resource
+   */
+  void saveDatapackageMetadata(Resource resource) throws InvalidConfigException;
+
+  /**
    * Save the inferred metadata file of a resource. Complementary method to {@link #save(Resource)}
    *
    * @param resource Resource
@@ -387,6 +394,15 @@ public interface ResourceManager {
    * @param validate
    */
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
+
+  /**
+   * Replace the datapackage metadata file in a resource by the provided file
+   *
+   * @param resource
+   * @param metadataFile
+   * @param validate
+   */
+  void replaceDatapackageMetadata(Resource resource, File metadataFile, boolean validate) throws ImportException;
 
   /**
    * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
