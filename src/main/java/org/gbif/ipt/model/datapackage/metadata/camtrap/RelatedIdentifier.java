@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -351,4 +352,14 @@ public class RelatedIdentifier implements Serializable {
 
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", RelatedIdentifier.class.getSimpleName() + "[", "]")
+        .add("relationType=" + relationType)
+        .add("relatedIdentifier='" + relatedIdentifier + "'")
+        .add("resourceTypeGeneral=" + resourceTypeGeneral)
+        .add("relatedIdentifierType=" + relatedIdentifierType)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

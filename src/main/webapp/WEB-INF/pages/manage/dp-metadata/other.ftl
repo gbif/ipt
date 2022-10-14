@@ -66,7 +66,35 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>Data package: ${section} metadata</p>
+                            <p>
+                                <strong>Organizations</strong>
+                                <br>
+                                -
+                            </p>
+
+                            <p>
+                                <strong>Rights holder</strong>
+                                <br>
+                                -
+                            </p>
+
+                            <p>
+                                <strong>Coordinates precision</strong>
+                                <br>
+                                ${metadata.coordinatePrecision!}
+                            </p>
+
+                            <p>
+                                <strong>Bibliographic citation</strong>
+                                <br>
+                                ${metadata.bibliographicCitation!}
+                            </p>
+
+                            <p>
+                                <strong>Platform</strong>
+                                <br>
+                                ${metadata.platform!}
+                            </p>
                         </div>
                     </div>
                 </main>

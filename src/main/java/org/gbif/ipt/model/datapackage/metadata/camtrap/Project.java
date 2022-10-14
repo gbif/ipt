@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -390,4 +391,20 @@ public class Project implements Serializable {
 
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Project.class.getSimpleName() + "[", "]")
+        .add("id='" + id + "'")
+        .add("title='" + title + "'")
+        .add("acronym='" + acronym + "'")
+        .add("description='" + description + "'")
+        .add("path=" + path)
+        .add("samplingDesign=" + samplingDesign)
+        .add("captureMethod=" + captureMethod)
+        .add("individualAnimals=" + individualAnimals)
+        .add("classificationLevel=" + classificationLevel)
+        .add("sequenceInterval=" + sequenceInterval)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

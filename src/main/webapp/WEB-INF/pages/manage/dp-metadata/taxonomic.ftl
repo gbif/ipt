@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
@@ -66,7 +67,17 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>Data package: ${section} metadata</p>
+                            <#if metadata.taxonomic??>
+                                <#list metadata.taxonomic as tx>
+                                    <p>
+                                        <strong>Taxon id:</strong> ${tx.taxonID!}<br>
+                                        <strong>taxonIDReference:</strong> ${tx.taxonIDReference!}<br>
+                                        <strong>scientificName:</strong> ${tx.scientificName!}<br>
+                                        <strong>taxonRank:</strong> ${tx.taxonRank!}<br>
+                                        <strong>vernacularNames:</strong> <#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if> <br>
+                                    </p>
+                                </#list>
+                            </#if>
                         </div>
                     </div>
                 </main>

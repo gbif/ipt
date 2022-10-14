@@ -68,39 +68,45 @@
 
                         <div class="my-md-3 p-3">
                             <p>
-                                <strong>Profile</strong>
+                                <strong>Profile (internal)</strong>
                                 <br>
                                 ${metadata.profile!"-"}
                             </p>
 
                             <p>
-                                <strong>Resources</strong>
+                                <strong>Resources (internal)</strong>
                                 <br>
                                 <#if metadata.resources??>
-                                    <ul>
+                                    <ol>
                                         <#list metadata.resources as resource>
-                                            <li>${resource}</li>
+                                            <li>
+                                                <strong>Name:</strong> ${resource.name!}<br>
+                                                <strong>Profile:</strong> ${resource.profile!}<br>
+                                                <strong>Path:</strong> ${resource.path!}<br>
+                                                <strong>Schema:</strong> ${resource.schema!}<br>
+                                                <strong>Format:</strong> ${resource.format!}<br><br>
+                                            </li>
                                         </#list>
-                                    </ul>
+                                    </ol>
                                 <#else>
                                     -
                                 </#if>
                             </p>
 
                             <p>
-                                <strong>Name</strong>
+                                <strong>Name (internal)</strong>
                                 <br>
                                 ${metadata.name!"-"}
                             </p>
 
                             <p>
-                                <strong>Id</strong>
+                                <strong>Id (internal)</strong>
                                 <br>
                                 ${metadata.id!"-"}
                             </p>
 
                             <p>
-                                <strong>Created</strong>
+                                <strong>Created (internal)</strong>
                                 <br>
                                 <#if metadata.created??>
                                     ${metadata.created?datetime?string.medium}
@@ -110,7 +116,7 @@
                             </p>
 
                             <p>
-                                <strong>Version</strong>
+                                <strong>Version (internal)</strong>
                                 <br>
                                 ${metadata.version!"-"}
                             </p>
@@ -130,18 +136,27 @@
                             <p>
                                 <strong>Keywords</strong>
                                 <br>
-                                ${metadata.keywords!"-"}
+                                <#if metadata.keywords?has_content>
+                                    <#list metadata.keywords as k>${k}<#sep>; </#sep></#list>
+                                <#else>
+                                    -
+                                </#if>
                             </p>
 
                             <p>
                                 <strong>Contributors</strong>
                                 <br>
                                 <#if metadata.contributors??>
-                                    <ul>
+                                    <ol>
                                         <#list metadata.contributors as contributor>
-                                            <li>${contributor}</li>
+                                            <li>
+                                                <strong>Title:</strong> ${contributor.title!}<br>
+                                                <strong>Path:</strong> ${contributor.path!}<br>
+                                                <strong>Email:</strong> ${contributor.email!}<br>
+                                                <strong>Role:</strong> ${contributor.role!}<br><br>
+                                            </li>
                                         </#list>
-                                    </ul>
+                                    </ol>
                                 <#else>
                                     -
                                 </#if>
@@ -171,11 +186,15 @@
                                 <strong>Sources</strong>
                                 <br>
                                 <#if metadata.sources??>
-                                    <ul>
+                                    <ol>
                                         <#list metadata.sources as source>
-                                            <li>${source}</li>
+                                            <li>
+                                                <strong>Title: </strong> ${source.title!}<br>
+                                                <strong>Path:</strong> ${source.path!}<br>
+                                                <strong>Email</strong> ${source.email!}<br><br>
+                                            </li>
                                         </#list>
-                                    </ul>
+                                    </ol>
                                 <#else>
                                     -
                                 </#if>
@@ -185,11 +204,16 @@
                                 <strong>Licenses</strong>
                                 <br>
                                 <#if metadata.licenses??>
-                                    <ul>
+                                    <ol>
                                         <#list metadata.licenses as license>
-                                            <li>${license}</li>
+                                            <li>
+                                                <strong>Name: </strong> ${license.name!}<br>
+                                                <strong>Path: </strong> ${license.path!}<br>
+                                                <strong>Title: </strong> ${license.title!}<br>
+                                                <strong>Scope: </strong> ${license.scope!}<br><br>
+                                            </li>
                                         </#list>
-                                    </ul>
+                                    </ol>
                                 <#else>
                                     -
                                 </#if>

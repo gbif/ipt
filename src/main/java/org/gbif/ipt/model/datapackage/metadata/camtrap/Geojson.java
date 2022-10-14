@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -238,4 +239,13 @@ public class Geojson implements Serializable {
 
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Geojson.class.getSimpleName() + "[", "]")
+        .add("type=" + type)
+        .add("crs=" + crs)
+        .add("bbox=" + bbox)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

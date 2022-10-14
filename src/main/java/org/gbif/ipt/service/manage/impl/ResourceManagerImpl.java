@@ -74,6 +74,7 @@ import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -392,7 +393,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     DataPackageMetadata metadata;
     ObjectMapper jsonObjectMapper = new ObjectMapper();
     try {
-      metadata = jsonObjectMapper.readValue(dataDirMetadataFile, DataPackageMetadata.class);
+      // TODO: 14/10/2022 consider type
+      metadata = jsonObjectMapper.readValue(dataDirMetadataFile, CamtrapMetadata.class);
     } catch (Exception e) {
       deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Invalid metadata document", e);
@@ -1218,7 +1220,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     ObjectMapper objectMapper = new ObjectMapper();
     DataPackageMetadata metadata = null;
     try {
-      metadata = objectMapper.readValue(metadataFile, DataPackageMetadata.class);
+      metadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
     } catch (IOException e) {
       // TODO: 13/10/2022 implement exception handling
       throw new RuntimeException(e);

@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -100,4 +101,12 @@ public class Temporal implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Temporal.class.getSimpleName() + "[", "]")
+        .add("start='" + start + "'")
+        .add("end='" + end + "'")
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }

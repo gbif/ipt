@@ -66,7 +66,17 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>Data package: ${section} metadata</p>
+                            <p>
+                                <strong>Start</strong>
+                                <br>
+                                ${(metadata.temporal.start)!}
+                            </p>
+
+                            <p>
+                                <strong>End</strong>
+                                <br>
+                                ${(metadata.temporal.end)!}
+                            </p>
                         </div>
                     </div>
                 </main>

@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
@@ -66,7 +67,11 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>Data package: ${section} metadata</p>
+                            <p>
+                                <strong>Bounding box</strong>
+                                <br>
+                                ${(metadata.spatial.bbox)!"-"}
+                            </p>
                         </div>
                     </div>
                 </main>

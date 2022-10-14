@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -353,4 +354,21 @@ public class Taxonomic implements Serializable {
 
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Taxonomic.class.getSimpleName() + "[", "]")
+        .add("taxonID='" + taxonID + "'")
+        .add("taxonIDReference=" + taxonIDReference)
+        .add("scientificName='" + scientificName + "'")
+        .add("taxonRank=" + taxonRank)
+        .add("kingdom='" + kingdom + "'")
+        .add("phylum='" + phylum + "'")
+        .add("_class='" + _class + "'")
+        .add("order='" + order + "'")
+        .add("family='" + family + "'")
+        .add("genus='" + genus + "'")
+        .add("vernacularNames=" + vernacularNames)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
+  }
 }
