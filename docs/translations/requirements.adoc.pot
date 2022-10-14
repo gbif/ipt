@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2022-10-14 17:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,14 +121,21 @@ msgid ""
 "distribution for an overview of how long your Java version will be supported."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/requirements.adoc:23
+msgid ""
+"See the installation instructions for notes on operating system and servlet "
+"container versions."
+msgstr ""
+
 #. type: Title ==
-#: en/modules/ROOT/pages/requirements.adoc:22
+#: en/modules/ROOT/pages/requirements.adoc:24
 #, no-wrap
 msgid "Technical support"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/requirements.adoc:23
+#: en/modules/ROOT/pages/requirements.adoc:25
 msgid ""
 "Running an IPT is a commitment.  Data should be backed up regularly, and "
 "security updates (for the operating system or the IPT) must be applied soon "
