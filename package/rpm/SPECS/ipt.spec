@@ -17,7 +17,11 @@ BuildArch: noarch
 %{?systemd_requires}
 %define _unitdir /usr/lib/systemd/system
 
+%if 0%{?el7}
 Requires: java >= 1:1.8.0
+%else
+Requires: java-11 >= 10.0.0
+%endif
 Requires: jetty-runner
 
 Requires(pre): /usr/sbin/useradd, /usr/bin/getent
