@@ -29,6 +29,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends DataPackageMetadata {
@@ -349,6 +350,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("licenses")
+  @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
   @Size(min = 2)
   @Valid
   public List<License> getLicenses() {

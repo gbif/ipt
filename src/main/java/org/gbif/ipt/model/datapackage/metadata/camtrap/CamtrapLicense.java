@@ -15,6 +15,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.License;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -24,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapLicense extends License {
@@ -95,7 +100,14 @@ public class CamtrapLicense extends License {
         return constant;
       }
     }
+  }
 
+  public static class CamtrapLicenseDeserializer extends JsonDeserializer<License> {
+    @Override
+    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, CamtrapLicense.class);
+    }
   }
 
   @Override
