@@ -66,71 +66,75 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>
-                                <strong>Id</strong>
-                                <br>
-                                ${(metadata.project.id)!}
-                            </p>
+                            <#if (metadata.project)?has_content>
+                                <p>
+                                    <strong>Id</strong>
+                                    <br>
+                                    ${(metadata.project.id)!}
+                                </p>
 
-                            <p>
-                                <strong>Title</strong>
-                                <br>
-                                ${(metadata.project.title)!}
-                            </p>
+                                <p>
+                                    <strong>Title</strong>
+                                    <br>
+                                    ${(metadata.project.title)!}
+                                </p>
 
-                            <p>
-                                <strong>Acronym</strong>
-                                <br>
-                                ${(metadata.project.acronym)!"-"}
-                            </p>
+                                <p>
+                                    <strong>Acronym</strong>
+                                    <br>
+                                    ${(metadata.project.acronym)!"-"}
+                                </p>
 
-                            <p>
-                                <strong>Description</strong>
-                                <br>
-                                ${(metadata.project.description)!}
-                            </p>
+                                <p>
+                                    <strong>Description</strong>
+                                    <br>
+                                    ${(metadata.project.description)!}
+                                </p>
 
-                            <p>
-                                <strong>Path</strong>
-                                <br>
-                                ${(metadata.project.path)!}
-                            </p>
+                                <p>
+                                    <strong>Path</strong>
+                                    <br>
+                                    ${(metadata.project.path)!}
+                                </p>
 
-                            <p>
-                                <strong>Sampling design</strong>
-                                <br>
-                                ${(metadata.project.samplingDesign)!}
-                            </p>
+                                <p>
+                                    <strong>Sampling design</strong>
+                                    <br>
+                                    ${(metadata.project.samplingDesign)!}
+                                </p>
 
-                            <p>
-                                <strong>Capture method</strong>
-                                <br>
-                                <#if metadata.project.captureMethod?has_content><#list metadata.project.captureMethod as m>${m}<#sep>, </#sep></#list></#if>
-                            </p>
+                                <p>
+                                    <strong>Capture method</strong>
+                                    <br>
+                                    <#if (metadata.project.captureMethod)?has_content><#list metadata.project.captureMethod as m>${m}<#sep>, </#sep></#list></#if>
+                                </p>
 
-                            <p>
-                                <strong>Animal types</strong>
-                                <br>
-                                ${(metadata.project.animalTypes)!}
-                            </p>
+                                <p>
+                                    <strong>Animal types</strong>
+                                    <br>
+                                    ${(metadata.project.animalTypes)!}
+                                </p>
 
-                            <p>
-                                <strong>Classification level</strong>
-                                <br>
-                                ${(metadata.project.classificationLevel)!}
-                            </p>
+                                <p>
+                                    <strong>Classification level</strong>
+                                    <br>
+                                    ${(metadata.project.classificationLevel)!}
+                                </p>
 
-                            <p>
-                                <strong>Sequence interval</strong>
-                                <br>
-                                ${(metadata.project.sequenceInterval)!}
-                            </p>
+                                <p>
+                                    <strong>Sequence interval</strong>
+                                    <br>
+                                    ${(metadata.project.sequenceInterval)!}
+                                </p>
 
-                            <p>
-                                <strong>References</strong>
-                                <br>
-                                ${(metadata.project.references)!"-"}
-                            </p>
+                                <p>
+                                    <strong>References</strong>
+                                    <br>
+                                    ${(metadata.project.references)!"-"}
+                                </p>
+                            <#else>
+                                No project data
+                            </#if>
                         </div>
                     </div>
                 </main>

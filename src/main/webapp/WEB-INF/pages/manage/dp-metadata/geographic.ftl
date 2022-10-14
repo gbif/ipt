@@ -67,11 +67,15 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
+                            <#if metadata.spatial?has_content>
                             <p>
                                 <strong>Bounding box</strong>
                                 <br>
                                 ${(metadata.spatial.bbox)!"-"}
                             </p>
+                            <#else>
+                                No geographic scope data
+                            </#if>
                         </div>
                     </div>
                 </main>

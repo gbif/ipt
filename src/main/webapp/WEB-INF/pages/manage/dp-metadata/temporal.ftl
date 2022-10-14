@@ -66,17 +66,21 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-                            <p>
-                                <strong>Start</strong>
-                                <br>
-                                ${(metadata.temporal.start)!}
-                            </p>
+                            <#if (metadata.temporal)?has_content>
+                                <p>
+                                    <strong>Start</strong>
+                                    <br>
+                                    ${(metadata.temporal.start)!}
+                                </p>
 
-                            <p>
-                                <strong>End</strong>
-                                <br>
-                                ${(metadata.temporal.end)!}
-                            </p>
+                                <p>
+                                    <strong>End</strong>
+                                    <br>
+                                    ${(metadata.temporal.end)!}
+                                </p>
+                            <#else>
+                                No temporal scope data
+                            </#if>
                         </div>
                     </div>
                 </main>

@@ -77,6 +77,8 @@
                                         <strong>vernacularNames:</strong> <#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if> <br>
                                     </p>
                                 </#list>
+                            <#else>
+                                No taxonomic scope data
                             </#if>
                         </div>
                     </div>

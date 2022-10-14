@@ -81,19 +81,19 @@
                             <p>
                                 <strong>Coordinates precision</strong>
                                 <br>
-                                ${metadata.coordinatePrecision!}
+                                ${metadata.coordinatePrecision!"-"}
                             </p>
 
                             <p>
                                 <strong>Bibliographic citation</strong>
                                 <br>
-                                ${metadata.bibliographicCitation!}
+                                ${metadata.bibliographicCitation!"-"}
                             </p>
 
                             <p>
                                 <strong>Platform</strong>
                                 <br>
-                                ${metadata.platform!}
+                                ${metadata.platform!"-"}
                             </p>
                         </div>
                     </div>
