@@ -155,13 +155,6 @@ public class DataDir {
     }
     org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
 
-    input = streamUtils.classpathStream("configDefault/about2.ftl");
-    if (input == null) {
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-        "Cannot read required classpath resources to create new data dir!");
-    }
-    org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about2.ftl"));
-
     LOG.info("Creating new default data dir");
   }
 
