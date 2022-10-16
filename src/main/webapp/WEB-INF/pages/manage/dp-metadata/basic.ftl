@@ -12,7 +12,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
