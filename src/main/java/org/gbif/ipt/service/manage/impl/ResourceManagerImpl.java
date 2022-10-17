@@ -2075,7 +2075,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
 
       // check object to preserve description
-      if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
+      if (!resource.getEml().getTaxonomicCoverages().isEmpty()) {
         inferredTaxonomicCoverage.setDescription(resource.getEml().getTaxonomicCoverages().get(0).getDescription());
       } else {
         inferredTaxonomicCoverage.setDescription("N/A");
