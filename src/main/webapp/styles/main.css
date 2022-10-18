@@ -466,7 +466,7 @@ header, .dropdown-menu {
 /* Logo, header, menu etc. END */
 
 /* Material UI icons */
-a.icon-button, a.icon-button:hover {
+a.icon-button, a.icon-button:hover, label.icon-button, label.icon-button:hover {
     color: rgb(78, 86, 95) !important;
 }
 

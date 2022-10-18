@@ -4,7 +4,21 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+            $('.userConfirmDeletion').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name="admin.user.delete.confirmation.message"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger"
+            });
+
+            $('.confirmPasswordReset').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger"
+            });
         });
     </script>
     <#assign currentMenu = "admin"/>
@@ -29,8 +43,8 @@
                 <div class="mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>
                     <#if "${newUser!}"=="no">
-                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                        <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
+                        <@s.submit cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
                     </#if>
                     <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
                 </div>

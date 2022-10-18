@@ -1,10 +1,39 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageUsers"/></title>
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <#assign currentMenu = "admin"/>
+    <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/usersTable.ftl"/>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
+    <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
     <script>
-
         $(document).ready(function(){
-            //Hack needed for Internet Explorer
+            var initConfirmationModal = function () {
+                if ($('.userConfirmDeletion').length > 0 && $('.confirmPasswordReset').length > 0) {
+                    $('.userConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+
+                    $('.confirmPasswordReset').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                } else {
+                    setTimeout(initConfirmationModal, 100); // check again in a moment
+                }
+            }
+
+            initConfirmationModal();
+
+            // Hack needed for Internet Explorer
             $('#create').click(function() {
                 window.location='user.do';
             });
@@ -13,12 +42,6 @@
             });
         });
     </script>
-    <#assign currentMenu = "admin"/>
-    <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/usersTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
-    <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
