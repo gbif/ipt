@@ -1,9 +1,25 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="title"/></title>
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
-
         $(document).ready(function(){
+            var initConfirmationModal = function () {
+                if ($('.organizationConfirmDeletion').length > 0) {
+                    $('.organizationConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                } else {
+                    setTimeout(initConfirmationModal, 100); // check again in a moment
+                }
+            }
+
+            initConfirmationModal();
+
             $('#organisation\\.key').click(function() {
                 $('#organisation\\.name').val($('#organisation\\.key :selected').text());
             });
@@ -24,7 +40,6 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
     <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
 
@@ -55,14 +70,14 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <#if !registeredIpt?has_content>
-                <div class="text-center">
-                    <@s.text name="admin.home.editOrganisations.disabled"/>
-                </div>
-            <#else>
+<#--            <#if !registeredIpt?has_content>-->
+<#--                <div class="text-center">-->
+<#--                    <@s.text name="admin.home.editOrganisations.disabled"/>-->
+<#--                </div>-->
+<#--            <#else>-->
                 <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
-            </#if>
+<#--            </#if>-->
         </div>
     </main>
 
