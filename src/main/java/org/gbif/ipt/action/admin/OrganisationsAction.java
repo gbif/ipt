@@ -273,7 +273,7 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost() && !cancel) {
+    if (isHttpPost() && !cancel && !delete) {
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!
@@ -334,5 +334,9 @@ public class OrganisationsAction extends POSTAction {
       }
     }
     return false;
+  }
+
+  public String getPortalUrl() {
+    return cfg.getPortalUrl();
   }
 }
