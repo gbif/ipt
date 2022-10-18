@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2022-10-14 20:14\n"
+"PO-Revision-Date: 2022-10-18 18:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -158,7 +158,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:45
 msgid "This release includes a bug fix for empty resource tables."
-msgstr ""
+msgstr "Esta versión incluye una corrección de un error asociado a tablas vacias"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:47
