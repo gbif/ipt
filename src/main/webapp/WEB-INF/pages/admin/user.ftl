@@ -31,14 +31,30 @@
         </div>
 
         <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-uppercase fw-bold fs-smaller-2">
-                    <span><@s.text name="menu.admin"/></span>
-                </div>
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                        <li class="breadcrumb-item"><a href="#"><@s.text name="breadcrumb.admin.users"/></a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.users.user"/></li>
+                    </ol>
+                </nav>
+            </div>
 
+            <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if>
+                    <#if "${newUser!}"=="no">
+                        ${user.firstname!} ${user.lastname!}
+                    <#else>
+                        <@s.text name="admin.user.title.new"/>
+                    </#if>
                 </h1>
+
+                <#if user.email?has_content>
+                    <div class="text-smaller">
+                        <a href="mailto:${user.email!}">${user.email!}</a>
+                    </div>
+                </#if>
 
                 <div class="mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>

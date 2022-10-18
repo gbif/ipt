@@ -91,7 +91,7 @@
                                         <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/organisations.do">
                                             <span>
                                                 <i class="bi bi-building text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.editOrganisations"/]
+                                                [@s.text name="admin.home.organisations"/]
                                             </span>
                                         </a>
                                     </li>

@@ -49,13 +49,18 @@
         </div>
 
         <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-uppercase fw-bold fs-smaller-2">
-                    <span><@s.text name="menu.admin"/></span>
-                </div>
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                        <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.organisations"/></li>
+                    </ol>
+                </nav>
+            </div>
 
+            <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="admin.home.editOrganisations"/>
+                    <@s.text name="admin.home.organisations"/>
                 </h1>
 
                 <div class="mt-2">
@@ -70,14 +75,14 @@
 
     <main class="container">
         <div class="my-3 p-3">
-<#--            <#if !registeredIpt?has_content>-->
-<#--                <div class="text-center">-->
-<#--                    <@s.text name="admin.home.editOrganisations.disabled"/>-->
-<#--                </div>-->
-<#--            <#else>-->
+            <#if !registeredIpt?has_content>
+                <div class="text-center">
+                    <@s.text name="admin.home.organisations.disabled"/>
+                </div>
+            <#else>
                 <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
-<#--            </#if>-->
+            </#if>
         </div>
     </main>
 
