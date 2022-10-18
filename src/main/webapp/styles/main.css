@@ -1527,7 +1527,6 @@ button.close {
 }
 
 #additional, #managers {
-    height: 100vh;
     min-height: 200px;
 }
 
