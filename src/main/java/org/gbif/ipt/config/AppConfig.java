@@ -46,6 +46,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +82,8 @@ public class AppConfig {
   public static final String ADMIN_EMAIL = "admin.email";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
-  private static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
+  public static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
+  public static final String BUILD_NUMBER_REGEX = "-r\\$\\{buildNumber\\}$|-r\\w{7}$";
   private Properties properties = new Properties();
   private IptColorScheme colorScheme;
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
@@ -375,10 +377,13 @@ public class AppConfig {
   public String getVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove suffix if it was not filled
-    if (version != null && version.contains(BUILD_NUMBER_VARIABLE_SUFFIX)) {
-      return version.substring(0, version.indexOf(BUILD_NUMBER_VARIABLE_SUFFIX));
-    }
-    return version;
+    return StringUtils.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
+  }
+
+  public String getShortVersion() {
+    String version = properties.getProperty(DEV_VERSION);
+    // remove build number suffix in the end
+    return RegExUtils.removePattern(version, BUILD_NUMBER_REGEX);
   }
 
   public boolean hasLocation() {

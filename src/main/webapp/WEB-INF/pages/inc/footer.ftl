@@ -2,8 +2,8 @@
 <footer class="footer bg-light border-top mt-auto text-muted text-center text-smaller py-3">
     <div class="container">
         <div class="mb-1">
-            <img class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
-            Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${cfg.version!"???"}
+            <img title="IPT ${(cfg.version)!}" class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
+            Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${(cfg.shortVersion)!}
         </div>
         <ul class="list-inline mb-0">
             <li class="list-inline-item ipt-footer-item">
