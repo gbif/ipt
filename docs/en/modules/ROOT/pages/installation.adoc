@@ -29,10 +29,13 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
+NOTE: Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see [this issue](https://github.com/gbif/ipt/issues/1646) if you can help with testing, or use Red Hat 7 / CentOS 7 instead.
+
 To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
 
 [source,shell]
 ----
+yum install yum-utils
 yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
 yum install ipt
 ----
@@ -65,11 +68,11 @@ This section explains how to install different types of servlet containers on yo
 
 It isn't necessary to use an reverse proxy, but in case you do, the following section explains how to configure an Apache HTTPD virtual host declaration for the IPT.
 
-The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly8 (JBoss).
+The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 3.0, 3.1 or 4.0.
 
 === Tomcat
 
-The IPT has been tested and works well with recent releases of Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/.
+The IPT has been tested and works well with recent releases of Tomcat 8.5 or 9. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
 
 . Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
 
@@ -127,7 +130,7 @@ _Ensure each IPT is configured to use its own data directory!_
 
 === Jetty
 
-_As a very rough guide, on CentOS, to run a single instance of the IPT:_
+_As a very rough guide, on CentOS 7, to run a single instance of the IPT:_
 
 [source,shell]
 ----

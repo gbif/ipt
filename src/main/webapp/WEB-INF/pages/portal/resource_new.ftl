@@ -7,7 +7,8 @@
 <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 
 <#--Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type -->
-<#macro contact con type dcPropertyType>
+<#-- viewType: standard - old one; contacts/projectPersonnel - new ones with deduplication and list of roles for contacts/projectData -->
+<#macro contact con type dcPropertyType viewType="standard">
     <div class="contact">
 
         <#-- minimum info is the last name, organisation name, or position name -->
@@ -23,10 +24,28 @@
         <#-- we use this div to toggle the grouped information -->
         <div class="text-smaller text-discreet">
             <div class="contactType fst-italic">
-                <#if con.role?? && con.role?has_content && roles[con.role]??>
-                    ${roles[con.role]?cap_first!}
-                <#elseif type?has_content>
-                    ${type}
+                <#if viewType == "standard">
+                    <#if con.role?? && con.role?has_content && roles[con.role]??>
+                        ${roles[con.role]?cap_first!}
+                    <#elseif type?has_content>
+                        ${type}
+                    </#if>
+                <#elseif viewType == "contacts">
+                    <ul class="inline-bullet-list list-unstyled mb-1">
+                        <#if contactRoles?has_content && con.fullName?has_content && contactRoles[con.fullName]?has_content>
+                            <#list contactRoles[con.fullName] as role>
+                                <li class="mx-0"><#if roles?has_content && role?has_content && roles[role]?has_content>${roles[role]?capitalize!}<#else>${role!}</#if> <#sep><span class="contacts-circle">●</span></#sep></li>
+                            </#list>
+                        </#if>
+                    </ul>
+                <#elseif viewType == "projectPersonnel">
+                    <ul class="inline-bullet-list list-unstyled mb-1">
+                        <#if projectPersonnelRoles?has_content && con.fullName?has_content && projectPersonnelRoles[con.fullName]?has_content>
+                            <#list projectPersonnelRoles[con.fullName] as role>
+                                <li class="mx-0"><#if roles?has_content && role?has_content && roles[role]?has_content>${roles[role]?capitalize!}<#else>${role!}</#if> <#sep><span class="contacts-circle">●</span></#sep></li>
+                            </#list>
+                        </#if>
+                    </ul>
                 </#if>
             </div>
             <#if con.position?has_content>
@@ -679,36 +698,10 @@
                             </h4>
 
                             <div class="row g-3 border">
-                                <div class="col-lg-4">
-                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.resource.creator.intro'/>:<br><span class="invisible-dash">-</span></p>
-                                    <div>
-                                        <@contactList contacts=eml.creators dcPropertyType='creator'/>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.resource.contact.intro'/>:</p>
-                                    <div>
-                                        <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.metadata.provider.intro'/>:<br><span class="invisible-dash">-</span></p>
-                                    <div>
-                                        <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
-                                    </div>
-                                </div>
-
-                                <#if (eml.associatedParties?size>0)>
-                                    <div class="col">
-                                        <p class="text-smaller fw-bold" style="margin: 10px;padding: 5px;"><@s.text name='portal.associatedParties.intro'/>:</p>
-                                        <div class="row">
-                                            <#list eml.associatedParties as c>
-                                                <div class="col-lg-4"><@contact con=c type="" dcPropertyType='contributor' /></div>
-                                            </#list>
-                                        </div>
-                                    </div>
+                                <#if (mergedContacts?size>0)>
+                                    <#list mergedContacts as c>
+                                        <div class="col-lg-4 mt-0"><@contact con=c type="" dcPropertyType="" viewType="contacts"/></div>
+                                    </#list>
                                 </#if>
                             </div>
                         </div>
@@ -879,9 +872,9 @@
                                 <br>
                                 <p class="text-smaller fw-bold"><@s.text name='eml.project.personnel.intro'/>:</p>
                                 <div class="row border">
-                                    <#list eml.project.personnel as c>
+                                    <#list deduplicatedProjectPersonnel as c>
                                         <div class="col-lg-4">
-                                            <@contact con=c type="" dcPropertyType="" />
+                                            <@contact con=c type="" dcPropertyType="" viewType="projectPersonnel" />
                                         </div>
                                     </#list>
                                 </div>

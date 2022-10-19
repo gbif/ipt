@@ -264,6 +264,14 @@ GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GB
 
 The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ].
 
+=== Why is GBIF unable to access my IPT over HTTPS?
+
+This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat etc).  Ensure you can access your server through the command line (`curl https://ipt.example.org`), from computers outside your organization's network (e.g. from a personal phone) and run an https://www.ssllabs.com/ssltest/[SSL Server Test].
+
+Any errors like "unable to get local issuer certificate" or "certificate chain incomplete" will usually prevent GBIF's systems from accessing your IPT.
+
+To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT.
+
 == Indexing by others
 
 === How can I export a list of resources published in my IPT?

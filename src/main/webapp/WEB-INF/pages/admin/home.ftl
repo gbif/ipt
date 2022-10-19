@@ -63,7 +63,7 @@
 									<i class="bi bi-building admin-icon"></i>
 								</div>
 								<h5 class="admin-card-title fw-400">
-									<@s.text name="admin.home.editOrganisations"/>
+									<@s.text name="admin.home.organisations"/>
 								</h5>
 							</a>
 						</div>

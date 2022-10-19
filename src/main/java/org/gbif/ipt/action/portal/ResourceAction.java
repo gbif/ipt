@@ -31,6 +31,7 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -45,6 +46,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,6 +85,10 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> ranks;
   private DataDir dataDir;
   private Eml eml;
+  private Set<Agent> mergedContacts = new HashSet<>();
+  private Set<Agent> deduplicatedProjectPersonnel = new HashSet<>();
+  private Map<String, Set<String>> contactRoles = new HashMap<>();
+  private Map<String, Set<String>> projectPersonnelRoles = new HashMap<>();
   private boolean metadataOnly;
   private boolean preview;
   private Map<String, String> frequencies;
@@ -658,6 +665,144 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Eml getEml() {
     return eml;
+  }
+
+  /**
+   * Returns merged contacts. Populates collection if it's empty.
+   * Puts all creators, contact, metadataProviders and associatedParties together removing duplicates.
+   *
+   * @return set og agents (contacts) without duplicates
+   */
+  public Set<Agent> getMergedContacts() {
+    if (mergedContacts.isEmpty()) {
+      Stream.of(eml.getCreators(), eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties())
+          .flatMap(Collection::stream)
+          .filter(Objects::nonNull)
+          .filter(agent -> mergedContacts.stream().filter(Objects::nonNull).noneMatch(a -> agentsMatch(a, agent)))
+          .forEach(mergedContacts::add);
+    }
+
+    if (contactRoles.isEmpty()) {
+      initializeContactRoles();
+    }
+
+    return mergedContacts;
+  }
+
+  /**
+   * Returns deduplicated personnel. Populates collection if it's empty.
+   *
+   * @return set og agents (project's personnel) without duplicates
+   */
+  public Set<Agent> getDeduplicatedProjectPersonnel() {
+    if (eml.getProject() != null && eml.getProject().getPersonnel() != null && deduplicatedProjectPersonnel.isEmpty()) {
+      eml.getProject().getPersonnel()
+          .stream()
+          .filter(Objects::nonNull)
+          .filter(agent -> deduplicatedProjectPersonnel.stream().filter(Objects::nonNull).noneMatch(a -> agentsMatch(a, agent)))
+          .forEach(deduplicatedProjectPersonnel::add);
+    }
+
+    if (projectPersonnelRoles.isEmpty()) {
+      initializeProjectPersonnelRoles();
+    }
+
+    return deduplicatedProjectPersonnel;
+  }
+
+  /**
+   * Check two EML agents match.
+   * Compares only essential fields:
+   * <ol>
+   *  <li>Full names must match</li>
+   *  <li>If both emails are non-nulls, they must match</li>
+   *  <li>If both position are non-nulls, they must match</li>
+   * </ol>
+   *
+   * @param agent1 first agent
+   * @param agent2 second agent
+   * @return comparison result
+   */
+  private boolean agentsMatch(Agent agent1, Agent agent2) {
+    boolean namesMatch = false;
+    boolean emailsMatch;
+    boolean positionsMatch;
+
+    if (agent1.getFullName() != null && agent2.getFullName() != null) {
+      namesMatch = agent1.getFullName().equals(agent2.getFullName());
+    }
+
+    if (agent1.getEmail() != null && agent2.getEmail() != null) {
+      emailsMatch = agent1.getEmail().equals(agent2.getEmail());
+    } else {
+      emailsMatch = true;
+    }
+
+    if (agent1.getPosition() != null && agent2.getPosition() != null) {
+      positionsMatch = agent1.getPosition().equals(agent2.getPosition());
+    } else {
+      positionsMatch = true;
+    }
+
+    return namesMatch && emailsMatch && positionsMatch;
+  }
+
+  /**
+   * Initializes contacts' roles.
+   * After deduplication contact may have several roles.
+   */
+  private void initializeContactRoles() {
+    for (Agent agent : mergedContacts) {
+      Set<String> agentRoles = new HashSet<>();
+      if (eml.getCreators().stream().filter(Objects::nonNull).anyMatch(a -> agentsMatch(a, agent))) {
+        agentRoles.add("originator");
+      }
+      if (eml.getContacts().stream().filter(Objects::nonNull).anyMatch(a -> agentsMatch(a, agent))) {
+        agentRoles.add("pointOfContact");
+      }
+      if (eml.getMetadataProviders().stream().filter(Objects::nonNull).anyMatch(a -> agentsMatch(a, agent))) {
+        agentRoles.add("metadataProvider");
+      }
+      eml.getAssociatedParties()
+          .stream()
+          .filter(Objects::nonNull)
+          .filter(a -> a.getRole() != null)
+          .filter(a -> agentsMatch(a, agent))
+          .forEach(a -> agentRoles.add(a.getRole()));
+
+      contactRoles.put(agent.getFullName(), agentRoles);
+    }
+  }
+
+  /**
+   * Initializes project personnel's roles.
+   * After deduplication contact may have several roles.
+   */
+  private void initializeProjectPersonnelRoles() {
+    if (eml.getProject() != null && eml.getProject().getPersonnel() != null) {
+      for (Agent agent : eml.getProject().getPersonnel()) {
+        // agent already present, just add role if not null
+        if (projectPersonnelRoles.containsKey(agent.getFullName()) && StringUtils.isNotEmpty(agent.getRole())) {
+          projectPersonnelRoles.get(agent.getFullName()).add(agent.getRole());
+        }
+        // agent not present, add agent and its role (or just empty set if role is null)
+        else if (!projectPersonnelRoles.containsKey(agent.getFullName())) {
+          Set<String> agentRoles = new HashSet<>();
+          if (StringUtils.isNotEmpty(agent.getRole())) {
+            agentRoles.add(agent.getRole());
+          }
+          projectPersonnelRoles.put(agent.getFullName(), agentRoles);
+        }
+      }
+    }
+  }
+
+  public Map<String, Set<String>> getContactRoles() {
+    return contactRoles;
+  }
+
+  public Map<String, Set<String>> getProjectPersonnelRoles() {
+    return projectPersonnelRoles;
   }
 
   /**
