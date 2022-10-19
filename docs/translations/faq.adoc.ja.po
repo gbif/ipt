@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-04-29 08:24+0000\n"
-"PO-Revision-Date: 2022-04-29 08:35\n"
+"POT-Creation-Date: 2022-10-14 17:06+0000\n"
+"PO-Revision-Date: 2022-10-14 20:14\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -687,25 +687,46 @@ msgstr ""
 msgid "The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ]."
 msgstr ""
 
-#. type: Title ==
+#. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:267
+#, no-wrap
+msgid "Why is GBIF unable to access my IPT over HTTPS?"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:270
+msgid "This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat etc).  Ensure you can access your server through the command line (`curl https://ipt.example.org`), from computers outside your organization's network (e.g. from a personal phone) and run an https://www.ssllabs.com/ssltest/[SSL Server Test]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:272
+msgid "Any errors like \"unable to get local issuer certificate\" or \"certificate chain incomplete\" will usually prevent GBIF's systems from accessing your IPT."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:274
+msgid "To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/faq.adoc:275
 #, no-wrap
 msgid "Indexing by others"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:269
+#: en/modules/ROOT/pages/faq.adoc:277
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:272
+#: en/modules/ROOT/pages/faq.adoc:280
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:273
+#: en/modules/ROOT/pages/faq.adoc:281
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
 msgstr ""
 
