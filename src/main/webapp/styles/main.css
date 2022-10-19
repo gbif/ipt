@@ -1829,3 +1829,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     margin-right: 4px;
     margin-bottom: 2px;
 }
+
+
+/* Resource contacts */
+.inline-bullet-list li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.contacts-circle {
+    font-size: 80%;
+}
