@@ -678,6 +678,7 @@ public class ResourceAction extends PortalBaseAction {
       Stream.of(eml.getCreators(), eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties())
           .flatMap(Collection::stream)
           .filter(Objects::nonNull)
+          .filter(this::isValidAgent)
           .filter(agent -> mergedContacts.stream().filter(Objects::nonNull).noneMatch(a -> agentsMatch(a, agent)))
           .forEach(mergedContacts::add);
     }
@@ -708,6 +709,14 @@ public class ResourceAction extends PortalBaseAction {
     }
 
     return deduplicatedProjectPersonnel;
+  }
+
+  private boolean isValidAgent(Agent agent) {
+    boolean isEmpty = StringUtils.isEmpty(agent.getFullName());
+    if (isEmpty) {
+      LOG.error("Invalid contact: fullname not present. Check the metadata");
+    }
+    return !isEmpty;
   }
 
   /**

@@ -15,12 +15,15 @@ package org.gbif.ipt.config;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AppConfigTest {
 
@@ -146,5 +149,42 @@ public class AppConfigTest {
   public void testGetResourceLinkFromLocalhost() {
     cfg.setProperty("ipt.baseURL", "http://localhost:8080");
     assertEquals("http://localhost:8080/resource?id=ants", cfg.getResourceGuid("ants"));
+  }
+
+  @Test
+  void testGetShortVersion() {
+    assertNull(RegExUtils.removePattern(null, AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("", RegExUtils.removePattern("", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3", RegExUtils.removePattern("2.6.3", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3", RegExUtils.removePattern("2.6.3-r6abcbe3", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3-SNAPSHOT",
+        RegExUtils.removePattern("2.6.3-SNAPSHOT-r6abcbe3", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3-SNAPSHOT",
+        RegExUtils.removePattern("2.6.3-SNAPSHOT-r${buildNumber}", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3-RC1",
+        RegExUtils.removePattern("2.6.3-RC1-r6abcbe3", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3-RC1-SNAPSHOT",
+        RegExUtils.removePattern("2.6.3-RC1-SNAPSHOT-r6abcbe3", AppConfig.BUILD_NUMBER_REGEX));
+    assertEquals("2.6.3-RC1-SNAPSHOT",
+        RegExUtils.removePattern("2.6.3-RC1-SNAPSHOT-r${buildNumber}", AppConfig.BUILD_NUMBER_REGEX));
+  }
+
+  @Test
+  void testGetVersion() {
+    assertNull(StringUtils.removeEnd(null, AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("", StringUtils.removeEnd("", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3", StringUtils.removeEnd("2.6.3", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-r6abcbe3",
+        StringUtils.removeEnd("2.6.3-r6abcbe3", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-SNAPSHOT-r6abcbe3",
+        StringUtils.removeEnd("2.6.3-SNAPSHOT-r6abcbe3", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-SNAPSHOT",
+        StringUtils.removeEnd("2.6.3-SNAPSHOT-r${buildNumber}", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-RC1-r6abcbe3",
+        StringUtils.removeEnd("2.6.3-RC1-r6abcbe3", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-RC1-SNAPSHOT-r6abcbe3",
+        StringUtils.removeEnd("2.6.3-RC1-SNAPSHOT-r6abcbe3", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
+    assertEquals("2.6.3-RC1-SNAPSHOT",
+        StringUtils.removeEnd("2.6.3-RC1-SNAPSHOT-r${buildNumber}", AppConfig.BUILD_NUMBER_VARIABLE_SUFFIX));
   }
 }

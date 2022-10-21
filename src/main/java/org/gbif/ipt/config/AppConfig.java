@@ -46,6 +46,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +82,8 @@ public class AppConfig {
   public static final String ADMIN_EMAIL = "admin.email";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
-  private static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
+  public static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
+  public static final String BUILD_NUMBER_REGEX = "-r\\$\\{buildNumber\\}$|-r\\w{7}$";
   private Properties properties = new Properties();
   private IptColorScheme colorScheme;
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
@@ -375,10 +377,13 @@ public class AppConfig {
   public String getVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove suffix if it was not filled
-    if (version != null && version.contains(BUILD_NUMBER_VARIABLE_SUFFIX)) {
-      return version.substring(0, version.indexOf(BUILD_NUMBER_VARIABLE_SUFFIX));
-    }
-    return version;
+    return StringUtils.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
+  }
+
+  public String getShortVersion() {
+    String version = properties.getProperty(DEV_VERSION);
+    // remove build number suffix in the end
+    return RegExUtils.removePattern(version, BUILD_NUMBER_REGEX);
   }
 
   public boolean hasLocation() {
@@ -427,37 +432,6 @@ public class AppConfig {
    * which includes populating core configuration.
    */
   public void loadConfig() throws InvalidConfigException {
-    // load (and create if absent) default colors configuration from ipt-color.scheme.properties
-    File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
-    if (!cfgFile.exists()) {
-      Path parentDir = cfgFile.getParentFile().toPath();
-      if (!Files.exists(parentDir)) {
-        try {
-          Files.createDirectories(parentDir);
-        } catch (IOException e) {
-          LOG.error("Failed to create .uiSettings directory", e);
-        }
-      }
-
-      // populate properties with default values and store
-      try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
-        // create object with default values
-        colorScheme = new IptColorScheme();
-        Properties props = colorScheme.toProperties();
-        props.store(out, "Default IPT color scheme configuration, last saved " + new Date());
-      } catch (IOException e) {
-        LOG.error("Failed to load the default application configuration from ipt-color-scheme.properties", e);
-      }
-    } else {
-      try (InputStream in = Files.newInputStream(cfgFile.toPath())) {
-        Properties props = new Properties();
-        props.load(in);
-        colorScheme = new IptColorScheme(props);
-      } catch (IOException e) {
-        LOG.error("Failed to load the application configuration from ipt-color-scheme.properties", e);
-      }
-    }
-
     // load default configuration from application.properties
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
@@ -492,6 +466,40 @@ public class AppConfig {
         } else {
           LOG.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
         }
+
+        // load (and create if absent) default colors configuration from ipt-color.scheme.properties
+        File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
+        if (!cfgFile.exists()) {
+          LOG.info("IPT UI settings not found, try to create them and then load");
+          Path parentDir = cfgFile.getParentFile().toPath();
+          if (!Files.exists(parentDir)) {
+            try {
+              Files.createDirectories(parentDir);
+            } catch (IOException e) {
+              LOG.error("Failed to create .uiSettings directory", e);
+            }
+          }
+
+          // populate properties with default values and store
+          try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
+            // create object with default values
+            colorScheme = new IptColorScheme();
+            Properties uiProps = colorScheme.toProperties();
+            uiProps.store(out, "Default IPT color scheme configuration, last saved " + new Date());
+          } catch (IOException e) {
+            LOG.error("Failed to load the default application configuration from ipt-color-scheme.properties", e);
+          }
+        } else {
+          LOG.info("Loading IPT UI settings");
+          try (InputStream in = Files.newInputStream(cfgFile.toPath())) {
+            Properties uiProps = new Properties();
+            uiProps.load(in);
+            colorScheme = new IptColorScheme(uiProps);
+          } catch (IOException e) {
+            LOG.error("Failed to load the application configuration from ipt-color-scheme.properties", e);
+          }
+        }
+
         // check if this datadir is a production or test installation
         // we use a hidden file to indicate the production type
         readRegistryLock();

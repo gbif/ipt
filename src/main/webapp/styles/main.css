@@ -397,18 +397,17 @@ header, .dropdown-menu {
 }
 
 .navbar-button {
-    color: rgba(var(--navbar-link-color), 0.7) !important;
-    border-color: rgba(var(--navbar-link-color), 0.7) !important;
-    font-weight: 400 !important;
+    color: rgb(var(--navbar-link-color)) !important;
+    border-color: rgb(var(--navbar-link-color)) !important;
 }
 
 .navbar-button:hover, .navbar-button:focus {
-    color: rgba(var(--navbar-link-color), 0.85) !important;
-    border-color: rgba(var(--navbar-link-color), 0.85) !important;
+    color: rgb(var(--navbar-link-color)) !important;
+    border-color: rgb(var(--navbar-link-color)) !important;
 }
 
 .nav-link {
-    color: rgba(var(--navbar-link-color), 0.7) !important;
+    color: rgb(var(--navbar-link-color)) !important;
 }
 
 .nav-link.active {
@@ -416,7 +415,7 @@ header, .dropdown-menu {
 }
 
 .nav-link:hover {
-    color: rgba(var(--navbar-link-color), 0.85) !important;
+    color: rgb(var(--navbar-link-color)) !important;
     text-shadow: 0 0 var(--navbar-link-color);
 }
 
@@ -425,11 +424,11 @@ header, .dropdown-menu {
 }
 
 .gbif-heartbeat-icon, .gbif-translate-icon {
-    fill: rgba(var(--navbar-link-color), 0.7);
+    fill: rgb(var(--navbar-link-color));
 }
 
 .gbif-heartbeat-icon:hover:not(.gbif-heartbeat-icon.active), .gbif-translate-icon:hover:not(.gbif-translate-icon.active) {
-    fill: rgba(var(--navbar-link-color), 0.85);
+    fill: rgb(var(--navbar-link-color));
 }
 
 .gbif-heartbeat-icon.active, .gbif-translate-icon.active {
