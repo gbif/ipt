@@ -317,7 +317,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
     // properties that get reset
-    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEmlVersion());
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getMetadataVersion());
     // the resource shouldn't be registered
     assertFalse(res.isRegistered());
     // the resource shouldn't have any managers
@@ -401,7 +401,7 @@ public class ResourceManagerImplTest {
     assertTrue(mockedDataDir.resourceFile(RESOURCE_SHORTNAME).exists());
 
     assertEquals(BigDecimal.valueOf(1.0), res.getEml().getEmlVersion());
-    assertEquals(BigDecimal.valueOf(1.0), res.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), res.getMetadataVersion());
 
     // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
 
@@ -562,7 +562,7 @@ public class ResourceManagerImplTest {
     assertEquals("http://rs.gbif.org/terms/1.0/Image", res.getMappings().get(1).getExtension().getRowType());
 
     // properties that get reset
-    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEmlVersion());
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getMetadataVersion());
     // the resource shouldn't be registered
     assertFalse(res.isRegistered());
     // the resource shouldn't have any managers
@@ -905,7 +905,7 @@ public class ResourceManagerImplTest {
     assertEquals(DATASET_TYPE_OCCURRENCE_IDENTIFIER, persistedResource.getCoreType());
     assertEquals(PublicationStatus.PRIVATE, persistedResource.getStatus());
     assertEquals(1, persistedResource.getSources().size());
-    assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(1.0), persistedResource.getMetadataVersion());
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
     // should be 1 KeywordSet corresponding to Dataset Type vocabulary
@@ -1611,7 +1611,7 @@ public class ResourceManagerImplTest {
     String shortname = "res1";
     assertEquals(shortname, resource.getShortname());
     BigDecimal version = new BigDecimal("1.1");
-    assertEquals(version.toPlainString(), resource.getEmlVersion().toPlainString());
+    assertEquals(version.toPlainString(), resource.getMetadataVersion().toPlainString());
     DOI doi = new DOI("doi:10.5072/gc8abc");
     assertNotNull(resource.getDoi());
     assertEquals(doi.toString(), resource.getDoi().toString());
@@ -1647,7 +1647,7 @@ public class ResourceManagerImplTest {
         emlXMLVersionOnePointOne, null);
 
     assertEquals(shortname, reconstructed.getShortname());
-    assertEquals(version, reconstructed.getEmlVersion());
+    assertEquals(version, reconstructed.getMetadataVersion());
     assertEquals(doi, reconstructed.getDoi());
     assertEquals(IdentifierStatus.PUBLIC, reconstructed.getIdentifierStatus());
     assertEquals(PublicationStatus.PUBLIC, reconstructed.getStatus());
@@ -1674,7 +1674,7 @@ public class ResourceManagerImplTest {
     String shortname = "res1";
     assertEquals(shortname, resource.getShortname());
     BigDecimal version = new BigDecimal("5.0");
-    assertEquals(version.toPlainString(), resource.getEmlVersion().toPlainString());
+    assertEquals(version.toPlainString(), resource.getMetadataVersion().toPlainString());
     DOI doi = new DOI("doi:10.5072/fk22zu2ds");
     assertNotNull(resource.getDoi());
     assertEquals(doi.toString(), resource.getDoi().toString());
@@ -1708,7 +1708,7 @@ public class ResourceManagerImplTest {
         emlXMLVersionOnePointOne, key);
 
     assertEquals(shortname, reconstructed.getShortname());
-    assertEquals(version, reconstructed.getEmlVersion());
+    assertEquals(version, reconstructed.getMetadataVersion());
     assertEquals(doi, reconstructed.getDoi());
     assertEquals(IdentifierStatus.PUBLIC, reconstructed.getIdentifierStatus());
     assertEquals(PublicationStatus.REGISTERED, reconstructed.getStatus());
@@ -1728,8 +1728,8 @@ public class ResourceManagerImplTest {
   public void testConvertVersion() throws Exception {
     Resource r = new Resource();
     r.setEmlVersion(BigDecimal.valueOf(4));
-    assertEquals(0, r.getEmlVersion().scale());
-    assertEquals(4, r.getEmlVersion().intValueExact());
+    assertEquals(0, r.getMetadataVersion().scale());
+    assertEquals(4, r.getMetadataVersion().intValueExact());
     // do conversion 4 -> 4.0
     BigDecimal converted = getResourceManagerImpl().convertVersion(r);
     assertEquals(new BigDecimal("4.0"), converted);
@@ -1742,8 +1742,8 @@ public class ResourceManagerImplTest {
   public void testConvertVersionZero() throws Exception {
     Resource r = new Resource();
     r.setEmlVersion(BigDecimal.valueOf(0));
-    assertEquals(0, r.getEmlVersion().scale());
-    assertEquals(0, r.getEmlVersion().intValueExact());
+    assertEquals(0, r.getMetadataVersion().scale());
+    assertEquals(0, r.getMetadataVersion().intValueExact());
     // do conversion 0 -> 1.0
     BigDecimal converted = getResourceManagerImpl().convertVersion(r);
     assertEquals(new BigDecimal("1.0"), converted);
@@ -1821,7 +1821,7 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
     Resource loaded = resourceManager.loadFromDir(resourceDir, creator);
-    assertEquals("19.0", loaded.getEmlVersion().toPlainString());
+    assertEquals("19.0", loaded.getMetadataVersion().toPlainString());
     assertEquals(1, loaded.getVersionHistory().size());
     assertEquals(IdentifierStatus.UNRESERVED, loaded.getIdentifierStatus());
 
@@ -1922,7 +1922,7 @@ public class ResourceManagerImplTest {
     assertFalse(emlFile31.exists());
     assertFalse(rtfFile31.exists());
     assertEquals(200, resource.getRecordsPublished());
-    assertEquals(new BigDecimal("3.0"), resource.getEmlVersion());
+    assertEquals(new BigDecimal("3.0"), resource.getMetadataVersion());
     assertEquals(released30, resource.getLastPublished());
     assertEquals(new BigDecimal("2.0"), resource.getReplacedEmlVersion());
   }

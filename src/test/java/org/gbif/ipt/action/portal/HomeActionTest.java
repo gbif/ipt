@@ -120,7 +120,7 @@ public class HomeActionTest {
     Resource returned = action.getResources().get(0);
     assertEquals("TEST RESOURCE", returned.getTitle());
     assertEquals(LAST_PUBLISHED, returned.getLastPublished());
-    assertEquals(VERSION_ONE_THREE_FOUR, returned.getEmlVersion());
+    assertEquals(VERSION_ONE_THREE_FOUR, returned.getMetadataVersion());
     assertEquals(RECORDS_PUBLISHED, returned.getRecordsPublished());
     // assert modified date and other properties the same as current (unpublished) resource
     assertNotEquals(MODIFIED, returned.getModified());

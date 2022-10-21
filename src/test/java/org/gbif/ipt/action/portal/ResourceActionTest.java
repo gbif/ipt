@@ -206,7 +206,7 @@ public class ResourceActionTest {
     action.getResource().getVersionHistory().clear();
     assertTrue(action.getResource().isRegistered());
     assertTrue(action.getResource().getVersionHistory().isEmpty());
-    assertEquals(LATEST_RESOURCE_VERSION, action.getResource().getEmlVersion());
+    assertEquals(LATEST_RESOURCE_VERSION, action.getResource().getMetadataVersion());
 
     // the last published version was registered and therefore can be shown publicly
     assertEquals(BaseAction.SUCCESS, action.detail());
@@ -255,7 +255,7 @@ public class ResourceActionTest {
 
     // ensure all versions available to manager
     action.setVersion(RESOURCE_VERSION_ONE);
-    assertNotEquals(resource.getEmlVersion(), action.getVersion());
+    assertNotEquals(resource.getMetadataVersion(), action.getVersion());
 
     assertEquals(BaseAction.SUCCESS, action.detail());
     // ensure warnings were generated:

@@ -166,7 +166,7 @@ public class ResourceAction extends PortalBaseAction {
           return new BigDecimal(latestVersion.getVersion());
         }
       } else if (resource.isRegistered()) {
-        return resource.getEmlVersion();
+        return resource.getMetadataVersion();
       }
     }
     return null;
@@ -187,7 +187,7 @@ public class ResourceAction extends PortalBaseAction {
       if (!history.isEmpty()) {
         return new BigDecimal(history.get(0).getVersion());
       } else {
-        return resource.getEmlVersion();
+        return resource.getMetadataVersion();
       }
     }
     return null;
@@ -207,7 +207,7 @@ public class ResourceAction extends PortalBaseAction {
           return vh.getPublicationStatus();
         }
       }
-    } else if (resource.getEmlVersion().compareTo(version) == 0) {
+    } else if (resource.getMetadataVersion().compareTo(version) == 0) {
       return resource.getStatus();
     }
     return PublicationStatus.PRIVATE;
@@ -222,7 +222,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   public DOI findDoiAssignedToPublishedVersion() {
     if (resource != null) {
-      BigDecimal versionRequested = (getVersion() == null) ? resource.getEmlVersion() : getVersion();
+      BigDecimal versionRequested = (getVersion() == null) ? resource.getMetadataVersion() : getVersion();
       for (VersionHistory history : resource.getVersionHistory()) {
         if (history.getVersion().equalsIgnoreCase(versionRequested.toPlainString())) {
           // To be officially assigned, DOI must be public

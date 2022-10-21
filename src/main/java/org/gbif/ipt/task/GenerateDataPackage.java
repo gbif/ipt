@@ -113,7 +113,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       bundleArchive();
 
       // reporting
-      addMessage(Level.INFO, "Archive version #" + resource.getEmlVersion() + " generated successfully!");
+      addMessage(Level.INFO, "Archive version #" + resource.getMetadataVersion() + " generated successfully!");
 
       // set final state
       setState(STATE.COMPLETED);

@@ -342,7 +342,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     checkForInterruption();
     setState(STATE.BUNDLING);
     File zip = null;
-    BigDecimal version = resource.getEmlVersion();
+    BigDecimal version = resource.getMetadataVersion();
     try {
       // create zip
       zip = dataDir.tmpFile("dwca", ".zip");
@@ -965,7 +965,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       setState(STATE.STARTED);
 
       // initial reporting
-      addMessage(Level.INFO, "Archive generation started for version #" + resource.getEmlVersion());
+      addMessage(Level.INFO, "Archive generation started for version #" + resource.getMetadataVersion());
 
       // create a temp dir to copy all dwca files to
       dwcaFolder = dataDir.tmpDir();
@@ -987,7 +987,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       bundleArchive();
 
       // reporting
-      addMessage(Level.INFO, "Archive version #" + resource.getEmlVersion() + " generated successfully!");
+      addMessage(Level.INFO, "Archive version #" + resource.getMetadataVersion() + " generated successfully!");
 
       // set final state
       setState(STATE.COMPLETED);

@@ -530,7 +530,7 @@ public class ResourceTest {
     resource.addVersionHistory(history);
 
     assertEquals("0.9", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("0.10", resource.getEmlVersion().toPlainString());
+    assertEquals("0.10", resource.getMetadataVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("0.11", resource.getNextVersion().toPlainString());
@@ -541,7 +541,7 @@ public class ResourceTest {
     resource.addVersionHistory(history);
 
     assertEquals("0.10", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("0.11", resource.getEmlVersion().toPlainString());
+    assertEquals("0.11", resource.getMetadataVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("0.12", resource.getNextVersion().toPlainString());
@@ -568,7 +568,7 @@ public class ResourceTest {
     resource.addVersionHistory(history);
 
     assertEquals("4.9", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("4.10", resource.getEmlVersion().toPlainString());
+    assertEquals("4.10", resource.getMetadataVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("4.11", resource.getNextVersion().toPlainString());
@@ -579,7 +579,7 @@ public class ResourceTest {
     resource.addVersionHistory(history);
 
     assertEquals("4.10", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("4.11", resource.getEmlVersion().toPlainString());
+    assertEquals("4.11", resource.getMetadataVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("4.12", resource.getNextVersion().toPlainString());
@@ -604,13 +604,13 @@ public class ResourceTest {
     resource.addVersionHistory(history);
 
     assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("1.20", resource.getEmlVersion().toPlainString());
+    assertEquals("1.20", resource.getMetadataVersion().toPlainString());
 
     // now imaging publishing fails before it gets the chance to finish (e.g. registry update fails)
     // simulate restoring version 1.19
     resource.setEmlVersion(new BigDecimal("1.19"));
     assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("1.19", resource.getEmlVersion().toPlainString());
+    assertEquals("1.19", resource.getMetadataVersion().toPlainString());
     assertEquals("1.19", resource.getEml().getEmlVersion().toPlainString());
   }
 
@@ -618,7 +618,7 @@ public class ResourceTest {
   public void testGetNextVersion() {
     Resource resource = new Resource();
     resource.setLastPublished(null);
-    assertEquals("1.0", resource.getEmlVersion().toPlainString());
+    assertEquals("1.0", resource.getMetadataVersion().toPlainString());
     // the resource hasn't been published yet, so no new version gets assigned yet
     assertEquals("1.0", resource.getNextVersion().toPlainString());
 
@@ -633,7 +633,7 @@ public class ResourceTest {
     vh1.setStatus(IdentifierStatus.UNRESERVED);
     resource.addVersionHistory(vh1);
 
-    assertEquals("1.0", resource.getEmlVersion().toPlainString());
+    assertEquals("1.0", resource.getMetadataVersion().toPlainString());
     // the resource has been published, no DOI is assigned, so the next version is a minor version bump
     assertEquals("1.1", resource.getNextVersion().toPlainString());
 
@@ -649,7 +649,7 @@ public class ResourceTest {
     vh2.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.addVersionHistory(vh2);
 
-    assertEquals("1.1", resource.getEmlVersion().toPlainString());
+    assertEquals("1.1", resource.getMetadataVersion().toPlainString());
     // the resource has been published, a DOI is only reserved, so the next version is a minor version bump
     assertEquals("1.2", resource.getNextVersion().toPlainString());
 
@@ -665,7 +665,7 @@ public class ResourceTest {
     vh3.setStatus(IdentifierStatus.PUBLIC);
     resource.addVersionHistory(vh3);
 
-    assertEquals("1.2", resource.getEmlVersion().toPlainString());
+    assertEquals("1.2", resource.getMetadataVersion().toPlainString());
     // the resource has been published, a DOI is public, but there is no new DOI reserved, so the next version is a minor version bump
     assertEquals("1.3", resource.getNextVersion().toPlainString());
 
@@ -673,7 +673,7 @@ public class ResourceTest {
     resource.setDoi(new DOI("10.1555/KY75TG"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
 
-    assertEquals("1.2", resource.getEmlVersion().toPlainString());
+    assertEquals("1.2", resource.getMetadataVersion().toPlainString());
     // the resource has been published, a DOI is public, but there is a new DOI reserved, so the next version is a major version bump
     assertEquals("2.0", resource.getNextVersion().toPlainString());
   }

@@ -459,7 +459,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return resource version
    */
   @NotNull
-  public BigDecimal getEmlVersion() {
+  public BigDecimal getMetadataVersion() {
     return (emlVersion == null) ? eml.getEmlVersion() : emlVersion;
   }
 

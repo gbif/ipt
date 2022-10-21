@@ -235,7 +235,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (cancelled) {
 
       // final logging
-      BigDecimal version = resource.getEmlVersion();
+      BigDecimal version = resource.getMetadataVersion();
       String msg = getText("publishing.cancelled", new String[] {version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
       addActionError(msg);

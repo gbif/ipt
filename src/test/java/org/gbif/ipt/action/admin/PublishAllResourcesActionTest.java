@@ -103,7 +103,7 @@ public class PublishAllResourcesActionTest {
 
     // make a few pre-publication assertions
     assertEquals(BigDecimal.valueOf(1.0), resource.getReplacedEmlVersion());
-    assertEquals(BigDecimal.valueOf(3.0), resource.getEmlVersion());
+    assertEquals(BigDecimal.valueOf(3.0), resource.getMetadataVersion());
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
     // populate a source mapping, and assign it to resource

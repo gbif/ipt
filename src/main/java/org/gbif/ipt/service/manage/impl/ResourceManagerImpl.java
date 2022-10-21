@@ -1006,7 +1006,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
       Resource resource = get(shortname);
-      BigDecimal version = resource.getEmlVersion();
+      BigDecimal version = resource.getMetadataVersion();
 
       // is listed as locked but task might be finished, check
       Future<Map<String, Integer>> f = processFutures.get(shortname);
@@ -1349,7 +1349,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // also convert/rename eml, rtf, and dwca versioned files also
         BigDecimal converted = convertVersion(resource);
         if (converted != null) {
-          updateResourceVersion(resource, resource.getEmlVersion(), converted);
+          updateResourceVersion(resource, resource.getMetadataVersion(), converted);
         }
 
         // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
@@ -1387,8 +1387,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @SuppressWarnings("BigDecimalEquals")
   protected BigDecimal convertVersion(Resource resource) {
-    if (resource.getEmlVersion() != null) {
-      BigDecimal version = resource.getEmlVersion();
+    if (resource.getMetadataVersion() != null) {
+      BigDecimal version = resource.getMetadataVersion();
       // special conversion: 0 -> 1.0
       if (version.equals(BigDecimal.ZERO)) {
         return Constants.INITIAL_RESOURCE_VERSION;
@@ -1485,7 +1485,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
     if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
       VersionHistory vh =
-        new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
+        new VersionHistory(resource.getMetadataVersion(), resource.getLastPublished(), resource.getStatus());
       vh.setRecordsPublished(resource.getRecordsPublished());
       return vh;
     }
@@ -1639,7 +1639,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // final logging
     String msg = action
-      .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
+      .getText("publishing.success", new String[] {String.valueOf(resource.getMetadataVersion()), resource.getShortname()});
     action.addActionMessage(msg);
     LOG.info(msg);
   }
@@ -1784,7 +1784,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     DOI doiToReplace = resource.getAssignedDoi();
 
     if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
-        && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
+        && resource.getMetadataVersion() != null && resource.getMetadataVersion().compareTo(version) == 0
         && replacedVersion != null && resource.findVersionHistory(replacedVersion) != null) {
 
       // register new DOI first, indicating it replaces former DOI
@@ -2928,7 +2928,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
     // set EML version
-    resource.getEml().setEmlVersion(resource.getEmlVersion());
+    resource.getEml().setEmlVersion(resource.getMetadataVersion());
     // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
     if (resource.getKey() != null) {
       resource.getEml().setGuid(resource.getKey().toString());
@@ -3249,7 +3249,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
-    if ((version != null) && !version.equals(resource.getEmlVersion())) {
+    if ((version != null) && !version.equals(resource.getMetadataVersion())) {
       LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
       try {
         removeVersion(resource.getShortname(), version);
