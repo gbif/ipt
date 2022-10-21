@@ -1757,7 +1757,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return StringUtils.trimToNull(summary);
   }
 
-  public boolean isDataSchemaBased() {
+  public boolean isDataPackageResource() {
     return resource.getSchemaIdentifier() != null;
   }
 }

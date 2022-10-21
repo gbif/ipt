@@ -50,7 +50,7 @@
             <div class="col-lg-9 ps-lg-5">
                 <div>
                     <p>
-                        <#if dataSchemaBased>
+                        <#if dataPackageResource>
                             <@s.text name='manage.overview.source.dataSchema.intro'/>
                         <#else>
                             <@s.text name='manage.overview.source.intro'/>
@@ -164,7 +164,7 @@
 <!-- Represents mapping data section on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
-    <#if dataSchemaBased>
+    <#if dataPackageResource>
         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
             <#assign mappingsInfo>
                 <@s.text name='manage.overview.mappings.info'/>

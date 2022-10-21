@@ -431,7 +431,7 @@
                 </div>
 
                 <p class="mt-3 mb-0 text-smaller fst-italic">
-                    <#if dataSchemaBased>
+                    <#if dataPackageResource>
                         <@s.text name="manage.overview.dataSchema.description"/>
                     <#elseif resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.description.metadataOnly"/>
@@ -456,7 +456,7 @@
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <#if dataSchemaBased>
+                                <#if dataPackageResource>
                                     <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.mappings'/></a></li>
                                 <#else>
                                     <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.DwC.Mappings'/></a></li>

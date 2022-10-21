@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <#if dataSchemaBased>
+                <#if dataPackageResource>
                     <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data" style="display: none;">
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <div class="row">
