@@ -203,7 +203,7 @@
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4">${m.dataSchemaFile!}</th>
                                             <td>
-                                                ${m.fieldsMapped!} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!} <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
+                                                ${m.fieldsMapped!} <@s.text name='manage.overview.mappings.fields.mapped'/> <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
                                                 ${(m.lastModified?datetime?string.medium)!}
                                             </td>
                                             <td class="d-flex justify-content-end py-0">
