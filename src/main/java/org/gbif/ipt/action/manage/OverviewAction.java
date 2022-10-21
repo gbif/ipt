@@ -1165,8 +1165,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
 
+      // TODO: 21/10/2022 check for data packages
       // check EML
-      missingMetadata = !emlValidator.isValid(resource, null);
+      if (!isDataPackageResource()) {
+        missingMetadata = !emlValidator.isValid(resource, null);
+      }
+
       // check resource has been assigned a valid publishing organisation
       missingValidPublishingOrganisation = !hasValidPublishingOrganisation(resource);
       // check resource meets all the conditions required in order to be registered

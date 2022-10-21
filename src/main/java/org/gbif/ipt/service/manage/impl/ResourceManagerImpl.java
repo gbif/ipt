@@ -2993,7 +2993,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setStatus(PublicationStatus.PRIVATE);
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // not applicable for data packages
+      if (resource.getSchemaIdentifier() != null) {
+        updateAlternateIdentifierForIPTURLToResource(resource);
+      }
 
       // save all changes to resource
       save(resource);
@@ -3010,7 +3013,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setStatus(PublicationStatus.PUBLIC);
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // not applicable for data packages
+      if (resource.getSchemaIdentifier() != null) {
+        updateAlternateIdentifierForIPTURLToResource(resource);
+      }
 
       // save all changes to resource
       save(resource);
