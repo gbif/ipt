@@ -137,8 +137,8 @@
 <#assign updateFrequencyTitle><@s.text name='eml.updateFrequency'/></#assign>
 <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
 <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
-<#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
-<#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
+<#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
+<#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign isPreviewPage = action.isPreview() />
 
 <style>
@@ -189,7 +189,7 @@
     <#-- display watermark for preview pages -->
     <#if isPreviewPage>
         <div id="watermark" class="text-center text-uppercase fs-1 mb-2">
-            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.metadataVersion.toPlainString()}</@s.param></@s.text>
+            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>
         </div>
     </#if>
 
@@ -207,7 +207,7 @@
                 <div class="text-gbif-primary text-smaller">
                     <span>
                         <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                        <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                             <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
                         <#else>
                             <@s.text name='portal.resource.latest.version'/>
@@ -237,7 +237,7 @@
                             <@s.text name='button.edit'/>
                         </a>
                     </#if>
-                    <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                         <#if adminRights>
                             <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                 <@s.text name='button.delete.version'/>
@@ -361,7 +361,7 @@
                                                 <@s.text name='portal.resource.dwca.verbose'/>
                                             </#if>
                                         </th>
-                                        <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString() && recordsPublishedForVersion??>
+                                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
                                             <td class="p-0">
                                                 <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);">
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
@@ -586,7 +586,7 @@
                             </h4>
 
                             <p>
-                                <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                                <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                                     <em class="warn"><@s.text name='portal.resource.latest.version.warning'/>&nbsp;</em>
                                 </#if>
                                 <@s.text name='portal.resource.cite.help'/>:

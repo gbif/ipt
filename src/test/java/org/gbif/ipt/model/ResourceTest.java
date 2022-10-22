@@ -444,7 +444,7 @@ public class ResourceTest {
   public void testGenerateResourceCitation() throws URISyntaxException {
     Resource resource = new Resource();
     resource.setTitle("Birds "); // should get trimmed
-    resource.setEmlVersion(BigDecimal.valueOf(1.6));
+    resource.setMetadataVersion(BigDecimal.valueOf(1.6));
     resource.setLastPublished(new Date());
     // create hompepage for next resource version (1.7)
     URI homepage = new URI("http://ipt.gbif.org/resource?r=birds&v=1.7");
@@ -518,30 +518,30 @@ public class ResourceTest {
     resource.getVersionHistory().clear();
 
     // simulate publication of one version
-    resource.setEmlVersion(new BigDecimal("0.9"));
+    resource.setMetadataVersion(new BigDecimal("0.9"));
     resource.setLastPublished(new Date());
     VersionHistory history = new VersionHistory(new BigDecimal("0.9"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
     // simulate publication of another
-    resource.setEmlVersion(new BigDecimal("0.10"));
+    resource.setMetadataVersion(new BigDecimal("0.10"));
     resource.setLastPublished(new Date());
     history = new VersionHistory(new BigDecimal("0.10"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
-    assertEquals("0.9", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("0.10", resource.getMetadataVersion().toPlainString());
+    assertEquals("0.9", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("0.10", resource.getEmlVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("0.11", resource.getNextVersion().toPlainString());
 
-    resource.setEmlVersion(new BigDecimal("0.11"));
+    resource.setMetadataVersion(new BigDecimal("0.11"));
     resource.setLastPublished(new Date());
     history = new VersionHistory(new BigDecimal("0.11"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
-    assertEquals("0.10", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("0.11", resource.getMetadataVersion().toPlainString());
+    assertEquals("0.10", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("0.11", resource.getEmlVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("0.12", resource.getNextVersion().toPlainString());
@@ -556,30 +556,30 @@ public class ResourceTest {
     resource.getVersionHistory().clear();
 
     // simulate publication of one version
-    resource.setEmlVersion(new BigDecimal("4.9"));
+    resource.setMetadataVersion(new BigDecimal("4.9"));
     resource.setLastPublished(new Date());
     VersionHistory history = new VersionHistory(new BigDecimal("4.9"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
     // simulate publication of another
-    resource.setEmlVersion(new BigDecimal("4.10"));
+    resource.setMetadataVersion(new BigDecimal("4.10"));
     resource.setLastPublished(new Date());
     history = new VersionHistory(new BigDecimal("4.10"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
-    assertEquals("4.9", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("4.10", resource.getMetadataVersion().toPlainString());
+    assertEquals("4.9", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("4.10", resource.getEmlVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("4.11", resource.getNextVersion().toPlainString());
 
-    resource.setEmlVersion(new BigDecimal("4.11"));
+    resource.setMetadataVersion(new BigDecimal("4.11"));
     resource.setLastPublished(new Date());
     history = new VersionHistory(new BigDecimal("4.11"), new Date(), PublicationStatus.PRIVATE);
     resource.addVersionHistory(history);
 
-    assertEquals("4.10", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("4.11", resource.getMetadataVersion().toPlainString());
+    assertEquals("4.10", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("4.11", resource.getEmlVersion().toPlainString());
 
     // ensure next version determined correctly
     assertEquals("4.12", resource.getNextVersion().toPlainString());
@@ -591,26 +591,26 @@ public class ResourceTest {
     resource.getVersionHistory().clear();
     // simulate publication of one verison
     BigDecimal v = new BigDecimal("1.19");
-    resource.setEmlVersion(v);
+    resource.setMetadataVersion(v);
     resource.setLastPublished(new Date());
     VersionHistory history = new VersionHistory(BigDecimal.valueOf(1.19), new Date(), PublicationStatus.PUBLIC);
     resource.addVersionHistory(history);
 
     // simulate publication of the next
     v = resource.getNextVersion();
-    resource.setEmlVersion(v);
+    resource.setMetadataVersion(v);
     resource.setLastPublished(new Date());
     history = new VersionHistory(v, new Date(),PublicationStatus.PUBLIC);
     resource.addVersionHistory(history);
 
-    assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("1.20", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.19", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("1.20", resource.getEmlVersion().toPlainString());
 
     // now imaging publishing fails before it gets the chance to finish (e.g. registry update fails)
     // simulate restoring version 1.19
-    resource.setEmlVersion(new BigDecimal("1.19"));
-    assertEquals("1.19", resource.getReplacedEmlVersion().toPlainString());
-    assertEquals("1.19", resource.getMetadataVersion().toPlainString());
+    resource.setMetadataVersion(new BigDecimal("1.19"));
+    assertEquals("1.19", resource.getReplacedMetadataVersion().toPlainString());
+    assertEquals("1.19", resource.getEmlVersion().toPlainString());
     assertEquals("1.19", resource.getEml().getEmlVersion().toPlainString());
   }
 
@@ -618,14 +618,14 @@ public class ResourceTest {
   public void testGetNextVersion() {
     Resource resource = new Resource();
     resource.setLastPublished(null);
-    assertEquals("1.0", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.0", resource.getEmlVersion().toPlainString());
     // the resource hasn't been published yet, so no new version gets assigned yet
     assertEquals("1.0", resource.getNextVersion().toPlainString());
 
     // first published version - no DOI
     BigDecimal v1 = new BigDecimal("1.0");
     Date v1Published = new Date();
-    resource.setEmlVersion(v1);
+    resource.setMetadataVersion(v1);
     resource.setLastPublished(v1Published);
     resource.setDoi(null);
     resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
@@ -633,14 +633,14 @@ public class ResourceTest {
     vh1.setStatus(IdentifierStatus.UNRESERVED);
     resource.addVersionHistory(vh1);
 
-    assertEquals("1.0", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.0", resource.getEmlVersion().toPlainString());
     // the resource has been published, no DOI is assigned, so the next version is a minor version bump
     assertEquals("1.1", resource.getNextVersion().toPlainString());
 
     // second published version - DOI reserved
     BigDecimal v2 = new BigDecimal("1.1");
     Date v2Published = new Date();
-    resource.setEmlVersion(v2);
+    resource.setMetadataVersion(v2);
     resource.setLastPublished(v2Published);
     resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
@@ -649,14 +649,14 @@ public class ResourceTest {
     vh2.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.addVersionHistory(vh2);
 
-    assertEquals("1.1", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.1", resource.getEmlVersion().toPlainString());
     // the resource has been published, a DOI is only reserved, so the next version is a minor version bump
     assertEquals("1.2", resource.getNextVersion().toPlainString());
 
     // third published version - DOI registered (public)
     BigDecimal v3 = new BigDecimal("1.2");
     Date v3Published = new Date();
-    resource.setEmlVersion(v3);
+    resource.setMetadataVersion(v3);
     resource.setLastPublished(v3Published);
     resource.setDoi(new DOI("10.1555/PU75GJ9"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
@@ -665,7 +665,7 @@ public class ResourceTest {
     vh3.setStatus(IdentifierStatus.PUBLIC);
     resource.addVersionHistory(vh3);
 
-    assertEquals("1.2", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.2", resource.getEmlVersion().toPlainString());
     // the resource has been published, a DOI is public, but there is no new DOI reserved, so the next version is a minor version bump
     assertEquals("1.3", resource.getNextVersion().toPlainString());
 
@@ -673,7 +673,7 @@ public class ResourceTest {
     resource.setDoi(new DOI("10.1555/KY75TG"));
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
 
-    assertEquals("1.2", resource.getMetadataVersion().toPlainString());
+    assertEquals("1.2", resource.getEmlVersion().toPlainString());
     // the resource has been published, a DOI is public, but there is a new DOI reserved, so the next version is a major version bump
     assertEquals("2.0", resource.getNextVersion().toPlainString());
   }

@@ -38,7 +38,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         var aDataSet = [
             <#list resources as r>
             [
-                <#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
+                <#if (r.eml.logoUrl)?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
                 "<a href='${baseURL}<#if !shownPublicly>/manage</#if>/resource?r=${r.shortname}'><if><#if r.title?has_content>${r.title?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${r.shortname}</#if></a>",
                 '<#if r.status=='REGISTERED' && r.organisation??>${r.organisation.alias?replace("\'", "\\'")?replace("\"", '\\"')!r.organisation.name?replace("\'", "\\'")?replace("\"", '\\"')}<#elseif r.status=='REGISTERED'><@s.text name="manage.home.unknown.organisation"/><#else><@s.text name="manage.home.not.registered"/></#if>',
                 <#if r.coreType?has_content && types[r.coreType?lower_case]?has_content>'${types[r.coreType?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,

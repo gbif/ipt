@@ -108,7 +108,7 @@ public class DataCiteMetadataBuilder {
     dataCiteMetadata.setResourceType(resourceType);
 
     // version (optional according to DataCite, mandatory and thus never null according to IPT)
-    dataCiteMetadata.setVersion(resource.getMetadataVersion().toPlainString());
+    dataCiteMetadata.setVersion(resource.getEmlVersion().toPlainString());
 
     // add list of contributors (recommended)
     List<Agent> emlContributors =

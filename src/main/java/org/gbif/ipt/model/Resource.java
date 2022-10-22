@@ -101,8 +101,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   private InferredMetadata inferredMetadata = new InferredMetadata();
   // resource version and eml version are the same
   private BigDecimal emlVersion;
+  private BigDecimal dataPackageMetadataVersion;
   // resource version replaced
   private BigDecimal replacedEmlVersion;
+  private BigDecimal replacedDataPackageMetadataVersion;
   // last time resource was successfully published
   private Date lastPublished;
   // next time resource is scheduled to be published
@@ -459,8 +461,20 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return resource version
    */
   @NotNull
-  public BigDecimal getMetadataVersion() {
+  public BigDecimal getEmlVersion() {
     return (emlVersion == null) ? eml.getEmlVersion() : emlVersion;
+  }
+
+  @NotNull
+  public BigDecimal getDataPackageMetadataVersion() {
+    return (dataPackageMetadataVersion == null)
+        ? new BigDecimal(dataPackageMetadata.getVersion().toString())
+        : dataPackageMetadataVersion;
+  }
+
+  @NotNull
+  public BigDecimal getMetadataVersion() {
+    return schemaIdentifier != null ? getDataPackageMetadataVersion() : getEmlVersion();
   }
 
   /**
@@ -473,22 +487,32 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   @NotNull
   public BigDecimal getNextVersion() {
-    // first publication retrieve existing version
-    if (lastPublished == null) {
-      return getEml().getEmlVersion();
-    }
-    // There are two cases that warrant a new major version, provided a doi has been reserved for resource
-    // #1: no DOI has been assigned yet, and resource's visibility is public (or registered)
-    // #2: a DOI has been assigned already
-    if (doi != null && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-      if (!isAlreadyAssignedDoi() && (status == PublicationStatus.PUBLIC || status == PublicationStatus.REGISTERED)) {
-        return getEml().getNextEmlVersionAfterMajorVersionChange();
-      } else if (isAlreadyAssignedDoi()) {
-        return getEml().getNextEmlVersionAfterMajorVersionChange();
+    if (schemaIdentifier != null) {
+      String versionAsString = getDataPackageMetadata().getVersion().toString();
+      // first publication retrieve existing version
+      if (lastPublished == null) {
+          return new BigDecimal(versionAsString);
       }
+      int majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
+      return new BigDecimal(majorVersion + 1 + ".0");
+    } else {
+      // first publication retrieve existing version
+      if (lastPublished == null) {
+        return getEml().getEmlVersion();
+      }
+      // There are two cases that warrant a new major version, provided a doi has been reserved for resource
+      // #1: no DOI has been assigned yet, and resource's visibility is public (or registered)
+      // #2: a DOI has been assigned already
+      if (doi != null && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+        if (!isAlreadyAssignedDoi() && (status == PublicationStatus.PUBLIC || status == PublicationStatus.REGISTERED)) {
+          return getEml().getNextEmlVersionAfterMajorVersionChange();
+        } else if (isAlreadyAssignedDoi()) {
+          return getEml().getNextEmlVersionAfterMajorVersionChange();
+        }
+      }
+      // all other cases warrant a minor version increment
+      return getEml().getNextEmlVersionAfterMinorVersionChange();
     }
-    // all other cases warrant a minor version increment
-    return getEml().getNextEmlVersionAfterMinorVersionChange();
   }
 
   /**
@@ -967,6 +991,22 @@ public class Resource implements Serializable, Comparable<Resource> {
     eml.setEmlVersion(v);
   }
 
+  public void setDataPackageMetadataVersion(BigDecimal v) {
+    if (ResourceUtils.assertVersionOrder(v, dataPackageMetadataVersion)) {
+      setReplacedDataPackageMetadataVersion(new BigDecimal(dataPackageMetadataVersion.toPlainString()));
+    }
+    dataPackageMetadataVersion = v;
+    dataPackageMetadata.setVersion(v);
+  }
+
+  public void setMetadataVersion(BigDecimal v) {
+    if (schemaIdentifier != null) {
+      setDataPackageMetadataVersion(v);
+    } else {
+      setEmlVersion(v);
+    }
+  }
+
   public void setKey(UUID key) {
     this.key = key;
   }
@@ -1158,6 +1198,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return (replacedEmlVersion == null) ? Constants.INITIAL_RESOURCE_VERSION : replacedEmlVersion;
   }
 
+  public BigDecimal getReplacedDataPackageMetadataVersion() {
+    return (replacedDataPackageMetadataVersion == null)
+        ? Constants.INITIAL_RESOURCE_VERSION
+        : replacedDataPackageMetadataVersion;
+  }
+
+  public BigDecimal getReplacedMetadataVersion() {
+    return schemaIdentifier != null ? getReplacedDataPackageMetadataVersion() : getReplacedEmlVersion();
+  }
+
   /**
    * Set the replacedEmlVersion, only if that version exists in VersionHistory.
    *
@@ -1169,6 +1219,15 @@ public class Resource implements Serializable, Comparable<Resource> {
       LOG.error("Replaced version (" + replacedEmlVersion.toPlainString() + ") does not exist in version history!");
     } else {
       this.replacedEmlVersion = replacedEmlVersion;
+    }
+  }
+
+  public void setReplacedDataPackageMetadataVersion(BigDecimal replacedDataPackageMetadataVersion) {
+    VersionHistory vh = findVersionHistory(replacedDataPackageMetadataVersion);
+    if (vh == null) {
+      LOG.error("Replaced version (" + replacedDataPackageMetadataVersion.toPlainString() + ") does not exist in version history!");
+    } else {
+      this.replacedDataPackageMetadataVersion = replacedDataPackageMetadataVersion;
     }
   }
 

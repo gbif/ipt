@@ -244,6 +244,19 @@ public class DataDir {
   }
 
   /**
+   * Retrieves published data package file for a specific version of a resource.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return data package file having specific version
+   */
+  public File resourceDataPackageFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = "data_package-" + version.toPlainString() + ".zip";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
    * Retrieves DwC-A file for a resource.
    *
    * @param resourceName resource short name
@@ -264,6 +277,11 @@ public class DataDir {
    */
   public File resourceEmlFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = "eml-" + version.toPlainString() + ".xml";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = "datapackage-" + version.toPlainString() + ".json";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 

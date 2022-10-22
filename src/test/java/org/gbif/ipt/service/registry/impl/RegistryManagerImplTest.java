@@ -315,7 +315,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     Date lastPublished = new Date();
     p.setModified(lastPublished);
     BigDecimal version = new BigDecimal("5.0");
-    p.setEmlVersion(version);
+    p.setMetadataVersion(version);
     p.setStatus(PublicationStatus.PUBLIC);
     VersionHistory vh = new VersionHistory(version, lastPublished, PublicationStatus.PUBLIC);
     p.addVersionHistory(vh);

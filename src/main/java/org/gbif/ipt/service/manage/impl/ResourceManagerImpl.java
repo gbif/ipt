@@ -528,7 +528,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // set number of records published to 0
         res.setRecordsPublished(0);
         // reset version number
-        res.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+        res.setMetadataVersion(Constants.INITIAL_RESOURCE_VERSION);
         // reset DOI
         res.setDoi(null);
         res.setIdentifierStatus(IdentifierStatus.UNRESERVED);
@@ -1228,6 +1228,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setDataPackageMetadata(metadata);
   }
 
+  private void loadMetadata(Resource resource) {
+    if (resource.getSchemaIdentifier() != null) {
+      loadDatapackageMetadata(resource);
+    } else {
+      loadEml(resource);
+    }
+  }
+
   /**
    * Loads a resource's inferred metadata from the xml file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
@@ -1336,11 +1344,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
         }
 
-        // TODO: 13/10/2022 load eml or datapackage metadata, not both
-        // load eml (this must be done before trying to convert version below)
-        loadEml(resource);
-        loadDatapackageMetadata(resource);
-
+        // load metadata (this must be done before trying to convert version below)
+        loadMetadata(resource);
 
         // load inferred metadata
         loadInferredMetadata(resource);
@@ -1358,13 +1363,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
-        // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
-        if (resource.getLastPublishedVersionsVersion() != null) {
-          renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
-        }
+        if (resource.getSchemaIdentifier() == null) {
+          // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
+          if (resource.getLastPublishedVersionsVersion() != null) {
+            renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
+          }
 
-        // update EML with the latest resource basics (version and GUID)
-        syncEmlWithResource(resource);
+          // update EML with the latest resource basics (version and GUID)
+          syncEmlWithResource(resource);
+        }
 
         LOG.debug("Read resource configuration for " + shortname);
         return resource;
@@ -1440,7 +1447,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // if all renames were successful (didn't throw an exception), set new version
-        resource.setEmlVersion(newVersion);
+        resource.setMetadataVersion(newVersion);
       } catch (IOException e) {
         LOG.error("Failed to update version number for " + resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
@@ -1557,11 +1564,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add new version history
     addOrUpdateVersionHistory(resource, version, false, action);
 
-    // publish EML
-    publishEml(resource, version);
+    // not for data packages
+    if (resource.getSchemaIdentifier() == null) {
+      // publish EML
+      publishEml(resource, version);
 
-    // publish RTF
-    publishRtf(resource, version);
+      // publish RTF
+      publishRtf(resource, version);
+    } else {
+      publishMetadata(resource, version);
+    }
 
     // remove StatusReport from previous publishing round
     StatusReport report = status(resource.getShortname());
@@ -1617,6 +1629,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
+    BigDecimal replacedMetadataVersion = resource.getReplacedMetadataVersion();
+
     // update the resource's registration (if registered), even if it is a metadata-only resource.
     updateRegistration(resource, action);
     // set last published date
@@ -1624,14 +1638,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set next published date (if resource configured for auto-publishing)
     updateNextPublishedDate(new Date(), resource);
     // register/update DOI
-    executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
+    executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
     // finalise/update version history
     addOrUpdateVersionHistory(resource, version, true, action);
     // persist resource object changes
     save(resource);
     // if archival mode is NOT turned on, don't keep former archive version (version replaced)
-    if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
-      removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
+    if (!cfg.isArchivalMode() && version.compareTo(replacedMetadataVersion) != 0) {
+      removeArchiveVersion(resource.getShortname(), replacedMetadataVersion);
     }
     // clean archive versions
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
@@ -1893,7 +1907,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // update version
-        resource.setEmlVersion(toRestore);
+        resource.setMetadataVersion(toRestore);
 
         // update replaced version with next last version
         if (resource.getVersionHistory().size() > 1) {
@@ -2051,7 +2065,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // ensure alternate identifier for IPT URL to resource is set - if resource is public
     updateAlternateIdentifierForIPTURLToResource(resource);
     // update eml version
-    resource.setEmlVersion(version);
+    resource.setMetadataVersion(version);
     // update eml pubDate (represents date when the resource was last published)
     resource.getEml().setPubDate(new Date());
     // set eml dateStamp (represents date when the resource was published for the first time). Do only once
@@ -2097,6 +2111,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (IOException e) {
       throw new PublicationException(PublicationException.TYPE.EML,
         "Can't publish eml file for resource " + resource.getShortname(), e);
+    }
+  }
+
+  public void publishMetadata(Resource resource, BigDecimal version) {
+    // check if publishing task is already running
+    if (isLocked(resource.getShortname())) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+          "Resource " + resource.getShortname() + " is currently locked by another process");
+    }
+
+    // update metadata version
+    resource.setMetadataVersion(version);
+    resource.getDataPackageMetadata().setCreated(new Date());
+    // update metadata created (represents date when the resource was last published)
+    resource.getDataPackageMetadata().setVersion(version);
+
+    // save all changes to Eml
+    saveDatapackageMetadata(resource);
+
+    // create versioned metadata file
+    File trunkFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    File versionedFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), version);
+    try {
+      FileUtils.copyFile(trunkFile, versionedFile);
+    } catch (IOException e) {
+      throw new PublicationException(PublicationException.TYPE.EML,
+          "Can't publish metadata file for resource " + resource.getShortname(), e);
     }
   }
 
@@ -2904,8 +2945,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set modified date
     resource.setModified(new Date());
     // save into data dir
-//    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
-    // TODO: 12/10/2022 implement: what exactly do we need to do here?
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      objectMapper.writeValue(metadataFile, resource.getDataPackageMetadata());
+    } catch (IOException e) {
+      // TODO: 21/10/2022 process exception
+      throw new RuntimeException(e);
+    }
+
     LOG.debug("Updated metadata file for " + resource);
   }
 
@@ -2928,7 +2976,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
     // set EML version
-    resource.getEml().setEmlVersion(resource.getMetadataVersion());
+    resource.getEml().setEmlVersion(resource.getEmlVersion());
     // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
     if (resource.getKey() != null) {
       resource.getEml().setGuid(resource.getKey().toString());
@@ -2994,7 +3042,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getSchemaIdentifier() != null) {
+      if (resource.getSchemaIdentifier() == null) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 
@@ -3014,7 +3062,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getSchemaIdentifier() != null) {
+      if (resource.getSchemaIdentifier() == null) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 

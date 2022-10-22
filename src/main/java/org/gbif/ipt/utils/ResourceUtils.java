@@ -70,7 +70,7 @@ public class ResourceUtils {
     Resource resource = new Resource();
     resource.setCoreType(coreType);
     resource.setShortname(shortname);
-    resource.setEmlVersion(version);
+    resource.setMetadataVersion(version);
     resource.setDoi(doi);
     resource.setOrganisation(organisation);
     resource.setKey(key);

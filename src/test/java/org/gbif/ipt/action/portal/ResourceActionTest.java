@@ -95,7 +95,7 @@ public class ResourceActionTest {
     // setup Resource with TaxonomicCoverage with 3 TaxonKeyword
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORT_NAME);
-    resource.setEmlVersion(LATEST_RESOURCE_VERSION);
+    resource.setMetadataVersion(LATEST_RESOURCE_VERSION);
 
     // setup manager as resource creator
     MANAGER = new User();
@@ -206,7 +206,7 @@ public class ResourceActionTest {
     action.getResource().getVersionHistory().clear();
     assertTrue(action.getResource().isRegistered());
     assertTrue(action.getResource().getVersionHistory().isEmpty());
-    assertEquals(LATEST_RESOURCE_VERSION, action.getResource().getMetadataVersion());
+    assertEquals(LATEST_RESOURCE_VERSION, action.getResource().getEmlVersion());
 
     // the last published version was registered and therefore can be shown publicly
     assertEquals(BaseAction.SUCCESS, action.detail());
@@ -255,7 +255,7 @@ public class ResourceActionTest {
 
     // ensure all versions available to manager
     action.setVersion(RESOURCE_VERSION_ONE);
-    assertNotEquals(resource.getMetadataVersion(), action.getVersion());
+    assertNotEquals(resource.getEmlVersion(), action.getVersion());
 
     assertEquals(BaseAction.SUCCESS, action.detail());
     // ensure warnings were generated:

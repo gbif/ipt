@@ -730,6 +730,7 @@
                                                 </#if>
                                             </tr>
                                             <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
+                                            <#if (resource.eml)?has_content>
                                             <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
                                                 <tr>
                                                     <th>${licenseTitle?cap_first}</th>
@@ -746,6 +747,7 @@
                                                         </td>
                                                     </#if>
                                                 </tr>
+                                            </#if>
                                             </#if>
                                             <tr>
                                                 <th>${releasedTitle?cap_first}</th>

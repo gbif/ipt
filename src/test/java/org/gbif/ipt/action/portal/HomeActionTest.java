@@ -73,7 +73,7 @@ public class HomeActionTest {
     p.setModified(new Date()); // different than version 1.34
     p.setNextPublished(NEXT_PUBLISHED);
     p.setLastPublished(LAST_PUBLISHED);
-    p.setEmlVersion(VERSION_ONE_THREE_FOUR);
+    p.setMetadataVersion(VERSION_ONE_THREE_FOUR);
     p.setStatus(PublicationStatus.PUBLIC);
     VersionHistory vh = new VersionHistory(VERSION_ONE_THREE_FOUR, LAST_PUBLISHED, PublicationStatus.PUBLIC);
     vh.setRecordsPublished(RECORDS_PUBLISHED);
@@ -120,7 +120,7 @@ public class HomeActionTest {
     Resource returned = action.getResources().get(0);
     assertEquals("TEST RESOURCE", returned.getTitle());
     assertEquals(LAST_PUBLISHED, returned.getLastPublished());
-    assertEquals(VERSION_ONE_THREE_FOUR, returned.getMetadataVersion());
+    assertEquals(VERSION_ONE_THREE_FOUR, returned.getEmlVersion());
     assertEquals(RECORDS_PUBLISHED, returned.getRecordsPublished());
     // assert modified date and other properties the same as current (unpublished) resource
     assertNotEquals(MODIFIED, returned.getModified());

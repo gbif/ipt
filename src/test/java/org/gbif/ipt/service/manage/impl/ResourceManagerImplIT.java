@@ -213,7 +213,7 @@ public class ResourceManagerImplIT {
     o.setKey(UUID.randomUUID().toString());
     resource.setOrganisation(o);
 
-    resource.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+    resource.setMetadataVersion(Constants.INITIAL_RESOURCE_VERSION);
     resource.setStatus(PublicationStatus.PUBLIC);
     assertNull(resource.getLastPublished());
   }
@@ -241,7 +241,7 @@ public class ResourceManagerImplIT {
     assertEquals(PublicationStatus.PUBLIC, resource.getStatus());
     resource.setDoi(doi);
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    assertEquals(Constants.INITIAL_RESOURCE_VERSION.toPlainString(), resource.getMetadataVersion().toPlainString());
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION.toPlainString(), resource.getEmlVersion().toPlainString());
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
     registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
 
@@ -283,9 +283,9 @@ public class ResourceManagerImplIT {
 
     // update DOI for next published version
     BigDecimal nextVersion = resource.getNextVersion();
-    resource.setEmlVersion(nextVersion);
-    assertEquals("1.1", resource.getMetadataVersion().toPlainString());
-    assertEquals("1.0", resource.getReplacedEmlVersion().toPlainString());
+    resource.setMetadataVersion(nextVersion);
+    assertEquals("1.1", resource.getEmlVersion().toPlainString());
+    assertEquals("1.0", resource.getReplacedMetadataVersion().toPlainString());
     manager.doUpdateDoi(resource);
     LOG.info("DOI was updated successfully, DOI=" + doi.getDoiName());
 
@@ -325,11 +325,11 @@ public class ResourceManagerImplIT {
     // replace DOI with new DOI, and publish version 2.0
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
     nextVersion = resource.getNextVersion(); // new major version
-    resource.setEmlVersion(nextVersion);
-    assertEquals("2.0", resource.getMetadataVersion().toPlainString());
+    resource.setMetadataVersion(nextVersion);
+    assertEquals("2.0", resource.getEmlVersion().toPlainString());
     assertNotNull(resource.getAssignedDoi());
-    assertEquals("1.1", resource.getReplacedEmlVersion().toPlainString());
-    manager.doReplaceDoi(resource, resource.getMetadataVersion(), resource.getReplacedEmlVersion());
+    assertEquals("1.1", resource.getReplacedMetadataVersion().toPlainString());
+    manager.doReplaceDoi(resource, resource.getEmlVersion(), resource.getReplacedMetadataVersion());
 
     // check new DOI is registered now, and its target is equal to resource URI
     doiData = registrationManager.getDoiService().resolve(newDoi);

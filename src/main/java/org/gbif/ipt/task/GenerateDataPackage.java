@@ -21,6 +21,7 @@ import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
 
@@ -48,6 +49,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -92,7 +94,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       setState(STATE.STARTED);
 
       // initial reporting
-      addMessage(Level.INFO, "Data package generation started for version #" + resource.getEmlVersion());
+      addMessage(Level.INFO, "Data package generation started for version #" + resource.getDataPackageMetadataVersion());
 
       // create a temp dir to copy all dwca files to
       dataPackageFolder = dataDir.tmpDir();
@@ -100,9 +102,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create data files
       createDataFiles();
 
-      // TODO: 06/04/2022 EML. Unclear how to put an eml file inside archive
-      // copy eml file
-//      addEmlFile();
+      // copy metadata file (datapackage.json)
+      addMetadata();
 
       // TODO: 06/04/2022 validation. Data is validated internally by frictionless data package,
       //  but validation quality is questionable. Validation messages are too broad, and does not provide valuable information
@@ -113,7 +114,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       bundleArchive();
 
       // reporting
-      addMessage(Level.INFO, "Archive version #" + resource.getMetadataVersion() + " generated successfully!");
+      addMessage(Level.INFO, "Archive version #" + resource.getDataPackageMetadataVersion() + " generated successfully!");
 
       // set final state
       setState(STATE.COMPLETED);
@@ -203,7 +204,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     checkForInterruption();
     setState(STATE.BUNDLING);
     File zip = null;
-    BigDecimal version = resource.getEmlVersion();
+    BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
       // create zip
       zip = dataDir.tmpFile("data_package", ".zip");
@@ -211,7 +212,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       if (zip.exists()) {
         // move to data dir with versioned name
-        File versionedFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
+        File versionedFile = dataDir.resourceDataPackageFile(resource.getShortname(), version);
         if (versionedFile.exists()) {
           FileUtils.forceDelete(versionedFile);
         }
@@ -612,5 +613,68 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     // write to publication log file
     writePublicationLogMessage(sb.toString());
+  }
+
+  /**
+   * Adds metadata to data package.
+   *
+   * @throws GeneratorException if there are issues with metadata file
+   * @throws InterruptedException if executing thread was interrupted
+   */
+  private void addMetadata() throws GeneratorException, InterruptedException {
+    checkForInterruption();
+    setState(GenerateDataPackage.STATE.METADATA);
+    try {
+      File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+      // TODO: 21/10/2022 bean?
+      ObjectMapper objectMapper = new ObjectMapper();
+      CamtrapMetadata camtrapMetadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
+
+      // BASIC metadata
+      if (camtrapMetadata.getCreated() != null) {
+        dataPackage.setProperty("created", camtrapMetadata.getCreated());
+      }
+
+      if (camtrapMetadata.getVersion() != null) {
+        dataPackage.setProperty("version", camtrapMetadata.getVersion());
+      }
+
+      if (StringUtils.isNotEmpty(camtrapMetadata.getTitle())) {
+        dataPackage.setProperty("title", camtrapMetadata.getTitle());
+      }
+
+      if (camtrapMetadata.getContributors() != null && !camtrapMetadata.getContributors().isEmpty()) {
+        dataPackage.setProperty("contributors", camtrapMetadata.getContributors());
+      }
+
+      if (StringUtils.isNotEmpty(camtrapMetadata.getDescription())) {
+        dataPackage.setProperty("description", camtrapMetadata.getDescription());
+      }
+
+      if (camtrapMetadata.getKeywords() != null && !camtrapMetadata.getKeywords().isEmpty()) {
+        dataPackage.setProperty("keywords", camtrapMetadata.getKeywords());
+      }
+
+      if (StringUtils.isNotEmpty(camtrapMetadata.getImage())) {
+        dataPackage.setProperty("image", camtrapMetadata.getImage());
+      }
+
+      if (camtrapMetadata.getHomepage() != null) {
+        dataPackage.setProperty("homepage", camtrapMetadata.getHomepage());
+      }
+
+      if (camtrapMetadata.getSources() != null && !camtrapMetadata.getSources().isEmpty()) {
+        dataPackage.setProperty("sources", camtrapMetadata.getSources());
+      }
+
+      if (camtrapMetadata.getLicenses() != null && !camtrapMetadata.getLicenses().isEmpty()) {
+        dataPackage.setProperty("licenses", camtrapMetadata.getLicenses());
+      }
+
+    } catch (IOException e) {
+      throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
+    }
+    // final reporting
+    addMessage(Level.INFO, "Metadata added");
   }
 }

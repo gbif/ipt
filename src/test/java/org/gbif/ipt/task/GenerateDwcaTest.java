@@ -42,9 +42,6 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.voc.IdentifierStatus;
-import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -129,7 +126,7 @@ public class GenerateDwcaTest {
     // create resource, version 3.0
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
-    resource.setEmlVersion(new BigDecimal("3.0"));
+    resource.setMetadataVersion(new BigDecimal("3.0"));
 
     // create user
     creator = new User();
