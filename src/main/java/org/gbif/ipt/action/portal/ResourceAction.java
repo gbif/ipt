@@ -22,6 +22,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -166,12 +167,20 @@ public class ResourceAction extends PortalBaseAction {
    *
    * @throws IOException if problem occurred loading metadata file (e.g. it doesn't exist)
    */
-  private DataPackageMetadata loadDataPackageMetadataFromFile(String shortname, @NotNull BigDecimal version)
+  private DataPackageMetadata loadDataPackageMetadataFromFile(String shortname, String type, @NotNull BigDecimal version)
       throws IOException {
     Objects.requireNonNull(version);
     File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, version);
+    DataPackageMetadata result;
+
+    if (type != null && "camtrap-dp".equals(type)) {
+      result = jsonMapper.readValue(metadataFile, CamtrapMetadata.class);
+    } else {
+      result = jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
+    }
+
     LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
-    return jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
+    return result;
   }
 
   /**
@@ -566,7 +575,7 @@ public class ResourceAction extends PortalBaseAction {
       }
 
       if (resource.getSchemaIdentifier() != null) {
-        dpMetadata = loadDataPackageMetadataFromFile(name, version);
+        dpMetadata = loadDataPackageMetadataFromFile(name, resource.getCoreType(), version);
       } else {
         // load EML instance for version requested
         eml = loadEmlFromFile(name, version);

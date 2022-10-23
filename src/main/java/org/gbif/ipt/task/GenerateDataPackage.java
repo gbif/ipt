@@ -32,6 +32,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -630,51 +631,59 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       ObjectMapper objectMapper = new ObjectMapper();
       CamtrapMetadata camtrapMetadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
 
-      // BASIC metadata
-      if (camtrapMetadata.getCreated() != null) {
-        dataPackage.setProperty("created", camtrapMetadata.getCreated());
-      }
+      // Basic metadata
+      setDataPackageProperty("created", camtrapMetadata.getCreated());
+      setDataPackageProperty("version", camtrapMetadata.getVersion());
+      setDataPackageStringProperty("title", camtrapMetadata.getTitle());
+      setDataPackageCollectionProperty("contributors", camtrapMetadata.getContributors());
+      setDataPackageStringProperty("description", camtrapMetadata.getDescription());
+      setDataPackageCollectionProperty("keywords", camtrapMetadata.getKeywords());
+      setDataPackageStringProperty("image", camtrapMetadata.getImage());
+      setDataPackageProperty("homepage", camtrapMetadata.getHomepage());
+      setDataPackageCollectionProperty("sources", camtrapMetadata.getSources());
+      setDataPackageCollectionProperty("licenses", camtrapMetadata.getLicenses());
 
-      if (camtrapMetadata.getVersion() != null) {
-        dataPackage.setProperty("version", camtrapMetadata.getVersion());
-      }
+      // Geographic scope
+      setDataPackageProperty("spatial", camtrapMetadata.getSpatial());
+      setDataPackageProperty("coordinatePrecision", camtrapMetadata.getCoordinatePrecision());
 
-      if (StringUtils.isNotEmpty(camtrapMetadata.getTitle())) {
-        dataPackage.setProperty("title", camtrapMetadata.getTitle());
-      }
+      // Taxonomic scope
+      setDataPackageCollectionProperty("taxonomic", camtrapMetadata.getTaxonomic());
 
-      if (camtrapMetadata.getContributors() != null && !camtrapMetadata.getContributors().isEmpty()) {
-        dataPackage.setProperty("contributors", camtrapMetadata.getContributors());
-      }
+      // Temporal scope
+      setDataPackageProperty("temporal", camtrapMetadata.getTemporal());
 
-      if (StringUtils.isNotEmpty(camtrapMetadata.getDescription())) {
-        dataPackage.setProperty("description", camtrapMetadata.getDescription());
-      }
+      // Project
+      setDataPackageProperty("project", camtrapMetadata.getProject());
 
-      if (camtrapMetadata.getKeywords() != null && !camtrapMetadata.getKeywords().isEmpty()) {
-        dataPackage.setProperty("keywords", camtrapMetadata.getKeywords());
-      }
-
-      if (StringUtils.isNotEmpty(camtrapMetadata.getImage())) {
-        dataPackage.setProperty("image", camtrapMetadata.getImage());
-      }
-
-      if (camtrapMetadata.getHomepage() != null) {
-        dataPackage.setProperty("homepage", camtrapMetadata.getHomepage());
-      }
-
-      if (camtrapMetadata.getSources() != null && !camtrapMetadata.getSources().isEmpty()) {
-        dataPackage.setProperty("sources", camtrapMetadata.getSources());
-      }
-
-      if (camtrapMetadata.getLicenses() != null && !camtrapMetadata.getLicenses().isEmpty()) {
-        dataPackage.setProperty("licenses", camtrapMetadata.getLicenses());
-      }
+      // Other metadata
+      setDataPackageStringProperty("bibliographicCitation", camtrapMetadata.getBibliographicCitation());
+      setDataPackageCollectionProperty("references", camtrapMetadata.getReferences());
+      setDataPackageCollectionProperty("relatedIdentifiers", camtrapMetadata.getRelatedIdentifiers());
 
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
     }
     // final reporting
     addMessage(Level.INFO, "Metadata added");
+  }
+
+  private void setDataPackageProperty(String name, Object property) {
+    if (property != null) {
+      dataPackage.setProperty(name, property);
+    }
+  }
+
+  private void setDataPackageStringProperty(String name, String property) {
+    if (StringUtils.isNotEmpty(property)) {
+      dataPackage.setProperty(name, property);
+    }
+  }
+
+  @SuppressWarnings("rawtypes")
+  private void setDataPackageCollectionProperty(String name, Collection property) {
+    if (property != null && !property.isEmpty()) {
+      dataPackage.setProperty(name, property);
+    }
   }
 }
