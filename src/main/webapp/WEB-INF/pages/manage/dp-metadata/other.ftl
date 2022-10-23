@@ -67,18 +67,6 @@
 
                         <div class="my-md-3 p-3">
                             <p>
-                                <strong>Organizations</strong>
-                                <br>
-                                -
-                            </p>
-
-                            <p>
-                                <strong>Rights holder</strong>
-                                <br>
-                                -
-                            </p>
-
-                            <p>
                                 <strong>Coordinates precision</strong>
                                 <br>
                                 ${metadata.coordinatePrecision!"-"}
@@ -88,12 +76,6 @@
                                 <strong>Bibliographic citation</strong>
                                 <br>
                                 ${metadata.bibliographicCitation!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Platform</strong>
-                                <br>
-                                ${metadata.platform!"-"}
                             </p>
                         </div>
                     </div>
