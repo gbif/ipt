@@ -73,7 +73,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private static final long serialVersionUID = 3832626162173352190L;
   private String shortname; // unique
   private Eml eml = new Eml();
-  private DataPackageMetadata dataPackageMetadata;
+  private DataPackageMetadata dataPackageMetadata = new DataPackageMetadata();
   private String coreType;
   private String subtype;
   // update frequency
@@ -436,6 +436,10 @@ public class Resource implements Serializable, Comparable<Resource> {
       return TERM_FACTORY.findTerm(cores.get(0).getExtension().getRowType());
     }
     return null;
+  }
+
+  public String getDataPackageType() {
+    return "camtrap-dp";
   }
 
   public Date getCreated() {
@@ -863,9 +867,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getTitle() {
-    if (eml != null) {
+    if (schemaIdentifier != null && dataPackageMetadata != null) {
+      return dataPackageMetadata.getTitle();
+    } else if (eml != null) {
       return eml.getTitle();
     }
+
     return null;
   }
 
@@ -877,7 +884,12 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public String getTitleAndShortname() {
     StringBuilder sb = new StringBuilder();
-    if (eml != null) {
+    if (schemaIdentifier != null && dataPackageMetadata != null) {
+      sb.append(dataPackageMetadata.getTitle());
+      if (!shortname.equalsIgnoreCase(dataPackageMetadata.getTitle())) {
+        sb.append(" (").append(shortname).append(")");
+      }
+    } else if (eml != null) {
       sb.append(eml.getTitle());
       if (!shortname.equalsIgnoreCase(eml.getTitle())) {
         sb.append(" (").append(shortname).append(")");

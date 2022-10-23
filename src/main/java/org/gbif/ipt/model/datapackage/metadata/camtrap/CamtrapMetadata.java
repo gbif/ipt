@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -183,6 +184,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("created")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   public Date getCreated() {
     return super.getCreated();
   }
@@ -193,6 +195,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("created")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   public void setCreated(Date created) {
     super.setCreated(created);
   }

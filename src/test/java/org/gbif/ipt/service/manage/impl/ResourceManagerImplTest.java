@@ -1643,7 +1643,7 @@ public class ResourceManagerImplTest {
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-1.1.xml");
     // reconstruct resource version 1.1
     Resource reconstructed = ResourceUtils
-      .reconstructVersion(version, shortname, resource.getCoreType(), doi, organisation, historyForVersionOnePointOne,
+      .reconstructVersion(version, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), doi, organisation, historyForVersionOnePointOne,
         emlXMLVersionOnePointOne, null);
 
     assertEquals(shortname, reconstructed.getShortname());
@@ -1704,7 +1704,7 @@ public class ResourceManagerImplTest {
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-5.0.xml");
     // reconstruct resource version 5.0
     Resource reconstructed = ResourceUtils
-      .reconstructVersion(version, shortname, resource.getCoreType(), doi, organisation, historyForVersionFivePointZero,
+      .reconstructVersion(version, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), doi, organisation, historyForVersionFivePointZero,
         emlXMLVersionOnePointOne, key);
 
     assertEquals(shortname, reconstructed.getShortname());

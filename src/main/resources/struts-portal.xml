@@ -30,15 +30,24 @@
     </action>
 
     <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
-      <result>/WEB-INF/pages/portal/resource_new.ftl</result>
+      <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
     <action name="resource/preview" class="org.gbif.ipt.action.portal.ResourceAction" method="preview">
       <interceptor-ref name="managerStack"/>
-      <result>/WEB-INF/pages/portal/resource_new.ftl</result>
+      <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
 
     <!-- data dir files -->
-    <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="eml">
+    <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="metadata">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="metadata" class="org.gbif.ipt.action.portal.ResourceFileAction" method="metadata">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
         <param name="contentCharSet">UTF-8</param>
@@ -91,7 +100,7 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
-    <action name="archive" class="org.gbif.ipt.action.portal.ResourceFileAction" method="dwca">
+    <action name="archive" class="org.gbif.ipt.action.portal.ResourceFileAction" method="archive">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
         <param name="inputName">inputStream</param>

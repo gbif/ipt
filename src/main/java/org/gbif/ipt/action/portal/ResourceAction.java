@@ -21,6 +21,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -66,12 +68,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 public class ResourceAction extends PortalBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(ResourceAction.class);
 
+  private ObjectMapper jsonMapper;
   private VocabulariesManager vocabManager;
   private ExtensionManager extensionManager;
   private List<Resource> resources;
@@ -85,6 +89,7 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> ranks;
   private DataDir dataDir;
   private Eml eml;
+  private DataPackageMetadata dpMetadata;
   private Set<Agent> mergedContacts = new HashSet<>();
   private Set<Agent> deduplicatedProjectPersonnel = new HashSet<>();
   private Map<String, Set<String>> contactRoles = new HashMap<>();
@@ -108,6 +113,7 @@ public class ResourceAction extends PortalBaseAction {
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
+    this.jsonMapper = new ObjectMapper();
   }
 
   @Override
@@ -142,8 +148,30 @@ public class ResourceAction extends PortalBaseAction {
     Objects.requireNonNull(version);
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
-    InputStream in = new FileInputStream(emlFile);
+    InputStream in = Files.newInputStream(emlFile.toPath());
     return EmlFactory.build(in);
+  }
+
+  /**
+   * Loads a specific version of a resource's metadata from its datapackage-v.json file located inside its resource directory.
+   * </br>
+   * If no specific version is requested, the latest published version is loaded.
+   * </br>
+   * If there have been no published versions yet, the resource is loaded from the default datapackage.json file.
+   *
+   * @param shortname resource shortname
+   * @param version   resource version (metadata version)
+   *
+   * @return DataPackageMetadata object loaded from datapackage.json file with specific version
+   *
+   * @throws IOException if problem occurred loading metadata file (e.g. it doesn't exist)
+   */
+  private DataPackageMetadata loadDataPackageMetadataFromFile(String shortname, @NotNull BigDecimal version)
+      throws IOException {
+    Objects.requireNonNull(version);
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, version);
+    LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
+    return jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
   }
 
   /**
@@ -392,14 +420,14 @@ public class ResourceAction extends PortalBaseAction {
     String shortname = resource.getShortname();
     try {
       File emlFile = dataDir.resourceEmlFile(shortname);
-      LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+      LOG.debug("Loading metadata from file: " + emlFile.getAbsolutePath());
       InputStream in = new FileInputStream(emlFile);
       eml = EmlFactory.build(in);
     } catch (FileNotFoundException e) {
-      LOG.error("EML file version #" + getStringVersion() + " for resource " + shortname + " not found");
+      LOG.error("Metadata file version #" + getStringVersion() + " for resource " + shortname + " not found");
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), shortname});
+      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
@@ -537,13 +565,17 @@ public class ResourceAction extends PortalBaseAction {
         addActionWarning(getText("portal.resource.warning.notLatest"));
       }
 
-      // load EML instance for version requested
-      eml = loadEmlFromFile(name, version);
+      if (resource.getSchemaIdentifier() != null) {
+        dpMetadata = loadDataPackageMetadataFromFile(name, version);
+      } else {
+        // load EML instance for version requested
+        eml = loadEmlFromFile(name, version);
+      }
     } catch (FileNotFoundException e) {
-      LOG.error("EML file version #" + getStringVersion() + " for resource " + name + " not found");
+      LOG.error("Metadata file version #" + getStringVersion() + " for resource " + name + " not found");
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.eml.error.load", new String[] {getStringVersion(), name});
+      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), name});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
@@ -554,7 +586,9 @@ public class ResourceAction extends PortalBaseAction {
       return ERROR;
     }
 
-    finishLoadingDetail(resource, eml, version);
+    if (resource.getSchemaIdentifier() == null) {
+      finishLoadingDetail(resource, eml, version);
+    }
 
     return SUCCESS;
   }
@@ -665,6 +699,10 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Eml getEml() {
     return eml;
+  }
+
+  public DataPackageMetadata getDpMetadata() {
+    return dpMetadata;
   }
 
   /**

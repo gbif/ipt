@@ -72,12 +72,20 @@ public class HomeAction extends BaseAction {
       // reconstruct the last published public version
       BigDecimal v = resource.getLastPublishedVersionsVersion();
       String shortname = resource.getShortname();
-      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+      File versionMetadataFile;
+      boolean isDataPackageResource = resource.getSchemaIdentifier() != null;
+      if (isDataPackageResource) {
+        versionMetadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(shortname, v);
+        // TODO: 22/10/2022 only camtrap for now
+      } else {
+        versionMetadataFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+      }
+
       // try/catch block flags resources missing mandatory metadata (published using IPT prior to v2.2)
       try {
         Resource publishedPublicVersion = ResourceUtils
-          .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
-            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+          .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getSchemaIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
+            resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
 
         // set properties only existing on current (unpublished) version
         Resource current = resourceManager.get(shortname);

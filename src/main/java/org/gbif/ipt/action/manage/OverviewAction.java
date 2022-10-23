@@ -471,7 +471,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
           UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
-          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), doi, organisation,
+          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), doi, organisation,
             resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
@@ -493,7 +493,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 File formerVersionToUndeleteEmlFile =
                   cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
-                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), formerDoi, organisation,
+                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), formerDoi, organisation,
                     resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);

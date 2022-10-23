@@ -222,7 +222,7 @@ public class InventoryAction extends ActionSupport {
       File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
       UUID gbifKey = r.getKey();
       Resource lastPublished = ResourceUtils.reconstructVersion(
-          version, shortname, r.getCoreType(), doi, r.getOrganisation(),
+          version, shortname, r.getCoreType(), r.getSchemaIdentifier(), doi, r.getOrganisation(),
           versionHistory, versionEmlFile, gbifKey
       );
 
