@@ -90,7 +90,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     // be valid, otherwise an error is displayed
     // TODO: 13/10/2022 implement validation
     if (true) {
-      // Save metadata information (eml.xml)
+      // Save metadata information (datapackage.json)
       resourceManager.saveDatapackageMetadata(resource);
       // save date metadata was last modified
       resource.setMetadataModified(new Date());

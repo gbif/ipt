@@ -67,6 +67,165 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <@input name="metadata.title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                </div>
+
+                                <div class="col-12">
+                                    <@text name="metadata.description" i18nkey="datapackagemetadata.description" requiredField=true />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3">
+                            <#assign removeContributorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+                            <#assign addContributorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+
+                            <!-- List of Contributors -->
+                            <div>
+                                <@textinline name="datapackagemetadata.contributors"/>
+                                <div id="contributor-items">
+                                    <#list metadata.contributors as item>
+                                        <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="contributor-removeLink-${item_index}" href="" class="removeContributorLink text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeContributorLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <@input name="metadata.contributors[${item_index}].title" i18nkey="datapackagemetadata.title" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].path" i18nkey="datapackagemetadata.path" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].email" i18nkey="datapackagemetadata.email" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].role" i18nkey="datapackagemetadata.contributor.role" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].organization" i18nkey="datapackagemetadata.contributor.organization" />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-contributor" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addContributorLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3">
+                            <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
+                            <#assign addSourceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.source'/></#assign>
+
+                            <!-- List of Sources -->
+                            <div>
+                                <@textinline name="datapackagemetadata.sources"/>
+                                <div id="collection-items">
+                                    <#list metadata.sources as item>
+                                        <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="source-removeLink-${item_index}" href="" class="removeSourceLink text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeSourceLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <@input name="metadata.sources[${item_index}].title" i18nkey="datapackagemetadata.title" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.sources[${item_index}].path" i18nkey="datapackagemetadata.path" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.sources[${item_index}].email" i18nkey="datapackagemetadata.email" />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-source" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addSourceLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3">
+                            <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
+
+                            <!-- List of Licenses -->
+                            <div>
+                                <@textinline name="datapackagemetadata.licenses"/>
+                                <div id="license-items">
+                                    <#list metadata.licenses as item>
+                                        <div id="license-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="license-removeLink-${item_index}" href="" class="removeLicenseLink text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeSourceLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <@input name="metadata.licenses[${item_index}].title" i18nkey="datapackagemetadata.title" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.licenses[${item_index}].path" i18nkey="datapackagemetadata.path" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.licenses[${item_index}].name" i18nkey="datapackagemetadata.name" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.licenses[${item_index}].scope" i18nkey="datapackagemetadata.license.scope" />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-license" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addLicenseLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="my-md-3 p-3">
                             <p>
                                 <strong>Profile (internal)</strong>
                                 <br>
