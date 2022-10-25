@@ -98,7 +98,7 @@ public class DataPackageMetadata implements Serializable {
    * A version string identifying the version of the package.
    */
   @JsonProperty("version")
-  private Object version;
+  private Object version = "1.0";
 
   /**
    * Created
