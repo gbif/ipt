@@ -14,6 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class Geojson implements Serializable {
   @JsonProperty("bbox")
   @Size(min = 4)
   @Valid
-  private List<Double> bbox = null;
+  private List<Double> bbox = new ArrayList<>();
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore

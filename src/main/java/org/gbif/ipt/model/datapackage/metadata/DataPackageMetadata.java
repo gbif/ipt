@@ -15,6 +15,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +117,7 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("contributors")
   @Size(min = 1)
   @Valid
-  private List<Contributor> contributors = null;
+  private List<Contributor> contributors = new ArrayList<>();
 
   /**
    * Keywords
@@ -126,7 +127,7 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("keywords")
   @Size(min = 1)
   @Valid
-  private List<String> keywords = null;
+  private List<String> keywords = new ArrayList<>();
 
   /**
    * Image
@@ -144,7 +145,7 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("licenses")
   @Size(min = 1)
   @Valid
-  private List<License> licenses = null;
+  private List<License> licenses = new ArrayList<>();
 
   /**
    * Data Resources
@@ -156,7 +157,7 @@ public class DataPackageMetadata implements Serializable {
   @Size(min = 1)
   @Valid
   @NotNull
-  private List<Resource> resources = null;
+  private List<Resource> resources = new ArrayList<>();
 
   /**
    * Sources
@@ -166,7 +167,7 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("sources")
   @Size()
   @Valid
-  private List<Source> sources = null;
+  private List<Source> sources = new ArrayList<>();
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore

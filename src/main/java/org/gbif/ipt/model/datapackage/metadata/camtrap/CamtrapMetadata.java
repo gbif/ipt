@@ -20,6 +20,7 @@ import org.gbif.ipt.model.datapackage.metadata.Resource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringJoiner;
@@ -85,21 +86,21 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @JsonProperty("taxonomic")
   @Valid
   @NotNull
-  private List<Taxonomic> taxonomic = null;
+  private List<Taxonomic> taxonomic = new ArrayList<>();
 
   /**
    * Identifiers of resources related to the package (e.g. papers, project pages, derived datasets, APIs, etc.).
    */
   @JsonProperty("relatedIdentifiers")
   @Valid
-  private List<RelatedIdentifier> relatedIdentifiers = null;
+  private List<RelatedIdentifier> relatedIdentifiers = new ArrayList<>();
 
   /**
    * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
    */
   @JsonProperty("references")
   @Valid
-  private List<String> references = null;
+  private List<String> references = new ArrayList<>();
 
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for the requirements for those resources.

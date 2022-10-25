@@ -15,6 +15,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class Resource implements Serializable {
   @JsonProperty("sources")
   @Size()
   @Valid
-  private List<Source> sources = null;
+  private List<Source> sources = new ArrayList<>();
 
   /**
    * Licenses
@@ -122,7 +123,7 @@ public class Resource implements Serializable {
   @JsonProperty("licenses")
   @Size(min = 1)
   @Valid
-  private List<License> licenses = null;
+  private List<License> licenses = new ArrayList<>();
 
   /**
    * Format

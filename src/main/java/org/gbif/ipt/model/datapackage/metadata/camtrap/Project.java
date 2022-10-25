@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -85,11 +86,11 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("captureMethod")
-  @JsonDeserialize(as = java.util.LinkedHashSet.class)
+  @JsonDeserialize(as = LinkedHashSet.class)
   @Size(min = 1)
   @Valid
   @NotNull
-  private Set<CaptureMethod> captureMethod = null;
+  private Set<CaptureMethod> captureMethod = new LinkedHashSet<>();
 
   /**
    * `true` if the project includes marked or recognizable individuals. See also `observations.individualID`.
