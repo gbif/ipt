@@ -65,17 +65,37 @@
                     </div>
 
                     <div class="bd-content">
+                        <div class="my-md-3 p-3">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <@input name="metadata.coordinatePrecision" i18nkey="datapackagemetadata.coordinatePrecision" />
+                                </div>
+                                <div class="col-6">
+                                    <@input name="metadata.spatial.type" i18nkey="datapackagemetadata.type" />
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="my-md-3 p-3">
-                            <#if metadata.spatial?has_content>
-                            <p>
-                                <strong>Bounding box</strong>
-                                <br>
-                                ${(metadata.spatial.bbox)!"-"}
-                            </p>
-                            <#else>
-                                No geographic scope data
-                            </#if>
+<#--                            <@textinline name="datapackagemetadata.bbox"/>-->
+
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <@input name="metadata.spatial.bbox[0]" withLabel=false />
+                                </div>
+
+                                <div class="col-6">
+                                    <@input name="metadata.spatial.bbox[1]" withLabel=false />
+                                </div>
+
+                                <div class="col-6">
+                                    <@input name="metadata.spatial.bbox[2]" withLabel=false />
+                                </div>
+
+                                <div class="col-6">
+                                    <@input name="metadata.spatial.bbox[3]" withLabel=false />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

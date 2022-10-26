@@ -65,21 +65,51 @@
                     </div>
 
                     <div class="bd-content">
-
                         <div class="my-md-3 p-3">
-                            <#if metadata.taxonomic??>
-                                <#list metadata.taxonomic as tx>
-                                    <p>
-                                        <strong>Taxon id:</strong> ${tx.taxonID!}<br>
-                                        <strong>taxonIDReference:</strong> ${tx.taxonIDReference!}<br>
-                                        <strong>scientificName:</strong> ${tx.scientificName!}<br>
-                                        <strong>taxonRank:</strong> ${tx.taxonRank!}<br>
-                                        <strong>vernacularNames:</strong> <#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if> <br>
-                                    </p>
-                                </#list>
-                            <#else>
-                                No taxonomic scope data
-                            </#if>
+                            <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+
+                            <!-- List of Sources -->
+                            <div>
+                                <div id="taxon-items">
+                                    <#list metadata.taxonomic as item>
+                                        <div id="taxon-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="taxon-removeLink-${item_index}" href="" class="removeTaxonLink text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeTaxonLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.taxonomic[${item_index}].taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.taxonomic[${item_index}].taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.taxonomic[${item_index}].scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.taxonomic[${item_index}].taxonRank" i18nkey="datapackagemetadata.taxonomic.taxonRank" />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-taxon" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addTaxonLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

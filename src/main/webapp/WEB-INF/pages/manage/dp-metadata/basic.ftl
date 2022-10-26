@@ -67,7 +67,6 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
-
                             <div class="row g-3">
                                 <div class="col-12">
                                     <@input name="metadata.title" i18nkey="datapackagemetadata.title" requiredField=true />
@@ -281,47 +280,6 @@
                             </p>
 
                             <p>
-                                <strong>Title</strong>
-                                <br>
-                                ${metadata.title!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Description</strong>
-                                <br>
-                                ${metadata.description!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Keywords</strong>
-                                <br>
-                                <#if metadata.keywords?has_content>
-                                    <#list metadata.keywords as k>${k}<#sep>; </#sep></#list>
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
-                                <strong>Contributors</strong>
-                                <br>
-                                <#if metadata.contributors??>
-                                    <ol>
-                                        <#list metadata.contributors as contributor>
-                                            <li>
-                                                <strong>Title:</strong> ${contributor.title!}<br>
-                                                <strong>Path:</strong> ${contributor.path!}<br>
-                                                <strong>Email:</strong> ${contributor.email!}<br>
-                                                <strong>Role:</strong> ${contributor.role!}<br><br>
-                                            </li>
-                                        </#list>
-                                    </ol>
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
                                 <strong>Homepage</strong>
                                 <br>
                                 <#if metadata.homepage?has_content>
@@ -336,43 +294,6 @@
                                 <br>
                                 <#if metadata.image?has_content>
                                     ${metadata.image}
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
-                                <strong>Sources</strong>
-                                <br>
-                                <#if metadata.sources??>
-                                    <ol>
-                                        <#list metadata.sources as source>
-                                            <li>
-                                                <strong>Title: </strong> ${source.title!}<br>
-                                                <strong>Path:</strong> ${source.path!}<br>
-                                                <strong>Email</strong> ${source.email!}<br><br>
-                                            </li>
-                                        </#list>
-                                    </ol>
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
-                                <strong>Licenses</strong>
-                                <br>
-                                <#if metadata.licenses??>
-                                    <ol>
-                                        <#list metadata.licenses as license>
-                                            <li>
-                                                <strong>Name: </strong> ${license.name!}<br>
-                                                <strong>Path: </strong> ${license.path!}<br>
-                                                <strong>Title: </strong> ${license.title!}<br>
-                                                <strong>Scope: </strong> ${license.scope!}<br><br>
-                                            </li>
-                                        </#list>
-                                    </ol>
                                 <#else>
                                     -
                                 </#if>

@@ -64,23 +64,16 @@
                     </div>
 
                     <div class="bd-content">
-
                         <div class="my-md-3 p-3">
-                            <#if (metadata.temporal)?has_content>
-                                <p>
-                                    <strong>Start</strong>
-                                    <br>
-                                    ${(metadata.temporal.start)!}
-                                </p>
+                            <div class="row g-3">
+                                <div class="col-lg-6">
+                                    <@input name="metadata.temporal.start" i18nkey="datapackagemetadata.temporal.start" requiredField=true />
+                                </div>
 
-                                <p>
-                                    <strong>End</strong>
-                                    <br>
-                                    ${(metadata.temporal.end)!}
-                                </p>
-                            <#else>
-                                No temporal scope data
-                            </#if>
+                                <div class="col-lg-6">
+                                    <@input name="metadata.temporal.end" i18nkey="datapackagemetadata.temporal.end" requiredField=true />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

@@ -64,19 +64,12 @@
                     </div>
 
                     <div class="bd-content">
-
                         <div class="my-md-3 p-3">
-                            <p>
-                                <strong>Coordinates precision</strong>
-                                <br>
-                                ${metadata.coordinatePrecision!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Bibliographic citation</strong>
-                                <br>
-                                ${metadata.bibliographicCitation!"-"}
-                            </p>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <@text name="metadata.bibliographicCitation" i18nkey="datapackagemetadata.other.bibliographicCitation" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

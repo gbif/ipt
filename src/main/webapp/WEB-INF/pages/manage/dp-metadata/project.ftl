@@ -64,6 +64,45 @@
                     </div>
 
                     <div class="bd-content">
+                        <div class="my-md-3 p-3">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <@input name="metadata.project.title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                </div>
+
+                                <div class="col-12">
+                                    <@text name="metadata.project.description" i18nkey="datapackagemetadata.description" />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.acronym" i18nkey="datapackagemetadata.project.acronym" />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.path" i18nkey="datapackagemetadata.path"  />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.samplingDesign" i18nkey="datapackagemetadata.project.samplingDesign"  />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.captureMethod" i18nkey="datapackagemetadata.project.captureMethod"  />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.animalTypes" i18nkey="datapackagemetadata.project.animalTypes"  />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.classificationLevel" i18nkey="datapackagemetadata.project.classificationLevel"  />
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <@input name="metadata.project.sequenceInterval" i18nkey="datapackagemetadata.project.sequenceInterval"  />
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="my-md-3 p-3">
                             <#if (metadata.project)?has_content>
@@ -71,66 +110,6 @@
                                     <strong>Id</strong>
                                     <br>
                                     ${(metadata.project.id)!}
-                                </p>
-
-                                <p>
-                                    <strong>Title</strong>
-                                    <br>
-                                    ${(metadata.project.title)!}
-                                </p>
-
-                                <p>
-                                    <strong>Acronym</strong>
-                                    <br>
-                                    ${(metadata.project.acronym)!"-"}
-                                </p>
-
-                                <p>
-                                    <strong>Description</strong>
-                                    <br>
-                                    ${(metadata.project.description)!}
-                                </p>
-
-                                <p>
-                                    <strong>Path</strong>
-                                    <br>
-                                    ${(metadata.project.path)!}
-                                </p>
-
-                                <p>
-                                    <strong>Sampling design</strong>
-                                    <br>
-                                    ${(metadata.project.samplingDesign)!}
-                                </p>
-
-                                <p>
-                                    <strong>Capture method</strong>
-                                    <br>
-                                    <#if (metadata.project.captureMethod)?has_content><#list metadata.project.captureMethod as m>${m}<#sep>, </#sep></#list></#if>
-                                </p>
-
-                                <p>
-                                    <strong>Animal types</strong>
-                                    <br>
-                                    ${(metadata.project.animalTypes)!}
-                                </p>
-
-                                <p>
-                                    <strong>Classification level</strong>
-                                    <br>
-                                    ${(metadata.project.classificationLevel)!}
-                                </p>
-
-                                <p>
-                                    <strong>Sequence interval</strong>
-                                    <br>
-                                    ${(metadata.project.sequenceInterval)!}
-                                </p>
-
-                                <p>
-                                    <strong>References</strong>
-                                    <br>
-                                    ${(metadata.project.references)!"-"}
                                 </p>
                             <#else>
                                 No project data
