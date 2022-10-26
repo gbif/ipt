@@ -49,7 +49,7 @@ public class Geojson implements Serializable {
    */
   @JsonProperty("type")
   @NotNull
-  private Geojson.Type type;
+  private Geojson.Type type = Geojson.Type.POLYGON;
 
   /**
    * Coordinate Reference System (CRS)
