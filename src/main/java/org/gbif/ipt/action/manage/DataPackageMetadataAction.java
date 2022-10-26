@@ -74,6 +74,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       case TEMPORAL_SECTION:
         break;
 
+      case KEYWORDS_SECTION:
+        break;
+
       case PROJECT_SECTION:
         break;
 
@@ -111,6 +114,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
           next = DataPackageMetadataSection.TEMPORAL_SECTION;
           break;
         case TEMPORAL_SECTION:
+          next = DataPackageMetadataSection.KEYWORDS_SECTION;
+          break;
+        case KEYWORDS_SECTION:
           next = DataPackageMetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:

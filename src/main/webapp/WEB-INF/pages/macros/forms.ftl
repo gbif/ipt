@@ -1,9 +1,11 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
+    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true>
         <#if date>
-            <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            <#if withLabel>
+                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            </#if>
             <div class="calendarInfo">
                 <input
                         class="form-control"
@@ -21,10 +23,12 @@
             </div>
         <#else>
             <div>
-                <div class="d-flex">
-                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-                    <#include "/WEB-INF/pages/macros/help_icon.ftl">
-                </div>
+                <#if withLabel>
+                    <div class="d-flex">
+                        <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                        <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                    </div>
+                </#if>
                 <input
                         class="form-control"
                         type="${type}"

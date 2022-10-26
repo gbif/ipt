@@ -25,6 +25,7 @@ public enum DataPackageMetadataSection {
   GEOGRAPHIC_SECTION ("geographic"),
   TAXONOMIC_SECTION ("taxonomic"),
   TEMPORAL_SECTION ("temporal"),
+  KEYWORDS_SECTION ("keywords"),
   PROJECT_SECTION ("project"),
   OTHER_SECTION ("other");
 
