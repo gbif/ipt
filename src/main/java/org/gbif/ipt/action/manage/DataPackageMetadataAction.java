@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
@@ -23,6 +24,9 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +42,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private DataPackageMetadataSection section = DataPackageMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
+  private Map<String, String> organisations;
 
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -63,6 +68,26 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     switch (section) {
       case BASIC_SECTION:
+        // load organisations map
+        loadOrganisations();
+
+        if (isHttpPost()) {
+          // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
+          if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
+            resource.setOrganisation(getDefaultOrganisation());
+            addActionWarning(getText("manage.overview.visibility.missing.organisation"));
+          }
+
+          // publishing organisation, if provided must match organisation
+          String id = getId();
+          Organisation organisation = (id == null) ? null : registrationManager.get(id);
+          if (organisation != null) {
+            // set organisation: note organisation is locked after 1) DOI assigned, or 2) after registration with GBIF
+            if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
+              resource.setOrganisation(organisation);
+            }
+          }
+        }
         break;
 
       case GEOGRAPHIC_SECTION:
@@ -135,6 +160,36 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
+   * host resources. There must be more than the default organisation "No organisation" in order to include the
+   * placeholder option.
+   */
+  private void loadOrganisations() {
+    List<Organisation> associatedOrganisations = registrationManager.list();
+    organisations = new LinkedHashMap<>();
+    if (!associatedOrganisations.isEmpty()) {
+
+      // add placeholder if there is more than the default organisation "No organisation"
+      if (associatedOrganisations.size() > 1) {
+        organisations.put("", getText("admin.organisation.name.select"));
+      }
+
+      // add default organisation "No organisation" as first option
+      Organisation noOrganisation = getDefaultOrganisation();
+      if (noOrganisation != null) {
+        organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
+      }
+
+      // then add remaining organisations in the order they have been sorted, excluding the default organisation
+      for (Organisation o : associatedOrganisations) {
+        if (!Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
+          organisations.put(o.getKey().toString(), o.getName());
+        }
+      }
+    }
+  }
+
   public String getNext() {
     return next.getName();
   }
@@ -145,5 +200,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public DataPackageMetadata getMetadata() {
     return resource.getDataPackageMetadata();
+  }
+
+  /**
+   * @return list of organisations associated to IPT that can publish resources
+   */
+  public Map<String, String> getOrganisations() {
+    return organisations;
   }
 }
