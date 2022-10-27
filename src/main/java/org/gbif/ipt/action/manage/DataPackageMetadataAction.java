@@ -18,6 +18,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -71,12 +72,16 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         // load organisations map
         loadOrganisations();
 
+        // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
+        if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
+          resource.setOrganisation(getDefaultOrganisation());
+          addActionWarning(getText("manage.overview.visibility.missing.organisation"));
+        }
+
         if (isHttpPost()) {
-          // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
-          if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
-            resource.setOrganisation(getDefaultOrganisation());
-            addActionWarning(getText("manage.overview.visibility.missing.organisation"));
-          }
+          resource.getDataPackageMetadata().getContributors().clear();
+          resource.getDataPackageMetadata().getLicenses().clear();
+          resource.getDataPackageMetadata().getSources().clear();
 
           // publishing organisation, if provided must match organisation
           String id = getId();
@@ -94,12 +99,18 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
 
       case TAXONOMIC_SECTION:
+        if (isHttpPost()) {
+          ((CamtrapMetadata) resource.getDataPackageMetadata()).getTaxonomic().clear();
+        }
         break;
 
       case TEMPORAL_SECTION:
         break;
 
       case KEYWORDS_SECTION:
+        if (isHttpPost()) {
+          resource.getDataPackageMetadata().getKeywords().clear();
+        }
         break;
 
       case PROJECT_SECTION:

@@ -5,6 +5,214 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            var contributorItems = calcNumberOfItems("contributor", contributorItems);
+            var sourcesItems = calcNumberOfItems("source", sourcesItems);
+            var licensesItems = calcNumberOfItems("license", licensesItems);
+
+            function calcNumberOfItems(name) {
+                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
+                if (lastItem !== undefined)
+                    return parseInt(lastItem.split("-")[2]);
+                else
+                    return -1;
+            }
+
+            $("#plus-contributor").click(function (event) {
+                event.preventDefault();
+                addNewContributorItem(true);
+            });
+
+            $("#plus-source").click(function (event) {
+                event.preventDefault();
+                console.log("plus source triggered")
+                addNewSourceItem(true);
+            });
+
+            $("#plus-license").click(function (event) {
+                event.preventDefault();
+                addNewLicenseItem(true);
+            });
+
+            function addNewContributorItem(effects) {
+                var newItem = $('#baseItem-contributor').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#contributor-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setContributorItemIndex(newItem, ++contributorItems);
+            }
+
+            function addNewSourceItem(effects) {
+                console.log("add new source triggered")
+                var newItem = $('#baseItem-source').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#source-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setSourceItemIndex(newItem, ++sourcesItems);
+            }
+
+            function addNewLicenseItem(effects) {
+                var newItem = $('#baseItem-license').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#license-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setLicenseItemIndex(newItem, ++licensesItems);
+            }
+
+            function removeContributorItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#contributor-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#contributor-items .item").each(function (index) {
+                        setContributorItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("contributor");
+                });
+            }
+
+            function removeSourceItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#source-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#source-items .item").each(function (index) {
+                        setSourceItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("source");
+                });
+            }
+
+            function removeLicenseItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#license-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#license-items .item").each(function (index) {
+                        setLicenseItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("license");
+                });
+            }
+
+            function setContributorItemIndex(item, index) {
+                item.attr("id", "contributor-item-" + index);
+
+                $("#contributor-item-" + index + " [id^='contributor-removeLink']").attr("id", "contributor-removeLink-" + index);
+                $("#contributor-removeLink-" + index).click(function (event) {
+                    removeContributorItem(event);
+                });
+
+                $("#contributor-item-" + index + " [id$='title']").attr("id", "metadata.contributors[" + index + "].title").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='title']").attr("for", "metadata.contributors[" + index + "].title");
+
+                $("#contributor-item-" + index + " [id$='path']").attr("id", "metadata.contributors[" + index + "].path").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='path']").attr("for", "metadata.contributors[" + index + "].path");
+
+                $("#contributor-item-" + index + " [id$='email']").attr("id", "metadata.contributors[" + index + "].email").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='email']").attr("for", "metadata.contributors[" + index + "].email");
+
+                $("#contributor-item-" + index + " [id$='role']").attr("id", "metadata.contributors[" + index + "].role").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='role']").attr("for", "metadata.contributors[" + index + "].role");
+
+                $("#contributor-item-" + index + " [id$='organization']").attr("id", "metadata.contributors[" + index + "].organization").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='organization']").attr("for", "metadata.contributors[" + index + "].organization");
+            }
+
+            function setSourceItemIndex(item, index) {
+                item.attr("id", "source-item-" + index);
+
+                $("#source-item-" + index + " [id^='source-removeLink']").attr("id", "source-removeLink-" + index);
+                $("#source-removeLink-" + index).click(function (event) {
+                    removeSourceItem(event);
+                });
+
+                $("#source-item-" + index + " [id$='title']").attr("id", "metadata.sources[" + index + "].title").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#source-item-" + index + " [for$='title']").attr("for", "metadata.sources[" + index + "].title");
+
+                $("#source-item-" + index + " [id$='path']").attr("id", "metadata.sources[" + index + "].path").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#source-item-" + index + " [for$='path']").attr("for", "metadata.sources[" + index + "].path");
+
+                $("#source-item-" + index + " [id$='email']").attr("id", "metadata.sources[" + index + "].email").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#source-item-" + index + " [for$='email']").attr("for", "metadata.sources[" + index + "].email");
+            }
+
+            function setLicenseItemIndex(item, index) {
+                item.attr("id", "license-item-" + index);
+
+                $("#license-item-" + index + " [id^='license-removeLink']").attr("id", "license-removeLink-" + index);
+                $("#license-removeLink-" + index).click(function (event) {
+                    removeLicenseItem(event);
+                });
+
+                $("#license-item-" + index + " [id$='title']").attr("id", "metadata.licenses[" + index + "].title").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#license-item-" + index + " [for$='title']").attr("for", "metadata.licenses[" + index + "].title");
+
+                $("#license-item-" + index + " [id$='path']").attr("id", "metadata.licenses[" + index + "].path").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#license-item-" + index + " [for$='path']").attr("for", "metadata.licenses[" + index + "].path");
+
+                $("#license-item-" + index + " [id$='name']").attr("id", "metadata.licenses[" + index + "].name").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#license-item-" + index + " [for$='name']").attr("for", "metadata.licenses[" + index + "].name");
+
+                $("#license-item-" + index + " [id$='scope']").attr("id", "metadata.licenses[" + index + "].scope").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#license-item-" + index + " [for$='scope']").attr("for", "metadata.licenses[" + index + "].scope");
+            }
+
+            $(".removeContributorLink").click(function (event) {
+                removeContributorItem(event);
+            });
+
+            $(".removeSourceLink").click(function (event) {
+                removeSourceItem(event);
+            });
+
+            $(".removeLicenseLink").click(function (event) {
+                removeLicenseItem(event);
+            });
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -85,7 +293,7 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.homepage" i18nkey="datapackagemetadata.homepage" />
+                                    <@input name="metadata.homepage" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
                             </div>
                         </div>
@@ -148,7 +356,7 @@
                             <!-- List of Sources -->
                             <div>
                                 <@textinline name="datapackagemetadata.sources"/>
-                                <div id="collection-items">
+                                <div id="source-items">
                                     <#list metadata.sources as item>
                                         <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
@@ -234,8 +442,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="my-md-3 p-3">
                             <p>
                                 <strong>Profile (internal)</strong>
@@ -317,6 +523,81 @@
             </div>
         </div>
     </form>
+
+    <div id="baseItem-contributor" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="contributor-removeLink" href="" class="removeContributorLink text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                        </svg>
+                                    </span>
+                <span>${removeContributorLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div>
+            <@input name="metadata.contributors.title" i18nkey="datapackagemetadata.title" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.path" i18nkey="datapackagemetadata.path" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.email" i18nkey="datapackagemetadata.email" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.role" i18nkey="datapackagemetadata.contributor.role" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.organization" i18nkey="datapackagemetadata.contributor.organization" />
+        </div>
+    </div>
+
+    <div id="baseItem-source" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="source-removeLink" href="" class="removeSourceLink text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                        </svg>
+                                    </span>
+                <span>${removeSourceLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div>
+            <@input name="metadata.sources.title" i18nkey="datapackagemetadata.title" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.sources.path" i18nkey="datapackagemetadata.path" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.sources.email" i18nkey="datapackagemetadata.email" />
+        </div>
+    </div>
+
+    <div id="baseItem-license" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="baseItem-license" href="" class="removeLicenseLink text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                        </svg>
+                                    </span>
+                <span>${removeSourceLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div>
+            <@input name="metadata.licenses.title" i18nkey="datapackagemetadata.title" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.licenses.path" i18nkey="datapackagemetadata.path" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.licenses.name" i18nkey="datapackagemetadata.name" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.licenses.scope" i18nkey="datapackagemetadata.license.scope" />
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
