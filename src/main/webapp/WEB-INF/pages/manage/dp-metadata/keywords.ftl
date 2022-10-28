@@ -5,6 +5,64 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            var keywordItems = calcNumberOfItems("keyword");
+
+            function calcNumberOfItems(name) {
+                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
+                if (lastItem !== undefined)
+                    return parseInt(lastItem.split("-")[2]);
+                else
+                    return -1;
+            }
+
+            $("#plus-keyword").click(function (event) {
+                event.preventDefault();
+                addNewKeywordItem(true);
+            });
+
+            function addNewKeywordItem(effects) {
+                var newItem = $('#baseItem-keyword').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#keyword-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setKeywordItemIndex(newItem, ++keywordItems);
+            }
+
+            function removeKeywordItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#keyword-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#keyword-items .item").each(function (index) {
+                        setKeywordItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("keyword");
+                });
+            }
+
+            function setKeywordItemIndex(item, index) {
+                item.attr("id", "keyword-item-" + index);
+
+                $("#keyword-item-" + index + " [id^='keyword-removeLink']").attr("id", "keyword-removeLink-" + index);
+                $("#keyword-removeLink-" + index).click(function (event) {
+                    removeKeywordItem(event);
+                });
+
+                $("#keyword-item-" + index + " [id^='metadata.keyword']").attr("id", "metadata.keywords[" + index + "]").attr("name", function () {
+                    return $(this).attr("id");
+                });
+            }
+
+            $(".removeKeywordLink").click(function (event) {
+                removeKeywordItem(event);
+            });
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -109,6 +167,22 @@
             </div>
         </div>
     </form>
+
+    <div id="baseItem-keyword" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="keyword-removeLink" href="" class="removeKeywordLink text-smaller">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
+                <span>${removeKeywordLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div>
+            <@input name="metadata.keyword" i18nkey="datapackagemetadata.keyword" withLabel=false />
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

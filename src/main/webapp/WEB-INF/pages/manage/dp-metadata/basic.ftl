@@ -5,9 +5,9 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            var contributorItems = calcNumberOfItems("contributor", contributorItems);
-            var sourcesItems = calcNumberOfItems("source", sourcesItems);
-            var licensesItems = calcNumberOfItems("license", licensesItems);
+            var contributorItems = calcNumberOfItems("contributor");
+            var sourcesItems = calcNumberOfItems("source");
+            var licensesItems = calcNumberOfItems("license");
 
             function calcNumberOfItems(name) {
                 var lastItem = $("#" + name + "-items .item:last-child").attr("id");
@@ -481,41 +481,21 @@
                                 ${metadata.id!"-"}
                             </p>
 
-                            <p>
-                                <strong>Created (internal)</strong>
-                                <br>
-                                <#if metadata.created??>
-                                    ${metadata.created?datetime?string.medium}
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
+<#--                            <p>-->
+<#--                                <strong>Created (internal)</strong>-->
+<#--                                <br>-->
+<#--                                <#if metadata.created??>-->
+<#--                                    ${metadata.created?datetime?string.medium}-->
+<#--                                <#else>-->
+<#--                                    --->
+<#--                                </#if>-->
+<#--                            </p>-->
 
-                            <p>
-                                <strong>Version (internal)</strong>
-                                <br>
-                                ${metadata.version!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Homepage</strong>
-                                <br>
-                                <#if metadata.homepage?has_content>
-                                    ${metadata.homepage}
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
-                                <strong>Image</strong>
-                                <br>
-                                <#if metadata.image?has_content>
-                                    ${metadata.image}
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
+<#--                            <p>-->
+<#--                                <strong>Version (internal)</strong>-->
+<#--                                <br>-->
+<#--                                ${metadata.version!"-"}-->
+<#--                            </p>-->
 
                         </div>
                     </div>
