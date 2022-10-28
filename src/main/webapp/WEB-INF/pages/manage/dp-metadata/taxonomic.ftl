@@ -5,6 +5,80 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            var taxonItems = calcNumberOfItems("taxon");
+
+            function calcNumberOfItems(name) {
+                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
+                if (lastItem !== undefined)
+                    return parseInt(lastItem.split("-")[2]);
+                else
+                    return -1;
+            }
+
+            $("#plus-taxon").click(function (event) {
+                event.preventDefault();
+                addNewTaxonItem(true);
+            });
+
+            function addNewTaxonItem(effects) {
+                var newItem = $('#baseItem-taxon').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#taxon-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setTaxonItemIndex(newItem, ++taxonItems);
+            }
+
+            function removeTaxonItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#taxon-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#taxon-items .item").each(function (index) {
+                        setTaxonItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("taxon");
+                });
+            }
+
+            function setTaxonItemIndex(item, index) {
+                item.attr("id", "taxon-item-" + index);
+
+                $("#taxon-item-" + index + " [id^='taxon-removeLink']").attr("id", "taxon-removeLink-" + index);
+                $("#taxon-removeLink-" + index).click(function (event) {
+                    removeTaxonItem(event);
+                });
+
+                $("#taxon-item-" + index + " [id$='taxonID']").attr("id", "metadata.taxonomic[" + index + "].taxonID").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='taxonID']").attr("for", "metadata.taxonomic[" + index + "].taxonID");
+
+                $("#taxon-item-" + index + " [id$='taxonIDReference']").attr("id", "metadata.taxonomic[" + index + "].taxonIDReference").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='taxonIDReference']").attr("for", "metadata.taxonomic[" + index + "].taxonIDReference");
+
+                $("#taxon-item-" + index + " [id$='scientificName']").attr("id", "metadata.taxonomic[" + index + "].scientificName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='scientificName']").attr("for", "metadata.taxonomic[" + index + "].scientificName");
+
+                $("#taxon-item-" + index + " [id$='taxonRank']").attr("id", "metadata.taxonomic[" + index + "].taxonRank").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='taxonRank']").attr("for", "metadata.taxonomic[" + index + "].taxonRank");
+            }
+
+            $(".removeTaxonLink").click(function (event) {
+                removeTaxonItem(event);
+            });
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -116,6 +190,31 @@
             </div>
         </div>
     </form>
+
+    <div id="baseItem-taxon" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="taxon-removeLink" href="" class="removeTaxonLink text-smaller">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
+                <span>${removeTaxonLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.taxonRank" i18nkey="datapackagemetadata.taxonomic.taxonRank" />
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
