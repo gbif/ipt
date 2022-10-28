@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-28 12:20+0000\n"
-"PO-Revision-Date: 2022-10-28 14:16\n"
+"PO-Revision-Date: 2022-10-28 15:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-6-3-october-2022,2.6.3>>."
-msgstr ""
+msgstr "La versión actual y estable es la <<2-6-3-october-2022,2.6.3>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
@@ -48,17 +48,17 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:16
 #, no-wrap
 msgid "*2.6.3* – October 2022"
-msgstr ""
+msgstr "*2.6.3* – Octubre de 2022\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.3/ipt-2.6.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.3/ipt-2.6.3.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] or xref:installation.adoc#installation-from-docker[usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "xref:2.5@release-notes.adoc[IPT v2.6.3 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Comentarios de la versión IPT v2.6.3]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -80,7 +80,7 @@ msgstr "xref:2.5@index.adoc[Manual del usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "Addressed https://github.com/gbif/ipt/milestone/41?closed=1[12 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/41?closed=1[12 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
