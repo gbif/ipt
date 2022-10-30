@@ -380,6 +380,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             Collections.singleton(new File(fn)),
             dataPackageFolder);
     packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
+    packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
 
     // set schema
     String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(resource.getSchemaIdentifier() + "_" + currSubschema, ".json");

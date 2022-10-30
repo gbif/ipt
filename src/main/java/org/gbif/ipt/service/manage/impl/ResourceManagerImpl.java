@@ -1216,15 +1216,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource resource
    */
   private void loadDatapackageMetadata(Resource resource) {
+    DataPackageMetadata metadata = new CamtrapMetadata();
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
-    ObjectMapper objectMapper = new ObjectMapper();
-    DataPackageMetadata metadata = null;
-    try {
-      metadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
-    } catch (IOException e) {
-      // TODO: 13/10/2022 implement exception handling
-      throw new RuntimeException(e);
+    if (metadataFile.exists() && !metadataFile.isDirectory()) {
+      ObjectMapper objectMapper = new ObjectMapper();
+      try {
+        metadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
+      } catch (IOException e) {
+        // TODO: 13/10/2022 implement exception handling
+        throw new RuntimeException(e);
+      }
+    } else {
+      metadata.setName(resource.getShortname());
+      // TODO: 30/10/2022 make profile constant or something
+      metadata.setProfile("https://raw.githubusercontent.com/tdwg/camtrap-dp/0.4/camtrap-dp-profile.json");
     }
+
     resource.setDataPackageMetadata(metadata);
   }
 
