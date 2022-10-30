@@ -445,63 +445,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="my-md-3 p-3">
-                            <p>
-                                <strong>Profile (internal)</strong>
-                                <br>
-                                ${metadata.profile!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Resources (internal)</strong>
-                                <br>
-                                <#if metadata.resources??>
-                                    <ol>
-                                        <#list metadata.resources as resource>
-                                            <li>
-                                                <strong>Name:</strong> ${resource.name!}<br>
-                                                <strong>Profile:</strong> ${resource.profile!}<br>
-                                                <strong>Path:</strong> ${resource.path!}<br>
-                                                <strong>Schema:</strong> ${resource.schema!}<br>
-                                                <strong>Format:</strong> ${resource.format!}<br><br>
-                                            </li>
-                                        </#list>
-                                    </ol>
-                                <#else>
-                                    -
-                                </#if>
-                            </p>
-
-                            <p>
-                                <strong>Name (internal)</strong>
-                                <br>
-                                ${metadata.name!"-"}
-                            </p>
-
-                            <p>
-                                <strong>Id (internal)</strong>
-                                <br>
-                                ${metadata.id!"-"}
-                            </p>
-
-<#--                            <p>-->
-<#--                                <strong>Created (internal)</strong>-->
-<#--                                <br>-->
-<#--                                <#if metadata.created??>-->
-<#--                                    ${metadata.created?datetime?string.medium}-->
-<#--                                <#else>-->
-<#--                                    --->
-<#--                                </#if>-->
-<#--                            </p>-->
-
-<#--                            <p>-->
-<#--                                <strong>Version (internal)</strong>-->
-<#--                                <br>-->
-<#--                                ${metadata.version!"-"}-->
-<#--                            </p>-->
-
-                        </div>
                     </div>
                 </main>
             </div>

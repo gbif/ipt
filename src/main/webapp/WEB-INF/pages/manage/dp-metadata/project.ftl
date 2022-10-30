@@ -125,18 +125,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="my-md-3 p-3">
-                            <#if (metadata.project)?has_content>
-                                <p>
-                                    <strong>Id</strong>
-                                    <br>
-                                    ${(metadata.project.id)!}
-                                </p>
-                            <#else>
-                                No project data
-                            </#if>
-                        </div>
                     </div>
                 </main>
             </div>
