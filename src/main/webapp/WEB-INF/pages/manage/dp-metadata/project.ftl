@@ -1,9 +1,13 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            $('select#metadata\\.project\\.captureMethod').select2({placeholder: '', width:"100%", allowClear: true, multiple: true, theme: 'bootstrap4'});
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -83,11 +87,25 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.samplingDesign" i18nkey="datapackagemetadata.project.samplingDesign"  />
+                                    <#if (metadata.project.samplingDesign)??>
+                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}"/>
+                                    <#else>
+                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value=""/>
+                                    </#if>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.captureMethod" i18nkey="datapackagemetadata.project.captureMethod"  />
+                                    <div class="form-group">
+                                        <label for="metadata.project.captureMethod" class="form-label">
+                                            <@s.text name="datapackagemetadata.project.captureMethod"/>
+                                        </label>
+                                        <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" multiple>
+                                            <#list captureMethods as key, value>
+                                                <option value="${key}" <#if metadata.project.captureMethod?contains(value)>selected</#if> >${value}</option>
+                                            </#list>
+                                        </select>
+                                        <@s.fielderror id="field-error-metadata.project.captureMethod" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="metadata.project.captureMethod"/>
+                                    </div>
                                 </div>
 
                                 <div class="col-lg-6">
@@ -95,7 +113,11 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.classificationLevel" i18nkey="datapackagemetadata.project.classificationLevel"  />
+                                    <#if (metadata.project.classificationLevel)??>
+                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}"/>
+                                    <#else>
+                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value=""/>
+                                    </#if>
                                 </div>
 
                                 <div class="col-lg-6">

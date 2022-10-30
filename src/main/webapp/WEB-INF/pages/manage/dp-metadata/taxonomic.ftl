@@ -168,7 +168,11 @@
                                                 <@input name="metadata.taxonomic[${item_index}].scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.taxonomic[${item_index}].taxonRank" i18nkey="datapackagemetadata.taxonomic.taxonRank" />
+                                                <#if (metadata.taxonomic[item_index].taxonRank)??>
+                                                    <@select name="metadata.taxonomic[${item_index}].taxonRank" includeEmpty=true compareValues=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value="${metadata.taxonomic[item_index].taxonRank!}"/>
+                                                <#else>
+                                                    <@select name="metadata.taxonomic[${item_index}].taxonRank" includeEmpty=true compareValues=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
+                                                </#if>
                                             </div>
                                         </div>
                                     </#list>
@@ -212,7 +216,7 @@
             <@input name="metadata.taxonomic.scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.taxonomic.taxonRank" i18nkey="datapackagemetadata.taxonomic.taxonRank" />
+            <@select name="metadata.taxonomic.taxonRank" includeEmpty=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
         </div>
     </div>
 

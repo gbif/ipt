@@ -24,11 +24,13 @@ public enum CaptureMethod {
   MOTION_DETECTION("motion detection"),
   TIME_LAPSE("time lapse");
   private final String value;
-  private final static Map<String, CaptureMethod> CONSTANTS = new HashMap<>();
+  public final static Map<String, CaptureMethod> CONSTANTS = new HashMap<>();
+  public final static Map<String, String> VOCABULARY = new HashMap<>();
 
   static {
     for (CaptureMethod c : values()) {
       CONSTANTS.put(c.value, c);
+      VOCABULARY.put(c.name(), c.value);
     }
   }
 

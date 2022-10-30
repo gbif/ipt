@@ -424,7 +424,11 @@
                                                 <@input name="metadata.licenses[${item_index}].name" i18nkey="datapackagemetadata.name" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].scope" i18nkey="datapackagemetadata.license.scope" />
+                                                <#if (metadata.licenses[item_index].scope)??>
+                                                    <@select name="metadata.licenses[${item_index}].scope" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="${metadata.licenses[item_index].scope!}"/>
+                                                <#else>
+                                                    <@select name="metadata.licenses[${item_index}].scope" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value=""/>
+                                                </#if>
                                             </div>
                                         </div>
                                     </#list>
@@ -507,11 +511,11 @@
     <div id="baseItem-contributor" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
             <a id="contributor-removeLink" href="" class="removeContributorLink text-smaller">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                        </svg>
-                                    </span>
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
                 <span>${removeContributorLink?lower_case?cap_first}</span>
             </a>
         </div>
@@ -535,11 +539,11 @@
     <div id="baseItem-source" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
             <a id="source-removeLink" href="" class="removeSourceLink text-smaller">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                        </svg>
-                                    </span>
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
                 <span>${removeSourceLink?lower_case?cap_first}</span>
             </a>
         </div>
@@ -556,12 +560,12 @@
 
     <div id="baseItem-license" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="baseItem-license" href="" class="removeLicenseLink text-smaller">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                        </svg>
-                                    </span>
+            <a id="license-removeLink" href="" class="removeLicenseLink text-smaller">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
                 <span>${removeSourceLink?lower_case?cap_first}</span>
             </a>
         </div>
@@ -575,7 +579,7 @@
             <@input name="metadata.licenses.name" i18nkey="datapackagemetadata.name" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.licenses.scope" i18nkey="datapackagemetadata.license.scope" />
+            <@select name="metadata.licenses.scope" includeEmpty=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value=""/>
         </div>
     </div>
 

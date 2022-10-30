@@ -312,11 +312,13 @@ public class Project implements Serializable {
     SEQUENCE("sequence"),
     MEDIA("media");
     private final String value;
-    private final static Map<String, Project.ClassificationLevel> CONSTANTS = new HashMap<>();
+    public final static Map<String, Project.ClassificationLevel> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (Project.ClassificationLevel c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 
@@ -358,11 +360,13 @@ public class Project implements Serializable {
     TARGETED("targeted"),
     OPPORTUNISTIC("opportunistic");
     private final String value;
-    private final static Map<String, Project.SamplingDesign> CONSTANTS = new HashMap<>();
+    public final static Map<String, Project.SamplingDesign> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (Project.SamplingDesign c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 

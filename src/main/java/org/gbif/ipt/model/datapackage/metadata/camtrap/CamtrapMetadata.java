@@ -39,6 +39,14 @@ public class CamtrapMetadata extends DataPackageMetadata {
   private final static long serialVersionUID = 7011607601336714408L;
 
   /**
+   * Licenses
+   * <p>
+   * The license(s) under which this package is published.
+   */
+  @JsonProperty("licenses")
+  private List<CamtrapLicense> licenses = new ArrayList<>();
+
+  /**
    * Bibliographic/recommended citation for the package.
    */
   @JsonProperty("bibliographicCitation")
@@ -355,10 +363,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @Override
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
-  @Size(min = 2)
-  @Valid
-  public List<License> getLicenses() {
-    return super.getLicenses();
+  public List<CamtrapLicense> getLicenses() {
+    return licenses;
   }
 
   /**
@@ -366,8 +372,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
-    super.setLicenses(licenses);
+  public void setLicenses(List<? extends License> licenses) {
+    this.licenses = (List<CamtrapLicense>) licenses;
   }
 
   /**

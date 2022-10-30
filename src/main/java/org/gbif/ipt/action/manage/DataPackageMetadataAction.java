@@ -18,7 +18,11 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CaptureMethod;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -43,7 +47,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private DataPackageMetadataSection section = DataPackageMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
-  private Map<String, String> organisations;
+  private Map<String, String> organisations = new LinkedHashMap<>();
 
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -114,12 +118,16 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
 
       case PROJECT_SECTION:
+        if (isHttpPost()) {
+          ((CamtrapMetadata) resource.getDataPackageMetadata()).getProject().getCaptureMethod().clear();
+        }
         break;
 
       case OTHER_SECTION:
         break;
 
-      default: break;
+      default:
+        break;
     }
   }
 
@@ -134,7 +142,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata" + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
@@ -161,7 +169,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         case OTHER_SECTION:
           next = DataPackageMetadataSection.BASIC_SECTION;
           break;
-        default: break;
+        default:
+          break;
       }
     } else {
       // stay on the same section, since save failed
@@ -178,7 +187,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
    */
   private void loadOrganisations() {
     List<Organisation> associatedOrganisations = registrationManager.list();
-    organisations = new LinkedHashMap<>();
     if (!associatedOrganisations.isEmpty()) {
 
       // add placeholder if there is more than the default organisation "No organisation"
@@ -218,5 +226,25 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
    */
   public Map<String, String> getOrganisations() {
     return organisations;
+  }
+
+  public Map<String, String> getLicenseScopes() {
+    return CamtrapLicense.Scope.VOCABULARY;
+  }
+
+  public Map<String, String> getTaxonRanks() {
+    return Taxonomic.TaxonRank.VOCABULARY;
+  }
+
+  public Map<String, String> getSamplingDesigns() {
+    return Project.SamplingDesign.VOCABULARY;
+  }
+
+  public Map<String, String> getClassificationLevels() {
+    return Project.ClassificationLevel.VOCABULARY;
+  }
+
+  public Map<String, String> getCaptureMethods() {
+    return CaptureMethod.VOCABULARY;
   }
 }

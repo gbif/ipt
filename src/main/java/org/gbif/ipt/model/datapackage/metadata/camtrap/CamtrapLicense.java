@@ -69,11 +69,13 @@ public class CamtrapLicense extends License {
     DATA("data"),
     MEDIA("media");
     private final String value;
-    private final static Map<String, CamtrapLicense.Scope> CONSTANTS = new HashMap<>();
+    public final static Map<String, CamtrapLicense.Scope> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (CamtrapLicense.Scope c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 

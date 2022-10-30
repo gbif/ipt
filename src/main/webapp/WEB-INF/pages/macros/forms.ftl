@@ -96,7 +96,7 @@
         </div>
     </#macro>
 
-    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
+    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false compareValues=false>
         <div>
             <div class="d-flex">
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
@@ -107,7 +107,7 @@
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
                 </#if>
                 <#list options?keys as val>
-                    <option value="${val}" <#if (value!"")==""+val> selected="selected"</#if>>
+                    <option value="${val}" <#if !compareValues && (value!"") == "" + val> selected="selected"</#if> <#if compareValues && (value!"") == "" + options[val]>selected</#if> >
                         <#if javaGetter><@s.text name="${options.get(val)}"/><#else><@s.text name="${options[val]}"/></#if>
                     </option>
                 </#list>

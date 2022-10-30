@@ -320,11 +320,13 @@ public class Taxonomic implements Serializable {
     SPECIES("species"),
     SUBSPECIES("subspecies");
     private final String value;
-    private final static Map<String, Taxonomic.TaxonRank> CONSTANTS = new HashMap<>();
+    public final static Map<String, Taxonomic.TaxonRank> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (Taxonomic.TaxonRank c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 

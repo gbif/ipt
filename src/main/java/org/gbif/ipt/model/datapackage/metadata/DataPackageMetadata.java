@@ -145,7 +145,7 @@ public class DataPackageMetadata implements Serializable {
   @JsonProperty("licenses")
   @Size(min = 1)
   @Valid
-  private List<License> licenses = new ArrayList<>();
+  private List<? extends License> licenses = new ArrayList<>();
 
   /**
    * Data Resources
@@ -402,7 +402,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public List<License> getLicenses() {
+  public List<? extends License> getLicenses() {
     return licenses;
   }
 
@@ -412,7 +412,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<? extends License> licenses) {
     this.licenses = licenses;
   }
 
