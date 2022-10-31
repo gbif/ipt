@@ -1349,7 +1349,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
-    if (resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+    // not applicable for data packages
+    if (resource.getSchemaIdentifier() == null && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
       String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
       addActionError(msg);
       LOG.error(msg);

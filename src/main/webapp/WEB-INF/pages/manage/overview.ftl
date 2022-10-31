@@ -979,7 +979,7 @@
                                                 <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
                                                 </div>
-                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) && !action.isDataPackageResource()>
                                                 <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                                                 <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
@@ -1016,7 +1016,7 @@
                                             <#elseif !resource.isLastPublishedVersionPublic()>
                                                 <!-- Disable register button and show warning: last published version must be publicly available to register -->
                                                 <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
-                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) && !action.isDataPackageResource()>
                                                 <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                                                 <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#else>
