@@ -745,6 +745,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // copy metadata file to data directory (with name datapackage.json) and populate Eml instance
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile);
+    // set name, erase some internal fields
+    metadata.setName(resource.getShortname());
+    metadata.setCreated(null);
+    metadata.setResources(new ArrayList<>());
+
     resource.setDataPackageMetadata(metadata);
     resource.setMetadataModified(new Date());
     save(resource);
