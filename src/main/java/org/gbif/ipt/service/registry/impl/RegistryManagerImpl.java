@@ -91,6 +91,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
+  private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_SAMPLING_EVENT = "DWC-ARCHIVE-SAMPLING-EVENT";
@@ -196,8 +197,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
     data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
 
-    // TODO: 01/11/2022 no service urls for now
-    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_OCCURRENCE));
+    // service type and url
+    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_CAMTRAP_DP));
+    data.add(new BasicNameValuePair("serviceUrls", cfg.getResourceArchiveUrl(resource.getShortname())));
 
     return data;
   }
