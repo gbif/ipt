@@ -1229,8 +1229,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (publish) {
-      // prevent publishing if resource is registered but it hasn't been assigned a GBIF-supported license
-      if (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()) {
+      // prevent publishing if resource is registered, but it hasn't been assigned a GBIF-supported license
+      if (resource.isRegistered() && !resource.isDataPackage() && !resource.isAssignedGBIFSupportedLicense()) {
         String msg = getText("manage.overview.prevented.resource.publishing.noGBIFLicense");
         addActionError(msg);
         LOG.error(msg);
