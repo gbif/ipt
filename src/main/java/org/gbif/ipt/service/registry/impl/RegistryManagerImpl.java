@@ -190,19 +190,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     data.add(new BasicNameValuePair("description", metadata.getDescription()));
     // TODO: 01/11/2022 logo and homepage
-//    data.add(new BasicNameValuePair("homepageURL", metadata.getHomepage()));
-//    data.add(new BasicNameValuePair("logoURL", metadata.getImage()));
 
     // Use resource creator as primary contact. May use one of the contributors in the future.
     data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
     data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
     data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
 
-    // TODO: 01/11/2022 no service types or urls for now
-    // see if we have a published dwca or if its only metadata
-//    RegistryServices services = buildServiceTypeParams(resource);
-//    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
-//    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+    // TODO: 01/11/2022 no service urls for now
+    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_OCCURRENCE));
 
     return data;
   }
