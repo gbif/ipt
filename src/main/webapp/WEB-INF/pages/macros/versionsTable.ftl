@@ -16,7 +16,7 @@ versionsTable macro: Generates a data table that has pagination.
             /* only show released versions. The version must be public unless user has manager rights in which case they can see all released versions */
             <#if v.released?? && ((v.publicationStatus == 'PUBLIC' || v.publicationStatus == 'REGISTERED') || managerRights) >
             [<#if (version?? && v.version == version.toPlainString()) || (!version?? && v.version == resource.emlVersion.toPlainString())>'<img class="latestVersion" src="${baseURL}/images/dataTables/forward_enabled_hover.png"/>${v.version!}'<#else>'<img class="latestVersionHidden" src="${baseURL}/images/dataTables/forward_enabled_hover.png"/><a href="${baseURL}/resource?r=${shortname}&amp;v=${v.version!}">${v.version!}</a>'</#if>,
-                '${v.released?date}',
+                '${(v.released?date?string("yyyy-MM-dd HH:mm:ss"))!""}',
                 '${v.recordsPublished}',
                 <#if v.changeSummary?has_content>"${v.changeSummary?replace("\'", "\\'")?replace("\"", '\\"')?replace("[\r\n]+", "<br>",'r')}&nbsp;<#if managerRights && !isPreviewPage><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if>"<#else>"<@s.text name="publishing.changeSummary.default"/>&nbsp;<#if managerRights && !isPreviewPage><a href='${baseURL}/manage/history.do?r=${resource.shortname}&v=${v.version}'><@s.text name='button.edit'/></a></#if>"</#if>,
                 <#if v.doi?? && v.status=="PUBLIC">'${v.doi!}'<#else>''</#if>,

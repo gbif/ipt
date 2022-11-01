@@ -128,7 +128,7 @@
                         </div>
 
                         <div class="my-md-3 p-3">
-                            <!-- List of Collections -->
+                            <!-- List of Specimen preservation methods -->
                             <div class="listBlock">
                                 <@textinline name="eml.specimenPreservationMethod.plural" help="i18n"/>
                                 <div id="specimenPreservationMethod-items">
