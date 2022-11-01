@@ -9,7 +9,7 @@
             <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-        <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+        <#elseif resource.isRegistered() && !resource.isDataPackage() && !resource.isAssignedGBIFSupportedLicense()>
             <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
         <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->

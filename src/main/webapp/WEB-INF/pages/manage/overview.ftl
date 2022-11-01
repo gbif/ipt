@@ -731,23 +731,23 @@
                                             </tr>
                                             <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
                                             <#if (resource.eml)?has_content>
-                                            <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
-                                                <tr>
-                                                    <th>${licenseTitle?cap_first}</th>
-                                                    <#if resource.lastPublished??>
-                                                        <td class="separator">
-                                                            <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
-                                                        </td>
-                                                        <td class="left_padding">
-                                                            <@shortLicense resource.getEml().parseLicenseUrl()/>
-                                                        </td>
-                                                    <#else>
-                                                        <td>
-                                                            <@shortLicense resource.getEml().parseLicenseUrl()/>
-                                                        </td>
-                                                    </#if>
-                                                </tr>
-                                            </#if>
+                                                <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
+                                                    <tr>
+                                                        <th>${licenseTitle?cap_first}</th>
+                                                        <#if resource.lastPublished??>
+                                                            <td class="separator">
+                                                                <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
+                                                            </td>
+                                                            <td class="left_padding">
+                                                                <@shortLicense resource.getEml().parseLicenseUrl()/>
+                                                            </td>
+                                                        <#else>
+                                                            <td>
+                                                                <@shortLicense resource.getEml().parseLicenseUrl()/>
+                                                            </td>
+                                                        </#if>
+                                                    </tr>
+                                                </#if>
                                             </#if>
                                             <tr>
                                                 <th>${releasedTitle?cap_first}</th>
