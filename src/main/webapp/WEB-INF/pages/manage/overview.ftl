@@ -515,7 +515,7 @@
                                     </div>
 
                                     <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-                                <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                                <#elseif resource.isRegistered() && !resource.isDataPackage() && !resource.isAssignedGBIFSupportedLicense()>
                                     <div class="callout callout-warning text-smaller">
                                         <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
                                     </div>
