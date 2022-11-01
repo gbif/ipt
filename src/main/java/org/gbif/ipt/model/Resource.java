@@ -1604,4 +1604,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   public boolean hasOccurrenceMapping() {
     return !getMappings(Constants.DWC_ROWTYPE_OCCURRENCE).isEmpty();
   }
+
+  public boolean isDataPackage() {
+    return schemaIdentifier != null;
+  }
 }

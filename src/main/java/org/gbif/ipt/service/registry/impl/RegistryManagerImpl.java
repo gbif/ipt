@@ -28,6 +28,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.datapackage.metadata.Contributor;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
@@ -38,6 +40,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.validation.AgentValidator;
+import org.gbif.ipt.validation.ContributorValidator;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -171,6 +174,35 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     RegistryServices services = buildServiceTypeParams(resource);
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+
+    return data;
+  }
+
+  private List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
+    List<NameValuePair> data = new ArrayList<>();
+
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+
+    // TODO: 01/11/2022 DOI
+
+    data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+        : StringUtils.trimToEmpty(resource.getShortname())));
+
+    data.add(new BasicNameValuePair("description", metadata.getDescription()));
+    // TODO: 01/11/2022 logo and homepage
+//    data.add(new BasicNameValuePair("homepageURL", metadata.getHomepage()));
+//    data.add(new BasicNameValuePair("logoURL", metadata.getImage()));
+
+    // Use resource creator as primary contact. May use one of the contributors in the future.
+    data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
+    data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
+    data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
+
+    // TODO: 01/11/2022 no service types or urls for now
+    // see if we have a published dwca or if its only metadata
+//    RegistryServices services = buildServiceTypeParams(resource);
+//    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
+//    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
     return data;
   }
@@ -721,7 +753,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     // populate params for ws call to register resource
-    List<NameValuePair> data = buildRegistryParameters(resource);
+    List<NameValuePair> data;
+    if (resource.isDataPackage()) {
+      data = buildRegistryParametersForDataPackage(resource);
+    } else {
+      data = buildRegistryParameters(resource);
+    }
+
     // add additional ipt and organisation parameters
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
