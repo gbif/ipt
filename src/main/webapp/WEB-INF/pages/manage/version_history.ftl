@@ -30,7 +30,9 @@
             <div class="mt-2">
                 <#if resource?? && version?? && resource.versionHistory??>
                     <@s.submit form="history" cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit form="history" cssClass="button btn btn-sm btn-outline-secondary top-button" name="back" key="button.cancel"/>
+                    <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
+                        <@s.text name="button.cancel"/>
+                    </a>
                 <#else>
                     <@s.submit form="history" cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                 </#if>
