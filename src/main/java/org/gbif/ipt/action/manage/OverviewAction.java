@@ -1310,6 +1310,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           return SUCCESS;
         }
       } catch (PublicationException e) {
+        LOG.error("Exception while publishing", e);
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           addActionError(getText("manage.overview.resource.being.published",
             new String[] {resource.getTitleAndShortname()}));
