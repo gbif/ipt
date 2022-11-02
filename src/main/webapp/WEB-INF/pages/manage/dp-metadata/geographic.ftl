@@ -77,23 +77,23 @@
                         </div>
 
                         <div class="my-md-3 p-3">
-<#--                            <@textinline name="datapackagemetadata.bbox"/>-->
+                            <@textinline name="datapackagemetadata.geographic.boundingCoordinates"/>
 
-                            <div class="row g-3">
+                            <div class="row g-3 mt-2">
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[0]" withLabel=false />
+                                    <@input name="metadata.spatial.bbox[0]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.longitude" requiredField=true />
                                 </div>
 
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[1]" withLabel=false />
+                                    <@input name="metadata.spatial.bbox[1]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.longitude" requiredField=true />
                                 </div>
 
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[2]" withLabel=false />
+                                    <@input name="metadata.spatial.bbox[2]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.latitude" requiredField=true />
                                 </div>
 
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[3]" withLabel=false />
+                                    <@input name="metadata.spatial.bbox[3]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.latitude" requiredField=true />
                                 </div>
                             </div>
                         </div>
