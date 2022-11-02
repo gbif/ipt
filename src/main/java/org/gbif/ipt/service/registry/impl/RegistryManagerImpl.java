@@ -957,7 +957,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     LOG.info("Update resource registration... [key=" + resource.getKey().toString() + "]");
     // populate params for ws call to update registered resource
-    List<NameValuePair> data = buildRegistryParameters(resource);
+    List<NameValuePair> data;
+    if (resource.isDataPackage()) {
+      data = buildRegistryParametersForDataPackage(resource);
+    } else {
+      data = buildRegistryParameters(resource);
+    }
+
     // ensure IPT serves relationship always gets created/updated
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(iptKey)));
 
