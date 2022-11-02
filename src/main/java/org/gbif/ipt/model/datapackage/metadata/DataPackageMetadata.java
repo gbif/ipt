@@ -115,6 +115,7 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
+  @NotNull
   @Size(min = 1)
   @Valid
   private List<Contributor> contributors = new ArrayList<>();
@@ -125,6 +126,7 @@ public class DataPackageMetadata implements Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
+  @NotNull
   @Size(min = 1)
   @Valid
   private List<String> keywords = new ArrayList<>();
@@ -143,9 +145,10 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  @Size(min = 1)
+  @NotNull
+  @Size(min = 1, groups = InternalField.class)
   @Valid
-  private List<? extends License> licenses = new ArrayList<>();
+  private List<License> licenses = new ArrayList<>();
 
   /**
    * Data Resources
@@ -154,9 +157,9 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
-  @Size(min = 1)
-  @Valid
   @NotNull
+  @Size(min = 1, groups = InternalField.class)
+  @Valid
   private List<Resource> resources = new ArrayList<>();
 
   /**
@@ -165,6 +168,7 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
+  @NotNull
   @Size()
   @Valid
   private List<Source> sources = new ArrayList<>();
@@ -402,7 +406,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public List<? extends License> getLicenses() {
+  public List<License> getLicenses() {
     return licenses;
   }
 
@@ -412,7 +416,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public void setLicenses(List<? extends License> licenses) {
+  public void setLicenses(List<License> licenses) {
     this.licenses = licenses;
   }
 

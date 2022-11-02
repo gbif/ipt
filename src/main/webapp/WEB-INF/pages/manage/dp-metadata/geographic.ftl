@@ -71,7 +71,7 @@
                                     <@input name="metadata.coordinatePrecision" i18nkey="datapackagemetadata.coordinatePrecision" />
                                 </div>
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.type" i18nkey="datapackagemetadata.type" />
+                                    <@input name="metadata.spatial.type" i18nkey="datapackagemetadata.type" requiredField=true />
                                 </div>
                             </div>
                         </div>

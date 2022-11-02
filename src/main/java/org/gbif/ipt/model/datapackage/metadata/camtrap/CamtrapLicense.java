@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.model.datapackage.metadata.DataPackageLicense;
 import org.gbif.ipt.model.datapackage.metadata.License;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapLicense extends License {
+public class CamtrapLicense extends DataPackageLicense {
 
   private final static long serialVersionUID = -6253983938937199264L;
 
@@ -115,7 +116,11 @@ public class CamtrapLicense extends License {
   @Override
   public String toString() {
     return new StringJoiner(", ", CamtrapLicense.class.getSimpleName() + "[", "]")
+        .add("name='" + super.getName() + "'")
+        .add("path='" + super.getPath() + "'")
+        .add("title='" + super.getTitle() + "'")
         .add("scope=" + scope)
+        .add("additionalProperties=" + super.getAdditionalProperties())
         .toString();
   }
 }

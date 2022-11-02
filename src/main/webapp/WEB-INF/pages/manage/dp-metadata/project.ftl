@@ -83,23 +83,23 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.path" i18nkey="datapackagemetadata.path"  />
+                                    <@input name="metadata.project.path" i18nkey="datapackagemetadata.path" />
                                 </div>
 
                                 <div class="col-lg-6">
                                     <#if (metadata.project.samplingDesign)??>
-                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}"/>
+                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}" requiredField=true />
                                     <#else>
-                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value=""/>
+                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="" requiredField=true />
                                     </#if>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="metadata.project.captureMethod" class="form-label">
-                                            <@s.text name="datapackagemetadata.project.captureMethod"/>
+                                            <@s.text name="datapackagemetadata.project.captureMethod"/> &#42;
                                         </label>
-                                        <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" multiple>
+                                        <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" required multiple>
                                             <#if captureMethods?has_content>
                                                 <#list captureMethods as key, value>
                                                     <option value="${key}" <#if (metadata.project.captureMethod)?has_content && metadata.project.captureMethod?contains(value)>selected</#if> >${value}</option>
@@ -111,19 +111,15 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.animalTypes" i18nkey="datapackagemetadata.project.animalTypes"  />
-                                </div>
-
-                                <div class="col-lg-6">
                                     <#if (metadata.project.classificationLevel)??>
-                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}"/>
+                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}" requiredField=true />
                                     <#else>
-                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value=""/>
+                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="" requiredField=true />
                                     </#if>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.sequenceInterval" i18nkey="datapackagemetadata.project.sequenceInterval"  />
+                                    <@input name="metadata.project.sequenceInterval" i18nkey="datapackagemetadata.project.sequenceInterval" requiredField=true />
                                 </div>
                             </div>
                         </div>

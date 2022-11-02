@@ -14,7 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 /**
- * License interface
+ * A marker intended for validation annotations indicating that the rule should be applied for internal fields.
  */
-public interface License {
+public @interface InternalField {
 }

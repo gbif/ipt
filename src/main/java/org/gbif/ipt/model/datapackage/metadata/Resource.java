@@ -111,7 +111,7 @@ public class Resource implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @Size()
+  @Size(groups = InternalField.class)
   @Valid
   private List<Source> sources = new ArrayList<>();
 
@@ -121,7 +121,7 @@ public class Resource implements Serializable {
    * The license(s) under which the resource is published.
    */
   @JsonProperty("licenses")
-  @Size(min = 1)
+  @Size(min = 1, groups = InternalField.class)
   @Valid
   private List<License> licenses = new ArrayList<>();
 

@@ -87,9 +87,9 @@ public class Project implements Serializable {
    */
   @JsonProperty("captureMethod")
   @JsonDeserialize(as = LinkedHashSet.class)
+  @NotNull
   @Size(min = 1)
   @Valid
-  @NotNull
   private Set<CaptureMethod> captureMethod = new LinkedHashSet<>();
 
   /**

@@ -160,13 +160,13 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" />
+                                                    <@input name="metadata.taxonomic[${item_index}].taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" requiredField=true />
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" />
+                                                    <@input name="metadata.taxonomic[${item_index}].taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" requiredField=true />
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
+                                                    <@input name="metadata.taxonomic[${item_index}].scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" requiredField=true />
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <#if (metadata.taxonomic[item_index].taxonRank)??>
@@ -209,13 +209,13 @@
             </a>
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.taxonomic.taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" />
+            <@input name="metadata.taxonomic.taxonID" i18nkey="datapackagemetadata.taxonomic.taxonId" requiredField=true />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.taxonomic.taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" />
+            <@input name="metadata.taxonomic.taxonIDReference" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" requiredField=true />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.taxonomic.scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" />
+            <@input name="metadata.taxonomic.scientificName" i18nkey="datapackagemetadata.taxonomic.scientificName" requiredField=true />
         </div>
         <div class="col-lg-6">
             <@select name="metadata.taxonomic.taxonRank" includeEmpty=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
