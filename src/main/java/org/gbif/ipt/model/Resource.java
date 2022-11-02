@@ -495,7 +495,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       String versionAsString = getDataPackageMetadata().getVersion().toString();
       // first publication retrieve existing version
       if (lastPublished == null) {
-          return new BigDecimal(versionAsString);
+        return new BigDecimal(versionAsString);
       }
       int majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
       return new BigDecimal(majorVersion + 1 + ".0");

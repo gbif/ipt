@@ -100,9 +100,11 @@
                                             <@s.text name="datapackagemetadata.project.captureMethod"/>
                                         </label>
                                         <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" multiple>
-                                            <#list captureMethods as key, value>
-                                                <option value="${key}" <#if metadata.project.captureMethod?contains(value)>selected</#if> >${value}</option>
-                                            </#list>
+                                            <#if captureMethods?has_content>
+                                                <#list captureMethods as key, value>
+                                                    <option value="${key}" <#if (metadata.project.captureMethod)?has_content && metadata.project.captureMethod?contains(value)>selected</#if> >${value}</option>
+                                                </#list>
+                                            </#if>
                                         </select>
                                         <@s.fielderror id="field-error-metadata.project.captureMethod" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="metadata.project.captureMethod"/>
                                     </div>

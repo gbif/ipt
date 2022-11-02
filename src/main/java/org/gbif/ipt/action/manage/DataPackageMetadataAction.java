@@ -119,7 +119,10 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
       case PROJECT_SECTION:
         if (isHttpPost()) {
-          ((CamtrapMetadata) resource.getDataPackageMetadata()).getProject().getCaptureMethod().clear();
+          CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+          if (camtrapMetadata.getProject() != null) {
+            camtrapMetadata.getProject().getCaptureMethod().clear();
+          }
         }
         break;
 
@@ -142,7 +145,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata" + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
