@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-03 13:50+0000\n"
-"PO-Revision-Date: 2022-11-03 14:10\n"
+"PO-Revision-Date: 2022-11-03 19:33\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -68,7 +68,7 @@ msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar e
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:16
 msgid "Some default configurations of Apache Tomcat come with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 4GB of RAM, the available memory should be increased to 2GB. For more information on how to do it, see the https://cwiki.apache.org/confluence/display/TOMCAT/Memory[Tomcat FAQ]"
-msgstr ""
+msgstr "Algunas configuraciones predeterminadas de Apache Tomcat vienen con muy poca memoria asignada. Para aumentar el rendimiento, se debe incrementar el espacio asignado dependiendo de la cantidad de memoria física en el servidor. Si el servidor tiene al menos 4 GB de RAM, la memoria disponible debe aumentarse a 2 GB. Para obtener más información sobre cómo hacerlo, consulte las https://cwiki.apache.org/confluence/display/TOMCAT/Memory[Preguntas frecuentes del Tomcat]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:18
@@ -79,7 +79,7 @@ msgstr "Se ejecuta lo siguiente:"
 #: en/modules/ROOT/pages/faq.adoc:21
 #, no-wrap
 msgid "export CATALINA_OPTS=\"-Xmx2048M\"\n"
-msgstr ""
+msgstr "export CATALINA_OPTS=\"-Xmx2048M\""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:24
