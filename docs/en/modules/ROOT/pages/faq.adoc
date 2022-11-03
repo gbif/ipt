@@ -12,12 +12,12 @@ To move the IPT to a different server, just make sure that you copy the entire c
 
 === My GBIF IPT instance is slow. What can I do to improve performance?
 
-Apache Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the http://wiki.apache.org/tomcat/FAQ/Memory[Tomcat FAQ]
+Some default configurations of Apache Tomcat come with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 4GB of RAM, the available memory should be increased to 2GB. For more information on how to do it, see the https://cwiki.apache.org/confluence/display/TOMCAT/Memory[Tomcat FAQ]
 
 The following is known to run:
 
 ----
-export CATALINA_OPTS="-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSize=1024M"
+export CATALINA_OPTS="-Xmx2048M"
 ----
 
 [#file-permissions]
