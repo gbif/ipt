@@ -1,60 +1,6 @@
 = Releases
 
-[TIP]
-.Latest stable release
-====
-The current, stable release is version <<2-6-3-october-2022,2.6.3>>.
-
-You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
-ifeval::["{language}" != "en"]
-Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE.
-endif::[]
-====
-
-// Next release text kept for reuse, as it will be part of the Crowdin translation memory.
-
-== *2.6.3* – October 2022
-
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.3/ipt-2.6.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:2.5@release-notes.adoc[IPT v2.6.3 Release Notes]
-* xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/41?closed=1[12 issues].
-* Translated into 7 languages
-
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-This release includes security and bug fixes.
-
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
-
-== *2.6.2* – October 2022
-
-* xref:2.5@release-notes.adoc[IPT v2.6.2 Release Notes]
-* xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/40?closed=1[7 issues].
-* Translated into 7 languages
-
-This release includes a bug fix for user creation.
-
-== *2.6.1* – September 2022
-
-* xref:2.5@release-notes.adoc[IPT v2.6.1 Release Notes]
-* xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/39?closed=1[1 issue].
-* Translated into 7 languages
-
-This release includes a bug fix for empty resource tables.
-
-== *2.6.0* – September 2022
-
-* xref:2.5@release-notes.adoc[IPT v2.6.0 Release Notes]
-* xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/37?closed=1[42 issues].
-* Translated into 7 languages
-
-This release brings many new features, bug fixes and improvements. Namely, admin UI management (color scheme, logo upload), automatic metadata inferring and more. For details please visit https://github.com/gbif/ipt/milestone/37?closed=1[GitHub].
+include::partial$version-outdated.adoc[]
 
 == *2.5.8* – May 2022
 

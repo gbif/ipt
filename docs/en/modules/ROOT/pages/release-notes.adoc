@@ -2,6 +2,8 @@
 
 *IPT Versions: pass:[2.5.*]*
 
+include::partial$version-outdated.adoc[]
+
 == Upgrade instructions
 
 WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
