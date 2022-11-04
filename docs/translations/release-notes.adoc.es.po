@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 16:22+0000\n"
-"PO-Revision-Date: 2022-11-04 16:28\n"
+"PO-Revision-Date: 2022-11-04 17:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -54,7 +54,7 @@ msgstr "Notas de la versión"
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
 msgid "*IPT Versions: pass:[2.6.*]*\n"
-msgstr ""
+msgstr "*Versiones de IPT: pass:[2.6.*]*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
