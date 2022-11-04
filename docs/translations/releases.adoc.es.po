@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:01\n"
+"PO-Revision-Date: 2022-11-04 14:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -119,7 +119,7 @@ msgstr "Esta versión incluye correcciones de errores y seguridad."
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
 msgid "No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub]."
-msgstr ""
+msgstr "No se ha estipulado una fecha de lanzamiento para la próxima versión. El progreso en el trabajo realizado sobre las incidencias para el próximo lanzamiento puede consultarse https://github.com/gbif/ipt/milestones [en GitHub]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
@@ -130,7 +130,7 @@ msgstr "Los problemas menores y los asuntos de seguridad se abordarán en parche
 #: en/modules/ROOT/pages/releases.adoc:32
 #, no-wrap
 msgid "*2.6.2* – October 2022"
-msgstr "*2.6.2* – Octubre de 2022\n"
+msgstr "*2.6.2* – Octubre de 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:35
@@ -151,17 +151,17 @@ msgstr "Esta versión incluye una corrección de errores en la creación de usua
 #: en/modules/ROOT/pages/releases.adoc:41
 #, no-wrap
 msgid "*2.6.1* – September 2022"
-msgstr ""
+msgstr "*2.6.1* – Septiembre 2022\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:44
 msgid "xref:2.5@release-notes.adoc[IPT v2.6.1 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Comentarios de la versión IPT v2.6.1]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:46
 msgid "Addressed https://github.com/gbif/ipt/milestone/39?closed=1[1 issue]."
-msgstr ""
+msgstr "Dirijase a https://github.com/gbif/ipt/milestone/39?closed=1[1 incidencia]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:49
@@ -172,7 +172,7 @@ msgstr "Esta versión incluye una corrección de un error asociado a tablas vaci
 #: en/modules/ROOT/pages/releases.adoc:50
 #, no-wrap
 msgid "*2.6.0* – September 2022"
-msgstr "*2.6.0* – Septiembre 2022\n"
+msgstr "*2.6.0* – Septiembre 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:53
@@ -203,7 +203,7 @@ msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.8]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:64
 msgid "Addressed https://github.com/gbif/ipt/milestone/35?closed=1[9 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/35?closed=1[9 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:67
@@ -219,12 +219,12 @@ msgstr "*2.5.7* – Febrero 2022"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:71
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.7 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.7]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:73
 msgid "Addressed https://github.com/gbif/ipt/milestone/34?closed=1[5 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/34?closed=1[5 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:76
@@ -235,17 +235,17 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:77
 #, no-wrap
 msgid "*2.5.6* – February 2022"
-msgstr ""
+msgstr "*2.5.6* – Febrero 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:80
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.6 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.6]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:82
 msgid "Addressed https://github.com/gbif/ipt/milestone/33?closed=1[21 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/33?closed=1[21 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:85
@@ -497,7 +497,7 @@ msgstr "link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.3.5]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:183
 msgid "Addressed https://github.com/gbif/ipt/milestone/6[27 issues]: 6 Defects, 7 Enhancements and 15 Other"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/6[27 incidencias]: 6 Defectos, 7 Mejoras y 15 de Otro tipo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:186
@@ -519,7 +519,7 @@ msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.4]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:192
 msgid "Addressed https://github.com/gbif/ipt/milestone/5[5 issues]: 3 Defects, 1 Enhancement and 1 Other"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/5[5 incidencias]: 6 Defectos, 1 Mejora y 1 de Otro tipo"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:196
@@ -535,7 +535,7 @@ msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.3]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:201
 msgid "Addressed https://github.com/gbif/ipt/milestone/3[90 issues]: 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 5 Other"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/3[90 incidencias]: 22 defectos, 17 mejoras, 36 no se solucionan, 10 duplicados y 5 de otro tipo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:204
@@ -565,7 +565,7 @@ msgstr "https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[Manual de usuar
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:210
 msgid "Addressed https://github.com/gbif/ipt/milestone/2?closed=1[14 issues]: 12 Defects, 2 Won’t fix"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/2?closed=1[14 incidencias]: 12 Defectuosas, 2 No se solucionan"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:211
