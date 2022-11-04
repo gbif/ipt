@@ -13,15 +13,21 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.model.datapackage.metadata.DataPackageSource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
+
+import java.io.IOException;
+import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.StringJoiner;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapSource extends Source {
+public class CamtrapSource extends DataPackageSource {
 
   private final static long serialVersionUID = -86921756591701358L;
 
@@ -47,10 +53,22 @@ public class CamtrapSource extends Source {
     this.version = version;
   }
 
+  public static class CamtrapSourceDeserializer extends JsonDeserializer<Source> {
+    @Override
+    public Source deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, CamtrapSource.class);
+    }
+  }
+
   @Override
   public String toString() {
     return new StringJoiner(", ", CamtrapSource.class.getSimpleName() + "[", "]")
-        .add("version='" + version + "'")
+        .add("title='" + super.getTitle() + "'")
+        .add("path='" + super.getPath() + "'")
+        .add("name='" + super.getEmail() + "'")
+        .add("scope=" + version)
+        .add("additionalProperties=" + super.getAdditionalProperties())
         .toString();
   }
 }

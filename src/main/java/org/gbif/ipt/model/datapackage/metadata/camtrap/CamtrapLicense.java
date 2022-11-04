@@ -15,6 +15,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.DataPackageLicense;
 import org.gbif.ipt.model.datapackage.metadata.License;
+import org.gbif.ipt.validation.BasicMetadata;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class CamtrapLicense extends DataPackageLicense {
    * (Required)
    */
   @JsonProperty("scope")
-  @NotNull
+  @NotNull(groups = BasicMetadata.class)
   private CamtrapLicense.Scope scope;
 
   /**

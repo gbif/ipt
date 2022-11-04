@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata;
 
+import org.gbif.ipt.validation.BasicMetadata;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class DataPackageLicense implements License, Serializable {
    * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
   @JsonProperty("name")
-  @Pattern(regexp = "^([-a-zA-Z0-9._])+$")
+  @Pattern(regexp = "^([-a-zA-Z0-9._])+$", groups = BasicMetadata.class)
   private String name;
 
   /**
@@ -51,7 +53,7 @@ public class DataPackageLicense implements License, Serializable {
    * A fully qualified URL, or a POSIX file path.
    */
   @JsonProperty("path")
-  @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$")
+  @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$", groups = BasicMetadata.class)
   private String path;
 
   /**

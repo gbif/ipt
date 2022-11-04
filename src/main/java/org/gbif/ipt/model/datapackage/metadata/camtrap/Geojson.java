@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.validation.GeographicScopeMetadata;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +50,7 @@ public class Geojson implements Serializable {
    * (Required)
    */
   @JsonProperty("type")
-  @NotNull
+  @NotNull(groups = GeographicScopeMetadata.class)
   private Geojson.Type type = Geojson.Type.POLYGON;
 
   /**
@@ -79,7 +81,7 @@ public class Geojson implements Serializable {
    * To include information on the coordinate range for geometries, features, or feature collections, a GeoJSON object may have a member named `bbox`. The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the contained geometries, with the lowest values for all axes followed by the highest values. The axes order of a bbox follows the axes order of geometries. In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference system of the GeoJSON object of which it is a member.
    */
   @JsonProperty("bbox")
-  @Size(min = 4)
+  @Size(min = 4, groups = GeographicScopeMetadata.class)
   @Valid
   private List<Double> bbox = new ArrayList<>();
 

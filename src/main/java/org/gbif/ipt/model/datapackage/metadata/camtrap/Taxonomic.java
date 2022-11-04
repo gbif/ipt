@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.validation.TaxonomicScopeMetadata;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
@@ -39,7 +41,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonID")
-  @NotNull
+  @NotNull(groups = TaxonomicScopeMetadata.class)
   private String taxonID;
 
   /**
@@ -47,7 +49,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonIDReference")
-  @NotNull
+  @NotNull(groups = TaxonomicScopeMetadata.class)
   private URI taxonIDReference;
 
   /**
@@ -55,7 +57,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("scientificName")
-  @NotNull
+  @NotNull(groups = TaxonomicScopeMetadata.class)
   private String scientificName;
 
   /**

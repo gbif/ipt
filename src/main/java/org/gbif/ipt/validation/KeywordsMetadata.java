@@ -11,10 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage.metadata;
+package org.gbif.ipt.validation;
 
-/**
- * A marker intended for validation annotations indicating that the rule should be applied for internal fields.
- */
-public @interface InternalField {
+public @interface KeywordsMetadata {
 }

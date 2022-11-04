@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.validation.TemporalScopeMetadata;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +41,7 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("start")
-  @NotNull
+  @NotNull(groups = TemporalScopeMetadata.class)
   private String start;
 
   /**
@@ -47,7 +49,7 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("end")
-  @NotNull
+  @NotNull(groups = TemporalScopeMetadata.class)
   private String end;
 
   @SuppressWarnings("FieldMayBeFinal")

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage.metadata;
+package org.gbif.ipt.validation;
 
-public interface Source {
+public @interface TemporalScopeMetadata {
 }

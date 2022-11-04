@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.validation.ProjectMetadata;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @NotNull
+  @NotNull(groups = ProjectMetadata.class)
   private String title;
 
   /**
@@ -78,7 +80,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("samplingDesign")
-  @NotNull
+  @NotNull(groups = ProjectMetadata.class)
   private Project.SamplingDesign samplingDesign;
 
   /**
@@ -87,8 +89,8 @@ public class Project implements Serializable {
    */
   @JsonProperty("captureMethod")
   @JsonDeserialize(as = LinkedHashSet.class)
-  @NotNull
-  @Size(min = 1)
+  @NotNull(groups = ProjectMetadata.class)
+  @Size(min = 1, groups = ProjectMetadata.class)
   @Valid
   private Set<CaptureMethod> captureMethod = new LinkedHashSet<>();
 
@@ -97,7 +99,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("individualAnimals")
-  @NotNull
+  @NotNull(groups = ProjectMetadata.class)
   private Boolean individualAnimals;
 
   /**
@@ -105,7 +107,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("classificationLevel")
-  @NotNull
+  @NotNull(groups = ProjectMetadata.class)
   private Project.ClassificationLevel classificationLevel;
 
   /**
@@ -113,7 +115,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("sequenceInterval")
-  @NotNull
+  @NotNull(groups = ProjectMetadata.class)
   private Integer sequenceInterval;
 
   @SuppressWarnings("FieldMayBeFinal")

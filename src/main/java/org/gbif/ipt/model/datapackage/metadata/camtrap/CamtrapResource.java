@@ -14,7 +14,10 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.Resource;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageResource;
+import org.gbif.ipt.validation.InternalField;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
@@ -23,12 +26,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Data Resource
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapResource extends Resource {
+public class CamtrapResource extends DataPackageResource {
 
   private final static long serialVersionUID = -5654049327007100865L;
 
@@ -54,7 +61,7 @@ public class CamtrapResource extends Resource {
    */
   @Override
   @JsonProperty("profile")
-  @NotNull
+  @NotNull(groups = InternalField.class)
   public String getProfile() {
     return super.getProfile();
   }
@@ -73,7 +80,7 @@ public class CamtrapResource extends Resource {
    */
   @Override
   @JsonProperty("schema")
-  @NotNull
+  @NotNull(groups = InternalField.class)
   public String getSchema() {
     return super.getSchema();
   }
@@ -85,6 +92,14 @@ public class CamtrapResource extends Resource {
   @JsonProperty("schema")
   public void setSchema(String schema) {
     super.setSchema(schema);
+  }
+
+  public static class CamtrapResourceDeserializer extends JsonDeserializer<Resource> {
+    @Override
+    public Resource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, CamtrapResource.class);
+    }
   }
 
   /**

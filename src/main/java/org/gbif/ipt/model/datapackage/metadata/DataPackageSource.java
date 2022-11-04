@@ -15,29 +15,29 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
+
 /**
- * Contributor
+ * Source
  * <p>
- * A contributor to this descriptor.
+ * A source file.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Contributor implements Serializable {
+public class DataPackageSource implements Source, Serializable {
 
-  private final static long serialVersionUID = -288140518286006582L;
+  private final static long serialVersionUID = -3013088705460436883L;
 
   /**
    * Title
@@ -65,17 +65,6 @@ public class Contributor implements Serializable {
    */
   @JsonProperty("email")
   private String email;
-
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  private String organization;
-
-  @JsonProperty("role")
-  private String role = "contributor";
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -144,36 +133,6 @@ public class Contributor implements Serializable {
     this.email = email;
   }
 
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  public String getOrganization() {
-    return organization;
-  }
-
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  public void setOrganization(String organization) {
-    this.organization = organization;
-  }
-
-  @JsonProperty("role")
-  public String getRole() {
-    return role;
-  }
-
-  @JsonProperty("role")
-  public void setRole(String role) {
-    this.role = role;
-  }
-
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -186,12 +145,10 @@ public class Contributor implements Serializable {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", Contributor.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", DataPackageSource.class.getSimpleName() + "[", "]")
         .add("title='" + title + "'")
         .add("path='" + path + "'")
         .add("email='" + email + "'")
-        .add("organization='" + organization + "'")
-        .add("role='" + role + "'")
         .add("additionalProperties=" + additionalProperties)
         .toString();
   }

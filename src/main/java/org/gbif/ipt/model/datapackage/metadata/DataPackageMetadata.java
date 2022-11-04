@@ -13,6 +13,10 @@
  */
 package org.gbif.ipt.model.datapackage.metadata;
 
+import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.InternalField;
+import org.gbif.ipt.validation.KeywordsMetadata;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.opensymphony.xwork2.util.Element;
 
 /**
  * Data Package
@@ -57,7 +62,7 @@ public class DataPackageMetadata implements Serializable {
    * An identifier string. Lower case characters with `.`, `_`, `-` and `/` are allowed.
    */
   @JsonProperty("name")
-  @Pattern(regexp = "^([-a-z0-9._/])+$")
+  @Pattern(regexp = "^([-a-z0-9._/])+$", groups = BasicMetadata.class)
   private String name;
 
   /**
@@ -115,8 +120,8 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  @NotNull
-  @Size(min = 1)
+  @NotNull(groups = BasicMetadata.class)
+  @Size(min = 1, groups = BasicMetadata.class)
   @Valid
   private List<Contributor> contributors = new ArrayList<>();
 
@@ -126,8 +131,8 @@ public class DataPackageMetadata implements Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
-  @NotNull
-  @Size(min = 1)
+  @NotNull(groups = KeywordsMetadata.class)
+  @Size(min = 1, groups = KeywordsMetadata.class)
   @Valid
   private List<String> keywords = new ArrayList<>();
 
@@ -145,8 +150,8 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  @NotNull
-  @Size(min = 1, groups = InternalField.class)
+  @NotNull(groups = BasicMetadata.class)
+  @Size(min = 1, groups = BasicMetadata.class)
   @Valid
   private List<License> licenses = new ArrayList<>();
 
@@ -157,7 +162,7 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
-  @NotNull
+  @NotNull(groups = InternalField.class)
   @Size(min = 1, groups = InternalField.class)
   @Valid
   private List<Resource> resources = new ArrayList<>();
@@ -168,8 +173,8 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @NotNull
-  @Size()
+  @NotNull(groups = BasicMetadata.class)
+  @Size(groups = BasicMetadata.class)
   @Valid
   private List<Source> sources = new ArrayList<>();
 
@@ -406,6 +411,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
+  @Element(DataPackageLicense.class)
   public List<License> getLicenses() {
     return licenses;
   }
@@ -427,6 +433,7 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
+  @Element(DataPackageResource.class)
   public List<Resource> getResources() {
     return resources;
   }
@@ -448,6 +455,7 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
+  @Element(DataPackageSource.class)
   public List<Source> getSources() {
     return sources;
   }

@@ -18,7 +18,12 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Resource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
-import org.gbif.ipt.model.datapackage.metadata.InternalField;
+import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.GeographicScopeMetadata;
+import org.gbif.ipt.validation.InternalField;
+import org.gbif.ipt.validation.ProjectMetadata;
+import org.gbif.ipt.validation.TaxonomicScopeMetadata;
+import org.gbif.ipt.validation.TemporalScopeMetadata;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.opensymphony.xwork2.util.Element;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends DataPackageMetadata {
@@ -50,8 +56,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("project")
+  @NotNull(groups = ProjectMetadata.class)
   @Valid
-  @NotNull
   private Project project;
 
   /**
@@ -67,8 +73,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("spatial")
+  @NotNull(groups = GeographicScopeMetadata.class)
   @Valid
-  @NotNull
   private Geojson spatial;
 
   /**
@@ -76,8 +82,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("temporal")
+  @NotNull(groups = TemporalScopeMetadata.class)
   @Valid
-  @NotNull
   private Temporal temporal;
 
   /**
@@ -85,8 +91,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("taxonomic")
+  @NotNull(groups = TaxonomicScopeMetadata.class)
   @Valid
-  @NotNull
   private List<Taxonomic> taxonomic = new ArrayList<>();
 
   /**
@@ -109,7 +115,9 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("resources")
-  @NotNull
+  @JsonDeserialize(contentUsing = CamtrapResource.CamtrapResourceDeserializer.class)
+  @Element(CamtrapResource.class)
+  @NotNull(groups = InternalField.class)
   @Size(min = 3, max = 3, groups = InternalField.class)
   @Valid
   public List<Resource> getResources() {
@@ -228,7 +236,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("contributors")
-  @NotNull
+  @NotNull(groups = BasicMetadata.class)
   public List<Contributor> getContributors() {
     return super.getContributors();
   }
@@ -338,6 +346,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("sources")
+  @JsonDeserialize(contentUsing = CamtrapSource.CamtrapSourceDeserializer.class)
+  @Element(CamtrapSource.class)
   @Valid
   public List<Source> getSources() {
     return super.getSources();
@@ -358,6 +368,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @Override
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
+  @Element(CamtrapLicense.class)
   public List<License> getLicenses() {
     return super.getLicenses();
   }
