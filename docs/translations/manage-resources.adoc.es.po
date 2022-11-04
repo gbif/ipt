@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:43\n"
+"PO-Revision-Date: 2022-11-04 15:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2323,7 +2323,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:611
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:614
@@ -2334,7 +2334,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:615
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:618
@@ -2465,7 +2465,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:664
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
@@ -2515,19 +2515,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:683
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
-msgstr ""
+msgstr "*Eliminar del IPT y de GBIF.org*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
-msgstr ""
+msgstr "*Eliminar sólo del IPT (huérfano)*"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:685
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDelete.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:688
