@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 15:29\n"
+"PO-Revision-Date: 2022-11-04 15:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2515,13 +2515,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:683
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
-msgstr "*Eliminar del IPT y de GBIF.org*"
+msgstr "*Eliminar del IPT y de GBIF.org*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
-msgstr "*Eliminar sólo del IPT (huérfano)*"
+msgstr "*Eliminar sólo del IPT (huérfano)*\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:685
