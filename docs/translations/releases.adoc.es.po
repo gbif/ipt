@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:42\n"
+"PO-Revision-Date: 2022-11-04 14:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,7 +48,7 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:16
 #, no-wrap
 msgid "*2.6.3* – October 2022"
-msgstr "*2.6.3* – Octubre de 2022\n"
+msgstr "*2.6.3* – Octubre de 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -151,7 +151,7 @@ msgstr "Esta versión incluye una corrección de errores en la creación de usua
 #: en/modules/ROOT/pages/releases.adoc:41
 #, no-wrap
 msgid "*2.6.1* – September 2022"
-msgstr "*2.6.1* – Septiembre 2022\n"
+msgstr "*2.6.1* – Septiembre 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:44
