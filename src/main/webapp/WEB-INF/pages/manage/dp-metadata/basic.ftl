@@ -379,7 +379,7 @@
                                                 <@input name="metadata.sources[${item_index}].email" i18nkey="datapackagemetadata.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].version" i18nkey="datapackagemetadata.version" />
+                                                <@input name="metadata.sources[${item_index}].version" i18nkey="datapackagemetadata.source.version" />
                                             </div>
                                         </div>
                                     </#list>
@@ -503,7 +503,7 @@
             <@input name="metadata.sources.email" i18nkey="datapackagemetadata.email" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.sources.version" i18nkey="datapackagemetadata.version" />
+            <@input name="metadata.sources.version" i18nkey="datapackagemetadata.source.version" />
         </div>
     </div>
 
