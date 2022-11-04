@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-11-04 09:45\n"
+"POT-Creation-Date: 2022-11-04 13:51+0000\n"
+"PO-Revision-Date: 2022-11-04 14:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -152,7 +152,7 @@ msgstr "En total, el IPT cuenta con 12 formatos de metadatos diferentes que orga
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
-#: en/modules/ROOT/pages/manage-resources.adoc:272
+#: en/modules/ROOT/pages/manage-resources.adoc:274
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "Metadatos básicos"
@@ -161,7 +161,7 @@ msgstr "Metadatos básicos"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
-#: en/modules/ROOT/pages/manage-resources.adoc:315
+#: en/modules/ROOT/pages/manage-resources.adoc:317
 #, no-wrap
 msgid "Geographic Coverage"
 msgstr "Cobertura geográfica"
@@ -170,7 +170,7 @@ msgstr "Cobertura geográfica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:326
+#: en/modules/ROOT/pages/manage-resources.adoc:328
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "Cobertura taxonómica"
@@ -179,7 +179,7 @@ msgstr "Cobertura taxonómica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:350
+#: en/modules/ROOT/pages/manage-resources.adoc:352
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "Cobertura temporal"
@@ -191,35 +191,35 @@ msgstr "Otras palabras clave"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:389
+#: en/modules/ROOT/pages/manage-resources.adoc:391
 #, no-wrap
 msgid "Associated Parties"
 msgstr "Partes asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:400
+#: en/modules/ROOT/pages/manage-resources.adoc:402
 #, no-wrap
 msgid "Project Data"
 msgstr "Datos del proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:419
+#: en/modules/ROOT/pages/manage-resources.adoc:421
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "Métodos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:432
+#: en/modules/ROOT/pages/manage-resources.adoc:434
 #, no-wrap
 msgid "Citations"
 msgstr "Referencias"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:460
+#: en/modules/ROOT/pages/manage-resources.adoc:462
 #, no-wrap
 msgid "Collection Data"
 msgstr "Datos de la colección"
@@ -231,7 +231,7 @@ msgstr "Datos físicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:511
+#: en/modules/ROOT/pages/manage-resources.adoc:513
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "Metadatos adicionales"
