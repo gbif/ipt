@@ -1,6 +1,6 @@
 name: ipt
 title: Integrated Publishing Toolkit
-version: 2.5
+version: 2.6
 start_page: ROOT:index.adoc
 nav:
   - modules/ROOT/nav.adoc
