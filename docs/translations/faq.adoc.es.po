@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-03 13:50+0000\n"
-"PO-Revision-Date: 2022-11-04 15:28\n"
+"PO-Revision-Date: 2022-11-04 15:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -79,7 +79,7 @@ msgstr "Se ejecuta lo siguiente:"
 #: en/modules/ROOT/pages/faq.adoc:21
 #, no-wrap
 msgid "export CATALINA_OPTS=\"-Xmx2048M\"\n"
-msgstr "export CATALINA_OPTS=\"-Xmx2048M\""
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:24
