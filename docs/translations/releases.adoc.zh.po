@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:01\n"
+"POT-Creation-Date: 2022-11-04 16:09+0000\n"
+"PO-Revision-Date: 2022-11-04 16:27\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -40,6 +40,7 @@ msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
+#: en/modules/ROOT/partials/version-outdated.adoc:8
 msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
 msgstr ""
 
