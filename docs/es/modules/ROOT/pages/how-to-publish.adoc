@@ -1,0 +1,51 @@
+= Cómo publicar datos sobre biodiversidad a través de GBIF.org
+
+GBIF admite la publicación, la búsqueda y el uso de cuatro clases de datos:
+
+* xref:resource-metadata.adoc[Metadatos del recurso]
+* xref:checklist-data.adoc[Datos de listas taxonómicas]
+* xref:occurrence-data.adoc[Datos de registros biológicos]
+* xref:sampling-event-data.adoc[Datos de eventos de muestreo]
+
+En su forma más simple, GBIF permite compartir información que describe un recurso de datos de biodiversidad, incluso cuando actualmente no hay más información digital disponible del recurso. Otras clases de datos respaldan una gama de información cada vez más rica y con mayor rango de información sobre las especies, sus distribuciones y su abundancia.
+
+Se recomienda a los publicadores de datos que compartan sus datos utilizando la clase más rica y apropiada. Esto maximiza la utilidad de los datos para los usuarios.
+
+Para que usted tenga una idea de cómo se puede utilizar el IPT para publicar datos sobre la biodiversidad a través de GBIF.org, se recomienda que vea la concisa demostración en vivo de 25 minutos a continuación:
+
+[.responsive-video]
+.Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el IPT
+video::eDH9IoTrMVE[youtube, width=100%]
+
+== Prerrequisitos
+
+. Usted necesita una cuenta en un Integrated Publishing Toolkit (IPT) de GBIF para publicar sus datos.
+** Sugerencia: es muy recomendable que se ahorre tiempo y dinero solicitando una cuenta en un xref:data-hosting-centres.adoc[centro de alojamiento de datos IPT] que se encuentra en su país.
+** Sugerencia: puede instalar y mantener su propia instancia de IPT si tiene las habilidades técnicas y la capacidad para mantenerla en línea cerca del 100% del tiempo.
+** Sugerencia: si no existe un nodo oficial de datos en su país y usted o su organización no tienen las habilidades técnicas y la capacidad para albergar un IPT, puede comunicarse con el Centro de ayuda de GBIF <helpdesk@gbif.org> para obtener ayuda.
+. Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo descubrible a nivel mundial a través de https://www.gbif.org/es/[GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF.
+** Sugerencia: para registrar su organización en GBIF, comience por completar https://www.gbif.org/become-a-publisher[este cuestionario en línea]. El proceso de registro puede tardar días, por lo que en paralelo puede proceder a publicar sus datos.
+** Sugerencia: si usted no está afiliado a ninguna organización, puede ponerse en contacto con el Centro de ayuda de GBIF <helpdesk@gbif.org> para obtener ayuda. Mientras tanto, puede proceder a publicar sus datos.
+
+== Instrucciones
+
+Para publicar sus datos, siga los 7 pasos a continuación:
+
+image::ipt2/flow-all.png[]
+
+. Seleccione la clase de datos de biodiversidad que tiene de esta lista:
+** xref:resource-metadata.adoc[Metadatos del recurso]
+** xref:checklist-data.adoc[Datos de listas taxonómicas]
+** xref:occurrence-data.adoc[Datos de registros biológicos]
+** xref:sampling-event-data.adoc[Datos de eventos de muestreo]
+. Transforme sus datos a una estructura de tabla, utilizando los términos de Darwin Core (DwC) como nombres de columnas.
+** Sugerencia: intente usar una plantilla de Excel para estructurar sus datos y para entender qué términos de DwC son requeridos y recomendados.
+** Sugerencia: es posible utilizar datos almacenados en una xref:database-connection.adoc[base de datos admitida]
+. Suba sus datos al IPT
+** Sugerencia: consulte otras secciones de este manual para obtener orientación adicional, como la sección xref:manage-resources.adoc[Menú gestión de recursos].
+. Mapee los datos (p. ej., xref:checklist-data.adoc[Datos de listado taxonómico] se asigna al {latest-dwc-taxon}[Taxon Core], los xref:occurrence-data.adoc[Datos de registros biológicos] se mapean al {latest-dwc-occurrence}[Occurrence Core], los xref:sampling-event-data.adoc[Datos de eventos de muestreo] se mapean al {latest-dwc-event}[Event Core].
+. Complete los metadatos de los recursos con el editor de metadatos del IPT
+. Publique el conjunto de datos (hágalo disponible de forma gratuita y abierta en todo el mundo)
+. Registre el conjunto de datos con GBIF.
++
+NOTE: Su organización debe estar registrada en GBIF (consulte el prerrequisito 2 arriba) y el administrador del IPT debe agregarla a su IPT. De lo contrario, la organización no estará disponible para elegir en el IPT.

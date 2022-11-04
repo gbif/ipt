@@ -1,0 +1,34 @@
+= Menú Acerca de
+
+La página "Acerca de", predeterminadamente muestra información sobre la actual instalación del IPT, incluyendo información de la organización que lo aloja y si aquel IPT ha sido registrado. Esta página está diseñada para ser personalizada en cada IPT, editando el archivo llamado about.ftl en el directorio llamado “config”, dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración"). El archivo about.ftl es una plantilla Freemarker que puede contener una combinación de HTML y referencias variables de la forma `${host.variable!"valor alternativo para cuando es nulo"}`. Después de realizar los cambios en el archivo about.ftl, la página "Acerca de", deberá ser actualizada para mostrar los cambios. Revise el archivo about.ftl predeterminado, para ejemplos de las variables que pueden ser incluidas.
+
+image::ipt2/about/IPTAbout.png[]
+
+Aquí está el contenido del archivo about.ftl que resulta en la página que se ve en la imagen anterior.
+
+[source=html]
+----
+<h1>Acerca de esta instalación IPT</h1>
+<#if hostingOrganisation?? && hostingOrganisation.name??>
+<p>Este es un IPT por defecto hosteado por ${hostingOrganisation.name}</p>
+
+<p>Puede utilizar las siguientes variables sobre la organización encargada del alojamiento:</p>
+<ul>
+  <li>description = ${hostingOrganisation.description!}</li>
+  <li>name = ${hostingOrganisation.name!}</li>
+  <li>alias = ${hostingOrganisation.alias!}</li>
+  <li>homepageURL = ${hostingOrganisation.homepageURL!}</li>
+  <li>primaryContactType = ${hostingOrganisation.primaryContactType!}</li>
+  <li>primaryContactName = ${hostingOrganisation.primaryContactName!}</li>
+  <li>primaryContactDescription = ${hostingOrganisation.primaryContactDescription!}</li>
+  <li>primaryContactAddress = ${hostingOrganisation.primaryContactAddress!}</li>
+  <li>primaryContactEmail = ${hostingOrganisation.primaryContactEmail!}</li>
+  <li>primaryContactPhone = ${hostingOrganisation.primaryContactPhone!}</li>
+  <li>nodeKey = ${hostingOrganisation.nodeKey!}</li>
+  <li>nodeName = ${hostingOrganisation.nodeName!}</li>
+  <li>nodeContactEmail = ${hostingOrganisation.nodeContactEmail!}</li>
+</ul>
+<#else>
+<p id="not-registered">This IPT installation has not been registered yet.</p>
+</#if>
+----

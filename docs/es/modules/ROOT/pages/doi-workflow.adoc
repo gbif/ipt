@@ -1,0 +1,33 @@
+= Flujos de trabajo DOI
+
+Desde la versión 2.2, el IPT se puede configurar para usar una cuenta DataCite y administrar los DOI de los conjuntos de datos. Los publicadores tienen la opción de asignar nuevos DOI a los conjuntos de datos, o permitir que el IPT administre un DOI existente para un conjunto de datos. A continuación, se incluye una descripción de estos dos flujos de proceso.
+
+== Flujos de trabajo
+
+=== Asignación de nuevos DOI a un Conjunto de datos
+
+Idealmente, los editores asignan un nuevo DOI a un conjunto de datos cada vez que se somete a un cambio científicamente significativo. Esto diferencia las versiones mayores entre sí y permite que se citen de forma única.
+
+El primer paso para asignar un DOI a un conjunto de datos, es reservar un DOI. Un publicador puede reservar un DOI para un conjunto de datos después de que se hayan ingresado los metadatos obligatorios. La ventaja de un DOI reservado es que se puede incluir en un manuscrito antes de la publicación oficial del conjunto de datos.
+
+El DOI se registrará la próxima vez que se publique el recurso, siempre que el recurso esté disponible públicamente. Esto da como resultado un cambio en la versión principal.
+
+Hasta que el DOI reservado se registre, aún se puede eliminar. A continuación, se muestra una representación gráfica de este flujo de trabajo:
+
+image::ipt2/v22/AssignNewDOI.png[]
+
+=== Dejar que el IPT gestione un DOI existente para un conjunto de datos
+
+Si un conjunto de datos ya tiene un DOI asignado, los editores tienen la opción de dejar que el IPT gestione el DOI existente por ellos. Esto facilita la actualización de los metadatos del DOI, ya que el IPT actualiza automáticamente los metadatos del DOI cada vez que se (re)publica el conjunto de datos.
+
+_Para que esto funcione con los DOIs "registrados" existentes, debe asegurarse de que el URI de destino del DOI coincida con el URI de la página de inicio del conjunto de datos, y que el conjunto de datos sea de acceso público (ya que un DOI existente debe hacer referencia a una página de acceso público)._
+
+Para asignar un DOI existente a un conjunto de datos, los editores deben establecer el DOI como identificador de la cita (en los metadatos del recurso). Una vez introducidos los metadatos obligatorios, el editor puede reservar un DOI. Sin embargo, dado que se ha introducido el DOI existente, el IPT lo reutiliza en lugar de asignar un nuevo DOI. Por supuesto, la cuenta del IPT que asigna el DOI debe tener los derechos para gestionar este DOI, de lo contrario aparecerá un mensaje de error.
+
+_Si el DOI existente sólo estaba reservado, se borrará si intenta eliminarlo. Si el DOI existente estaba registrado, no se borrará si intenta eliminarlo._
+
+El DOI se actualizará la próxima vez que se publique el recurso, siempre que esté disponible públicamente. Esto supone un cambio de versión importante.
+
+A continuación se muestra una representación gráfica de este flujo de trabajo:
+
+image::ipt2/v22/AssignExistingDOI.png[]

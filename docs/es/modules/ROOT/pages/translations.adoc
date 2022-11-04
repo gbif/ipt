@@ -1,0 +1,96 @@
+= Cómo traducir
+
+Tanto la interfaz, como el manual de usuario del IPT se benefician de la internacionalización. La internacionalización es un esfuerzo de la comunidad y todos son bienvenidos a unirse.
+
+La traducción utiliza una herramienta de traducción en línea llamada https://crowdin.com/project/gbif-ipt[Crowdin]. Para unirse, inicie sesión en https://crowdin.com/project/gbif-ipt[Crowdin], seleccione el idioma que desea traducir y haga clic en el botón "Join". Un editor de traducciones se encargará de tu solicitud y te añadirá al equipo de traducción. A continuación, podrá empezar a traducir. La mayoría de la gente encuentra Crowdin fácil e intuitivo de usar. Para obtener ayuda sobre el uso de Crowdin, siempre puede consultar su https://support.crowdin.com5/crowdin-intro/[Introducción a Crowdin].
+
+En el proyecto Crowdin del IPT, el archivo `Glosario` no forma parte ni de la interfaz de usuario ni del manual de usuario, pero se utiliza para comprobar la coherencia de los términos traducidos. Los demás archivos pertenecen a la interfaz de usuario o al manual de usuario.
+
+== Traduciendo la interfaz de usuario
+
+Las traducciones para la interfaz de usuario están contenidas en el archivo `ApplicationResources_en.properties`. Puede pedir al mailto:helpdesk@gbif.org[Centro de ayuda] una cuenta en https://ipt.gbif-uat.org/[el desarrollo del IPT de GBIF], donde se aplicarán las nuevas traducciones.
+
+image::ipt2/v22/Crowdin-Join.png[]
+
+=== Idiomas actuales
+
+* Francés
+* Japonés
+* Portugués
+* Ruso
+* Español
+* Chino tradicional
+* Persa (en curso)
+
+Si desea traducir la interfaz de usuario a otro idioma, envíe un correo electrónico a helpdesk@gbif.org.
+
+== Traducir el manual de usuario
+
+Las traducciones del manual de usuario están en la carpeta de Crowdin `docs/translations`. El manual de usuario está escrito en https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], y es necesaria cierta sintaxis en las traducciones , por ejemplo, `+++*negrita*, _cursiva_ o `texto monoespaciado` +++`.
+
+Hay que prestar especial atención a que las referencias cruzadas (enlaces entre páginas y/o secciones dentro de las páginas) funcionen en las versiones traducidas.
+
+Las nuevas traducciones añadidas mediante Crowdin deberían aparecer en la https://ipt.gbif-uat.org/manual/[versión UAT de este manual] unos 15-60 minutos después.
+
+=== Hipervínculos simples
+
+Al traducirlos, es conveniente enlazar con una versión traducida de la página si el contenido es equivalente. Traduzca de la siguiente manera:
+
+[source, asciidoctor]
+----
+https://www.gbif.org/the-gbif-network[GBIF's diverse Participants]
+
+https://www.gbif.org/es/the-gbif-network[los diversos Aliados de GBIF]
+----
+
+=== Referencias cruzadas en la misma página
+
+Se trata de enlaces a lugares dentro de una página y suelen hacerse con la sintaxis de referencia cruzada: `\<<Encabezado de destino>>`, y a veces con la forma `\<<TEncabezado de destino,texto mostrado>>` cuando el texto a mostrar no debe ser el mismo que el del encabezado al que apunta el enlace.
+
+Por lo tanto, una traducción cruzada es así:
+
+[source, asciidoctor]
+----
+click on the button labelled "Add" to open the <<Data Source selection page>>.
+
+clic en el botón "Agregar" para abrir la <<Página de selección del Conjunto de Datos>>.
+----
+
+=== Referencias cruzadas de diferentes páginas
+
+Los enlaces más sencillos a las diferentes páginas se encuentran en la parte superior de la página enlazada. Tienen la forma `\xref:filename.adoc[texto a mostrar]`. Sólo debe traducirse el texto a mostrar, el nombre del archivo no cambia:
+
+[source, asciidoc]
+----
+refer to the xref:doi-workflow.adoc[DOI Workflows] page
+
+consulte la página de xref:doi-workflow.adoc[flujo de trabajo de los DOIs].
+----
+
+Los enlaces a una sección específica dentro de otra página son más complicados. Estos deben utilizar el enlace objetivo, que se genera automáticamente en cada encabezado: los espacios en el texto del encabezado se sustituyen por guiones (`-`) y el resultado se convierte a minúsculas. En un navegador web, se muestran en la barra de URL tras un `#`, en el menú "Contenido" o con el símbolo "§" junto a un encabezado.
+
+La referencia cruzada se escribe entonces como `\xref:filename.adoc#link-target[texto a mostrar]`, por ejemplo `\xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]` se muestra como xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos].
+
+Un encabezado en inglés, `Source Data`, tiene como enlace objetivo `source-data`. La traducción al español del encabezado, `Conjunto de datos`, tiene como enlace objetivo `conjunto-de-datos`.
+
+[source, asciidoc]
+----
+Files can be uploaded … when xref:manage-resources.adoc#source-data[adding new source data files].
+
+La carga de archivos al se puede … cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos].
+----
+
+=== Imágenes y descargas
+
+Algunas imágenes de capturas de pantalla pueden traducirse y otras (sin texto en inglés) pueden ser las mismas en todos los idiomas. Por defecto, se utiliza la misma imagen en todos los idiomas. Se debe subir una imagen diferente en https://github.com/gbif/ipt[GitHub]. Cree una imagen con el mismo nombre de archivo y la misma ruta, excepto con `en` cambiado al idioma de destino.
+
+Por ejemplo, la imagen por defecto (Inglés) que se muestra en xref:home.adoc[página de menú de inicio] se guarda en GitHub en https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`] y su traducción a español se encuentra en https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`].
+
+La sintaxis para incluir esta imagen en el manual, `image::ipt2/home/IPTHome.png[]`, no requiere traducción.
+
+=== Idiomas
+
+* Español (parcial)
+* Chino tradicional (iniciado)
+
+Si desea traducir el manual de usuario a otro idioma, envíe un correo electrónico a helpdesk@gbif.org. No es necesario traducir todo el manual: las secciones no traducidas se mostrarán en inglés.

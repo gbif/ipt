@@ -1,0 +1,180 @@
+= Data Hosting Centres
+
+== Introduction
+
+A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through https://www.gbif.org[GBIF.org].
+
+Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language.
+
+Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your enquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance.
+
+Please note that to qualify as a trusted DHC, the centre must meet a strict set of criteria. Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset is backed up.
+
+== Data Hosting Centre Criteria
+
+A DHC must meet the following set of strict requirements in order to be recommended to publishers:
+
+* Their IPT is online near 100% of the time
+* They can properly administer their IPT:
+** Keeping it up-to-date with latest version
+** Keeping the operating system and servlet container (if used) up-to-date
+** Ensuring the IPT data directory is regularly backed-up
+** Managing user accounts
+** Managing IPT cores and extensions
+* They have a proven track-record of hosting data for publishers in their country
+* They can provide prompt and knowledgeable helpdesk support:
+** They know how to use the IPT to publish data through GBIF.org
+** They know about biodiversity data standards in general
+** They know how to publish data papers
+
+If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org].
+
+== Data Hosting Centres by Theme
+
+* <<Freshwater data>>
+* <<Marine data>>
+* <<Vertebrate data>>
+
+== Data Hosting Centres by Location
+
+* <<Belgium>>
+* <<Canada>> ⭐
+* <<Colombia>> ⭐
+* <<Denmark>>
+* <<Finland>>
+* <<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)
+* <<Norway>>
+* <<Portugal>>
+* <<South Africa>>
+* <<Spain>> ⭐
+* <<Sweden>>
+* <<Taiwan>>
+* <<USA>>
+
+⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data].
+
+== Belgium
+
+The https://www.biodiversity.be[Belgian Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform shares their IPT with the following organizations:
+
+* http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]
+* http://www.ulg.be[University of Liège]
+* http://www.plantentuinmeise.be[Botanical Garden Meise]
+* http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]
+* http://www.portail.umons.ac.be[University of Mons-Hainaut]
+* http://www.ulb.ac.be/[Université Libre de Bruxelles ]
+* http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]
+* http://www.ugent.be[Ghent University]
+* https://www.natagriwal.be/[Natagriwal]
+* https://www.itg.be/[Institute of Tropical Medicine Antwerp]
+
+The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:
+
+* http://ipt-mrbif.bebif.be/[GBIF Mauritania IPT]
+* http://ipt.biodiversity.aq/[Antabif IPT]
+* http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT]
+
+The Research Institute for Nature and Forest (INBO) also provides http://data.inbo.be/ipt[IPT] hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organizations:
+
+* http://www.natuurpunt.be[Natuurpunt]
+* http://www.vmm.be[Flemish Environment Agency VMM]
+
+The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine data>>.
+
+== Canada
+
+The http://www.cbif.gc.ca/[Canadian Biodiversity Information Facility (CBIF)] does not run an IPT.
+
+Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the http://data.canadensys.net/ipt[Canadensys IPT]. Please contact Canadensys <canadensys.network@gmail.com> for assistance.
+
+The http://data.canadensys.net/ipt[Canadensys IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
+
+== Colombia
+
+The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance.
+
+The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
+
+== Denmark
+
+The http://danbif.dk/[Danish Biodiversity Information Facility (DanBIF)] provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the http://danbif.au.dk/ipt/[DanBIF IPT]. Please contact DanBIF <icalabuig@snm.ku.dk> for assistance.
+
+== Finland
+
+The Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/) provides helpdesk support to new publishers in Finland, and hosting support for datasets on the FinBIF IPT (https://ipt.laji.fi/ipt). Please contact FinBIF eija-leena.laiho@helsinki.fi for assistance.
+
+== France
+
+http://www.gbif.fr/[GBIF France] provides helpdesk support to new publishers and hosts an IPT for each of these countries:
+
+* http://ipt-benin.gbif.fr[GBIF Benin IPT]
+* http://ipt-botswana.gbif.fr/[Botswana IPT] - _Note Botswana is not a GBIF Participant_
+* http://ipt-burkinafaso.gbif.fr[Burkina Faso IPT] - _Note Burkina Faso is not a GBIF Participant_
+* http://ipt-cameroun.gbif.fr[Cameroon IPT]
+* http://ipt-cotedivoire.gbif.fr[Côte d'Ivoire IPT] - _Note Côte d'Ivoire is not a GBIF Participant_
+* http://ipt.gbif.fr[GBIF France IPT]
+* http://ipt-gabon.gbif.fr[Gabon IPT] - _Note Gabon is not a GBIF Participant_
+* http://ipt-ghana.gbif.fr[Ghana BIF IPT]
+* http://ipt-guinee.gbif.fr[GBIF Guinea IPT]
+* http://ipt-inpn.gbif.fr/[INPN IPT]
+* http://ipt.madbif.mg[MadBIF IPT]
+* http://ipt-nigeria.gbif.fr[GBIF Nigeria IPT]
+* http://ipt-senegal.gbif.fr[Senegal IPT] - _Note Senegal is not a GBIF participant_
+* http://ipt-togo.gbif.fr[GBIF Togo IPT]
+* http://ipt-uganda.gbif.fr[GBIF Uganda IPT]
+
+Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead.
+
+== Norway
+
+http://www.gbif.no/[GBIF Norway] provides helpdesk support to new publishers in Norway, and hosting support for datasets on the http://ipt.gbif.no/[GBIF Norway IPT]. Please contact GBIF Norway <helpdesk@gbif.no> for assistance.
+
+== Portugal
+
+http://www.gbif.pt/[GBIF Portugal] provides helpdesk support to new publishers in Portugal, and hosting support for datasets on the http://ipt.gbif.pt/ipt/[GBIF Portugal IPT]. Please contact GBIF Portugal <node@gbif.pt> for assistance.
+
+== South Africa
+
+The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://ipt.sanbi.org.za/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance.
+
+== Spain
+
+http://www.gbif.es/[GBIF Spain] provides helpdesk support to new publishers in Spain, and hosting support for datasets on the http://www.gbif.es/ipt/[GBIF Spain IPT]. Please contact <info@gbif.es> for assistance.
+
+The http://www.gbif.es/ipt/[GBIF Spain IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
+
+== Sweden
+
+http://www.gbif.se/[GBIF Sweden] provides helpdesk support to new publishers in Sweden, and hosting support for datasets on the http://www.gbif.se/ipt/[GBIF Sweden IPT]. Please contact Anders Telenius <anders.telenius@nrm.se> for assistance.
+
+== Taiwan
+
+The http://www.taibif.tw/[Taiwan Biodiversity Information Facility (TaiBIF)] provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the http://ipt.taibif.tw/[TaiBIF IPT]. Please contact Melissa Liu <melissaliu0520@gmail.com> for assistance.
+
+== USA
+
+The http://ipt.idigbio.org[iDigBio IPT] provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact data@idigbio.org for assistance.
+
+http://vertnet.org/[VertNet] provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution.
+
+The http://www.usgs.gov/[United States Geological Survey (USGS)] provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the https://bison.usgs.gov/ipt[USGS BISON IPT]. Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organizations/resources:
+
+* https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]
+* https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]
+* https://bison.usgs.gov/ipt[USGS Biodiversity Information Serving Our Nation (BISON) IPT]
+
+== Freshwater data
+
+http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] provides data hosting and helpdesk support to publishers of freshwater data around the globe on the http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT], hosted by the Belgium Biodiversity Platform. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions.
+
+== Marine data
+
+http://www.iobis.org[OBIS] provides data hosting and helpdesk support to publishers of marine data around the globe. EurOBIS/Flanders Marine Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt.vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than http://www.iobis.org/about/[20 OBIS Nodes] around the world connecting 500 institutions from 56 countries.
+
+== Vertebrate data
+
+http://vertnet.org/[VertNet] provides data hosting and helpdesk support to publishers of vertebrate specimen and observation data. Hosted data can be seen on the http://ipt.vertnet.org/[VertNet IPT]. Please contact David Bloom <dbloom@vertnet.org> for assistance.
+
+== Certification
+
+By becoming certified, repositories can demonstrate to both their users and their funders that an independent authority has evaluated them and endorsed their trustworthiness. The World Data System (WDS) and the Data Seal of Approval (DSA) have merged their data repository certifications into a set of harmonized common requirements for certification of repositories named the https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. The Core certification requires a data repository supply evidence that they are sustainable and trustworthy. A repository first conducts an internal self-assessment, which is then reviewed by community peers. More information about the certification process can be found https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[here].

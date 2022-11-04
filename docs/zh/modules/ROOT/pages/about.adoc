@@ -1,0 +1,34 @@
+= 選單：關於
+
+「關於」頁面提供此 IPT 裝置的資訊，包含所在機構（若已註冊的話）。透過編輯 IPT 資料目錄中 config 目錄的 about.ftl 檔案，此頁面用來提供個別 IPT 裝置的客製化內容（請見「管理」選單一節中有關「IPT 設定」一項）。about.ftl 是 FreeMarker 範本，其中包含許多 HTML 標籤及 `${host.variable!"alternate value if null"}` 變數。在修改 about.ftl 檔案之後，「關於」頁面將會反映所做的變更。預設的 about.ftl 中提供可用變數的範例。
+
+image::ipt2/about/IPTAbout.png[]
+
+這裡是上面所顯示 about.ftl 的檔案內容。
+
+[source=html]
+----
+<h1>About this IPT installation</h1>
+<#if hostingOrganisation?? && hostingOrganisation.name??>
+<p>This is a default IPT hosted by ${hostingOrganisation.name}</p>
+
+<p>You can use the following variables about the hosting organization:</p>
+<ul>
+  <li>description = ${hostingOrganisation.description!}</li>
+  <li>name = ${hostingOrganisation.name!}</li>
+  <li>alias = ${hostingOrganisation.alias!}</li>
+  <li>homepageURL = ${hostingOrganisation.homepageURL!}</li>
+  <li>primaryContactType = ${hostingOrganisation.primaryContactType!}</li>
+  <li>primaryContactName = ${hostingOrganisation.primaryContactName!}</li>
+  <li>primaryContactDescription = ${hostingOrganisation.primaryContactDescription!}</li>
+  <li>primaryContactAddress = ${hostingOrganisation.primaryContactAddress!}</li>
+  <li>primaryContactEmail = ${hostingOrganisation.primaryContactEmail!}</li>
+  <li>primaryContactPhone = ${hostingOrganisation.primaryContactPhone!}</li>
+  <li>nodeKey = ${hostingOrganisation.nodeKey!}</li>
+  <li>nodeName = ${hostingOrganisation.nodeName!}</li>
+  <li>nodeContactEmail = ${hostingOrganisation.nodeContactEmail!}</li>
+</ul>
+<#else>
+<p id="not-registered">This IPT installation has not been registered yet.</p>
+</#if>
+----

@@ -1,0 +1,180 @@
+= Centros de alojamiento de datos
+
+== Introducción
+
+Un centro de alojamiento de datos (DHC por sus siglas en ingles ) puede proporcionarle una cuenta en su IPT, permitiéndole gestionar sus propios conjuntos de datos y publicarlos a través de https://www.gbif.org[GBIF.org].
+
+El uso de un DHC es muy recomendable pues le ahorrará tiempo y dinero a la hora de configurar su propia instancia de IPT, además, podrá recibir apoyo del centro de ayuda en su propio idioma.
+
+Por favor, use esta página para descubrir un DHC de confianza, ya sea por país o por tema, que sea adecuado para usted. Si no existe un DHC adecuado o el DHC no responde rápidamente a su consulta, póngase en contacto con el mailto:helpdesk@gbif.org[centro de ayuda de GBIF] para obtener ayuda.
+
+Tenga en cuenta que para ser considerado un DHC de confianza, el centro debe cumplir una serie de criterios estrictos. De esta manera, puede confiar en que el DHC mantendrá su IPT en línea cerca del 100% del tiempo y se asegurará de que su conjunto de datos esté respaldado.
+
+== Criterios de los centros de alojamiento de datos
+
+Un DHC debe cumplir la siguiente serie de requisitos estrictos para ser recomendado a los publicadores:
+
+* Su IPT está en línea casi el 100% del tiempo
+* Pueden administrar adecuadamente su IPT:
+** Manteniéndolo actualizado con la última versión
+** Mantener actualizados el sistema operativo y el contenedor de servlets (si se usa)
+** Asegurando la realización de copias de seguridad periódicas del directorio de datos del IPT
+** Administrando las cuentas de usuario
+** Administrando los núcleos y extensiones de IPT
+* Tienen un historial comprobado de alojamiento de datos para publicadores en su país.
+* Pueden proporcionar asistencia técnica rápida y bien informada:
+** Saben cómo usar el IPT para publicar datos a través de GBIF.org
+** Conocen los estándares de datos de biodiversidad en general
+** Saben cómo publicar artículos de datos
+
+Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto:helpdesk@gbif.org[helpdesk@gbif.org].
+
+== Centros de alojamiento de datos por tema
+
+* <<Datos dulceacuícolas>>
+* <<Datos marinos>>
+* <<Datos de vertebrados>>
+
+== Centros de alojamiento de datos por ubicación
+
+* <<Bélgica>>
+* <<Canadá>> ⭐
+* <<Colombia>> ⭐
+* <<Dinamarca>>
+* <<Finlandia>>
+* <<Francia>> (también para Benín, Botswana, Burkina Faso, Camerún, Costa de Marfil, Gabón, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo y Uganda)
+* <<Noruega>>
+* <<Portugal>>
+* <<Sudáfrica>>
+* <<España>> ⭐
+* <<Suecia>>
+* <<Taiwán>>
+* <<EUA>>
+
+⭐Designa a un país con un IPT que actúa como repositorio, capaz de asignar DOI a los conjuntos de datos de publicaciones científicas en revistas como https://www.nature.com/sdata/[Datos científicos].
+
+== Bélgica
+
+La https://www.biodiversity.be[Plataforma sobre Biodiversidad de Bélgica] ofrece soporte técnico a los publicadores en Bélgica y soporte de alojamiento para conjuntos de datos en https://ipt.biodiversity.be/[Belgian BIF IPT]. Póngase en contacto con André Heughebaert <a.heughebaert@biodiversity.be> para obtener ayuda. La Plataforma sobre Biodiversidad de Bélgica comparte su IPT con las siguientes organizaciones:
+
+* http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]
+* http://www.ulg.be[Universidad de Liège]
+* http://www.plantentuinmeise.be[Jardín botánico de Meise]
+* http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]
+* http://www.portail.umons.ac.be[Universidad de Mons-Hainaut]
+* http://www.ulb.ac.be/[Universidad Libre de Bruxelles]
+* http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]
+* http://www.ugent.be[Universidad de Ghent]
+* https://www.natagriwal.be/[Natagriwal]
+* https://www.itg.be/[Institute of Tropical Medicine Antwerp]
+
+La Belgian Biodiversity Platform también alberga un IPT para cada uno de estos países/instituciones:
+
+* http://ipt-mrbif.bebif.be/[IPT GBIF Mauritania]
+* http://ipt.biodiversity.aq/[IPT Antabif]
+* http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh]
+
+El Instituto de Investigación para la Naturaleza y los Bosques (INBO) también proporciona soporte de alojamiento http://data.inbo.be/ipt[IPT] para conjuntos de datos que se originan en la región flamenca. El INBO comparte su instancia de IPT con estas organizaciones:
+
+* http://www.natuurpunt.be[Natuurpunt]
+* http://www.vmm.be[Agencia Flamenca de Medio Ambiente VMM]
+
+El Instituto Marino Flanders (VLIZ) aloja un servidor con múltiples instalaciones del IPT para http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] y http://www.emodnet-biology.eu[EMODnet Biology] en http://ipt.vliz.be. Los publicadores de datos marinos deben consultar la sección <<Datos marinos>>.
+
+== Canadá
+
+El http://www.cbif.gc.ca/[Canadian Biodiversity Information Facility (CBIF)] no ejecuta un IPT.
+
+Por lo tanto, se recomienda que se ponga en contacto con Canadensys, que ofrece asistencia a los nuevos editores en Canadá, y soporte de alojamiento para los conjuntos de datos en el http://data.canadensys.net/ipt[IPT Canadensys]. Póngase en contacto con Canadensys <canadensys.network@gmail.com> para obtener ayuda.
+
+El http://data.canadensys.net/ipt[IPT Canadensys] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada.
+
+== Colombia
+
+El http://www.sibcolombia.net/[Sistema de Información de Biodiversidad Colombiano (SiB Colombia)] ofrece soporte técnico a los nuevos publicadores en Colombia y soporte de alojamiento para los conjuntos de datos en el http://ipt.sibcolombia.net/sib/[IPT SiB Colombia]. Para obtener ayuda por favor póngase en contacto con <sib@humboldt.org.co>.
+
+El http://ipt.sibcolombia.net/sib/[IPT SiB Colombia] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada.
+
+== Dinamarca
+
+El http://danbif.dk/[Danish Biodiversity Information Facility (DanBIF)] ofrece soporte técnico a los nuevos publicadores en Dinamarca y soporte de alojamiento para los conjuntos de datos en el http://danbif.au.dk/ipt/[DanBIF IPT]. Para obtener ayuda por favor póngase en contacto con <icalabuig@snm.ku.dk>.
+
+== Finlandia
+
+El Servicio Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/) ofrece soporte técnico a los nuevos publicadores en Finlandia y soporte de alojamiento para los conjuntos de datos en el IPT de FinBIF (https://ipt.laji.fi/ipt). Póngase en contacto con FinBIF eija-leena.laiho@helsinki.fi para obtener ayuda.
+
+== Francia
+
+http://www.gbif.fr/[GBIF Francia] ofrece asistencia a los nuevos publicadores y alberga un IPT para cada uno de estos países:
+
+* http://ipt-benin.gbif.fr[IPT GBIF Benín]
+* http://ipt-botswana.gbif.fr/[IPT Botswana] _Nota: Botswana no es participante de GBIF_
+* http://ipt-burkinafaso.gbif.fr[IPT Burkina Faso] - Nota: Burkina Faso no es participante de GBIF_
+* http://ipt-cameroun.gbif.fr[IPT Camerún]
+* http://ipt-cotedivoire.gbif.fr[IPT Costa de Marfil] _Nota: Costa de Marfil no es un Participante GBIF_
+* http://ipt.gbif.fr[IPT GBIF Francia]
+* http://ipt-gabon.gbif.fr[IPT Gabón] _Nota: Gabón no es un participante de GBIF_
+* http://ipt-ghana.gbif.fr[IPT Ghana BIF]
+* http://ipt-guinee.gbif.fr[IPT GBIF Guinea]
+* http://ipt-inpn.gbif.fr/[IPT INPN]
+* http://ipt.madbif.mg[IPT MadBIF]
+* http://ipt-nigeria.gbif.fr[IPT GBIF Nigeria]
+* http://ipt-senegal.gbif.fr[IPT Senegal] _Nota: Senegal no es un participante de GBIF_
+* http://ipt-togo.gbif.fr[IPT GBIF Togo]
+* http://ipt-uganda.gbif.fr[IPT GBIF Uganda]
+
+Póngase en contacto con GBIF Francia <gbif@gbif.fr> para obtener ayuda. Para problemas técnicos, escriba a <dev@gbif.fr>.
+
+== Noruega
+
+http://www.gbif.no/[GBIF Noruega] ofrece soporte técnico a los nuevos publicadores en Noruega y soporte de alojamiento para los conjuntos de datos en el http://ipt.gbif.no/[IPT GBIF Noruega]. Para obtener ayuda por favor póngase en contacto con <helpdesk@gbif.no>.
+
+== Portugal
+
+http://www.gbif.pt/[GBIF Portugal] ofrece soporte técnico a los nuevos publicadores en Portugal y soporte de alojamiento para los conjuntos de datos en el http://ipt.gbif.pt/ipt/[IPT GBIF Portugal]. Para obtener ayuda por favor póngase en contacto con <node@gbif.pt>.
+
+== Sudáfrica
+
+El http://www.sanbi.org/[Instituto Nacional de Biodiversidad de Sudáfrica (SANBI)] ofrece soporte técnico a los nuevos publicadores en Sudáfrica y soporte de alojamiento para los conjuntos de datos en el http://ipt.sanbi.org.za/iptsanbi/[IPT del SANBI]. Para obtener ayuda por favor póngase en contacto con <f.ramwashe@sanbi.org.za>.
+
+== España
+
+http://www.gbif.pt/[GBIF España] ofrece soporte técnico a los nuevos publicadores en España y soporte de alojamiento para los conjuntos de datos en el http://www.gbif.es/ipt/[IPT GBIF España]. Para obtener ayuda por favor póngase en contacto con <info@gbif.es>.
+
+El http://www.gbif.es/ipt/[IPT de GBIF España] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada.
+
+== Suecia
+
+http://www.gbif.se/[GBIF Suecia] ofrece soporte técnico a los nuevos publicadores en Suecia y soporte de alojamiento para los conjuntos de datos en el http://www.gbif.se/ipt/[IPT GBIF Suecia]. Para obtener ayuda por favor póngase en contacto con Anders Telenius <anders.telenius@nrm.se>.
+
+== Taiwán
+
+El http://www.taibif.tw/[Taiwan Biodiversity Information Facility (TaiBIF)] ofrece soporte técnico a los nuevos publicadores en Taiwán y soporte de alojamiento para los conjuntos de datos en el http://ipt.taibif.tw/[IPT TaiBIF]. Para obtener ayuda por favor póngase en contacto con Melissa Liu <melissaliu0520@gmail.com>.
+
+== EE.UU.
+
+El http://ipt.idigbio.org[IPT iDigBio] ofrece soporte técnico a los nuevos publicadores en los Estados Unidos y recursos de publicación de datos para conjuntos de datos que necesitan soporte para la movilización de datos. Para obtener ayuda por favor póngase en contacto con data@idigbio.org.
+
+http://vertnet.org/[VertNet] ofrece soporte técnico a las instituciones que tienen vertebrados en uno o más de los conjuntos de datos que desean publicar. En otras palabras, si la institución está interesada en publicar conjuntos de datos de vertebrados (ya sean especímenes u observaciones), VertNet ayudará a publicar todos sus conjuntos de datos. Esto promueve la eficiencia al brindar y mantener el apoyo a la institución.
+
+El http://www.usgs.gov/[United States Geological Survey (USGS)] ofrece soporte técnico a los nuevos publicadores en los Estados Unidos asociados o afiliados con el USGS o el gobierno federal de los EE.UU. y brinda soporte de alojamiento para conjuntos de datos en https://bison.usgs.gov/ipt[IPT USGS BISON]. Para obtener ayuda comuníquese con <bison@usgs.gov>. También tenga en cuenta que el USGS aloja IPT para las siguientes organizaciones/recursos: 
+
+* https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]
+* https://nas.er.usgs.gov/ipt/[Recurso de información Non-indigenous Aquatic Species (NAS) para el USGS]
+* https://bison.usgs.gov/ipt[IPT USGS Biodiversity Information Serving Our Nation (BISON)]
+
+== Datos dulceacuícolas
+
+http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] proporciona alojamiento de datos y soporte técnico a los publicadores de datos de agua dulce de todo el mundo en http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh], alojado por la Belgium Biodiversity Platform. Biofresh, es un proyecto internacional financiado por la Unión Europea que tiene como objetivo construir una plataforma de información global para científicos y administradores de ecosistemas con acceso a todas las bases de datos disponibles que describen la distribución, el estado y las tendencias de la biodiversidad mundial de agua dulce. BioFresh integra las capacidades y la experiencia en biodiversidad de agua dulce de 19 instituciones de investigación.
+
+== Datos marinos
+
+http://www.iobis.org[OBIS] proporciona alojamiento de datos y soporte técnico a publicadores de datos marinos de todo el mundo. EurOBIS/Flanders Marine Institute (VLIZ) aloja múltiples instalaciones IPT que se pueden encontrar en http://ipt.vliz.be/ en nombre de varios Nodos OBIS. Actualmente, hay más de http://www.iobis.org/about/[20 Nodos OBIS] en todo el mundo que conectan a 500 instituciones de 56 países.
+
+== Datos de vertebrados
+
+http://vertnet.org/[VertNet] proporciona alojamiento de datos y soporte técnico a publicadores de datos de especímenes y observaciones de vertebrados. Los datos alojados se pueden ver en http://ipt.vertnet.org/[IPT VertNet]. Póngase en contacto con David Bloom <dbloom@vertnet.org> para obtener ayuda.
+
+== Certificación
+
+Al obtener la certificación, los repositorios pueden demostrar tanto a sus usuarios como a sus financiadores que una autoridad independiente los ha evaluado y respaldado su confiabilidad. El World Data System (WDS) y el Data Seal of Approval (DSA) han fusionado sus certificaciones de repositorios de datos en un conjunto de requisitos comunes estandarizados para la certificación de repositorios denominados https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. La certificación Core requiere que un repositorio de datos proporcione pruebas de que es sostenible y confiable. El repositorio primero realiza una autoevaluación interna, que luego es revisada por pares de la comunidad. Puede encontrar más información sobre el proceso de certificación https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[aquí].

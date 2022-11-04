@@ -1,0 +1,226 @@
+= Versiones
+
+include::partial$version-outdated.adoc[]
+
+== *2.5.8* - Mayo de 2022
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.8]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/35?closed=1[9 incidencias].
+* Traducida en 7 idiomas
+
+This release includes a bug fix for publishing resources with DOI and other minor fixes (see https://github.com/gbif/ipt/milestone/35?closed=1[issues]).
+
+== *2.5.7* – Febrero 2022
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.7]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/34?closed=1[5 incidencias].
+* Traducida en 7 idiomas
+
+This release includes small user interface improvements, fixes a bug with database data sources and corrects a problem when deleting which have been assigned a DOI within the IPT. It also fixes the "Reset Password" button on the admin page.
+
+== *2.5.6* – Febrero 2022
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.6]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/33?closed=1[21 incidencias].
+* Traducida en 7 idiomas
+
+This version brings new Darwin Core terms (establishmentMeans, degreeOfEstablishment, pathway etc.) It also changes the way user passwords are stored to improve their security. All users are encouraged to upgrade to this version.
+
+== *2.5.5* – Diciembre 2021
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.5]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/32?closed=1[3 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión contiene actualizaciones adicionales de seguridad de la biblioteca Log4J. También contiene una corrección relacionada con el Darwin Core (los elementos identifiedByID/recordedByID que no se mostraban). Se recomienda a todos los usuarios que actualicen a esta versión, especialmente si utilizan esos elementos del Darwin Core.
+
+== *2.5.4* – Diciembre 2021
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.4]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/31?closed=1[3 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión contiene correcciones a problemas de seguridad críticos con las bibliotecas Struts y https://nvd.nist.gov/vuln/detail/CVE-2021-44228[Log4J]. Se recomienda a todos los usuarios que actualicen a esta versión lo antes posible.
+
+== *2.5.3* – Diciembre 2021
+
+* xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.3]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/30?closed=1[2 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión contiene una actualización de la traducción al español de la interfaz de usuario y una pequeña corrección de errores para la página de vocabularios en la sección de administración. No hay otros cambios desde la versión 2.5.2 y no es necesario actualizar si no desea hacerlo. Gracias al trabajo de los traductores, se ha completado la traducción de este manual de usuario al español.
+
+== *2.5.2* Noviembre 2021
+
+* xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.2]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/29?closed=1[26 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión aborda los errores introducidos en las versiones 2.5 anteriores, principalmente en torno a la edición de metadatos y las citaciones. Se incluyen otras mejoras para la instalación y la administración del servidor, así como actualizaciones de la interfaz de usuario y nuevas versiones de las dependencias de las bibliotecas.
+
+== *2.5.1* – Septiembre de 2021
+
+* xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.1]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/27?closed=1[4 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión soluciona un error introducido en la versión 2.5.0, que impedía al IPT conectarse a fuentes de bases de datos. Los usuarios que conecten el IPT a fuentes de bases de datos tendrán que actualizarse a la versión 2.5.1.
+
+== *2.5.0* – Agosto de 2021
+
+* xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.0]
+* xref:2.5@index.adoc[Manual del usuario]
+* Abordadas https://github.com/gbif/ipt/milestone/27?closed=1[81 incidencias].
+* Traducida en 7 idiomas
+
+Esta versión aborda 81 incidencias incluyendo el famoso "error de doble inicio de sesión" y trae una interfaz de usuario de aspecto más fresco. El manual de usuario también se ha renovado, permitiendo una traducción completa al español.
+
+== *2.4.2* - Septiembre de 2020
+
+* xref:2.4@release-notes.adoc[Notas de la versión IPT v2.4.2]
+* xref:2.4@index.adoc[Manual de Usuarios]
+* Abordada https://github.com/gbif/ipt/milestone/9?closed=1[1 incidencia].
+* Traducida en 7 idiomas
+
+La versión 2.4.2 soluciona una vulneración menor de la seguridad en Apache Struts, que utiliza el IPT. Los usuarios deberían planear una actualización a esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se ha incluido una mejora para el uso de memoria cuando se leen conjuntos de datos grandes desde un servidor PostgreSQL.
+
+== *2.4.1* - Septiembre de 2020
+
+* xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.4.1]
+* xref:2.4@index.adoc[Manual de Usuarios]
+* Abordadas https://github.com/gbif/ipt/milestone/25?closed=1[12 incidencias].
+* Traducida en 7 idiomas
+
+La versión 2.4.1 soluciona una vulneración de la seguridad en Apache Struts que utiliza el IPT. Los usuarios deberían planear una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión].
+
+== *2.4.0* – Julio de 2019
+
+* link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.4.0]
+* xref:2.4@index.adoc[Manual de Usuarios]
+* Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias]. 
+* Traducida en 7 idiomas
+
+La versión 2.4.0 soluciona vulneraciones de seguridad en Apache Jackson y Apache Struts que utiliza el IPT. Los usuarios deberían planear una actualización a esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se actualiza la integración para DOI personalizados desde DataCite y elimina el soporte para DOIs (sin uso) de EZID. El número de versión ha sido actualizado a 2.4.0 para reflejar la eliminación del soporte para EZID.
+
+== *2.3.6* - Julio de 2018
+
+* xref:2.4@release-notes.adoc[Notas de la versión IPT v2.3.6]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Abordadas https://github.com/gbif/ipt/milestone/7?closed=1[20 incidencias].
+* Traducida en 7 idiomas
+
+La versión 2.3.6 soluciona una vulneración de seguridad en JQuery que utiliza el IPT. Los usuarios deberían planear una actualización a esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión].
+
+https://github.com/gbif/ipt/issues/1411[Una incidencia] permanece con DOIs personalizados de DataCite. Si es necesario, se lanzará otra versión del IPT en julio o agosto.
+
+== *2.3.5* – Octubre de 2017
+
+* link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.3.5]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Abordadas https://github.com/gbif/ipt/milestone/6[27 incidencias]: 6 Defectos, 7 Mejoras y 15 de Otro tipo
+* Traducida en 7 idiomas
+
+La versión 2.3.4 soluciona una https://struts.apache.org/docs/s2-045.html[vulnerabilidad de seguridad] que fue descubierta en el marco de trabajo web de Apache Struts que utiliza el IPT. Esta vulneración afecta a todas las versiones del IPT, incluyendo la 2.3.3, por ello todos los usuarios deberían planear una actualización a esta versión inmediatamente siguiendo las instrucciones de las lxref:2.4@release-notes.adoc[Notas de la versión].
+
+== *2.3.4* - Marzo de 2017
+
+* xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.4]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Abordadas https://github.com/gbif/ipt/milestone/5[5 incidencias]: 6 Defectos, 1 Mejora y 1 de Otro tipo
+* Traducida en 7 idiomas
+
+La versión 2.3.4 soluciona una https://struts.apache.org/docs/s2-045.html[vulnerabilidad de seguridad] que fue descubierta en el marco de trabajo web de Apache Struts que utiliza el IPT. Esta vulneración afecta a todas las versiones del IPT, incluyendo la 2.3.3, por ello todos los usuarios deberían planear una actualización a esta versión inmediatamente siguiendo las instrucciones de las lxref:2.4@release-notes.adoc[Notas de la versión].
+
+== *2.3.3* - Diciembre de 2016
+
+* xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.3]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Abordadas https://github.com/gbif/ipt/milestone/3[90 incidencias]: 22 defectos, 17 mejoras, 36 no se solucionan, 10 duplicados y 5 de otro tipo
+* Traducida en 7 idiomas
+
+En https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[esta entrada del blog] se describen las nuevas características añadidas al IPT en la versión 2.3.3. Además, tenga en cuenta por favor, que GBIF lanzó recientemente un nuevo conjunto de modelos de Microsoft Excel para la carga de datos en el IPT. Los nuevos modelos proporcionan una solución más simple para la captura, formateo y subida de los tres tipos de datos de GBIF: xref:sampling-event-data.adoc[datos de eventos de muestro], xref:occurrence-data.adoc[datos de presencias de especies] y xref:checklist-data.adoc[datos de listados de especies]. Se puede encontrar más información sobre estos modelos en https://www.gbif.org/newsroom/news/new-darwin-core-spreadsheet-templates[esta noticia].
+
+== *2.3.2* - Octubre de 2015
+
+* xref:2.4@ipt-release-notes-2_3.adoc[Notas de la versión IPT v2.3]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[Manual de usuarios] https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[(en)]
+* Abordadas https://github.com/gbif/ipt/milestone/2?closed=1[14 incidencias]: 12 Defectuosas, 2 No se solucionan
+* Traducida en 6 idiomas
+
+== *2.3.1* - Septiembre de 2015
+
+* xref:2.4@ipt-release-notes-2_3.adoc[Notas de la versión IPT v2.3]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[Manual de usuarios] https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[(en)]
+* Abordadas https://github.com/gbif/ipt/milestone/1?closed=1[3 incidencias]: 3 Defectuosas
+* Traducida en 6 idiomas
+
+== *2.3* - Septiembre de 2015
+
+* xref:2.4@ipt-release-notes-2_3.adoc[Notas de la versión IPT v2.3]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[Manual de usuarios] https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[(en)]
+* Abordadas https://github.com/gbif/ipt/milestone/20?closed=1[38 incidencias]: 15 defectos, 15 mejoras, 4 no se Solucionan y 4 que fueron consideradas como tareas
+* Traducida en 6 idiomas
+
+== *2.2.1* - Abril de 2015
+
+* xref:2.4@ipt-release-notes-2_2.adoc[Notas de la versión IPT v2.2]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[Manual de usuarios]
+* Abordadas https://github.com/gbif/ipt/milestone/19?closed=1[5 incidencias]: 3 Defectuosas, 1 Mejora, 1 de Otro tipo
+* Traducida en 6 idiomas
+
+== *2.2* - Marzo de 2015
+
+* xref:2.4@ipt-release-notes-2_2.adoc[Notas de la versión IPT v2.2]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[Manual de usuarios]
+* https://gbif.blogspot.com/2015/03/ipt-v22.html[Anuncio del lanzamiento]
+* Abordadas https://github.com/gbif/ipt/milestone/18?closed=1[74 incidencias]: 20 defectos, 26 mejoras, 16 no se solucionan, 6 duplicados, 2 de otro tipo, 1 tarea y 3 que fueron consideradas invalidas
+* Traducida en 6 idiomas
+
+== *2.1* - Abril de 2014
+
+* xref:2.4@ipt-release-notes-2_1.adoc[Notas de la versión IPT v2.1]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv21.wiki[Manual de usuario]
+* https://gbif.blogspot.com/2014/04/ipt-v21.html[Anuncio del lanzamiento]
+* Abordadas https://github.com/gbif/ipt/milestone/16?closed=1[85 incidencias]: 38 defectos, 11 mejoras, 18 no se Solucionan, 6 duplicados, 1 de otro tipo y 11 que fueron considerados Invalidos
+* Traducida a 6 idiomas (añadida traducción al japonés)
+
+== *2.0.5* - Mayo de 2013
+
+* link:../../../en/ipt/2.4/ipt-release-notes-2_0_5[Notas de la versión IPT v2.0.5]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki[Manual de usuarios]
+* https://gbif.blogspot.com/2013/05/ipt-v205-released-melhor-versao-ate-o.html[Anuncio del lanzamiento]
+* Abordadas https://github.com/gbif/ipt/milestone/14?closed=1[45 incidencias]: 15 defectos, 17 mejoras, 2 parches, 7 no se Solucionan, 3 duplicados y 1 que fue considerada invalida
+* Traducida a 5 idiomas (añadida traducción al portugués)
+
+== *2.0.4* - Octubre de 2012
+
+* link:../../../en/ipt/2.4/ipt-release-notes-2_0_4[Notas de la versión IPT v2.0.4]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv204.wiki[Manual de usuarios]
+* https://gbif.blogspot.com/2012/10/ipt-v204-released.html[Anuncio del lanzamiento]
+* Abordadas https://github.com/gbif/ipt/milestone/13?closed=1[108 incidencias]: 38 defectos, 35 mejoras, 7 de otro tipo, 5 parches, 18 no se Solucionan, 4 duplicados y 1 que fue considerada como invalida
+* Traducida a 4 idiomas (añadida traducción a chino tradicional)
+
+== *2.0.3*  Noviembre de 2011
+
+* link:../../../en/ipt/2.4/ipt-release-notes-2_0_3[Notas de la versión IPT v2.0.3]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[Manual de usuarios]
+* https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Anuncio del lanzamiento]
+* Abordadas https://github.com/gbif/ipt/milestone/12?closed=1[85 incidencias]: 43 defectos, 31 mejoras, 3 parches, 7 no se Solucionan y 1 duplicado
+* Traducida a 3 idiomas (añadidas traducciones a francés y español)
+
+== *2.0.2* – Junio de 2011
+
+* https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Anuncio del lanzamiento]
+
+== *2.0.1* – Febrero de 2011
+
+* Primer lanzamiento del IPT versión 2
+* https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Anuncio del lanzamiento]

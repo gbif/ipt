@@ -1,0 +1,40 @@
+= 版權宣告
+
+== 引用文獻
+
+ifeval::["{language}",  == "en"]
+This user manual adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for this user manual is as follows:
+endif::[]
+ifeval::["{language}",  != "en"]
+The link:../../../en/[English user manual] adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for the English user manual is as follows:
+endif::[]
+
+[quote]
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/
+
+ifeval::["{language}",  != "en"]
+This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES. The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:
+
+[quote]
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/
+endif::[]
+
+== 版權
+
+The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–{localyear} by the Global Biodiversity Information Facility Secretariat.
+
+== 授權條款
+
+The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an "as is" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:
+
+* you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);
+* you may not use this work for commercial purposes;
+* if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+
+== 參考文獻
+
+Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4. Copenhagen: GBIF Secretariat. https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki
+
+Réveillon A (2009) The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: GBIF Secretariat. https://links.gbif.org/ipt_manual_1.0
