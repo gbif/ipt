@@ -277,11 +277,11 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                    <@input name="metadata.title" i18nkey="datapackagemetadata.title" />
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.description" i18nkey="datapackagemetadata.description" requiredField=true />
+                                    <@text name="metadata.description" i18nkey="datapackagemetadata.description" />
                                 </div>
 
                                 <div class="col-lg-6">
@@ -304,7 +304,7 @@
 
                             <!-- List of Contributors -->
                             <div>
-                                <@textinline name="datapackagemetadata.contributors"/>
+                                <@textinline name="datapackagemetadata.contributors" requiredField=true />
                                 <div id="contributor-items">
                                     <#list metadata.contributors as item>
                                         <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -355,7 +355,7 @@
 
                             <!-- List of Sources -->
                             <div>
-                                <@textinline name="datapackagemetadata.sources"/>
+                                <@textinline name="datapackagemetadata.sources" requiredField=true />
                                 <div id="source-items">
                                     <#list metadata.sources as item>
                                         <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -369,7 +369,7 @@
                                                     <span>${removeSourceLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
-                                            <div>
+                                            <div class="col-lg-6">
                                                 <@input name="metadata.sources[${item_index}].title" i18nkey="datapackagemetadata.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
@@ -377,6 +377,9 @@
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="metadata.sources[${item_index}].email" i18nkey="datapackagemetadata.email" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.sources[${item_index}].version" i18nkey="datapackagemetadata.version" />
                                             </div>
                                         </div>
                                     </#list>
@@ -400,7 +403,7 @@
 
                             <!-- List of Licenses -->
                             <div>
-                                <@textinline name="datapackagemetadata.licenses"/>
+                                <@textinline name="datapackagemetadata.licenses" requiredField=true />
                                 <div id="license-items">
                                     <#list metadata.licenses as item>
                                         <div id="license-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -414,7 +417,7 @@
                                                     <span>${removeSourceLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
-                                            <div>
+                                            <div class="col-lg-6">
                                                 <@input name="metadata.licenses[${item_index}].title" i18nkey="datapackagemetadata.title" />
                                             </div>
                                             <div class="col-lg-6">
@@ -490,7 +493,7 @@
                 <span>${removeSourceLink?lower_case?cap_first}</span>
             </a>
         </div>
-        <div>
+        <div class="col-lg-6">
             <@input name="metadata.sources.title" i18nkey="datapackagemetadata.title" requiredField=true />
         </div>
         <div class="col-lg-6">
@@ -498,6 +501,9 @@
         </div>
         <div class="col-lg-6">
             <@input name="metadata.sources.email" i18nkey="datapackagemetadata.email" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.sources.version" i18nkey="datapackagemetadata.version" />
         </div>
     </div>
 
@@ -512,7 +518,7 @@
                 <span>${removeSourceLink?lower_case?cap_first}</span>
             </a>
         </div>
-        <div>
+        <div class="col-lg-6">
             <@input name="metadata.licenses.title" i18nkey="datapackagemetadata.title" />
         </div>
         <div class="col-lg-6">

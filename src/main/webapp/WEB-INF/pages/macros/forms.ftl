@@ -84,7 +84,7 @@
         <div class="textinline">
             <h5 class="py-2 mb-0 text-gbif-header fw-400">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
-                <span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span>
+                <span><@s.text name="${name}"/><#if requiredField> &#42;</#if></span>
             </h5>
         </div>
     </#macro>

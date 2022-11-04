@@ -67,11 +67,11 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-lg-6">
-                                    <@input name="metadata.temporal.start" i18nkey="datapackagemetadata.temporal.start" requiredField=true />
+                                    <@input name="metadata.temporal.start" i18nkey="datapackagemetadata.temporal.start" type="date" requiredField=true />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.temporal.end" i18nkey="datapackagemetadata.temporal.end" requiredField=true />
+                                    <@input name="metadata.temporal.end" i18nkey="datapackagemetadata.temporal.end" type="date" requiredField=true />
                                 </div>
                             </div>
                         </div>
