@@ -4,4 +4,4 @@
 
 For developers trying to understand the IPT architecture and how to work on the the IPT codebase, refer to:
 
-https://ipt.gbif.org/manual/en/ipt/2.5/developer-guide
+https://ipt.gbif.org/manual/en/ipt/2.6/developer-guide
