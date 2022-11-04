@@ -50,7 +50,7 @@ TIP: When upgrading to version 2.5.0 or later, follow xref:installation.adoc#tom
 An upgrade can be performed in 4 steps:
 
 . Backup the existing data directory and any xref:customization.adoc[custom styling] (images, stylesheets, etc) previously applied to your IPT.
-. Replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`).
+. Without shutting down Tomcat, replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`).
 +
 NOTE: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
 
