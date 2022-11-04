@@ -27,6 +27,7 @@ import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -45,14 +46,16 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -1669636958170716515L;
 
+  private final DataPackageMetadataValidator metadataValidator;
   private DataPackageMetadataSection section = DataPackageMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
 
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                                   ResourceManager resourceManager) {
+                                   ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator) {
     super(textProvider, cfg, registrationManager, resourceManager);
+    this.metadataValidator = metadataValidator;
   }
 
   @Override
@@ -60,7 +63,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return resource;
   }
 
-  // TODO: 13/10/2022 implement prepare
   @Override
   public void prepare() {
     super.prepare();
@@ -138,8 +140,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   public String save() throws Exception {
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
-    // TODO: 13/10/2022 implement validation
-    if (true) {
+    if (metadataValidator.isSectionValid(this, resource, section)) {
       // Save metadata information (datapackage.json)
       resourceManager.saveDatapackageMetadata(resource);
       // save date metadata was last modified
