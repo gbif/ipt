@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:02\n"
+"PO-Revision-Date: 2022-11-04 14:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -482,7 +482,7 @@ msgstr "*Formato de fecha*: un código que describe el formato de los elementos 
 #: en/modules/ROOT/pages/manage-resources.adoc:106
 #, no-wrap
 msgid "*Selected Worksheet* - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet. After changing the sheet click *Analyse* to update the row/column information.\n"
-msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de selección muestra los nombres de todas las hojas de cálculo del archivo/libro de Excel. Sólo puede utilizar una hoja de cálculo como fuente de datos, por defecto aparecerá señeccionada la primera hoja del archivo. Despues de seleccionar la hoja de calculo que contenga los datos haga clic en  *Analizar* para actualizar la información de  filas y columnas."
+msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de selección muestra los nombres de todas las hojas de cálculo del archivo/libro de Excel. Sólo puede utilizar una hoja de cálculo como fuente de datos, por defecto aparecerá señeccionada la primera hoja del archivo. Despues de seleccionar la hoja de calculo que contenga los datos haga clic en  *Analizar* para actualizar la información de  filas y columnas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
