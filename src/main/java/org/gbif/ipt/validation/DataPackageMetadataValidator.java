@@ -25,6 +25,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.HibernateValidator;
 
@@ -98,9 +99,22 @@ public class DataPackageMetadataValidator {
 
           for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
             if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "contributors", "sources")) {
-              action.addActionError(violation.getMessage());
+              action.addActionError(action.getText(violation.getMessage()));
             } else {
-              action.addFieldError("metadata." + violation.getPropertyPath(), violation.getMessage());
+              if (violation.getMessage().equals("validation.datapackage.metadata.license.nameOrPath.required")) {
+                // remove all characters, we need the index
+                String index = RegExUtils.removeAll(violation.getPropertyPath().toString(), "[a-zA-z.\\[\\]]*");
+                action.addFieldError(
+                    "metadata.licenses[" + index + "].name",
+                    action.getText(action.getText(violation.getMessage()))
+                );
+                action.addFieldError(
+                    "metadata.licenses[" + index + "].path",
+                    action.getText(action.getText(violation.getMessage()))
+                );
+              } else {
+                addDefaultFieldError(action, violation);
+              }
             }
           }
 
@@ -111,9 +125,35 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, GeographicScopeMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : geographicSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            if (violation.getMessage().contains("type")) {
+              action.addFieldError("metadata.spatial.type", action.getText(violation.getMessage()));
+            }
+
+            if (violation.getMessage().contains("west")) {
+              action.addFieldError("metadata.spatial.bbox[0]", action.getText(violation.getMessage()));
+            }
+
+            if (violation.getMessage().contains("east")) {
+              action.addFieldError("metadata.spatial.bbox[1]", action.getText(violation.getMessage()));
+            }
+
+            if (violation.getMessage().contains("south")) {
+              action.addFieldError("metadata.spatial.bbox[2]", action.getText(violation.getMessage()));
+            }
+
+            if (violation.getMessage().contains("north")) {
+              action.addFieldError("metadata.spatial.bbox[3]", action.getText(violation.getMessage()));
+            }
+
+            if (violation.getMessage().contains("longitude.swapped")) {
+              action.addFieldError("metadata.spatial.bbox[0]", action.getText(violation.getMessage()));
+              action.addFieldError("metadata.spatial.bbox[1]", action.getText(violation.getMessage() + ".viceversa"));
+            }
+
+            if (violation.getMessage().contains("latitude.swapped")) {
+              action.addFieldError("metadata.spatial.bbox[2]", action.getText(violation.getMessage()));
+              action.addFieldError("metadata.spatial.bbox[3]", action.getText(violation.getMessage() + ".viceversa"));
+            }
           }
 
           break;
@@ -123,9 +163,7 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, TaxonomicScopeMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : taxonomicSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            addDefaultFieldError(action, violation);
           }
 
           break;
@@ -135,9 +173,7 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, TemporalScopeMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : temporalSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            addDefaultFieldError(action, violation);
           }
 
           break;
@@ -147,9 +183,7 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, KeywordsMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : keywordsSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            action.addActionError(action.getText(violation.getMessage()));
           }
 
           break;
@@ -159,9 +193,7 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, ProjectMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : projectSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            addDefaultFieldError(action, violation);
           }
 
           break;
@@ -171,13 +203,27 @@ public class DataPackageMetadataValidator {
               = validator.validate(metadata, OtherMetadata.class);
 
           for (ConstraintViolation<DataPackageMetadata> violation : otherMetadataSectionViolations) {
-            action.addFieldError(
-                "metadata." + violation.getPropertyPath(),
-                violation.getMessage());
+            addDefaultFieldError(action, violation);
           }
 
           break;
       }
+    }
+  }
+
+  private boolean isValidationProperty(String message) {
+    return message.startsWith("validation.");
+  }
+
+  private void addDefaultFieldError(BaseAction action, ConstraintViolation<DataPackageMetadata> violation) {
+    if (isValidationProperty(violation.getMessage())) {
+      action.addFieldError(
+          "metadata." + violation.getPropertyPath(),
+          action.getText(violation.getMessage(), new String[]{violation.getPropertyPath().toString()}));
+    } else {
+      action.addFieldError(
+          "metadata." + violation.getPropertyPath(),
+          violation.getMessage());
     }
   }
 }

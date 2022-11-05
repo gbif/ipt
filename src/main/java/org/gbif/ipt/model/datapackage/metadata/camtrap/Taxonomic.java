@@ -41,7 +41,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonID")
-  @NotNull(groups = TaxonomicScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   private String taxonID;
 
   /**
@@ -49,7 +49,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonIDReference")
-  @NotNull(groups = TaxonomicScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   private URI taxonIDReference;
 
   /**
@@ -57,7 +57,7 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("scientificName")
-  @NotNull(groups = TaxonomicScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   private String scientificName;
 
   /**

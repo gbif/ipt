@@ -61,7 +61,7 @@ public class CamtrapResource extends DataPackageResource {
    */
   @Override
   @JsonProperty("profile")
-  @NotNull(groups = InternalField.class)
+  @NotNull(message = "validation.input.required", groups = InternalField.class)
   public String getProfile() {
     return super.getProfile();
   }
@@ -80,7 +80,7 @@ public class CamtrapResource extends DataPackageResource {
    */
   @Override
   @JsonProperty("schema")
-  @NotNull(groups = InternalField.class)
+  @NotNull(message = "validation.input.required", groups = InternalField.class)
   public String getSchema() {
     return super.getSchema();
   }

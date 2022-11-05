@@ -54,7 +54,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private String title;
 
   /**
@@ -80,7 +80,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("samplingDesign")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Project.SamplingDesign samplingDesign;
 
   /**
@@ -89,8 +89,8 @@ public class Project implements Serializable {
    */
   @JsonProperty("captureMethod")
   @JsonDeserialize(as = LinkedHashSet.class)
-  @NotNull(groups = ProjectMetadata.class)
-  @Size(min = 1, groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
+  @Size(min = 1, message = "validation.camtrap.metadata.project.captureMethod.size", groups = ProjectMetadata.class)
   @Valid
   private Set<CaptureMethod> captureMethod = new LinkedHashSet<>();
 
@@ -99,7 +99,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("individualAnimals")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Boolean individualAnimals;
 
   /**
@@ -107,7 +107,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("classificationLevel")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Project.ClassificationLevel classificationLevel;
 
   /**
@@ -115,7 +115,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("sequenceInterval")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Integer sequenceInterval;
 
   @SuppressWarnings("FieldMayBeFinal")

@@ -41,7 +41,7 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relationType")
-  @NotNull
+  @NotNull(message = "validation.input.required")
   private RelatedIdentifier.RelationType relationType;
 
   /**
@@ -49,7 +49,7 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relatedIdentifier")
-  @NotNull
+  @NotNull(message = "validation.input.required")
   private String relatedIdentifier;
 
   /**

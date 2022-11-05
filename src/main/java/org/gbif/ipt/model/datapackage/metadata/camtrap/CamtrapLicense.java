@@ -42,7 +42,7 @@ public class CamtrapLicense extends DataPackageLicense {
    * (Required)
    */
   @JsonProperty("scope")
-  @NotNull(groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   private CamtrapLicense.Scope scope;
 
   /**

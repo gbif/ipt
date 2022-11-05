@@ -14,6 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.NotNullIfAnotherFieldNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -34,6 +35,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NotNullIfAnotherFieldNull(
+    fieldName = "name",
+    dependFieldName = "path",
+    message = "validation.datapackage.metadata.license.nameOrPath.required",
+    groups = BasicMetadata.class)
 public class DataPackageLicense implements License, Serializable {
 
   private final static long serialVersionUID = 5529108333342991396L;

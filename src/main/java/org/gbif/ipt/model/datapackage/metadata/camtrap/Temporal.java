@@ -41,7 +41,7 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("start")
-  @NotNull(groups = TemporalScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TemporalScopeMetadata.class)
   private String start;
 
   /**
@@ -49,7 +49,7 @@ public class Temporal implements Serializable {
    * (Required)
    */
   @JsonProperty("end")
-  @NotNull(groups = TemporalScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TemporalScopeMetadata.class)
   private String end;
 
   @SuppressWarnings("FieldMayBeFinal")

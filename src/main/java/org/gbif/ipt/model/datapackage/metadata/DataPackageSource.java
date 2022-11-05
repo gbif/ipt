@@ -46,7 +46,7 @@ public class DataPackageSource implements Source, Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @NotNull(groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   private String title;
 
   /**

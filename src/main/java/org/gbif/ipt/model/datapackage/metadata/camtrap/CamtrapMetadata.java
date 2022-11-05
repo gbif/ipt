@@ -56,7 +56,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("project")
-  @NotNull(groups = ProjectMetadata.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   @Valid
   private Project project;
 
@@ -73,7 +73,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("spatial")
-  @NotNull(groups = GeographicScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = GeographicScopeMetadata.class)
   @Valid
   private Geojson spatial;
 
@@ -82,7 +82,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("temporal")
-  @NotNull(groups = TemporalScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TemporalScopeMetadata.class)
   @Valid
   private Temporal temporal;
 
@@ -91,7 +91,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * (Required)
    */
   @JsonProperty("taxonomic")
-  @NotNull(groups = TaxonomicScopeMetadata.class)
+  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   @Valid
   private List<Taxonomic> taxonomic = new ArrayList<>();
 
@@ -99,7 +99,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * Identifiers of resources related to the package (e.g. papers, project pages, derived datasets, APIs, etc.).
    */
   @JsonProperty("relatedIdentifiers")
-  @NotNull
+  @NotNull(message = "validation.input.required")
   @Valid
   private List<RelatedIdentifier> relatedIdentifiers = new ArrayList<>();
 
@@ -107,6 +107,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
    */
   @JsonProperty("references")
+  @NotNull(message = "validation.input.required")
   @Valid
   private List<String> references = new ArrayList<>();
 
@@ -117,7 +118,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @JsonProperty("resources")
   @JsonDeserialize(contentUsing = CamtrapResource.CamtrapResourceDeserializer.class)
   @Element(CamtrapResource.class)
-  @NotNull(groups = InternalField.class)
+  @NotNull(message = "validation.input.required", groups = InternalField.class)
   @Size(min = 3, max = 3, groups = InternalField.class)
   @Valid
   public List<Resource> getResources() {
@@ -236,7 +237,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("contributors")
-  @NotNull(groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   public List<Contributor> getContributors() {
     return super.getContributors();
   }
@@ -369,6 +370,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
   @Element(CamtrapLicense.class)
+  @Size(min = 2, message = "validation.camtrap.metadata.licenses.size", groups = BasicMetadata.class)
   public List<License> getLicenses() {
     return super.getLicenses();
   }

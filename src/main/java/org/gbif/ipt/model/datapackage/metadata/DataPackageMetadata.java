@@ -120,8 +120,8 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  @NotNull(groups = BasicMetadata.class)
-  @Size(min = 1, groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
   @Valid
   private List<Contributor> contributors = new ArrayList<>();
 
@@ -131,8 +131,8 @@ public class DataPackageMetadata implements Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
-  @NotNull(groups = KeywordsMetadata.class)
-  @Size(min = 1, groups = KeywordsMetadata.class)
+  @NotNull(message = "validation.input.required", groups = KeywordsMetadata.class)
+  @Size(min = 1, message = "validation.datapackage.metadata.keywords.size", groups = KeywordsMetadata.class)
   @Valid
   private List<String> keywords = new ArrayList<>();
 
@@ -150,8 +150,8 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  @NotNull(groups = BasicMetadata.class)
-  @Size(min = 1, groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @Size(min = 1, message = "validation.datapackage.metadata.licenses.size", groups = BasicMetadata.class)
   @Valid
   private List<License> licenses = new ArrayList<>();
 
@@ -162,8 +162,8 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
-  @NotNull(groups = InternalField.class)
-  @Size(min = 1, groups = InternalField.class)
+  @NotNull(message = "validation.input.required", groups = InternalField.class)
+  @Size(min = 1, message = "validation.datapackage.metadata.resources.size", groups = InternalField.class)
   @Valid
   private List<Resource> resources = new ArrayList<>();
 
@@ -173,8 +173,8 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @NotNull(groups = BasicMetadata.class)
-  @Size(groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @Size(message = "validation.datapackage.metadata.sources.size", groups = BasicMetadata.class)
   @Valid
   private List<Source> sources = new ArrayList<>();
 

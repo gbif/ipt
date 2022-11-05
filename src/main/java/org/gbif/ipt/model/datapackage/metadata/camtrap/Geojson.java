@@ -14,6 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.GeographicScopeMetadata;
+import org.gbif.ipt.validation.ValidCoordinates;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class Geojson implements Serializable {
    * (Required)
    */
   @JsonProperty("type")
-  @NotNull(groups = GeographicScopeMetadata.class)
+  @NotNull(message = "validation.camtrap.metadata.spatial.type.required", groups = GeographicScopeMetadata.class)
   private Geojson.Type type = Geojson.Type.POLYGON;
 
   /**
@@ -82,6 +83,7 @@ public class Geojson implements Serializable {
    */
   @JsonProperty("bbox")
   @Size(min = 4, groups = GeographicScopeMetadata.class)
+  @ValidCoordinates(groups = GeographicScopeMetadata.class)
   @Valid
   private List<Double> bbox = new ArrayList<>();
 
