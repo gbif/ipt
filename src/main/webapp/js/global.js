@@ -19,19 +19,6 @@ $(document).ready(function () {
     // document.querySelectorAll('.btn').forEach(setRippleElement);
 });
 
-function initCalendar(context) {
-    if (context === undefined) context = "";
-
-    $(context + " .calendarInfo").each(function (i) {
-        $(this).find("input").datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true,
-            orientation: "bottom",
-            forceParse: false
-        });
-    });
-}
-
 function initInfoPopovers(item) {
     var popoverTriggerList = [].slice.call(item.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

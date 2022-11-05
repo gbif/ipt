@@ -1,51 +1,31 @@
 <#ftl output_format="HTML">
 
     <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
-        <#if date>
-            <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon.ftl">
-            <div class="calendarInfo">
-                <input
-                        class="form-control"
-                        type="${type}"
-                        id="${name}"
-                        name="${name}"
-                        aria-describedby="calendar-${name}"
-                        value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
-                        <#if (size>0)>size="${size}"</#if>
-                        <#if (maxlength>0)>maxlength="${maxlength}"</#if>
-                        <#if disabled>readonly="readonly"</#if>
-                        <#if requiredField>required</#if>
-                />
-                <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+        <div>
+            <div class="d-flex text-smaller">
+                <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
             </div>
-        <#else>
-            <div>
-                <div class="d-flex">
-                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-                    <#include "/WEB-INF/pages/macros/help_icon.ftl">
-                </div>
-                <input
-                        class="form-control"
-                        type="${type}"
-                        id="${name}"
-                        name="${name}"
-                        value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
-                        <#if (size>0)>size="${size}"</#if>
-                        <#if (maxlength>0)>maxlength="${maxlength}"</#if>
-                        <#if disabled>readonly="readonly"</#if>
-                        <#if requiredField>required</#if>
-                />
-                <#include "/WEB-INF/pages/macros/form_field_error.ftl">
-            </div>
-        </#if>
+            <input
+                    class="form-control"
+                    type="${type}"
+                    id="${name}"
+                    name="${name}"
+                    value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                    <#if (size>0)>size="${size}"</#if>
+                    <#if (maxlength>0)>maxlength="${maxlength}"</#if>
+                    <#if disabled>readonly="readonly"</#if>
+                    <#if requiredField>required</#if>
+            />
+            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+        </div>
     </#macro>
 
     <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false minlength=-1 maxlength=-1>
         <div>
-            <div class="d-flex">
-                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+            <div class="d-flex text-smaller">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
             </div>
             <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}"<#rt>
                       <#if (minlength>0)> minlength="${minlength}"</#if><#t>
@@ -80,7 +60,7 @@
         <div class="textinline">
             <h5 class="py-2 mb-0 text-gbif-header fw-400">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
-                <span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span>
+                <span><@s.text name="${name}"/><#if requiredField> <span class="text-gbif-danger">&#42;</span></#if></span>
             </h5>
         </div>
     </#macro>
@@ -94,9 +74,9 @@
 
     <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
         <div>
-            <div class="d-flex">
-                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+            <div class="d-flex text-smaller">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
             </div>
             <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if> <#if requiredField>required</#if>>
                 <#if includeEmpty>
@@ -115,9 +95,9 @@
     <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false withLabel=true>
         <div>
             <#if withLabel>
-                <div class="d-flex">
-                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                <div class="d-flex text-smaller">
                     <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
                 </div>
             </#if>
             <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
@@ -142,9 +122,9 @@
     </#macro>
 
     <#macro readonly name i18nkey value size=-1 help="" errorfield="" requiredField=false>
-        <div class="d-flex">
-            <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+        <div class="d-flex text-smaller">
             <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_label.ftl">
         </div>
         <input type="text" class="form-control" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly"/>
         <#include "/WEB-INF/pages/macros/form_field_error.ftl">

@@ -339,7 +339,7 @@
                     <!-- App Logo -->
                     <div id="logofields" class="row g-3">
                         <div class="col-lg-6">
-                            <@s.label for="file" value="IPT logo" />
+                            <@s.label for="file" class="form-label text-smaller" value="IPT logo" />
                             <@s.file cssClass="form-control my-1" name="file"/>
                             <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
                                 <@s.text name="button.upload"/>
