@@ -96,7 +96,7 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="metadata.project.captureMethod" class="form-label">
+                                        <label for="metadata.project.captureMethod" class="form-label" style="margin-bottom: 6px !important;">
                                             <@s.text name="datapackagemetadata.project.captureMethod"/> &#42;
                                         </label>
                                         <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" required multiple>
