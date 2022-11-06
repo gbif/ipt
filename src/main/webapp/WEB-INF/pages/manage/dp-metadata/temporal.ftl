@@ -74,13 +74,15 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <p class="mb-5"><@s.text name="datapackagemetadata.temporal.intro"/></p>
+
                             <div class="row g-3">
                                 <div class="col-lg-6">
-                                    <@input name="metadata.temporal.start" i18nkey="datapackagemetadata.temporal.start" type="date" requiredField=true />
+                                    <@input name="metadata.temporal.start" help="i18n" i18nkey="datapackagemetadata.temporal.start" type="date" requiredField=true />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.temporal.end" i18nkey="datapackagemetadata.temporal.end" type="date" requiredField=true />
+                                    <@input name="metadata.temporal.end" help="i18n" i18nkey="datapackagemetadata.temporal.end" type="date" requiredField=true />
                                 </div>
                             </div>
                         </div>

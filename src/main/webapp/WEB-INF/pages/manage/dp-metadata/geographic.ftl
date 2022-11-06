@@ -75,18 +75,20 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <p class="mb-5"><@s.text name="datapackagemetadata.geographic.intro"/></p>
+
                             <div class="row g-3">
                                 <div class="col-6">
-                                    <@input name="metadata.coordinatePrecision" i18nkey="datapackagemetadata.coordinatePrecision" />
+                                    <@input name="metadata.coordinatePrecision" help="i18n" i18nkey="datapackagemetadata.coordinatePrecision" />
                                 </div>
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.type" i18nkey="datapackagemetadata.type" requiredField=true />
+                                    <@input name="metadata.spatial.type" help="i18n" i18nkey="datapackagemetadata.geographic.type" requiredField=true />
                                 </div>
                             </div>
                         </div>
 
                         <div class="my-md-3 p-3">
-                            <@textinline name="datapackagemetadata.geographic.boundingCoordinates"/>
+                            <@textinline help="i18n" name="datapackagemetadata.geographic.boundingCoordinates"/>
 
                             <div class="row g-3 mt-2">
                                 <div class="col-6">

@@ -76,7 +76,7 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@text name="metadata.bibliographicCitation" i18nkey="datapackagemetadata.other.bibliographicCitation" />
+                                    <@text name="metadata.bibliographicCitation" help="i18n" i18nkey="datapackagemetadata.other.bibliographicCitation" />
                                 </div>
                             </div>
                         </div>

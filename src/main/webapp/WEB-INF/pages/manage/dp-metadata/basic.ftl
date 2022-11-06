@@ -287,23 +287,23 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.title" i18nkey="datapackagemetadata.title" />
+                                    <@input name="metadata.title" help="i18n" i18nkey="datapackagemetadata.title" />
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.description" i18nkey="datapackagemetadata.description" />
+                                    <@text name="metadata.description" help="i18n" i18nkey="datapackagemetadata.description" />
                                 </div>
 
                                 <div class="col-lg-6">
                                     <#if resource.organisation??>
-                                        <@select name="id" i18nkey="eml.publishingOrganisation" options=organisations value="${resource.organisation.key!''}" requiredField=true />
+                                        <@select name="id" help="i18n" i18nkey="eml.publishingOrganisation" options=organisations value="${resource.organisation.key!''}" requiredField=true />
                                     <#else>
-                                        <@select name="id" i18nkey="eml.publishingOrganisation" options=organisations requiredField=true />
+                                        <@select name="id" help="i18n" i18nkey="eml.publishingOrganisation" options=organisations requiredField=true />
                                     </#if>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.homepage" i18nkey="datapackagemetadata.homepage" type="url" />
+                                    <@input name="metadata.homepage" help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
                             </div>
                         </div>
@@ -314,7 +314,7 @@
 
                             <!-- List of Contributors -->
                             <div>
-                                <@textinline name="datapackagemetadata.contributors" requiredField=true />
+                                <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
                                 <div id="contributor-items">
                                     <#list metadata.contributors as item>
                                         <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -329,19 +329,19 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                <@input name="metadata.contributors[${item_index}].title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                                <@input name="metadata.contributors[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].path" i18nkey="datapackagemetadata.path" />
+                                                <@input name="metadata.contributors[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].email" i18nkey="datapackagemetadata.email" />
+                                                <@input name="metadata.contributors[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].role" i18nkey="datapackagemetadata.contributor.role" />
+                                                <@input name="metadata.contributors[${item_index}].role" help="i18n" i18nkey="datapackagemetadata.contributor.role" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].organization" i18nkey="datapackagemetadata.contributor.organization" />
+                                                <@input name="metadata.contributors[${item_index}].organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
                                             </div>
                                         </div>
                                     </#list>
@@ -365,7 +365,7 @@
 
                             <!-- List of Sources -->
                             <div>
-                                <@textinline name="datapackagemetadata.sources" requiredField=true />
+                                <@textinline name="datapackagemetadata.sources" help="i18n" requiredField=true />
                                 <div id="source-items">
                                     <#list metadata.sources as item>
                                         <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -380,16 +380,16 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                                <@input name="metadata.sources[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].path" i18nkey="datapackagemetadata.path" />
+                                                <@input name="metadata.sources[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.source.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].email" i18nkey="datapackagemetadata.email" />
+                                                <@input name="metadata.sources[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.source.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].version" i18nkey="datapackagemetadata.source.version" />
+                                                <@input name="metadata.sources[${item_index}].version" help="i18n" i18nkey="datapackagemetadata.source.version" />
                                             </div>
                                         </div>
                                     </#list>
@@ -413,7 +413,7 @@
 
                             <!-- List of Licenses -->
                             <div>
-                                <@textinline name="datapackagemetadata.licenses" requiredField=true />
+                                <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
                                 <div id="license-items">
                                     <#list metadata.licenses as item>
                                         <div id="license-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
@@ -428,19 +428,19 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].title" i18nkey="datapackagemetadata.title" />
+                                                <@input name="metadata.licenses[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.license.title" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].path" i18nkey="datapackagemetadata.path" requiredField=true />
+                                                <@input name="metadata.licenses[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].name" i18nkey="datapackagemetadata.name" requiredField=true />
+                                                <@input name="metadata.licenses[${item_index}].name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
                                                 <#if (metadata.licenses[item_index].scope)??>
-                                                    <@select name="metadata.licenses[${item_index}].scope" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="${metadata.licenses[item_index].scope!}" requiredField=true/>
+                                                    <@select name="metadata.licenses[${item_index}].scope" help="i18n" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="${metadata.licenses[item_index].scope!}" requiredField=true/>
                                                 <#else>
-                                                    <@select name="metadata.licenses[${item_index}].scope" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
+                                                    <@select name="metadata.licenses[${item_index}].scope" help="i18n" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
                                                 </#if>
                                             </div>
                                         </div>
@@ -476,19 +476,19 @@
             </a>
         </div>
         <div>
-            <@input name="metadata.contributors.title" i18nkey="datapackagemetadata.title" requiredField=true/>
+            <@input name="metadata.contributors.title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true/>
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.contributors.path" i18nkey="datapackagemetadata.path" />
+            <@input name="metadata.contributors.path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.contributors.email" i18nkey="datapackagemetadata.email" />
+            <@input name="metadata.contributors.email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.contributors.role" i18nkey="datapackagemetadata.contributor.role" />
+            <@input name="metadata.contributors.role" help="i18n" i18nkey="datapackagemetadata.contributor.role" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.contributors.organization" i18nkey="datapackagemetadata.contributor.organization" />
+            <@input name="metadata.contributors.organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
         </div>
     </div>
 
@@ -504,16 +504,16 @@
             </a>
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.sources.title" i18nkey="datapackagemetadata.title" requiredField=true />
+            <@input name="metadata.sources.title" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.sources.path" i18nkey="datapackagemetadata.path" />
+            <@input name="metadata.sources.path" help="i18n" i18nkey="datapackagemetadata.source.path" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.sources.email" i18nkey="datapackagemetadata.email" />
+            <@input name="metadata.sources.email" help="i18n" i18nkey="datapackagemetadata.source.email" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.sources.version" i18nkey="datapackagemetadata.source.version" />
+            <@input name="metadata.sources.version" help="i18n" i18nkey="datapackagemetadata.source.version" />
         </div>
     </div>
 
@@ -529,16 +529,16 @@
             </a>
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.licenses.title" i18nkey="datapackagemetadata.title" />
+            <@input name="metadata.licenses.title" help="i18n" i18nkey="datapackagemetadata.license.title" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.licenses.path" i18nkey="datapackagemetadata.path" requiredField=true />
+            <@input name="metadata.licenses.path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.licenses.name" i18nkey="datapackagemetadata.name" requiredField=true />
+            <@input name="metadata.licenses.name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
         </div>
         <div class="col-lg-6">
-            <@select name="metadata.licenses.scope" includeEmpty=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
+            <@select name="metadata.licenses.scope" help="i18n" includeEmpty=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
         </div>
     </div>
 

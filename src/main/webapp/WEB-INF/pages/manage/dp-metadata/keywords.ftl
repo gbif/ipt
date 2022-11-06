@@ -135,6 +135,8 @@
                     <div class="bd-content">
 
                         <div class="my-md-3 p-3">
+                            <p class="mb-4"><@s.text name="datapackagemetadata.keywords.intro"/></p>
+
                             <#assign removeKeywordLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.keyword'/></#assign>
                             <#assign addKeywordLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.keyword'/></#assign>
 

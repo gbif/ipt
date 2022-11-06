@@ -14,6 +14,7 @@
     <#assign currentMetadataPage = "project"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
+    <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
     <form class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -69,33 +70,36 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <p class="mb-5"><@s.text name="datapackagemetadata.project.intro"/></p>
+
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.project.title" i18nkey="datapackagemetadata.title" requiredField=true />
+                                    <@input name="metadata.project.title" help="i18n" i18nkey="datapackagemetadata.project.title" requiredField=true />
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.project.description" i18nkey="datapackagemetadata.description" />
+                                    <@text name="metadata.project.description" help="i18n" i18nkey="datapackagemetadata.project.description" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.acronym" i18nkey="datapackagemetadata.project.acronym" />
+                                    <@input name="metadata.project.acronym" help="i18n" i18nkey="datapackagemetadata.project.acronym" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.path" i18nkey="datapackagemetadata.path" />
+                                    <@input name="metadata.project.path" help="i18n" i18nkey="datapackagemetadata.project.path" />
                                 </div>
 
                                 <div class="col-lg-6">
                                     <#if (metadata.project.samplingDesign)??>
-                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}" requiredField=true />
+                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}" requiredField=true />
                                     <#else>
-                                        <@select name="metadata.project.samplingDesign" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="" requiredField=true />
+                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="" requiredField=true />
                                     </#if>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
+                                        <@popoverPropertyInfo "datapackagemetadata.project.captureMethod.help"/>
                                         <label for="metadata.project.captureMethod" class="form-label" style="margin-bottom: 6px !important;">
                                             <@s.text name="datapackagemetadata.project.captureMethod"/> <span class="text-gbif-danger">&#42;</span>
                                         </label>
@@ -112,14 +116,14 @@
 
                                 <div class="col-lg-6">
                                     <#if (metadata.project.classificationLevel)??>
-                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}" requiredField=true />
+                                        <@select name="metadata.project.classificationLevel" help="i18n" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}" requiredField=true />
                                     <#else>
-                                        <@select name="metadata.project.classificationLevel" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="" requiredField=true />
+                                        <@select name="metadata.project.classificationLevel" help="i18n" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="" requiredField=true />
                                     </#if>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.sequenceInterval" i18nkey="datapackagemetadata.project.sequenceInterval" requiredField=true />
+                                    <@input name="metadata.project.sequenceInterval" help="i18n" i18nkey="datapackagemetadata.project.sequenceInterval" requiredField=true />
                                 </div>
                             </div>
                         </div>
