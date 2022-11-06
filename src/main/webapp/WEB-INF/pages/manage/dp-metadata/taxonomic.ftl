@@ -30,6 +30,8 @@
                 }
 
                 setTaxonItemIndex(newItem, ++taxonItems);
+
+                initInfoPopovers(newItem[0]);
             }
 
             function removeTaxonItem(event) {

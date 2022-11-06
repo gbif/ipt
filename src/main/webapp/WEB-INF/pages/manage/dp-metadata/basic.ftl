@@ -43,6 +43,8 @@
                 }
 
                 setContributorItemIndex(newItem, ++contributorItems);
+
+                initInfoPopovers(newItem[0]);
             }
 
             function addNewSourceItem(effects) {
@@ -56,6 +58,8 @@
                 }
 
                 setSourceItemIndex(newItem, ++sourcesItems);
+
+                initInfoPopovers(newItem[0]);
             }
 
             function addNewLicenseItem(effects) {
@@ -68,6 +72,8 @@
                 }
 
                 setLicenseItemIndex(newItem, ++licensesItems);
+
+                initInfoPopovers(newItem[0]);
             }
 
             function removeContributorItem(event) {
