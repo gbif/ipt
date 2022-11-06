@@ -16,7 +16,6 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
-import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -26,10 +25,10 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
-import org.gbif.metadata.eml.BBox;
 import org.gbif.registry.metadata.InvalidEmlException;
 
 import java.io.File;
@@ -38,7 +37,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -398,11 +396,12 @@ public interface ResourceManager {
   /**
    * Replace the datapackage metadata file in a resource by the provided file
    *
+   * @param action
    * @param resource
    * @param metadataFile
    * @param validate
    */
-  void replaceDatapackageMetadata(Resource resource, File metadataFile, boolean validate) throws ImportException;
+  void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, InvalidMetadataException;
 
   /**
    * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).

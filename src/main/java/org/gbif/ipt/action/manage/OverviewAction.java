@@ -1568,11 +1568,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public String replaceDatapackageMetadata() {
     try {
-      resourceManager.replaceDatapackageMetadata(resource, datapackageMetadataFile, validateDatapackageMetadata);
-      // TODO: 12/10/2022 add action message?
+      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata);
+      addActionMessage(getText("manage.overview.success.replace.metadata"));
       return SUCCESS;
     } catch (ImportException e) {
-      // TODO: 12/10/2022 log exception, add action error
+      LOG.error("Failed to replace data package metadata", e);
+      addActionError(getText("manage.overview.failed.replace.metadata"));
+      return ERROR;
+    } catch (IOException e) {
+      LOG.error("Failed to read data package metadata from file", e);
+      addActionError(getText("manage.overview.failed.replace.metadata.read"));
+      return ERROR;
+    } catch (org.gbif.ipt.service.InvalidMetadataException e) {
+      LOG.error("Validation failed for metadata file", e);
+      addActionError(getText("manage.overview.failed.replace.metadata.validation"));
       return ERROR;
     }
   }

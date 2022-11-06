@@ -110,6 +110,7 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -341,8 +342,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       emlValidator.validate(emlString);
   }
 
-  private void validateDatapackageMetadataFile(File metadataFile) {
-    // TODO: 12/10/2022 implement 
+  private void validateDatapackageMetadataFile(BaseAction action, File metadataFile) throws IOException, org.gbif.ipt.service.InvalidMetadataException {
+    DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
+    ObjectMapper jsonObjectMapper = new ObjectMapper();
+    DataPackageMetadata metadata = jsonObjectMapper.readValue(metadataFile, CamtrapMetadata.class);
+    validator.validate(action, metadata);
   }
 
   /**
@@ -739,9 +743,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public void replaceDatapackageMetadata(Resource resource, File metadataFile, boolean validate) throws ImportException {
+  public void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, org.gbif.ipt.service.InvalidMetadataException {
     if (validate) {
-      validateDatapackageMetadataFile(metadataFile);
+      validateDatapackageMetadataFile(action, metadataFile);
     }
     // copy metadata file to data directory (with name datapackage.json) and populate Eml instance
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile);
