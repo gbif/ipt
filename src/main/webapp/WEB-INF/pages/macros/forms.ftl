@@ -1,11 +1,13 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
+    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false withLabel=true maxlength=-1>
         <div>
-            <div class="d-flex text-smaller">
-                <#include "/WEB-INF/pages/macros/help_icon.ftl">
-                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-            </div>
+            <#if withLabel>
+                <div class="d-flex text-smaller">
+                    <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                </div>
+            </#if>
             <input
                     class="form-control"
                     type="${type}"
