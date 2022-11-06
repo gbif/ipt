@@ -11,6 +11,8 @@ This page allows a user having the Admin role to make and change settings for th
 
 image::ipt2/administration/IPTAdminConfigIPT.png[]
 
+* *IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.
+* *IPT administrator email* - This is the email shown on the login page to users who have forgotten their password.  If it is not set, the first administrator user's email is used.
 * [[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.
 +
 --
@@ -32,6 +34,7 @@ The IPT tests the Public URL for accessibility from the client computer when the
 * *Enable GBIF Analytics* - Check this box if you would like to enable GBIF to track this instance of the IPT with Google Analytics.
 * *Debugging Mode* - Check this box if you would like the IPT to begin logging in the verbose debugging mode. Debugging mode is generally unnecessary unless you are trying to track a problem with the IPT. The IPT log file is located in the file debug.log in the IPT's data directory. The data directory is set during the first step in the installation process (see the Getting Started Guide). Refer to the information under the "View IPT logs" heading of the "Administration Menus" section for an easy way for users having the Admin role to view the debug.log file.
 * *Archival Mode* - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.
+* *Number of archived versions* - When archival mode is enabled, setting this configuration value to a number will keep that many old versions, but automatically delete older versions.
 * *IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.
 
 == Publish all resources

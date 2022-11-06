@@ -408,10 +408,10 @@
                                             <div id="date-${temporalCoverage_index}" class="typeForm col-12">
                                                 <div class="row g-3">
                                                     <div class="col-lg-6">
-                                                        <@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <@input date=true i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -419,7 +419,7 @@
                                         <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                                 </div>
 
                                             </div>
@@ -506,10 +506,10 @@
                             <div id="date-99999" class="typeForm col-12" style="display:none">
                                 <div class="row g-3">
                                     <div class="col-lg-6">
-                                        <@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                     </div>
                                     <div class="col-lg-6">
-                                        <@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                     </div>
                                 </div>
                             </div>
@@ -517,7 +517,7 @@
                             <!-- SINGLE DATE -->
                             <div id="single-99999" class="typeForm col-lg-6" style="display:none">
                                 <div>
-                                    <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"} />
+                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"} />
                                 </div>
                             </div>
 

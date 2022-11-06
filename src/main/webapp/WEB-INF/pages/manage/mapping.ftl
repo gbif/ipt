@@ -297,7 +297,7 @@
                     <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
                         dc:${p.name}
                     </#if>
-                    <#if p.required>&#42;</#if>
+                    <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
                 </strong>
             </div>
 

@@ -5,5 +5,5 @@
     <#else>
         <@s.text name="${i18nkey}"/>
     </#if>
-    <#if requiredField>&#42;</#if>
+    <#if requiredField><span class="text-gbif-danger">&#42;</span></#if>
 </label>

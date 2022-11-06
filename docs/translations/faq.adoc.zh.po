@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2022-10-14 20:14\n"
+"POT-Creation-Date: 2022-11-03 13:50+0000\n"
+"PO-Revision-Date: 2022-11-03 14:10\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -67,7 +67,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:16
-msgid "Apache Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the http://wiki.apache.org/tomcat/FAQ/Memory[Tomcat FAQ]"
+msgid "Some default configurations of Apache Tomcat come with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 4GB of RAM, the available memory should be increased to 2GB. For more information on how to do it, see the https://cwiki.apache.org/confluence/display/TOMCAT/Memory[Tomcat FAQ]"
 msgstr ""
 
 #. type: Plain text
@@ -78,7 +78,7 @@ msgstr ""
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:21
 #, no-wrap
-msgid "export CATALINA_OPTS=\"-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSize=1024M\"\n"
+msgid "export CATALINA_OPTS=\"-Xmx2048M\"\n"
 msgstr ""
 
 #. type: Title ===

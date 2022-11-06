@@ -859,6 +859,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 
 /* Style form elements START */
+.form-label {
+    font-size: 0.875rem !important;
+    font-weight: 500;
+}
+
 .form-control, .form-select, .form-control:focus, .form-select:focus {
     color: #4e565f;
 }

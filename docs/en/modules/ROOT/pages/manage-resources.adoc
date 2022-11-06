@@ -63,7 +63,7 @@ image::ipt2/manage/IPTManageResourceOverview.png[]
 This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:
 
 ==== File as data source
-The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click on the button labelled "Browse…" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Browse…" button.
+The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Select "File" from the dropdown box and click on the button labelled "Browse…" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Browse…" button.
 
 image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
@@ -263,6 +263,8 @@ This area of the Resource Overview page allows a user to edit the resource metad
 
 image::ipt2/manage/IPTManageResourceMetadataMissing.png[]
 
+An existing resource EML file can be uploaded, replacing any existing metadata.  To do this, click the "Browse" button and choose the EML file.
+
 Clicking on the "Edit" button opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.
 
 image::ipt2/manage/IPTManageResourceMetadataPagesList.png[width=168]
@@ -274,7 +276,7 @@ All metadata fields on this page are required. Please note for each contact you 
 
 image::ipt2/manage/IPTManageResourceMetadataBasicMetadata.png[]
 
-* *Title* - the Title for the resource. This title will appear as the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.
+* *Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  "Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)" is a good title, "aves_tz_snm" is not! Avoid using filenames or acronyms known only within your organization.
 * *Publishing Organization* - the organization responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's rights holder and publishing organization when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organization does not appear in the list it may be added by the IPT Administrator (see the information under the "Configure Organizations" heading in the "Administration Menu" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
 * *Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.
 * *Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field "other" can be selected. Review the information under the "Configure Core Types and Extensions" heading of the "Administration Menu" section.
@@ -530,13 +532,8 @@ This area of the Resource Overview page allows a user to publish a version of th
 
 image::ipt2/manage/IPTManageResourcePublish.png[]
 
-The *left-hand* section controls how resource versions are published. The publish button can be used to publish new versions on demand, or auto-publishing can be enabled to publish new versions on a schedule. For explanations of the options in this section, refer to the information below.
+Click on the button labelled "Publish" to trigger publishing a new version. The button labelled "Publish" will be enabled if
 
-image::ipt2/manage/IPTManageResourcePublishLeftSide2.png[]
-
-* *Publish on demand*: - simply click on the button labelled "Publish" to trigger publishing a new version. The button labelled "Publish" will be enabled if
-+
---
 . the required metadata for the resource are complete, and
 . the user has the role "Manager with/without registration rights".
 
@@ -547,27 +544,20 @@ image::ipt2/manage/IPTManageResourcePublishMajor.png[]
 image::ipt2/manage/IPTManageResourcePublishMinor.png[]
 
 The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.
---
 
-* *Auto-publishing*: - to turn on automated publishing, select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and then press the publish button. When automated publishing is on, the publishing interval and next published date are clearly displayed in the published versions section. To change the publishing interval, select a different publishing interval and press publish. To turn off automated publishing, select "Turn off" and then press publish. In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
-+
---
-The *right-hand* section contains a table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
+On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
 
 .This demonstrates a major version change since the pending version has been reserved a new DOI:
 image::ipt2/manage/IPTManageResourcePublishTable.png[]
 
 .This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
 image::ipt2/manage/IPTManageResourcePublishTable2.png[]
---
 
-* *Version*: - the version number tracking the major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the "View" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
+* *Version*: - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the "View" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
 * *Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.
 * *DOI*: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
-* *Data License*: - the license applied to the resource. In order to register the resource with GBIF, the resource manager must ensure a license equivalent to either CC0, CC-BY, or CC-BY-NC is applied to the resource. GBIF's licensing policy is described https://www.gbif.org/terms/licences[here].
 * *Published on*: - to date the current version was published on / the date the pending version will be published on.
 * *Publication log*: - click the download button to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.
-* *Publication report*: - the publication summary of the current version - not applicable to the pending version.
 
 ==== Publishing steps
 
@@ -614,6 +604,20 @@ A page entitled Publishing Status will show status messages highlighting the suc
 
 image::ipt2/manage/IPTManageResourcePublishingStatus.png[]
 
+=== Auto-publishing
+
+To turn on automated publishing, select "Edit" in the Auto-publishing section.
+
+image::ipt2/manage/IPTManageResourceAutoPublishingStatus.png[]
+
+Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press "Save".
+
+image::ipt2/manage/IPTManageResourceAutoPublishingSetup.png[]
+
+When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The "Edit" button can be used to change or disable auto-publishing.
+
+In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
+
 === Visibility
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
@@ -653,7 +657,38 @@ image::ipt2/manage/IPTManageResourceVisibilityRegistered.png[]
 If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
 --
 
-=== Migrate a Resource
+=== Networks
+
+This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)].
+
+image::ipt2/manage/IPTManageResourceNetworks.png[]
+
+To add the resource to a network, select it from the dropdown list and click "Add".  To remove it, click the icon on the right of the network name.
+
+IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk.
+
+=== Resource Managers
+
+image::ipt2/manage/IPTManageResourceManagers.png[]
+
+Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labelled "Delete" to the right of the email address in the manager listing.
+
+image::ipt2/manage/IPTManageResourceManagerAdded.png[]
+
+=== Delete a Resource
+
+Clicking on the button labelled "Delete" on the Resource Overview page will show two options.
+
+* *Delete from the IPT and GBIF.org*
+* *Delete from the IPT only (Orphan)*
+
+image::ipt2/manage/IPTManageResourceDelete.png[]
+
+Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org.
+
+Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the "resources" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the "Integrate an existing resource configuration folder" section under the "Create a New Resource" heading in the "Manage Resources Menu" section.
+
+== Migrate a Resource
 
 There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID.
 
@@ -682,19 +717,3 @@ image::ipt2/manage/IPTManageResourcePublishOverwrite.png[]
 .. the name and URL (or GBIF Registry UUID) of your IPT
 .. the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)
 .. (if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry
-
-=== Resource Managers
-
-image::ipt2/manage/IPTManageResourceManagers.png[]
-
-Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labelled "Delete" to the right of the email address in the manager listing.
-
-image::ipt2/manage/IPTManageResourceManagerAdded.png[]
-
-=== Delete a Resource
-
-Clicking on the button labelled "Delete" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system.  *It will also delete the resource from GBIF.org!*
-
-Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the "resources" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the "Integrate an existing resource configuration folder" section under the "Create a New Resource" heading in the "Manage Resources Menu" section.
-
-There is currently no simple way to remove a resource from the IPT but keep it in GBIF.org (to intentionally "orphan" the dataset).  A workaround, requiring access to the server, is to move/delete the resource directory (as above) and restart the IPT.  Issue: https://github.com/gbif/ipt/issues/1461
