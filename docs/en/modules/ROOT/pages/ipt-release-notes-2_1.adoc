@@ -1,5 +1,7 @@
 = IPT Version 2.1 Release Notes
 
+include::partial$version-outdated.adoc[]
+
 == Upgrade instructions
 
 . Performing the upgrade

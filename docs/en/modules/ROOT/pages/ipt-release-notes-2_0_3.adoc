@@ -1,5 +1,7 @@
 = GBIF Integrated Publishing Toolkit 2.0.3: Release Notes
 
+include::partial$version-outdated.adoc[]
+
 == Upgrade instructions
 
 To upgrade from an earlier version of the IPT, this version requires the Administrator to press the  "Publish all resources" button on the Administration page immediately after specifying the location of the existing IPT data directory and pressing the "continue" button.

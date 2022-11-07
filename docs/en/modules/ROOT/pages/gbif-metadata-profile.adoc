@@ -1,5 +1,7 @@
 = GBIF Metadata Profile – How-to Guide
 
+include::partial$version-outdated.adoc[]
+
 Version 2.1.
 
 image::figures/cover_art_adiatum.png[]

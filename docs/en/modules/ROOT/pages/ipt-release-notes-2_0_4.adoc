@@ -1,5 +1,7 @@
 = GBIF Integrated Publishing Toolkit 2.0.4: Release Notes
 
+include::partial$version-outdated.adoc[]
+
 == Upgrade instructions
 
 . Performing the upgrade

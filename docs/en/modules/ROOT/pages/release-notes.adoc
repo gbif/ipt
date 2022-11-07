@@ -1,5 +1,7 @@
 = Release Notes
 
+include::partial$version-outdated.adoc[]
+
 *IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.4.0, 2.4.1, 2.4.2*
 
 // Note: after the first release of the IPT tech-docs, all old release notes can be removed, leaving only this page to document upgrading to the latest version.

@@ -1,4 +1,7 @@
 = About the IPT
+
+include::partial$version-outdated.adoc[]
+
 == Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
 

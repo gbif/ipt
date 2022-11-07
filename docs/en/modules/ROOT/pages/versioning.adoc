@@ -1,5 +1,7 @@
 = Dataset Versioning Policy
 
+include::partial$version-outdated.adoc[]
+
 The IPT carefully tracks the major and minor version changes for a dataset so that each published version can be unambiguously identified, and users can easily see when significant changes to the dataset occurred. The relationship between all versions is visible in the version history table (on its homepage) and also gets documented in the DOI metadata.
 
 The versioning policy that the IPT uses is described below. It is important to note that the IPT’s versioning policy is based on http://schema.datacite.org/[DataCite's recommendations], which are based on the work of the http://wiki.esipfed.org/index.php/Interagency_Data_Stewardship/Citations/provider_guidelines#Note_on_Versioning_and_Locators[Earth Science Information Partners (ESIP)].

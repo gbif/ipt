@@ -1,5 +1,7 @@
 = Quick Reference
 
+include::partial$version-outdated.adoc[]
+
 == Introduction
 
 This Quick Reference Guide explains in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the Getting Started Guide. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.

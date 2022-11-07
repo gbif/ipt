@@ -1,5 +1,7 @@
 = Install Tomcat on Linux
 
+include::partial$version-outdated.adoc[]
+
 Tomcat is usually installed using distribution packages.
 
 For example, on CentOS or RedHat systems, `yum install tomcat`.

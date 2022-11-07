@@ -9,5 +9,6 @@ asciidoc:
     idprefix: '@'
     idseparator: '-@'
     manual-version: 2.4
+    latest-manual-version: 2.6
     # EML
     eml-location: http://web.archive.org/web/2013if_/http://knb.ecoinformatics.org/software/eml/eml-2.1.1

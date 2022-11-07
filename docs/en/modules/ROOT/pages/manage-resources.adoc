@@ -1,4 +1,6 @@
-# Manage Resources Menu
+= Manage Resources Menu
+
+include::partial$version-outdated.adoc[]
 
 This menu is visible to users with an Admin or Manager role.
 

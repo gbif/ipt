@@ -1,5 +1,7 @@
 = Data Preparation
 
+include::partial$version-outdated.adoc[]
+
 == Things to consider
 * create a local identifier if not existing
 * create full dwc:scientificName including authorship

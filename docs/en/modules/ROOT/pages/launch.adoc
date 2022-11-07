@@ -1,5 +1,7 @@
 = New IPT Version Launch Procedure
 
+include::partial$version-outdated.adoc[]
+
 == Introduction
 
 A checklist documenting the ordered steps of the release and launch procedure of the IPT. Learn as you go – review and adjust the process to streamline it.

@@ -1,5 +1,7 @@
 = How to publish biodiversity data through GBIF.org
 
+include::partial$version-outdated.adoc[]
+
 GBIF supports publication, discovery and use of four classes of data:
 
 * xref:resource-metadata.adoc[Resource metadata]

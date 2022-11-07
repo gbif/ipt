@@ -1,5 +1,7 @@
 = Data Hosting Centres
 
+include::partial$version-outdated.adoc[]
+
 == Introduction
 
 A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through https://www.gbif.org[GBIF.org].

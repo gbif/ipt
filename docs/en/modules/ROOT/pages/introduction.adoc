@@ -1,5 +1,7 @@
 = How to Use this Manual
 
+include::partial$version-outdated.adoc[]
+
 This manual has three main components: an introduction with background information, a number of step-by-step tutorials and a complete reference guide including a "getting started" section and sections describing in detail the different elements of the tool.
 
 All users are encouraged to review this introductory part and then refer to the different specific sections depending on their role(s) regarding the IPT installation. The IPT (and this manual) differentiates three type of users:

@@ -2,6 +2,8 @@
 
 *Versión del IPT: 2.3*
 
+include::partial$version-outdated.adoc[]
+
 == Introducción
 === Acerca del IPT de GBIF
 
@@ -35,7 +37,7 @@ Se invita a todos los usuarios a revisar esta sección introductoria y a que pos
 * *Usuarios básicos*: Sólo podrán navegar a través de los recursos publicados en una instalación del IPT. En futuras versiones del IPT, estos usuarios adquirirán derechos adicionales. Para los usuarios básicos, el IPT funcionará como una aplicación web sencilla, de manera que no se incluirá una explicación más detallada en este manual.
 
 == Guía de Instalación
-Esta "Guía de Instalación" está dirigida a aquellos interesados quienes por primera vez, instalarán y ejecutarán una instancia IPT. Si desea ver una instalación funcional del IPT, puede utilizar el ejemplo de prueba para el público de la última versión general en http://ipt.gbif.org/. De ser así, deberán consultar la <<Guía de Referencia Rápida>> para obtener detalles sobre cómo utilizar las pantallas que visualizarán. Los desarrolladores que deseen trabajar con la última revisión del código fuente deberán consultar la sección {latest-manual}/developer-guide[Cómo contribuir (en inglés)] del sitio de la wiki del IPT de GBIF en Google Code.
+Esta "Guía de Instalación" está dirigida a aquellos interesados quienes por primera vez, instalarán y ejecutarán una instancia IPT. Si desea ver una instalación funcional del IPT, puede utilizar el ejemplo de prueba para el público de la última versión general en http://ipt.gbif.org/. De ser así, deberán consultar la <<Guía de Referencia Rápida>> para obtener detalles sobre cómo utilizar las pantallas que visualizarán. Los desarrolladores que deseen trabajar con la última revisión del código fuente deberán consultar la sección xref:{latest-manual-version}@/developer-guide.adoc[Cómo contribuir] del sitio de la wiki del IPT de GBIF en Google Code.
 
 === Requerimientos
 ==== Conexión a Internet
@@ -56,17 +58,17 @@ El espacio requerido por la aplicación del IPT es menor a 20 MB. El contenido d
 El servidor que aloja el IPT debe tener una versión de Java 6 o más reciente, instalada y en funcionamiento antes de la instalación del IPT.
 
 ==== Contenedor de servlet
-La aplicación IPT viene empaquetada con Jetty y por lo tanto no requiere un contenedor de servlets adicional. No obstante, el IPT puede ser desplegado en otro contenedor de servlets (por ejemplo Tomcat) que ya esté en uso. Información acerca de cómo utilizar diferentes contenedores de servlets con el IPT, se puede encontrar {latest-manual}server-preparation[aquí (en inglés)].
+La aplicación IPT viene empaquetada con Jetty y por lo tanto no requiere un contenedor de servlets adicional. No obstante, el IPT puede ser desplegado en otro contenedor de servlets (por ejemplo Tomcat) que ya esté en uso. Información acerca de cómo utilizar diferentes contenedores de servlets con el IPT, se puede encontrar xref:{latest-manual-version}@server-preparation.adoc[aquí].
 
 === Instalación del IPT
 ==== Preparar el Servidor
 Antes de instalar el IPT, asegúrese de que el servidor previsto para el alojamiento cumpla con las especificaciones mínimas que se describen en las secciones del capítulo de "Requerimientos".
 
 ==== Descargar el IPT
-La última versión del software del IPT está disponible para su descarga como un archivo con el nombre ipt.war en la  https://www.gbif.org/es/ipt[página del IPT]. Se deberá descargar este archivo en el servidor en el que se ejecutará el IPT. Los desarrolladores o quienes deseen utilizar la última revisión del código fuente, deberán consultar la sección “Desarrolladores” del sitio de la wiki del IPT de GBIF en Google Code {latest-manual}developer-guide[Cómo Contribuir (en inglés)].
+La última versión del software del IPT está disponible para su descarga como un archivo con el nombre ipt.war en la  https://www.gbif.org/es/ipt[página del IPT]. Se deberá descargar este archivo en el servidor en el que se ejecutará el IPT. Los desarrolladores o quienes deseen utilizar la última revisión del código fuente, deberán consultar la sección “Desarrolladores” del sitio de la wiki del IPT de GBIF en Google Code xref:{latest-manual-version}@developer-guide.adoc[Cómo Contribuir].
 
 ==== Desplegar el IPT en el contenedor de servlet
-Siga el proceso habitual para desplegar una aplicación web en un contenedor de servlets. Una página wiki con mayor información acerca de instalaciones específicas está disponible {latest-manual}server-preparation.adoc[aquí (página en inglés)].
+Siga el proceso habitual para desplegar una aplicación web en un contenedor de servlets. Una página wiki con mayor información acerca de instalaciones específicas está disponible xref:{latest-manual-version}@server-preparation.adoc[aquí].
 
 ==== Ejecutar la aplicación del IPT
 Un despliegue exitoso del IPT en el contenedor de servlets, hará que el IPT esté disponible a través de un buscador web en una URL determinada por la URL base del servlet, seguida de /ipt (por ejemplo, http://localhost:8080/ipt). Si la instalación fue exitosa, la página de inicio de la configuración del IPT aparecerá en un buscador utilizando la URL del IPT.
@@ -201,7 +203,7 @@ image::ipt2/v23/es/Control-UploadSourceData.png[]
 El IPT tiene un límite de 100MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 100MB, se recomiendan las siguientes alternativas:
 
 * Comprimir el archivo (con zip o gzip)
-* Cargar los datos a una de las {latest-manual}database-connection.adoc[bases de datos soportadas por el IPT (página en inglés)]
+* Cargar los datos a una de las xref:{latest-manual-version}@database-connection.adoc[bases de datos soportadas por el IPT]
 * Dividir el archivo en varias partes
 
 ==== Controles que aparecen en todas las páginas
@@ -222,7 +224,7 @@ image::ipt2/v23/es/IPTHeaderLoggedIn.png[]
 * *Iniciar sesión* - Un usuario que se ha creado en esta instancia del IPT, puede iniciar sesión ingresando la dirección de correo electrónico y contraseña en la esquina superior derecha de la página, y haciendo clic en el vínculo "Iniciar sesión". Nuevos usuarios podrán ser creados únicamente por un usuario existente que tiene el rol Administrador. El proceso de creación de los nuevos usuarios se explica en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración". El proceso de iniciar el IPT asignará el rol Administrador al primer usuario.
 * *Cerrar sesión* - Si alguien inicia sesión en el IPT, la dirección de correo electrónico de la persona que se registra se mostrará en la esquina superior derecha de la página, junto con el enlace "Cerrar sesión".
 * *Cuenta* - Para visualizar este enlace y la página a la que conduce, debe iniciar sesión en el IPT. La página muestra los detalles de la información de la cuenta para la persona que inicia sesión en el IPT y permite que estos sean cambiados. Los detalles de los elementos de esta página se podrán encontrar en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración".
-* *Selección del idioma* - En la esquina superior derecha de la página está el nombre del idioma en el que se visualiza actualmente el IPT. El IPT se visualizará predeterminadamente en idioma inglés. El idioma de la interfaz del usuario se puede cambiar haciendo clic en el idioma deseado, si está disponible. GBIF busca activamente que el IPT sea traducido a otros idiomas. Para obtener más información, consulte la sección {latest-manual}translations.adoc[Cómo contribuir (página en ingés)] del sitio de la wiki del IPT de GBIF en Google Code.
+* *Selección del idioma* - En la esquina superior derecha de la página está el nombre del idioma en el que se visualiza actualmente el IPT. El IPT se visualizará predeterminadamente en idioma inglés. El idioma de la interfaz del usuario se puede cambiar haciendo clic en el idioma deseado, si está disponible. GBIF busca activamente que el IPT sea traducido a otros idiomas. Para obtener más información, consulte la sección xref:{latest-manual-version}@translations.adoc[Cómo contribuir] del sitio de la wiki del IPT de GBIF en Google Code.
 
 
 ===== Pie de Página
@@ -382,7 +384,7 @@ Si la fuente de datos se encuentra en varios archivos de texto, el proceso descr
 
 ====== Base de Datos como fuente de datos
 
-El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de {latest-manual}database-connection.adoc[Bases de Datos Soportadas por el IPT] disponible a través del sitio de la wiki del IPT de GBIF en Google Code. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área "Fuente de Datos" de la página "Vista General del Recurso". Esto abrirá una página detallada de Fuente de Base de Datos.
+El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de xref:{latest-manual-version}@database-connection.adoc[Bases de Datos Soportadas por el IPT] disponible a través del sitio de la wiki del IPT de GBIF en Google Code. Para configurar una base de datos como fuente de datos, haga clic en el botón "Conectar a BD" en la columna de la izquierda del área "Fuente de Datos" de la página "Vista General del Recurso". Esto abrirá una página detallada de Fuente de Base de Datos.
 
 La página detallada de Fuente de Base de Datos muestra el nombre del recurso, junto con un resumen de las características de la base de datos (opción de lectura, número de columnas detectadas) y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estas opciones para analizar y obtener una vista previa de los datos.
 
@@ -534,7 +536,7 @@ image::ipt2/v23/es/IPTManageResourceMetadataBasicMetadata.png[]
 * *Subtipo* - El subtipo del recurso. Las opciones de este elemento dependen del elemento Tipo. Si el subtipo deseado no se encuentra en la lista, puede dejar el campo con la selección por defecto.
 * *Idioma de los Metadatos* - El idioma en que está escrito el documento de los metadatos.
 * *Idioma de los Datos* - El idioma principal de los datos. (No el documento de los metadatos).
-* *Licencia de los datos* - La licencia que se aplica a un conjunto de datos proporciona una forma estandarizada de definir el uso apropiado de su trabajo. GBIF invita a los publicadores a adoptar la licencia menos restrictiva posible entre tres opciones de lectura mecánica (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), para fomentar de la manera más amplia posible el uso y aplicación de los datos. Infórmese https://www.gbif.org/es/terms/licences[aquí]. Si no es posible que usted elija una de las tres opciones y su conjunto de datos contiene registros biológicos, no podrá registrar su conjunto de datos en GBIF o hacerlo globalmente visible a través de GBIF.org. Si considera que no puede seleccionar alguna de las tres opciones, póngase en contacto con el Secretariado de GBIF en participation@gbif.org. Para más información acerca de cómo aplicar una licencia a nivel de registro consulte {latest-manual}apply-license.adoc[How To Apply a License To a Dataset] en la página del wiki del IPT. Para cambiar el set de licencias que aparecen por predeterminadas consulte {latest-manual}license.adoc[How To Add a New License] en la página del wiki del IPT.
+* *Licencia de los datos* - La licencia que se aplica a un conjunto de datos proporciona una forma estandarizada de definir el uso apropiado de su trabajo. GBIF invita a los publicadores a adoptar la licencia menos restrictiva posible entre tres opciones de lectura mecánica (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), para fomentar de la manera más amplia posible el uso y aplicación de los datos. Infórmese https://www.gbif.org/es/terms/licences[aquí]. Si no es posible que usted elija una de las tres opciones y su conjunto de datos contiene registros biológicos, no podrá registrar su conjunto de datos en GBIF o hacerlo globalmente visible a través de GBIF.org. Si considera que no puede seleccionar alguna de las tres opciones, póngase en contacto con el Secretariado de GBIF en participation@gbif.org. Para más información acerca de cómo aplicar una licencia a nivel de registro consulte xref:{latest-manual-version}@apply-license.adoc[How To Apply a License To a Dataset] en la página del wiki del IPT. Para cambiar el set de licencias que aparecen por predeterminadas consulte xref:{latest-manual-version}@license.adoc[How To Add a New License] en la página del wiki del IPT.
 * *Descripción* - Una breve descripción del recurso que está siendo documentado, separado en párrafos. Debe proveer suficiente información para ayudar a los potenciales usuarios de los datos a entender si estos pueden ser de su interés.
 * *Contactos del Recurso* - La lista de contactos representa a las personas y organizaciones que custodian o deben ser contactadas para obtener más información sobre el recurso, de la misma manera son aquellos que deberían resolver los posibles problemas con el recurso o sus datos.
 +
@@ -556,7 +558,7 @@ image::ipt2/v23/es/IPTManageResourceMetadataResourceContact.png[]
 * *Teléfono* - El número de teléfono internacional preferido del contacto del recurso.
 * *Correo Electrónico* - La dirección de correo electrónica preferida del contacto del recurso.
 * *Página Web* - La URL a una página web del contacto del recurso.
-* *Perfil en línea* - La URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn, y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte {latest-manual}user-id[How To Add a New User ID Directory] en la página del wiki del IPT.
+* *Perfil en línea* - La URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn, y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte xref:{latest-manual-version}@user-id.adoc[How To Add a New User ID Directory] en la página del wiki del IPT.
 * *Identificador Personal* - Un ID ORCID de 16 dígitos (por ejemplo 0000-0002-1825-0097) u otro identificador que enlaza esta persona con el repositorio del perfil en línea especificado.
 * *Creadores del Recurso* - La lista de creadores representa a las personas y organizaciones que han creado el recurso, en orden de prioridad. La lista será utilizada para generar la referencia del recurso (si la generación automática está activada). Si la persona o la organización es la misma del contacto del recurso, todos los detalles anteriores pueden ser copiados a los campos equivalentes en la sección creadores del recurso haciendo clic en el enlace "Copiar los datos del contacto del recurso".
   El formato de creadores del recurso tiene los mismos campos obligatorios que el contacto del recurso. Consulte las explicaciones de los campos que se encuentran en la parte superior en los detalles del Contacto del recurso. *Nota*: la personasn u organizaciones responsables de la creación del recurso, como aparece en el IPT y para la publicación efectiva del recurso pueden agregarse como partes asociadas con el rol de 'publicador'.
@@ -652,7 +654,7 @@ image::ipt2/v23/es/IPTManageResourceMetadataProjectData.png[]
 * *Personas Asociadas al Proyecto* - Esta lista representa a las personas involucradas en el proyecto.
 * *Nombre* - El nombre de la persona asociada al proyecto.
 * *Apellido* - El apellido de la persona asociada al proyecto.
-* *Perfil en línea* - La URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn, y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte {latest-manual}user-id.adoc[How To Add a New User ID Directory] en la página del wiki del IPT.
+* *Perfil en línea* - La URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn, y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte xref:{latest-manual-version}@user-id.adoc[How To Add a New User ID Directory] en la página del wiki del IPT.
 * *Identificador Personal* - Un ID ORCID de 16 dígitos (por ejemplo 0000-0002-1825-0097) u otro identificador que enlaza esta persona con el repositorio del perfil en línea especificado.
 * *Rol* - El rol de la persona asociada al proyecto. Haga clic en el ícono de información al lado izquierdo de la caja de selección para ver las descripciones de los posibles roles. Elija el rol más apropiado para la persona que nombró en la parte superior.
 
@@ -683,7 +685,7 @@ image::ipt2/v23/es/IPTManageResourceMetadataCitations.png[]
 +
 " Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, aniones M, Belisle P, C Gendreau, Shorthouse D (2010) Base de datos de las plantas vasculares de Canadá. Versión 1.2. Universite de Montreal Biodiversity Centre. Conjunto de datos/Lista de especies. http://Doi.org/10.5886/1bft7W5f"
 
-* *Generación automática Desactivada - Activar* - Active la generación automática para que el IPT autogenere la referencia por usted. El formato de la referencia utilizado en la generación automática se basa en el formato recomendado: referencia de DataCite y satisface la "Joint Declaration of Data Citation Principle". Este formato incluye un número de versión, que es importante especialmente para los conjuntos de datos que se actualizan continuamente. Puede encontrar más información acerca del formato de referencias en la página del wiki del IPT del formato de referencia {latest-manual}citation[IPT Citation Format].
+* *Generación automática Desactivada - Activar* - Active la generación automática para que el IPT autogenere la referencia por usted. El formato de la referencia utilizado en la generación automática se basa en el formato recomendado: referencia de DataCite y satisface la "Joint Declaration of Data Citation Principle". Este formato incluye un número de versión, que es importante especialmente para los conjuntos de datos que se actualizan continuamente. Puede encontrar más información acerca del formato de referencias en la página del wiki del IPT del formato de referencia xref:{latest-manual-version}@citation.adoc[IPT Citation Format].
 * *Identificador de la Referencia del Recurso* -Un DOI, URI u otro identificador persistente que se resuelva en el conjunto de datos en línea. Se recomienda incluir el identificador en la citación. Tenga en cuenta que si el recurso tiene un DOI asignado (utilizando el IPT), el IPT establece el DOI como el identificador de la cita y no puede ser editado.
 * *Referencias Bibliográficas* - referencias de otros recursos relacionados con lo que se utilizaron en la creación de este recurso.
 * *Añadir nueva referencia bibliográfica* -  Haciendo clic sobre este enlace, se adicionan cuadros de texto requeridos para una cita adicional en la bibliografía.
@@ -793,7 +795,7 @@ image::ipt2/v23/es/IPTManageResourcePublishTable.png[]
 .Muestra los cambios menores en la versión, ya que a la versión pendiente se le ha asignado el mismo DOI de la versión actual:
 image::ipt2/v23/es/IPTManageResourcePublishTable2.png[]
 
-* *Versión*: - El número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el administrador del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic {latest-manual}versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver" para ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en image:ipt2/v23/es/Checkmark.png[] para confirmar que se utilice el http://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en "Vista previa" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el administrador del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.
+* *Versión*: - El número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el administrador del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic xref:{latest-manual-version}@versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver" para ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en image:ipt2/v23/es/Checkmark.png[] para confirmar que se utilice el http://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en "Vista previa" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el administrador del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.
 * *Visibilidad*: - La visibilidad de la versión pendiente. Para poder registrar el recurso a través de GBIF, el administrador del recurso debe asegurarse de que la versión esté pública.
   Para asignar un DOI al recurso, el administrador del recurso debe asegurarse de que la versión esté pública.
 * *DOI*: - El DOI de la versión pendiente. El DOI de la versión actual nunca podrá ser cambiado, sin embargo, el DOI de la versión pendiente puede ser reservado o eliminado. Para más información acerca de cómo reservar, eliminar, registrar, desactivar y reactivar los DOIs, por favor remítase a la sección a continuación.
@@ -821,7 +823,7 @@ El IPT realiza las siguientes validaciones sobre el archivo de datos dentro del 
 http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario del Tipo de Darwin Core].
 
 ====== Asignar DOIs a los Recursos
-Una práctica adecuada es asignarle un nuevo DOI al recurso cada vez que sea sometido a un cambio científicamente significativo. Para permitir que el IPT asigne DOIs a los recursos, el administrador del IPT debe configurar primero una organización asociada al IPT con una cuenta en DataCite o EZID. Consulte la sección "Configurar Organizaciones" para ayuda sobre esta opción. De otra forma los botones del DOI en la sección de Versiones Publicadas estarán ocultos. Una vez se hayan activado las cuentas en DataCite o EZID en el IPT, los administradores del recurso podrán reservar, eliminar, registrar, desactivar y reactivar los DOIs de sus recursos utilizando esta cuenta. Cada una de estas operaciones de con DOIs son explicadas detalladamente a continuación. Para obtener más ayuda acerca de cómo el IPT asigna DOIs a los conjuntos de datos, consulte la página de {latest-manual}doi-workflow.adoc[Flujo de trabajo de los DOIs del IPT] en el wiki del IPT.
+Una práctica adecuada es asignarle un nuevo DOI al recurso cada vez que sea sometido a un cambio científicamente significativo. Para permitir que el IPT asigne DOIs a los recursos, el administrador del IPT debe configurar primero una organización asociada al IPT con una cuenta en DataCite o EZID. Consulte la sección "Configurar Organizaciones" para ayuda sobre esta opción. De otra forma los botones del DOI en la sección de Versiones Publicadas estarán ocultos. Una vez se hayan activado las cuentas en DataCite o EZID en el IPT, los administradores del recurso podrán reservar, eliminar, registrar, desactivar y reactivar los DOIs de sus recursos utilizando esta cuenta. Cada una de estas operaciones de con DOIs son explicadas detalladamente a continuación. Para obtener más ayuda acerca de cómo el IPT asigna DOIs a los conjuntos de datos, consulte la página de xref:{latest-manual-version}@doi-workflow.adoc[Flujo de trabajo de los DOIs del IPT] en el wiki del IPT.
 
 * *Reservar*: - Un DOI puede ser reservado para un recurso. Esta operación varía un poco dependiendo de si al recurso ya le ha sido asignado un DOI o no.
 * *Recurso sin un DOI asignado*: - Un DOI puede ser reservado para un recurso luego de que los metadatos obligatorios hayan sido ingresados. Para reservar un DOI, presione el botón "Reservar" en la sección de Versiones Publicadas. Para reutilizar un DOI existente, ingréselo al campo de Identificador del Recurso en los metadatos del recurso, y luego presione el botón "Reservar" en la sección de Versiones Publicadas. Si un recurso está disponible públicamente y con un DOI reservado, la siguiente publicación resultará en una versión mayor i del DOI será registrado. De lo contrario si un recurso es privado y tiene un DOI reservado, la siguiente publicación resultará en una versión menor del recurso y el DOI NO será registrado. Tenga en cuenta que hasta que un DOI no sea registrado este puede ser eliminado.
@@ -1133,7 +1135,7 @@ Este manual del usuario se publica bajo la Licencia Creative Commons Atribución
 
 == Recursos
 === Documentación Darwin Core Archive
-Los detalles sobre la estructura de un archivo Darwin Core Archive, abreviado DWCA, se pueden encontrar en la sección "Guía de texto" de la página web de Darwin Core: http://rs.tdwg.org/dwc/terms/guides/text/. Para más información sobre el uso de DWCA por parte del IPT, remítase a este documento {latest-manual}darwin-core.adoc[wiki del IPT de GBIF en Google Code].
+Los detalles sobre la estructura de un archivo Darwin Core Archive, abreviado DWCA, se pueden encontrar en la sección "Guía de texto" de la página web de Darwin Core: http://rs.tdwg.org/dwc/terms/guides/text/. Para más información sobre el uso de DWCA por parte del IPT, remítase a este documento xref:{latest-manual-version}@darwin-core.adoc[wiki del IPT de GBIF en Google Code].
 
 === Mesa de Ayuda GBIF
 Envíe mensajes de correo electrónico a helpdesk@gbif.org para reportar problemas con los servicios de GBIF, tales como el Registro GBIF. No envíe preguntas específicas de ayuda del IPT a la "Mesa de Ayuda". En su lugar, envíelas a la "Lista de Correos" del IPT (ver más abajo).
@@ -1146,7 +1148,7 @@ Utilice esta aplicación en línea para encontrar información acerca de organiz
 El "Sitio del Código" es el repositorio del proyecto para todo el código de fuente abierta, administración y documentación del IPT: https://github.com/gbif/ipt.
 
 === Documentación para Desarrolladores del IPT
-Los desarrolladores que deseen contribuir, o utilizar la última revisión del código fuente para su instalación deberán consultar la sección {latest-manual}developer-guide.adoc[How to Contribute] del wiki del IPT.
+Los desarrolladores que deseen contribuir, o utilizar la última revisión del código fuente para su instalación deberán consultar la sección xref:{latest-manual-version}@developer-guide.adoc[How to Contribute] del wiki del IPT.
 
 === Grupo de Expertos del IPT en el Sitio de la Comunidad GBIF
 El sitio de la comunidad de GBIF organiza un grupo para los interesados en participar en la "Mesa de Ayuda", promoción y actividades de formación relacionadas con el IPT de GBIF. Este es un lugar para intercambiar experiencias, pedir ayuda, y publicar oportunidades, con el objetivo de una mayor apropiación de la herramienta dentro y fuera de la red de GBIF: http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/.
@@ -1158,10 +1160,10 @@ El https://github.com/gbif/ipt/issues[seguimiento de problemas] es un sistema de
 Suscríbase a la "Lista de Correos" del IPT para enviar y recibir mensajes relacionados con el uso del Integrated Publishing Toolkit. Este grupo es para que los usuarios se apoyan mutuamente en el uso del IPT http://lists.gbif.org/mailman/listinfo/ipt/.
 
 === Preparación del Servidor del IPT
-Esta página wiki da detalles acerca de la preparación de un servidor para ejecutar el IPT y se puede encontrar en el sitio en código de la wiki del proyecto IPT en {latest-manual}server-preparation.adoc[Server Preparation].
+Esta página wiki da detalles acerca de la preparación de un servidor para ejecutar el IPT y se puede encontrar en el sitio en código de la wiki del proyecto IPT en xref:{latest-manual-version}@server-preparation.adoc[Server Preparation].
 
 === Bases de Datos del IPT Soportadas
-Esta página wiki da detalles acerca de los sistemas de administración de bases de datos a los que el IPT se pueden conectar para obtener una fuente de datos. La página se puede encontrar en el sitio en código del proyecto IPT {latest-manual}database-connection[here].
+Esta página wiki da detalles acerca de los sistemas de administración de bases de datos a los que el IPT se pueden conectar para obtener una fuente de datos. La página se puede encontrar en el sitio en código del proyecto IPT xref:{latest-manual-version}@database-connection.adoc[here].
 
 === Instalación de Prueba del IPT
 GBIF proporciona una instalación funcional del IPT para fines de evaluación y prueba. La instalación de prueba de la última versión se puede encontrar en https://ipt.gbif.org.

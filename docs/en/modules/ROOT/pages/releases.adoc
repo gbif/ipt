@@ -1,5 +1,7 @@
 = Releases
 
+include::partial$version-outdated.adoc[]
+
 == *2.4.2* – September 2020
 
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war[Download]

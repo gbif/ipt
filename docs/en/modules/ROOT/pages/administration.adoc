@@ -1,5 +1,7 @@
 = Administration Menu
 
+include::partial$version-outdated.adoc[]
+
 This menu is visible only to users having the Admin role.
 
 This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labeled "Organisations" will remain disabled by default until the GBIF registration options have been set.

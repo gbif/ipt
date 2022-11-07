@@ -1,5 +1,7 @@
 = How to Style Your IPT
 
+include::partial$version-outdated.adoc[]
+
 == Introduction
 
 It couldn't be easier to customize the style of your IPT. The following guide explains how to customize the IPT, and preserve your customization when upgrading your IPT's version.

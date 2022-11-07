@@ -1,5 +1,7 @@
 = Supported Databases
 
+include::partial$version-outdated.adoc[]
+
 This section provides information about the source database types supported by the IPT
 
 == Supported default databases

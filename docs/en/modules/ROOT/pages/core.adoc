@@ -1,5 +1,7 @@
 = How To Add a New Core
 
+include::partial$version-outdated.adoc[]
+
 WARNING: This page contains configuration instructions for advanced IPT users only
 
 The IPT always ships with 3 cores installed by default: taxon, occurrence, and event. Since IPT 2.1, there is the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. In this way, their community can start trying to map their data to the new core, and iteratively refine its set of properties.

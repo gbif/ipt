@@ -1,5 +1,7 @@
 = GBIF Integrated Publishing Toolkit (IPT) User Manual
 
+include::partial$version-outdated.adoc[]
+
 The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:
 
 . primary taxon occurrence data

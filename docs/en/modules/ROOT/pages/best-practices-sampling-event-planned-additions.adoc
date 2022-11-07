@@ -1,5 +1,7 @@
 = Best Practices in Publishing Sampling-event data - planned additions and notes for revision
 
+include::partial$version-outdated.adoc[]
+
 Version 2.0
 
 Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[].

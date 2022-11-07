@@ -1,5 +1,7 @@
 = How To Prepare Your IPT Server
 
+include::partial$version-outdated.adoc[]
+
 Since the IPT ships as a `.war` file, installing the IPT consists of deploying the `.war` file in a servlet container such as Tomcat.
 
 This page explains how to install different types of servlet containers on your server, and how to deploy the IPT in them.

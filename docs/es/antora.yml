@@ -6,6 +6,6 @@ nav:
   - modules/ROOT/nav.adoc
 asciidoc:
   attributes:
-    latest-manual: "https://ipt.gbif.org/manual/es/ipt/2.5/"
+    latest-manual-version: 2.6
     idprefix: '@'
     idseparator: '-@'

@@ -1,5 +1,7 @@
 = Adding a new License
 
+include::partial$version-outdated.adoc[]
+
 [WARNING]
 --
 This page contains configuration instructions for advanced IPT users only.  Datasets published with a different license to those included by GBIF cannot be published to GBIF, or registered to GBIF.

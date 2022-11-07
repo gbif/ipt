@@ -1,4 +1,7 @@
 = Glossary
+
+include::partial$version-outdated.adoc[]
+
 * *Checklist Resource* - a resource having information about one of many types of taxon-related lists.
 * *Core Type* - a category of predefined sets of data properties (Taxon, Occurrence, and Event) used as the basis of a resource. Additional extensions might be linked to these Core Types when mapping data in the IPT.
 * *CSV file* - a text file that contains data in the Comma-separated Value format.
