@@ -1,5 +1,7 @@
 = Resources
 
+include::partial$version-outdated.adoc[]
+
 == Darwin Core Archive documentation
 Details about the structure of a Darwin Core Archive, abbreviated DwC-A, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DwC-A can be found on xref:darwin-core.adoc[this] page.
 

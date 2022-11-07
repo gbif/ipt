@@ -1,5 +1,7 @@
 = Darwin Core
 
+include::partial$version-outdated.adoc[]
+
 Darwin Core is a http://www.tdwg.org/activities/darwincore/[TDWG] standard, which is based on the ideas of the popular http://dublincore.org/documents/dcmi-terms/[terms from the Dublin Core Metadata Initiative].
 A fundamental principle of the Darwin Core as a library of terms is to keep the definition of terms distinct from the technology used to share them, e.g. XML or RDF.
 

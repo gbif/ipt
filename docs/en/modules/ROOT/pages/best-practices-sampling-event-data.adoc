@@ -1,5 +1,7 @@
 = Best Practices in Publishing Sampling-event data
 
+include::partial$version-outdated.adoc[]
+
 Version 2.2
 
 == Document control

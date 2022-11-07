@@ -1,5 +1,7 @@
 = IPT Statistics
 
+include::partial$version-outdated.adoc[]
+
 _Last updated 7 December 2017._
 
 This page provides various statistics and charts showing the IPT's growth story over these last four years. For example, did you know the number of organizations publishing occurrence data using the IPT has grown 721% over the last 4 years?!

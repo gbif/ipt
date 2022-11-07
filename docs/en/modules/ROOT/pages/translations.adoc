@@ -1,5 +1,7 @@
 = How to Translate
 
+include::partial$version-outdated.adoc[]
+
 The IPT user interface and user manual both benefit from internationalization. Internationalization is a community effort, and everyone is welcome to join.
 
 Translation uses an online translation tool called https://crowdin.com/project/gbif-ipt[Crowdin]. To join, login to https://crowdin.com/project/gbif-ipt[Crowdin], select the language you would like to translate, and click the "Join" button. A translation manager will handle your request, and add you to the translation team. You may then start translating. Most people find Crowdin easy and intuitive to use. For help using Crowdin, you can always refer to their https://support.crowdin.com5/crowdin-intro/[Crowdin Introduction].

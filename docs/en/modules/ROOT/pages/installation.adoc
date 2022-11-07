@@ -1,5 +1,7 @@
 = Installation
 
+include::partial$version-outdated.adoc[]
+
 == Data directory
 
 The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run.

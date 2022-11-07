@@ -1,5 +1,7 @@
 = Adding a New User ID Directory
 
+include::partial$version-outdated.adoc[]
+
 WARNING: This page contains configuration instructions for advanced IPT users only.
 
 Since IPT v2.2 the IPT ships with 4 user directories to choose from when entering a user ID for any contact, creator, metadata provider, associated party, or project personnel. Those directories are:

@@ -1,5 +1,7 @@
 = How to Style Your IPT
 
+include::partial$version-outdated.adoc[]
+
 [WARNING]
 ====
 Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue].

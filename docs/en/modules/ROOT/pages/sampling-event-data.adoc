@@ -1,5 +1,7 @@
 = Sampling Event Data
 
+include::partial$version-outdated.adoc[]
+
 == Introduction
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data].

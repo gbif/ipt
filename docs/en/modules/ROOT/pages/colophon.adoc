@@ -1,5 +1,7 @@
 = Colophon
 
+include::partial$version-outdated.adoc[]
+
 == Citation
 
 // If English

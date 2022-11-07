@@ -1,5 +1,7 @@
 = Resource Metadata
 
+include::partial$version-outdated.adoc[]
+
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
 == How to write resource metadata

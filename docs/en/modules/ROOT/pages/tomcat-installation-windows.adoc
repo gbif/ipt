@@ -1,5 +1,7 @@
 = Install Tomcat 8 on Windows
 
+include::partial$version-outdated.adoc[]
+
 This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations.
 
 == Prerequisites

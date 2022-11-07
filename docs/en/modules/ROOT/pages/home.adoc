@@ -1,5 +1,7 @@
 = Home Menu
 
+include::partial$version-outdated.adoc[]
+
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.
 
 image::ipt2/home/IPTHome.png[]

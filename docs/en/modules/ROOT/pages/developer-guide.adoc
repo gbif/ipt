@@ -1,5 +1,7 @@
 = Developer Guidelines
 
+include::partial$version-outdated.adoc[]
+
 == Contributions
 
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the https://github.com/gbif/ipt[IPT Git repository].

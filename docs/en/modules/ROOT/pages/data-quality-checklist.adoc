@@ -1,5 +1,7 @@
 = Data Quality Checklist
 
+include::partial$version-outdated.adoc[]
+
 Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets.
 
 The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:

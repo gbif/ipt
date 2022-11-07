@@ -1,5 +1,7 @@
 = FAQ
 
+include::partial$version-outdated.adoc[]
+
 Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
 
 == Installation

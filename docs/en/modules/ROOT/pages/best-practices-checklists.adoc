@@ -1,5 +1,7 @@
 = Best Practices in Publishing Species Checklists
 
+include::partial$version-outdated.adoc[]
+
 Version 2.1
 
 image::figures/cover_art_stilt.png[]

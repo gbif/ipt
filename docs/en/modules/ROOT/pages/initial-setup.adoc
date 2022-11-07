@@ -1,5 +1,7 @@
 = Initial Setup
 
+include::partial$version-outdated.adoc[]
+
 == Data directory
 
 NOTE: This step is only shown if the data directory was not already configured during installation.

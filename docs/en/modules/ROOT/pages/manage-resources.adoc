@@ -1,5 +1,7 @@
 = Manage Resources Menu
 
+include::partial$version-outdated.adoc[]
+
 This menu is visible to users with an Admin or Manager role.
 
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.
