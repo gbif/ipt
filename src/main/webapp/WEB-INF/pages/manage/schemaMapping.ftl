@@ -157,7 +157,7 @@
 
                 <strong>
                     ${field.field.name}
-                    <#if (field.field.constraints.required)?? && (field.field.constraints.required?string) == "true">&#42;</#if>
+                    <#if (field.field.constraints.required)?? && (field.field.constraints.required?string) == "true"><span class="text-gbif-danger">&#42;</span></#if>
                 </strong>
             </div>
 
