@@ -4,6 +4,84 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            var relatedIdentifierItems = calcNumberOfItems("relatedIdentifier");
+
+            function calcNumberOfItems(name) {
+                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
+                if (lastItem !== undefined)
+                    return parseInt(lastItem.split("-")[2]);
+                else
+                    return -1;
+            }
+
+            $("#plus-relatedIdentifier").click(function (event) {
+                event.preventDefault();
+                console.log("plus")
+                addNewRelatedIdentifierItem(true);
+            });
+
+            function addNewRelatedIdentifierItem(effects) {
+                var newItem = $('#baseItem-relatedIdentifier').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#relatedIdentifier-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setRelatedIdentifierItemIndex(newItem, ++relatedIdentifierItems);
+
+                initInfoPopovers(newItem[0]);
+            }
+
+            function removeRelatedIdentifierItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                $('#relatedIdentifier-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#relatedIdentifier-items .item").each(function (index) {
+                        setRelatedIdentifierItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("relatedIdentifier");
+                });
+            }
+
+            function setRelatedIdentifierItemIndex(item, index) {
+                item.attr("id", "relatedIdentifier-item-" + index);
+
+                $("#relatedIdentifier-item-" + index + " [id^='relatedIdentifier-removeLink']").attr("id", "relatedIdentifier-removeLink-" + index);
+                $("#relatedIdentifier-removeLink-" + index).click(function (event) {
+                    removeRelatedIdentifierItem(event);
+                });
+
+                $("#relatedIdentifier-item-" + index + " [id$='relationType']").attr("id", "metadata.relatedIdentifiers[" + index + "].relationType").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#relatedIdentifier-item-" + index + " [for$='relationType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relationType");
+
+                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifier']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifier").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifier']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifier");
+
+                $("#relatedIdentifier-item-" + index + " [id$='resourceTypeGeneral']").attr("id", "metadata.relatedIdentifiers[" + index + "].resourceTypeGeneral").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#relatedIdentifier-item-" + index + " [for$='resourceTypeGeneral']").attr("for", "metadata.relatedIdentifiers[" + index + "].resourceTypeGeneral");
+
+                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifierType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType");
+            }
+
+            $(".removeRelatedIdentifierLink").click(function (event) {
+                removeRelatedIdentifierItem(event);
+            });
+
             // scroll to the error if present
             var invalidElements = $(".is-invalid");
 
@@ -80,11 +158,84 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="my-md-3 p-3">
+                            <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
+                            <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
+
+                            <!-- List of Related identifiers -->
+                            <div>
+                                <@textinline name="datapackagemetadata.other.relatedIdentifiers" help="i18n"/>
+                                <div id="relatedIdentifier-items">
+                                    <#list metadata.relatedIdentifiers as item>
+                                        <div id="relatedIdentifier-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="relatedIdentifier-removeLink-${item_index}" href="" class="removeRelatedIdentifierLink text-smaller">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeRelatedIdentifierLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@select name="metadata.relatedIdentifiers[${item_index}].relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value="${(metadata.relatedIdentifiers[item_index].relationType)!}" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.relatedIdentifiers[${item_index}].relatedIdentifier" help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@select name="metadata.relatedIdentifiers[${item_index}].resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value="${(metadata.relatedIdentifiers[item_index].resourceTypeGeneral)!}" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@select name="metadata.relatedIdentifiers[${item_index}].relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value="${(metadata.relatedIdentifiers[item_index].relatedIdentifierType)!}" requiredField=true />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-relatedIdentifier" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addRelatedIdentifierLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
         </div>
     </form>
+
+    <div id="baseItem-relatedIdentifier" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="relatedIdentifier-removeLink" href="" class="removeRelatedIdentifierLink text-smaller">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
+                <span>${removeRelatedIdentifierLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <@select name="metadata.relatedIdentifiers.relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value="" requiredField=true />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.relatedIdentifiers.relatedIdentifier" help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
+        </div>
+        <div class="col-lg-6">
+            <@select name="metadata.relatedIdentifiers.resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value="" />
+        </div>
+        <div class="col-lg-6">
+            <@select name="metadata.relatedIdentifiers.relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value="" requiredField=true />
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

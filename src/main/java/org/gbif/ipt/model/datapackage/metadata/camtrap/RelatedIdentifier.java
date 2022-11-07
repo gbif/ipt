@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.gbif.ipt.validation.OtherMetadata;
 
 /**
  * Related identifier.
@@ -41,7 +42,7 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relationType")
-  @NotNull(message = "validation.input.required")
+  @NotNull(message = "validation.input.required", groups = OtherMetadata.class)
   private RelatedIdentifier.RelationType relationType;
 
   /**
@@ -49,7 +50,7 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relatedIdentifier")
-  @NotNull(message = "validation.input.required")
+  @NotNull(message = "validation.input.required", groups = OtherMetadata.class)
   private String relatedIdentifier;
 
   /**
@@ -63,7 +64,7 @@ public class RelatedIdentifier implements Serializable {
    * (Required)
    */
   @JsonProperty("relatedIdentifierType")
-  @NotNull
+  @NotNull(message = "validation.input.required", groups = OtherMetadata.class)
   private RelatedIdentifier.RelatedIdentifierType relatedIdentifierType;
 
   @SuppressWarnings("FieldMayBeFinal")
@@ -177,10 +178,12 @@ public class RelatedIdentifier implements Serializable {
     W_3_ID("w3id");
     private final String value;
     private final static Map<String, RelatedIdentifier.RelatedIdentifierType> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (RelatedIdentifier.RelatedIdentifierType c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 
@@ -251,10 +254,12 @@ public class RelatedIdentifier implements Serializable {
     IS_OBSOLETED_BY("IsObsoletedBy");
     private final String value;
     private final static Map<String, RelatedIdentifier.RelationType> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (RelatedIdentifier.RelationType c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 
@@ -319,10 +324,12 @@ public class RelatedIdentifier implements Serializable {
     OTHER("Other");
     private final String value;
     private final static Map<String, RelatedIdentifier.ResourceTypeGeneral> CONSTANTS = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
       for (RelatedIdentifier.ResourceTypeGeneral c : values()) {
         CONSTANTS.put(c.value, c);
+        VOCABULARY.put(c.name(), c.value);
       }
     }
 

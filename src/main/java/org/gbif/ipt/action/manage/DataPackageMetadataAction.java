@@ -22,6 +22,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CaptureMethod;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -250,5 +251,17 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getCaptureMethods() {
     return CaptureMethod.VOCABULARY;
+  }
+
+  public Map<String, String> getRelationTypes() {
+    return RelatedIdentifier.RelationType.VOCABULARY;
+  }
+
+  public Map<String, String> getResourceTypeGenerals() {
+    return RelatedIdentifier.ResourceTypeGeneral.VOCABULARY;
+  }
+
+  public Map<String, String> getRelatedIdentifierTypes() {
+    return RelatedIdentifier.RelatedIdentifierType.VOCABULARY;
   }
 }
