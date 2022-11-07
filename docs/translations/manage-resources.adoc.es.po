@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 15:39\n"
+"PO-Revision-Date: 2022-11-07 11:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2109,7 +2109,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:557
 #, no-wrap
 msgid "*Version*: - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr ""
+msgstr "*Versión*: - el número de versión que sigue la `versión_mayor.versión_menor` de la versión actual/pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, hecho que se realiza reservando un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. En la columna de la versión actual, haga clic en el botón \"Ver\" para ver la página de inicio de la versión actual. Suponiendo que se haya publicado un DwC-A, haga clic en image:ipt2/manage/checkmark.png[width=40,height=40] para validarlo utilizando el https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. En la columna de la versión pendiente, haga clic en el botón \"Vista previa\" para ver una vista preliminar de la página de inicio de la versión pendiente. La vista previa de la página de inicio es privada sólo para los editores de recursos, y les permite asegurarse que el recurso está listo para ser publicado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:558
