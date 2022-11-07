@@ -15,15 +15,10 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.InternalField;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -31,6 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Data Resource
@@ -482,6 +487,14 @@ public class DataPackageResource implements Resource, Serializable {
   @JsonAnySetter
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  public static class DataPackageResourceDeserializer extends JsonDeserializer<Resource> {
+    @Override
+    public Resource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, DataPackageResource.class);
+    }
   }
 
   @Override

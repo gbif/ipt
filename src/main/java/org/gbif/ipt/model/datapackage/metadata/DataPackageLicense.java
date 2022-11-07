@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.NotNullIfAnotherFieldNull;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * License
@@ -143,6 +148,14 @@ public class DataPackageLicense implements License, Serializable {
   @JsonAnySetter
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  public static class DataPackageLicenseDeserializer extends JsonDeserializer<License> {
+    @Override
+    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, DataPackageLicense.class);
+    }
   }
 
   @Override

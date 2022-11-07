@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.opensymphony.xwork2.util.Element;
 
 /**
@@ -411,6 +412,7 @@ public class DataPackageMetadata implements Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
+  @JsonDeserialize(contentUsing = DataPackageLicense.DataPackageLicenseDeserializer.class)
   @Element(DataPackageLicense.class)
   public List<License> getLicenses() {
     return licenses;
@@ -433,6 +435,7 @@ public class DataPackageMetadata implements Serializable {
    * (Required)
    */
   @JsonProperty("resources")
+  @JsonDeserialize(contentUsing = DataPackageSource.DataPackageSourceDeserializer.class)
   @Element(DataPackageResource.class)
   public List<Resource> getResources() {
     return resources;
@@ -455,6 +458,7 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
+  @JsonDeserialize(contentUsing = DataPackageSource.DataPackageSourceDeserializer.class)
   @Element(DataPackageSource.class)
   public List<Source> getSources() {
     return sources;

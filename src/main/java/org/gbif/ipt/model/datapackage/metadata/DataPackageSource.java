@@ -15,19 +15,24 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Source
@@ -141,6 +146,14 @@ public class DataPackageSource implements Source, Serializable {
   @JsonAnySetter
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  public static class DataPackageSourceDeserializer extends JsonDeserializer<Source> {
+    @Override
+    public Source deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, DataPackageSource.class);
+    }
   }
 
   @Override
