@@ -167,7 +167,7 @@
                             <div>
                                 <@textinline name="datapackagemetadata.other.relatedIdentifiers" help="i18n"/>
                                 <div id="relatedIdentifier-items">
-                                    <#list metadata.relatedIdentifiers as item>
+                                    <#list (metadata.relatedIdentifiers)! as item>
                                         <div id="relatedIdentifier-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
                                                 <a id="relatedIdentifier-removeLink-${item_index}" href="" class="removeRelatedIdentifierLink text-smaller">

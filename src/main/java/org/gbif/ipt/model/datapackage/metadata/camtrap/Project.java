@@ -99,7 +99,8 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("individualAnimals")
-  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
+  // TODO: 08/11/2022 not implemented
+//  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Boolean individualAnimals;
 
   /**

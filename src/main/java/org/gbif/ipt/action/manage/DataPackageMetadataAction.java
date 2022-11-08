@@ -107,7 +107,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
       case TAXONOMIC_SECTION:
         if (isHttpPost()) {
-          ((CamtrapMetadata) resource.getDataPackageMetadata()).getTaxonomic().clear();
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+            ((CamtrapMetadata) resource.getDataPackageMetadata()).getTaxonomic().clear();
+          }
         }
         break;
 
@@ -122,9 +124,11 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
       case PROJECT_SECTION:
         if (isHttpPost()) {
-          CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-          if (camtrapMetadata.getProject() != null) {
-            camtrapMetadata.getProject().getCaptureMethod().clear();
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+            CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+            if (camtrapMetadata.getProject() != null) {
+              camtrapMetadata.getProject().getCaptureMethod().clear();
+            }
           }
         }
         break;
