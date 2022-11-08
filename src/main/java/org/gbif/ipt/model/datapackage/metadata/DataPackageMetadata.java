@@ -132,8 +132,7 @@ public class DataPackageMetadata implements Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
-  @NotNull(message = "validation.input.required", groups = KeywordsMetadata.class)
-  @Size(min = 1, message = "validation.datapackage.metadata.keywords.size", groups = KeywordsMetadata.class)
+  @NotNull(message = "validation.input.notNull", groups = KeywordsMetadata.class)
   @Valid
   private List<String> keywords = new ArrayList<>();
 
@@ -174,8 +173,7 @@ public class DataPackageMetadata implements Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  @Size(message = "validation.datapackage.metadata.sources.size", groups = BasicMetadata.class)
+  @NotNull(message = "validation.input.notNull", groups = BasicMetadata.class)
   @Valid
   private List<Source> sources = new ArrayList<>();
 

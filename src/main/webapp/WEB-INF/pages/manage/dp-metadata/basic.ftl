@@ -371,7 +371,7 @@
 
                             <!-- List of Sources -->
                             <div>
-                                <@textinline name="datapackagemetadata.sources" help="i18n" requiredField=true />
+                                <@textinline name="datapackagemetadata.sources" help="i18n" />
                                 <div id="source-items">
                                     <#list metadata.sources as item>
                                         <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
