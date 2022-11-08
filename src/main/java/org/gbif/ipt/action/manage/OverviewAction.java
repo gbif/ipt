@@ -62,6 +62,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
@@ -124,6 +125,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<Organisation> organisations;
   private Organisation doiAccount;
   private final EmlValidator emlValidator;
+  private final DataPackageMetadataValidator dataPackageMetadataValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
   private boolean missingValidPublishingOrganisation;
@@ -168,6 +170,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
+    this.dataPackageMetadataValidator = new DataPackageMetadataValidator();
     this.dwcaFactory = dwcaFactory;
     this.dataPackageFactory = dataPackageFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
@@ -1165,10 +1168,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
 
-      // TODO: 21/10/2022 check for data packages
-      // check EML
+      // check metadata
       if (!isDataPackageResource()) {
         missingMetadata = !emlValidator.isValid(resource, null);
+      } else {
+        missingMetadata = !dataPackageMetadataValidator.isValid(resource);
       }
 
       // check resource has been assigned a valid publishing organisation

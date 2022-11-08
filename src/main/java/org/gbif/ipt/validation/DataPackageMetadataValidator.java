@@ -43,6 +43,15 @@ public class DataPackageMetadataValidator {
     }
   }
 
+  public boolean isValid(Resource resource) {
+    Set<ConstraintViolation<DataPackageMetadata>> violations
+        = validator.validate(resource.getDataPackageMetadata(), BasicMetadata.class, GeographicScopeMetadata.class,
+        TaxonomicScopeMetadata.class, TemporalScopeMetadata.class, KeywordsMetadata.class, ProjectMetadata.class,
+        OtherMetadata.class);
+
+    return violations.isEmpty();
+  }
+
   /**
    * Validate if all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
