@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-08 12:33\n"
+"PO-Revision-Date: 2022-11-08 13:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2042,7 +2042,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:536
 msgid "Click on the button labelled \"Publish\" to trigger publishing a new version. The button labelled \"Publish\" will be enabled if"
-msgstr ""
+msgstr "Haga clic en el botón \"Publicar\" para activar la publicación de una nueva versión. El botón \"Publicar\" estará habilitado si:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:538
