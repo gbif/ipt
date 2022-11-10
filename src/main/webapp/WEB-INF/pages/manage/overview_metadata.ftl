@@ -1,7 +1,7 @@
 <!-- Represents metadata section on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-metadata"></span>
 <div class="py-5 border-bottom section" id="metadata">
-    <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+    <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
         <#assign metadataHeaderInfo>
             <@s.text name='manage.metadata.description'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
@@ -15,6 +15,22 @@
 
         <@s.text name='manage.overview.metadata'/>
     </h5>
+    <#if metadataModifiedSinceLastPublication || resource.lastPublished??>
+        <div class="text-smaller mb-4">
+            <small>
+                <span style="vertical-align: 0.125em !important;">
+                    <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                </svg>
+                </span>
+                <#if metadataModifiedSinceLastPublication>
+                    <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
+                <#elseif resource.lastPublished??>
+                    <@s.text name="manage.overview.notModified"/>
+                </#if>
+            </small>
+        </div>
+    </#if>
 
     <div class="row">
         <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
@@ -63,14 +79,6 @@
                     <@s.text name="manage.overview.missing.metadata"/>
                 </div>
             </#if>
-
-            <div class="details mb-3">
-                <#if metadataModifiedSinceLastPublication>
-                    <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
-                <#elseif resource.lastPublished??>
-                    <@s.text name="manage.overview.notModified"/>
-                </#if>
-            </div>
         </div>
     </div>
 </div>

@@ -464,6 +464,12 @@ header, .dropdown-menu {
 /*}*/
 /* Logo, header, menu etc. END */
 
+/* Overview */
+.source-item:hover, .mapping-item:hover, .network-item:hover, .manager-item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+}
+
 /* Material UI icons */
 a.icon-button, a.icon-button:hover, label.icon-button, label.icon-button:hover {
     color: rgb(78, 86, 95) !important;
@@ -515,6 +521,11 @@ a.icon-button, a.icon-button:hover, label.icon-button, label.icon-button:hover {
     flex-shrink: 0;
     -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.icon-button-svg-sm {
+    width: 0.875em;
+    height: 0.875em;
 }
 
 .icon-button:hover {
@@ -1843,4 +1854,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .contacts-circle {
     font-size: 80%;
+}
+
+/* Tooltips */
+.tooltip-inner {
+    background-color: #fff;
+    color: #4e565f;
+    box-shadow: 0 0 2px #4e565f;
+    opacity: 1 !important;
+    font-size: 12.25px;
+}
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
+    border-right-color: #fff !important;
+}
+.tooltip.bs-tooltip-left .tooltip-arrow::before {
+    border-left-color: #fff !important;
+}
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #fff !important;
+}
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #fff !important;
 }

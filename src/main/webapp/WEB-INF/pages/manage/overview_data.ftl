@@ -4,7 +4,7 @@
 <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
 <div class="py-5 border-bottom section" id="sources">
     <div class="titleOverview">
-        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+        <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
             <#assign sourcesInfo>
                 <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
             </#assign>
@@ -12,6 +12,24 @@
 
             <@s.text name='manage.overview.source.data'/>
         </h5>
+        <#if sourcesModifiedSinceLastPublication || resource.lastPublished??>
+        <div class="text-smaller mb-4">
+            <small>
+                <span style="vertical-align: 0.125em !important;">
+                    <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                </svg>
+                </span>
+                <span>
+                    <#if sourcesModifiedSinceLastPublication>
+                        <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?datetime?string.medium!}
+                    <#elseif resource.lastPublished??>
+                        <@s.text name="manage.overview.notModified"/>
+                    </#if>
+                </span>
+            </small>
+        </div>
+        </#if>
 
         <div class="row">
             <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
@@ -53,100 +71,113 @@
                         <@s.text name='manage.overview.source.intro'/>
                     </p>
 
-                    <div class="details mb-3">
-                        <#if sourcesModifiedSinceLastPublication>
-                            <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?datetime?string.medium!}
-                        <#elseif resource.lastPublished??>
-                            <@s.text name="manage.overview.notModified"/>
-                        </#if>
-                    </div>
-
                     <#if (resource.sources?size>0)>
                         <div class="details">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-borderless text-smaller">
-                                    <#list resource.sources as src>
-                                        <tr>
-                                            <#if src.isFileSource()>
-                                                <th class="col-4">${src.name} <@s.text name='manage.overview.source.file'/></th>
-                                                <td>
-                                                    ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
-                                                    ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;
-                                                    <#if src.readable>
-                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
-                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
-                                                    <#else>
-                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
-                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
-                                                    </#if>
-                                                </td>
-                                            <#elseif src.isExcelSource()>
-                                                <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
-                                                <td>
-                                                    ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
-                                                    ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;
-                                                    <#if src.readable>
-                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
-                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
-                                                    <#else>
-                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
-                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
-                                                    </#if>
-                                                </td>
-                                            <#elseif src.isUrlSource()>
-                                                <th class="col-4">${src.name} <@s.text name='manage.overview.source.url'/></th>
-                                                <td>
-                                                    ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
-                                                    ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;
-                                                    <#if src.readable>
-                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
-                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
-                                                    <#else>
-                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
-                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
-                                                    </#if>
-                                                </td>
+                            <#list resource.sources as src>
+                                <div class="row border rounded-2 mx-1 my-2 p-1 py-2 source-item">
+                                    <#if src.isFileSource()>
+                                        <div class="col-auto my-auto text-smaller">
+                                            <small>
+                                                <#if src.readable>
+                                                <i class="bi bi-circle-fill text-gbif-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br> "></i>
                                             <#else>
-                                                <th class="col-4">${src.name} <@s.text name='manage.overview.source.sql'/></th>
-                                                <td>
-                                                    ${src.database!"..."}<br>
-                                                    ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;
-                                                    <#if src.readable>
-                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
-                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
-                                                    <#else>
-                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
-                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
-                                                    </#if>
-                                                </td>
-                                            </#if>
-                                            <td class="d-flex justify-content-end py-0">
-                                                <#if src.isFileSource() || src.isExcelSource()>
-                                                    <a class="icon-button icon-button-sm" type="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank">
-                                                        <svg class="icon-button-svg icon-material-download" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
-                                                        </svg>
-                                                    </a>
+                                                <i class="bi bi-circle-fill text-gbif-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br> "></i>
                                                 </#if>
-                                                <a class="icon-button icon-button-sm" type="button" href="source.do?r=${resource.shortname}&id=${src.name}">
-                                                    <svg class="icon-button-svg icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                    </svg>
-                                                </a>
-                                                <a class="icon-button icon-button-sm icon-material-delete delete-source" type="button" href="delete-source.do?r=${resource.shortname}&id=${src.name}">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </#list>
-                                </table>
-                            </div>
+                                            </small>
+                                        </div>
+                                        <div class="col-8 col-md-9 px-0 my-auto text-smaller source-item-link" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                            <span class="fw-bold overflow-wrap">
+                                                <i class="bi bi-file-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.file'/>"></i>&nbsp;${src.name!}
+                                            </span><br>
+                                            <small>
+                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
+                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                            </small>
+                                            <small>
+                                                ${(src.lastModified?datetime?string.medium)!}
+                                            </small>
+                                        </div>
+
+                                    <#elseif src.isExcelSource()>
+                                        <div class="col-auto my-auto text-smaller source-item-readable">
+                                            <small>
+                                                <#if src.readable>
+                                                    <i class="bi bi-circle-fill text-gbif-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br> "></i>
+                                                <#else>
+                                                    <i class="bi bi-circle-fill text-gbif-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br> "></i>
+                                                </#if>
+                                            </small>
+                                        </div>
+                                        <div class="col-8 col-md-9 px-0 text-smaller source-item-link" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                            <i class="bi bi-file-excel" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.excel'/>"></i>
+                                            <span class="fw-bold">${src.name}</span><br>
+                                            <small>
+                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
+                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                            </small>
+                                            <small>
+                                                ${(src.lastModified?datetime?string.medium)!}
+                                            </small>
+                                        </div>
+
+                                    <#elseif src.isUrlSource()>
+                                        <div class="col-auto my-auto text-smaller">
+                                            <small>
+                                                <#if src.readable>
+                                                    <i class="bi bi-circle-fill text-gbif-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br> "></i>
+                                                <#else>
+                                                    <i class="bi bi-circle-fill text-gbif-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br> "></i>
+                                                </#if>
+                                            </small>
+                                        </div>
+                                        <div class="col-8 col-md-9 px-0 text-smaller source-item-link" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                            <i class="bi bi-link" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.url'/>"></i>
+                                            <span class="fw-bold">${src.name}</span><br>
+                                            <small>
+                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
+                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                            </small>
+                                            <small>
+                                                ${(src.lastModified?datetime?string.medium)!}
+                                            </small>
+                                        </div>
+
+                                    <#else>
+                                        <div class="col-auto my-auto text-smaller">
+                                            <small>
+                                                <#if src.readable>
+                                                    <i class="bi bi-circle-fill text-gbif-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br> "></i>
+                                                <#else>
+                                                    <i class="bi bi-circle-fill text-gbif-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br> "></i>
+                                                </#if>
+                                            </small>
+                                        </div>
+                                        <div class="col-8 col-md-9 px-0 text-smaller source-item-link" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                            <i class="bi bi-server" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.sql'/>"></i>
+                                            <span class="fw-bold">${src.name}</span><br>
+                                            <small>
+                                                ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>
+                                            </small>
+                                        </div>
+
+                                    </#if>
+                                    <div class="col-2 ms-auto d-flex justify-content-end my-auto source-item-actions">
+                                        <#if src.isFileSource() || src.isExcelSource()>
+                                            <a class="icon-button icon-button-sm source-item-action" type="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank">
+                                                <svg class="icon-button-svg icon-material-download" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
+                                                </svg>
+                                            </a>
+                                        </#if>
+                                        <a class="icon-button icon-button-sm icon-material-delete delete-source source-item-action" type="button" href="delete-source.do?r=${resource.shortname}&id=${src.name}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </#list>
                         </div>
                     </#if>
                 </div>
@@ -159,7 +190,7 @@
 
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
-    <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+    <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
         <#assign mappingsInfo>
             <@s.text name='manage.overview.DwC.Mappings.coretype.description1'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
         </#assign>
@@ -167,6 +198,22 @@
 
         <@s.text name='manage.overview.DwC.Mappings'/>
     </h5>
+    <#if mappingsModifiedSinceLastPublication || resource.lastPublished??>
+        <div class="text-smaller mb-4">
+            <small>
+                <span style="vertical-align: 0.125em !important;">
+                    <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                </svg>
+                </span>
+                <#if mappingsModifiedSinceLastPublication>
+                    <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
+                <#elseif resource.lastPublished??>
+                    <@s.text name="manage.overview.notModified"/>
+                </#if>
+            </small>
+        </div>
+    </#if>
 
     <div class="row">
         <div class="col-lg-3 border-lg-right <#if (potentialCores?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
@@ -210,83 +257,61 @@
                     </div>
                 </#if>
 
-                <div class="details mb-3">
-                    <#if mappingsModifiedSinceLastPublication>
-                        <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
-                    <#elseif resource.lastPublished??>
-                        <@s.text name="manage.overview.notModified"/>
-                    </#if>
-                </div>
-
                 <#if resource.coreRowType?has_content>
                     <div class="details">
                         <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-borderless text-smaller">
-                                <#list resource.getMappings(resource.coreRowType) as m>
-                                    <tr <#if m_index==0>class="mapping_row"</#if>>
-                                        <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
-                                        <td>
-                                            ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
-                                            ${(m.lastModified?datetime?string.medium)!}
-                                        </td>
-                                        <td class="d-flex justify-content-end pt-0">
-                                            <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                </svg>
-                                            </a>
-                                            <a class="icon-button icon-button-sm" type="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                </svg>
-                                            </a>
-                                            <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </#list>
-                            </table>
-                        </div>
+                            <#list resource.getMappings(resource.coreRowType) as m>
+                                <div class="row border rounded-2 mx-1 my-2 p-1 py-2 mapping-item text-smaller">
+                                    <div class="col-10 mapping-item-link" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.extension.rowType?url}" data-ipt-mapping="${m_index}">
+                                        <strong>${(m.source.name)!}</strong>
+                                        <i class="bi bi-arrow-right"></i>
+                                        <strong>${m.extension.title}</strong>
+                                        <br>
+                                        <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
+                                    </div>
+                                    <div class="col-2 my-auto d-flex justify-content-end pt-0">
+                                        <a class="icon-button icon-button-sm peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                            </svg>
+                                        </a>
+                                        <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </#list>
                         <#if (resource.getMappedExtensions()?size > 1)>
-                            <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-borderless text-smaller">
-                                    <#list resource.getMappedExtensions() as ext>
-                                        <#if ext.rowType != resource.coreRowType>
-                                            <#list resource.getMappings(ext.rowType) as m>
-                                                <tr <#if m_index==0>class="mapping_row"</#if>>
-                                                    <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
-                                                    <td>
-                                                        ${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> <#if (m.source.name)?has_content><a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${m.source.name}</a></#if><br>
-                                                        ${(m.lastModified?datetime?string.medium)!}
-                                                    </td>
-                                                    <td class="d-flex justify-content-end">
-                                                        <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                            </svg>
-                                                        </a>
-                                                        <a class="icon-button icon-button-sm" type="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                            </svg>
-                                                        </a>
-                                                        <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </#list>
-                                        </#if>
+                            <div class="mapping_head mt-3"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
+                            <#list resource.getMappedExtensions() as ext>
+                                <#if ext.rowType != resource.coreRowType>
+                                    <#list resource.getMappings(ext.rowType) as m>
+                                        <div class="row border rounded-2 mx-1 my-2 p-1 py-2 mapping-item text-smaller">
+                                            <div class="col-10 mapping-item-link" data-ipt-resource="${resource.shortname}" data-ipt-extension="${ext.rowType?url}" data-ipt-mapping="${m_index}">
+                                                <strong>${(m.source.name)!}</strong>
+                                                <i class="bi bi-arrow-right"></i>
+                                                <strong>${ext.title}</strong>
+                                                <br>
+                                                <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
+                                            </div>
+                                            <div class="col-2 my-auto d-flex justify-content-end">
+                                                <a class="icon-button icon-button-sm peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                    </svg>
+                                                </a>
+                                                <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </#list>
-                                </table>
-                            </div>
+                                </#if>
+                            </#list>
                         </#if>
                     </div>
                 </#if>
