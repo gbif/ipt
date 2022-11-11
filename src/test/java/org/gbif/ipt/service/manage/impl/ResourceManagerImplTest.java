@@ -1086,14 +1086,7 @@ public class ResourceManagerImplTest {
     // indicate resource is ready to be published, by setting its status to Public
     resource.setStatus(PublicationStatus.PUBLIC);
 
-    // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<>();
-    Resource r1 = new Resource();
-    r1.setKey(UUID.fromString(registeredDigirResourceUUID));
-    r1.setTitle("Herpetology");
-    organisationsResources.add(r1);
-
-    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+    when(mockRegistryManager.isResourceBelongsToOrganisation(anyString(), anyString())).thenReturn(true);
 
     manager.register(resource, organisation, ipt, baseAction);
 
@@ -1136,14 +1129,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<>();
-    Resource r1 = new Resource();
-    // resource has different UUID than the one in the alternate identifiers list - interpreted as failed migration
-    r1.setKey(UUID.fromString(UUID.randomUUID().toString()));
-    r1.setTitle("Herpetology");
-    organisationsResources.add(r1);
-
-    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+    when(mockRegistryManager.isResourceBelongsToOrganisation(anyString(), anyString())).thenReturn(false);
 
     assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
