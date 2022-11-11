@@ -2517,36 +2517,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         List<String> duplicateUses = detectDuplicateUsesOfUUID(candidate, resource.getShortname());
         if (duplicateUses.isEmpty()) {
           if (organisation.getKey() != null && organisation.getName() != null) {
-            boolean matched = false;
-            // collect list of registered resources associated to organization
-            List<Resource> existingResources =
-              registryManager.getOrganisationsResources(organisation.getKey().toString());
-            for (Resource entry : existingResources) {
-              // is the candidate UUID equal to the UUID from an existing registered resource owned by the
-              // organization? There should only be one match, and the first one encountered will be used for migration.
-              if (entry.getKey() != null && candidate.equals(entry.getKey())) {
-                LOG.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
+            // check in the registry resource with the provided key has this publishing organisation
+            boolean matched =
+                registryManager.isResourceBelongsToOrganisation(candidate.toString(), organisation.getKey().toString());
 
-                // fill in registration info - we've found the original resource being migrated to the IPT
-                resource.setStatus(PublicationStatus.REGISTERED);
-                resource.setKey(entry.getKey());
-                resource.setOrganisation(organisation);
+            if (matched) {
+              LOG.debug("Resource matched to existing registered resource, UUID=" + organisation.getKey());
 
-                // display update about migration to user
-                alog.info("manage.resource.migrate", new String[] {entry.getKey().toString(), organisation.getName()});
+              // fill in registration info - we've found the original resource being migrated to the IPT
+              resource.setStatus(PublicationStatus.REGISTERED);
+              resource.setKey(candidate);
+              resource.setOrganisation(organisation);
 
-                // update the resource, adding the new service(s)
-                updateRegistration(resource, action);
+              // display update about migration to user
+              alog.info("manage.resource.migrate", new String[] {organisation.getKey().toString(), organisation.getName()});
 
-                // indicate a match was found
-                matched = true;
-
-                // just in case, ensure only a single existing resource is updated
-                break;
-              }
+              // update the resource, adding the new service(s)
+              updateRegistration(resource, action);
             }
             // if no match was ever found, this is considered a failed resource migration
-            if (!matched) {
+            else {
               String reason =
                 action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
               String help = action.getText("manage.resource.migrate.failed.help");
