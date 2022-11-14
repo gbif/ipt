@@ -13,7 +13,7 @@
             <@s.text name='manage.overview.source.data'/>
         </h5>
         <#if sourcesModifiedSinceLastPublication || resource.lastPublished??>
-        <div class="text-smaller mb-4">
+        <div class="text-smaller">
             <small>
                 <span style="vertical-align: 0.125em !important;">
                     <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@
         </div>
         </#if>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
                 <div>
                     <form action='addsource.do' method='post' enctype="multipart/form-data">
@@ -199,7 +199,7 @@
         <@s.text name='manage.overview.DwC.Mappings'/>
     </h5>
     <#if mappingsModifiedSinceLastPublication || resource.lastPublished??>
-        <div class="text-smaller mb-4">
+        <div class="text-smaller">
             <small>
                 <span style="vertical-align: 0.125em !important;">
                     <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -215,7 +215,7 @@
         </div>
     </#if>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-lg-3 border-lg-right <#if (potentialCores?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
             <div>
                 <#if (potentialCores?size>0)>

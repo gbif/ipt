@@ -496,7 +496,7 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
-                        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <#assign overviewTitleInfo>
                                 <#if resource.coreType?has_content && resource.coreType==metadataType>
                                     <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -515,7 +515,7 @@
                             <@s.text name='manage.overview.published'/>
                         </h5>
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-9 order-lg-last ps-lg-5">
                                 <p>
                                     <@s.text name="manage.overview.published.intro"/>
@@ -838,12 +838,12 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
                     <div class="py-5 border-bottom section" id="autopublish">
-                        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                             <@s.text name="manage.overview.autopublish.title"/>
                         </h5>
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-9 order-lg-last ps-lg-5">
                                 <div>
                                     <p>
@@ -890,7 +890,7 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
-                        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <#assign visibilityTitleInfo>
                                 <@s.text name='manage.overview.visibility.description'/>
                                 <br><br>
@@ -901,7 +901,7 @@
                             <@s.text name='manage.overview.visibility'/>
                         </h5>
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-9 order-lg-last ps-lg-5">
                                 <div>
                                     <div class="bodyOverview">
@@ -1047,12 +1047,12 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
-                        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.networks.description"/>
                             <@s.text name="manage.overview.networks.title"/>
                         </h5>
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-3 border-lg-right <#if resource.key?has_content && (potentialNetworks?size>0)> border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
                                 <#if resource.key?has_content && (potentialNetworks?size>0)>
                                     <div>
@@ -1121,12 +1121,12 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
                     <div class="py-5" id="managers">
-                        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                             <@s.text name="manage.overview.resource.managers"/>
                         </h5>
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-3 border-lg-right <#if (potentialManagers?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
                                 <#if (potentialManagers?size>0)>
                                     <div>

@@ -16,7 +16,7 @@
         <@s.text name='manage.overview.metadata'/>
     </h5>
     <#if metadataModifiedSinceLastPublication || resource.lastPublished??>
-        <div class="text-smaller mb-4">
+        <div class="text-smaller">
             <small>
                 <span style="vertical-align: 0.125em !important;">
                     <svg class="icon-button-svg icon-button-sm icon-button-svg-sm icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@
         </div>
     </#if>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
             <div>
                 <div class="mb-lg-3 text-smaller">
