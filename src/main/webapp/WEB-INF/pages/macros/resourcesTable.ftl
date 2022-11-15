@@ -169,7 +169,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     var sortFieldOrder = dt.order()[0][1];
                     var searchParams = new URLSearchParams(window.location.search);
 
-                    searchParams.set(SEARCH_PARAM, searchValue);
+                    searchValue ? searchParams.set(SEARCH_PARAM, searchValue) : searchParams.delete(SEARCH_PARAM);
                     searchParams.set(SORT_PARAM, getSafe(columnIndexName, sortFieldIndex, "name"));
                     searchParams.set(ORDER_PARAM, sortFieldOrder);
 
