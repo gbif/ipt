@@ -1366,7 +1366,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (logoUrl == null) {
       return "<span>--</span>";
     }
-    return logoUrl;
+    return "<img class=\"resourceminilogo\" src=\"" + logoUrl + "/>";
   }
 
   /**
@@ -1403,7 +1403,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (type == null) {
       return "<span>--</span>";
     }
-    return "<span class=\"text-nowrap ct-content__link ct-content__pill coreType-" + type + "\">" + type + "</span>";
+    return "<span class=\"text-nowrap ct-content__link ct-content__pill coreType-" + type.toLowerCase() + "\">" + type.toLowerCase() + "</span>";
   }
 
   /**
