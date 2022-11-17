@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-02-24 12:21\n"
+"POT-Creation-Date: 2022-11-17 09:56+0000\n"
+"PO-Revision-Date: 2022-11-17 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -16,12 +16,6 @@ msgstr ""
 "X-Crowdin-File: /[gbif.ipt] master/docs/translations/dwca-guide.adoc.pot\n"
 "X-Crowdin-File-ID: 122\n"
 
-#. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:4
-#: en/modules/ROOT/pages/dwca-guide.adoc:4
-msgid "Version 2.1"
-msgstr ""
-
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
@@ -29,6 +23,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
+#: en/modules/ROOT/pages/dwca-guide.adoc:4
+msgid "Version 2.2"
 msgstr ""
 
 #. type: Target for macro image
