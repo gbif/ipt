@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.annotation.Nullable;
@@ -363,6 +364,17 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
       }
     }
     return null;
+  }
+
+  /**
+   * Extract request parameter from request as Optional.
+   *
+   * @param request request
+   * @param paramName parameter name
+   * @return wrapped value for the parameter
+   */
+  public Optional<String> getRequestParameter(HttpServletRequest request, String paramName) {
+    return Optional.ofNullable(request.getParameter(paramName));
   }
 
   /**

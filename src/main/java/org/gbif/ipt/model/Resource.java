@@ -769,6 +769,41 @@ public class Resource implements Serializable, Comparable<Resource> {
     return sb.toString();
   }
 
+  public String getLogoUrl() {
+    if (eml != null) {
+      return eml.getLogoUrl();
+    }
+    return null;
+  }
+
+  public String getSubject() {
+    if (eml != null) {
+      return eml.getSubject();
+    }
+    return null;
+  }
+
+  public String getOrganisationName() {
+    if (organisation != null) {
+      return organisation.getName();
+    }
+    return null;
+  }
+
+  public String getOrganisationAlias() {
+    if (organisation != null) {
+      return organisation.getAlias();
+    }
+    return null;
+  }
+
+  public String getCreatorName() {
+    if (creator != null) {
+      return creator.getName();
+    }
+    return null;
+  }
+
   /**
    * @return true if this resource is mapped to at least one core extension
    */

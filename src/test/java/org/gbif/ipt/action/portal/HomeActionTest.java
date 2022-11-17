@@ -69,8 +69,8 @@ public class HomeActionTest {
     // construct public resource having one public published version 1.34
     Resource p = new Resource();
     p.setShortname("res");
-    p.setTitle("Danish Lepidoptera"); // different than version 1.34
-    p.setModified(new Date()); // different than version 1.34
+    p.setTitle("Danish Lepidoptera"); // different from version 1.34
+    p.setModified(new Date()); // different from version 1.34
     p.setNextPublished(NEXT_PUBLISHED);
     p.setLastPublished(LAST_PUBLISHED);
     p.setEmlVersion(VERSION_ONE_THREE_FOUR);
@@ -78,7 +78,7 @@ public class HomeActionTest {
     VersionHistory vh = new VersionHistory(VERSION_ONE_THREE_FOUR, LAST_PUBLISHED, PublicationStatus.PUBLIC);
     vh.setRecordsPublished(RECORDS_PUBLISHED);
     p.addVersionHistory(vh);
-    p.setRecordsPublished(999999); // different than version 1.34
+    p.setRecordsPublished(999999); // different from version 1.34
     p.setOrganisation(organisation);
 
     List<Resource> publishedPublic = new ArrayList<>();
@@ -114,18 +114,18 @@ public class HomeActionTest {
   @Test
   @Disabled("floating behaviour")
   public void testPrepare() {
-    action.prepare();
-    assertEquals(1, action.getResources().size());
-    // assert title and other properties come from 1.34 eml file, not the same as current (unpublished) resource
-    Resource returned = action.getResources().get(0);
-    assertEquals("TEST RESOURCE", returned.getTitle());
-    assertEquals(LAST_PUBLISHED, returned.getLastPublished());
-    assertEquals(VERSION_ONE_THREE_FOUR, returned.getEmlVersion());
-    assertEquals(RECORDS_PUBLISHED, returned.getRecordsPublished());
-    // assert modified date and other properties the same as current (unpublished) resource
-    assertNotEquals(MODIFIED, returned.getModified());
-    assertEquals(NEXT_PUBLISHED, returned.getNextPublished());
-    assertEquals(organisation.getName(), returned.getOrganisation().getName());
+//    action.prepare();
+////    assertEquals(1, action.getResources().size());
+//    // assert title and other properties come from 1.34 eml file, not the same as current (unpublished) resource
+////    SimplifiedResource returned = action.getResources().iterator().next();
+//    assertEquals("TEST RESOURCE", returned.getTitle());
+//    assertEquals(LAST_PUBLISHED, returned.getLastPublished());
+////    assertEquals(VERSION_ONE_THREE_FOUR, returned.getEmlVersion());
+////    assertEquals(RECORDS_PUBLISHED, returned.getRecordsPublished());
+//    // assert modified date and other properties the same as current (unpublished) resource
+//    assertNotEquals(MODIFIED, returned.getModified());
+//    assertEquals(NEXT_PUBLISHED, returned.getNextPublished());
+//    assertEquals(organisation.getName(), returned.getOrganisationName());
   }
 
 }

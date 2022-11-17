@@ -10,6 +10,16 @@
  -->
 <struts>
 
+  <package name="ipt-manager-api" extends="ipt-api,ipt-default" namespace="/manager-api">
+    <default-interceptor-ref name="managerStack"/>
+
+    <action name="resources" class="org.gbif.ipt.action.manage.HomeAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">resources</param>
+      </result>
+    </action>
+  </package>
 
   <!-- The entry to the manage section -->
   <package name="manage" extends="ipt-default" namespace="/manage">

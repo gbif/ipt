@@ -53,6 +53,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.SimplifiedResource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -65,6 +66,8 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.datatable.DatatableRequest;
+import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -129,6 +132,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoField;
@@ -136,6 +140,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -162,6 +167,7 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
+import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -170,7 +176,6 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
-import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.FAMILY;
@@ -191,6 +196,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
+  // simplified resources for home page (metadata from last published version!)
+  private Map<String, SimplifiedResource> publishedPublicVersionsSimplified = new HashMap<>();
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
@@ -206,6 +213,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
   private RegistrationManager registrationManager;
+
+  private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
+  private static final Comparator<Date> nullSafeDateComparator = Comparator.nullsFirst(Date::compareTo);
+  private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
@@ -232,6 +243,89 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
+    // add only public/registered resources with at least one published version
+    if (!res.getVersionHistory().isEmpty()) {
+      VersionHistory latestVersion = res.getVersionHistory().get(0);
+      if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+          !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+          latestVersion.getReleased() != null) {
+        publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+      }
+    }
+  }
+
+  /**
+   * Converts regular Resource to lightweight SimplifiedResource.
+   * Reconstructs resource from last published EML to take data before it was changed.
+   *
+   * @param resource regular Resource
+   * @return simplified resource
+   */
+  private SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
+    BigDecimal v = resource.getLastPublishedVersionsVersion();
+    String shortname = resource.getShortname();
+    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+    Resource publishedPublicVersion = ResourceUtils
+        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
+            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+
+    SimplifiedResource result = new SimplifiedResource();
+    result.setShortname(publishedPublicVersion.getShortname());
+    result.setTitle(publishedPublicVersion.getTitle());
+    result.setStatus(publishedPublicVersion.getStatus());
+    result.setRecordsPublished(publishedPublicVersion.getRecordsPublished());
+    result.setLogoUrl(publishedPublicVersion.getLogoUrl());
+    result.setSubject(publishedPublicVersion.getSubject());
+    if (publishedPublicVersion.getOrganisation() != null) {
+      result.setOrganisationName(publishedPublicVersion.getOrganisationName());
+      result.setOrganisationAlias(publishedPublicVersion.getOrganisationAlias());
+    }
+    result.setCoreType(resource.getCoreType());
+    result.setSubtype(resource.getSubtype());
+    result.setModified(resource.getModified());
+    result.setPublished(true);
+    result.setLastPublished(publishedPublicVersion.getLastPublished());
+    result.setNextPublished(resource.getNextPublished());
+    result.setCreatorName(resource.getCreatorName());
+
+    // TODO: 15/11/2022 this might be redundant, just update on registration
+    // was last published version later registered but never republished? Fix for issue #1319
+    if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
+      result.setStatus(PublicationStatus.REGISTERED);
+      result.setOrganisationAlias(resource.getOrganisationAlias());
+      result.setOrganisationName(resource.getOrganisationName());
+    }
+
+    return result;
+  }
+
+  /**
+   * Converts regular Resource to lightweight SimplifiedResource.
+   *
+   * @param resource regular Resource
+   * @return simplified resource
+   */
+  private SimplifiedResource toSimplifiedResource(Resource resource) {
+    SimplifiedResource result = new SimplifiedResource();
+    result.setShortname(resource.getShortname());
+    result.setTitle(resource.getTitle());
+    result.setStatus(resource.getStatus());
+    result.setRecordsPublished(resource.getRecordsPublished());
+    result.setLogoUrl(resource.getLogoUrl());
+    result.setSubject(resource.getSubject());
+    if (resource.getOrganisation() != null) {
+      result.setOrganisationName(resource.getOrganisationName());
+      result.setOrganisationAlias(resource.getOrganisationAlias());
+    }
+    result.setCoreType(resource.getCoreType());
+    result.setSubtype(resource.getSubtype());
+    result.setModified(resource.getModified());
+    result.setPublished(resource.getLastPublished() != null);
+    result.setLastPublished(resource.getLastPublished());
+    result.setNextPublished(resource.getNextPublished());
+    result.setCreatorName(resource.getCreatorName());
+
+    return result;
   }
 
   @Override
@@ -1065,9 +1159,315 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request) {
+    List<SimplifiedResource> filteredResources = publishedPublicVersionsSimplified.values().stream()
+        .filter(p -> matchesSearchString(p, request.getSearch()))
+        .collect(Collectors.toList());
+
+    List<List<String>> data = filteredResources.stream()
+        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
+        .skip(request.getOffset())
+        .limit(request.getLimit())
+        .map(this::toDatatableResourcePortalView)
+        .collect(Collectors.toList());
+
+    DatatableResult result = new DatatableResult();
+    result.setTotalRecords(publishedPublicVersionsSimplified.values().size());
+    result.setTotalDisplayRecords(filteredResources.size());
+    result.setData(data);
+
+    return result;
+  }
+
+  /**
+   * Produces comparator from the raw parameters.
+   *
+   * @param index field index (1 - title, 2 - organization, 3 - core type etc.)
+   * @param order asc/desc
+   * @return comparator
+   */
+  private Comparator<SimplifiedResource> resourceComparator(int index, String order) {
+    boolean isDescendingOrder = isDescendingOrder(order);
+    if (index == 1) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator);
+    } else if (index == 2) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator);
+    } else if (index == 3) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator);
+    } else if (index == 4) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator);
+    } else if (index == 5) {
+      return isDescendingOrder ?
+          Comparator.comparingInt(SimplifiedResource::getRecordsPublished).reversed() :
+          Comparator.comparingInt(SimplifiedResource::getRecordsPublished);
+    } else if (index == 6) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator);
+    } else if (index == 7) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator);
+    } else if (index == 8) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator);
+    } else if (index == 9) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
+          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
+    } else if (index == 10) {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator);
+    } else {
+      return isDescendingOrder ?
+          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator);
+    }
+  }
+
+  /**
+   * Check whether sort order is descending.
+   *
+   * @param order raw sort order string
+   * @return true if descending, false otherwise
+   */
+  private boolean isDescendingOrder(String order) {
+    return StringUtils.equalsIgnoreCase(StringUtils.trimToEmpty(order), "desc");
+  }
+
+  /**
+   * Check if provided string is present in one of the searchable fields.
+   *
+   * @param resource lightweight resource
+   * @param search search string
+   * @return true/false
+   */
+  private boolean matchesSearchString(SimplifiedResource resource, String search) {
+    if (StringUtils.isEmpty(search)) {
+      return true;
+    }
+
+    return StringUtils.containsIgnoreCase(resource.getShortname(), search)
+        || StringUtils.containsIgnoreCase(resource.getTitle(), search)
+        || StringUtils.containsIgnoreCase(resource.getOrganisationAlias(), search)
+        || StringUtils.containsIgnoreCase(resource.getOrganisationName(), search)
+        || StringUtils.containsIgnoreCase(resource.getCoreType(), search)
+        || StringUtils.containsIgnoreCase(resource.getSubtype(), search)
+        || StringUtils.containsIgnoreCase(resource.getCreatorName(), search)
+        || StringUtils.containsIgnoreCase(resource.getSubject(), search);
+  }
+
+  /**
+   * Converts raw data (one simplified resource) to UI data for portal home page.
+   * BEWARE! Order is crucial!
+   *
+   * @param resource simplified resource
+   * @return UI data (array)
+   */
+  private List<String> toDatatableResourcePortalView(SimplifiedResource resource) {
+    List<String> result = new ArrayList<>();
+    result.add(toUiLogoUrl(resource.getLogoUrl()));
+    result.add(toResourceHomeLink(resource));
+    result.add(toUiOrganization(resource));
+    result.add(toTypeBadge(resource.getCoreType()));
+    result.add(toTypeBadge(resource.getSubtype()));
+    result.add(toUiRecordsPublished(resource));
+    result.add(toUiDateTime(resource.getModified()));
+    result.add(toUiDateTime(resource.getLastPublished()));
+    result.add(toUiNextPublished(resource.getNextPublished()));
+    result.add(toUiStatus(resource.getStatus()));
+    result.add(resource.getCreatorName());
+    result.add(resource.getShortname());
+    result.add(resource.getSubject() != null ? resource.getSubject() : "");
+
+    return result;
+  }
+
+  /**
+   * Converts raw data (one simplified resource) to UI data for manage home page.
+   * BEWARE! Order is crucial!
+   *
+   * @param resource simplified resource
+   * @return UI data (array)
+   */
+  private List<String> toDatatableResourceManageView(SimplifiedResource resource) {
+    List<String> result = new ArrayList<>();
+    result.add(toUiLogoUrl(resource.getLogoUrl()));
+    result.add(toResourceManageLink(resource));
+    result.add(toUiOrganization(resource));
+    result.add(toTypeBadge(resource.getCoreType()));
+    result.add(toTypeBadge(resource.getSubtype()));
+    result.add(toUiRecordsPublished(resource));
+    result.add(toUiDateTime(resource.getModified()));
+    result.add(toUiDateTime(resource.getLastPublished()));
+    result.add(toUiNextPublished(resource.getNextPublished()));
+    result.add(toUiStatus(resource.getStatus()));
+    result.add(resource.getCreatorName());
+    result.add(resource.getShortname());
+    result.add(resource.getSubject() != null ? resource.getSubject() : "");
+
+    return result;
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Date formatted as yyyy-MM-dd HH:mm:ss or "--" if empty.
+   *
+   * @param date date
+   * @return formatted date
+   */
+  private String toUiDateTime(Date date) {
+    if (date == null) {
+      return "<span>--</span>";
+    }
+    return DATETIME_FORMAT.format(date);
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Next publication date formatted as yyyy-MM-dd HH:mm:ss or "--" if empty.
+   * Next published date should never be before today's date, otherwise auto-publication must have failed.
+   * In this case, highlight the row to bring the problem to the resource manager's attention.
+   *
+   * @param date next publication date
+   * @return formatted date
+   */
+  private String toUiNextPublished(Date date) {
+    if (date == null) {
+      return "<span>--</span>";
+    }
+
+    Date now = new Date();
+
+    // highlight if next published is before now (something wrong)
+    return date.before(now)
+        ? "<span class=\"text-gbif-danger\">" + DATETIME_FORMAT.format(date) + "</span>"
+        : DATETIME_FORMAT.format(date);
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Logo URL or "--" if empty
+   *
+   * @param logoUrl logo URL
+   * @return Logo URL or "--" if empty
+   */
+  private String toUiLogoUrl(String logoUrl) {
+    if (logoUrl == null) {
+      return "<span>--</span>";
+    }
+    return logoUrl;
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Organization alias or name or "--" if empty
+   *
+   * @param resource lightweight resource
+   * @return alias or name or "--"
+   */
+  private String toUiOrganization(SimplifiedResource resource) {
+    String result = StringUtils.defaultString(resource.getOrganisationAlias(), resource.getOrganisationName());
+    return !"No organization".equals(result) ? result : "--";
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Wraps number of published records into a link
+   *
+   * @param resource lightweight resource
+   * @return link to records section
+   */
+  private String toUiRecordsPublished(SimplifiedResource resource) {
+    return "<a href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + resource.getRecordsPublished() + "</a>";
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Wraps core type or subtype into span to make it badge on UI.
+   *
+   * @param type core type or subtype
+   * @return wrapped type (badge)
+   */
+  private String toTypeBadge(String type) {
+    if (type == null) {
+      return "<span>--</span>";
+    }
+    return "<span class=\"text-nowrap ct-content__link ct-content__pill coreType-" + type + "\">" + type + "</span>";
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Wraps resource title or shortname into a link (home page)
+   *
+   * @param resource lightweight resource
+   * @return link to resource (home page)
+   */
+  private String toResourceHomeLink(SimplifiedResource resource) {
+    String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
+    return "<a href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Wraps resource title or shortname into a link (manage page)
+   *
+   * @param resource lightweight resource
+   * @return link to resource (manage page)
+   */
+  private String toResourceManageLink(SimplifiedResource resource) {
+    String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
+    return "<a href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+  }
+
+  /**
+   * Converts raw data to UI format.
+   * Wraps lower case status into span to make it badge on UI.
+   *
+   * @param status publication status
+   * @return wrapped publication status (badge)
+   */
+  private String toUiStatus(PublicationStatus status) {
+    return "<span class=\"text-nowrap ct-content__link ct-content__pill status-" + status.name().toLowerCase() + "\">" + status + "</span>";
+  }
+
+  @Override
+  public DatatableResult list(User user, DatatableRequest request) {
+    List<SimplifiedResource> filteredResources = resources.values().stream()
+        .filter(res -> RequireManagerInterceptor.isAuthorized(user, res))
+        .map(this::toSimplifiedResource)
+        .filter(res -> matchesSearchString(res, request.getSearch()))
+        .collect(Collectors.toList());
+
+    List<List<String>> data = filteredResources.stream()
+        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
+        .skip(request.getOffset())
+        .limit(request.getLimit())
+        .map(this::toDatatableResourceManageView)
+        .collect(Collectors.toList());
+
+    DatatableResult result = new DatatableResult();
+    result.setTotalRecords(publishedPublicVersionsSimplified.values().size());
+    result.setTotalDisplayRecords(filteredResources.size());
+    result.setData(data);
+
+    return result;
+  }
+
+  @Override
   public List<Resource> list(User user) {
     List<Resource> result = new ArrayList<>();
-    // select basedon user rights - for testing return all resources for now
+    // select based on user rights - for testing return all resources for now
     for (Resource res : resources.values()) {
       if (RequireManagerInterceptor.isAuthorized(user, res)) {
         result.add(res);
@@ -2561,6 +2961,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // change status to registered
         resource.setStatus(PublicationStatus.REGISTERED);
+
+        // TODO: 15/11/2022 update simplifiedResources?
 
         // ensure alternate identifier for Registry UUID set
         updateAlternateIdentifierForRegistry(resource);

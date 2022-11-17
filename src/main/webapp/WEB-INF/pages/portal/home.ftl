@@ -6,7 +6,7 @@
 <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 
-<@resourcesTable shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
+<@resourcesTable resources=resources shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">
@@ -38,7 +38,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
+        <div id="tableContainer" class="table-responsive-md text-smaller pt-2"></div>
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>

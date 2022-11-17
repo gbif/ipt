@@ -16,22 +16,21 @@ package org.gbif.ipt.action.portal;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.model.datatable.DatatableRequest;
+import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
-import org.gbif.ipt.utils.ResourceUtils;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.json.annotations.JSON;
 
 import com.google.inject.Inject;
 
@@ -40,10 +39,9 @@ public class HomeAction extends BaseAction {
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
 
-  private List<Resource> resources;
+  private DatatableResult resources;
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
-
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -55,7 +53,36 @@ public class HomeAction extends BaseAction {
 
   @Override
   public String execute() {
+    DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
+    resources = resourceManager.listPublishedPublicVersionsSimplified(dr);
+
     return SUCCESS;
+  }
+
+  /**
+   * Constructs request object from HTTP request to get required resources.
+   *
+   * @param request HTTP request
+   * @return resource request object
+   */
+  private DatatableRequest getRequestParameters(HttpServletRequest request) {
+    DatatableRequest result = new DatatableRequest();
+    getRequestParameter(request, Constants.DATATABLE_SEARCH_PARAM)
+        .map(StringUtils::trimToEmpty)
+        .ifPresent(result::setSearch);
+    getRequestParameter(request, Constants.DATATABLE_ORDER_DIRECTORY_PARAM)
+        .ifPresent(result::setSortOrder);
+    getRequestParameter(request, Constants.DATATABLE_ORDER_COLUMN_PARAM)
+        .map(Integer::parseInt)
+        .ifPresent(result::setSortFieldIndex);
+    getRequestParameter(request, Constants.DATATABLE_START_PARAM)
+        .map(Long::parseLong)
+        .ifPresent(result::setOffset);
+    getRequestParameter(request, Constants.DATATABLE_LENGTH_PARAM)
+        .map(Integer::parseInt)
+        .ifPresent(result::setLimit);
+
+    return result;
   }
 
   /**
@@ -66,39 +93,6 @@ public class HomeAction extends BaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    resources = new ArrayList<>();
-
-    for (Resource resource : resourceManager.listPublishedPublicVersions()) {
-      // reconstruct the last published public version
-      BigDecimal v = resource.getLastPublishedVersionsVersion();
-      String shortname = resource.getShortname();
-      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
-      // try/catch block flags resources missing mandatory metadata (published using IPT prior to v2.2)
-      try {
-        Resource publishedPublicVersion = ResourceUtils
-          .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
-            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
-
-        // set properties only existing on current (unpublished) version
-        Resource current = resourceManager.get(shortname);
-        publishedPublicVersion.setModified(current.getModified());
-        publishedPublicVersion.setNextPublished(current.getNextPublished());
-        publishedPublicVersion.setCoreType(current.getCoreType());
-        publishedPublicVersion.setSubtype(current.getSubtype());
-        // was last published version later registered but never republished? Fix for issue #1319
-        if (!publishedPublicVersion.isRegistered() && current.isRegistered() && current.getOrganisation() != null) {
-          publishedPublicVersion.setStatus(PublicationStatus.REGISTERED);
-          publishedPublicVersion.setOrganisation(current.getOrganisation());
-        }
-        resources.add(publishedPublicVersion);
-      } catch (IllegalArgumentException e) {
-        // only expected to happen for extremely out-of-date resources published using IPT prior to v.2.2
-        addActionWarning(resource.getTitleAndShortname() + " failed to load. To fix this problem, try publishing this resource again.");
-      }
-    }
-
-    // sort alphabetically (A to Z)
-    Collections.sort(resources);
 
     // Dataset core type list, derived from XML vocabulary
     types = new LinkedHashMap<>();
@@ -116,7 +110,8 @@ public class HomeAction extends BaseAction {
    *
    * @return a list of resources
    */
-  public List<Resource> getResources() {
+  @JSON
+  public DatatableResult getResources() {
     return resources;
   }
 

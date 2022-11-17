@@ -6,7 +6,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 - columnToSortOn: The column to sort on by default (index starting at 0)
 - sortOrder: The sort order of the columnToSortOn
 -->
-<#macro resourcesTable shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
+<#macro resourcesTable resources shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
 
     <script charset="utf-8">
         <#assign emptyString="--">
@@ -17,20 +17,6 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         <#assign notRegistered><@s.text name="manage.home.not.registered"/></#assign>
         <#assign unknownOrganisation><@s.text name="manage.home.unknown.organisation"/></#assign>
         <#assign notPublished><@s.text name="portal.home.not.published"/></#assign>
-
-        /* Sorts columns having "sType": "number". It should handle numbers with locale specific separators, e.g. 1,000 */
-        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-            "number-pre": function (a) {
-                var x = String(String(a).replace(/<[\s\S]*?>/g, "")).replace(/,/g, '');
-                return parseFloat(x);
-            },
-            "number-asc": function (a, b) {
-                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-            },
-            "number-desc": function (a, b) {
-                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-            }
-        });
 
         // parse a date in yyyy-mm-dd format
         function parseDate(input) {
@@ -45,28 +31,6 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 return defaultVal;
             }
         }
-
-        /* resources list */
-        var aDataSet = [
-            <#list resources as r>
-            [
-                <#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
-                "<a href='${baseURL}<#if !shownPublicly>/manage</#if>/resource?r=${r.shortname}'><if><#if r.title?has_content>${r.title?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${r.shortname}</#if></a>",
-                '<#if r.status=='REGISTERED' && r.organisation??>${r.organisation.alias?replace("\'", "\\'")?replace("\"", '\\"')!r.organisation.name?replace("\'", "\\'")?replace("\"", '\\"')}<#elseif r.status=='REGISTERED'>${unknownOrganisation}<#else>${notRegistered}</#if>',
-                <#if r.coreType?has_content && types[r.coreType?lower_case]?has_content>'${types[r.coreType?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,
-                <#if r.subtype?has_content && datasetSubtypes[r.subtype?lower_case]?has_content >'${datasetSubtypes[r.subtype?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,
-                '<a target="_blank" href="${baseURL}/resource?r=${r.shortname}#anchor-dataRecords">${(r.recordsPublished?c)!0}</a>',
-                '${r.modified?date}',
-                <#if r.published>'${(r.lastPublished?date)!}'<#else>'${notPublished}'</#if>,
-                '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm"))!'${emptyString}'}',
-                <#if r.status=='PRIVATE'>'${visibilityPrivate}'<#elseif r.status=='DELETED'>'${visibilityDeleted}'<#else>'${visibilityPublic}'</#if>,
-                <#if (r.creator.name)?has_content>'${r.creator.name?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>,
-                '${r.shortname}',
-                '${(r.eml.subject?replace("[\r\n]+", "<br>", "r")?replace("\'", "\\'")?replace("\"", '\\"'))!}'
-            ]
-            <#if r_has_next>, </#if>
-            </#list>
-        ];
 
         $(document).ready(function () {
             const SEARCH_PARAM = "search";
@@ -105,10 +69,11 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 
             $('#tableContainer').html('<table  class="display dataTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
-                "aaData": aDataSet,
+                ajax: <#if shownPublicly>'/api/resources'<#else>'/manager-api/resources'</#if>,
+                "bProcessing": true,
+                "bServerSide": true,
                 "iDisplayLength": ${numResourcesShown},
                 "bLengthChange": false,
-                "bAutoWidth": false,
                 "oLanguage": {
                     "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
                     "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
@@ -119,11 +84,10 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     "oPaginate": {
                         "sNext": "<@s.text name="pager.next"/>",
                         "sPrevious": "<@s.text name="pager.previous"/>"
-
                     }
                 },
                 "aoColumns": [
-                    {"sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bVisible": <#if shownPublicly>true<#else>false</#if>},
+                    {"sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bSortable": false, "bVisible": <#if shownPublicly>true<#else>false</#if>},
                     {"sTitle": "<@s.text name="manage.home.name"/>"},
                     {"sTitle": "<@s.text name="manage.home.organisation"/>"},
                     {"sTitle": "<@s.text name="manage.home.type"/>"},
@@ -143,21 +107,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 ],
                 "oSearch": {"sSearch": searchParam},
                 "fnInitComplete": function (oSettings) {
-                    /* Next published date should never be before today's date, otherwise auto-publication must have failed.
-                       In this case, highlight the row to bring the problem to the resource manager's attention. */
-                    var today = new Date();
-                    for (var i = 0, iLen = oSettings.aoData.length; i < iLen; i++) {
-                        // warning fragile: index 8 must always equal next published date on both home page and manage page
-                        var nextPublishedDate = (oSettings.aoData[i]._aData[8] == '${emptyString}') ? today : parseDate(oSettings.aoData[i]._aData[8]);
-                        if (today > nextPublishedDate) {
-                            oSettings.aoData[i].nTr.className += " text-gbif-danger";
-                        }
-                        // warning fragile: index 9 must always equal visibility (only on manage page)
-                        var visibility = oSettings.aoData[i]._aData[9];
-                        if (visibility && visibility.toLowerCase() == '${visibilityDeleted?lower_case}') {
-                            oSettings.aoData[i].nTr.className += " text-gbif-danger";
-                        }
-                    }
+                    /* Do nothing for now, may need in the future */
                 }
             });
 
