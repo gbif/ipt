@@ -951,10 +951,12 @@ div.dataTables_processing>div:last-child>div {
 
 .status-deleted {
     background: #ff8787 !important;
+    color: #ffffff !important;
 }
 
 .status-registered {
     background: #2c91bf !important;
+    color: #ffffff !important;
 }
 
 .coreType-occurrence {
