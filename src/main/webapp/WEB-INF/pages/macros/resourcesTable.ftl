@@ -103,7 +103,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             var sortParam = urlParams.get(SORT_PARAM) ? getSafe(columnNameIndex, urlParams.get(SORT_PARAM), 1) : ${columnToSortOn};
             var orderParam = urlParams.get(ORDER_PARAM) ? urlParams.get(ORDER_PARAM) : "${sortOrder}";
 
-            $('#tableContainer').html('<table  class="table table-sm align-middle" id="rtable"></table>');
+            $('#tableContainer').html('<table  class="display dataTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
                 "aaData": aDataSet,
                 "iDisplayLength": ${numResourcesShown},

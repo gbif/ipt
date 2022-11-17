@@ -40,8 +40,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
-    <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
