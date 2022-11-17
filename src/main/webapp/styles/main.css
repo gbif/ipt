@@ -924,46 +924,74 @@ td.left_padding {
 }
 
 
-/* Custom colors for tables pagination items START */
-.page-link {
-    position: relative;
-    display: block;
-    color: rgb(var(--color-gbif-primary)) !important;
-    text-decoration: none;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-.page-link:hover {
-    z-index: 2;
-    color: rgb(var(--color-gbif-primary)) !important;
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-}
-.page-link:focus {
-    z-index: 3;
-    color: rgb(var(--color-gbif-primary)) !important;
-    background-color: #e9ecef;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(var(--color-gbif-primary), 0.25) !important;
+/* DataTables styles START */
+/* DataTable loader styles */
+div.dataTables_processing>div:last-child>div {
+    background: rgb(var(--color-gbif-primary)) !important;
 }
 
-.page-item:not(:first-child) .page-link {
-    margin-left: -1px;
+/* DataTable pagination buttons styles */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:active{
+    color: #4e565f !important;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0.2rem;
+    background: transparent;
 }
-.page-item.active .page-link {
-    z-index: 3;
-    color: #fff !important;
-    background-color: rgb(var(--color-gbif-primary)) !important;
-    border-color: rgb(var(--color-gbif-primary)) !important;
+
+.status-public {
+    background: #cbe5be !important;
 }
-.page-item.disabled .page-link {
-    color: #6c757d !important;
-    pointer-events: none;
-    background-color: #fff;
-    border-color: #dee2e6;
+
+.status-private {
+    background: #F8C4B4 !important;
 }
-/* Custom colors for tables pagination items END */
+
+.status-deleted {
+    background: #ff8787 !important;
+}
+
+.status-registered {
+    background: #2c91bf !important;
+}
+
+.coreType-occurrence {
+    background: #bfbbde !important;
+}
+
+.coreType-checklist {
+    background: #cbe5be !important;
+}
+
+.coreType-metadata {
+    background: #7aced8 !important;
+    color: #ffffff !important;
+}
+
+.coreType-samplingEvent {
+    background: #f9d7e7 !important;
+}
+
+.coreType-other {
+    background: #7b6d6a !important;
+    color: #ffffff !important;
+}
+
+/* Base styles for dataTable badges */
+.ct-content__link {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ct-content__pill {
+    border-radius: 8px;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    background: #d3d3d3;
+}
+/* DataTables styles END */
 
 
 /* Custom styles for cross in search inputs START*/
