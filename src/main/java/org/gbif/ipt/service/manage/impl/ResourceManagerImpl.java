@@ -1366,7 +1366,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (logoUrl == null) {
       return "<span>--</span>";
     }
-    return "<img class=\"resourceminilogo\" src=\"" + logoUrl + "/>";
+    return "<img class=\"resourceminilogo\" src=\"" + logoUrl + "\"/>";
   }
 
   /**
@@ -1377,8 +1377,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return alias or name or "--"
    */
   private String toUiOrganization(SimplifiedResource resource) {
-    String result = StringUtils.defaultString(resource.getOrganisationAlias(), resource.getOrganisationName());
-    return !"No organization".equals(result) ? result : "--";
+    String result = resource.getOrganizationAliasOrName();
+    return result != null && !"No organization".equals(result) ? result : "--";
   }
 
   /**
@@ -1457,7 +1457,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
-    result.setTotalRecords(publishedPublicVersionsSimplified.values().size());
+    result.setTotalRecords(resources.values().size());
     result.setTotalDisplayRecords(filteredResources.size());
     result.setData(data);
 

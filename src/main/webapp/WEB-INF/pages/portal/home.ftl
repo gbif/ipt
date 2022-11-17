@@ -6,7 +6,7 @@
 <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 
-<@resourcesTable resources=resources shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
+<@resourcesTable resources=resources shownPublicly=true numResourcesShown=10 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">
@@ -25,7 +25,7 @@
 
             <#if (resources?size>0)>
                 <div class="text-smaller text-gbif-primary mb-2">
-                    <@s.text name="portal.home.resources.available"><@s.param>${resources?size}</@s.param></@s.text>
+                    <@s.text name="portal.home.resources.available"><@s.param>${resourcesSize}</@s.param></@s.text>
                 </div>
             <#else>
                 <div class="text-smaller text-gbif-danger mb-2">

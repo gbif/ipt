@@ -115,6 +115,10 @@ public class HomeAction extends BaseAction {
     return resources;
   }
 
+  public int getResourcesSize() {
+    return resources != null ? resources.getTotalRecords() : 0;
+  }
+
   /**
    * A map of dataset types keys to internationalized values.
    *

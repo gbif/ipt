@@ -106,6 +106,10 @@ public class HomeAction extends BaseAction {
     return resources;
   }
 
+  public int getResourcesSize() {
+    return resources != null ? resources.getTotalRecords() : 0;
+  }
+
   /**
    * Get map of resource types to populate resource type selection.
    *

@@ -28,7 +28,7 @@
 
             <#if (resources?size>0)>
                 <div class="text-smaller text-gbif-primary">
-                    <@s.text name="portal.home.resources.available"><@s.param>${resources?size}</@s.param></@s.text>
+                    <@s.text name="portal.home.resources.available"><@s.param>${resourcesSize}</@s.param></@s.text>
                 </div>
             <#else>
                 <div class="text-smaller text-gbif-danger">
