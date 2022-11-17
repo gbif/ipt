@@ -2,7 +2,7 @@
 
 include::partial$version-outdated.adoc[]
 
-Version 2.1
+Version 2.2
 
 image::figures/cover_art_cicindelinae.png[]
 
