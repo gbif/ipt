@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-01-13 12:18\n"
+"POT-Creation-Date: 2022-11-17 09:56+0000\n"
+"PO-Revision-Date: 2022-11-17 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -94,6 +94,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
+#: en/modules/ROOT/pages/dwca-guide.adoc:4
 msgid "Version 2.2"
 msgstr ""
 
