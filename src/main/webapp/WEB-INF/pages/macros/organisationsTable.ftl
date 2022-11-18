@@ -39,7 +39,7 @@ organisationsTable macro: Generates a data table that has searching, pagination,
         ];
 
         $(document).ready(function() {
-            $('#tableContainer').html( '<table class="display dataTable" id="rtable"></table>' );
+            $('#tableContainer').html( '<table class="display dataTable compact" id="rtable"></table>' );
             $('#rtable').dataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numOrganisationsShown},
