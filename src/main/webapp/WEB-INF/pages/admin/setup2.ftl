@@ -44,24 +44,24 @@
                 [@s.text name="admin.config.setup2.administrator"/]. [@s.text name="admin.config.setup2.administrator.help"/]
             </p>
             <div class="row g-3 pb-3 mb-2">
-                <div class="col-12">
-                    [@input name="user.email" disabled=(ignoreUserValidation==1) /]
+                <div class="col-md-4">
+                    [@input name="user.firstname" disabled=(ignoreUserValidation==1) requiredField=true /]
+                </div>
+
+                <div class="col-md-4">
+                    [@input name="user.lastname" disabled=(ignoreUserValidation==1) requiredField=true /]
+                </div>
+
+                <div class="col-md-4">
+                    [@input name="user.email" disabled=(ignoreUserValidation==1) requiredField=true /]
                 </div>
 
                 <div class="col-md-6">
-                    [@input name="user.firstname" disabled=(ignoreUserValidation==1) /]
+                    [@input name="user.password" type="password" disabled=(ignoreUserValidation==1) requiredField=true /]
                 </div>
 
                 <div class="col-md-6">
-                    [@input name="user.lastname" disabled=(ignoreUserValidation==1) /]
-                </div>
-
-                <div class="col-md-6">
-                    [@input name="user.password" type="password" disabled=(ignoreUserValidation==1) /]
-                </div>
-
-                <div class="col-md-6">
-                    [@input name="password2" i18nkey="user.password2" type="password" disabled=(ignoreUserValidation==1) /]
+                    [@input name="password2" i18nkey="user.password2" type="password" disabled=(ignoreUserValidation==1) requiredField=true /]
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
             <p>[@s.text name="admin.config.setup2.mode.help"/]</p>
             <p>[@s.text name="admin.config.setup2.mode.test"/]</p>
             <p>[@s.text name="admin.config.setup2.mode.production"/]</p>
-            <p>[@s.text name="admin.config.setup2.mode"/]</p>
+            <p>[@s.text name="admin.config.setup2.mode"/] <span class="text-gbif-danger">&#42;</span></p>
 
             [#list modes as mode]
                 <div class="form-check form-check-inline pb-2">
@@ -99,13 +99,13 @@
 
             <div class="row g-2">
                 <div class="col-md-6">
-                    [@input name="baseURL" i18nkey="admin.config.baseUrl"/]
+                    [@input name="baseURL" i18nkey="admin.config.baseUrl" requiredField=true /]
                 </div>
             </div>
 
         </div>
 
-        <div class="my-3 p-3">
+        <div class="mt-3 p-3 mb-5">
             <h5 class="text-gbif-header-2 pb-2 pt-2 fw-400">
                 [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
             </h5>

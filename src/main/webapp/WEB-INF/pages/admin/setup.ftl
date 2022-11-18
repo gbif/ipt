@@ -38,7 +38,7 @@
             <p>[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
             <div>
-                [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read"/]
+                [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read" requiredField=true /]
             </div>
         </div>
 
@@ -52,7 +52,7 @@
 
             <div class="row g-3">
                 <div class="col-12">
-                    [@input name="dataDirPath" type="text" i18nkey="admin.config.setup.datadir" /]
+                    [@input name="dataDirPath" type="text" i18nkey="admin.config.setup.datadir" requiredField=true /]
                 </div>
             </div>
         </div>
