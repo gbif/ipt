@@ -202,17 +202,19 @@
                                     <#assign selectOrganisationInfo>
                                         <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
                                     </#assign>
-                                    <label for="organisation.key" class="form-label">
-                                        <@s.text name="admin.organisation.key"/> &#42;
-                                    </label>
-                                    <a tabindex="0" role="button"
-                                       class="popover-link"
-                                       data-bs-toggle="popover"
-                                       data-bs-trigger="focus"
-                                       data-bs-html="true"
-                                       data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-gbif-primary"></i>
-                                    </a>
+                                    <div class="d-flex text-smaller">
+                                        <a tabindex="0" role="button"
+                                           class="popover-link"
+                                           data-bs-toggle="popover"
+                                           data-bs-trigger="focus"
+                                           data-bs-html="true"
+                                           data-bs-content="${selectOrganisationInfo}">
+                                            <i class="bi bi-info-circle text-gbif-primary"></i>
+                                        </a>&nbsp;
+                                        <label for="organisation.key" class="form-label">
+                                            <@s.text name="admin.organisation.key"/> <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                    </div>
                                     <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
                                     <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                                 </div>

@@ -139,7 +139,7 @@
                 <div class="row g-3">
                     <#if id?has_content>
                         <div class="col-lg-6">
-                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
+                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true requiredField=true/>
                         </div>
 
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
@@ -174,17 +174,19 @@
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
                                 </#assign>
-                                <label for="organisation.key" class="form-label">
-                                    <@s.text name="admin.organisation.key"/> &#42;
-                                </label>
-                                <a tabindex="0" role="button"
-                                   class="popover-link"
-                                   data-bs-toggle="popover"
-                                   data-bs-trigger="focus"
-                                   data-bs-html="true"
-                                   data-bs-content="${selectOrganisationInfo}">
-                                    <i class="bi bi-info-circle text-gbif-primary"></i>
-                                </a>
+                                <div class="d-flex text-smaller">
+                                    <a tabindex="0" role="button"
+                                       class="popover-link"
+                                       data-bs-toggle="popover"
+                                       data-bs-trigger="focus"
+                                       data-bs-html="true"
+                                       data-bs-content="${selectOrganisationInfo}">
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                    </a>&nbsp;
+                                    <label for="organisation.key" class="form-label">
+                                        <@s.text name="admin.organisation.key"/> <span class="text-gbif-danger">&#42;</span>
+                                    </label>
+                                </div>
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>

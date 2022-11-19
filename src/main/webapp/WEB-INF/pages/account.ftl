@@ -90,21 +90,21 @@
 
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-sm-6">
-                    <@input name="user.email" disabled=true />
+                    <@input name="user.email" disabled=true requiredField=true />
                 </div>
 
                 <#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
 
                 <div class="col-sm-6">
-                    <@readonly name="role" i18nkey="user.role" value=val />
+                    <@readonly name="role" i18nkey="user.role" value=val requiredField=true />
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="user.firstname" />
+                    <@input name="user.firstname" requiredField=true />
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="user.lastname" />
+                    <@input name="user.lastname" requiredField=true />
                 </div>
             </div>
         </form>
@@ -119,15 +119,15 @@
 
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-sm-6">
-                    <@input name="newPassword" i18nkey="user.password.new" type="password"/>
+                    <@input name="newPassword" i18nkey="user.password.new" type="password" requiredField=true />
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="password2" i18nkey="user.password2" type="password"/>
+                    <@input name="password2" i18nkey="user.password2" type="password" requiredField=true />
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="currentPassword" i18nkey="user.password.current" type="password"/>
+                    <@input name="currentPassword" i18nkey="user.password.current" type="password" requiredField=true />
                 </div>
             </div>
         </form>
