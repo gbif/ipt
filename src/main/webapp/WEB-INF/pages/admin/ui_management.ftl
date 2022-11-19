@@ -337,9 +337,14 @@
                     <@s.hidden name="removeLogo" id="removeLogo" value="false" required="true" />
 
                     <!-- App Logo -->
-                    <div id="logofields" class="row g-3">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.uiManagement.logo"/>
+                    </h4>
+                    <div id="logofields" class="row g-3 mb-5">
                         <div class="col-lg-6">
-                            <@s.label for="file" class="form-label text-smaller" value="IPT logo" />
+                            <label for="file" class="form-label">
+                                <@s.text name="admin.uiManagement.iptLogo"/>
+                            </label>
                             <@s.file cssClass="form-control my-1" name="file"/>
                             <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
                                 <@s.text name="button.upload"/>
@@ -357,10 +362,13 @@
                     </div>
 
                     <!-- App colors -->
-                    <div class="row g-3 mt-5">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.uiManagement.colors"/>
+                    </h4>
+                    <div class="row g-3">
                         <div class="col-lg-6">
                             <label for="primaryColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.primaryColor"/>
+                                <@s.text name="admin.uiManagement.primaryColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.primaryColor" id="primaryColor-select" class="form-select">
@@ -381,7 +389,7 @@
 
                         <div class="col-lg-6">
                             <label for="secondaryColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.secondaryColor"/>
+                                <@s.text name="admin.uiManagement.secondaryColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.secondaryColor" id="secondaryColor-select" class="form-select">
@@ -402,7 +410,7 @@
 
                         <div class="col-lg-6">
                             <label for="warningColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.warningColor"/>
+                                <@s.text name="admin.uiManagement.warningColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.warningColor" id="warningColor-select" class="form-select">
@@ -423,7 +431,7 @@
 
                         <div class="col-lg-6">
                             <label for="dangerColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.dangerColor"/>
+                                <@s.text name="admin.uiManagement.dangerColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.dangerColor" id="dangerColor-select" class="form-select">
@@ -441,12 +449,11 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row g-3 mt-5">
+                        <!-- Navigation bar -->
                         <div class="col-lg-6">
                             <label for="navbarColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.navbarColor"/>
+                                <@s.text name="admin.uiManagement.navbarColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.navbarColor" id="navbarColor-select" class="form-select">
@@ -467,7 +474,7 @@
 
                         <div class="col-lg-6">
                             <label for="navbarLinkColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.navbarLinkColor"/>
+                                <@s.text name="admin.uiManagement.navbarLinkColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.navbarLinkColor" id="navbarLinkColor-select" class="form-select">
@@ -485,12 +492,12 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row g-3 mt-5">
+                        <!-- Links -->
+
                         <div class="col-lg-6">
                             <label for="linkColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.linkColor"/>
+                                <@s.text name="admin.uiManagement.linkColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.linkColor" id="linkColor-select" class="form-select">
