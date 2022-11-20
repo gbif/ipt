@@ -39,7 +39,7 @@ public class HomeAction extends BaseAction {
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
 
-  private DatatableResult resources;
+  private DatatableResult resources = new DatatableResult();
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
 

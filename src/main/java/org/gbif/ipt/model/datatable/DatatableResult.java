@@ -24,8 +24,8 @@ import org.apache.struts2.json.annotations.JSON;
  * This class represents source data for data tables (resource home table, resource manage table etc.)
  */
 public class DatatableResult {
-  private int totalRecords;
-  private int totalDisplayRecords;
+  private int totalRecords = 0;
+  private int totalDisplayRecords = 0;
   private List<List<String>> data = new ArrayList<>();
 
   @JSON(name = "iTotalRecords")

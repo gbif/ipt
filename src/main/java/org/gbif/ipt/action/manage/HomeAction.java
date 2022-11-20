@@ -38,7 +38,7 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
-  private DatatableResult resources;
+  private DatatableResult resources = new DatatableResult();
 
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
