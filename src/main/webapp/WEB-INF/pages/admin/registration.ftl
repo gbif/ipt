@@ -12,6 +12,37 @@
     </script>
     <script>
         $(document).ready(function(){
+            $("#edit-registration-radio").change(function () {
+                if ($('#edit-registration-radio').is(':checked')) {
+                    displayEditRegistrationView();
+                }
+            });
+
+            $("#change-tokens-radio").change(function () {
+                if ($('#change-tokens-radio').is(':checked')) {
+                    displayChangeTokensView();
+                }
+            });
+
+            function displayChangeTokensView() {
+                $('#tokens-block').show();
+                $('#registration-block').hide();
+                $('#tokens').show();
+                $('#update').hide();
+            }
+
+            function displayEditRegistrationView() {
+                $('#tokens-block').hide();
+                $('#registration-block').show();
+                $('#tokens').hide();
+                $('#update').show();
+            }
+
+            if (window.location.href.indexOf("changeTokens") > -1) {
+                displayChangeTokensView();
+                $('#change-tokens-radio').prop("checked", true);
+            }
+
             $('#organisation\\.key').change(function() {
 
                 var organisationSelected = $('#organisation\\.key :selected');
@@ -112,6 +143,7 @@
                 <div class="mt-2">
                     <#if hostingOrganisation?has_content>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="registration" name="update" id="update" key="button.updateRegistration" />
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="changeTokens" name="tokens" id="tokens" key="button.updateTokens" cssStyle="display: none;"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="registration" name="cancel" key="button.cancel"/>
                     <#else>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
@@ -134,31 +166,71 @@
                     <@s.text name="admin.registration.registered2"><@s.param><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></@s.param></@s.text>
                 </p>
 
-                <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
-                <form id="registration" class="topForm half" action="updateRegistration" method="post">
-                    <div class="row g-3">
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
-                        </div>
-
-                        <div class="col-12">
-                            <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
-                        </div>
-
-                        <#-- For future release. Will replace contact name below
-                        <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
-                        <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
-                        -->
-
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
-                        </div>
-
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
-                        </div>
+                <div class="py-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="edit-registration-radio" value="edit-registration" checked>
+                        <label class="form-check-label" for="edit-profile-radio"><@s.text name="admin.ipt.registration"/></label>
                     </div>
-                </form>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="change-tokens-radio" value="change-tokens">
+                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens"/></label>
+                    </div>
+                </div>
+
+                <div id="registration-block" class="py-3">
+                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.ipt.registration"/>
+                    </h4>
+                    <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
+                    <form id="registration" class="needs-validation" action="updateRegistration" method="post" novalidate>
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+                            </div>
+
+                            <div class="col-12">
+                                <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
+                            </div>
+
+                            <#-- For future release. Will replace contact name below
+                            <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
+                            <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+                            -->
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tokens-block" style="display: none;" class="py-3">
+                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.ipt.tokens.title"/>
+                    </h4>
+
+                    <p class="mb-3 pb-3">
+                        <@s.text name="admin.ipt.tokens.intro"/>
+                    </p>
+
+                    <form id="changeTokens" class="needs-validation" action="changeTokens" method="post" novalidate>
+                        <@s.hidden id="tokenChange" name="tokenChange" value="true" />
+
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@input name="hostingOrganisationToken" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIptPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 />
+                            </div>
+                        </div>
+                    </form>
+                </div>
             <#else>
                 <#-- BASE URL has not been validated, disable the form -->
                 <#if !validatedBaseURL>
@@ -193,6 +265,7 @@
                         </div>
                     </div>
                 </#if>
+
                 <div id="registrationFormDiv" class="mt-4" style="display: none;" >
 
                     <form id="registrationForm" class="needs-validation" action="registration.do" method="post" novalidate>

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,6 +81,10 @@ public class RegistrationAction extends POSTAction {
   private final RegistryManager registryManager;
   private final OrganisationSupport organisationValidation;
   private final IptValidator iptValidation;
+
+  private String registeredIptPassword;
+  private String hostingOrganisationToken;
+  protected boolean tokenChange = false;
 
   private boolean validatedBaseURL = false;
 
@@ -245,16 +250,70 @@ public class RegistrationAction extends POSTAction {
     return SUCCESS;
   }
 
+  public String changeTokens() {
+    try {
+      if (cancel) {
+        return cancel();
+      }
+      if (StringUtils.isNotEmpty(hostingOrganisationToken)) {
+        getHostingOrganisation().setPassword(hostingOrganisationToken);
+      }
+      if (StringUtils.isNotEmpty(registeredIptPassword)) {
+        getRegisteredIpt().setWsPassword(registeredIptPassword);
+      }
+      registrationManager.save();
+      addActionMessage(getText("admin.ipt.success.update"));
+    } catch (Exception e) {
+      addActionError(e.getMessage());
+      LOG.error("Exception caught", e);
+      return INPUT;
+    }
+    return SUCCESS;
+  }
+
   @Override
   public void validate() {
-    if (isHttpPost() && !cancel) {
-      if (getRegisteredIpt() != null) {
-        iptValidation.validateUpdate(this, getRegisteredIpt());
-      } else {
-        iptValidation.validate(this, ipt);
-        validatedBaseURL = true;
-        organisationValidation.validate(this, organisation);
-      }
+    if (!isHttpPost() || cancel) {
+      return;
     }
+
+    if (tokenChange) {
+      if (StringUtils.isNotEmpty(hostingOrganisationToken)) {
+        organisationValidation.validateOrganisationToken(this, getHostingOrganisation().getKey(), hostingOrganisationToken);
+      }
+      if (StringUtils.isNotEmpty(registeredIptPassword)) {
+        iptValidation.validateIptPassword(this, registeredIptPassword);
+      }
+    } else if (getRegisteredIpt() != null) {
+      iptValidation.validateUpdate(this, getRegisteredIpt());
+    } else {
+      iptValidation.validate(this, ipt);
+      validatedBaseURL = true;
+      organisationValidation.validate(this, organisation);
+    }
+  }
+
+  public String getRegisteredIptPassword() {
+    return registeredIptPassword;
+  }
+
+  public void setRegisteredIptPassword(String registeredIptPassword) {
+    this.registeredIptPassword = registeredIptPassword;
+  }
+
+  public String getHostingOrganisationToken() {
+    return hostingOrganisationToken;
+  }
+
+  public void setHostingOrganisationToken(String hostingOrganisationToken) {
+    this.hostingOrganisationToken = hostingOrganisationToken;
+  }
+
+  public boolean isTokenChange() {
+    return tokenChange;
+  }
+
+  public void setTokenChange(boolean tokenChange) {
+    this.tokenChange = tokenChange;
   }
 }

@@ -168,6 +168,17 @@ public class OrganisationSupport {
     return valid;
   }
 
+  public void validateOrganisationToken(BaseAction action, UUID organisationKey, String organisationToken) {
+    // validate if the key+password combination validates to true
+    if (organisationKey != null && organisationToken != null) {
+      if (organisationKey.toString().length() > 0 && organisationToken.length() > 0) {
+        if (!registryManager.validateOrganisation(organisationKey.toString(), organisationToken)) {
+          action.addFieldError("hostingOrganisationToken", action.getText("validation.organisation.password.invalid"));
+        }
+      }
+    }
+  }
+
   /**
    * @return DataCiteMetadata having only mandatory elements that can be used to reserve DOIs in order to test
    * authentication

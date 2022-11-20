@@ -28,6 +28,12 @@ public class IptValidator extends BaseValidator {
     }
   }
 
+  public void validateIptPassword(BaseAction action, String password) {
+    if (password != null && password.length() < 6) {
+      action.addFieldError("registeredIptPassword", action.getText("validation.ipt.password.short"));
+    }
+  }
+
   public void validateUpdate(BaseAction action, Ipt ipt) {
     validateBasic(action, ipt, "registeredIpt");
   }
