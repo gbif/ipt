@@ -237,7 +237,7 @@
     <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
-            <#list peek as row>
+            <#list peek! as row>
                 <#if row??>
                     <#if row[index]?has_content && row[index]!=" ">
                         <code>${row[index]}</code>

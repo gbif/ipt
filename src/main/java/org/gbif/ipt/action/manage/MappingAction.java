@@ -84,7 +84,7 @@ public class MappingAction extends ManagerBaseAction {
   private final VocabulariesManager vocabManager;
   // config
   private ExtensionMapping mapping;
-  private List<String> columns;
+  private List<String> columns = new ArrayList<>();
   private final Comparator[] comparators = Comparator.values();
   private List<String[]> peek;
   private List<PropertyMapping> fields;
@@ -479,20 +479,22 @@ public class MappingAction extends ManagerBaseAction {
 
   private void readSource() {
     Source src = mapping.getSource();
-    if (src == null) {
-      columns = new ArrayList<>();
-    } else {
-      peek = sourceManager.peek(src, 5);
-      // If user wants to import a source without a header lines, the columns are going to be numbered with the first
-      // non-null value as an example. Otherwise, read the file/database normally.
-      if ((src.isUrlSource() || src.isFileSource())
-          && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0) {
-        columns = mapping.getColumns(peek);
-      } else {
-        columns = sourceManager.columns(src);
-      }
-      if (columns.isEmpty() && src.getName() != null) {
-        addActionWarning(getText("manage.mapping.source.no.columns", new String[] {src.getName()}));
+    if (src != null) {
+      try {
+        peek = sourceManager.peek(src, 5);
+        // If user wants to import a source without a header lines, the columns are going to be numbered with the first
+        // non-null value as an example. Otherwise, read the file/database normally.
+        if ((src.isUrlSource() || src.isFileSource())
+            && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0) {
+          columns = mapping.getColumns(peek);
+        } else {
+          columns = sourceManager.columns(src);
+        }
+        if (columns.isEmpty() && src.getName() != null) {
+          addActionWarning(getText("manage.mapping.source.no.columns", new String[]{src.getName()}));
+        }
+      } catch (Exception e) {
+        addActionError(getText("manage.mapping.source.read.failed", new String[]{src.getName()}));
       }
     }
   }
