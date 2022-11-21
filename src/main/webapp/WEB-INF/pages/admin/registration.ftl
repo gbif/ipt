@@ -173,7 +173,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="change-tokens-radio" value="change-tokens">
-                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens"/></label>
+                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens.title"/></label>
                     </div>
                 </div>
 
