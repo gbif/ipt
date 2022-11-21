@@ -36,6 +36,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             const SEARCH_PARAM = "search";
             const SORT_PARAM = "sort";
             const ORDER_PARAM = "order";
+            const PAGE_PARAM = "page";
 
             var columnIndexName = {
                 1: "name",
@@ -66,12 +67,16 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             var searchParam = urlParams.get(SEARCH_PARAM) ? urlParams.get(SEARCH_PARAM) : "";
             var sortParam = urlParams.get(SORT_PARAM) ? getSafe(columnNameIndex, urlParams.get(SORT_PARAM), 1) : ${columnToSortOn};
             var orderParam = urlParams.get(ORDER_PARAM) ? urlParams.get(ORDER_PARAM) : "${sortOrder}";
+            var rawPageParam = urlParams.get(PAGE_PARAM);
+            // converted from page to start param (1, 2, 3 etc. -> 0, 10, 20, 30 etc.)
+            var start = rawPageParam && rawPageParam > 0 ? (urlParams.get(PAGE_PARAM) - 1) * 10 : 0;
 
             $('#tableContainer').html('<table  class="display dataTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
                 ajax: <#if shownPublicly>'/api/resources'<#else>'/manager-api/resources'</#if>,
                 "bProcessing": true,
                 "bServerSide": true,
+                "displayStart": start,
                 "iDisplayLength": ${numResourcesShown},
                 "bLengthChange": false,
                 "oLanguage": {
@@ -111,23 +116,36 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 }
             });
 
+            // display page parameter in the URL
+            $(document).on("click", "a.paginate_button", function (e) {
+                var page = $(this).data("dtIdx") + 1;
+                var params = new URLSearchParams(window.location.search);
+                page !== 0 ? params.set(PAGE_PARAM, page) : params.delete(PAGE_PARAM);
+                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
+                window.history.pushState({path: newurl}, '', newurl);
+            });
+
             // display search and sort parameters in the URL
             dt.on('search.dt', function () {
                 if (history.pushState) {
                     var searchValue = dt.search();
                     var sortFieldIndex = dt.order()[0][0];
                     var sortFieldOrder = dt.order()[0][1];
-                    var searchParams = new URLSearchParams(window.location.search);
+                    var params = new URLSearchParams(window.location.search);
+                    var page = params.get(PAGE_PARAM);
 
-                    searchValue ? searchParams.set(SEARCH_PARAM, searchValue) : searchParams.delete(SEARCH_PARAM);
-                    searchParams.set(SORT_PARAM, getSafe(columnIndexName, sortFieldIndex, "name"));
-                    searchParams.set(ORDER_PARAM, sortFieldOrder);
+                    // reset page param
+                    if (page) {
+                        params.set(PAGE_PARAM, 1);
+                    }
+                    searchValue ? params.set(SEARCH_PARAM, searchValue) : params.delete(SEARCH_PARAM);
+                    params.set(SORT_PARAM, getSafe(columnIndexName, sortFieldIndex, "name"));
+                    params.set(ORDER_PARAM, sortFieldOrder);
 
-                    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+                    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
                     window.history.pushState({path: newurl}, '', newurl);
                 }
             });
-
         });
     </script>
 </#macro>
