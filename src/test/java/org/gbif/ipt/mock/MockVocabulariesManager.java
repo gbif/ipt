@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -124,8 +125,18 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
   }
 
   @Override
+  public Map<String, String> getI18nDatasetTypesVocab(String lang, boolean sortAlphabetically) {
+    return new HashMap<>();
+  }
+
+  @Override
+  public Map<String, String> getI18nDatasetSubtypesVocab(String lang, boolean sortAlphabetically) {
+    return new HashMap<>();
+  }
+
+  @Override
   public List<Vocabulary> list() {
-    return new ArrayList<Vocabulary>();
+    return new ArrayList<>();
   }
 
   @Override

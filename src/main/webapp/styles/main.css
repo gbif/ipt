@@ -982,12 +982,12 @@ div.dataTables_processing>div:last-child>div {
 }
 
 /* Base styles for dataTable badges */
-.ct-content__link {
+.dt-content-link {
     display: inline-block;
     vertical-align: middle;
 }
 
-.ct-content__pill {
+.dt-content-pill {
     border-radius: 8px;
     padding-left: .5rem;
     padding-right: .5rem;

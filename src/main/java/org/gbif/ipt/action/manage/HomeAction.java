@@ -20,14 +20,10 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.MapUtils;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,36 +34,24 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
+  private static final long serialVersionUID = -7395504502586148676L;
+
   private DatatableResult resources = new DatatableResult();
 
   private final ResourceManager resourceManager;
-  private final VocabulariesManager vocabManager;
-  private Map<String, String> types;
-  private Map<String, String> datasetSubtypes;
   private List<Organisation> organisations;
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                    ResourceManager resourceManager, VocabulariesManager vocabManager) {
+                    ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
-    this.vocabManager = vocabManager;
   }
 
   @Override
   public String execute() {
     DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
     resources = resourceManager.list(getCurrentUser(), dr);
-
-    // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<>();
-    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
-    types = MapUtils.getMapWithLowercaseKeys(types);
-
-    // Dataset Subtypes list, derived from XML vocabulary
-    datasetSubtypes = new LinkedHashMap<>();
-    datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
-    datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
 
     // load organisations able to host
     organisations = registrationManager.list();
@@ -83,6 +67,7 @@ public class HomeAction extends BaseAction {
    */
   private DatatableRequest getRequestParameters(HttpServletRequest request) {
     DatatableRequest result = new DatatableRequest();
+    result.setLocale(getLocaleLanguage());
     getRequestParameter(request, Constants.DATATABLE_SEARCH_PARAM)
         .map(StringUtils::trimToEmpty)
         .ifPresent(result::setSearch);
@@ -108,24 +93,6 @@ public class HomeAction extends BaseAction {
 
   public int getResourcesSize() {
     return resources != null ? resources.getTotalRecords() : 0;
-  }
-
-  /**
-   * Get map of resource types to populate resource type selection.
-   *
-   * @return map of resource types
-   */
-  public Map<String, String> getTypes() {
-    return types;
-  }
-
-  /**
-   * A map of dataset subtypes keys to internationalized values.
-   *
-   * @return map of dataset subtypes
-   */
-  public Map<String, String> getDatasetSubtypes() {
-    return datasetSubtypes;
   }
 
   /**

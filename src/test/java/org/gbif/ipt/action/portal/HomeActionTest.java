@@ -98,8 +98,7 @@ public class HomeActionTest {
     // mock a locale provider
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
-    action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceManager,
-      mock(VocabulariesManager.class));
+    action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceManager);
 
     action.setContainer(container);
     action.setServletRequest(mock(HttpServletRequest.class));

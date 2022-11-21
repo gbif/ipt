@@ -99,6 +99,7 @@ import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
+import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
@@ -1164,11 +1165,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .filter(p -> matchesSearchString(p, request.getSearch()))
         .collect(Collectors.toList());
 
+    Map<String, String> datasetTypes =
+        MapUtils.getMapWithLowercaseKeys(
+            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    Map<String, String> datasetSubtypes =
+        MapUtils.getMapWithLowercaseKeys(
+            vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
+
     List<List<String>> data = filteredResources.stream()
         .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(this::toDatatableResourcePortalView)
+        .map(res -> toDatatableResourcePortalView(res, datasetTypes, datasetSubtypes))
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
@@ -1272,15 +1280,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * BEWARE! Order is crucial!
    *
    * @param resource simplified resource
+   * @param datasetTypes dataset types vocabulary
+   * @param datasetSubtypes dataset subtypes vocabulary
    * @return UI data (array)
    */
-  private List<String> toDatatableResourcePortalView(SimplifiedResource resource) {
+  private List<String> toDatatableResourcePortalView(
+      SimplifiedResource resource, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceHomeLink(resource));
     result.add(toUiOrganization(resource));
-    result.add(toTypeBadge(resource.getCoreType()));
-    result.add(toTypeBadge(resource.getSubtype()));
+    result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
+    result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
     result.add(toUiRecordsPublished(resource));
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
@@ -1298,15 +1309,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * BEWARE! Order is crucial!
    *
    * @param resource simplified resource
+   * @param datasetTypes dataset types vocabulary
+   * @param datasetSubtypes dataset subtypes vocabulary
    * @return UI data (array)
    */
-  private List<String> toDatatableResourceManageView(SimplifiedResource resource) {
+  private List<String> toDatatableResourceManageView(
+      SimplifiedResource resource, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceManageLink(resource));
     result.add(toUiOrganization(resource));
-    result.add(toTypeBadge(resource.getCoreType()));
-    result.add(toTypeBadge(resource.getSubtype()));
+    result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
+    result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
     result.add(toUiRecordsPublished(resource));
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
@@ -1378,7 +1392,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiOrganization(SimplifiedResource resource) {
     String result = resource.getOrganizationAliasOrName();
-    return result != null && !"No organization".equals(result) ? result : "--";
+    return result != null && !"No organization".equals(result) ? result : "";
   }
 
   /**
@@ -1397,13 +1411,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Wraps core type or subtype into span to make it badge on UI.
    *
    * @param type core type or subtype
+   * @param vocab vocabulary map
    * @return wrapped type (badge)
    */
-  private String toTypeBadge(String type) {
+  private String toTypeBadge(String type, Map<String, String> vocab) {
     if (type == null) {
       return "<span>--</span>";
     }
-    return "<span class=\"text-nowrap ct-content__link ct-content__pill coreType-" + type.toLowerCase() + "\">" + type.toLowerCase() + "</span>";
+    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill coreType-" + type.toLowerCase() + "\">" + vocab.getOrDefault(type.toLowerCase(), "--") + "</span>";
   }
 
   /**
@@ -1438,7 +1453,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return wrapped publication status (badge)
    */
   private String toUiStatus(PublicationStatus status) {
-    return "<span class=\"text-nowrap ct-content__link ct-content__pill status-" + status.name().toLowerCase() + "\">" + status + "</span>";
+    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-" + status.name().toLowerCase() + "\">" + status + "</span>";
   }
 
   @Override
@@ -1449,11 +1464,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .filter(res -> matchesSearchString(res, request.getSearch()))
         .collect(Collectors.toList());
 
+    Map<String, String> datasetTypes =
+        MapUtils.getMapWithLowercaseKeys(
+            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    Map<String, String> datasetSubtypes =
+        MapUtils.getMapWithLowercaseKeys(
+            vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
+
     List<List<String>> data = filteredResources.stream()
         .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(this::toDatatableResourceManageView)
+        .map(res -> toDatatableResourceManageView(res, datasetTypes, datasetSubtypes))
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();

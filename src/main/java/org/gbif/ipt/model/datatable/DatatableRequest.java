@@ -26,6 +26,7 @@ public class DatatableRequest {
   private String sortOrder = "asc";
   private long offset = 0;
   private int limit = 10;
+  private String locale = "en";
 
   public String getSearch() {
     return search;
@@ -67,6 +68,14 @@ public class DatatableRequest {
     this.limit = limit;
   }
 
+  public String getLocale() {
+    return locale;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -76,12 +85,13 @@ public class DatatableRequest {
         && Objects.equals(sortFieldIndex, that.sortFieldIndex)
         && Objects.equals(sortOrder, that.sortOrder)
         && Objects.equals(offset, that.offset)
-        && Objects.equals(limit, that.limit);
+        && Objects.equals(limit, that.limit)
+        && Objects.equals(locale, that.locale);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(search, sortFieldIndex, sortOrder, offset, limit);
+    return Objects.hash(search, sortFieldIndex, sortOrder, offset, limit, locale);
   }
 
   @Override
@@ -92,6 +102,7 @@ public class DatatableRequest {
         .add("sortOrder='" + sortOrder + "'")
         .add("offset=" + offset)
         .add("limit=" + limit)
+        .add("locale='" + locale + "'")
         .toString();
   }
 }
