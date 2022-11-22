@@ -479,7 +479,9 @@ public class MappingAction extends ManagerBaseAction {
 
   private void readSource() {
     Source src = mapping.getSource();
-    if (src != null) {
+    if (src == null) {
+      columns = new ArrayList<>();
+    } else {
       try {
         peek = sourceManager.peek(src, 5);
         // If user wants to import a source without a header lines, the columns are going to be numbered with the first
