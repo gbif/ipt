@@ -1165,6 +1165,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .filter(p -> matchesSearchString(p, request.getSearch()))
         .collect(Collectors.toList());
 
+    Locale currentLocale = Locale.forLanguageTag(request.getLocale());
+
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
@@ -1176,7 +1178,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(res -> toDatatableResourcePortalView(res, datasetTypes, datasetSubtypes))
+        .map(res -> toDatatableResourcePortalView(res, currentLocale, datasetTypes, datasetSubtypes))
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
@@ -1285,7 +1287,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return UI data (array)
    */
   private List<String> toDatatableResourcePortalView(
-      SimplifiedResource resource, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
+      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceHomeLink(resource));
@@ -1296,7 +1298,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus()));
+    result.add(toUiStatus(resource.getStatus(), locale));
     result.add(resource.getCreatorName());
     result.add(resource.getShortname());
     result.add(resource.getSubject() != null ? resource.getSubject() : "");
@@ -1314,7 +1316,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return UI data (array)
    */
   private List<String> toDatatableResourceManageView(
-      SimplifiedResource resource, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
+      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceManageLink(resource));
@@ -1325,7 +1327,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus()));
+    result.add(toUiStatus(resource.getStatus(), locale));
     result.add(resource.getCreatorName());
     result.add(resource.getShortname());
     result.add(resource.getSubject() != null ? resource.getSubject() : "");
@@ -1418,7 +1420,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (type == null) {
       return "<span>--</span>";
     }
-    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill coreType-" + type.toLowerCase() + "\">" + vocab.getOrDefault(type.toLowerCase(), "--") + "</span>";
+    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-" + type.toLowerCase() + "\">" + vocab.getOrDefault(type.toLowerCase(), "--") + "</span>";
   }
 
   /**
@@ -1452,8 +1454,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param status publication status
    * @return wrapped publication status (badge)
    */
-  private String toUiStatus(PublicationStatus status) {
-    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-" + status.name().toLowerCase() + "\">" + status + "</span>";
+  private String toUiStatus(PublicationStatus status, Locale locale) {
+    String localizedStatus = textProvider.getTexts(locale).getString("manage.home.visible." + status.name().toLowerCase());
+    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-" + status.name().toLowerCase() + "\">" + localizedStatus + "</span>";
   }
 
   @Override
@@ -1463,6 +1466,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .map(this::toSimplifiedResource)
         .filter(res -> matchesSearchString(res, request.getSearch()))
         .collect(Collectors.toList());
+
+    Locale currentLocale = Locale.forLanguageTag(request.getLocale());
 
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
@@ -1475,7 +1480,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(res -> toDatatableResourceManageView(res, datasetTypes, datasetSubtypes))
+        .map(res -> toDatatableResourceManageView(res, currentLocale, datasetTypes, datasetSubtypes))
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();

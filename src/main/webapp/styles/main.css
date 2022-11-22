@@ -951,34 +951,68 @@ div.dataTables_processing>div:last-child>div {
 
 .status-deleted {
     background: #ff8787 !important;
-    color: #ffffff !important;
+    color: white !important;
 }
 
 .status-registered {
     background: #2c91bf !important;
-    color: #ffffff !important;
+    color: white !important;
 }
 
-.coreType-occurrence {
+.type-occurrence {
     background: #bfbbde !important;
 }
 
-.coreType-checklist {
+.type-checklist {
     background: #cbe5be !important;
 }
 
-.coreType-metadata {
+.type-metadata {
     background: #7aced8 !important;
-    color: #ffffff !important;
+    color: white !important;
 }
 
-.coreType-samplingevent {
+.type-samplingevent {
     background: #f9d7e7 !important;
 }
 
-.coreType-other {
+.type-other {
     background: #7b6d6a !important;
-    color: #ffffff !important;
+    color: white !important;
+}
+
+.type-taxonomicauthority {
+    background: #fff5a0 !important;
+}
+
+.type-nomenclatorauthority {
+    background: #a7bfe3 !important;
+}
+
+.type-inventorythematic {
+    background: #dfd1b4 !important;
+}
+
+.type-inventoryregional {
+    background: #fbdeda !important;
+}
+
+.type-globalspeciesdataset {
+    background: #f1cb9d !important;
+}
+
+.type-derivedfromoccurrence {
+    background: #d1cfe7 !important;
+}
+
+.type-specimen {
+    background: #c7a2cd !important;
+    color: white !important;
+}
+
+.type-observation {
+    background: #e59eac !important;
+    color: white !important;
 }
 
 /* Base styles for dataTable badges */
