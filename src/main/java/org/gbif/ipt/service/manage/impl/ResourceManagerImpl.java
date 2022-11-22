@@ -289,7 +289,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setNextPublished(resource.getNextPublished());
     result.setCreatorName(resource.getCreatorName());
 
-    // TODO: 15/11/2022 this might be redundant, just update on registration
     // was last published version later registered but never republished? Fix for issue #1319
     if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
       result.setStatus(PublicationStatus.REGISTERED);
@@ -2989,15 +2988,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // change status to registered
         resource.setStatus(PublicationStatus.REGISTERED);
 
-        // TODO: 15/11/2022 update simplifiedResources?
-
         // ensure alternate identifier for Registry UUID set
         updateAlternateIdentifierForRegistry(resource);
+
+        // update stored resources
+        updateStoredResources(resource);
       }
       // save all changes to resource
       save(resource);
     } else {
       LOG.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
+    }
+  }
+
+  /**
+   * Change resource status to REGISTERED and update organization.
+   */
+  private void updateStoredResources(Resource resource) {
+    SimplifiedResource simplifiedResource = publishedPublicVersionsSimplified.get(resource.getShortname());
+    if (simplifiedResource != null) {
+      simplifiedResource.setStatus(PublicationStatus.REGISTERED);
+      simplifiedResource.setOrganisationAlias(resource.getOrganisationAlias());
+      simplifiedResource.setOrganisationName(resource.getOrganisationName());
     }
   }
 
