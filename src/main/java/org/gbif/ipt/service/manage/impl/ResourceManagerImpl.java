@@ -262,7 +262,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource regular Resource
    * @return simplified resource
    */
-  private SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
+  protected SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
     File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);

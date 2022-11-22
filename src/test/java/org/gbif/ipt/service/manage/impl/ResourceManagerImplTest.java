@@ -32,6 +32,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SimplifiedResource;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -99,6 +100,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -111,7 +113,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class ResourceManagerImplTest {
@@ -196,6 +200,9 @@ public class ResourceManagerImplTest {
     // mock resource link used as EML GUID
     when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
     when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
+//    // mock
+//    when(mockAppConfig.getDataDir().resourceEmlFile("res2", any(BigDecimal.class)))
+//        .thenReturn(FileUtils.getClasspathFile("resources/res2/eml.xml"));
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
@@ -1836,9 +1843,11 @@ public class ResourceManagerImplTest {
   @Test
   public void testRestoreVersion() throws Exception {
     // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    ResourceManagerImpl resourceManager = spy(getResourceManagerImpl());
     // prepare resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
+
+    doReturn(new SimplifiedResource()).when(resourceManager).toSimplifiedResourceReconstructedVersion(any());
 
     // add versionHistory for version 2.0
     Date released20 = new Date();
@@ -1962,10 +1971,12 @@ public class ResourceManagerImplTest {
   @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   public void testLoad() throws Exception {
-    ResourceManagerImpl manager = getResourceManagerImpl();
+    ResourceManagerImpl manager = spy(getResourceManagerImpl());
     // mock finding resource.xml file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+
+    doReturn(new SimplifiedResource()).when(manager).toSimplifiedResourceReconstructedVersion(any());
 
     // construct resource directory with a few resources
     File resourceDirectory = FileUtils.createTempDir();
