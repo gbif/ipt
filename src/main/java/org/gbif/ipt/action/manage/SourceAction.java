@@ -564,9 +564,12 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setSqlSourcePassword(String sqlSourcePassword) {
     if (source != null && source instanceof SqlSource) {
-      ((SqlSource) source).setPassword(sqlSourcePassword);
-      // source should be re-analyzed after password update
-      this.analyze = true;
+      // ignore empty password
+      if (StringUtils.isNotBlank(sqlSourcePassword)) {
+        ((SqlSource) source).setPassword(sqlSourcePassword);
+        // source should be re-analyzed after password update
+        this.analyze = true;
+      }
     }
   }
 
@@ -618,7 +621,7 @@ public class SourceAction extends ManagerBaseAction {
 
         // restore password if it was not sent from UI
         if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
-          src.setPassword(sqlSourcePasswordCache);
+          ((SqlSource) source).setPassword(sqlSourcePasswordCache);
         }
 
         // pure ODBC connections need only a DSN, no server
