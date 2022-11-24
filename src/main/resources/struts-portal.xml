@@ -102,7 +102,7 @@
     <action name="dcat" class="org.gbif.ipt.action.portal.DCATAction">
       <result type="stream">
         <param name="noCache">true</param>
-        <param name="contentType">text</param>
+        <param name="contentType">text/turtle</param>
         <param name="contentCharSet">UTF-8</param>
         <param name="inputName">dcatInfo</param>
       </result>
