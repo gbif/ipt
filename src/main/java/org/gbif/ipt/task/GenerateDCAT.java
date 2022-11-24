@@ -198,9 +198,8 @@ public class GenerateDCAT {
           resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
           resource.getKey());
 
-        // make sure it has a license and records published
-        if (publishedPublicVersion.getRecordsPublished() > 0 && publishedPublicVersion.getEml() != null
-            && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
+        // make sure it has a license
+        if (publishedPublicVersion.getEml() != null && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
 
           feed.append(createDCATDatasetInformation(publishedPublicVersion));
           feed.append("\n");
