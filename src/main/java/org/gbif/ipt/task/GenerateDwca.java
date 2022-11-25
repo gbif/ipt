@@ -416,7 +416,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private File sortCoreDataFile(ArchiveFile file, int column) throws IOException {
     // retrieve the core file
-    File unsorted = file.getLocationFile();
+    File unsorted = file.getLocationFiles().get(0);
 
     // create a new file that will store the records sorted by column
     File sorted = new File(unsorted.getParentFile(), SORTED_FILE_PREFIX + unsorted.getName());
