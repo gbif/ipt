@@ -437,7 +437,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File emlFile2 = dataDir.resourceEmlFile(shortname);
     try {
       FileUtils.copyFile(emlFile, emlFile2);
-    } catch (IOException e1) {
+    } catch (Exception e1) {
       LOG.error("Unable to copy EML File", e1);
     }
     Eml eml;
