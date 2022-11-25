@@ -709,11 +709,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // read core source+mappings
       TextFileSource s = importSource(resource, arch.getCore());
-      sources.put(arch.getCore().getLocation(), s);
+      sources.put(arch.getCore().getLocations().get(0), s);
       ExtensionMapping map = importMappings(alog, arch.getCore(), s);
       resource.addMapping(map);
 
-      // if extensions are being used..
+      // if extensions are being used
       // the core must contain an id element that indicates the identifier for a record
       if (!arch.getExtensions().isEmpty()) {
         if (map.getIdColumn() == null) {
@@ -723,12 +723,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // read extension sources+mappings
         for (ArchiveFile ext : arch.getExtensions()) {
-          if (sources.containsKey(ext.getLocation())) {
-            s = sources.get(ext.getLocation());
+          if (sources.containsKey(ext.getLocations().get(0))) {
+            s = sources.get(ext.getLocations().get(0));
             LOG.debug("SourceBase " + s.getName() + " shared by multiple extensions");
           } else {
             s = importSource(resource, ext);
-            sources.put(ext.getLocation(), s);
+            sources.put(ext.getLocations().get(0), s);
           }
           map = importMappings(alog, ext, s);
           if (map.getIdColumn() == null) {
@@ -992,8 +992,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private TextFileSource importSource(Resource config, ArchiveFile af)
     throws ImportException, InvalidFilenameException {
-    File extFile = af.getLocationFile();
-    TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocation());
+    File extFile = af.getLocationFiles().get(0);
+    TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocations().get(0));
     SourceManagerImpl.copyArchiveFileProperties(af, s);
 
     // the number of rows was calculated using the standard file importer
