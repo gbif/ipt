@@ -479,6 +479,7 @@
                             <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
                             <li><a href="#anchor-autopublish" class="sidebar-navigation-link"><@s.text name='manage.overview.autopublish.title'/></a></li>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
+                            <li><a href="#anchor-registration" class="sidebar-navigation-link"><@s.text name='manage.overview.registration'/></a></li>
                             <li><a href="#anchor-networks" class="sidebar-navigation-link"><@s.text name='manage.overview.networks.title'/></a></li>
                             <li><a href="#anchor-managers" class="sidebar-navigation-link"><@s.text name='manage.overview.resource.managers'/></a></li>
                         </ul>
@@ -893,8 +894,6 @@
                         <h5 class="pb-2 text-gbif-header-2 fw-400">
                             <#assign visibilityTitleInfo>
                                 <@s.text name='manage.overview.visibility.description'/>
-                                <br><br>
-                                <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></br></br><@s.text name='manage.resource.status.intro.public.gbifWarning'/>
                             </#assign>
 
                             <@popoverTextInfo visibilityTitleInfo/>
@@ -905,18 +904,65 @@
                             <div class="col-lg-9 order-lg-last ps-lg-5">
                                 <div>
                                     <div class="bodyOverview">
-
                                         <p>
                                             <#if resource.status=="PRIVATE">
                                                 <span class="badge rounded-pill bg-gbif-danger">
-                                            <@s.text name="resource.status.${resource.status?lower_case}"/>
-                                        </span>
+                                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                                </span>
                                             <#else>
                                                 <span class="badge rounded-pill bg-gbif-primary">
-                                            <@s.text name="resource.status.${resource.status?lower_case}"/>
-                                        </span>
+                                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                                </span>
                                             </#if>
                                             <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 border-lg-right pe-lg-5">
+                                <div class="d-flex flex-wrap">
+                                    <#if resource.status=="PRIVATE">
+                                        <#assign actionMethod>makePublic</#assign>
+                                        <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                                            <@s.submit name="makePublic" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.public"/>
+                                        </form>
+                                    </#if>
+
+                                    <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                        <#assign actionMethod>makePrivate</#assign>
+                                        <form action='resource-${actionMethod}.do' method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.private" />
+                                        </form>
+                                    </#if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
+                    <div class="py-5 border-bottom section" id="registration">
+                        <h5 class="pb-2 text-gbif-header-2 fw-400">
+                            <#assign registrationTitleInfo>
+                                Register resource with GBIF to make it globally discoverable
+                                <br><br>
+                                <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text>
+                                <br><br>
+                                <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
+                            </#assign>
+
+                            <@popoverTextInfo registrationTitleInfo/>
+                            <@s.text name='manage.overview.registration'/>
+                        </h5>
+
+                        <div class="row mt-4">
+                            <div class="col-lg-9 order-lg-last ps-lg-5">
+                                <div>
+                                    <div class="bodyOverview">
+                                        <p>
+                                            <@s.text name="manage.overview.registration.intro"/>
                                         </p>
 
                                         <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
@@ -960,6 +1006,13 @@
                                                         </tr>
                                                     </#if>
                                                 </table>
+                                            </div>
+                                        </#if>
+
+                                        <#if resource.status=="PRIVATE">
+                                            <!-- Show warning: resource must be public -->
+                                            <div class="callout callout-warning text-smaller">
+                                                <@s.text name="manage.overview.registration.private" />
                                             </div>
                                         </#if>
 
@@ -1027,19 +1080,9 @@
                                             <#else>
                                                 <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register"/>
                                             </#if>
-                                        <#else>
-                                            <#if resource.status=="PRIVATE">
-                                                <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.public"/>
-                                            </#if>
                                         </#if>
                                     </form>
 
-                                    <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-                                        <#assign actionMethod>makePrivate</#assign>
-                                        <form action='resource-${actionMethod}.do' method='post'>
-                                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.private" />
-                                        </form>
-                                    </#if>
                                 </div>
                             </div>
                         </div>
