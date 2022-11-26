@@ -105,6 +105,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date lastPublished;
   // next time resource is scheduled to be published
   private Date nextPublished;
+  // date/time resource is scheduled to become public
+  private Date makePublicDate;
   // core record count
   private int recordsPublished = 0;
   // record counts by extension: Map<rowType, count>
@@ -1461,5 +1463,13 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean hasOccurrenceMapping() {
     return !getMappings(Constants.DWC_ROWTYPE_OCCURRENCE).isEmpty();
+  }
+
+  public Date getMakePublicDate() {
+    return makePublicDate;
+  }
+
+  public void setMakePublicDate(Date makePublicDate) {
+    this.makePublicDate = makePublicDate;
   }
 }

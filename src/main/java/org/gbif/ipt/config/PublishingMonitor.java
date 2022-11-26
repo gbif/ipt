@@ -147,6 +147,15 @@ public class PublishingMonitor {
                   }
                 }
               }
+
+              // ensure resource is due to become public
+              if (resource.getMakePublicDate() != null && resource.getMakePublicDate().before(now)) {
+                try {
+                  resourceManager.visibilityToPublic(resource, null);
+                } catch (Exception e) {
+                  LOG.error("Resource " + resource.getShortname() + " failed to go public automatically", e);
+                }
+              }
             }
           }
 

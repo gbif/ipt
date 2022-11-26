@@ -104,6 +104,7 @@
 
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary"});
+        $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
         $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -345,6 +346,49 @@
         $('#doi_edit_cancel').click(function() {
             $('.doiButton').show();
             $('#doi_edit_block').hide();
+        });
+
+        $('#makePublic').click(function (e) {
+            e.preventDefault();
+            showMakePublicModal();
+        });
+
+        // make public modal window
+        function showMakePublicModal() {
+            var dialogWindow = $("#make-public-modal");
+            dialogWindow.modal('show');
+
+            var radioValue = $('input[name=makePublicOptions]:checked').val();
+
+            // show input depending on which radio is selected
+            if (radioValue === "makePublicImmediately") {
+                $("#makePublicDateTime").hide();
+            } else if (radioValue === "makePublicAtDate") {
+                $("#makePublicDateTime").show();
+            }
+        }
+
+        // hide/show input on radio change
+        $('input[name=makePublicOptions]').on('change', function() {
+            var radioValue = $('input[name=makePublicOptions]:checked').val();
+
+            if (radioValue === "makePublicImmediately") {
+                $("#makePublicDateTime").hide();
+            } else if (radioValue === "makePublicAtDate") {
+                $("#makePublicDateTime").show();
+            }
+        });
+
+        // erase makePublicDateTime before submit in case of 'make public immediately'
+        $("#make-public-modal-form").one('submit', function (e) {
+            e.preventDefault();
+
+            var radioValue = $('input[name=makePublicOptions]:checked').val();
+            if (radioValue === "makePublicImmediately") {
+                $("#makePublicDateTime").val("");
+            }
+
+            $(this).submit();
         });
     });
 </script>
@@ -909,20 +953,29 @@
                                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
                                                     <@s.text name="resource.status.private"/>
                                                 </span>
+                                                <#if resource.makePublicDate?has_content>
+                                                    <@s.text name="manage.resource.status.intro.private.public.scheduled">
+                                                        <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
+                                                    </@s.text>
+                                                <#else>
+                                                    <@s.text name="manage.resource.status.intro.private"/>
+                                                </#if>
                                             <#elseif resource.status=="PUBLIC">
                                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
                                                     <@s.text name="resource.status.public"/>
                                                 </span>
+                                                <@s.text name="manage.resource.status.intro.public"/>
                                             <#elseif resource.status=="REGISTERED">
                                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
                                                     <@s.text name="resource.status.registered"/>
                                                 </span>
+                                                <@s.text name="manage.resource.status.intro.registered"/>
                                             <#elseif resource.status=="DELETED">
                                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
                                                     <@s.text name="resource.status.deleted"/>
                                                 </span>
+                                                <@s.text name="manage.resource.status.intro.deleted"/>
                                             </#if>
-                                            <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                                         </p>
                                     </div>
                                 </div>
@@ -934,7 +987,7 @@
                                         <#assign actionMethod>makePublic</#assign>
                                         <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <@s.submit name="makePublic" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.public"/>
+                                            <@s.submit name="makePublic" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.change"/>
                                         </form>
                                     </#if>
 
@@ -942,7 +995,7 @@
                                         <#assign actionMethod>makePrivate</#assign>
                                         <form action='resource-${actionMethod}.do' method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.private" />
+                                            <@s.submit cssClass="confirmMakePrivate btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.change" />
                                         </form>
                                     </#if>
                                 </div>
@@ -1071,20 +1124,14 @@
                                                 <#assign visibilityConfirmRegistrationWarning>
                                                     <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                                 </#assign>
-
-                                                <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#elseif missingValidPublishingOrganisation?string == "true">
                                                 <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                                <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#elseif missingRegistrationMetadata?string == "true">
                                                 <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                                <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#elseif !resource.isLastPublishedVersionPublic()>
                                                 <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                                <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                                 <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                             <#else>
                                                 <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register"/>
                                             </#if>
@@ -1240,6 +1287,51 @@
             </main>
         </div>
             </main>
+        </div>
+    </div>
+
+    <div id="make-public-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.visibility.change.public"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicImmediately" value="makePublicImmediately" <#if !resource.makePublicDate?has_content>checked</#if> >
+                            <label class="form-check-label" for="inlineRadio1"><@s.text name="manage.overview.visibility.change.public.immediately"/></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicAtDate" value="makePublicAtDate" <#if resource.makePublicDate?has_content>checked</#if> >
+                            <label class="form-check-label" for="inlineRadio2"><@s.text name="manage.overview.visibility.change.public.date"/></label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        <div>
+                            <form id="make-public-modal-form" action="resource-makePublic.do" method="post">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <#if resource.makePublicDate?has_content>
+                                    <input id="makePublicDateTime" name="makePublicDateTime" class="form-control" type="datetime-local" value="${resource.makePublicDate?datetime?string["yyyy-MM-dd'T'HH:mm"]}" />
+                                <#else>
+                                    <input id="makePublicDateTime" name="makePublicDateTime" class="form-control" type="datetime-local" value="${makePublicDateTime!}" />
+                                </#if>
+                            </form>
+                            <form id="cancel-make-public" action="resource-cancelMakePublic.do" method="post">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button id="changeStateSubmit" type="submit" form="make-public-modal-form" class="btn btn-outline-gbif-primary"><@s.text name="button.submit"/></button>
+                    <#if resource.makePublicDate?has_content>
+                        <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
+                    </#if>
+                </div>
+            </div>
         </div>
     </div>
 

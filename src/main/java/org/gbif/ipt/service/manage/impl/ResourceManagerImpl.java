@@ -3309,6 +3309,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // update visibility to public
       resource.setStatus(PublicationStatus.PUBLIC);
 
+      // erase make public date
+      resource.setMakePublicDate(null);
+
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
       updateAlternateIdentifierForIPTURLToResource(resource);
 
