@@ -906,12 +906,20 @@
                                     <div class="bodyOverview">
                                         <p>
                                             <#if resource.status=="PRIVATE">
-                                                <span class="badge rounded-pill bg-gbif-danger">
-                                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
+                                                    <@s.text name="resource.status.private"/>
                                                 </span>
-                                            <#else>
-                                                <span class="badge rounded-pill bg-gbif-primary">
-                                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                            <#elseif resource.status=="PUBLIC">
+                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
+                                                    <@s.text name="resource.status.public"/>
+                                                </span>
+                                            <#elseif resource.status=="REGISTERED">
+                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
+                                                    <@s.text name="resource.status.registered"/>
+                                                </span>
+                                            <#elseif resource.status=="DELETED">
+                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
+                                                    <@s.text name="resource.status.deleted"/>
                                                 </span>
                                             </#if>
                                             <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
