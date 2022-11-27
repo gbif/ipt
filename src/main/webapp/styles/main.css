@@ -926,6 +926,10 @@ td.left_padding {
 
 /* DataTables styles START */
 /* DataTable loader styles */
+.resourcesTable {
+    max-width: 1264px; /* Temp fix to prevent scroll */
+}
+
 div.dataTables_processing>div:last-child>div {
     background: rgb(var(--color-gbif-primary)) !important;
 }

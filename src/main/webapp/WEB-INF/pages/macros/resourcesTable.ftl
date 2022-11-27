@@ -71,7 +71,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             // converted from page to start param (1, 2, 3 etc. -> 0, 10, 20, 30 etc.)
             var start = rawPageParam && rawPageParam > 0 ? (urlParams.get(PAGE_PARAM) - 1) * 10 : 0;
 
-            $('#tableContainer').html('<table  class="display dataTable" id="rtable"></table>');
+            $('#tableContainer').html('<table  class="display dataTable resourcesTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
                 ajax: <#if shownPublicly>'/api/resources'<#else>'/manager-api/resources'</#if>,
                 "bProcessing": true,

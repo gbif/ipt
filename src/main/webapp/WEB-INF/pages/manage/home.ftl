@@ -53,7 +53,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div id="tableContainer" class="table-responsive-md text-smaller pt-2"></div>
+        <div id="tableContainer" class="overflow-x-auto text-smaller pt-2"></div>
     </div>
 </main>
 
