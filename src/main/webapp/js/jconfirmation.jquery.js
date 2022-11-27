@@ -10,6 +10,7 @@
         // checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
         // summary: a textarea to enter a summary for the submit
         // buttonType: a button type (color)
+        // processing: run spinner
         var theOptions = jQuery.extend({
             titleQuestion: "Are you sure?",
             question: undefined,
@@ -17,7 +18,8 @@
             cancelAnswer: "Cancel",
             checkboxText: undefined,
             summary: undefined,
-            buttonType: "danger"
+            buttonType: "danger",
+            processing: false
         }, options);
         return this.each(function () {
 
@@ -96,6 +98,21 @@
                             var selected = $("#dialogSummary").val();
                             $("#summary").empty().append(selected);
                             submitBtn.click();
+
+                            // display processing spinner if enabled
+                            if (theOptions.processing) {
+                                // remove confirmation modal and background
+                                $("#dialog-confirm").remove();
+                                $(".modal-backdrop").remove();
+
+                                // processing spinner
+                                var processingDiv = $(".dataTables_processing");
+                                processingDiv.show();
+                                processingDiv.css("z-index", "1001");
+                                var div= document.createElement("div");
+                                div.className += "overlay";
+                                document.body.appendChild(div);
+                            }
                         }
                     });
 

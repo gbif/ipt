@@ -7,6 +7,19 @@
         $(document).ready(function(){
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         });
+
+        function displayProcessing() {
+            var processingDiv = $(".dataTables_processing");
+            processingDiv.show();
+            processingDiv.css("z-index", "1001");
+            var div= document.createElement("div");
+            div.className += "overlay";
+            document.body.appendChild(div);
+        }
+
+        $("#synchronise").on("click", function () {
+            displayProcessing();
+        });
     </script>
 
     <#macro extensionRow ext currentIndex numberOfExtensions>
@@ -246,6 +259,10 @@
 
         </div>
     </main>
+
+    <div class="dataTables_processing" style="display: none;">
+        <div><div></div><div></div><div></div><div></div></div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

@@ -1944,3 +1944,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .tooltip.bs-tooltip-top .tooltip-arrow::before {
     border-top-color: #fff !important;
 }
+
+/* Overlay for processing spinner */
+.overlay {
+    background-color: #EFEFEF;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    opacity: .5; /* in FireFox */
+    filter: alpha(opacity=50); /* in IE */
+}

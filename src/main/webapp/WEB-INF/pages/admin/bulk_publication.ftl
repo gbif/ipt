@@ -6,7 +6,8 @@
             titleQuestion : "<@s.text name="basic.confirm"/>",
             yesAnswer : "<@s.text name='basic.yes'/>",
             cancelAnswer : "<@s.text name='basic.no'/>",
-            buttonType: "primary"
+            buttonType: "primary",
+            processing: true
         });
     });
 </script>
@@ -45,6 +46,10 @@
             <p>
                 <@s.text name="admin.config.publishResources.details"/>
             </p>
+        </div>
+
+        <div class="dataTables_processing" style="display: none;">
+            <div><div></div><div></div><div></div><div></div></div>
         </div>
     </main>
 </@s.form>

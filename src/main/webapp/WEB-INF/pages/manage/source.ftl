@@ -31,6 +31,23 @@
             }
         });
 
+        function displayProcessing() {
+            var processingDiv = $(".dataTables_processing");
+            processingDiv.show();
+            processingDiv.css("z-index", "1001");
+            var div= document.createElement("div");
+            div.className += "overlay";
+            document.body.appendChild(div);
+        }
+
+        $("#save").on("click", function () {
+            displayProcessing();
+        });
+
+        $("#analyze").on("click", function () {
+            displayProcessing();
+        });
+
         $(document.body).on('click', '.helpOptionLink', function (e) {
             e.preventDefault();
             // get all link classes
@@ -114,6 +131,10 @@
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
+                            <div class="dataTables_processing" style="display: none;">
+                                <div><div></div><div></div><div></div><div></div></div>
+                            </div>
+
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table id="source-properties" class="table table-sm table-borderless text-smaller">
