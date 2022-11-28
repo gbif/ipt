@@ -42,7 +42,7 @@
     <dwca-io.version>2.15</dwca-io.version>
     <gbif-api.version>0.175</gbif-api.version>
     <gbif-common.version>0.57</gbif-common.version>
-    <gbif-doi.version>2.18</gbif-doi.version>
+    <gbif-doi.version>2.19</gbif-doi.version>
     <gbif-metadata-profile.version>1.6</gbif-metadata-profile.version>
     <gbif-parsers.version>0.59</gbif-parsers.version>
     <gbif-registry-metadata.version>3.87</gbif-registry-metadata.version>
