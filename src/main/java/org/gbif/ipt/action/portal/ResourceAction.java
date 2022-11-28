@@ -47,6 +47,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -295,7 +296,19 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   public String rss() {
-    resources = resourceManager.latest(page, 25);
+    String resourceShortname = req.getParameter(Constants.REQ_PARAM_RESOURCE);
+
+    if (resourceShortname == null) {
+      resources = resourceManager.latest(page, 25);
+    } else {
+      Resource r = resourceManager.get(resourceShortname);
+      if (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED) {
+        resources = Collections.singletonList(resourceManager.get(resourceShortname));
+      } else {
+        resources = new ArrayList<>();
+      }
+    }
+
     return SUCCESS;
   }
 
