@@ -1,6 +1,6 @@
 = Quick Reference
 
-include::partial$version-outdated.adoc[]
+include::partial$version-outdated-page-removed.adoc[]
 
 == Introduction
 

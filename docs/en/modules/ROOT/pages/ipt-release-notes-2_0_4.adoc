@@ -1,6 +1,6 @@
 = GBIF Integrated Publishing Toolkit 2.0.4: Release Notes
 
-include::partial$version-outdated.adoc[]
+include::partial$version-outdated-page-removed.adoc[]
 
 == Upgrade instructions
 

@@ -1,6 +1,6 @@
 = How To Prepare Your IPT Server
 
-include::partial$version-outdated.adoc[]
+include::partial$version-outdated-page-removed.adoc[]
 
 Since the IPT ships as a `.war` file, installing the IPT consists of deploying the `.war` file in a servlet container such as Tomcat.
 
