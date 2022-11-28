@@ -92,6 +92,7 @@
 
         $(".mapping-item-link").click(function (e) {
             e.preventDefault();
+            displayProcessing();
             openMappingDetails(e);
         });
 
