@@ -159,15 +159,15 @@ To solve this, you can:
 
 === How do I change the publishing organization of my resource? The drop down on the Basic Metadata page is disabled.
 
-Ideally, the publishing organization shoul not be changed after the resource has been either registered with GBIF or assigned a DOI.
+Ideally, the publishing organization should not be changed after the resource has been either registered with GBIF or assigned a DOI.
 
-That being said, there are two ways to change the publising organizations.
-The easiest way to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].
-If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry.
+That being said, there are two ways to change the publishing organization.
+The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].
+If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry.
 
 The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):
 
-* In <organisation>, replace the current UUID by the UUID of the organization you would like to be the new publising organization,
+* In <organisation>, replace the current UUID by the UUID of the organization you would like to be the new publishing organization,
 * Restart TomCat,
 * Check that no error message appears in your IPT when you click publish.
 
