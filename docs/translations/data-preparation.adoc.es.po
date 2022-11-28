@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-11-04 09:45\n"
+"POT-Creation-Date: 2022-11-28 13:40+0000\n"
+"PO-Revision-Date: 2022-11-28 14:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -146,8 +146,8 @@ msgstr "convertir la codificación de caracteres de Windows-1252 a UTF-8 usando\
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
-#: en/modules/ROOT/pages/faq.adoc:207
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
+#: en/modules/ROOT/pages/faq.adoc:216
 msgid "{blank}"
 msgstr "{blank}"
 
