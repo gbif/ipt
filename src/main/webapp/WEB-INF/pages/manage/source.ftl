@@ -13,7 +13,8 @@
         });
         $("#peekBtn").click(function (e) {
             e.preventDefault();
-            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}");
+            displayProcessing();
+            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", hideProcessing);
             $("#modalbox").show();
         });
         $("#modalbox").click(function (e) {
@@ -31,22 +32,8 @@
             }
         });
 
-        function displayProcessing() {
-            var processingDiv = $(".dataTables_processing");
-            processingDiv.show();
-            processingDiv.css("z-index", "1001");
-            var div= document.createElement("div");
-            div.className += "overlay";
-            document.body.appendChild(div);
-        }
-
-        $("#save").on("click", function () {
-            displayProcessing();
-        });
-
-        $("#analyze").on("click", function () {
-            displayProcessing();
-        });
+        $("#save").on("click", displayProcessing);
+        $("#analyze").on("click", displayProcessing);
 
         $(document.body).on('click', '.helpOptionLink', function (e) {
             e.preventDefault();
@@ -131,10 +118,6 @@
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
-                            <div class="dataTables_processing" style="display: none;">
-                                <div><div></div><div></div><div></div><div></div></div>
-                            </div>
-
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table id="source-properties" class="table table-sm table-borderless text-smaller">

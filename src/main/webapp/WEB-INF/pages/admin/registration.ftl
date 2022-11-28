@@ -119,18 +119,7 @@
 
             });
 
-            function displayProcessing() {
-                var processingDiv = $(".dataTables_processing");
-                processingDiv.show();
-                processingDiv.css("z-index", "1001");
-                var div= document.createElement("div");
-                div.className += "overlay";
-                document.body.appendChild(div);
-            }
-
-            $("#update").on("click", function () {
-                displayProcessing();
-            });
+            $("#update").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -359,10 +348,6 @@
             </#if>
         </div>
     </main>
-
-    <div class="dataTables_processing" style="display: none;">
-        <div><div></div><div></div><div></div><div></div></div>
-    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

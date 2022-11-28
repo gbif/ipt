@@ -19,6 +19,20 @@ $(document).ready(function () {
     // document.querySelectorAll('.btn').forEach(setRippleElement);
 });
 
+function displayProcessing() {
+    var processingDiv = $(".dataTables_processing");
+    processingDiv.show();
+    processingDiv.css("z-index", "1001");
+    var div= document.createElement("div");
+    div.className += "overlay";
+    document.body.appendChild(div);
+}
+
+function hideProcessing() {
+    $(".dataTables_processing").hide();
+    $(".overlay").remove();
+}
+
 function initInfoPopovers(item) {
     var popoverTriggerList = [].slice.call(item.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

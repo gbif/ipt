@@ -22,6 +22,10 @@
     </div>
 </footer>
 
+<div class="dataTables_processing" style="display: none;">
+    <div><div></div><div></div><div></div><div></div></div>
+</div>
+
 <div id="modalbox">
     <div id="modalback"></div>
     <div id="modalcontainer">

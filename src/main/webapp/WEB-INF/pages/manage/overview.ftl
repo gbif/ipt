@@ -325,7 +325,8 @@
         $(".peekBtn").click(function(e) {
             e.preventDefault();
             var addressValue = $(this).attr("href");
-            $("#modalcontent").load(addressValue);
+            displayProcessing();
+            $("#modalcontent").load(addressValue, hideProcessing);
             $("#modalbox").show();
         });
         $("#modalbox").click(function(e) {
@@ -1290,9 +1291,6 @@
         </div>
     </div>
 
-    <div class="dataTables_processing" style="display: none;">
-        <div><div></div><div></div><div></div><div></div></div>
-    </div>
     <div id="make-public-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">

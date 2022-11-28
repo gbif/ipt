@@ -4,6 +4,11 @@
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<script>
+    $(document).ready(function(){
+        $("#save").on("click", displayProcessing);
+    });
+</script>
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">

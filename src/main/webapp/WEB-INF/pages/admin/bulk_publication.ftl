@@ -47,10 +47,6 @@
                 <@s.text name="admin.config.publishResources.details"/>
             </p>
         </div>
-
-        <div class="dataTables_processing" style="display: none;">
-            <div><div></div><div></div><div></div><div></div></div>
-        </div>
     </main>
 </@s.form>
 
