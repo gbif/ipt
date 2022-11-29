@@ -14,7 +14,6 @@
         // a function called when adding new temporal coverages
         // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
-            initCalendar();
             calculateCount();
 
             function calculateCount() {
@@ -159,22 +158,18 @@
                     var popovers = $("#" + idNewForm + " a.popover-link");
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
                     popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
-
-                    initCalendar("#date-" + index);
                 }
                 if (typeSubForm === FORMATION_PERIOD) {
                     $("#" + idNewForm + " [id^='formation-']").attr("id", "formation-" + index);
                     $("#" + idNewForm + " [id$='formationPeriod']").attr("id", "eml.temporalCoverages[" + index + "].formationPeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initCalendar("#formation-" + index);
                 }
                 if (typeSubForm === LIVING_TIME_PERIOD) {
                     $("#" + idNewForm + " [id^='living-']").attr("id", "living-" + index);
                     $("#" + idNewForm + " [id$='livingTimePeriod']").attr("id", "eml.temporalCoverages[" + index + "].livingTimePeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initCalendar("#living-" + index);
                 }
                 if (typeSubForm === SINGLE_DATE) {
                     $("#" + idNewForm + " [id^='single-']").attr("id", "single-" + index);
@@ -185,8 +180,6 @@
                     // replace generic 'inputName-startDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
                     var popovers = $("#" + idNewForm + " a.popover-link");
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
-
-                    initCalendar("#single-" + index);
                 }
 
                 initInfoPopovers($("#" + idNewForm)[0]);
