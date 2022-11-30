@@ -63,7 +63,6 @@
     <guice.version>4.2.0</guice.version>
     <httpclient.version>4.5.13</httpclient.version>
     <httpcore.version>4.4.15</httpcore.version>
-    <itext.version>2.1.7</itext.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
@@ -73,6 +72,7 @@
     <junit.version>5.9.1</junit.version>
     <log4j.version>2.19.0</log4j.version>
     <mockito.version>4.9.0</mockito.version>
+    <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <struts2.version>2.5.30</struts2.version>
@@ -604,23 +604,13 @@
       <version>${commons-io.version}</version>
     </dependency>
 
-    <!--
-      RTF generation.
-      Version frozen at 2.1.7 - do not upgrade!
-      RTF writing is no longer supported in itext v5.
-      Warning itext v4 cannot be used either because it has a distribution relocation to v5 in its POM.
-    -->
+    <!-- RTF generation -->
     <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext</artifactId>
-      <version>${itext.version}</version>
+      <groupId>com.github.librepdf</groupId>
+      <artifactId>openrtf</artifactId>
+      <version>${openrtf.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext-rtf</artifactId>
-      <version>${itext.version}</version>
-    </dependency>
-    <!-- UriBuilder -->
+
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
