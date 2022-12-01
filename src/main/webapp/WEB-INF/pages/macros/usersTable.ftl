@@ -13,7 +13,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
             <#list users as u>
             ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
                 '${u.email?replace("'", "\\'")?replace("\"", '\\"')!}',
-                '<@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/>',
+                '<span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill user-${u.role?lower_case}"><@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/></span>',
                 '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"never"}',
                 '<form class="needs-validation" action="user.do" method="post">' +
                 '<div class="form-group d-flex justify-content-end">' +

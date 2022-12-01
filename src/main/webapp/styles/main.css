@@ -1019,6 +1019,23 @@ div.dataTables_processing>div:last-child>div {
     color: white !important;
 }
 
+.user-admin {
+    background: #009EFF !important;
+    color: white !important;
+}
+
+.user-manager {
+    background: #7DE5ED !important;
+}
+
+.user-publisher {
+    background: #C7F2A4 !important;
+}
+
+.user-user {
+    background: #FFE15D !important;
+}
+
 /* Base styles for dataTable badges */
 .dt-content-link {
     display: inline-block;
