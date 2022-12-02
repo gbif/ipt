@@ -5,7 +5,7 @@
 
 *Versión del IPT: 2.3*
 
-include::partial$version-outdated.adoc[]
+include::partial$version-outdated-page-removed.adoc[]
 
 == Introducción
 === Acerca del IPT de GBIF

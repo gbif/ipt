@@ -1,0 +1,7 @@
+[WARNING]
+..Versión obsoleta
+====
+Está leyendo el manual de la versión {page-version}, que está desactualizado. Quizás quiera leer el manual xref:{latest-manual-version}@index.adoc[version {latest-manual-version}].  Puede elegir otras versiones del manual con los selectores de la parte superior derecha o inferior izquierda de la página.
+
+Tenga en cuenta que no todas las versiones del manual están disponibles en español.
+====
