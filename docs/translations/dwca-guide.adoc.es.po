@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-11-04 15:30\n"
+"POT-Creation-Date: 2022-11-28 13:40+0000\n"
+"PO-Revision-Date: 2022-11-28 14:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -16,12 +16,6 @@ msgstr ""
 "X-Crowdin-File: /[gbif.ipt] master/docs/translations/dwca-guide.adoc.pot\n"
 "X-Crowdin-File-ID: 122\n"
 
-#. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:4
-#: en/modules/ROOT/pages/dwca-guide.adoc:4
-msgid "Version 2.1"
-msgstr "Versión 2.1"
-
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
@@ -30,6 +24,12 @@ msgstr "Versión 2.1"
 #, no-wrap
 msgid "Suggested citation"
 msgstr "Citación sugerida"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
+#: en/modules/ROOT/pages/dwca-guide.adoc:4
+msgid "Version 2.2"
+msgstr "Versión 2.2"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:46
@@ -52,8 +52,8 @@ msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
-#: en/modules/ROOT/pages/faq.adoc:207
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
+#: en/modules/ROOT/pages/faq.adoc:216
 msgid "{blank}"
 msgstr "{blank}"
 
