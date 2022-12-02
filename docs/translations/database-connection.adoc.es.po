@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 09:31+0000\n"
-"PO-Revision-Date: 2022-02-03 17:09\n"
+"PO-Revision-Date: 2022-12-02 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -159,7 +159,7 @@ msgstr "pgsql.url=jdbc:postgresql://{host}/{database}?sslmode=require\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:53
 msgid "The following example is for an SQLite driver.  This connects to a file, so no `\\{host}` is used in the URL template:"
-msgstr "El siguiente ejemplo es para un controlador SQLite. Este se conecta a un archivo, por lo que no se usa `\\ {host}` en la plantilla URL:"
+msgstr "El siguiente ejemplo es para un controlador SQLite. Este se conecta a un archivo, por lo que no se usa `\\{host}` en la plantilla URL:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/database-connection.adoc:63
