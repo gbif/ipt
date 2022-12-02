@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2022-11-28 14:06\n"
+"PO-Revision-Date: 2022-12-02 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -682,7 +682,7 @@ msgstr "Datos de eventos de muestreo: xref:sampling-event-data#campos-dwc-requer
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:210
 msgid "Resource metadata: xref:resource-metadata.adoc#required-dwc-fields[required terms] / xref:resource-metadata.adoc#recommended-dwc-fields[recommended terms]"
-msgstr "Metadatos de recursos: xref:resource-metadata#campos-obligatorios-de-los-metadatos[términos requeridos terms] / xref:esource-metadata#campos-de-metadatos-recomendados[términos recomendados]"
+msgstr "Metadatos de recursos: xref:resource-metadata#campos-obligatorios-de-los-metadatos[términos requeridos terms] / xref:resource-metadata#campos-de-metadatos-recomendados[términos recomendados]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:211
@@ -708,7 +708,7 @@ msgstr "https://en.wikipedia.org/wiki/Iconv"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:222
 msgid "Ex.: Convert character encodings from Windows-1252 to UTF-8 using https://linux.die.net/man/1/iconv[*iconv*]:"
-msgstr "P. ej., convertir codificaciones de caracteres de Windows-1252 a UTF-8 usando https://linux.die.net/man/1/iconv[*iconv*]:"
+msgstr "P{empty}. ej., convertir codificaciones de caracteres de Windows-1252 a UTF-8 usando https://linux.die.net/man/1/iconv[*iconv*]:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:228
