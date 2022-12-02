@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 16:09+0000\n"
-"PO-Revision-Date: 2022-11-04 16:27\n"
+"PO-Revision-Date: 2022-12-02 17:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -395,7 +395,7 @@ msgstr "xref:2.4@release-notes.adoc[Notas de la versión IPT v2.4.2]"
 #: en/modules/ROOT/pages/releases.adoc:153
 #: en/modules/ROOT/pages/releases.adoc:162
 msgid "xref:2.4@index.adoc[User Manual]"
-msgstr "xref:2.4@index.adoc[Manual de Usuarios]"
+msgstr "link:../../../en/2.4/[Manual de Usuarios (en)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:145
@@ -554,7 +554,7 @@ msgstr "*2.3.2* - Octubre de 2015"
 #: en/modules/ROOT/pages/releases.adoc:215
 #: en/modules/ROOT/pages/releases.adoc:222
 msgid "xref:2.4@ipt-release-notes-2_3.adoc[IPT v2.3 Release Notes]"
-msgstr "xref:2.4@ipt-release-notes-2_3.adoc[Notas de la versión IPT v2.3]"
+msgstr "link:../../../en/ipt/2.4/ipt-release-notes-2_3[Notas de la versión IPT v2.3]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:209
@@ -609,7 +609,7 @@ msgstr "*2.2.1* - Abril de 2015"
 #: en/modules/ROOT/pages/releases.adoc:229
 #: en/modules/ROOT/pages/releases.adoc:236
 msgid "xref:2.4@ipt-release-notes-2_2.adoc[IPT v2.2 Release Notes]"
-msgstr "xref:2.4@ipt-release-notes-2_2.adoc[Notas de la versión IPT v2.2]"
+msgstr "link:../../../en/ipt/2.4/ipt-release-notes-2_2[Notas de la versión IPT v2.2]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:230
@@ -647,7 +647,7 @@ msgstr "*2.1* - Abril de 2014"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:244
 msgid "xref:2.4@ipt-release-notes-2_1.adoc[IPT v2.1 Release Notes]"
-msgstr "xref:2.4@ipt-release-notes-2_1.adoc[Notas de la versión IPT v2.1]"
+msgstr "link:../../../en/ipt/2.4/ipt-release-notes-2_1[Notas de la versión IPT v2.1]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:245
