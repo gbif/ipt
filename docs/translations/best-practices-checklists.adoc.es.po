@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 21:42\n"
+"PO-Revision-Date: 2022-12-02 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1020,7 +1020,7 @@ msgstr "Compartir referencias"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr "Se pueden compartir citas bibliográficas. Los datos bibliográficos se comparten como un archivo relacionado separado utilizando la {latest-reference}[extensión de referencias]. La extensión Referencias se recomienda y está diseñada para su uso en el intercambio de información sobre sinonimia en monografías y listados taxonómicos anotados. Admite compartir una cita analizada y, por lo tanto, proporciona un formato de cita más detallado que algunos de los elementos de datos de almacenamiento de citas en el archivo de datos principal, como dwc:namePublishedIn. Esta extensión admite la calificación taxonómica y nomenclatural de una referencia a través de la propiedad *dc:type*, que, cuando se usa con {latest-reference-type}[el vocabulario del tipo de referencia], se puede usar para distinguir un conjunto de referencias relacionadas con un taxón."
+msgstr "Se pueden compartir citas bibliográficas. Los datos bibliográficos se comparten como un archivo relacionado separado utilizando la {latest-references}[extensión de referencias]. La extensión Referencias se recomienda y está diseñada para su uso en el intercambio de información sobre sinonimia en monografías y listados taxonómicos anotados. Admite compartir una cita analizada y, por lo tanto, proporciona un formato de cita más detallado que algunos de los elementos de datos de almacenamiento de citas en el archivo de datos principal, como dwc:namePublishedIn. Esta extensión admite la calificación taxonómica y nomenclatural de una referencia a través de la propiedad *dc:type*, que, cuando se usa con {latest-reference-type}[el vocabulario del tipo de referencia], se puede usar para distinguir un conjunto de referencias relacionadas con un taxón."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:380

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2022-11-28 14:04\n"
+"PO-Revision-Date: 2022-12-02 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -276,7 +276,7 @@ msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:111
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr "Lo único que falta es agregar la información de la organización a la cuenta DataCite (p. ej., el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration-adoc#editar-una-organización[Editar una organización] del manual de usuario."
+msgstr "Lo único que falta es agregar la información de la organización a la cuenta DataCite (p. ej., el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#editar-una-organización[Editar una organización] del manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
