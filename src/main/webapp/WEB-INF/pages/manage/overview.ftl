@@ -667,9 +667,9 @@
                                                             <table class="table table-sm table-borderless mb-0">
                                                                 <tbody>
                                                                 <tr>
-                                                                    <td class="col-6"><strong>${visibilityTitle?cap_first}</strong>
-                                                                    </td>
-                                                                    <td class="text-end">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td>
+                                                                    <td class="col-6"><strong>${visibilityTitle?cap_first}</strong></td>
+                                                                    <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
+                                                                    <td class="text-end"><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${lastPublishedVersionStatus}">${lastPublishedVersionStatus?cap_first}</span></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="col-6"><strong>${licenseTitle?cap_first}</strong></td>
@@ -693,25 +693,27 @@
                                                                         ${resource.lastPublished?datetime?string["dd.MM.yyyy HH:mm"]}
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">
-                                                                        <a target="_blank"
-                                                                           href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                                            ${downloadTitle?cap_first}
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">
-                                                                        <#if report??>
-                                                                            <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
-                                                                        <#else>
-                                                                            ${emptyCell}
-                                                                        </#if>
-                                                                    </td>
-                                                                </tr>
+                                                                <#if (resource.coreType)! != "metadata">
+                                                                    <tr>
+                                                                        <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
+                                                                        <td class="text-end">
+                                                                            <a target="_blank"
+                                                                               href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                                                                ${downloadTitle?cap_first}
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
+                                                                        <td class="text-end">
+                                                                            <#if report??>
+                                                                                <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
+                                                                            <#else>
+                                                                                ${emptyCell}
+                                                                            </#if>
+                                                                        </td>
+                                                                    </tr>
+                                                                </#if>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -748,7 +750,7 @@
                                                             <tbody>
                                                             <tr>
                                                                 <td class="col-6"><strong>${visibilityTitle?cap_first}</strong></td>
-                                                                <td class="text-end">${resource.status?lower_case?cap_first}</td>
+                                                                <td class="text-end"><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${resource.status?lower_case}">${resource.status?lower_case?cap_first}</span></td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="col-6"><strong>${licenseTitle?cap_first}</strong></td>
@@ -826,14 +828,16 @@
                                                                     </#if>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
-                                                                <td class="text-end">${emptyCell}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
-                                                                <td class="text-end">${emptyCell}</td>
-                                                            </tr>
+                                                            <#if (resource.coreType)! != "metadata">
+                                                                <tr>
+                                                                    <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
+                                                                    <td class="text-end">${emptyCell}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
+                                                                    <td class="text-end">${emptyCell}</td>
+                                                                </tr>
+                                                            </#if>
                                                             </tbody>
                                                         </table>
                                                     </div>
