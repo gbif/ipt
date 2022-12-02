@@ -69,19 +69,38 @@
                 $(".doiAgencyField").css("display", "");
             }
 
+            function hideDoiRegistrationFields() {
+                $("#organisation\\.doiRegistrationAgency").val('');
+                $("#organisation\\.agencyAccountUsername").val('');
+                $("#organisation\\.agencyAccountPassword").val('');
+                $("#organisation\\.doiPrefix").val('');
+                $('#organisation\\.agencyAccountPrimary').attr('checked', false);
+                $(".doiAgencyField").hide();
+            }
+
+            function showDoiRegistrationFields() {
+                $(".doiAgencyField").show();
+            }
+
             $('#organisation\\.doiRegistrationAgency').change(function() {
                 var doiRegistrationAgency = $('#organisation\\.doiRegistrationAgency :selected').val();
 
                 if (doiRegistrationAgency) {
-                    $(".doiAgencyField").css("display", "");
+                    showDoiRegistrationFields();
                 } else {
-                    $("#organisation\\.agencyAccountUsername").val('');
-                    $("#organisation\\.agencyAccountPassword").val('');
-                    $("#organisation\\.doiPrefix").val('');
-                    $('#organisation\\.agencyAccountPrimary').attr('checked', false);
-                    $(".doiAgencyField").css("display", "none");
+                    hideDoiRegistrationFields();
                 }
             });
+
+            $("#doiRegistrationAgencyAssociation").change(function () {
+                if (!$('#doiRegistrationAgencyAssociation').is(':checked')) {
+                    hideDoiRegistrationFields();
+                } else {
+                    showDoiRegistrationFields();
+                }
+            });
+
+            $("#save").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -190,7 +209,7 @@
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>
-                            <div id="requestDetails" class="mt-0"></div>
+                            <div id="requestDetails" class="mt-0 text-smaller"></div>
                         </div>
                     </#if>
 
@@ -210,7 +229,17 @@
                         </#if>
                     </div>
 
-                    <div class="col-lg-6">
+                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content />
+
+                    <div class="col-12">
+                        <#if id?has_content>
+                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?string}" help="i18n"/>
+                        <#else>
+                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="false" help="i18n"/>
+                        </#if>
+                    </div>
+
+                    <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>
                         <@select name="organisation.doiRegistrationAgency" value="${organisation.doiRegistrationAgency!''}" options=doiRegistrationAgencies help="i18n" i18nkey="admin.organisation.doiRegistrationAgency" includeEmpty=true />
                     </div>
 
