@@ -118,7 +118,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 
             // display page parameter in the URL
             $(document).on("click", "a.paginate_button", function (e) {
-                var page = $(this).data("dtIdx") + 1;
+                var page = dt.page() + 1;
                 var params = new URLSearchParams(window.location.search);
                 page !== 0 ? params.set(PAGE_PARAM, page) : params.delete(PAGE_PARAM);
                 var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
