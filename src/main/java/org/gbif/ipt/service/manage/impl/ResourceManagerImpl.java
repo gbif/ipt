@@ -1381,7 +1381,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (logoUrl == null) {
       return "<span>--</span>";
     }
-    return "<img class=\"resourceminilogo\" alt=\"--\" src=\"" + logoUrl + "\"/>";
+    return "<img class=\"resourceminilogo\" src=\"" + logoUrl + "\"/>";
   }
 
   /**
