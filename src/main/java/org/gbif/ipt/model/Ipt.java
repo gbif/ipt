@@ -22,8 +22,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Encapsulates all the information for an IPT instance.
@@ -31,9 +29,6 @@ import org.apache.logging.log4j.Logger;
 public class Ipt extends AgentBase implements Serializable {
 
   private static final long serialVersionUID = 78945123624747L;
-
-  // logging
-  private static final Logger LOG = LogManager.getLogger(Ipt.class);
 
   private UUID organisationKey;
   private String language;
@@ -132,10 +127,6 @@ public class Ipt extends AgentBase implements Serializable {
    * @param wsPassword the wsPassword to set
    */
   public void setWsPassword(@Nullable String wsPassword) {
-    if (wsPassword != null && wsPassword.isEmpty()) {
-      LOG.error("Setting empty non-null password! There is an error somewhere!");
-    }
-
     if (wsPassword == null) {
       this.wsPassword = new Password();
     }
