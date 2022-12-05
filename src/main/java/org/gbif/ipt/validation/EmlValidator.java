@@ -367,9 +367,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // MetadataProviders list: at least one field has to have had data entered into it to qualify for validation
-          if (isAgentsListEmpty(eml.getMetadataProviders())) {
-            action.addActionError(action.getText("eml.metadataProvider.required"));
-          } else {
+          if (!isAgentsListEmpty(eml.getMetadataProviders())) {
             for (int index = 0; index < eml.getMetadataProviders().size(); index++) {
               Agent c = eml.getMetadataProviders().get(index);
 
