@@ -17,8 +17,8 @@
             </h1>
 
             <div class="text-smaller text-gbif-primary mb-2">
-                <#if (ipt.key)??>
-                    <a href="${portalUrl}/installation/${ipt.key}" target="_blank"><@s.text name="about.link"/></a>
+                <#if (iptKey)??>
+                    <a href="${portalUrl}/installation/${iptKey}" target="_blank"><@s.text name="about.link"/></a>
                 <#else>
                     <#assign aDateTime = .now>
                     ${aDateTime?date?string.long}
@@ -32,11 +32,11 @@
     <div class="my-3 p-3">
         <p class="text-center">
             <span class="text-start d-inline-block">
-                <#if (hostingOrganisation.name)??>
-                    <#if (ipt.description)??>
-                        <@ipt.description?interpret />
+                <#if (hostingOrganisationName)??>
+                    <#if (iptDescription)??>
+                        <@iptDescription?interpret />
                     <#else>
-                        <@s.text name="about.installation"/> ${hostingOrganisation.name}
+                        <@s.text name="about.installation"/> ${hostingOrganisationName}
                     </#if>
                 <#else>
                     <@s.text name="about.notRegistered"/>
