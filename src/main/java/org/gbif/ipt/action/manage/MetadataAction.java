@@ -844,17 +844,14 @@ public class MetadataAction extends ManagerBaseAction {
             metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
           }
         }
-      } else {
-        // add current user to metadataProviders list
-        resource.getEml().addMetadataProvider(current);
       }
 
-      // auto populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
+      // auto-populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
       if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
         current.setRole("user");
         resource.getEml().getAssociatedParties().add(current);
       }
-      // otherwise, ensure associated parties' country value get converted into 2 letter iso code for proper display
+      // otherwise, ensure associated parties' country value get converted into 2-letter iso code for proper display
       else if (!resource.getEml().getAssociatedParties().isEmpty()) {
         for (Agent party : resource.getEml().getAssociatedParties()) {
           String countryValue = party.getAddress().getCountry();
