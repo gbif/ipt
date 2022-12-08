@@ -22,19 +22,19 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.CoordinateUtils;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.BBox;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.GeospatialCoverage;
-import org.gbif.metadata.eml.JGTICuratorialUnit;
-import org.gbif.metadata.eml.JGTICuratorialUnitType;
-import org.gbif.metadata.eml.KeywordSet;
-import org.gbif.metadata.eml.PhysicalData;
-import org.gbif.metadata.eml.TaxonKeyword;
-import org.gbif.metadata.eml.TaxonomicCoverage;
-import org.gbif.metadata.eml.TemporalCoverage;
-import org.gbif.metadata.eml.TemporalCoverageType;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.BBox;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
+import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnit;
+import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
+import org.gbif.metadata.eml.ipt.model.PhysicalData;
+import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
+import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 
 import java.awt.Color;
 import java.text.DateFormat;
@@ -684,7 +684,7 @@ public class Eml2Rtf {
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
 
-      for (org.gbif.metadata.eml.Collection collection: eml.getCollections()) {
+      for (org.gbif.metadata.eml.ipt.model.Collection collection: eml.getCollections()) {
         if (exists(collection.getParentCollectionId()) || exists(collection.getCollectionName()) || exists(collection.getCollectionId())) {
           p.add(new Phrase(getText("rtf.collections.description"), fontTitle));
           p.add(Chunk.NEWLINE);

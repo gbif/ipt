@@ -14,8 +14,8 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.ipt.config.Constants;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 
 import java.util.ArrayList;
 import java.util.List;

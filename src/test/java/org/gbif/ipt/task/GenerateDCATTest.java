@@ -45,8 +45,8 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 

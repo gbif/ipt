@@ -30,7 +30,7 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
-import org.gbif.registry.metadata.InvalidEmlException;
+import org.gbif.metadata.eml.InvalidEmlException;
 
 import java.io.File;
 import java.io.IOException;

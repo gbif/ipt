@@ -48,9 +48,9 @@ import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlWriter;
+import org.gbif.metadata.eml.ipt.IptEmlWriter;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.properties.PropertiesUtil;
 
 import java.io.File;
@@ -272,7 +272,7 @@ public class ResourceManagerImplIT {
     resource.addVersionHistory(history);
 
     // persist eml file for version 1.0
-    EmlWriter.writeEmlFile(TMP_EML_FILE, resource.getEml());
+    IptEmlWriter.writeEmlFile(TMP_EML_FILE, resource.getEml());
 
     // update DOI for next published version
     BigDecimal nextVersion = resource.getNextVersion();

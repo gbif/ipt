@@ -13,8 +13,8 @@
  */
 package peformance;
 
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.IOException;
 import java.net.URL;

@@ -61,11 +61,11 @@ import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.EmlValidator;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
-import org.gbif.registry.metadata.InvalidEmlException;
+import org.gbif.metadata.eml.InvalidEmlException;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 

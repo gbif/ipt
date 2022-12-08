@@ -29,7 +29,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.IptMockBaseTest;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

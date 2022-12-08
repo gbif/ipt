@@ -23,7 +23,7 @@
   <properties>
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
-      Therefore we keep both available - make sure they are always negated in all profiles!
+      Therefore, we keep both available - make sure they are always negated in all profiles!
       -->
     <devMode>false</devMode>
     <devModeNegated>true</devModeNegated>
@@ -38,15 +38,14 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>1.41</dwc-api.version>
-    <dwca-io.version>2.15</dwca-io.version>
-    <gbif-api.version>0.175</gbif-api.version>
-    <gbif-common.version>0.57</gbif-common.version>
-    <gbif-doi.version>2.19</gbif-doi.version>
-    <gbif-metadata-profile.version>1.6</gbif-metadata-profile.version>
-    <gbif-parsers.version>0.59</gbif-parsers.version>
-    <gbif-registry-metadata.version>3.87</gbif-registry-metadata.version>
-    <gbif-httputils.version>1.3</gbif-httputils.version>
+    <dwc-api.version>1.42</dwc-api.version>
+    <dwca-io.version>2.16</dwca-io.version>
+    <gbif-api.version>0.177</gbif-api.version>
+    <gbif-common.version>0.58</gbif-common.version>
+    <gbif-doi.version>2.21</gbif-doi.version>
+    <gbif-metadata-profile.version>2.0-SNAPSHOT</gbif-metadata-profile.version>
+    <gbif-parsers.version>0.60</gbif-parsers.version>
+    <gbif-httputils.version>1.4</gbif-httputils.version>
 
     <!-- Third party dependencies -->
     <apache-poi.version>5.2.3</apache-poi.version>
@@ -313,7 +312,7 @@
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>
-      <artifactId>gbif-metadata-profile</artifactId>
+      <artifactId>gbif-metadata-profile-eml</artifactId>
       <version>${gbif-metadata-profile.version}</version>
     </dependency>
     <dependency>
@@ -359,11 +358,6 @@
           <artifactId>name-parser-v1</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.gbif.registry</groupId>
-      <artifactId>registry-metadata</artifactId>
-      <version>${gbif-registry-metadata.version}</version>
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>

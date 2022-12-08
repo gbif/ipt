@@ -1,7 +1,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
-import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 
 import java.util.HashSet;
 import java.util.Objects;
