@@ -144,6 +144,19 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
+    <!-- temp fix to protocol differences -->
+    <#assign userIdDirecotriesExtended =
+        {"https://orcid.org/": "https://orcid.org/",
+        "http://orcid.org/": "https://orcid.org/",
+        "http://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
+        "https://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
+        "http://scholar.google.com/citations?user=": "http://scholar.google.com/citations?user=",
+        "https://scholar.google.com/citations?user=": "http://scholar.google.com/citations?user=",
+        "https://www.linkedin.com/profile/view?id=": "https://www.linkedin.com/profile/view?id=",
+        "http://www.linkedin.com/profile/view?id=": "https://www.linkedin.com/profile/view?id=",
+        "http://www.wikidata.org/entity/": "http://www.wikidata.org/entity/",
+        "https://www.wikidata.org/entity/": "http://www.wikidata.org/entity/"}>
+
 <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container pt-2">
@@ -384,7 +397,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if (eml.contacts[contact_index].userIds[0].directory)??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.contacts[contact_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -545,7 +558,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.creators[creator_index].userIds[0]??>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.creators[creator_index].userIds[0].directory!}"/>
+                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -706,7 +719,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.metadataProviders[metadataProvider_index].userIds[0].directory!}"/>
+                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
