@@ -421,6 +421,11 @@
             showMetadataModal();
         });
 
+        // close metadata modal to show confirm override modal instead
+        $("#emlReplace").on("click", function () {
+            $('#metadata-modal').modal('hide');
+        });
+
         function showAddNetworkModal() {
             var dialogWindow = $("#networks-modal");
             dialogWindow.modal('show');
