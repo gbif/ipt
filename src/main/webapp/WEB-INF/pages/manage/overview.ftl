@@ -402,6 +402,13 @@
             $(this).submit();
         });
 
+        // show spinner file upload
+        $("#add").on("click", function () {
+            $('#source-data-modal').modal('hide');
+            displayProcessing();
+        });
+
+
         // Action modals
         function showAddSourceModal() {
             var dialogWindow = $("#source-data-modal");
