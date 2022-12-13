@@ -3,7 +3,7 @@
 <div class="py-5 border-bottom section" id="metadata">
     <div class="row">
         <div class="col-9">
-            <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
+            <h5 class="mb-0 text-gbif-header-2 fw-400">
                 <#assign metadataHeaderInfo>
                     <@s.text name='manage.metadata.description'/>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>

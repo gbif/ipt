@@ -604,8 +604,8 @@
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
                         <div class="row">
-                            <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                            <div class="col-8">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -625,7 +625,7 @@
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
+                            <div class="col-4 d-flex justify-content-end">
                                 <@publish resource/>
                             </div>
                         </div>
@@ -953,7 +953,7 @@
                     <div class="py-5 border-bottom section" id="autopublish">
                         <div class="row">
                             <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                                     <@s.text name="manage.overview.autopublish.title"/>
                                 </h5>
@@ -1013,8 +1013,8 @@
                     <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
                         <div class="row">
-                            <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                            <div class="col-8">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <#assign visibilityTitleInfo>
                                         <@s.text name='manage.overview.visibility.description'/>
                                     </#assign>
@@ -1024,7 +1024,7 @@
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
+                            <div class="col-4 d-flex justify-content-end">
                                 <#if resource.status=="PRIVATE">
                                     <#assign actionMethod>makePublic</#assign>
                                     <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
@@ -1098,7 +1098,7 @@
 
                         <div class="row">
                             <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <#assign registrationTitleInfo>
                                         <@s.text name="manage.resource.status.intro.registration"/>
                                         <br><br>
@@ -1238,7 +1238,7 @@
                     <div class="py-5 border-bottom section" id="networks">
                         <div class="row">
                             <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.networks.description"/>
                                     <@s.text name="manage.overview.networks.title"/>
                                 </h5>
@@ -1310,7 +1310,7 @@
                     <div class="py-5" id="managers">
                         <div class="row">
                             <div class="col-9">
-                                <h5 class="pb-2 text-gbif-header-2 fw-400">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                                     <@s.text name="manage.overview.resource.managers"/>
                                 </h5>

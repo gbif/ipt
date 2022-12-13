@@ -6,7 +6,7 @@
     <div class="titleOverview">
         <div class="row">
             <div class="col-9">
-                <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
+                <h5 class="mb-0 text-gbif-header-2 fw-400">
                     <#assign sourcesInfo>
                         <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
                     </#assign>
@@ -168,7 +168,7 @@
 <div class="py-5 border-bottom section" id="mappings">
     <div class="row">
         <div class="col-9">
-            <h5 class="pb-2 mb-0 text-gbif-header-2 fw-400">
+            <h5 class="mb-0 text-gbif-header-2 fw-400">
                 <#assign mappingsInfo>
                     <@s.text name='manage.overview.DwC.Mappings.coretype.description1'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
                 </#assign>
