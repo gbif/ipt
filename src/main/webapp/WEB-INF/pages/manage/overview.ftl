@@ -254,6 +254,14 @@
 
         $("#file").change(function() {
             var usedFileName = $("#file").prop("value");
+            var currentFileSize = this.files[0].size;
+
+            // validate size
+            if (currentFileSize > 209715200) {
+                $("#file").addClass("is-invalid");
+                return;
+            }
+
             if (usedFileName !== "") {
                 var addButton = $('#add');
                 addButton.attr("value", '<@s.text name="button.add"/>');
@@ -264,6 +272,7 @@
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
+            $("#file").removeClass("is-invalid");
             $("#url").prop("value", "");
             if ($("#file").is(":visible")) {
                 $("#add").hide();
@@ -1436,6 +1445,11 @@
                                 </div>
                                 <div class="col-12">
                                     <@s.file name="file" cssClass="form-control my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
+                                    <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
+                                        <li>
+                                            <span><@s.text name="manage.overview.source.file.too.big"/></span>
+                                        </li>
+                                    </ul>
                                     <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
                                     <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
                                 </div>
