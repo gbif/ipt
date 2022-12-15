@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.portal;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -53,6 +54,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -86,8 +88,8 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> ranks;
   private DataDir dataDir;
   private Eml eml;
-  private Set<Agent> mergedContacts = new HashSet<>();
-  private Set<Agent> deduplicatedProjectPersonnel = new HashSet<>();
+  private Set<Agent> mergedContacts = new LinkedHashSet<>();
+  private Set<Agent> deduplicatedProjectPersonnel = new LinkedHashSet<>();
   private Map<String, Set<String>> contactRoles = new HashMap<>();
   private Map<String, Set<String>> projectPersonnelRoles = new HashMap<>();
   private boolean metadataOnly;
@@ -688,7 +690,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Set<Agent> getMergedContacts() {
     if (mergedContacts.isEmpty()) {
-      Stream.of(eml.getCreators(), eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties())
+      Stream.of(eml.getCreators(), eml.getMetadataProviders(), eml.getContacts(), eml.getAssociatedParties())
           .flatMap(Collection::stream)
           .filter(Objects::nonNull)
           .filter(this::isValidAgent)

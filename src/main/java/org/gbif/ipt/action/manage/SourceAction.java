@@ -186,7 +186,11 @@ public class SourceAction extends ManagerBaseAction {
         .endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
-          List<File> files = CompressionUtil.decompressFile(tmpDir, file);
+          // in case of a file to override auto-generated name
+          String unzippedFileName = fileFileName != null
+              ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
+
+          List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
           addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
 
           // validate if at least one file already exists to ask confirmation

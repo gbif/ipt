@@ -254,6 +254,14 @@
 
         $("#file").change(function() {
             var usedFileName = $("#file").prop("value");
+            var currentFileSize = this.files[0].size;
+
+            // validate size
+            if (currentFileSize > 209715200) {
+                $("#file").addClass("is-invalid");
+                return;
+            }
+
             if (usedFileName !== "") {
                 var addButton = $('#add');
                 addButton.attr("value", '<@s.text name="button.add"/>');
@@ -264,6 +272,7 @@
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
+            $("#file").removeClass("is-invalid");
             $("#url").prop("value", "");
             if ($("#file").is(":visible")) {
                 $("#add").hide();
@@ -391,6 +400,64 @@
             }
 
             $(this).submit();
+        });
+
+        // show spinner file upload
+        $("#add").on("click", function () {
+            $('#source-data-modal').modal('hide');
+            displayProcessing();
+        });
+
+
+        // Action modals
+        function showAddSourceModal() {
+            var dialogWindow = $("#source-data-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#add-source-button").on('click', function () {
+            showAddSourceModal();
+        });
+
+        function showAddMappingModal() {
+            var dialogWindow = $("#mapping-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#add-mapping-button").on('click', function () {
+            showAddMappingModal();
+        });
+
+        function showMetadataModal() {
+            var dialogWindow = $("#metadata-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#edit-metadata-button").on('click', function () {
+            showMetadataModal();
+        });
+
+        // close metadata modal to show confirm override modal instead
+        $("#emlReplace").on("click", function () {
+            $('#metadata-modal').modal('hide');
+        });
+
+        function showAddNetworkModal() {
+            var dialogWindow = $("#networks-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#add-network-button").on('click', function () {
+            showAddNetworkModal();
+        });
+
+        function showAddManagerModal() {
+            var dialogWindow = $("#managers-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#add-manager-button").on('click', function () {
+            showAddManagerModal();
         });
     });
 </script>
@@ -543,27 +610,35 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <#assign overviewTitleInfo>
-                                <#if resource.coreType?has_content && resource.coreType==metadataType>
-                                    <@s.text name="manage.overview.published.description.metadataOnly"/>
-                                <#else>
-                                    <@s.text name="manage.overview.published.description"/>
-                                </#if>
-                                <br/><br/>
-                                <#if organisationWithPrimaryDoiAccount??>
-                                    <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
-                                <#else>
-                                    <@s.text name="manage.overview.published.description.noDoiAccount"/>
-                                </#if>
-                            </#assign>
-                            <@popoverTextInfo overviewTitleInfo/>
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <#assign overviewTitleInfo>
+                                        <#if resource.coreType?has_content && resource.coreType==metadataType>
+                                            <@s.text name="manage.overview.published.description.metadataOnly"/>
+                                        <#else>
+                                            <@s.text name="manage.overview.published.description"/>
+                                        </#if>
+                                        <br/><br/>
+                                        <#if organisationWithPrimaryDoiAccount??>
+                                            <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
+                                        <#else>
+                                            <@s.text name="manage.overview.published.description.noDoiAccount"/>
+                                        </#if>
+                                    </#assign>
+                                    <@popoverTextInfo overviewTitleInfo/>
 
-                            <@s.text name='manage.overview.published'/>
-                        </h5>
+                                    <@s.text name='manage.overview.published'/>
+                                </h5>
+                            </div>
+
+                            <div class="col-4 d-flex justify-content-end">
+                                <@publish resource/>
+                            </div>
+                        </div>
 
                         <div class="row mt-4">
-                            <div class="col-lg-9 order-lg-last ps-lg-5">
+                            <div class="col-12">
                                 <p>
                                     <@s.text name="manage.overview.published.intro"/>
                                 </p>
@@ -643,7 +718,7 @@
 
                                     <div class="row g-3">
                                         <#if resource.lastPublished??>
-                                            <div class="col-xl-6" style="height: 100%">
+                                            <div class="col-sm-6" style="height: 100%">
                                                 <div class="card">
                                                     <div class="card-header d-flex justify-content-between">
                                                         <div class="my-auto text-smaller">
@@ -722,7 +797,7 @@
                                             </div>
                                         </#if>
 
-                                        <div class="col-xl-6" style="height: 100%">
+                                        <div class="col-sm-6" style="height: 100%">
                                             <div class="card">
                                                 <div class="card-header d-flex justify-content-between">
                                                     <div class="my-auto text-smaller">
@@ -878,24 +953,36 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-3 border-lg-right pe-lg-5">
-                                <div class="mt-2">
-                                    <@publish resource/>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
                     <div class="py-5 border-bottom section" id="autopublish">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <@popoverPropertyInfo "manage.overview.autopublish.description"/>
-                            <@s.text name="manage.overview.autopublish.title"/>
-                        </h5>
+                        <div class="row">
+                            <div class="col-9">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <@popoverPropertyInfo "manage.overview.autopublish.description"/>
+                                    <@s.text name="manage.overview.autopublish.title"/>
+                                </h5>
+                            </div>
+
+                            <div class="col-3 d-flex justify-content-end">
+                                <div>
+                                    <form action='auto-publish.do' method='get'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <button class="btn btn-sm overview-action-button" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.edit'/>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row mt-4">
-                            <div class="col-lg-9 order-lg-last ps-lg-5">
+                            <div class="col-12">
                                 <div>
                                     <p>
                                         <#if resource.usesAutoPublishing()>
@@ -927,31 +1014,55 @@
                                     </#if>
                                 </div>
                             </div>
-
-                            <div class="col-lg-3 border-lg-right pe-lg-5">
-                                <div>
-                                    <form action='auto-publish.do' method='get'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <@s.submit name="edit" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.edit"/>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <#assign visibilityTitleInfo>
-                                <@s.text name='manage.overview.visibility.description'/>
-                            </#assign>
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <#assign visibilityTitleInfo>
+                                        <@s.text name='manage.overview.visibility.description'/>
+                                    </#assign>
 
-                            <@popoverTextInfo visibilityTitleInfo/>
-                            <@s.text name='manage.overview.visibility'/>
-                        </h5>
+                                    <@popoverTextInfo visibilityTitleInfo/>
+                                    <@s.text name='manage.overview.visibility'/>
+                                </h5>
+                            </div>
+
+                            <div class="col-4 d-flex justify-content-end">
+                                <#if resource.status=="PRIVATE">
+                                    <#assign actionMethod>makePublic</#assign>
+                                    <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <button id="makePublic" class="btn btn-sm overview-action-button" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                </#if>
+
+                                <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                    <#assign actionMethod>makePrivate</#assign>
+                                    <form action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <input name="unpublish" type="hidden" value="Change"/>
+                                        <button class="confirmMakePrivate btn btn-sm overview-action-button" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                </#if>
+                            </div>
+                        </div>
 
                         <div class="row mt-4">
-                            <div class="col-lg-9 order-lg-last ps-lg-5">
+                            <div class="col-12">
                                 <div>
                                     <div class="bodyOverview">
                                         <p>
@@ -986,46 +1097,61 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-3 border-lg-right pe-lg-5">
-                                <div class="d-flex flex-wrap">
-                                    <#if resource.status=="PRIVATE">
-                                        <#assign actionMethod>makePublic</#assign>
-                                        <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <@s.submit name="makePublic" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.change"/>
-                                        </form>
-                                    </#if>
-
-                                    <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-                                        <#assign actionMethod>makePrivate</#assign>
-                                        <form action='resource-${actionMethod}.do' method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <@s.submit cssClass="confirmMakePrivate btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.change" />
-                                        </form>
-                                    </#if>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
                     <div class="py-5 border-bottom section" id="registration">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <#assign registrationTitleInfo>
-                                Register resource with GBIF to make it globally discoverable
-                                <br><br>
-                                <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text>
-                                <br><br>
-                                <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
-                            </#assign>
 
-                            <@popoverTextInfo registrationTitleInfo/>
-                            <@s.text name='manage.overview.registration'/>
-                        </h5>
+                        <div class="row">
+                            <div class="col-9">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <#assign registrationTitleInfo>
+                                        <@s.text name="manage.resource.status.intro.registration"/>
+                                        <br><br>
+                                        <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text>
+                                        <br><br>
+                                        <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
+                                    </#assign>
+
+                                    <@popoverTextInfo registrationTitleInfo/>
+                                    <@s.text name='manage.overview.registration'/>
+                                </h5>
+                            </div>
+
+                            <div class="col-3 d-flex justify-content-end">
+                                <#if resource.status=="PUBLIC">
+                                    <#if !currentUser.hasRegistrationRights()>
+                                        <!-- Hide register button and show warning: user must have registration rights -->
+                                        <#assign visibilityConfirmRegistrationWarning>
+                                            <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                                        </#assign>
+                                    <#elseif missingValidPublishingOrganisation?string == "true">
+                                        <!-- Hide register button and show warning: user must assign valid publishing organisation -->
+                                    <#elseif missingRegistrationMetadata?string == "true">
+                                        <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
+                                    <#elseif !resource.isLastPublishedVersionPublic()>
+                                        <!-- Hide register button and show warning: last published version must be publicly available to register -->
+                                    <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                        <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                                    <#else>
+                                        <form class="me-1 pb-1" action="resource-registerResource.do" method="post">
+                                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                                            <button id="register-resource-button" class="confirmRegistration btn btn-sm overview-action-button" type="submit">
+                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                </svg>
+                                                <@s.text name='button.register'/>
+                                            </button>
+                                        </form>
+                                    </#if>
+                                </#if>
+
+                            </div>
+                        </div>
 
                         <div class="row mt-4">
-                            <div class="col-lg-9 order-lg-last ps-lg-5">
+                            <div class="col-12">
                                 <div>
                                     <div class="bodyOverview">
                                         <p>
@@ -1114,67 +1240,33 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-3 border-lg-right pe-lg-5">
-                                <#assign actionMethod>registerResource</#assign>
-                                <#if resource.status=="PRIVATE">
-                                    <#assign actionMethod>makePublic</#assign>
-                                </#if>
-
-                                <div class="d-flex flex-wrap">
-                                    <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <#if resource.status=="PUBLIC">
-                                            <#if !currentUser.hasRegistrationRights()>
-                                                <!-- Disable register button and show warning: user must have registration rights -->
-                                                <#assign visibilityConfirmRegistrationWarning>
-                                                    <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                                </#assign>
-                                            <#elseif missingValidPublishingOrganisation?string == "true">
-                                                <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                            <#elseif missingRegistrationMetadata?string == "true">
-                                                <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                            <#elseif !resource.isLastPublishedVersionPublic()>
-                                                <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                                <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                            <#else>
-                                                <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register"/>
-                                            </#if>
-                                        </#if>
-                                    </form>
-
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <@popoverPropertyInfo "manage.overview.networks.description"/>
-                            <@s.text name="manage.overview.networks.title"/>
-                        </h5>
-
-                        <div class="row mt-4">
-                            <div class="col-lg-3 border-lg-right <#if resource.key?has_content && (potentialNetworks?size>0)> border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
-                                <#if resource.key?has_content && (potentialNetworks?size>0)>
-                                    <div>
-                                        <form action='resource-addNetwork.do' method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
-                                                <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
-                                                <#list potentialNetworks?sort_by("name") as n>
-                                                    <option value="${n.key}">${n.name}</option>
-                                                </#list>
-                                            </select>
-                                            <@s.submit id="add-network" name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add" cssStyle="display: none"/>
-                                        </form>
-                                    </div>
-                                </#if>
+                        <div class="row">
+                            <div class="col-9">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <@popoverPropertyInfo "manage.overview.networks.description"/>
+                                    <@s.text name="manage.overview.networks.title"/>
+                                </h5>
                             </div>
 
-                            <div class="col-lg-9 ps-lg-5">
+                            <div class="col-3 d-flex justify-content-end">
+                                <#if resource.key?has_content && (potentialNetworks?size>0)>
+                                <button id="add-network-button" class="btn btn-sm overview-action-button">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                    </svg>
+                                    <@s.text name='button.add'/>
+                                </button>
+                                </#if>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
                                 <div>
                                     <p>
                                         <@s.text name="manage.overview.networks.intro"/>
@@ -1225,31 +1317,28 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
                     <div class="py-5" id="managers">
-                        <h5 class="pb-2 text-gbif-header-2 fw-400">
-                            <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
-                            <@s.text name="manage.overview.resource.managers"/>
-                        </h5>
-
-                        <div class="row mt-4">
-                            <div class="col-lg-3 border-lg-right <#if (potentialManagers?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
-                                <#if (potentialManagers?size>0)>
-                                    <div>
-                                        <!-- Warning: method name match is case sensitive therefore must be addManager -->
-                                        <form action='resource-addManager.do' method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <select name="id" class="form-select form-select-sm my-1" id="manager" size="1">
-                                                <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>
-                                                <#list potentialManagers?sort_by("name") as u>
-                                                    <option value="${u.email}">${u.name}</option>
-                                                </#list>
-                                            </select>
-                                            <@s.submit id="add-manager" name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add" cssStyle="display: none"/>
-                                        </form>
-                                    </div>
-                                </#if>
+                        <div class="row">
+                            <div class="col-9">
+                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                                    <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
+                                    <@s.text name="manage.overview.resource.managers"/>
+                                </h5>
                             </div>
 
-                            <div class="col-lg-9 ps-lg-5">
+                            <div class="col-3 d-flex justify-content-end">
+                                <#if (potentialManagers?size>0)>
+                                <button id="add-manager-button" class="btn btn-sm overview-action-button">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                    </svg>
+                                    <@s.text name='button.add'/>
+                                </button>
+                                </#if>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
                                 <div>
                                     <p>
                                         <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
@@ -1335,6 +1424,194 @@
                     <button id="changeStateSubmit" type="submit" form="make-public-modal-form" class="btn btn-outline-gbif-primary"><@s.text name="button.submit"/></button>
                     <#if resource.makePublicDate?has_content>
                         <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="source-data-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.source.title"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form action='addsource.do' method='post' enctype="multipart/form-data">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <input name="validate" type="hidden" value="false"/>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <select id="sourceType" name="sourceType" class="form-select my-1">
+                                        <option value="" disabled selected><@s.text name='manage.source.select.type'/></option>
+                                        <option value="source-sql"><@s.text name='manage.source.database'/></option>
+                                        <option value="source-file"><@s.text name='manage.source.file'/></option>
+                                        <option value="source-url"><@s.text name='manage.source.url'/></option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <@s.file name="file" cssClass="form-control my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
+                                    <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
+                                        <li>
+                                            <span><@s.text name="manage.overview.source.file.too.big"/></span>
+                                        </li>
+                                    </ul>
+                                    <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
+                                    <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-1" cssStyle="display: none" key="button.connect"/>
+                                    <@s.submit name="clear" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
+                                </div>
+                            </div>
+                        </form>
+                        <form action='canceloverwrite.do' method='post'>
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <input name="validate" type="hidden" value="false"/>
+                            <@s.submit name="canceloverwrite" key="button.cancel" cssStyle="display: none;" cssClass="btn btn-outline-secondary my-1"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.mapping.title"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <#if (potentialCores?size>0)>
+                            <form action='mapping.do' method='post'>
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <select name="id" class="form-select my-1" id="rowType" size="1">
+                                    <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
+                                        <#list potentialCores as c>
+                                            <#if c?has_content>
+                                                <option value="${c.rowType}">${c.title}</option>
+                                            </#if>
+                                        </#list>
+                                    </optgroup>
+                                    <#if (potentialExtensions?size>0)>
+                                        <optgroup label="<@s.text name='manage.overview.DwC.Mappings.extensions.select'/>">
+                                            <#list potentialExtensions as e>
+                                                <#if e?has_content>
+                                                    <option value="${e.rowType}">${e.title}</option>
+                                                </#if>
+                                            </#list>
+                                        </optgroup>
+                                    </#if>
+                                </select>
+                                <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add"/>
+                            </form>
+                        </#if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.metadata"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="metadata-radio" id="edit-metadata-radio" value="edit" checked>
+                                <label class="form-check-label" for="edit-metadata-radio"><@s.text name="button.edit"/></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="metadata-radio" id="upload-metadata-radio" value="upload">
+                                <label class="form-check-label" for="upload-metadata-radio"><@s.text name="button.upload"/></label>
+                            </div>
+                        </div>
+
+                        <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data" style="display: none;">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <@s.file name="emlFile" cssClass="form-control my-1"/>
+                                </div>
+                                <div id="eml-validate" class="col-12" style="display: none;">
+                                    <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                                </div>
+                                <div class="col-12">
+                                    <@s.submit name="emlReplace" cssClass="btn btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
+                                    <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form id="edit-metadata-form" action='metadata-basic.do' method='get' class="my-1">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <@s.submit cssClass="btn btn-outline-gbif-primary" name="edit" key="button.edit"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="networks-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.networks.title"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <#if resource.key?has_content && (potentialNetworks?size>0)>
+                        <div>
+                            <form action='resource-addNetwork.do' method='post'>
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <select name="id" class="form-select my-1" id="network" size="1">
+                                    <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
+                                    <#list potentialNetworks?sort_by("name") as n>
+                                        <option value="${n.key}">${n.name}</option>
+                                    </#list>
+                                </select>
+                                <@s.submit id="add-network" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
+                            </form>
+                        </div>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.resource.managers"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <#if (potentialManagers?size>0)>
+                        <div>
+                            <form action='resource-addManager.do' method='post'>
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <select name="id" class="form-select my-1" id="manager" size="1">
+                                    <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>
+                                    <#list potentialManagers?sort_by("name") as u>
+                                        <option value="${u.email}">${u.name}</option>
+                                    </#list>
+                                </select>
+                                <@s.submit id="add-manager" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
+                            </form>
+                        </div>
                     </#if>
                 </div>
             </div>

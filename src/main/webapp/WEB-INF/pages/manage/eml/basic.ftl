@@ -1,6 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -384,7 +385,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if (eml.contacts[contact_index].userIds[0].directory)??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.contacts[contact_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -545,7 +546,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.creators[creator_index].userIds[0]??>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.creators[creator_index].userIds[0].directory!}"/>
+                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -706,7 +707,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.metadataProviders[metadataProvider_index].userIds[0].directory!}"/>
+                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory]!}"/>
                                         <#else>
                                             <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
