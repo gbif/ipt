@@ -394,10 +394,10 @@ public class ResourceTest {
     Agent creator = new Agent();
     creator.setLastName("Williams");
     creator.setFirstName("Brian");
-    assertEquals("Williams B", getResource().getAuthorName(creator));
+    assertEquals("Williams B", getResource().getCitationAgentName(creator));
 
     creator.setFirstName("Brian Gonzalez");
-    assertEquals("Williams B G", getResource().getAuthorName(creator));
+    assertEquals("Williams B G", getResource().getCitationAgentName(creator));
   }
 
   /**
@@ -410,14 +410,14 @@ public class ResourceTest {
     creator.setLastName("");
     creator.setFirstName("");
     creator.setOrganisation("Natural History Museum of Denmark");
-    assertEquals("Natural History Museum of Denmark", getResource().getAuthorName(creator));
+    assertEquals("Natural History Museum of Denmark", getResource().getCitationAgentName(creator));
 
     creator.setFirstName("Brian Gonzalez");
-    assertEquals("", getResource().getAuthorName(creator));
+    assertEquals("", getResource().getCitationAgentName(creator));
 
     creator.setFirstName("");
     creator.setLastName("Williams");
-    assertEquals("", getResource().getAuthorName(creator));
+    assertEquals("", getResource().getCitationAgentName(creator));
   }
 
   @Test
