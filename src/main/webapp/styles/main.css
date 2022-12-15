@@ -309,7 +309,8 @@ table {
 
 #login-button {
     font-size: 0.75rem !important;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
+    border: 2px solid rgb(var(--navbar-link-color));
 }
 
 @media (min-width: 576px) {

@@ -187,7 +187,7 @@
                         </div>
                     [#else]
                         <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center">
-                            <button id="login-button" class="btn btn-sm m-xl-auto navbar-button border text-capitalize show-xl-bigger" type="submit" name="login-submit">
+                            <button id="login-button" class="btn btn-sm m-xl-auto navbar-button text-capitalize show-xl-bigger" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
                             <div class="navbar-nav show-xl-smaller nav-item-border-top">
