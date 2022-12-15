@@ -24,6 +24,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
 
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -129,7 +130,7 @@
                                             </div>
                                             <div class="col-lg-6">
                                                 <#if eml.project.personnel[item_index]?? && eml.project.personnel[item_index].userIds[0]??>
-                                                    <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.project.personnel[item_index].userIds[0].directory!}"/>
+                                                    <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.project.personnel[item_index].userIds[0].directory]!}"/>
                                                 <#else>
                                                     <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                                 </#if>

@@ -27,6 +27,7 @@
         }
     </style>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
 
     <#assign currentMetadataPage = "parties"/>
     <#assign currentMenu="manage"/>
@@ -151,7 +152,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <#if (eml.associatedParties[item_index].userIds[0].directory)??>
-                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.associatedParties[item_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
+                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.associatedParties[item_index].userIds[0].directory]!}"/>
                                             <#else>
                                                 <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                             </#if>

@@ -1,6 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -143,19 +144,6 @@
     <#assign currentMetadataPage = "basic"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
-    <!-- temp fix to protocol differences -->
-    <#assign userIdDirecotriesExtended =
-        {"https://orcid.org/": "https://orcid.org/",
-        "http://orcid.org/": "https://orcid.org/",
-        "http://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
-        "https://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
-        "http://scholar.google.com/citations?user=": "http://scholar.google.com/citations?user=",
-        "https://scholar.google.com/citations?user=": "http://scholar.google.com/citations?user=",
-        "https://www.linkedin.com/profile/view?id=": "https://www.linkedin.com/profile/view?id=",
-        "http://www.linkedin.com/profile/view?id=": "https://www.linkedin.com/profile/view?id=",
-        "http://www.wikidata.org/entity/": "http://www.wikidata.org/entity/",
-        "https://www.wikidata.org/entity/": "http://www.wikidata.org/entity/"}>
 
 <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
