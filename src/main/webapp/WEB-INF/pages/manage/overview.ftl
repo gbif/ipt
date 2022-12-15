@@ -1135,12 +1135,15 @@
                                     <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                         <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                                     <#else>
-                                        <button id="register-resource-button" class="confirmRegistration btn btn-sm overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
+                                        <form class="me-1 pb-1" action="resource-registerResource.do" method="post">
+                                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                                            <button id="register-resource-button" class="confirmRegistration btn btn-sm overview-action-button" type="submit">
+                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                </svg>
+                                                <@s.text name='button.register'/>
+                                            </button>
+                                        </form>
                                     </#if>
                                 </#if>
 
