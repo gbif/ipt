@@ -24,7 +24,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

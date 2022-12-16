@@ -67,7 +67,7 @@ import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;

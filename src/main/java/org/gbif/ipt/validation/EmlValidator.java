@@ -20,26 +20,26 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.metadata.eml.Address;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.BBox;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Collection;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.GeospatialCoverage;
-import org.gbif.metadata.eml.JGTICuratorialUnit;
-import org.gbif.metadata.eml.JGTICuratorialUnitType;
-import org.gbif.metadata.eml.KeywordSet;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
-import org.gbif.metadata.eml.PhysicalData;
-import org.gbif.metadata.eml.Point;
-import org.gbif.metadata.eml.Project;
-import org.gbif.metadata.eml.StudyAreaDescription;
-import org.gbif.metadata.eml.TaxonKeyword;
-import org.gbif.metadata.eml.TaxonomicCoverage;
-import org.gbif.metadata.eml.TemporalCoverage;
-import org.gbif.metadata.eml.TemporalCoverageType;
-import org.gbif.metadata.eml.UserId;
+import org.gbif.metadata.eml.ipt.model.Address;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.BBox;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Collection;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
+import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnit;
+import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.PhysicalData;
+import org.gbif.metadata.eml.ipt.model.Point;
+import org.gbif.metadata.eml.ipt.model.Project;
+import org.gbif.metadata.eml.ipt.model.StudyAreaDescription;
+import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
+import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
+import org.gbif.metadata.eml.ipt.model.UserId;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -367,9 +367,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // MetadataProviders list: at least one field has to have had data entered into it to qualify for validation
-          if (isAgentsListEmpty(eml.getMetadataProviders())) {
-            action.addActionError(action.getText("eml.metadataProvider.required"));
-          } else {
+          if (!isAgentsListEmpty(eml.getMetadataProviders())) {
             for (int index = 0; index < eml.getMetadataProviders().size(); index++) {
               Agent c = eml.getMetadataProviders().get(index);
 

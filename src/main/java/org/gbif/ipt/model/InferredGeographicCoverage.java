@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.metadata.eml.GeospatialCoverage;
+import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
 
 import java.util.HashSet;
 import java.util.Objects;

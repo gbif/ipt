@@ -18,8 +18,8 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Citation;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Citation;
 
 import java.math.BigDecimal;
 import java.net.URI;

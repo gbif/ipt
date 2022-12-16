@@ -1,6 +1,6 @@
 package org.gbif.ipt.model;
 
-import org.gbif.metadata.eml.TemporalCoverage;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
 
 import java.util.HashSet;
 import java.util.Objects;

@@ -16,10 +16,10 @@ package org.gbif.ipt.utils;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.IptEmlWriter;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -112,7 +112,7 @@ public class EmlUtils {
     try {
       synchronized (currentLocale) {
         Locale.setDefault(locale);
-        EmlWriter.writeEmlFile(emlFile, resource.getEml());
+        IptEmlWriter.writeEmlFile(emlFile, resource.getEml());
         Locale.setDefault(currentLocale);
       }
     } catch (IOException e) {

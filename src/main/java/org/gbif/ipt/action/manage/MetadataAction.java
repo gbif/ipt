@@ -36,18 +36,14 @@ import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.BBox;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.JGTICuratorialUnitType;
-import org.gbif.metadata.eml.TaxonKeyword;
-import org.gbif.metadata.eml.TaxonomicCoverage;
-import org.gbif.metadata.eml.TemporalCoverage;
-import org.gbif.metadata.eml.TemporalCoverageType;
-import org.gbif.metadata.eml.UserId;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.BBox;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
+import org.gbif.metadata.eml.ipt.model.UserId;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -848,17 +844,14 @@ public class MetadataAction extends ManagerBaseAction {
             metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
           }
         }
-      } else {
-        // add current user to metadataProviders list
-        resource.getEml().addMetadataProvider(current);
       }
 
-      // auto populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
+      // auto-populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
       if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
         current.setRole("user");
         resource.getEml().getAssociatedParties().add(current);
       }
-      // otherwise, ensure associated parties' country value get converted into 2 letter iso code for proper display
+      // otherwise, ensure associated parties' country value get converted into 2-letter iso code for proper display
       else if (!resource.getEml().getAssociatedParties().isEmpty()) {
         for (Agent party : resource.getEml().getAssociatedParties()) {
           String countryValue = party.getAddress().getCountry();

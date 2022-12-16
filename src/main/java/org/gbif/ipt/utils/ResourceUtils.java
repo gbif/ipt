@@ -17,7 +17,7 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
 import java.math.BigDecimal;

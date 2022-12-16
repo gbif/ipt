@@ -28,7 +28,7 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
-import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.ipt.model.Agent;
 
 import java.util.Date;
 import java.util.UUID;

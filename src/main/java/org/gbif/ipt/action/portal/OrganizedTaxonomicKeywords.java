@@ -20,8 +20,8 @@ import java.util.List;
  * Class similar to TaxonomicCoverage, but the TaxonomicKeywords are OrganizedTaxonomicKeywords. This conveniently
  * stores all scientific names and common names for a rank together. Each display name is simply the concatenation
  * of the scientific name, and the common name in parentheses. E.g. Plantae (plants).
- *
- * @see org.gbif.metadata.eml.TaxonKeyword in project gbif-metadata-profile
+ * <p>
+ * @see org.gbif.metadata.eml.ipt.model.TaxonKeyword in project gbif-metadata-profile
  */
 public class OrganizedTaxonomicKeywords {
 

@@ -643,7 +643,7 @@
 
                     <div class="my-3 p-3">
                         <!-- Metadata Providers -->
-                        <@textinline name="eml.metadataProvider.plural" help="i18n" requiredField=true/>
+                        <@textinline name="eml.metadataProvider.plural" help="i18n"/>
                         <div id="metadataProvider-items">
                             <#list eml.metadataProviders as metadataProvider>
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">

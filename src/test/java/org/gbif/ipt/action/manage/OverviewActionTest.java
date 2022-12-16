@@ -37,9 +37,9 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlWriter;
+import org.gbif.metadata.eml.ipt.IptEmlWriter;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +141,7 @@ public class OverviewActionTest {
       "This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
     assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
-    EmlWriter.writeEmlFile(emlFile, r.getEml());
+    IptEmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
     VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
@@ -157,7 +157,7 @@ public class OverviewActionTest {
       "This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
     assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
-    EmlWriter.writeEmlFile(emlFile, r.getEml());
+    IptEmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
     VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
@@ -178,7 +178,7 @@ public class OverviewActionTest {
       "This work is licensed under a <a href=\"http://opendatacommons.org/licenses/odbl/1.0\">Open Data Commons Open Database License (ODbL) 1.0</a>");
     assertEquals("http://opendatacommons.org/licenses/odbl/1.0", r.getEml().parseLicenseUrl());
     assertFalse(r.isAssignedGBIFSupportedLicense());
-    EmlWriter.writeEmlFile(emlFile, r.getEml());
+    IptEmlWriter.writeEmlFile(emlFile, r.getEml());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
     VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
