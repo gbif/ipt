@@ -415,9 +415,10 @@ public class ResourceTest {
     creator.setFirstName("Brian Gonzalez");
     assertEquals("", getResource().getCitationAgentName(creator));
 
+    // lastname is enough
     creator.setFirstName("");
     creator.setLastName("Williams");
-    assertEquals("", getResource().getCitationAgentName(creator));
+    assertEquals("Williams", getResource().getCitationAgentName(creator));
   }
 
   @Test
@@ -480,7 +481,7 @@ public class ResourceTest {
 
     LOG.info("Resource citation using next minor version: " + citation);
     String currentYear = Year.now().toString();
-    assertEquals("Smith J, Weir P ("+currentYear+"): Birds. v1.7. NHM. Dataset/Occurrence. http://ipt.gbif.org/resource?r=birds&v=1.7", citation);
+    assertEquals("Smith J, Weir P (" + currentYear + "). Birds. Version 1.7. NHM. Occurrence dataset. http://ipt.gbif.org/resource?r=birds&v=1.7", citation);
 
     // mock assigning Citation Identifier to resource
     Citation emlCitation = new Citation("Citation text", "http://doi.org/10.5886/cit_id");
@@ -495,7 +496,7 @@ public class ResourceTest {
     citation = resource.generateResourceCitation(resource.getNextVersion(), homepage);
 
     LOG.info("Resource citation using next minor version: " + citation);
-    assertEquals("Smith J, Weir P ("+currentYear+"): Birds. v1.7. NHM. Dataset/Checklist. http://doi.org/10.5886/cit_id", citation);
+    assertEquals("Smith J, Weir P (" + currentYear + "). Birds. Version 1.7. NHM. Checklist dataset. http://doi.org/10.5886/cit_id", citation);
 
     // mock assigning DOI to resource
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
@@ -505,7 +506,7 @@ public class ResourceTest {
     citation = resource.generateResourceCitation(resource.getNextVersion(), homepage);
 
     LOG.info("Resource citation with version specified: " + citation);
-    assertEquals("Smith J, Weir P ("+currentYear+"): Birds. v1.7. NHM. Dataset/Checklist. https://doi.org/10.5886/1bft7w5f", citation);
+    assertEquals("Smith J, Weir P (" + currentYear + "). Birds. Version 1.7. NHM. Checklist dataset. https://doi.org/10.5886/1bft7w5f", citation);
   }
 
 
