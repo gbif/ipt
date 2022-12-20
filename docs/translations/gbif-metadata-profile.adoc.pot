@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
+"POT-Creation-Date: 2022-12-20 11:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -236,28 +236,28 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:402
+#: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "Project Data"
 msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:421
+#: en/modules/ROOT/pages/manage-resources.adoc:437
 #, no-wrap
 msgid "Sampling Methods"
 msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:434
+#: en/modules/ROOT/pages/manage-resources.adoc:450
 #, no-wrap
 msgid "Citations"
 msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:462
+#: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "Collection Data"
 msgstr ""
@@ -269,7 +269,7 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:513
+#: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "Additional Metadata"
 msgstr ""
