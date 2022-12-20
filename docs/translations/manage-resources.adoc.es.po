@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-12-20 11:04+0000\n"
-"PO-Revision-Date: 2022-12-20 14:06\n"
+"POT-Creation-Date: 2022-12-20 20:00+0000\n"
+"PO-Revision-Date: 2022-12-20 21:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1513,8 +1513,8 @@ msgstr "*Eliminar parte asociada*: haciendo clic sobre este enlace, se elimina l
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
-msgid "*Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr "*Rol*: este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el ícono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol más apropiado para la parte asociada.\n"
+msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:401
