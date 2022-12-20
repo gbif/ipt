@@ -396,7 +396,7 @@ image::ipt2/manage/IPTManageResourceMetadataAssociatedParties.png[]
 
 * *Copy details from resource contact* - if this person or organization is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
 * *Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.
-* *Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
+* *Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
 ** *Author*: an agent associated with authoring a publication that used the data set, or of a data paper
 ** *Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)
 ** *Custodian Steward*: an agent who is responsible for/takes care of the data set
