@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2022-12-20 21:10\n"
+"PO-Revision-Date: 2022-12-21 14:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1514,103 +1514,103 @@ msgstr "*Eliminar parte asociada*: haciendo clic sobre este enlace, se elimina l
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr ""
+msgstr "*Rol*: este campo de selección contiene una https://rs.gbif.org/vocabulary/gbif/agent_role.xml[lista de posibles roles] que la parte asociada puede tener en relación con el recurso. Haga clic en el icono de información situado a la izquierda del campo de selección para ver las descripciones de las posibles funciones. Elija el rol más apropiado para la parte asociada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:401
 #, no-wrap
 msgid "*Author*: an agent associated with authoring a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*Autor*: un participante asociado a la autoría de una publicación en la que se haya utilizado el conjunto de datos, o de un artículo sobre datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:402
 #, no-wrap
 msgid "*Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)\n"
-msgstr ""
+msgstr "*Proveedor de contenido*: un participante que ha aportado contenido a un conjunto de datos (el conjunto de datos descrito puede ser un conjunto compuesto)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:403
 #, no-wrap
 msgid "*Custodian Steward*: an agent who is responsible for/takes care of the data set\n"
-msgstr ""
+msgstr "*Custodio de los datos*: un participante que se encarga del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:404
 #, no-wrap
 msgid "*Distributor*: an agent involved in the publishing/distribution chain of a data set\n"
-msgstr ""
+msgstr "*Distribuidor*: un participante en la cadena de publicación o distribución de un conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:405
 #, no-wrap
 msgid "*Editor*: an agent associated with editing a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*Editor*: un participante asociado a la edición de una publicación en la que se haya utilizado el conjunto de datos, o de un artículo sobre datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:406
 #, no-wrap
 msgid "*Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page\n"
-msgstr ""
+msgstr "*Proveedor de metadatos*: un participante responsable de suministrar los metadatos (el mismo que el proveedor de metadatos de la página de metadatos básicos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:407
 #, no-wrap
 msgid "*Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)\n"
-msgstr ""
+msgstr "*Creador*: un participante que recopiló/preparó en un principio el conjunto de datos (el mismo que el creador de la página de metadatos básicos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:408
 #, no-wrap
 msgid "*Owner*: an agent who owns the data set (may or may not be the custodian)\n"
-msgstr ""
+msgstr "*Propietario*: un participante propietario del conjunto de datos (puede ser o no el custodio)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:409
 #, no-wrap
 msgid "*Point Of Contact*: an agent to contact for further information about the data set\n"
-msgstr ""
+msgstr "*Punto de contacto*: un participante al cual dirigirse para obtener más información sobre el conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:410
 #, no-wrap
 msgid "*Principal Investigator*: a primary scientific contact associated with the data set\n"
-msgstr ""
+msgstr "*Investigador principal*: un contacto científico principal asociado al conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:411
 #, no-wrap
 msgid "*Processor*: an agent responsible for any post-collection processing of the data set\n"
-msgstr ""
+msgstr "*Procesador*: un participante responsable del procesamiento posterior a la recopilación de los datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:412
 #, no-wrap
 msgid "*Publisher*: the agent associated with publishing a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*Publicador*: el participante asociado a la elaboración de una publicación en la que se haya utilizado el conjunto de datos, o de un artículo sobre datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:413
 #, no-wrap
 msgid "*User*: an agent that makes use of the dataset\n"
-msgstr ""
+msgstr "*Usuario*: un participante que utiliza el conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:414
 #, no-wrap
 msgid "*Programmer*: an agent providing informatics/programming support related to the data set\n"
-msgstr ""
+msgstr "*Programador*: un participante que aporta apoyo informático o de programación en relación con el conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:415
 #, no-wrap
 msgid "*Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens\n"
-msgstr ""
+msgstr "*Curador*: participante que mantiene y documenta los especímenes de una colección. Algunas de sus funciones son preparar y etiquetar los especímenes para que estén listos para su identificación y preservación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:416
 #, no-wrap
 msgid "*Reviewer*: person assigned to review the dataset and verify its data and/or metadata quality. This role is analogous to the role played by peer reviewers in the scholarly publication process.\n"
-msgstr ""
+msgstr "*Revisor*: persona encargada de revisar el conjunto de datos y verificar la calidad de sus datos o metadatos. Esta función es análoga a la que desempeñan los pares evaluadores en el proceso de una publicación académica."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:417
