@@ -87,7 +87,12 @@
                         $('#requestDetails').html(contactLink);
                     });
 
-                    var installationsUrl = "https://api.gbif-uat.org/v1/organization/" + organisationKey + "/installation";
+                    var installationsUrl = "https://api.gbif.org/v1/organization/" + organisationKey + "/installation";
+
+                    // for test env (UAT)
+                    if ("${cfg.registryUrl!}".indexOf("gbif-uat") !== -1) {
+                        installationsUrl = "https://api.gbif-uat.org/v1/organization/" + organisationKey + "/installation";
+                    }
 
                     $.getJSON(installationsUrl, function (data) {
                         var numberOfIptInstallations = 0;
@@ -102,7 +107,7 @@
 
                         if (numberOfIptInstallations > 0) {
                             // do not remove, will be substituted in installationsWarningText
-                            var organizationPortalLink = "<a href=\"${cfg.portalUrl}/publisher/" + organisationKey + "\">" + orgName + "</a>";
+                            var organizationPortalLink = "<a href=\"${cfg.portalUrl!}/publisher/" + organisationKey + "\">" + orgName + "</a>";
                             var installationsWarningText = `<@s.text name="admin.registration.duplicate.warning"/>`;
                             var installationsCallout = $("#installations-warning");
                             installationsCallout.html(installationsWarningText);
