@@ -64,7 +64,7 @@
                 if(organisationKey) {
                     var url = '${registryURL}organisation/' + organisationKey + ".json";
 
-                    $.getJSON(url,function(data){
+                    $.getJSON(url, function (data) {
                         $('#organisation\\.primaryContactType').val(data.primaryContactType);
                         $('#organisation\\.primaryContactName').val(data.primaryContactName);
                         $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
@@ -86,9 +86,36 @@
                         contactLink += "</div>";
                         $('#requestDetails').html(contactLink);
                     });
+
+                    var installationsUrl = "https://api.gbif-uat.org/v1/organization/" + organisationKey + "/installation";
+
+                    $.getJSON(installationsUrl, function (data) {
+                        var numberOfIptInstallations = 0;
+
+                        for (var i in data.results) {
+                            console.log(data.results[i])
+                            console.log(data.results[i].type)
+                            if (data.results[i].type === "IPT_INSTALLATION") {
+                                numberOfIptInstallations++;
+                            }
+                        }
+
+                        if (numberOfIptInstallations > 0) {
+                            // do not remove, will be substituted in installationsWarningText
+                            var organizationPortalLink = "<a href=\"${cfg.portalUrl}/publisher/" + organisationKey + "\">" + orgName + "</a>";
+                            var installationsWarningText = `<@s.text name="admin.registration.duplicate.warning"/>`;
+                            var installationsCallout = $("#installations-warning");
+                            installationsCallout.html(installationsWarningText);
+                            installationsCallout.show();
+                        }
+                    });
                 } else {
                     // remove link
                     $("#requestDetails").empty();
+                    // erase installations warning
+                    var installationsCallout = $("#installations-warning");
+                    installationsCallout.text("");
+                    installationsCallout.hide();
                 }
             });
 
@@ -272,7 +299,7 @@
 
                     <form id="registrationForm" class="needs-validation" action="registration.do" method="post" novalidate>
                         <div class="row g-3">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <#assign selectOrganisationInfo>
                                         <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
@@ -296,12 +323,16 @@
                                 <div id="requestDetails" class="mt-0 text-smaller"></div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
+                            </div>
+
+                            <div class="col-12">
+                                <div id="installations-warning" class="callout callout-warning" style="display: none;"></div>
                             </div>
 
                             <div class="col-12">
@@ -316,6 +347,10 @@
 
                             <div class="col-lg-6">
                                 <@input name="ipt.name" i18nkey="admin.ipt.name" type="text" maxlength=255 size=150 requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
                             </div>
 
                             <div class="col-12">
@@ -335,11 +370,6 @@
                             </div>
 
                             <@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical"/>
-
-                            <div class="col-lg-6">
-                                <@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
-                            </div>
-
                             <@s.hidden id="organisation.name" name="organisation.name" />
                             <@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
                         </div>
