@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2022-12-07 22:25\n"
+"PO-Revision-Date: 2022-12-21 14:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -428,7 +428,7 @@ msgstr "Dicho esto, hay dos formas de cambiar la organización que publica."
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:168
 msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr ""
+msgstr "La forma más sencilla es volver a publicar el recurso y, a continuación, ajustar la organización publicadora deseada. Para simplificar el proceso, puede volver a crear el conjunto de datos desde su carpeta de recursos IPT comprimida. Encontrará instrucciones sobre cómo hacerlo xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí].  Si migra el recurso de la antigua organización publicadora a la nueva organización publicadora siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]: Por favor, preste mucha atención al paso 5, donde tendrá que pedir al Helpdesk de GBIF que actualice el Registro de GBIF (GBIF Registry).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:170
