@@ -44,7 +44,8 @@
                         $('#organisation\\.nodeName').val(data.nodeName);
 
                         //Create a contact link to prefill an email to request a password from an Organisation
-                        var contactLink = '<div class="mt-2"><a href=\"mailto:';
+                        var contactLink = '<div class="mt-2">';
+                        contactLink += '<a href=\"mailto:';
                         contactLink += data.primaryContactEmail;
                         contactLink += '?subject=';
                         contactLink += 'Shared token request for ';
@@ -52,7 +53,8 @@
                         contactLink += '&body=';
                         contactLink += emailContent;
                         contactLink += '\">';
-                        contactLink += 'Click here to contact';
+                        contactLink += '<svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ContactSupportOutlinedIcon" tabindex="-1" title="ContactSupportOutlined"><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"></path></svg>';
+                        contactLink += ' Click here to contact';
                         contactLink += '</a> ';
                         contactLink += orgName;
                         contactLink += "</div>";
@@ -157,7 +159,7 @@
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
                 <div class="row g-3">
                     <#if id?has_content>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true requiredField=true/>
                         </div>
 
@@ -213,11 +215,11 @@
                         </div>
                     </#if>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
                     </div>
 
