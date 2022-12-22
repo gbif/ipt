@@ -46,6 +46,7 @@ import org.gbif.metadata.eml.ipt.model.UserId;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -178,9 +179,11 @@ public class MetadataAction extends ManagerBaseAction {
   public String getLicenseKeySelected() {
     String licenseText = resource.getEml().getIntellectualRights();
     if (StringUtils.isNotBlank(licenseText)) {
+      // can be old-fashioned license, with version outside parenthesis
+      String licenseTextUpdated = licenseText.replace(") 4.0", " 4.0)");
       for (Map.Entry<String, String> entry: licenses.entrySet()) {
         String licenseName = entry.getValue();
-        if (StringUtils.isNotBlank(licenseName) && licenseText.contains(licenseName)) {
+        if (StringUtils.isNotBlank(licenseName) && licenseTextUpdated.contains(licenseName)) {
           return entry.getKey();
         }
       }
@@ -706,7 +709,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Singleton
   public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
     if (licenses == null || licenseTexts == null) {
-      licenses = new TreeMap<>();
+      licenses = new TreeMap<>(new LicenceComparator());
       licenses.put("", (firstOption == null) ? "-" : firstOption);
       licenseTexts = new TreeMap<>();
 
@@ -942,5 +945,35 @@ public class MetadataAction extends ManagerBaseAction {
 
   public KeyNamePair getInferredTemporalCoverage() {
     return inferredTemporalCoverage;
+  }
+
+  /**
+   * Custom license comparator. This is needed because java Properties class is based on Hashtable and does not
+   * respect the order in the licences.properties file. This comparator will sort license from less to more restricted.
+   * Result: "" (empty), cczero, ccby, ccbync
+   */
+  private static class LicenceComparator implements Comparator<String> {
+
+    @Override
+    public int compare(String o1, String o2) {
+      if (StringUtils.equals(o1, o2)) {
+        return 0;
+      } else if (!StringUtils.equalsAny("cczero", o1, o2)) {
+        // if not cczero - just compare them
+        return o1.compareTo(o2);
+      } else if ("cczero".equals(o1) && !o2.isEmpty()) {
+        // cczero should be right after empty license
+        return -1;
+      } else if ("cczero".equals(o2) && !o1.isEmpty()) {
+        // cczero should be right after empty license
+        return 1;
+      } else if (o1.isEmpty()) {
+        return -1;
+      } else if (o2.isEmpty()) {
+        return 1;
+      }
+
+      return o1.compareTo(o2);
+    }
   }
 }
