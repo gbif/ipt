@@ -26,8 +26,8 @@
             max-width: 600px;
         }
     </style>
-    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
+    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <#assign currentMetadataPage = "parties"/>
     <#assign currentMenu="manage"/>
@@ -94,7 +94,7 @@
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                         <div class="columnLinks mt-2 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copyDetails-${item_index}" href="" class="text-smaller">
+                                                <a id="associatedParty-copy-${item_index}" href="" class="text-smaller">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -152,7 +152,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <#if (eml.associatedParties[item_index].userIds[0].directory)??>
-                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.associatedParties[item_index].userIds[0].directory]!}"/>
+                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.associatedParties[item_index].userIds[0].directory!]!}"/>
                                             <#else>
                                                 <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                             </#if>
@@ -189,7 +189,7 @@
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copyDetails" href="" class="text-smaller">
+                                        <a id="associatedParty-copy" href="" class="text-smaller">
                                             <span>
                                                 <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -263,6 +263,52 @@
         </div>
     </form>
 
+    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="resource" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.resource"/>
+                            </label>
+                            <select name="resource" id="resource" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agentType" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agentType"/>
+                            </label>
+                            <select name="agentType" id="agentType" size="1" class="form-select">
+                                <option value=""></option>
+                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agent" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agent"/>
+                            </label>
+                            <select name="agent" id="agent" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div>
+                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

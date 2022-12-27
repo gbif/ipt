@@ -334,8 +334,16 @@
                             <#list eml.contacts as contact>
                                 <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="columnLinks mt-4 d-flex justify-content-between">
-                                        <!-- Do not show copy-from-resource-contact link for the first contact -->
-                                        <div>&nbsp;</div>
+                                        <div>
+                                            <a id="contact-copy-${contact_index}" href="" class="text-smaller">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${copyLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
                                         <div>
                                             <a id="contact-removeLink-${contact_index}" class="removeContactLink text-smaller" href="">
                                                 <span>
@@ -385,7 +393,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if (eml.contacts[contact_index].userIds[0].directory)??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.contacts[contact_index].userIds[0].directory]!}"/>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.contacts[contact_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -415,7 +423,7 @@
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="contact-copyDetails" href="" class="text-smaller">
+                                    <a id="contact-copy" href="" class="text-smaller">
                                         <span>
                                             <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -488,7 +496,7 @@
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="creator-copyDetails-${creator_index}" href="" class="text-smaller">
+                                            <a id="creator-copy-${creator_index}" href="" class="text-smaller">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -546,7 +554,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.creators[creator_index].userIds[0]??>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory]!}"/>
+                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -576,7 +584,7 @@
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copyDetails" href="" class="text-smaller">
+                                    <a id="creator-copy" href="" class="text-smaller">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -649,7 +657,7 @@
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="" class="text-smaller">
+                                            <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="text-smaller">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -707,7 +715,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory]!}"/>
+                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -737,7 +745,7 @@
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copyDetails" href="" class="text-smaller">
+                                    <a id="metadataProvider-copy" href="" class="text-smaller">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -809,6 +817,53 @@
         </div>
     </div>
 </form>
+
+    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="resource" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.resource"/>
+                            </label>
+                            <select name="resource" id="resource" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agentType" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agentType"/>
+                            </label>
+                            <select name="agentType" id="agentType" size="1" class="form-select">
+                                <option value=""></option>
+                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agent" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agent"/>
+                            </label>
+                            <select name="agent" id="agent" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div>
+                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
