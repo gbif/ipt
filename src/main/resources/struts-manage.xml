@@ -19,6 +19,20 @@
         <param name="root">resources</param>
       </result>
     </action>
+
+    <action name="suggest-resources" class="org.gbif.ipt.action.manage.MetadataAgentSuggesterAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">suggestedResources</param>
+      </result>
+    </action>
+
+    <action name="suggest-agents" class="org.gbif.ipt.action.manage.MetadataAgentSuggesterAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">suggestedAgents</param>
+      </result>
+    </action>
   </package>
 
   <!-- The entry to the manage section -->
