@@ -356,7 +356,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       LOG.error(msg);
+    } catch (JsonSyntaxException e) {
+      // add startup error message that explains the consequence of the error
+      String msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      LOG.error(msg);
     }
+
     // populate Organisation list
     List<Organisation> organisations = new ArrayList<>();
     int invalid = 0;
@@ -573,6 +579,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
         warnings.addStartupError(msg);
         LOG.error(msg);
+      } catch (JsonSyntaxException e) {
+        // add startup error message that explains the consequence of the error
+        String msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        LOG.error(msg);
       }
     }
 
@@ -603,6 +614,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      LOG.error(msg);
+    } catch (JsonSyntaxException e) {
+      // add startup error message that explains the consequence of the error
+      String msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       LOG.error(msg);
     }
