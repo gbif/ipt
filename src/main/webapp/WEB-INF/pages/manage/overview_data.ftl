@@ -40,7 +40,7 @@
         </div>
         </#if>
 
-        <div class="row mt-4">
+        <div class="mt-4">
             <p class="mb-0">
                 <@s.text name='manage.overview.source.intro'/>
             </p>
@@ -118,36 +118,36 @@
                                         </div>
 
                                     </#if>
-                                        <div class="d-flex justify-content-end my-auto source-item-actions">
-                                            <div class="dropdown">
-                                                <a class="icon-button icon-material-actions source-item-action" type="button" href="#" id="dropdownMenuLink-${src_index}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                    </svg>
-                                                </a>
+                                    <div class="d-flex justify-content-end my-auto source-item-actions">
+                                        <div class="dropdown">
+                                            <a class="icon-button icon-material-actions source-item-action" type="button" href="#" id="dropdown-source-item-actions-${src_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                </svg>
+                                            </a>
 
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink-${src_index}">
-                                                    <#if src.isFileSource() || src.isExcelSource()>
-                                                        <li>
-                                                            <a class="dropdown-item action-link" type="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank">
-                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
-                                                                </svg>
-                                                                <@s.text name="button.download"/>
-                                                            </a>
-                                                        </li>
-                                                    </#if>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdown-source-item-actions-${src_index}">
+                                                <#if src.isFileSource() || src.isExcelSource()>
                                                     <li>
-                                                        <a class="delete-source source-item-action dropdown-item action-link" type="button" href="delete-source.do?r=${resource.shortname}&id=${src.name}">
+                                                        <a class="dropdown-item action-link" type="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank">
                                                             <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
                                                             </svg>
-                                                            <@s.text name="button.delete"/>
+                                                            <@s.text name="button.download"/>
                                                         </a>
                                                     </li>
-                                                </ul>
-                                            </div>
+                                                </#if>
+                                                <li>
+                                                    <a class="delete-source source-item-action dropdown-item action-link" type="button" href="delete-source.do?r=${resource.shortname}&id=${src.name}">
+                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                        </svg>
+                                                        <@s.text name="button.delete"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </#list>
@@ -155,7 +155,6 @@
                 </div>
             </#if>
         </div>
-
     </div>
 
 </div>
@@ -196,78 +195,114 @@
         </div>
     </#if>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div>
-                <p>
-                    <@s.text name='manage.overview.DwC.Mappings.description'/>
-                </p>
+    <div class="mt-4">
+        <p class="mb-0">
+            <@s.text name='manage.overview.DwC.Mappings.description'/>
+        </p>
 
-                <#if !(potentialCores?size>0)>
-                    <div class="callout callout-warning text-smaller">
-                        <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                    </div>
-                </#if>
+        <#if !(potentialCores?size>0)>
+            <div class="callout callout-warning text-smaller">
+                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+            </div>
+        </#if>
 
-                <#if resource.coreRowType?has_content>
-                    <div class="details">
-                        <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
-                            <#list resource.getMappings(resource.coreRowType) as m>
-                                <div class="row border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
-                                    <div class="col-10 mapping-item-link" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.extension.rowType?url}" data-ipt-mapping="${m_index}">
-                                        <strong>${(m.source.name)!}</strong>
-                                        <i class="bi bi-arrow-right"></i>
-                                        <strong>${m.extension.title}</strong>
-                                        <br>
-                                        <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
-                                    </div>
-                                    <div class="col-2 my-auto d-flex justify-content-end pt-0">
-                                        <a class="icon-button icon-button-sm peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+        <#if resource.coreRowType?has_content>
+            <div class="details mt-3">
+                <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
+                <div class="row g-2">
+                    <#list resource.getMappings(resource.coreRowType) as m>
+                        <div class="col-xl-6">
+                            <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
+                                <div class="mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.extension.rowType?url}" data-ipt-mapping="${m_index}">
+                                    <strong>${(m.source.name)!}</strong>
+                                    <i class="bi bi-arrow-right"></i>
+                                    <strong>${m.extension.title}</strong>
+                                    <br>
+                                    <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
+                                </div>
+                                <div class="my-auto d-flex justify-content-end pt-0">
+                                    <div class="dropdown">
+                                        <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
                                             </svg>
                                         </a>
-                                        <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                            </svg>
-                                        </a>
+
+                                        <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                            <li>
+                                                <a class="dropdown-item action-link peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                    </svg>
+                                                    <@s.text name="button.preview"/>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                    <@s.text name="button.delete"/>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                            </#list>
-                        <#if (resource.getMappedExtensions()?size > 1)>
-                            <div class="mapping_head mt-3"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
-                            <#list resource.getMappedExtensions() as ext>
-                                <#if ext.rowType != resource.coreRowType>
-                                    <#list resource.getMappings(ext.rowType) as m>
-                                        <div class="row border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
-                                            <div class="col-10 mapping-item-link" data-ipt-resource="${resource.shortname}" data-ipt-extension="${ext.rowType?url}" data-ipt-mapping="${m_index}">
+                            </div>
+                        </div>
+                    </#list>
+                </div>
+                <#if (resource.getMappedExtensions()?size > 1)>
+                    <div class="mapping_head mt-3"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
+                    <div class="row g-2">
+                        <#list resource.getMappedExtensions() as ext>
+                            <#if ext.rowType != resource.coreRowType>
+                                <#list resource.getMappings(ext.rowType) as m>
+                                    <div class="col-xl-6">
+                                        <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
+                                            <div class="mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${ext.rowType?url}" data-ipt-mapping="${m_index}">
                                                 <strong>${(m.source.name)!}</strong>
                                                 <i class="bi bi-arrow-right"></i>
                                                 <strong>${ext.title}</strong>
                                                 <br>
                                                 <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
                                             </div>
-                                            <div class="col-2 my-auto d-flex justify-content-end">
-                                                <a class="icon-button icon-button-sm peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                    </svg>
-                                                </a>
-                                                <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </a>
+                                            <div class="my-auto d-flex justify-content-end mapping-item-actions">
+                                                <div class="dropdown">
+                                                    <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                        <li>
+                                                            <a class="dropdown-item action-link peekBtn" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.preview"/>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.delete"/>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </#list>
-                                </#if>
-                            </#list>
-                        </#if>
+                                    </div>
+                                </#list>
+                            </#if>
+                        </#list>
                     </div>
                 </#if>
             </div>
-        </div>
+        </#if>
     </div>
 </div>
