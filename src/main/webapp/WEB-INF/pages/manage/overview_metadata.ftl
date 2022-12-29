@@ -42,16 +42,13 @@
     </#if>
 
     <div class="row mt-4">
-        <div class="col-12">
-            <p>
-                <@s.text name="manage.overview.metadata.description"/>
-            </p>
-
+        <p class="mb-0">
             <#if missingMetadata>
-                <div class="callout callout-warning text-smaller">
-                    <@s.text name="manage.overview.missing.metadata"/>
-                </div>
+                <span title="<@s.text name='manage.overview.missing.metadata'/>" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-incomplete"><@s.text name="manage.overview.metadata.incomplete"/></span>
+            <#else>
+                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-complete"><@s.text name="manage.overview.metadata.complete"/></span>
             </#if>
-        </div>
+            <@s.text name="manage.overview.metadata.description"/>
+        </p>
     </div>
 </div>

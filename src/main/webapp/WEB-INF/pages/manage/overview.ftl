@@ -14,24 +14,20 @@
     <!-- The organisation with DOI account activated must exist,
     the mandatory metadata must have been filled in,
     and the user must have registration rights for any DOI operation made possible -->
-    <#if !organisationWithPrimaryDoiAccount??>
-        -
-    <#elseif !currentUser.hasRegistrationRights()>
-        -
-    <#elseif resource.identifierStatus == "UNRESERVED">
+    <#if resource.identifierStatus == "UNRESERVED">
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi button-link text-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-outline-gbif-primary my-3" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
         </form>
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
         <form action='resource-deleteDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmDeleteDoi button-link text-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmDeleteDoi btn btn-outline-gbif-danger my-3" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
         </form>
     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi button-link text-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-outline-gbif-primary my-3" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
         </form>
     </#if>
 </#macro>
@@ -459,6 +455,16 @@
         $("#add-manager-button").on('click', function () {
             showAddManagerModal();
         });
+
+        $("#reserve-doi").on("click", function (e) {
+            showReserveDoiModal(e);
+        });
+
+        function showReserveDoiModal(e) {
+            e.preventDefault();
+            var dialogWindow = $("#reserve-doi-modal");
+            dialogWindow.modal('show');
+        }
     });
 </script>
 
@@ -637,320 +643,242 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <p>
-                                    <@s.text name="manage.overview.published.intro"/>
-                                </p>
+                        <div class="mt-4">
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.published.intro"/>
+                            </p>
 
-                                <!-- resources cannot be published if the mandatory metadata is missing -->
-                                <#if missingMetadata>
+                            <!-- resources cannot be published if the mandatory metadata is missing -->
+                            <#if missingMetadata>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.published.missing.metadata"/>
+                                </div>
+
+                                <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+                            <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
+                                </div>
+
+                                <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
+                            <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
+                            || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
+                            || resource.status == "REGISTERED">
+                                <!-- the user must have registration rights -->
+                                <#if !currentUser.hasRegistrationRights()>
                                     <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.published.missing.metadata"/>
+                                        <@s.text name="manage.resource.status.publication.forbidden"/>
+                                        &nbsp;<@s.text name="manage.resource.role.change"/>
                                     </div>
 
-                                    <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-                                <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                                    <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
+                                <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+                                || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
+                                && !organisationWithPrimaryDoiAccount??>
                                     <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
+                                        <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
                                     </div>
 
-                                    <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
-                                <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
-                                || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
-                                || resource.status == "REGISTERED">
-                                    <!-- the user must have registration rights -->
-                                    <#if !currentUser.hasRegistrationRights()>
-                                        <div class="callout callout-warning text-smaller">
-                                            <@s.text name="manage.resource.status.publication.forbidden"/>
-                                            &nbsp;<@s.text name="manage.resource.role.change"/>
-                                        </div>
-
-                                        <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
-                                    <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
-                                    || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
-                                    && !organisationWithPrimaryDoiAccount??>
-                                        <div class="callout callout-warning text-smaller">
-                                            <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                                        </div>
-
-                                        <!-- when a DOI is reserved.. -->
-                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                                        <!-- and the resource has no existing DOI and its status is private..  -->
-                                        <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
-                                            <!-- and the resource has never been published before, the first publication is a new major version -->
-                                            <#if !resource.lastPublished??>
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                                </div>
-
-                                                <!-- and the resource has been published before, the next publication is a new minor version -->
-                                            <#else>
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                                </div>
-                                            </#if>
-
-                                            <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
-                                        <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                                            <div class="callout callout-info text-smaller">
-                                                <@s.text name="manage.overview.publishing.doi.register.help"/>
+                                    <!-- when a DOI is reserved.. -->
+                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                                    <!-- and the resource has no existing DOI and its status is private..  -->
+                                    <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
+                                        <!-- and the resource has never been published before, the first publication is a new major version -->
+                                        <#if !resource.lastPublished??>
+                                            <div class="callout callout-warning text-smaller">
+                                                <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
                                             </div>
 
+                                            <!-- and the resource has been published before, the next publication is a new minor version -->
+                                        <#else>
+                                            <div class="callout callout-warning text-smaller">
+                                                <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
+                                            </div>
                                         </#if>
+
+                                        <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
+                                    <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
+                                        <div class="callout callout-info text-smaller">
+                                            <@s.text name="manage.overview.publishing.doi.register.help"/>
+                                        </div>
+
                                     </#if>
                                 </#if>
+                            </#if>
 
-                                <div class="details">
-                                    <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
-                                    <#assign nextPublishedTitle><@s.text name="manage.overview.published.next.publication.intro"/></#assign>
-                                    <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
-                                    <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
-                                    <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
-                                    <#assign pubRepTitle><@s.text name="manage.overview.published.report"/></#assign>
-                                    <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
-                                    <#assign showTitle><@s.text name="basic.show"/></#assign>
-                                    <#assign viewTitle><@s.text name='button.view'/></#assign>
-                                    <#assign previewTitle><@s.text name='button.preview'/></#assign>
-                                    <#assign emptyCell="-"/>
-                                    <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
-                                    <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
+                            <div class="details mt-3">
+                                <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
+                                <#assign nextPublishedTitle><@s.text name="manage.overview.published.next.publication.intro"/></#assign>
+                                <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
+                                <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
+                                <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
+                                <#assign pubRepTitle><@s.text name="manage.overview.published.report"/></#assign>
+                                <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
+                                <#assign showTitle><@s.text name="basic.show"/></#assign>
+                                <#assign viewTitle><@s.text name='button.view'/></#assign>
+                                <#assign previewTitle><@s.text name='button.preview'/></#assign>
+                                <#assign emptyCell="-"/>
+                                <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
+                                <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
 
-                                    <div class="row g-3">
-                                        <#if resource.lastPublished??>
-                                            <div class="col-sm-6" style="height: 100%">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between">
-                                                        <div class="my-auto text-smaller">
-                                                            <strong>v${resource.emlVersion.toPlainString()}</strong>
-                                                            (${lastPublishedTitle})
-                                                        </div>
-                                                        <div>
-                                                            <a class="icon-button icon-button-sm" type="button"
-                                                               href="${baseURL}/resource?r=${resource.shortname}">
-                                                                <svg class="icon-button-svg icon-material-eye mb-1"
-                                                                     focusable="false" aria-hidden="true"
-                                                                     viewBox="0 0 24 24">
-                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="table-responsive text-smaller">
-                                                            <table class="table table-sm table-borderless mb-0">
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${visibilityTitle?cap_first}</strong></td>
-                                                                    <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
-                                                                    <td class="text-end"><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${lastPublishedVersionStatus}">${lastPublishedVersionStatus?cap_first}</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${licenseTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">
-                                                                        <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>DOI</strong></td>
-                                                                    <td class="text-end">
-                                                                        <#if resource.isAlreadyAssignedDoi()>
-                                                                            ${resource.versionHistory[0].doi!}
-                                                                        <#else>
-                                                                            ${emptyCell}
-                                                                        </#if>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${releasedTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">
-                                                                        ${resource.lastPublished?datetime?string["dd.MM.yyyy HH:mm"]}
-                                                                    </td>
-                                                                </tr>
-                                                                <#if (resource.coreType)! != "metadata">
-                                                                    <tr>
-                                                                        <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
-                                                                        <td class="text-end">
-                                                                            <a target="_blank"
-                                                                               href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                                                ${downloadTitle?cap_first}
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
-                                                                        <td class="text-end">
-                                                                            <#if report??>
-                                                                                <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
-                                                                            <#else>
-                                                                                ${emptyCell}
-                                                                            </#if>
-                                                                        </td>
-                                                                    </tr>
-                                                                </#if>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </#if>
+                                <div class="row g-2">
+                                    <#if resource.lastPublished??>
+                                        <div class="col-xl-6" style="height: 100%">
+                                            <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
 
-                                        <div class="col-sm-6" style="height: 100%">
-                                            <div class="card">
-                                                <div class="card-header d-flex justify-content-between">
-                                                    <div class="my-auto text-smaller">
-                                                        <span>
-                                                            <strong>v${resource.getNextVersion().toPlainString()}</strong> (${nextPublishedTitle})
-                                                        </span>
-                                                    </div>
-
-                                                    <#if !missingMetadata>
-                                                        <div>
-                                                            <a class="ms-auto icon-button icon-button-sm" type="button"
-                                                               href="${baseURL}/resource/preview?r=${resource.shortname}">
-                                                                <svg class="icon-button-svg icon-material-eye mb-1"
-                                                                     focusable="false" aria-hidden="true"
-                                                                     viewBox="0 0 24 24">
-                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
+                                            <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
+                                                <div class="ps-2">
+                                                    <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong></span><br>
+                                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-current">${lastPublishedTitle?cap_first}</span>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span>
+                                                    <#if resource.isAlreadyAssignedDoi()>
+                                                        <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
                                                     </#if>
+                                                    <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${lastPublishedVersionStatus}">${lastPublishedVersionStatus?cap_first}</span><br>
+                                                    <small>
+                                                        ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
+                                                    </small>
                                                 </div>
-                                                <div class="card-body">
-                                                    <div class="table-responsive text-smaller">
-                                                        <table class="table table-sm table-borderless mb-0">
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="col-6"><strong>${visibilityTitle?cap_first}</strong></td>
-                                                                <td class="text-end"><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${resource.status?lower_case}">${resource.status?lower_case?cap_first}</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="col-6"><strong>${licenseTitle?cap_first}</strong></td>
-                                                                <td class="text-end">
-                                                                    <@shortLicense resource.getEml().parseLicenseUrl()/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="col-6">
-                                                                    <strong>DOI</strong>
-                                                                    <#if !organisationWithPrimaryDoiAccount??>
-                                                                        <a tabindex="0" role="button"
-                                                                           class="popover-link"
-                                                                           data-bs-toggle="popover"
-                                                                           data-bs-trigger="focus"
-                                                                           data-bs-html="true"
-                                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
-                                                                            <i class="bi bi-info-circle text-warning"></i>
-                                                                        </a>
-                                                                    <#elseif !currentUser.hasRegistrationRights()>
-                                                                        <a tabindex="0" role="button"
-                                                                           class="popover-link"
-                                                                           data-bs-toggle="popover"
-                                                                           data-bs-trigger="focus"
-                                                                           data-bs-html="true"
-                                                                           data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>">
-                                                                            <i class="bi bi-info-circle text-warning"></i>
-                                                                        </a>
-                                                                    <#elseif resource.identifierStatus == "UNRESERVED">
-                                                                        <a tabindex="0" role="button"
-                                                                           class="popover-link"
-                                                                           data-bs-trigger="focus"
-                                                                           data-bs-toggle="popover"
-                                                                           data-bs-placement="top"
-                                                                           data-bs-html="true"
-                                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
-                                                                            <i class="bi bi-info-circle text-gbif-primary"></i>
-                                                                        </a>
-                                                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                                                                        <a tabindex="0" role="button"
-                                                                           class="popover-link"
-                                                                           data-bs-trigger="focus"
-                                                                           data-bs-toggle="popover"
-                                                                           data-bs-placement="top"
-                                                                           data-bs-html="true"
-                                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
-                                                                            <i class="bi bi-info-circle text-gbif-danger"></i>
-                                                                        </a>
-                                                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-                                                                        <a tabindex="0" role="button"
-                                                                           class="popover-link"
-                                                                           data-bs-trigger="focus"
-                                                                           data-bs-toggle="popover"
-                                                                           data-bs-placement="top"
-                                                                           data-bs-html="true"
-                                                                           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
-                                                                            <i class="bi bi-info-circle text-gbif-primary"></i>
-                                                                        </a>
-                                                                    </#if>
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
-                                                                        <em>${resource.doi!emptyCell}</em>&nbsp;
-                                                                    </#if>
-                                                                    <@nextDoiButtonTD/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="col-6"><strong>${releasedTitle?cap_first}</strong></td>
-                                                                <td class="text-end">
-                                                                    <#if resource.nextPublished??>
-                                                                        ${resource.nextPublished?datetime?string["dd.MM.yyyy HH:mm"]}
-                                                                    <#else>
-                                                                        ${emptyCell}
-                                                                    </#if>
-                                                                </td>
-                                                            </tr>
+
+                                                <div class="d-flex justify-content-end my-auto version-item-actions">
+                                                    <div class="dropdown">
+                                                        <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-current">
+                                                            <li>
+                                                                <a class="dropdown-item action-link" type="button" href="${baseURL}/resource?r=${resource.shortname}">
+                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                    </svg>
+                                                                    <@s.text name="button.view"/>
+                                                                </a>
+                                                            </li>
+
                                                             <#if (resource.coreType)! != "metadata">
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${pubLogTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">${emptyCell}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-6"><strong>${pubRepTitle?cap_first}</strong></td>
-                                                                    <td class="text-end">${emptyCell}</td>
-                                                                </tr>
+                                                                <li>
+                                                                    <a class="dropdown-item action-link" type="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                            <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-2-7H7v-2h10v2zm-4 4H7v-2h6v2z"></path>
+                                                                        </svg>
+                                                                        ${pubLogTitle?cap_first}
+                                                                    </a>
+                                                                </li>
+
+
+                                                                <#if report??>
+                                                                    <li>
+                                                                        <a id="toggleReport" class="delete-source source-item-action dropdown-item action-link" type="button" href="#anchor-publish">
+                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                                <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-5.5-6c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM12 9c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4zm0 6.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                                                                            </svg>
+                                                                            ${pubRepTitle?cap_first}
+                                                                        </a>
+                                                                    </li>
+                                                                </#if>
                                                             </#if>
-                                                            </tbody>
-                                                        </table>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </#if>
 
-                                    <div class="mt-2">
-                                        <#if report??>
-                                            <table>
-                                                <tr id="dwcaReport" style="display: none;">
-                                                    <td colspan="2">
-                                                        <div class="report text-smaller">
-                                                            <ul class="simple list-unstyled">
-                                                                <#list report.messages as msg>
-                                                                    <li class="${msg.level}"><span
-                                                                                class="small">${msg.date?time?string}</span> ${msg.message}
-                                                                    </li>
+                                    <div class="col-xl-6" style="height: 100%">
+                                        <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
+                                            <div class="ps-2">
+                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span><br>
+                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-pending">${nextPublishedTitle?cap_first}</span>
+                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense resource.getEml().parseLicenseUrl()/></span>
+                                                <#if resource.isAlreadyAssignedDoi()>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
+                                                </#if>
+                                                <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${resource.status?lower_case}">${resource.status?lower_case?cap_first}</span><br>
+                                                <small>
+                                                    <#if resource.nextPublished??>
+                                                        ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
+                                                    <#else>
+                                                        No next publication date set
+                                                    </#if>
+                                                </small>
+                                            </div>
+
+                                            <div class="d-flex justify-content-end my-auto version-item-actions">
+                                                <div class="dropdown">
+                                                    <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-pending" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-pending">
+                                                        <#if !missingMetadata>
+                                                            <li>
+                                                                <a class="dropdown-item action-link" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                    </svg>
+                                                                    <@s.text name="button.preview"/>
+                                                                </a>
+                                                            </li>
+                                                        </#if>
+                                                        <li>
+                                                            <a id="reserve-doi" class="dropdown-item action-link" type="button" href="#">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M8 11h8v2H8zm12.1 1H22c0-2.76-2.24-5-5-5h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1zM3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM19 12h-2v3h-3v2h3v3h2v-3h3v-2h-3z"></path>
+                                                                </svg>
+                                                                <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED">
+                                                                    <@s.text name="button.reserve"/> DOI
+                                                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                                                                    <@s.text name="button.delete"/> DOI
+                                                                <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
+                                                                    <@s.text name="button.reserve.new"/> DOI
+                                                                <#else>
+                                                                    <@s.text name="button.reserve"/> DOI
+                                                                </#if>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2">
+                                    <#if report??>
+                                        <table>
+                                            <tr id="dwcaReport" style="display: none;">
+                                                <td colspan="2">
+                                                    <div class="report text-smaller">
+                                                        <ul class="simple list-unstyled">
+                                                            <#list report.messages as msg>
+                                                                <li class="${msg.level}"><span
+                                                                            class="small">${msg.date?time?string}</span> ${msg.message}
+                                                                </li>
+                                                            </#list>
+                                                        </ul>
+                                                        <#if cfg.debug() && report.hasException()>
+                                                            <br/>
+                                                            <ul class="simple">
+                                                                <li>
+                                                                    <strong>Exception</strong> ${report.exceptionMessage!}
+                                                                </li>
+                                                                <#list report.exceptionStacktrace as msg>
+                                                                    <li>${msg}</li>
                                                                 </#list>
                                                             </ul>
-                                                            <#if cfg.debug() && report.hasException()>
-                                                                <br/>
-                                                                <ul class="simple">
-                                                                    <li>
-                                                                        <strong>Exception</strong> ${report.exceptionMessage!}
-                                                                    </li>
-                                                                    <#list report.exceptionStacktrace as msg>
-                                                                        <li>${msg}</li>
-                                                                    </#list>
-                                                                </ul>
-                                                            </#if>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </#if>
-                                    </div>
+                                                        </#if>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </#if>
                                 </div>
                             </div>
                         </div>
@@ -982,38 +910,36 @@
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col-12">
-                                <div>
-                                    <p>
-                                        <#if resource.usesAutoPublishing()>
-                                            <@s.text name="manage.overview.autopublish.intro.activated"/>
-                                        <#else>
-                                            <@s.text name="manage.overview.autopublish.intro.deactivated"/>
-                                        </#if>
-                                    </p>
+                            <p class="mb-0">
+                                <#if resource.usesAutoPublishing()>
+                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                <#else>
+                                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
+                                </#if>
+                            </p>
 
-                                    <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                        <div class="callout callout-warning text-smaller">
-                                            <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                        </div>
-                                    </#if>
-
-                                    <#if resource.usesAutoPublishing()>
-                                        <div class="details table-responsive mt-3">
-                                            <table class="table table-sm table-borderless text-smaller">
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
-                                                    <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
-                                                    <td>${resource.nextPublished?datetime?string.long_short}</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </#if>
+                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
                                 </div>
-                            </div>
+                            </#if>
+
+                            <#if resource.usesAutoPublishing()>
+                                <div class="details mt-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless text-smaller mb-0">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
+                                                <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
+                                                <td>${resource.nextPublished?datetime?string.long_short}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </#if>
                         </div>
                     </div>
 
@@ -1062,41 +988,35 @@
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col-12">
-                                <div>
-                                    <div class="bodyOverview">
-                                        <p>
-                                            <#if resource.status=="PRIVATE">
-                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
-                                                    <@s.text name="resource.status.private"/>
-                                                </span>
-                                                <#if resource.makePublicDate?has_content>
-                                                    <@s.text name="manage.resource.status.intro.private.public.scheduled">
-                                                        <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
-                                                    </@s.text>
-                                                <#else>
-                                                    <@s.text name="manage.resource.status.intro.private"/>
-                                                </#if>
-                                            <#elseif resource.status=="PUBLIC">
-                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
-                                                    <@s.text name="resource.status.public"/>
-                                                </span>
-                                                <@s.text name="manage.resource.status.intro.public"/>
-                                            <#elseif resource.status=="REGISTERED">
-                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
-                                                    <@s.text name="resource.status.registered"/>
-                                                </span>
-                                                <@s.text name="manage.resource.status.intro.registered"/>
-                                            <#elseif resource.status=="DELETED">
-                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
-                                                    <@s.text name="resource.status.deleted"/>
-                                                </span>
-                                                <@s.text name="manage.resource.status.intro.deleted"/>
-                                            </#if>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <p class="mb-0">
+                                <#if resource.status=="PRIVATE">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
+                                        <@s.text name="resource.status.private"/>
+                                    </span>
+                                    <#if resource.makePublicDate?has_content>
+                                        <@s.text name="manage.resource.status.intro.private.public.scheduled">
+                                            <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
+                                        </@s.text>
+                                    <#else>
+                                        <@s.text name="manage.resource.status.intro.private"/>
+                                    </#if>
+                                <#elseif resource.status=="PUBLIC">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
+                                        <@s.text name="resource.status.public"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.public"/>
+                                <#elseif resource.status=="REGISTERED">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
+                                        <@s.text name="resource.status.registered"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.registered"/>
+                                <#elseif resource.status=="DELETED">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
+                                        <@s.text name="resource.status.deleted"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.deleted"/>
+                                </#if>
+                            </p>
                         </div>
                     </div>
 
@@ -1151,95 +1071,91 @@
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col-12">
-                                <div>
-                                    <div class="bodyOverview">
-                                        <p>
-                                            <@s.text name="manage.overview.registration.intro"/>
-                                        </p>
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.registration.intro"/>
+                            </p>
 
-                                        <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                                            <div class="callout callout-warning text-smaller">
-                                                <@s.text name="manage.overview.published.testmode.warning"/>
-                                            </div>
-                                        </#if>
+                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.published.testmode.warning"/>
+                                </div>
+                            </#if>
 
-                                        <#if resource.status=="REGISTERED" && resource.key??>
-                                            <div class="details table-responsive">
-                                                <table class="table table-sm table-borderless text-smaller">
-                                                    <tr>
-                                                        <th class="col-4">GBIF UUID</th>
-                                                        <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
-                                                        </td>
-                                                    </tr>
-                                                    <#if resource.organisation??>
-                                                    <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
-                                                        <tr>
-                                                            <th><@s.text name="manage.overview.visibility.organisation"/></th>
-                                                            <td><a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
-                                                            <td>
-                                                                <#-- Check if name or email missing -->
-                                                                <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
-                                                                    ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
-                                                                <#elseif resource.organisation.primaryContactName??>
-                                                                    ${resource.organisation.primaryContactName!}
-                                                                <#elseif resource.organisation.primaryContactEmail??>
-                                                                    ${resource.organisation.primaryContactEmail!}
-                                                                <#else>
-                                                                    -
-                                                                </#if>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>
-                                                            <td><a href="${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}" target="_blank">${resource.organisation.nodeName!}</a></td>
-                                                        </tr>
+                            <#if resource.status=="REGISTERED" && resource.key??>
+                                <div class="details mt-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless text-smaller mb-0">
+                                        <tr>
+                                            <th class="col-4">GBIF UUID</th>
+                                            <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
+                                            </td>
+                                        </tr>
+                                        <#if resource.organisation??>
+                                        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
+                                            <tr>
+                                                <th><@s.text name="manage.overview.visibility.organisation"/></th>
+                                                <td><a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
+                                                <td>
+                                                    <#-- Check if name or email missing -->
+                                                    <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
+                                                    <#elseif resource.organisation.primaryContactName??>
+                                                        ${resource.organisation.primaryContactName!}
+                                                    <#elseif resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactEmail!}
+                                                    <#else>
+                                                        -
                                                     </#if>
-                                                </table>
-                                            </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>
+                                                <td><a href="${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}" target="_blank">${resource.organisation.nodeName!}</a></td>
+                                            </tr>
                                         </#if>
-
-                                        <#if resource.status=="PRIVATE">
-                                            <!-- Show warning: resource must be public -->
-                                            <div class="callout callout-warning text-smaller">
-                                                <@s.text name="manage.overview.registration.private" />
-                                            </div>
-                                        </#if>
-
-                                        <#if resource.status=="PUBLIC">
-                                            <#if !currentUser.hasRegistrationRights()>
-                                                <!-- Show warning: user must have registration rights -->
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                                </div>
-                                            <#elseif missingValidPublishingOrganisation?string == "true">
-                                                <!-- Show warning: user must assign valid publishing organisation -->
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.visibility.missing.organisation"/>
-                                                </div>
-                                            <#elseif missingRegistrationMetadata?string == "true">
-                                                <!-- Show warning: user must fill in minimum registration metadata -->
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.visibility.missing.metadata" />
-                                                </div>
-                                            <#elseif !resource.isLastPublishedVersionPublic()>
-                                                <!-- Show warning: last published version must be publicly available to register -->
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                                                </div>
-                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                                <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <div class="callout callout-warning text-smaller">
-                                                    <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                                                </div>
-                                            </#if>
-                                        </#if>
+                                    </table>
                                     </div>
                                 </div>
-                            </div>
+                            </#if>
+
+                            <#if resource.status=="PRIVATE">
+                                <!-- Show warning: resource must be public -->
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.registration.private" />
+                                </div>
+                            </#if>
+
+                            <#if resource.status=="PUBLIC">
+                                <#if !currentUser.hasRegistrationRights()>
+                                    <!-- Show warning: user must have registration rights -->
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                                    </div>
+                                <#elseif missingValidPublishingOrganisation?string == "true">
+                                    <!-- Show warning: user must assign valid publishing organisation -->
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.visibility.missing.organisation"/>
+                                    </div>
+                                <#elseif missingRegistrationMetadata?string == "true">
+                                    <!-- Show warning: user must fill in minimum registration metadata -->
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.visibility.missing.metadata" />
+                                    </div>
+                                <#elseif !resource.isLastPublishedVersionPublic()>
+                                    <!-- Show warning: last published version must be publicly available to register -->
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
+                                    </div>
+                                <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                    <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
+                                    </div>
+                                </#if>
+                            </#if>
                         </div>
                     </div>
 
@@ -1612,6 +1528,44 @@
                                 <@s.submit id="add-manager" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
                         </div>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reserve-doi-modal" class="modal fade" tabindex="-1" aria-labelledby="reserve-doi-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="reserve-doi-modal-title">DOI</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <#if !organisationWithPrimaryDoiAccount??>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
+                        </div>
+                    <#elseif !currentUser.hasRegistrationRights()>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        </div>
+                    <#elseif resource.identifierStatus == "UNRESERVED">
+                        <div class="callout callout-primary text-smaller">
+                            <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
+                        </div>
+                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                        <div class="callout callout-danger text-smaller">
+                            <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
+                        </div>
+                        <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
+                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
+                        <div class="callout callout-info text-smaller">
+                            <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
+                        </div>
+                    </#if>
+                    <#if organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
+                        <@nextDoiButtonTD/>
                     </#if>
                 </div>
             </div>
