@@ -802,7 +802,7 @@
                                                     <#if resource.nextPublished??>
                                                         ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                     <#else>
-                                                        No next publication date set
+                                                        <@s.text name="manage.overview.published.date.not.set"/>
                                                     </#if>
                                                 </small>
                                             </div>
@@ -909,11 +909,17 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
+                        <div class="mt-4">
                             <p class="mb-0">
                                 <#if resource.usesAutoPublishing()>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                                    </span>
                                     <@s.text name="manage.overview.autopublish.intro.activated"/>
                                 <#else>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
+                                        <@s.text name="manage.overview.autopublish.disabled"/>
+                                    </span>
                                     <@s.text name="manage.overview.autopublish.intro.deactivated"/>
                                 </#if>
                             </p>
@@ -921,23 +927,6 @@
                             <#if resource.isDeprecatedAutoPublishingConfiguration()>
                                 <div class="callout callout-warning text-smaller">
                                     <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                </div>
-                            </#if>
-
-                            <#if resource.usesAutoPublishing()>
-                                <div class="details mt-3">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-borderless text-smaller mb-0">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
-                                                <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
-                                                <td>${resource.nextPublished?datetime?string.long_short}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
                                 </div>
                             </#if>
                         </div>
@@ -987,7 +976,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
+                        <div class="mt-4">
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
                                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
@@ -1083,40 +1072,20 @@
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details mt-3">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-borderless text-smaller mb-0">
-                                        <tr>
-                                            <th class="col-4">GBIF UUID</th>
-                                            <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
-                                            </td>
-                                        </tr>
-                                        <#if resource.organisation??>
-                                        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
-                                            <tr>
-                                                <th><@s.text name="manage.overview.visibility.organisation"/></th>
-                                                <td><a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
-                                                <td>
-                                                    <#-- Check if name or email missing -->
-                                                    <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
-                                                        ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
-                                                    <#elseif resource.organisation.primaryContactName??>
-                                                        ${resource.organisation.primaryContactName!}
-                                                    <#elseif resource.organisation.primaryContactEmail??>
-                                                        ${resource.organisation.primaryContactEmail!}
-                                                    <#else>
-                                                        -
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <div class="registration-item border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
+                                                <div class="ps-2">
+                                                    <strong class="overview-registered-title">${resource.title!resource.shortname}</strong>
+                                                    <br>
+                                                    <small>${resource.key}</small>
+                                                    <#if resource.organisation??>
+                                                        |
+                                                        <small>${resource.organisation.name!"Organisation"}</small>
                                                     </#if>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>
-                                                <td><a href="${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}" target="_blank">${resource.organisation.nodeName!}</a></td>
-                                            </tr>
-                                        </#if>
-                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </#if>
@@ -1181,53 +1150,66 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div>
-                                    <p>
-                                        <@s.text name="manage.overview.networks.intro"/>
-                                    </p>
+                        <div class="mt-4">
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.networks.intro"/>
+                            </p>
 
-                                    <#if resource.key?has_content>
-                                        <#if (resourceNetworks?size>0)>
+                            <#if resource.key?has_content>
+                                <div class="details mt-3">
+                                    <#if (resourceNetworks?size>0)>
+                                        <div class="row g-2">
                                             <#list resourceNetworks as n>
-                                                <div class="row border rounded-2 mx-1 my-2 p-1 py-2 network-item text-smaller">
-                                                    <div class="col-10 my-auto">
-                                                        <strong>${n.title!""}</strong><br>
-                                                        <small>${(n.key)!}</small>
-                                                    </div>
-                                                    <div class="col-2 my-auto d-flex justify-content-end py-0">
-                                                        <a class="icon-button icon-button-sm icon-material-eye"
-                                                           type="button" target="_blank"
-                                                           href="https://www.gbif-uat.org/network/${n.key!}">
-                                                            <svg class="icon-button-svg" focusable="false"
-                                                                 aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                            </svg>
-                                                        </a>
-                                                        <a class="icon-button icon-button-sm icon-material-delete"
-                                                           type="button"
-                                                           href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
-                                                            <svg class="icon-button-svg" focusable="false"
-                                                                 aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </a>
+                                                <div class="col-xl-6">
+                                                    <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller">
+                                                        <div class="my-auto">
+                                                            <strong>${n.title!""}</strong><br>
+                                                            <small>${(n.key)!}</small>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-end my-auto network-item-actions">
+                                                            <div class="dropdown">
+                                                                <a class="icon-button icon-material-actions network-item-action" type="button" href="#" id="dropdown-network-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                                    </svg>
+                                                                </a>
+
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdown-network-item-actions-current">
+                                                                    <li>
+                                                                        <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/network/${n.key!}">
+                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                            </svg>
+                                                                            <@s.text name="manage.overview.networks.view.gbif"/>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                            <@s.text name="button.delete"/>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </#list>
-                                        <#else>
-                                            <p>
-                                                <@s.text name="manage.overview.networks.no.data"/>
-                                            </p>
-                                        </#if>
-                                    <#else>
-                                        <div class="callout callout-warning text-smaller">
-                                            <@s.text name="manage.overview.networks.not.registered"/>
                                         </div>
+                                    <#else>
+                                        <p class="mb-0">
+                                            <@s.text name="manage.overview.networks.no.data"/>
+                                        </p>
                                     </#if>
                                 </div>
-                            </div>
+                            <#else>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.networks.not.registered"/>
+                                </div>
+                            </#if>
                         </div>
                     </div>
 
@@ -1253,38 +1235,53 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div>
-                                    <p>
-                                        <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
-                                    </p>
+                        <div class="mt-4">
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
+                            </p>
 
-                                    <div class="row border rounded-2 mx-1 my-2 p-1 py-2 manager-item text-smaller">
-                                        <div class="col-10 my-auto">
-                                            <strong>${resource.creator.name!}</strong><br>
-                                            <small><@s.text name="manage.overview.resource.managers.creator"/>
-                                                | ${resource.creator.email}</small>
+                            <div class="details mt-3">
+                                <div class="row g-2">
+                                    <div class="col-xl-6">
+                                        <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                            <div class="my-auto ps-2">
+                                                <strong>${resource.creator.name!}</strong><br>
+                                                <small><@s.text name="manage.overview.resource.managers.creator"/>
+                                                    | ${resource.creator.email}</small>
+                                            </div>
+                                            <div class="d-flex justify-content-end my-auto manager-item-actions"></div>
                                         </div>
-                                        <div class="col-2 my-auto"></div>
                                     </div>
+
                                     <#if (resource.managers?size>0)>
                                         <#list resource.managers as u>
-                                            <div class="row border rounded-2 mx-1 my-2 p-1 py-2 manager-item text-smaller">
-                                                <div class="col-10 my-auto">
-                                                    <strong>${u.name}</strong><br>
-                                                    <small><@s.text name="manage.overview.resource.managers.manager"/>
-                                                        | ${u.email}</small>
-                                                </div>
-                                                <div class="col-2 my-auto d-flex justify-content-end p-0">
-                                                    <a class="icon-button icon-button-sm icon-material-delete"
-                                                       type="button"
-                                                       href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
-                                                        <svg class="icon-button-svg" focusable="false"
-                                                             aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </a>
+                                            <div class="col-xl-6">
+                                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                                    <div class="my-auto ps-2">
+                                                        <strong>${u.name}</strong><br>
+                                                        <small><@s.text name="manage.overview.resource.managers.manager"/>
+                                                            | ${u.email}</small>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end my-auto manager-item-actions">
+                                                        <div class="dropdown">
+                                                            <a class="icon-button icon-material-actions manager-item-action" type="button" href="#" id="dropdown-manager-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                                </svg>
+                                                            </a>
+
+                                                            <ul class="dropdown-menu" aria-labelledby="dropdown-manager-item-actions-current">
+                                                                <li>
+                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                        <@s.text name="button.delete"/>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </#list>

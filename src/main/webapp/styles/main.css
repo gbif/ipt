@@ -466,7 +466,7 @@ header, .dropdown-menu {
 /* Logo, header, menu etc. END */
 
 /* Overview */
-.source-item:hover, .mapping-item:hover, .network-item:hover, .manager-item:hover {
+.source-item:hover, .mapping-item:hover, .network-item:hover, .manager-item:hover, .version-item:hover, .registration-item:hover {
     background-color: rgba(0, 0, 0, 0.04);
     cursor: pointer;
 }
@@ -895,7 +895,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     vertical-align: -0.125em !important;
 }
 
-.overview-version-title {
+.overview-version-title, .overview-registered-title {
     font-size: 1rem !important;
 }
 
@@ -973,6 +973,14 @@ div.dataTables_processing>div:last-child>div {
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0.2rem;
     background: transparent;
+}
+
+.autopublish-enabled {
+    background: #cbe5be !important;
+}
+
+.autopublish-disabled {
+    background: #fff1a6 !important;
 }
 
 .metadata-incomplete {
