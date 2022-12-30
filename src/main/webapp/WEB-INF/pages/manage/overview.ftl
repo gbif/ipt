@@ -183,20 +183,6 @@
             $("#eml-validate").hide();
         });
 
-        $("#edit-metadata-radio").change(function () {
-            if($('#edit-metadata-radio').is(':checked')) {
-                $('#upload-metadata-form').hide();
-                $('#edit-metadata-form').show();
-            }
-        });
-
-        $("#upload-metadata-radio").change(function () {
-            if($('#upload-metadata-radio').is(':checked')) {
-                $('#edit-metadata-form').hide();
-                $('#upload-metadata-form').show();
-            }
-        });
-
         $("#sourceType").change(function (e) {
             var sourceType = this.options[e.target.selectedIndex].value;
 
@@ -429,7 +415,7 @@
             dialogWindow.modal('show');
         }
 
-        $("#edit-metadata-button").on('click', function () {
+        $("#upload-metadata-button").on('click', function () {
             showMetadataModal();
         });
 
@@ -1424,6 +1410,10 @@
                                 </select>
                                 <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add"/>
                             </form>
+                        <#else>
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+                            </div>
                         </#if>
                     </div>
                 </div>
@@ -1431,27 +1421,16 @@
         </div>
     </div>
 
-    <div id="metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.metadata"/></h5>
+                    <h5 class="modal-title w-100" id="metadata-modal-title"><@s.text name="manage.overview.metadata"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <div class="mb-3">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="metadata-radio" id="edit-metadata-radio" value="edit" checked>
-                                <label class="form-check-label" for="edit-metadata-radio"><@s.text name="button.edit"/></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="metadata-radio" id="upload-metadata-radio" value="upload">
-                                <label class="form-check-label" for="upload-metadata-radio"><@s.text name="button.upload"/></label>
-                            </div>
-                        </div>
-
-                        <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data" style="display: none;">
+                        <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <div class="row">
                                 <div class="col-12">
@@ -1465,11 +1444,6 @@
                                     <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
                                 </div>
                             </div>
-                        </form>
-
-                        <form id="edit-metadata-form" action='metadata-basic.do' method='get' class="my-1">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <@s.submit cssClass="btn btn-outline-gbif-primary" name="edit" key="button.edit"/>
                         </form>
                     </div>
                 </div>

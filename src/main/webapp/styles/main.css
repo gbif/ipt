@@ -872,13 +872,13 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* Overview buttons */
 .overview-action-button {
-    color: rgb(var(--color-gbif-primary));
+    font-size: 1.25rem !important;
 }
 
 .overview-action-button-icon {
-    fill: rgb(var(--color-gbif-primary)) !important;
     height: 1em;
     vertical-align: -0.125em !important;
+    fill: #4e565f;
 }
 
 .overview-action-button:hover {

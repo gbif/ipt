@@ -4,9 +4,9 @@
 <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
 <div class="py-5 border-bottom section" id="sources">
     <div class="titleOverview">
-        <div class="row">
-            <div class="col-9">
-                <h5 class="mb-0 text-gbif-header-2 fw-400">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <h5 class="my-auto text-gbif-header-2 fw-400">
                     <#assign sourcesInfo>
                         <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
                     </#assign>
@@ -16,13 +16,25 @@
                 </h5>
             </div>
 
-            <div class="col-3 d-flex justify-content-end">
-                <button id="add-source-button" class="btn btn-sm overview-action-button">
-                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                    </svg>
-                    <@s.text name='button.add'/>
-                </button>
+            <div class="d-flex justify-content-end">
+                <div class="dropdown">
+                    <a class="icon-button icon-material-actions overview-action-button source-action" type="button" href="#" id="dropdown-source-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                        </svg>
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-source-actions">
+                        <li>
+                            <a id="add-source-button" class="dropdown-item action-link" type="button" href="#">
+                                <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                </svg>
+                                <@s.text name="button.add"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -161,9 +173,9 @@
 
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
-    <div class="row">
-        <div class="col-9">
-            <h5 class="mb-0 text-gbif-header-2 fw-400">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            <h5 class="my-auto text-gbif-header-2 fw-400">
                 <#assign mappingsInfo>
                     <@s.text name='manage.overview.DwC.Mappings.coretype.description1'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/><br><br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
                 </#assign>
@@ -173,13 +185,25 @@
             </h5>
         </div>
 
-        <div class="col-3 d-flex justify-content-end">
-            <button id="add-mapping-button" class="btn btn-sm overview-action-button">
-                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                </svg>
-                <@s.text name='button.add'/>
-            </button>
+        <div class="d-flex justify-content-end">
+            <div class="dropdown">
+                <a class="icon-button icon-material-actions overview-action-button mapping-action" type="button" href="#" id="dropdown-mapping-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                    </svg>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-actions">
+                    <li>
+                        <a id="add-mapping-button" class="dropdown-item action-link" type="button" href="#">
+                            <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                            </svg>
+                            <@s.text name="button.add"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -199,12 +223,6 @@
         <p class="mb-0">
             <@s.text name='manage.overview.DwC.Mappings.description'/>
         </p>
-
-        <#if !(potentialCores?size>0)>
-            <div class="callout callout-warning text-smaller">
-                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-            </div>
-        </#if>
 
         <#if resource.coreRowType?has_content>
             <div class="details mt-3">
