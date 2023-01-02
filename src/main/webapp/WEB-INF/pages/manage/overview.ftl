@@ -424,6 +424,22 @@
             $('#metadata-modal').modal('hide');
         });
 
+        function showPublicationModal() {
+            var dialogWindow = $("#publication-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#publish-button-show-warning").on('click', function () {
+            showPublicationModal();
+        });
+
+        function showRegistrationModal() {
+            var dialogWindow = $("#registration-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#show-registration-disabled-modal").on('click', showRegistrationModal);
+
         function showAddNetworkModal() {
             var dialogWindow = $("#networks-modal");
             dialogWindow.modal('show');
@@ -602,9 +618,9 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
-                        <div class="row">
-                            <div class="col-8">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -633,64 +649,6 @@
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
                             </p>
-
-                            <!-- resources cannot be published if the mandatory metadata is missing -->
-                            <#if missingMetadata>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.published.missing.metadata"/>
-                                </div>
-
-                                <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-                            <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                                </div>
-
-                                <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
-                            <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
-                            || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
-                            || resource.status == "REGISTERED">
-                                <!-- the user must have registration rights -->
-                                <#if !currentUser.hasRegistrationRights()>
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.resource.status.publication.forbidden"/>
-                                        &nbsp;<@s.text name="manage.resource.role.change"/>
-                                    </div>
-
-                                    <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
-                                <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
-                                || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
-                                && !organisationWithPrimaryDoiAccount??>
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                                    </div>
-
-                                    <!-- when a DOI is reserved.. -->
-                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                                    <!-- and the resource has no existing DOI and its status is private..  -->
-                                    <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
-                                        <!-- and the resource has never been published before, the first publication is a new major version -->
-                                        <#if !resource.lastPublished??>
-                                            <div class="callout callout-warning text-smaller">
-                                                <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                            </div>
-
-                                            <!-- and the resource has been published before, the next publication is a new minor version -->
-                                        <#else>
-                                            <div class="callout callout-warning text-smaller">
-                                                <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                            </div>
-                                        </#if>
-
-                                        <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
-                                    <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                                        <div class="callout callout-info text-smaller">
-                                            <@s.text name="manage.overview.publishing.doi.register.help"/>
-                                        </div>
-
-                                    </#if>
-                                </#if>
-                            </#if>
 
                             <div class="details mt-3">
                                 <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
@@ -872,25 +830,32 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
                     <div class="py-5 border-bottom section" id="autopublish">
-                        <div class="row">
-                            <div class="col-9">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                                     <@s.text name="manage.overview.autopublish.title"/>
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
-                                <div>
-                                    <form action='auto-publish.do' method='get'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <button class="btn btn-sm overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.edit'/>
-                                        </button>
-                                    </form>
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown">
+                                    <a class="icon-button icon-material-actions overview-action-button autopublish-action" type="button" href="#" id="dropdown-autopublish-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </a>
+
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-autopublish-actions">
+                                        <li>
+                                            <a id="edit-autopublish-button" class="dropdown-item action-link" type="button" href="auto-publish.do?r=${resource.shortname}">
+                                                <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                </svg>
+                                                <@s.text name="button.edit"/>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -920,9 +885,9 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
-                        <div class="row">
-                            <div class="col-8">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <#assign visibilityTitleInfo>
                                         <@s.text name='manage.overview.visibility.description'/>
                                     </#assign>
@@ -932,33 +897,47 @@
                                 </h5>
                             </div>
 
-                            <div class="col-4 d-flex justify-content-end">
-                                <#if resource.status=="PRIVATE">
-                                    <#assign actionMethod>makePublic</#assign>
-                                    <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <button id="makePublic" class="btn btn-sm overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                </#if>
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown">
+                                    <a class="icon-button icon-material-actions overview-action-button visibility-action" type="button" href="#" id="dropdown-visibility-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </a>
 
-                                <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-                                    <#assign actionMethod>makePrivate</#assign>
-                                    <form action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <input name="unpublish" type="hidden" value="Change"/>
-                                        <button class="confirmMakePrivate btn btn-sm overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                </#if>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-visibility-actions">
+                                        <#if resource.status=="PRIVATE">
+                                            <#assign actionMethod>makePublic</#assign>
+                                            <li>
+                                                <form action='resource-${actionMethod}.do' method='post'>
+                                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                                    <button id="makePublic" class="dropdown-item action-link" type="submit">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.change'/>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </#if>
+
+                                        <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                            <#assign actionMethod>makePrivate</#assign>
+                                            <li>
+                                                <form action='resource-${actionMethod}.do' method='post'>
+                                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                                    <input name="unpublish" type="hidden" value="Change"/>
+                                                    <button class="confirmMakePrivate dropdown-item action-link" type="submit">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.change'/>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </#if>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -998,9 +977,9 @@
                     <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
                     <div class="py-5 border-bottom section" id="registration">
 
-                        <div class="row">
-                            <div class="col-9">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <#assign registrationTitleInfo>
                                         <@s.text name="manage.resource.status.intro.registration"/>
                                         <br><br>
@@ -1014,34 +993,75 @@
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
-                                <#if resource.status=="PUBLIC">
-                                    <#if !currentUser.hasRegistrationRights()>
-                                        <!-- Hide register button and show warning: user must have registration rights -->
-                                        <#assign visibilityConfirmRegistrationWarning>
-                                            <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                        </#assign>
-                                    <#elseif missingValidPublishingOrganisation?string == "true">
-                                        <!-- Hide register button and show warning: user must assign valid publishing organisation -->
-                                    <#elseif missingRegistrationMetadata?string == "true">
-                                        <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
-                                    <#elseif !resource.isLastPublishedVersionPublic()>
-                                        <!-- Hide register button and show warning: last published version must be publicly available to register -->
-                                    <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                        <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                    <#else>
-                                        <form class="me-1 pb-1" action="resource-registerResource.do" method="post">
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <button id="register-resource-button" class="confirmRegistration btn btn-sm overview-action-button" type="submit">
-                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                </svg>
-                                                <@s.text name='button.register'/>
-                                            </button>
-                                        </form>
-                                    </#if>
-                                </#if>
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown">
+                                    <a class="icon-button icon-material-actions overview-action-button registration-action" type="button" href="#" id="dropdown-registration-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </a>
 
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-registration-actions">
+                                        <#if resource.status=="PUBLIC">
+                                            <#if !currentUser.hasRegistrationRights()>
+                                                <!-- Hide register button and show warning: user must have registration rights -->
+                                                <#assign visibilityConfirmRegistrationWarning>
+                                                    <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                                                </#assign>
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            <#elseif missingValidPublishingOrganisation?string == "true">
+                                                <!-- Hide register button and show warning: user must assign valid publishing organisation -->
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            <#elseif missingRegistrationMetadata?string == "true">
+                                                <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            <#elseif !resource.isLastPublishedVersionPublic()>
+                                                <!-- Hide register button and show warning: last published version must be publicly available to register -->
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                                <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            <#else>
+                                                <li>
+                                                    <form action="resource-registerResource.do" method="post">
+                                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                                        <button id="register-resource-button" class="confirmRegistration dropdown-item action-link" type="submit">
+                                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                            </svg>
+                                                            <@s.text name='button.register'/>
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </#if>
+                                        </#if>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -1049,12 +1069,6 @@
                             <p class="mb-0">
                                 <@s.text name="manage.overview.registration.intro"/>
                             </p>
-
-                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.published.testmode.warning"/>
-                                </div>
-                            </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details mt-3">
@@ -1074,42 +1088,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </#if>
-
-                            <#if resource.status=="PRIVATE">
-                                <!-- Show warning: resource must be public -->
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.registration.private" />
-                                </div>
-                            </#if>
-
-                            <#if resource.status=="PUBLIC">
-                                <#if !currentUser.hasRegistrationRights()>
-                                    <!-- Show warning: user must have registration rights -->
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                    </div>
-                                <#elseif missingValidPublishingOrganisation?string == "true">
-                                    <!-- Show warning: user must assign valid publishing organisation -->
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.visibility.missing.organisation"/>
-                                    </div>
-                                <#elseif missingRegistrationMetadata?string == "true">
-                                    <!-- Show warning: user must fill in minimum registration metadata -->
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.visibility.missing.metadata" />
-                                    </div>
-                                <#elseif !resource.isLastPublishedVersionPublic()>
-                                    <!-- Show warning: last published version must be publicly available to register -->
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                                    </div>
-                                <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                    <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                    <div class="callout callout-warning text-smaller">
-                                        <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                                    </div>
-                                </#if>
                             </#if>
                         </div>
                     </div>
@@ -1284,11 +1262,11 @@
         </div>
     </div>
 
-    <div id="make-public-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="make-public-modal" class="modal fade" tabindex="-1" aria-labelledby="make-public-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.visibility.change.public"/></h5>
+                    <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility.change.public"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
@@ -1329,11 +1307,11 @@
         </div>
     </div>
 
-    <div id="source-data-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="source-data-modal" class="modal fade" tabindex="-1" aria-labelledby="source-data-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.source.title"/></h5>
+                    <h5 class="modal-title w-100" id="source-data-modal-title"><@s.text name="manage.source.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
@@ -1378,11 +1356,11 @@
         </div>
     </div>
 
-    <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="mapping-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.mapping.title"/></h5>
+                    <h5 class="modal-title w-100" id="mapping-modal-title"><@s.text name="manage.mapping.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
@@ -1451,11 +1429,174 @@
         </div>
     </div>
 
-    <div id="networks-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="publication-modal" class="modal fade" tabindex="-1" aria-labelledby="publication-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.networks.title"/></h5>
+                    <h5 class="modal-title w-100" id="publication-modal-title"><@s.text name="manage.overview.published"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <!-- resources cannot be published if the mandatory metadata is missing -->
+                    <#if missingMetadata>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.published.missing.metadata"/>
+                        </div>
+
+                        <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+                    <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
+                        </div>
+
+                        <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
+                    <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
+                    || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
+                    || resource.status == "REGISTERED">
+                        <!-- the user must have registration rights -->
+                        <#if !currentUser.hasRegistrationRights()>
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.resource.status.publication.forbidden"/>
+                                &nbsp;<@s.text name="manage.resource.role.change"/>
+                            </div>
+
+                            <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
+                        <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+                        || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
+                        && !organisationWithPrimaryDoiAccount??>
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
+                            </div>
+
+                            <!-- when a DOI is reserved.. -->
+                        <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                            <!-- and the resource has no existing DOI and its status is private..  -->
+                            <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
+                                <!-- and the resource has never been published before, the first publication is a new major version -->
+                                <#if !resource.lastPublished??>
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
+                                    </div>
+
+                                    <!-- and the resource has been published before, the next publication is a new minor version -->
+                                <#else>
+                                    <div class="callout callout-warning text-smaller">
+                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
+                                    </div>
+                                </#if>
+
+                                <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
+                            <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
+                                <div class="callout callout-info text-smaller">
+                                    <@s.text name="manage.overview.publishing.doi.register.help"/>
+                                </div>
+
+                            </#if>
+                        </#if>
+                    </#if>
+
+                    <form action='publish.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="publish" type="hidden" value="Publish"/>
+
+                        <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                        <#if missingMetadata>
+                            <!-- resources cannot be published if the mandatory metadata is missing -->
+                        <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                            <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+
+                            <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
+                        <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
+
+                            <button class="confirmPublishMinorVersion btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                </svg>
+                                <@s.text name="button.publish"/>
+                            </button>
+
+                            <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
+                        <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
+                        || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
+                        || resource.status == "REGISTERED">
+
+                            <#if !currentUser.hasRegistrationRights()>
+                                <!-- the user must have registration rights -->
+
+                                <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
+                            <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+                            || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
+                            && !organisationWithPrimaryDoiAccount??>
+
+                                <!-- when a DOI is reserved -->
+                            <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                                <!-- and the resource has no existing DOI and its status is private..  -->
+                                <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
+                                    <!-- and the resource has never been published before, the first publication is a new major version -->
+                                    <#if !resource.lastPublished??>
+                                        <button class="confirmPublishMajorVersionWithoutDOI btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name="button.publish"/>
+                                        </button>
+                                        <!-- and the resource has been published before, the next publication is a new minor version -->
+                                    <#else>
+                                        <button class="confirmPublishMinorVersion btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name="button.publish"/>
+                                        </button>
+                                    </#if>
+
+                                    <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
+                                <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
+                                    <@s.submit cssClass="confirmPublishMajorVersion btn btn-sm overview-action-button" id="publishButton" name="publish" key="button.publish"/>
+                                </#if>
+
+                                <!-- publishing a new minor version -->
+                            <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
+                                <button class="confirmPublishMinorVersion btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                    </svg>
+                                    <@s.text name="button.publish"/>
+                                </button>
+
+                                <!-- publishing a new version registered with GBIF -->
+                            <#elseif resource.status == "REGISTERED">
+                                <button class="confirmPublishMinorVersion btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                    </svg>
+                                    <@s.text name="button.publish"/>
+                                </button>
+                            </#if>
+
+                            <!-- first time any resource not assigned a DOI is published is always new major version -->
+                        <#elseif !resource.lastPublished?? && resource.identifierStatus == "UNRESERVED">
+                            <button class="confirmPublishMajorVersionWithoutDOI btn btn-sm overview-action-button" id="publishButton" name="publish" type="submit">
+                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                </svg>
+                                <@s.text name="button.publish"/>
+                            </button>
+                        <#else>
+                            <!-- otherwise prevent publication from happening just to be safe -->
+                        </#if>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="networks-modal" class="modal fade" tabindex="-1" aria-labelledby="networks-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="networks-modal-title"><@s.text name="manage.overview.networks.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
@@ -1478,11 +1619,65 @@
         </div>
     </div>
 
-    <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="registration-modal" class="modal fade" tabindex="-1" aria-labelledby="registration-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.overview.resource.managers"/></h5>
+                    <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.published.testmode.warning"/>
+                        </div>
+                    </#if>
+
+                    <#if resource.status=="PRIVATE">
+                        <!-- Show warning: resource must be public -->
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.registration.private" />
+                        </div>
+                    </#if>
+
+                    <#if resource.status=="PUBLIC">
+                        <#if !currentUser.hasRegistrationRights()>
+                            <!-- Show warning: user must have registration rights -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                            </div>
+                        <#elseif missingValidPublishingOrganisation?string == "true">
+                            <!-- Show warning: user must assign valid publishing organisation -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.overview.visibility.missing.organisation"/>
+                            </div>
+                        <#elseif missingRegistrationMetadata?string == "true">
+                            <!-- Show warning: user must fill in minimum registration metadata -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.overview.visibility.missing.metadata" />
+                            </div>
+                        <#elseif !resource.isLastPublishedVersionPublic()>
+                            <!-- Show warning: last published version must be publicly available to register -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
+                            </div>
+                        <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                            <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
+                            </div>
+                        </#if>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="managers-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="managers-modal-title"><@s.text name="manage.overview.resource.managers"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
