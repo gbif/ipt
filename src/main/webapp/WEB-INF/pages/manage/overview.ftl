@@ -1094,23 +1094,33 @@
 
                     <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
-                        <div class="row">
-                            <div class="col-9">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.networks.description"/>
                                     <@s.text name="manage.overview.networks.title"/>
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
-                                <#if resource.key?has_content && (potentialNetworks?size>0)>
-                                <button id="add-network-button" class="btn btn-sm overview-action-button">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                    <@s.text name='button.add'/>
-                                </button>
-                                </#if>
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown">
+                                    <a class="icon-button icon-material-actions overview-action-button networks-action" type="button" href="#" id="dropdown-networks-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </a>
+
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-networks-actions">
+                                        <li>
+                                            <button id="add-network-button" class="dropdown-item action-link">
+                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                                <@s.text name='button.add'/>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -1169,33 +1179,39 @@
                                         </p>
                                     </#if>
                                 </div>
-                            <#else>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.networks.not.registered"/>
-                                </div>
                             </#if>
                         </div>
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
                     <div class="py-5" id="managers">
-                        <div class="row">
-                            <div class="col-9">
-                                <h5 class="mb-0 text-gbif-header-2 fw-400">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                                     <@s.text name="manage.overview.resource.managers"/>
                                 </h5>
                             </div>
 
-                            <div class="col-3 d-flex justify-content-end">
-                                <#if (potentialManagers?size>0)>
-                                <button id="add-manager-button" class="btn btn-sm overview-action-button">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                    <@s.text name='button.add'/>
-                                </button>
-                                </#if>
+                            <div class="d-flex justify-content-end">
+                                <div class="dropdown">
+                                    <a class="icon-button icon-material-actions overview-action-button networks-action" type="button" href="#" id="dropdown-networks-actions" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </a>
+
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-networks-actions">
+                                        <li>
+                                            <button id="add-manager-button" class="dropdown-item action-link">
+                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                                <@s.text name='button.add'/>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -1612,6 +1628,10 @@
                                 </select>
                                 <@s.submit id="add-network" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
+                        </div>
+                    <#else>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.networks.not.registered"/>
                         </div>
                     </#if>
                 </div>
