@@ -433,6 +433,13 @@
             showPublicationModal();
         });
 
+        function showVisibilityDisabledModal() {
+            var dialogWindow = $("#visibility-disabled-modal");
+            dialogWindow.modal('show');
+        }
+
+        $("#show-visibility-disabled-modal").on('click', showVisibilityDisabledModal);
+
         function showRegistrationModal() {
             var dialogWindow = $("#registration-modal");
             dialogWindow.modal('show');
@@ -919,9 +926,7 @@
                                                     </button>
                                                 </form>
                                             </li>
-                                        </#if>
-
-                                        <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                        <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
                                             <#assign actionMethod>makePrivate</#assign>
                                             <li>
                                                 <form action='resource-${actionMethod}.do' method='post'>
@@ -934,6 +939,15 @@
                                                         <@s.text name='button.change'/>
                                                     </button>
                                                 </form>
+                                            </li>
+                                        <#else>
+                                            <li>
+                                                <button id="show-visibility-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.change'/>
+                                                </button>
                                             </li>
                                         </#if>
                                     </ul>
@@ -1002,50 +1016,60 @@
                                     </a>
 
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-registration-actions">
-                                        <#if resource.status=="PUBLIC">
+                                        <#if resource.status!="REGISTERED">
                                             <#if !currentUser.hasRegistrationRights()>
                                                 <!-- Hide register button and show warning: user must have registration rights -->
                                                 <#assign visibilityConfirmRegistrationWarning>
                                                     <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                                 </#assign>
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
+                                                <li>
+                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.register'/>
+                                                    </button>
+                                                </li>
                                             <#elseif missingValidPublishingOrganisation?string == "true">
                                                 <!-- Hide register button and show warning: user must assign valid publishing organisation -->
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
+                                                <li>
+                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.register'/>
+                                                    </button>
+                                                </li>
                                             <#elseif missingRegistrationMetadata?string == "true">
                                                 <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
+                                                <li>
+                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.register'/>
+                                                    </button>
+                                                </li>
                                             <#elseif !resource.isLastPublishedVersionPublic()>
                                                 <!-- Hide register button and show warning: last published version must be publicly available to register -->
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
+                                                <li>
+                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.register'/>
+                                                    </button>
+                                                </li>
                                             <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                                 <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
+                                                <li>
+                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                        </svg>
+                                                        <@s.text name='button.register'/>
+                                                    </button>
+                                                </li>
                                             <#else>
                                                 <li>
                                                     <form action="resource-registerResource.do" method="post">
@@ -1136,7 +1160,7 @@
                                             <#list resourceNetworks as n>
                                                 <div class="col-xl-6">
                                                     <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller">
-                                                        <div class="my-auto">
+                                                        <div class="my-auto ps-2">
                                                             <strong>${n.title!""}</strong><br>
                                                             <small>${(n.key)!}</small>
                                                         </div>
@@ -1173,10 +1197,6 @@
                                                 </div>
                                             </#list>
                                         </div>
-                                    <#else>
-                                        <p class="mb-0">
-                                            <@s.text name="manage.overview.networks.no.data"/>
-                                        </p>
                                     </#if>
                                 </div>
                             </#if>
@@ -1317,6 +1337,30 @@
                     <button id="changeStateSubmit" type="submit" form="make-public-modal-form" class="btn btn-outline-gbif-primary"><@s.text name="button.submit"/></button>
                     <#if resource.makePublicDate?has_content>
                         <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="visibility-disabled-modal" class="modal fade" tabindex="-1" aria-labelledby="make-public-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <#if resource.status == "DELETED">
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.visibility.warning.deleted"/>
+                        </div>
+                    </#if>
+
+                    <#if resource.status == "REGISTERED">
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.visibility.warning.registered"/>
+                        </div>
                     </#if>
                 </div>
             </div>
@@ -1653,14 +1697,22 @@
                         </div>
                     </#if>
 
-                    <#if resource.status=="PRIVATE">
+                    <#if resource.status=="DELETED">
+                        <!-- Show warning: resource must not be deleted -->
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.registration.deleted" />
+                        </div>
+                    <#elseif resource.status=="REGISTERED">
+                        <!-- Show warning: resource already registered -->
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.registration.registered" />
+                        </div>
+                    <#elseif resource.status=="PRIVATE">
                         <!-- Show warning: resource must be public -->
                         <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.registration.private" />
                         </div>
-                    </#if>
-
-                    <#if resource.status=="PUBLIC">
+                    <#elseif resource.status=="PUBLIC">
                         <#if !currentUser.hasRegistrationRights()>
                             <!-- Show warning: user must have registration rights -->
                             <div class="callout callout-warning text-smaller">
