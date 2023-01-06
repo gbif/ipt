@@ -356,7 +356,9 @@
             // show input depending on which radio is selected
             if (radioValue === "makePublicImmediately") {
                 $("#makePublicDateTime").hide();
+                $("#makePublicDateTimeWrapper").hide();
             } else if (radioValue === "makePublicAtDate") {
+                $("#makePublicDateTimeWrapper").show();
                 $("#makePublicDateTime").show();
             }
         }
@@ -367,7 +369,9 @@
 
             if (radioValue === "makePublicImmediately") {
                 $("#makePublicDateTime").hide();
+                $("#makePublicDateTimeWrapper").hide();
             } else if (radioValue === "makePublicAtDate") {
+                $("#makePublicDateTimeWrapper").show();
                 $("#makePublicDateTime").show();
             }
         });
@@ -1317,8 +1321,8 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center mt-3">
-                        <div>
+                    <div id="makePublicDateTimeWrapper" class="mt-3" style="display: none !important;">
+                        <div class="d-flex justify-content-center">
                             <form id="make-public-modal-form" action="resource-makePublic.do" method="post">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <#if resource.makePublicDate?has_content>
