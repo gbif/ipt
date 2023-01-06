@@ -1089,6 +1089,15 @@
                                                     </form>
                                                 </li>
                                             </#if>
+                                        <#else>
+                                            <li>
+                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
+                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                    </svg>
+                                                    <@s.text name='button.register'/>
+                                                </button>
+                                            </li>
                                         </#if>
                                     </ul>
                                 </div>
@@ -1159,51 +1168,49 @@
                                 <@s.text name="manage.overview.networks.intro"/>
                             </p>
 
-                            <#if resource.key?has_content>
+                            <#if resource.key?has_content && (resourceNetworks?size>0)>
                                 <div class="details mt-3">
-                                    <#if (resourceNetworks?size>0)>
-                                        <div class="row g-2">
-                                            <#list resourceNetworks as n>
-                                                <div class="col-xl-6">
-                                                    <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller">
-                                                        <div class="my-auto ps-2">
-                                                            <strong>${n.title!""}</strong><br>
-                                                            <small>${(n.key)!}</small>
-                                                        </div>
+                                    <div class="row g-2">
+                                        <#list resourceNetworks as n>
+                                            <div class="col-xl-6">
+                                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller">
+                                                    <div class="my-auto ps-2">
+                                                        <strong>${n.title!""}</strong><br>
+                                                        <small>${(n.key)!}</small>
+                                                    </div>
 
-                                                        <div class="d-flex justify-content-end my-auto network-item-actions">
-                                                            <div class="dropdown">
-                                                                <a class="icon-button icon-material-actions network-item-action" type="button" href="#" id="dropdown-network-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                                    </svg>
-                                                                </a>
+                                                    <div class="d-flex justify-content-end my-auto network-item-actions">
+                                                        <div class="dropdown">
+                                                            <a class="icon-button icon-material-actions network-item-action" type="button" href="#" id="dropdown-network-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                                </svg>
+                                                            </a>
 
-                                                                <ul class="dropdown-menu" aria-labelledby="dropdown-network-item-actions-current">
-                                                                    <li>
-                                                                        <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/network/${n.key!}">
-                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                            </svg>
-                                                                            <@s.text name="manage.overview.networks.view.gbif"/>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
-                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                            <@s.text name="button.delete"/>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                            <ul class="dropdown-menu" aria-labelledby="dropdown-network-item-actions-current">
+                                                                <li>
+                                                                    <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/network/${n.key!}">
+                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                        </svg>
+                                                                        <@s.text name="manage.overview.networks.view.gbif"/>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                        <@s.text name="button.delete"/>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </#list>
-                                        </div>
-                                    </#if>
+                                            </div>
+                                        </#list>
+                                    </div>
                                 </div>
                             </#if>
                         </div>
