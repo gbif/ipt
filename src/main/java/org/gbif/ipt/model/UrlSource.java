@@ -125,6 +125,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
   }
 
+  @Override
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }

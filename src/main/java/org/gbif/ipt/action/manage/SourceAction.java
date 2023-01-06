@@ -477,6 +477,10 @@ public class SourceAction extends ManagerBaseAction {
 
   @Override
   public String save() throws IOException {
+    if (source != null) {
+      source.setLastModified(new Date());
+    }
+
     // treat jdbc special
     if (source != null && rdbms != null) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
@@ -498,7 +502,7 @@ public class SourceAction extends ManagerBaseAction {
             problem = sourceManager.analyze(source);
           }
         } catch (AlreadyExistingException e) {
-          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
+          // shouldn't really happen as we validate this beforehand - still catching it here to be safe
           addActionError(getText("manage.source.existing"));
         }
       } else {

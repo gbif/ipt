@@ -30,8 +30,6 @@ public interface FileSource extends Source, RowIterable, SourceWithHeader {
 
   Date getLastModified();
 
-  void setLastModified(Date lastModified);
-
   long getFileSize();
 
   int getRows();
