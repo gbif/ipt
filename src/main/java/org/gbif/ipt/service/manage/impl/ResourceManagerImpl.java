@@ -592,9 +592,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setUpdateFrequency(null);
         res.setNextPublished(null);
         // reset other last modified dates
-        res.setMetadataModified(null);
-        res.setMappingsModified(null);
-        res.setSourcesModified(null);
+        Date lastModifiedDate = new Date();
+        res.setMetadataModified(lastModifiedDate);
+        res.setMappingsModified(lastModifiedDate);
+        res.setSourcesModified(lastModifiedDate);
+        res.getSources().forEach(s -> s.setLastModified(lastModifiedDate));
+        res.getMappings().forEach(m -> m.setLastModified(lastModifiedDate));
+
         // reset first and last published dates
         res.getEml().setDateStamp((Date) null);
         res.getEml().setPubDate(null);
@@ -707,12 +711,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // create new resource
       resource = create(shortname, resourceType.toString().toUpperCase(Locale.ENGLISH), creator);
+      Date lastModifiedDate = new Date();
 
       // read core source+mappings
       TextFileSource s = importSource(resource, arch.getCore());
       sources.put(arch.getCore().getLocations().get(0), s);
       ExtensionMapping map = importMappings(alog, arch.getCore(), s);
+      map.setLastModified(lastModifiedDate);
       resource.addMapping(map);
+
+      resource.setSourcesModified(lastModifiedDate);
+      resource.setMappingsModified(lastModifiedDate);
 
       // if extensions are being used
       // the core must contain an id element that indicates the identifier for a record
@@ -732,6 +741,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             sources.put(ext.getLocations().get(0), s);
           }
           map = importMappings(alog, ext, s);
+          map.setLastModified(lastModifiedDate);
           if (map.getIdColumn() == null) {
             alog.error("manage.resource.create.core.invalid.coreid");
             throw new ImportException("Darwin Core Archive is invalid, extension mapping has no coreId element");
@@ -749,6 +759,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Eml eml = readMetadata(resource.getShortname(), arch, alog);
       if (eml != null) {
         resource.setEml(eml);
+        resource.setMetadataModified(lastModifiedDate);
       }
 
       // finally persist the whole thing
@@ -837,6 +848,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // create resource of type metadata, with Eml instance
     Resource resource = create(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    resource.setMetadataModified(new Date());
     resource.setEml(eml);
     return resource;
   }
