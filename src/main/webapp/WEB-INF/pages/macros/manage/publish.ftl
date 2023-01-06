@@ -32,12 +32,17 @@
                     <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
                 <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
 
-                    <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                        </svg>
-                        <@s.text name="button.publish"/>
-                    </button>
+                    <form action="publish.do" method="post">
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                        <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                            </svg>
+                            <@s.text name="button.publish"/>
+                        </button>
+                    </form>
 
                     <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
                 <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
@@ -74,59 +79,90 @@
                         <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                             <!-- and the resource has never been published before, the first publication is a new major version -->
                             <#if !resource.lastPublished??>
-                                <button class="confirmPublishMajorVersionWithoutDOI dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                    </svg>
-                                    <@s.text name="button.publish"/>
-                                </button>
+                                <form action="publish.do" method="post">
+                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                    <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                                    <button class="confirmPublishMajorVersionWithoutDOI dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                        </svg>
+                                        <@s.text name="button.publish"/>
+                                    </button>
+                                </form>
+
                                 <!-- and the resource has been published before, the next publication is a new minor version -->
                             <#else>
-                                <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                    </svg>
-                                    <@s.text name="button.publish"/>
-                                </button>
+                                <form action="publish.do" method="post">
+                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                    <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                                    <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                        </svg>
+                                        <@s.text name="button.publish"/>
+                                    </button>
+                                </form>
                             </#if>
 
                             <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
                         <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                            <button class="confirmPublishMajorVersion dropdown-item action-link" id="publishButton" name="publish" type="submit">
+                            <form action="publish.do" method="post">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                                <button class="confirmPublishMajorVersion dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                    </svg>
+                                    <@s.text name="button.publish"/>
+                                </button>
+                            </form>
+                        </#if>
+
+                        <!-- publishing a new minor version -->
+                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
+                        <form action="publish.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                            <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
                                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                 </svg>
                                 <@s.text name="button.publish"/>
                             </button>
-                        </#if>
-
-                        <!-- publishing a new minor version -->
-                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
-                        <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                            </svg>
-                            <@s.text name="button.publish"/>
-                        </button>
+                        </form>
 
                         <!-- publishing a new version registered with GBIF -->
                     <#elseif resource.status == "REGISTERED">
-                        <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                            </svg>
-                            <@s.text name="button.publish"/>
-                        </button>
+                        <form action="publish.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                            <button class="confirmPublishMinorVersion dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                </svg>
+                                <@s.text name="button.publish"/>
+                            </button>
+                        </form>
                     </#if>
 
                     <!-- first time any resource not assigned a DOI is published is always new major version -->
                 <#elseif !resource.lastPublished?? && resource.identifierStatus == "UNRESERVED">
-                    <button class="confirmPublishMajorVersionWithoutDOI dropdown-item action-link" id="publishButton" name="publish" type="submit">
-                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                        </svg>
-                        <@s.text name="button.publish"/>
-                    </button>
+                    <form action="publish.do" method="post">
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
+
+                        <button class="confirmPublishMajorVersionWithoutDOI dropdown-item action-link" id="publishButton" name="publish" value="Publish" type="submit">
+                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                            </svg>
+                            <@s.text name="button.publish"/>
+                        </button>
+                    </form>
                 <#else>
                     <!-- otherwise prevent publication from happening just to be safe -->
                     <a id="publish-button-show-warning" class="dropdown-item action-link" type="button" href="#">
