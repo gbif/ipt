@@ -87,9 +87,18 @@ $(document).ready(function(){
         </#if>
     });
 
+    function initializeSortableComponent(componentId) {
+        sortable('#' + componentId, {
+            forcePlaceholderSize: true,
+            placeholderClass: 'border',
+            exclude: 'input'
+        });
+    }
+
     $("#plus").click(function(event) {
         event.preventDefault();
         addNewItem(true);
+        initializeSortableComponent("items");
     });
 
     $("#plus-collection").click(function (event) {
@@ -116,6 +125,7 @@ $(document).ready(function(){
 	
 	$("[id^=plus-subItem]").click(function(event) {
 		addNewSubItem(event);
+        initializeSortableComponent("subItems");
 	});
 	
 	$("[id^=trash]").click(function(event) {

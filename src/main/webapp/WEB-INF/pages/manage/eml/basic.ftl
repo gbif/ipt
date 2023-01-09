@@ -137,6 +137,80 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_contacts = initAndGetSortable('#contact-items');
+            const sortable_creators = initAndGetSortable('#creator-items');
+            const sortable_metadataProviders = initAndGetSortable('#metadataProvider-items');
+            const sortable_description = initAndGetSortable('#items');
+
+            sortable_contacts[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_creators[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_metadataProviders[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_description[0].addEventListener('sortupdate', function(e) {
+                // recalculate names!
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " textarea").attr("name", "eml.description[" + index + "]");
+                });
+
+                hideProcessing();
+            });
+
+            sortable_contacts[0].addEventListener('drag', dragScroll);
+            sortable_creators[0].addEventListener('drag', dragScroll);
+            sortable_metadataProviders[0].addEventListener('drag', dragScroll);
+            sortable_description[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeAgentInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#contact-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.contacts[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.contacts[" + index + "].lastName");
+                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.contacts[" + index + "].position");
+                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.contacts[" + index + "].organisation");
+                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.contacts[" + index + "].address.address");
+                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.contacts[" + index + "].address.city");
+                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.contacts[" + index + "].address.province");
+                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.contacts[" + index + "].address.country");
+                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.contacts[" + index + "].address.postalCode");
+                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.contacts[" + index + "].phone");
+                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.contacts[" + index + "].email");
+                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.contacts[" + index + "].homepage");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.contacts[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.contacts[" + index + "].userIds[0].identifier");
+                });
+
+                hideProcessing();
+            }
         });
 
     </script>
@@ -277,8 +351,8 @@
                         <@textinline name="eml.description" help="i18n" requiredField=true/>
                         <div id="items">
                             <#list eml.description as item>
-                                <div id="item-${item_index}" class="item paragraphk pb-4 border-bottom">
-                                    <div class="my-2 d-flex justify-content-end">
+                                <div id="item-${item_index}" class="handle item pb-4 border-bottom">
+                                    <div class="handle columnLinks my-2 d-flex justify-content-end">
                                         <a id="removeLink-${item_index}" class="removeLink text-smaller mt-1" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
@@ -304,7 +378,7 @@
                         </div>
 
                         <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
-                            <div class="my-2 d-flex justify-content-end">
+                            <div class="handle columnLinks my-2 d-flex justify-content-end">
                                 <a id="removeLink" class="removeLink text-smaller" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
@@ -318,7 +392,7 @@
                         </div>
 
                         <!-- retrieve some link names one time -->
-                        <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+                        <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
                         <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
                         <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
                         <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
@@ -333,7 +407,7 @@
                         <div id="contact-items">
                             <#list eml.contacts as contact>
                                 <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <a id="contact-copy-${contact_index}" href="" class="text-smaller">
                                                 <span>
@@ -421,7 +495,7 @@
                         </div>
 
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="contact-copy" href="" class="text-smaller">
                                         <span>
@@ -494,7 +568,7 @@
                         <div id="creator-items">
                             <#list eml.creators as creator>
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <a id="creator-copy-${creator_index}" href="" class="text-smaller">
                                                 <span>
@@ -582,7 +656,7 @@
                         </div>
 
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="creator-copy" href="" class="text-smaller">
                                         <span>
@@ -655,7 +729,7 @@
                         <div id="metadataProvider-items">
                             <#list eml.metadataProviders as metadataProvider>
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="text-smaller">
                                                 <span>
@@ -663,7 +737,7 @@
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
-                                                <span><@s.text name="eml.resourceCreator.copyLink" /></span>
+                                                <span><@s.text name="eml.metadataAgent.copyLink" /></span>
                                             </a>
                                         </div>
                                         <div class="text-end">
@@ -743,7 +817,7 @@
                         </div>
 
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="metadataProvider-copy" href="" class="text-smaller">
                                         <span>

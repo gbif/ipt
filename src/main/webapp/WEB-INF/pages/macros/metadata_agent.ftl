@@ -52,29 +52,42 @@
                 personnelItemsCount = -1;
         }
 
+        function initializeSortableComponent(componentId) {
+            sortable('#' + componentId, {
+                forcePlaceholderSize: true,
+                placeholderClass: 'border',
+                exclude: 'input'
+            });
+        }
+
         $("#plus-contact").click(function (event) {
             event.preventDefault();
             addNewContactItem(true);
+            initializeSortableComponent("contact-items")
         });
 
         $("#plus-creator").click(function (event) {
             event.preventDefault();
             addNewCreatorItem(true);
+            initializeSortableComponent("creator-items")
         });
 
         $("#plus-metadataProvider").click(function (event) {
             event.preventDefault();
             addNewMetadataProviderItem(true);
+            initializeSortableComponent("metadataProvider-items")
         });
 
         $("#plus-associatedParty").click(function (event) {
             event.preventDefault();
             addNewAssociatedPartyItem(true);
+            initializeSortableComponent("associatedParty-items")
         });
 
         $("#plus-personnel").click(function (event) {
             event.preventDefault();
             addNewPersonnelItem(true);
+            initializeSortableComponent("personnel-items")
         });
 
         $(".removeContactLink").click(function (event) {
