@@ -5,17 +5,6 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
     <script>
         $(document).ready(function(){
-            // make labels size the same (issue for ru locale)
-            $(window).on("load resize",function(){
-                var lb = $("label.form-label");
-                lb.height('');
-                var heights = lb.map(function() {
-                    return $(this).height();
-                }).get();
-                maxHeight = Math.max.apply(null, heights);
-                lb.css("height", maxHeight);
-            });
-
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -42,6 +31,54 @@
                 var pos = invalidElement.offset().top - 100;
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
+            }
+
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_taxa = initAndGetSortable('#subItems');
+
+            sortable_taxa[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+
+            sortable_taxa[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var items = $("#subItems div.sub-item");
+
+                items.each(function (index) {
+                    var elementId = $(this)[0].id;
+                    var parentIndex = $(this).data("iptItemIndex");
+
+                    if (!parentIndex) {
+                        var parentItem = $(this).closest('.item');
+                        parentIndex = parentItem.data("iptItemIndex");
+                    }
+
+                    $("div#" + elementId + " input[id$='scientificName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].scientificName");
+                    $("div#" + elementId + " input[id$='commonName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].commonName");
+                    $("div#" + elementId + " select[id$='rank']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].rank");
+                });
+
+                hideProcessing();
             }
         });
     </script>
@@ -161,7 +198,7 @@
                                 <!-- Adding the taxonomic coverages that already exists on the file -->
                                 <#assign next_agent_index=0 />
                                 <#list eml.taxonomicCoverages as item>
-                                    <div id='item-${item_index}' class="item border-bottom">
+                                    <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
                                         <div class="d-flex justify-content-end mt-2">
                                             <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                 <span>
@@ -201,8 +238,8 @@
                                         <div id="subItems" class="mt-2">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
-                                                    <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
-                                                        <div class="d-flex justify-content-end mt-2">
+                                                    <div id="subItem-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
+                                                        <div class="handle d-flex justify-content-end mt-2 py-1">
                                                             <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
                                                                 <span>
                                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -212,25 +249,20 @@
                                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                                             </a>
                                                         </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100">
+
+                                                        <div class="row flex-grow-1 g-3">
+                                                            <div class="col-lg-4">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100">
+                                                            <div class="col-lg-4">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100 me-2">
-                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
+                                                            <div class="col-lg-4">
+                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks! value="${(eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank)!?lower_case}"/>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
                                                 </#list>
                                             </#if>
@@ -250,7 +282,7 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus text-smaller" href="">
+                                <a id="plus" class="plus plus-taxcoverage text-smaller" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -352,8 +384,8 @@
                                 </div>
                             </div>
 
-                            <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
-                                <div class="d-flex justify-content-end mt-2">
+                            <div id="subItem-9999" class="sub-item mt-3" style="display:none">
+                                <div class="handle d-flex justify-content-end mt-2 py-1">
                                     <a id="trash" class="text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
@@ -363,21 +395,18 @@
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                     </a>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="w-100">
+
+                                <div class="row g-3">
+                                    <div class="col-lg-4">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4">
-                                    <div class="w-100">
+                                    <div class="col-lg-4">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4">
-                                    <div class="w-100 me-2">
-                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
+                                    <div class="col-lg-4">
+                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks! />
                                     </div>
                                 </div>
                             </div>

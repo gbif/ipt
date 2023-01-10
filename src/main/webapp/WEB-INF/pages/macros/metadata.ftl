@@ -98,7 +98,12 @@ $(document).ready(function(){
     $("#plus").click(function(event) {
         event.preventDefault();
         addNewItem(true);
-        initializeSortableComponent("items");
+        // do not initialize for taxcoverage for now
+        if (event.currentTarget.className.indexOf("plus-taxcoverage") === -1) {
+            initializeSortableComponent("items");
+        } else {
+            initializeSortableComponent("subItems");
+        }
     });
 
     $("#plus-collection").click(function (event) {
@@ -450,6 +455,7 @@ $(document).ready(function(){
 			$("#plus-subItem-"+index).click(function(event) {
 				event.preventDefault();
 				addNewSubItem(event);
+                initializeSortableComponent("subItems");
 			});
 			$("#item-"+index+" #subItems").children(".sub-item").each(function(subindex){				
 				setSubItemIndex($("#item-"+index), $(this), subindex);
