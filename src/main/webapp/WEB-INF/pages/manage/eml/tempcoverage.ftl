@@ -29,7 +29,7 @@
                 event.preventDefault();
                 var idNewForm = "temporal-" + count;
                 var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
-                // Add the fields depending of the actual value in the select
+                // Add the fields depending on the actual value in the select
                 var typeSubForm = $("#tempTypes").prop("value");
                 //Adding the 'sub-form' to the new form.
                 addTypeForm(newForm, typeSubForm, true);
@@ -262,6 +262,49 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#temporals');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#temporals div.tempo");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='startDate']").attr("name", "eml.temporalCoverages[" + index + "].startDate");
+                    $("div#" + elementId + " input[id$='endDate']").attr("name", "eml.temporalCoverages[" + index + "].endDate");
+                    $("div#" + elementId + " input[id$='formationPeriod']").attr("name", "eml.temporalCoverages[" + index + "].formationPeriod");
+                    $("div#" + elementId + " input[id$='livingTimePeriod']").attr("name", "eml.temporalCoverages[" + index + "].livingTimePeriod");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
     <style>
@@ -386,7 +429,7 @@
                                 <#assign next_agent_index=0 />
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
-                                        <div class="d-flex justify-content-end mt-4">
+                                        <div class="handle d-flex justify-content-end mt-4">
                                             <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -484,7 +527,7 @@
 
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="base-temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
-                                <div class="d-flex justify-content-end mt-4">
+                                <div class="handle d-flex justify-content-end mt-4">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
