@@ -18,6 +18,47 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_keywords = initAndGetSortable('#items');
+
+            sortable_keywords[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_keywords[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='keywordThesaurus']").attr("name", "eml.keywords[" + index + "].keywordThesaurus");
+                    $("div#" + elementId + " textarea[id$='keywordsString']").attr("name", "eml.keywords[" + index + "].keywordsString");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
@@ -79,7 +120,7 @@
                             <div id="items">
                                 <#list eml.keywords as item>
                                     <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
-                                        <div class="d-flex justify-content-end mt-2">
+                                        <div class="handle d-flex justify-content-end mt-2">
                                             <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -118,7 +159,7 @@
 
 
                             <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="d-flex justify-content-end mt-2">
+                                <div class="handle d-flex justify-content-end mt-2">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
