@@ -264,6 +264,11 @@
             }
         });
     </script>
+    <style>
+        input {
+            max-height: 2.375rem !important;
+        }
+    </style>
 
     <title><@s.text name='manage.metadata.tempcoverage.title'/></title>
     <#assign currentMetadataPage = "tempcoverage"/>
@@ -401,10 +406,10 @@
                                             <div id="date-${temporalCoverage_index}" class="typeForm col-12">
                                                 <div class="row g-3">
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" value="${eml.temporalCoverages[temporalCoverage_index].endDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,7 +417,7 @@
                                         <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                 </div>
 
                                             </div>
@@ -431,7 +436,6 @@
                                                 </div>
                                             </div>
                                         </#if>
-
                                     </div>
                                 </#list>
                             </div>
@@ -499,10 +503,10 @@
                             <div id="date-99999" class="typeForm col-12" style="display:none">
                                 <div class="row g-3">
                                     <div class="col-lg-6">
-                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n"/>
                                     </div>
                                     <div class="col-lg-6">
-                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n"/>
                                     </div>
                                 </div>
                             </div>
@@ -510,7 +514,7 @@
                             <!-- SINGLE DATE -->
                             <div id="single-99999" class="typeForm col-lg-6" style="display:none">
                                 <div>
-                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"} />
+                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" />
                                 </div>
                             </div>
 
