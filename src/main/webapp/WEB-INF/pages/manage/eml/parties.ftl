@@ -18,6 +18,60 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#associatedParty-items');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#associatedParty-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.associatedParties[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.associatedParties[" + index + "].lastName");
+                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.associatedParties[" + index + "].position");
+                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.associatedParties[" + index + "].organisation");
+                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.associatedParties[" + index + "].address.address");
+                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.associatedParties[" + index + "].address.city");
+                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.associatedParties[" + index + "].address.province");
+                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.associatedParties[" + index + "].address.country");
+                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.associatedParties[" + index + "].address.postalCode");
+                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.associatedParties[" + index + "].phone");
+                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.associatedParties[" + index + "].email");
+                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.associatedParties[" + index + "].homepage");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.associatedParties[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.associatedParties[" + index + "].userIds[0].identifier");
+                    $("div#" + elementId + " select[id$='role']").attr("name", "eml.associatedParties[" + index + "].role");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
     <style>
@@ -85,14 +139,14 @@
                             </p>
 
                             <!-- retrieve some link names one time -->
-                            <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+                            <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
 
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                        <div class="columnLinks mt-2 d-flex justify-content-between">
+                                        <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                             <div>
                                                 <a id="associatedParty-copy-${item_index}" href="" class="text-smaller">
                                                     <span>
@@ -187,7 +241,7 @@
 
 
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="columnLinks mt-2 d-flex justify-content-between">
+                                <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
                                         <a id="associatedParty-copy" href="" class="text-smaller">
                                             <span>
