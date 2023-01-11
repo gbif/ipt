@@ -18,6 +18,50 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_physical_data = initAndGetSortable('#items');
+
+            sortable_physical_data[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_physical_data[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='name']").attr("name", "eml.physicalData[" + index + "].name");
+                    $("div#" + elementId + " input[id$='charset']").attr("name", "eml.physicalData[" + index + "].charset");
+                    $("div#" + elementId + " input[id$='distributionUrl']").attr("name", "eml.physicalData[" + index + "].distributionUrl");
+                    $("div#" + elementId + " input[id$='format']").attr("name", "eml.physicalData[" + index + "].format");
+                    $("div#" + elementId + " input[id$='formatVersion']").attr("name", "eml.physicalData[" + index + "].formatVersion");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
 
@@ -90,7 +134,7 @@
                                 <div id="items">
                                     <#list eml.physicalData as item>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="mt-2 d-flex justify-content-end">
+                                            <div class="handle mt-2 d-flex justify-content-end">
                                                 <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
@@ -135,7 +179,7 @@
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="mt-2 d-flex justify-content-end">
+                                <div class="handle mt-2 d-flex justify-content-end">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
