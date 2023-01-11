@@ -109,11 +109,13 @@ $(document).ready(function(){
     $("#plus-collection").click(function (event) {
         event.preventDefault();
         addNewCollectionItem(true);
+        initializeSortableComponent("collection-items");
     });
 
     $("#plus-specimenPreservationMethod").click(function (event) {
         event.preventDefault();
         addNewSpecimenPreservationMethodItem(true);
+        initializeSortableComponent("specimenPreservationMethod-items");
     });
 
     $(".removeLink").click(function(event) {
@@ -384,7 +386,7 @@ $(document).ready(function(){
 			$("#item-"+index+" input").attr("id",function() {
 				var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
 				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n];
-      });
+            });
 
 			$("#item-"+index+" select").attr("id","type-"+index).unbind().change(function() {
 				updateSubitem($(this));
@@ -393,7 +395,7 @@ $(document).ready(function(){
 			$("#item-"+index+" label").attr("for",function() {
 				var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
 				return "eml.jgtiCuratorialUnits["+index+"]."+parts[n];
-      });
+            });
 
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 			$("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
