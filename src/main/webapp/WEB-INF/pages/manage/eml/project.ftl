@@ -17,6 +17,50 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#personnel-items');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#personnel-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.project.personnel[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.project.personnel[" + index + "].lastName");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.project.personnel[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.project.personnel[" + index + "].userIds[0].identifier");
+                    $("div#" + elementId + " select[id$='role']").attr("name", "eml.project.personnel[" + index + "].role");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
     <#assign currentMetadataPage = "project"/>
@@ -77,7 +121,7 @@
                             </p>
 
                             <!-- retrieve some link names one time -->
-                            <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+                            <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='rtf.project.personnel'/></#assign>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='rtf.project.personnel'/></#assign>
 
@@ -100,7 +144,7 @@
                                 <div id="personnel-items">
                                     <#list eml.project.personnel as item>
                                         <div id="personnel-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-between">
+                                            <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                                 <div>
                                                     <a id="personnel-copy-${item_index}" href="" class="text-smaller">
                                                         <span>
@@ -161,7 +205,7 @@
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
                             <div id="baseItem-personnel" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="columnLinks mt-2 d-flex justify-content-between">
+                                <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
                                         <a id="personnel-copy" href="" class="text-smaller">
                                             <span>
