@@ -41,11 +41,15 @@
                 });
             }
 
-            const sortable_taxa = initAndGetSortable('#subItems');
+            const sortable_taxcoverages = initAndGetSortable('#items');
+            sortable_taxcoverages[0].addEventListener('sortupdate', changeInputNamesTaxCoverageAfterDragging);
+            sortable_taxcoverages[0].addEventListener('drag', dragScroll);
 
-            sortable_taxa[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
-
-            sortable_taxa[0].addEventListener('drag', dragScroll);
+            $("[id^='subItems-']").each(function (index) {
+                const sortable_taxa = initAndGetSortable("#" + $(this)[0].id);
+                sortable_taxa[0].addEventListener('sortupdate', changeInputNamesTaxonAfterDragging);
+                sortable_taxa[0].addEventListener('drag', dragScroll);
+            });
 
             function dragScroll(e) {
                 var cursor = e.pageY;
@@ -60,22 +64,49 @@
                 }
             }
 
-            function changeInputNamesAfterDragging(e) {
+            function changeInputNamesTaxonAfterDragging(e) {
                 displayProcessing();
-                var items = $("#subItems div.sub-item");
+                var targetId = e.target.id;
+                var parentIndex = targetId.split("-")[1];
+                var items = $("#" + e.target.id + " div.sub-item");
 
                 items.each(function (index) {
                     var elementId = $(this)[0].id;
-                    var parentIndex = $(this).data("iptItemIndex");
-
-                    if (!parentIndex) {
-                        var parentItem = $(this).closest('.item');
-                        parentIndex = parentItem.data("iptItemIndex");
-                    }
 
                     $("div#" + elementId + " input[id$='scientificName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].scientificName");
                     $("div#" + elementId + " input[id$='commonName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].commonName");
                     $("div#" + elementId + " select[id$='rank']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].rank");
+                });
+
+                hideProcessing();
+            }
+
+            function changeInputNamesTaxCoverageAfterDragging(e) {
+                displayProcessing();
+                var items = $("#items div.item");
+
+                items.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
+                    console.log("div#" + elementId + " input[id^='add-button']");
+                    console.log($("div#" + elementId + " input[id^='add-button']"));
+                    $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
+
+                    var scientificNames = $("#" + elementId + " input[id$='scientificName']");
+                    scientificNames.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].scientificName");
+                    });
+
+                    var commonNames = $("#" + elementId + " input[id$='commonName']");
+                    commonNames.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].commonName");
+                    });
+
+                    var ranks = $("#" + elementId + " select[id$='rank']");
+                    ranks.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].rank");
+                    });
                 });
 
                 hideProcessing();
@@ -199,7 +230,7 @@
                                 <#assign next_agent_index=0 />
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
-                                        <div class="d-flex justify-content-end mt-2">
+                                        <div class="handle d-flex justify-content-end mt-2">
                                             <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -235,10 +266,10 @@
                                                 <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
-                                        <div id="subItems" class="mt-2">
+                                        <div id="subItems-${item_index}" class="mt-2">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
-                                                    <div id="subItem-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
+                                                    <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
                                                         <div class="handle d-flex justify-content-end mt-2 py-1">
                                                             <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
                                                                 <span>
@@ -336,10 +367,10 @@
                             <!-- internal parameter -->
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
-                            <!-- The base form that is going to be cloned every time an user click on the 'add' link -->
+                            <!-- The base form that is going to be cloned every time a user click on the 'add' link -->
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
-                                <div class="d-flex justify-content-end mt-2">
+                                <div class="handle d-flex justify-content-end mt-2">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">

@@ -98,12 +98,7 @@ $(document).ready(function(){
     $("#plus").click(function(event) {
         event.preventDefault();
         addNewItem(true);
-        // do not initialize for taxcoverage for now
-        if (event.currentTarget.className.indexOf("plus-taxcoverage") === -1) {
-            initializeSortableComponent("items");
-        } else {
-            initializeSortableComponent("subItems");
-        }
+        initializeSortableComponent("items");
     });
 
     $("#plus-collection").click(function (event) {
@@ -132,7 +127,8 @@ $(document).ready(function(){
 	
 	$("[id^=plus-subItem]").click(function(event) {
 		addNewSubItem(event);
-        initializeSortableComponent("subItems");
+        var subItemsIndex = event.currentTarget.id.replace("plus-subItem-", "");
+        initializeSortableComponent("subItems-" + subItemsIndex);
 	});
 	
 	$("[id^=trash]").click(function(event) {
@@ -145,6 +141,8 @@ $(document).ready(function(){
 	
 	$("[id^=add-button]").click(function(event) {
 		createTaxons(event);
+        var subItemsIndex = event.currentTarget.id.replace("add-button-", "");
+        initializeSortableComponent("subItems-" + subItemsIndex)
 	});
 
     function addNewSubItem(event, text) {
@@ -168,12 +166,18 @@ $(document).ready(function(){
         if (lastIndex === undefined) {
             lastIndex = 0;
         } else {
-            lastIndex = parseInt(lastIndex.split("-")[1]) + 1;
+            var splitId = lastIndex.split("-");
+            // one or two indexes: subItem-1 or subItem-1-1
+            if (splitId.length === 2) {
+                lastIndex = parseInt(lastIndex.split("-")[1]) + 1;
+            } else {
+                lastIndex = parseInt(lastIndex.split("-")[2]) + 1;
+            }
         }
         // cloning the taxonItem and setting the corresponding id.
         var subBaseItem = $("#subItem-9999").clone();
         // setting the ids to the rest of the components of the taxomItem
-        $("#" + idBaseItem + " #subItems").append(subBaseItem);
+        $("#" + idBaseItem + " #subItems-" + itemIndex).append(subBaseItem);
         // setting the ids to the rest of the components of the taxonItem.
         setSubItemIndex(baseItem, subBaseItem, lastIndex);
         if (text === undefined) {
@@ -183,11 +187,12 @@ $(document).ready(function(){
             subBaseItem.show();
         }
     }
-		
+
 	function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 		<#switch "${section}">
   			<#case "taxcoverage">
-                subItem.attr("id", "subItem-" + subBaseIndex);
+                var itemIndex = baseItem[0].id.split("-")[1];
+                subItem.attr("id", "subItem-" + itemIndex + "-" + subBaseIndex);
                 $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName").attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -222,7 +227,9 @@ $(document).ready(function(){
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        $("#item-" + $target.attr("id").split("-")[1] + " #subItem-" + $target.attr("id").split("-")[2]).slideUp("fast", function () {
+        var itemIndex = $target.attr("id").split("-")[1];
+        var subItemIndex = $target.attr("id").split("-")[2];
+        $("#item-" + itemIndex + " #subItem-" + itemIndex + "-" + subItemIndex).slideUp("fast", function () {
             var indexItem = $(this).find("[id^='trash']").attr("id").split("-")[1];
             $(this).remove();
             $("#item-" + indexItem + " .sub-item").each(function (index) {
@@ -354,10 +361,10 @@ $(document).ready(function(){
 	
 	function setItemIndex(item, index){
 		item.attr("id","item-"+index);
-		$("#item-"+index+" .removeLink").attr("id", "removeLink-"+index);
-		$("#removeLink-"+index).click(function(event) {
-			removeItem(event);
-		});
+        $("#item-" + index + " .removeLink").attr("id", "removeLink-" + index);
+        $("#removeLink-" + index).click(function (event) {
+            removeItem(event);
+        });
 
 	  <#switch "${section}">
 			<#case "basic">
@@ -451,33 +458,54 @@ $(document).ready(function(){
 				return "eml.alternateIdentifiers["+index+"]"; });		
 			$("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
 		<#break>
-		<#case "taxcoverage">			
-			$("#item-"+index+" [id^='plus-subItem']").attr("id", "plus-subItem-"+index);
-			$("#plus-subItem-"+index).unbind();		
-			$("#plus-subItem-"+index).click(function(event) {
-				event.preventDefault();
-				addNewSubItem(event);
-                initializeSortableComponent("subItems");
-			});
-			$("#item-"+index+" #subItems").children(".sub-item").each(function(subindex){				
-				setSubItemIndex($("#item-"+index), $(this), subindex);
-			});
-			$("#item-"+index+" [id$='description']").attr("id", "eml.taxonomicCoverages["+index+"].description").attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [for$='description']").attr("for", "eml.taxonomicCoverages["+index+"].description");
-			
-			$("#item-"+index+" [id^='list']").attr("id", "list-"+index).attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [id^='taxon-list']").attr("id", "taxon-list-"+index).attr("name", function() {return $(this).attr("id");});
-			$("#item-"+index+" [id^='taxonsLink']").attr("id", "taxonsLink-"+index);
-			$("#taxonsLink-"+index).click(function(event){
-				 showList(event);
-			});	
-			$("#item-"+index+" [id^='add-button']").attr("id", "add-button-"+index).attr("name", function() {return $(this).attr("id");});
-			$("#add-button-"+index).click(function(event){
-				createTaxons(event);
-			});
-			if($("#item-"+index+" #subItems").children().length === 0) {
-				$("#plus-subItem-"+index).click();
-			};
+		<#case "taxcoverage">
+        $("#item-" + index + " #subItems").attr("id", "subItems-" + index);
+        $("#item-" + index + " [id^='plus-subItem']").attr("id", "plus-subItem-" + index);
+        $("#plus-subItem-" + index).unbind();
+        $("#plus-subItem-" + index).click(function (event) {
+            event.preventDefault();
+            addNewSubItem(event);
+            initializeSortableComponent("subItems-" + index);
+        });
+        $("#item-" + index + " #subItems-" + index).children(".sub-item").each(function (subindex) {
+            setSubItemIndex($("#item-" + index), $(this), subindex);
+        });
+        $("#item-" + index + " [id$='description']").attr("id", "eml.taxonomicCoverages[" + index + "].description").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#item-" + index + " [for$='description']").attr("for", "eml.taxonomicCoverages[" + index + "].description");
+
+        $("#item-" + index + " [id^='list']").attr("id", "list-" + index).attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#item-" + index + " [id^='taxon-list']").attr("id", "taxon-list-" + index).attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#item-" + index + " [id^='taxonsLink']").attr("id", "taxonsLink-" + index);
+        $("#taxonsLink-" + index).click(function (event) {
+            showList(event);
+        });
+        $("#item-" + index + " [id^='add-button']").attr("id", "add-button-" + index).attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#add-button-" + index).click(function (event) {
+            createTaxons(event);
+            initializeSortableComponent("subItems-" + index)
+
+            // update taxon names
+            // take real parent index from name (if item was dragged)
+            var parentRealIndex = $("div#item-" + index + " input[id^='add-button']").attr("name").replace("add-button-", "");
+            var items = $("#item-" + index + " div.sub-item");
+
+            items.each(function (subIndex) {
+                $("div#subItem-" + index + "-" + subIndex + " input[id$='scientificName']").attr("name", "eml.taxonomicCoverages[" + parentRealIndex + "].taxonKeywords[" + subIndex + "].scientificName");
+                $("div#subItem-" + index + "-" + subIndex + " input[id$='commonName']").attr("name", "eml.taxonomicCoverages[" + parentRealIndex + "].taxonKeywords[" + subIndex + "].commonName");
+                $("div#subItem-" + index + "-" + subIndex + " select[id$='rank']").attr("name", "eml.taxonomicCoverages[" + parentRealIndex + "].taxonKeywords[" + subIndex + "].rank");
+            });
+        });
+        if ($("#item-" + index + " #subItems-" + index).children().length === 0) {
+            $("#plus-subItem-" + index).click();
+        }
 		<#break>
 		<#default>
   	  </#switch>		
