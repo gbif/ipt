@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2022-12-02 15:24\n"
+"PO-Revision-Date: 2022-12-21 17:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -418,42 +418,42 @@ msgstr "¿Cómo cambio la organización que publica mi recurso? El menú despleg
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:163
 msgid "Ideally, the publishing organization should not be changed after the resource has been either registered with GBIF or assigned a DOI."
-msgstr ""
+msgstr "Idealmente, organización publicadora del recurso no debe cambiarse después de que el recurso se haya registrado en GBIF o se le haya asignado un DOI."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:165
 msgid "That being said, there are two ways to change the publishing organization."
-msgstr ""
+msgstr "Dicho esto, hay dos formas de cambiar la organización publicadora."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:168
 msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr ""
+msgstr "La forma más sencilla es volver a publicar el recurso y, a continuación, ajustar la organización publicadora deseada. Para simplificar el proceso, puede volver a crear el conjunto de datos desde su carpeta de recursos IPT comprimida. Encontrará instrucciones sobre cómo hacerlo xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí].  Si migra el recurso de la antigua organización publicadora a la nueva organización publicadora siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]: Por favor, preste mucha atención al paso 5, donde tendrá que pedir al Helpdesk de GBIF que actualice el Registro de GBIF (GBIF Registry).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:170
 msgid "The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):"
-msgstr ""
+msgstr "La otra forma de proceder es trabajar directamente en el directorio IPT. Antes de empezar, haga una copia de seguridad de sus archivos. A continuación, edite el archivo resource.xml del conjunto de datos en el que desea trabajar (en su servidor, en la carpeta IPT):\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:172
 msgid "In `<organisation>`, replace the current UUID by the UUID of the organization you would like to be the new publishing organization,"
-msgstr ""
+msgstr "En `<organisation>`, reemplace el UUID actual por el UUID de la organización que desea que sea la nueva organización publicadora,\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:173
 msgid "Restart the IPT (restart Tomcat, restart the IPT service, etc),"
-msgstr ""
+msgstr "Reinicie el IPT (reinicie Tomcat, reinicie el servicio IPT, etc.),"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:174
 msgid "Check that no error message appears in your IPT when you click publish."
-msgstr ""
+msgstr "Compruebe que no aparezca ningún mensaje de error en su IPT al hacer clic en publicar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:176
 msgid "In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
-msgstr ""
+msgstr "Adicionalmente, *por favor contacte con el Helpdesk de GBIF y pida que la organización sea actualizada en el Registro de GBIF (GBIF Registry)* (esta parte es muy importante).\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:178

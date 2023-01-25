@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:00\n"
+"POT-Creation-Date: 2022-12-20 20:00+0000\n"
+"PO-Revision-Date: 2022-12-20 21:10\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -59,35 +59,35 @@ msgstr "アソーシエート"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:402
+#: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "Project Data"
 msgstr "プロジェクトデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:421
+#: en/modules/ROOT/pages/manage-resources.adoc:437
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "収集方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:434
+#: en/modules/ROOT/pages/manage-resources.adoc:450
 #, no-wrap
 msgid "Citations"
 msgstr "引用論文"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:462
+#: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "Collection Data"
 msgstr "コレクションデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:513
+#: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "追加のメタデータ"
@@ -1198,14 +1198,14 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:308
-#: en/modules/ROOT/pages/manage-resources.adoc:418
+#: en/modules/ROOT/pages/manage-resources.adoc:434
 #, no-wrap
 msgid "*Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the xref:user-id.adoc[Add a New User ID Directory] page in the IPT wiki.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:309
-#: en/modules/ROOT/pages/manage-resources.adoc:419
+#: en/modules/ROOT/pages/manage-resources.adoc:435
 #, no-wrap
 msgid "*Personnel Identifier* - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.\n"
 msgstr ""
@@ -1513,1134 +1513,1230 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
-msgid "*Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
+msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:401
 #, no-wrap
-msgid "*Add new associated party* - click on this link to initiate a form for an additional associated party.\n"
+msgid "*Author*: an agent associated with authoring a publication that used the data set, or of a data paper\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:402
+#, no-wrap
+msgid "*Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:403
+#, no-wrap
+msgid "*Custodian Steward*: an agent who is responsible for/takes care of the data set\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:404
+#, no-wrap
+msgid "*Distributor*: an agent involved in the publishing/distribution chain of a data set\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:405
-msgid "This metadata page contains information about a project under which the data in the resource were produced."
+#, no-wrap
+msgid "*Editor*: an agent associated with editing a publication that used the data set, or of a data paper\n"
 msgstr ""
 
-#. type: Target for macro image
+#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:406
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceMetadataProjectData.png"
+msgid "*Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:407
+#, no-wrap
+msgid "*Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:408
+#, no-wrap
+msgid "*Owner*: an agent who owns the data set (may or may not be the custodian)\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:409
 #, no-wrap
-msgid "*Title* - the title of the project.\n"
+msgid "*Point Of Contact*: an agent to contact for further information about the data set\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:410
 #, no-wrap
-msgid "*Identifier* - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.\n"
+msgid "*Principal Investigator*: a primary scientific contact associated with the data set\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:411
 #, no-wrap
-msgid "*Description* - an abstract about the research project.\n"
+msgid "*Processor*: an agent responsible for any post-collection processing of the data set\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:412
 #, no-wrap
-msgid "*Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.\n"
+msgid "*Publisher*: the agent associated with publishing a publication that used the data set, or of a data paper\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:413
 #, no-wrap
-msgid "*Study Area Description* - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).\n"
+msgid "*User*: an agent that makes use of the dataset\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:414
 #, no-wrap
-msgid "*Design Description* - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.\n"
+msgid "*Programmer*: an agent providing informatics/programming support related to the data set\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:415
 #, no-wrap
-msgid "*Project Personnel* - the list of people involved in the project.\n"
+msgid "*Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:416
 #, no-wrap
-msgid "*Personnel First Name* - the first name of the person associated with the project.\n"
+msgid "*Reviewer*: person assigned to review the dataset and verify its data and/or metadata quality. This role is analogous to the role played by peer reviewers in the scholarly publication process.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:417
 #, no-wrap
-msgid "*Personnel Last Name* - the last name of the person associated with the project.\n"
+msgid "*Add new associated party* - click on this link to initiate a form for an additional associated party.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:420
-#, no-wrap
-msgid "*Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:424
-msgid "This metadata page contains information about sampling methods used for the data represented by the resource."
+#: en/modules/ROOT/pages/manage-resources.adoc:421
+msgid "This metadata page contains information about a project under which the data in the resource were produced."
 msgstr ""
 
 #. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:422
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourceMetadataProjectData.png"
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:425
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceMetadataSamplingMethods.png"
+msgid "*Title* - the title of the project.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:426
+#, no-wrap
+msgid "*Identifier* - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:427
+#, no-wrap
+msgid "*Description* - an abstract about the research project.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:428
 #, no-wrap
-msgid "*Study Extent* - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the \"Study Area Description\" field of the Project metadata page.\n"
+msgid "*Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:429
 #, no-wrap
-msgid "*Sampling Description* - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
+msgid "*Study Area Description* - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:430
 #, no-wrap
-msgid "*Quality Control* - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).\n"
+msgid "*Design Description* - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:431
 #, no-wrap
-msgid "*Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.\n"
+msgid "*Project Personnel* - the list of people involved in the project.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:432
 #, no-wrap
-msgid "*Add new method step* -  click on this link to add a text box labelled \"Step Description\" to the page (see above). One may add as many method steps as desired.\n"
+msgid "*Personnel First Name* - the first name of the person associated with the project.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:433
 #, no-wrap
-msgid "*Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.\n"
+msgid "*Personnel Last Name* - the last name of the person associated with the project.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:437
-msgid "This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labelled \"Bibliographic Citations\", and a link labelled \"Add new bibliographic citation\"."
+#: en/modules/ROOT/pages/manage-resources.adoc:436
+#, no-wrap
+msgid "*Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:440
+msgid "This metadata page contains information about sampling methods used for the data represented by the resource."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:438
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourceMetadataCitations.png"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:441
-msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:443
 #, no-wrap
-msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
+msgid "ipt2/manage/IPTManageResourceMetadataSamplingMethods.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:444
 #, no-wrap
-msgid "Example citation with institutional creator:\n"
+msgid "*Study Extent* - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the \"Study Area Description\" field of the Project metadata page.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:445
+#, no-wrap
+msgid "*Sampling Description* - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:446
-msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
+#, no-wrap
+msgid "*Quality Control* - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:447
+#, no-wrap
+msgid "*Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:448
+#, no-wrap
+msgid "*Add new method step* -  click on this link to add a text box labelled \"Step Description\" to the page (see above). One may add as many method steps as desired.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:449
+#, no-wrap
+msgid "*Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:453
+msgid "This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labelled \"Bibliographic Citations\", and a link labelled \"Add new bibliographic citation\"."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:454
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourceMetadataCitations.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:457
+msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:459
+#, no-wrap
+msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:460
+#, no-wrap
+msgid "Example citation with institutional creator:\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:462
+msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:464
 msgid "Example citation with 9 creators:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:450
+#: en/modules/ROOT/pages/manage-resources.adoc:466
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:452
+#: en/modules/ROOT/pages/manage-resources.adoc:468
 #, no-wrap
 msgid "*Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:453
+#: en/modules/ROOT/pages/manage-resources.adoc:469
 #, no-wrap
 msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:454
+#: en/modules/ROOT/pages/manage-resources.adoc:470
 #, no-wrap
 msgid "*Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:455
+#: en/modules/ROOT/pages/manage-resources.adoc:471
 #, no-wrap
 msgid "*Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:456
+#: en/modules/ROOT/pages/manage-resources.adoc:472
 #, no-wrap
 msgid "*Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:457
+#: en/modules/ROOT/pages/manage-resources.adoc:473
 #, no-wrap
 msgid "*Bibliographic Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:458
+#: en/modules/ROOT/pages/manage-resources.adoc:474
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataBibCitations.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:461
+#: en/modules/ROOT/pages/manage-resources.adoc:477
 #, no-wrap
 msgid "*Remove this bibliographic citation* - click on this link to remove the citation that follows immediately below the link.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:465
+#: en/modules/ROOT/pages/manage-resources.adoc:481
 msgid "This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labelled \"Add new curatorial unit\"."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:466
+#: en/modules/ROOT/pages/manage-resources.adoc:482
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCollectionData.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:469
+#: en/modules/ROOT/pages/manage-resources.adoc:485
 #, no-wrap
 msgid "*Collections* - the list of collections that this resource is based on.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:470
+#: en/modules/ROOT/pages/manage-resources.adoc:486
 #, no-wrap
 msgid "*Add new citation* -  click on this link to add the text boxes required for an additional collection in the Collections section.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:471
+#: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "*Collection Name* - the full standard name by which the collection is known or cited in the local language.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:472
+#: en/modules/ROOT/pages/manage-resources.adoc:488
 #, no-wrap
 msgid "*Collection Identifier* - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:473
+#: en/modules/ROOT/pages/manage-resources.adoc:489
 #, no-wrap
 msgid "*Parent Collection Identifier* - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter \"Not applicable\" if this collection does not have a parent collection.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:474
+#: en/modules/ROOT/pages/manage-resources.adoc:490
 #, no-wrap
 msgid "*Remove this collection* - click on this link to remove the collection that follows immediately below the link.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:475
+#: en/modules/ROOT/pages/manage-resources.adoc:491
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCollections.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:478
+#: en/modules/ROOT/pages/manage-resources.adoc:494
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:479
+#: en/modules/ROOT/pages/manage-resources.adoc:495
 #, no-wrap
 msgid "*Add new preservation method* -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:480
+#: en/modules/ROOT/pages/manage-resources.adoc:496
 #, no-wrap
 msgid "*Remove this preservation method* - click on this link to remove the preservation method that follows immediately below the link.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:481
+#: en/modules/ROOT/pages/manage-resources.adoc:497
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataPreservationMethods.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:484
+#: en/modules/ROOT/pages/manage-resources.adoc:500
 #, no-wrap
 msgid "*Curatorial Units* - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:485
+#: en/modules/ROOT/pages/manage-resources.adoc:501
 #, no-wrap
 msgid "*Add new curatorial unit* -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is \"Count Range\".\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:486
+#: en/modules/ROOT/pages/manage-resources.adoc:502
 #, no-wrap
 msgid "*Method Type* - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:487
+#: en/modules/ROOT/pages/manage-resources.adoc:503
 #, no-wrap
 msgid "*Count Range* - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:488
+#: en/modules/ROOT/pages/manage-resources.adoc:504
 #, no-wrap
 msgid "*Between* - enter the lower bound of the number of objects in this text box.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:489
+#: en/modules/ROOT/pages/manage-resources.adoc:505
 #, no-wrap
 msgid "*and* - enter the upper bound of the number of objects in this text box.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:490
+#: en/modules/ROOT/pages/manage-resources.adoc:506
 #, no-wrap
 msgid "*Count with uncertainty* - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:491
+#: en/modules/ROOT/pages/manage-resources.adoc:507
 #, no-wrap
 msgid "*Count* - enter the mean likely number of object in this text box.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:492
+#: en/modules/ROOT/pages/manage-resources.adoc:508
 #, no-wrap
 msgid "*+/-* - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:493
+#: en/modules/ROOT/pages/manage-resources.adoc:509
 #, no-wrap
 msgid "*Unit Type* - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:494
+#: en/modules/ROOT/pages/manage-resources.adoc:510
 #, no-wrap
 msgid "*Remove this curatorial unit* - click on this link to remove the curatorial unit that follows immediately below the link.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:495
+#: en/modules/ROOT/pages/manage-resources.adoc:511
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCuratorialUnits.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:497
+#: en/modules/ROOT/pages/manage-resources.adoc:513
 #, no-wrap
 msgid "External Links"
 msgstr "外部リンク"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:500
-msgid "This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labelled \"Add new external link\"."
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:501
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourceMetadataExternalLinks.png"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:504
-#, no-wrap
-msgid "*Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:505
-#, no-wrap
-msgid "*Other Data Formats* - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:506
-#, no-wrap
-msgid "*Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:507
-#, no-wrap
-msgid "*Name* - the name of the file or data set.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:508
-#, no-wrap
-msgid "*Character Set* - the name or code for the character encoding (e.g., ASCII, UTF-8).\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:509
-#, no-wrap
-msgid "*Download URL* - the URL from which the file for the document or data set can be downloaded in the mentioned format.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:510
-#, no-wrap
-msgid "*Data Format* - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:511
-#, no-wrap
-msgid "*Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:512
-#, no-wrap
-msgid "*Remove this external link* - click on the link having this label to remove the external link that follows immediately below.\n"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:516
-msgid "This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labelled \"Add new alternative identifier\"."
+msgid "This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labelled \"Add new external link\"."
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:517
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png"
+msgid "ipt2/manage/IPTManageResourceMetadataExternalLinks.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:520
 #, no-wrap
-msgid "*Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.\n"
+msgid "*Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:521
 #, no-wrap
-msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Published Versions>> section).\n"
+msgid "*Other Data Formats* - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:522
 #, no-wrap
-msgid "*Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.\n"
+msgid "*Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:523
 #, no-wrap
-msgid "*Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.\n"
+msgid "*Name* - the name of the file or data set.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:524
 #, no-wrap
-msgid "*Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.\n"
+msgid "*Character Set* - the name or code for the character encoding (e.g., ASCII, UTF-8).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:525
 #, no-wrap
-msgid "*Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.\n"
+msgid "*Download URL* - the URL from which the file for the document or data set can be downloaded in the mentioned format.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:526
 #, no-wrap
-msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
+msgid "*Data Format* - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:527
 #, no-wrap
-msgid "*Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.\n"
+msgid "*Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:528
 #, no-wrap
-msgid "*Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).\n"
+msgid "*Remove this external link* - click on the link having this label to remove the external link that follows immediately below.\n"
 msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:529
-#, no-wrap
-msgid "*Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.\n"
-msgstr ""
-
-#. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:530
-#, no-wrap
-msgid "Published Versions"
-msgstr "発行済みのバージョン"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:532
-msgid "This area of the Resource Overview page allows a user to publish a version of the resource."
+msgid "This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labelled \"Add new alternative identifier\"."
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:533
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublish.png"
+msgid "ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:536
-msgid "Click on the button labelled \"Publish\" to trigger publishing a new version. The button labelled \"Publish\" will be enabled if"
+#, no-wrap
+msgid "*Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:537
+#, no-wrap
+msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Published Versions>> section).\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:538
-msgid "the required metadata for the resource are complete, and"
+#, no-wrap
+msgid "*Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:539
-msgid "the user has the role \"Manager with/without registration rights\"."
+#, no-wrap
+msgid "*Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:540
+#, no-wrap
+msgid "*Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:541
+#, no-wrap
+msgid "*Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:542
+#, no-wrap
+msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:543
+#, no-wrap
+msgid "*Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:544
+#, no-wrap
+msgid "*Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:545
+#, no-wrap
+msgid "*Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/manage-resources.adoc:546
+#, no-wrap
+msgid "Published Versions"
+msgstr "発行済みのバージョン"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:548
+msgid "This area of the Resource Overview page allows a user to publish a version of the resource."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:549
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourcePublish.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:552
+msgid "Click on the button labelled \"Publish\" to trigger publishing a new version. The button labelled \"Publish\" will be enabled if"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:554
+msgid "the required metadata for the resource are complete, and"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:555
+msgid "the user has the role \"Manager with/without registration rights\"."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:557
 msgid "When the resource is registered or the resource has been assigned a DOI, however, only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" button, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:542
+#: en/modules/ROOT/pages/manage-resources.adoc:558
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMajor.png"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:544
+#: en/modules/ROOT/pages/manage-resources.adoc:560
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMinor.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:547
+#: en/modules/ROOT/pages/manage-resources.adoc:563
 msgid "The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing \"Publish\" is explained in the \"Publishing steps\" section below."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:549
+#: en/modules/ROOT/pages/manage-resources.adoc:565
 msgid "On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below."
 msgstr ""
 
 #. type: Block title
-#: en/modules/ROOT/pages/manage-resources.adoc:550
+#: en/modules/ROOT/pages/manage-resources.adoc:566
 #, no-wrap
 msgid "This demonstrates a major version change since the pending version has been reserved a new DOI:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:551
+#: en/modules/ROOT/pages/manage-resources.adoc:567
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishTable.png"
 msgstr ""
 
 #. type: Block title
-#: en/modules/ROOT/pages/manage-resources.adoc:553
+#: en/modules/ROOT/pages/manage-resources.adoc:569
 #, no-wrap
 msgid "This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:554
+#: en/modules/ROOT/pages/manage-resources.adoc:570
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishTable2.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:557
+#: en/modules/ROOT/pages/manage-resources.adoc:573
 #, no-wrap
 msgid "*Version*: - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:558
+#: en/modules/ROOT/pages/manage-resources.adoc:574
 #, no-wrap
 msgid "*Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:559
+#: en/modules/ROOT/pages/manage-resources.adoc:575
 #, no-wrap
 msgid "*DOI*: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:560
+#: en/modules/ROOT/pages/manage-resources.adoc:576
 #, no-wrap
 msgid "*Published on*: - to date the current version was published on / the date the pending version will be published on.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:561
+#: en/modules/ROOT/pages/manage-resources.adoc:577
 #, no-wrap
 msgid "*Publication log*: - click the download button to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.\n"
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:562
+#: en/modules/ROOT/pages/manage-resources.adoc:578
 #, no-wrap
 msgid "Publishing steps"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:565
+#: en/modules/ROOT/pages/manage-resources.adoc:581
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:567
+#: en/modules/ROOT/pages/manage-resources.adoc:583
 msgid "The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:568
+#: en/modules/ROOT/pages/manage-resources.adoc:584
 msgid "A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:569
+#: en/modules/ROOT/pages/manage-resources.adoc:585
 msgid "The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see \"Data Validation\" section below)."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:570
+#: en/modules/ROOT/pages/manage-resources.adoc:586
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:571
+#: en/modules/ROOT/pages/manage-resources.adoc:587
 msgid "The information about the resource is updated in the GBIF Registry if the resource is registered."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:572
+#: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT."
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:573
+#: en/modules/ROOT/pages/manage-resources.adoc:589
 #, no-wrap
 msgid "Data Validation"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:576
+#: en/modules/ROOT/pages/manage-resources.adoc:592
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:578
+#: en/modules/ROOT/pages/manage-resources.adoc:594
 msgid "After writing, the IPT also validates their content in the following ways:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:580
+#: en/modules/ROOT/pages/manage-resources.adoc:596
 msgid "If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:581
+#: en/modules/ROOT/pages/manage-resources.adoc:597
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:582
+#: en/modules/ROOT/pages/manage-resources.adoc:598
 #, no-wrap
 msgid "Assigning DOIs to Resources"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:585
-msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the \"Configure Organizations\" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:587
-#, no-wrap
-msgid "*Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:588
-#, no-wrap
-msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the \"Reserve\" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the \"Reserve\" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:589
-#, no-wrap
-msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the \"Reserve new\" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:590
-#, no-wrap
-msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the \"Delete\" button in the Published Versions section.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:591
-#, no-wrap
-msgid "*Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:592
-#, no-wrap
-msgid "*Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:593
-#, no-wrap
-msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr ""
-
-#. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:594
-#, no-wrap
-msgid "Publishing Status page"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:597
-msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:599
-#, no-wrap
-msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:600
-#, no-wrap
-msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:601
-#, no-wrap
-msgid "how many records couldn't be read and were not written to the DwC-A\n"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:602
-#, no-wrap
-msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
+msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the \"Configure Organizations\" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:603
 #, no-wrap
-msgid "how many records contained fewer columns than the number that was mapped\n"
+msgid "*Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:604
 #, no-wrap
+msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the \"Reserve\" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the \"Reserve\" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:605
+#, no-wrap
+msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the \"Reserve new\" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:606
+#, no-wrap
+msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the \"Delete\" button in the Published Versions section.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:607
+#, no-wrap
+msgid "*Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:608
+#, no-wrap
+msgid "*Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:609
+#, no-wrap
+msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/manage-resources.adoc:610
+#, no-wrap
+msgid "Publishing Status page"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:613
+msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:615
+#, no-wrap
+msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:616
+#, no-wrap
+msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:617
+#, no-wrap
+msgid "how many records couldn't be read and were not written to the DwC-A\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:618
+#, no-wrap
+msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:619
+#, no-wrap
+msgid "how many records contained fewer columns than the number that was mapped\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:620
+#, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:605
+#: en/modules/ROOT/pages/manage-resources.adoc:621
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishingStatus.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:607
+#: en/modules/ROOT/pages/manage-resources.adoc:623
 #, no-wrap
 msgid "Auto-publishing"
 msgstr "自動公開"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:610
+#: en/modules/ROOT/pages/manage-resources.adoc:626
 msgid "To turn on automated publishing, select \"Edit\" in the Auto-publishing section."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:611
+#: en/modules/ROOT/pages/manage-resources.adoc:627
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:614
+#: en/modules/ROOT/pages/manage-resources.adoc:630
 msgid "Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press \"Save\"."
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:615
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:618
-msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" button can be used to change or disable auto-publishing."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:620
-msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
-msgstr ""
-
-#. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:621
-#, no-wrap
-msgid "Visibility"
-msgstr "公開状況"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:623
-msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:625
-#, no-wrap
-msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labelled \"Public\". A message will appear at the top of the page saying that the status has been changed to \"Public\".\n"
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:626
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:629
-#, no-wrap
-msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.\n"
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:631
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceVisibilityPublicNeedToPublish.png"
+msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
-msgid "Two buttons appear in the left-hand section of the visibility area. Clicking on the button labelled \"Private\" will remove the resource entirely from public visibility and return it to the private state. The button labelled \"Register\" will only be enabled if"
+msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" button can be used to change or disable auto-publishing."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:636
-msgid "the required metadata for the resource are complete,"
+msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
 msgstr ""
 
-#. type: Plain text
+#. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:637
-msgid "the resource has been published (see the explanation of the <<Published Versions>> area of the Resource Overview page, below), and"
+#, no-wrap
+msgid "Visibility"
+msgstr "公開状況"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:639
+msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:638
-msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
+#: en/modules/ROOT/pages/manage-resources.adoc:641
+#, no-wrap
+msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labelled \"Public\". A message will appear at the top of the page saying that the status has been changed to \"Public\".\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:639
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:642
-msgid "Finally, click on the button labelled \"Register\" to register the resource with the GBIF Registry."
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:644
-msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:646
-msgid "Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
+#: en/modules/ROOT/pages/manage-resources.adoc:645
+#, no-wrap
+msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.\n"
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:647
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
+msgid "ipt2/manage/IPTManageResourceVisibilityPublicNeedToPublish.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:650
-msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\"."
+msgid "Two buttons appear in the left-hand section of the visibility area. Clicking on the button labelled \"Private\" will remove the resource entirely from public visibility and return it to the private state. The button labelled \"Register\" will only be enabled if"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:652
+msgid "the required metadata for the resource are complete,"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:653
-#, no-wrap
-msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.\n"
+msgid "the resource has been published (see the explanation of the <<Published Versions>> area of the Resource Overview page, below), and"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:654
+msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:655
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
+msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:658
+msgid "Finally, click on the button labelled \"Register\" to register the resource with the GBIF Registry."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:660
+msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:662
+msgid "Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:663
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:666
+msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\"."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:669
+#, no-wrap
+msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.\n"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:671
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:674
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:660
+#: en/modules/ROOT/pages/manage-resources.adoc:676
 #, no-wrap
 msgid "Networks"
 msgstr "ネットワーク"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:663
+#: en/modules/ROOT/pages/manage-resources.adoc:679
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:664
+#: en/modules/ROOT/pages/manage-resources.adoc:680
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:667
+#: en/modules/ROOT/pages/manage-resources.adoc:683
 msgid "To add the resource to a network, select it from the dropdown list and click \"Add\".  To remove it, click the icon on the right of the network name."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:669
+#: en/modules/ROOT/pages/manage-resources.adoc:685
 msgid "Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:670
+#: en/modules/ROOT/pages/manage-resources.adoc:686
 #, no-wrap
 msgid "Resource Managers"
 msgstr "リソース　管理者(Managers)"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:672
+#: en/modules/ROOT/pages/manage-resources.adoc:688
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:675
+#: en/modules/ROOT/pages/manage-resources.adoc:691
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labelled \"Delete\" to the right of the email address in the manager listing."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:676
+#: en/modules/ROOT/pages/manage-resources.adoc:692
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:678
+#: en/modules/ROOT/pages/manage-resources.adoc:694
 #, no-wrap
 msgid "Delete a Resource"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:681
+#: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will show two options."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:683
+#: en/modules/ROOT/pages/manage-resources.adoc:699
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:684
+#: en/modules/ROOT/pages/manage-resources.adoc:700
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:685
+#: en/modules/ROOT/pages/manage-resources.adoc:701
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:688
+#: en/modules/ROOT/pages/manage-resources.adoc:704
 msgid "Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:690
+#: en/modules/ROOT/pages/manage-resources.adoc:706
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/manage-resources.adoc:691
+#: en/modules/ROOT/pages/manage-resources.adoc:707
 #, no-wrap
 msgid "Migrate a Resource"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:694
+#: en/modules/ROOT/pages/manage-resources.adoc:710
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:696
+#: en/modules/ROOT/pages/manage-resources.adoc:712
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:698
+#: en/modules/ROOT/pages/manage-resources.adoc:714
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:700
+#: en/modules/ROOT/pages/manage-resources.adoc:716
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:701
+#: en/modules/ROOT/pages/manage-resources.adoc:717
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:702
+#: en/modules/ROOT/pages/manage-resources.adoc:718
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:703
+#: en/modules/ROOT/pages/manage-resources.adoc:719
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:704
+#: en/modules/ROOT/pages/manage-resources.adoc:720
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:706
+#: en/modules/ROOT/pages/manage-resources.adoc:722
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:708
+#: en/modules/ROOT/pages/manage-resources.adoc:724
 msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:709
+#: en/modules/ROOT/pages/manage-resources.adoc:725
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:710
+#: en/modules/ROOT/pages/manage-resources.adoc:726
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:711
+#: en/modules/ROOT/pages/manage-resources.adoc:727
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:713
+#: en/modules/ROOT/pages/manage-resources.adoc:729
 msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:714
+#: en/modules/ROOT/pages/manage-resources.adoc:730
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:717
+#: en/modules/ROOT/pages/manage-resources.adoc:733
 #, no-wrap
 msgid "*Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:718
+#: en/modules/ROOT/pages/manage-resources.adoc:734
 #, no-wrap
 msgid "the name and URL (or GBIF Registry UUID) of your IPT\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:719
+#: en/modules/ROOT/pages/manage-resources.adoc:735
 #, no-wrap
 msgid "the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:719
+#: en/modules/ROOT/pages/manage-resources.adoc:735
 #, no-wrap
 msgid "(if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry\n"
 msgstr ""
