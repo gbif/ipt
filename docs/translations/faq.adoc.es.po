@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-01-26 11:04\n"
+"PO-Revision-Date: 2023-01-26 11:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -433,7 +433,7 @@ msgstr "La forma más sencilla es volver a publicar el recurso y, a continuació
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:170
 msgid "The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):"
-msgstr "La otra forma de proceder es trabajar directamente en el directorio IPT. Antes de empezar, haga una copia de seguridad de sus archivos. A continuación, edite el archivo resource.xml del conjunto de datos en el que desea trabajar (en su servidor, en la carpeta IPT):\n"
+msgstr "La otra forma de proceder es trabajar directamente en el directorio IPT. Antes de empezar, haga una copia de seguridad de sus archivos. A continuación, edite el archivo resource.xml del conjunto de datos en el que desea trabajar (en su servidor, en la carpeta IPT):"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:172
