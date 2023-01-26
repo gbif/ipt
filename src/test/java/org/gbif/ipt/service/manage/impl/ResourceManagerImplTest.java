@@ -347,8 +347,8 @@ public class ResourceManagerImplTest {
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
     assertNotNull(res.getMetadataModified());
-    assertNull(res.getMappingsModified());
-    assertNull(res.getSourcesModified());
+    assertNotNull(res.getMappingsModified());
+    assertNotNull(res.getSourcesModified());
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
@@ -592,8 +592,8 @@ public class ResourceManagerImplTest {
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
     assertNotNull(res.getMetadataModified());
-    assertNull(res.getMappingsModified());
-    assertNull(res.getSourcesModified());
+    assertNotNull(res.getMappingsModified());
+    assertNotNull(res.getSourcesModified());
   }
 
   /**
