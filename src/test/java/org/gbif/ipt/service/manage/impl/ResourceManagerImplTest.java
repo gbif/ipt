@@ -346,7 +346,7 @@ public class ResourceManagerImplTest {
     assertNull(res.getUpdateFrequency());
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
-    assertNull(res.getMetadataModified());
+    assertNotNull(res.getMetadataModified());
     assertNull(res.getMappingsModified());
     assertNull(res.getSourcesModified());
 
@@ -591,7 +591,7 @@ public class ResourceManagerImplTest {
     assertNull(res.getUpdateFrequency());
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
-    assertNull(res.getMetadataModified());
+    assertNotNull(res.getMetadataModified());
     assertNull(res.getMappingsModified());
     assertNull(res.getSourcesModified());
   }
