@@ -1,5 +1,5 @@
 [WARNING]
 .Obsolete version
 ====
-You are reading the manual for version {page-version}, which is out of date.  You may wish to read the manual for xref:{latest-manual-version}@{docname}.adoc[version {latest-manual-version}].  You can choose other versions of the manual with the selectors at the top right or bottom left of the page.
+You are reading the manual for version {page-version}, which is out of date.  You may wish to read the manual for the xref:{latest-manual-version}@{docname}.adoc[latest version].  You can choose other versions of the manual with the selectors at the top right or bottom left of the page.
 ====

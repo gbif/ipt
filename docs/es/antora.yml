@@ -6,6 +6,6 @@ nav:
   - modules/ROOT/nav.adoc
 asciidoc:
   attributes:
-    latest-manual-version: 2.6
+    latest-manual-version: 2.5
     idprefix: '@'
     idseparator: '-@'
