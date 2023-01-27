@@ -9,7 +9,7 @@ If there are any public resources, they will appear in a table having the follow
 
 * **Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)
 * **Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).
-* **Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be "Not registered". Review the information under the "Organizations" heading in the "Administration Menu" section for more information about registering organizations and registering a resource under an organization.
+* **Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be "No organisation". Review the information under the "Organizations" heading in the "Administration Menu" section for more information about registering organizations and registering a resource under an organization.
 * **Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata
 * **Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata
 * **Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.
