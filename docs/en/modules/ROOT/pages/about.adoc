@@ -1,34 +1,13 @@
 = About Menu
 
-The default About page gives information about the current IPT installation, including information about the hosting organization, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a FreeMarker template that can contain a combination of HTML and variable references of the form `${host.variable!"alternate value if null"}`. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included.
+The default About page gives basic information about the current IPT installation.
+
+If IPT has not been registered the following page is displayed
 
 image::ipt2/about/IPTAbout.png[]
 
-Here is the content of the about.ftl file resulting in the page as viewed above.
+and if IPT is registered
 
-[source=html]
-----
-<h1>About this IPT installation</h1>
-<#if hostingOrganisation?? && hostingOrganisation.name??>
-<p>This is a default IPT hosted by ${hostingOrganisation.name}</p>
+image::ipt2/about/IPTAboutRegistered.png[]
 
-<p>You can use the following variables about the hosting organization:</p>
-<ul>
-  <li>description = ${hostingOrganisation.description!}</li>
-  <li>name = ${hostingOrganisation.name!}</li>
-  <li>alias = ${hostingOrganisation.alias!}</li>
-  <li>homepageURL = ${hostingOrganisation.homepageURL!}</li>
-  <li>primaryContactType = ${hostingOrganisation.primaryContactType!}</li>
-  <li>primaryContactName = ${hostingOrganisation.primaryContactName!}</li>
-  <li>primaryContactDescription = ${hostingOrganisation.primaryContactDescription!}</li>
-  <li>primaryContactAddress = ${hostingOrganisation.primaryContactAddress!}</li>
-  <li>primaryContactEmail = ${hostingOrganisation.primaryContactEmail!}</li>
-  <li>primaryContactPhone = ${hostingOrganisation.primaryContactPhone!}</li>
-  <li>nodeKey = ${hostingOrganisation.nodeKey!}</li>
-  <li>nodeName = ${hostingOrganisation.nodeName!}</li>
-  <li>nodeContactEmail = ${hostingOrganisation.nodeContactEmail!}</li>
-</ul>
-<#else>
-<p id="not-registered">This IPT installation has not been registered yet.</p>
-</#if>
-----
+Information displayed on the page can be edited in Administration/GBIF Registration Options.
