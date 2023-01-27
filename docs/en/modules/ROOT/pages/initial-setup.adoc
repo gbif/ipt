@@ -58,11 +58,13 @@ If the server on which the IPT is installed does not have direct HTTP/HTTPS acce
 
 image::ipt2/setup/IPTSetup2.png[]
 
+image::ipt2/setup/IPTSetup2-1.png[]
+
 When all of the information on the page is complete and correct, click on the button labelled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear.
 
 image::ipt2/setup/IPTSetupFinished.png[]
 
-Click on the button labelled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization. The Organizations button is disabled by default until the GBIF registration options have been set.
+Click on the button labelled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization.
 
 image::ipt2/administration/IPTAdminBeforeRegistration.png[]
 
