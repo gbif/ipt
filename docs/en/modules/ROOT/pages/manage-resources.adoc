@@ -258,13 +258,14 @@ This page shows a list of concepts within the vocabulary. In the context of mapp
 image::ipt2/manage/IPTManageResourceVocabularyDetail.png[]
 
 === Metadata
-This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on
+three dot menu and selecting "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
 
 image::ipt2/manage/IPTManageResourceMetadataMissing.png[]
 
-An existing resource EML file can be uploaded, replacing any existing metadata.  To do this, click the "Browse" button and choose the EML file.
+An existing resource EML file can be uploaded, replacing any existing metadata. To do this, click three dot menu and select "Upload". Then click the "Browse" button and choose the EML file.
 
-Clicking on the "Edit" button opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.
+Clicking on the "Edit" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.
 
 image::ipt2/manage/IPTManageResourceMetadataPagesList.png[width=168]
 
@@ -284,11 +285,12 @@ image::ipt2/manage/IPTManageResourceMetadataBasicMetadata.png[]
 * *Resource Language* - the language in which the data for the resource are written.
 * *Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.
 * *Description* - a brief overview of the resource broken into paragraphs. This should provide enough information to help potential users of the data to understand if it may be of interest.
-* *Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed.
+* *Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. The contacts in the list can be rearranged by simply dragging the elements and placing them in the right place.
 +
 --
 image::ipt2/manage/IPTManageResourceMetadataResourceContact.png[]
 
+* *Copy from another* - click on this link to copy contact data from any resource. Modal window would be displayed with options to choose the resource and the contact.
 * *Add new resource contact* - click on this link to initiate a form for an additional resource contact.
 * *Remove this resource contact* - click on this link to remove the resource contact that follows immediately below the link.
 * *First Name* - the first or given name of the resource contact.
@@ -319,6 +321,8 @@ This metadata page contains information about the geographic area covered by the
 
 image::ipt2/manage/IPTManageResourceMetadataGeographicCoverage.png[]
 
+* *Automatically infer from source data* - source data would be analyzed and the geographical coverage would be set automatically on publication.
+* *Preview inferred* - analyze source data and display inferred values.
 * *Coverage Map* - if connected to the Internet, a map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on all corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Drag the entire box, or drag individual markers to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. The map features hill shading, natural vegetation colours, advanced labelling, etc. The map has buttons to zoom in (+) and zoom out (-) and can be dragged in any direction to change the area of the earth being shown.
 * *Set global coverage?* - click on this check box to change the geographic coverage to cover the entire earth.
 * *South/West & North/East* - these four text boxes correspond to the SW and NE corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labelled "Save".
@@ -330,6 +334,8 @@ This metadata page allows the user to enter information about one of more groups
 
 image::ipt2/manage/IPTManageResourceMetadataTaxonomic.png[]
 
+* *Automatically infer from source data* - source data would be analyzed and the taxonomic coverage would be set automatically on publication.
+* *Preview inferred* - analyze source data and display inferred values.
 * *Remove this taxonomic coverage* - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.
 * *Description* - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.
 * *Add several taxa* - this link adds a text box labelled "Taxon List" to the page.
@@ -338,14 +344,14 @@ image::ipt2/manage/IPTManageResourceMetadataTaxonList.png[]
 
 * *Taxon List* - this text box allows the user to enter a list of taxa with each taxon on a separate line by using the ENTER key within the text box. The taxa entered in this list are treated as scientific names.
 * *Add* - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.
-* *Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a trash icon. The taxon can contain any combination of scientific and common name with an optional rank.
+* *Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a "Remove this taxon" link. The taxon can contain any combination of scientific and common name with an optional rank.
 
 image::ipt2/manage/IPTManageResourceMetadataSingleTaxon.png[]
 
 * *Scientific Name* - this text box is meant to contain the scientific name for the taxon.
 * *Common Name* - this text box is meant to contain the scientific name for the taxon.
 * *Rank* - this text box is meant to contain the taxonomic rank of the taxon.
-* *Trash Icon* image:ipt2/controls/Control-TrashIcon.png[] - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.
+* *Remove this taxon* - clicking on this link will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.
 * *Add new taxonomic coverage* - click on this link to initiate a form for a new taxonomic coverage with a text box labelled "Description" and links to "Add several taxa" and "Add new taxon" as described above.
 
 === Temporal Coverage
@@ -354,6 +360,8 @@ This metadata page contains information about one of more dates, date ranges, or
 
 image::ipt2/manage/IPTManageResourceMetadataTemporalCoverages.png[]
 
+* *Automatically infer from source data* - source data would be analyzed and the temporal coverage would be set automatically on publication.
+* *Preview inferred* - analyze source data and display inferred values.
 * *Add new temporal coverage* - click on this link to initiate a form for an additional temporal coverage.
 * *Remove this temporal coverage* - click on this link to remove the temporal coverage that follows immediately below the link.
 * *Temporal Coverage Type* - select one of the options in this select box to set the type of temporal coverage, which can consist of a single date, a date range, a formation period, or a living time period. Selecting a type will reveal controls appropriate to the choice as explained below.
