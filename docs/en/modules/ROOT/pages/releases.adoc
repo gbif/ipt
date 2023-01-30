@@ -5,7 +5,7 @@
 ====
 The current, stable release is version <<2-7-0-january-2023,2.7.0>>.
 
-You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
+You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
 Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE.
 endif::[]
@@ -32,13 +32,10 @@ Minor issues and security issues will be addressed in patch releases.
 
 == *2.6.3* – October 2022
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.3/ipt-2.6.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.6.3 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/41?closed=1[12 issues].
 * Translated into 7 languages
-
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This release includes security and bug fixes.
 

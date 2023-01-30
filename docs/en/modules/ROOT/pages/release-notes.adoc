@@ -1,6 +1,6 @@
 = Release Notes
 
-*IPT Versions: pass:[2.6.*]*
+*IPT Versions: pass:[2.5.*, 2.6.*, 2.7.*]*
 
 == Upgrade instructions
 
