@@ -153,7 +153,7 @@ From this point, the process is very similar to using a file as a data source.  
 === Darwin Core Mappings
 This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.
 
-Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.
+Once these conditions have been met, the dropdown will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the "Configure Core Types and Extensions" heading in the "Administration Menu" section for an explanation of how to install extensions.
 
 image::ipt2/manage/IPTManageResourceDwCMapping.png[]
 
@@ -170,7 +170,7 @@ image::ipt2/manage/IPTManageResourceSourceSelect.png[]
 
 Select the data source to map, and then click on the button labelled "Save". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping).
 
-After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the "Edit" button beside a mapping to modify it, or click the preview icon image:ipt2/manage/preview.png[width=32,height=31] to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
+After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the three dot menu and select "Preview" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
 
 image::ipt2/manage/IPTManageResourceDwCMapping2.png[]
 
