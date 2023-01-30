@@ -812,6 +812,9 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
     box-shadow: none !important;
+    color: rgb(var(--color-gbif-secondary)) !important;
+    background-color: rgba(var(--color-gbif-secondary), 0.04) !important;
+    border-color: rgb(var(--color-gbif-secondary)) !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -828,6 +831,9 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
     box-shadow: none;
+    color: rgb(var(--color-gbif-primary));
+    background-color: rgba(var(--color-gbif-primary), 0.04);
+    border-color: rgb(var(--color-gbif-primary));
 }
 .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
     color: rgb(var(--color-gbif-primary));
@@ -855,6 +861,9 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 .btn-check:focus + .btn-outline-gbif-danger, .btn-outline-gbif-danger:focus {
     box-shadow: none;
+    color: rgb(var(--color-gbif-danger));
+    background-color: rgba(var(--color-gbif-danger), 0.04);
+    border-color: rgb(var(--color-gbif-danger));
 }
 .btn-check:checked + .btn-outline-gbif-danger, .btn-check:active + .btn-outline-gbif-danger, .btn-outline-gbif-danger:active, .btn-outline-gbif-danger.active, .btn-outline-gbif-danger.dropdown-toggle.show {
     color: rgb(var(--color-gbif-danger));

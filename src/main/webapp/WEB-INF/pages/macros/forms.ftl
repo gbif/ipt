@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
+    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 tabindex=-1>
         <div>
             <div class="d-flex text-smaller">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
@@ -11,6 +11,7 @@
                     type="${type}"
                     id="${name}"
                     name="${name}"
+                    <#if (tabindex>0)>tabindex="${tabindex}" </#if>
                     value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
                     <#if (size>0)>size="${size}"</#if>
                     <#if (maxlength>0)>maxlength="${maxlength}"</#if>
@@ -72,13 +73,13 @@
         </div>
     </#macro>
 
-    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
+    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false tabindex=-1>
         <div>
             <div class="d-flex text-smaller">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
             </div>
-            <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if> <#if requiredField>required</#if>>
+            <select name="${name}" id="${name}" size="${size}" class="form-select" <#if (tabindex>0)>tabindex="${tabindex}" </#if> <#if disabled>readonly="readonly"</#if> <#if requiredField>required</#if>>
                 <#if includeEmpty>
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
                 </#if>
