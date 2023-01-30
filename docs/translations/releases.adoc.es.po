@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-01-30 16:42+0000\n"
-"PO-Revision-Date: 2023-01-30 16:46\n"
+"PO-Revision-Date: 2023-01-30 20:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "La versión estable actual es la <<2-7-0-enero-2023,2.7.0>>."
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
 msgid "You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen."
-msgstr ""
+msgstr "Está leyendo la última versión del manual. Puede leer otras versiones utilizando los selectores situados en la parte superior derecha o inferior izquierda de la pantalla."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
