@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-01-31 02:54\n"
+"PO-Revision-Date: 2023-01-31 04:06\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -33,63 +33,63 @@ msgstr "また、IPTのインスタンスを自分でセットアップする場
 #: en/modules/ROOT/pages/index.adoc:30
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
-msgstr ""
+msgstr "IPTを利用してGBIF.orgで生物多様性データを公開する方法"
 
 #. type: Title =
 #: en/modules/ROOT/pages/index.adoc:1
 #, no-wrap
 msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
-msgstr ""
+msgstr "GBIF 統合バブリッシングツールキット（IPT） ユーザーマニュアル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
 msgid "_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._"
-msgstr ""
+msgstr "ダウンロードを含む最新版の情報は、[Releases]ページをご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
 msgid "The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:"
-msgstr ""
+msgstr "GBIF統合パブリッシングツールキット（IPT）は、4種類の生物多様性関連情報を簡単に共有できる、自由に利用可能なオープンソースWebアプリケーションです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:8
 msgid "primary taxon occurrence data"
-msgstr ""
+msgstr "主要な分類群のオカレンスデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
 msgid "taxon checklists"
-msgstr ""
+msgstr "分類群チェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:10
 msgid "sampling event data"
-msgstr ""
+msgstr "サンプリングイベントデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11
 msgid "general metadata about data sources."
-msgstr ""
+msgstr "データソース全般のメタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:13
 msgid "An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository."
-msgstr ""
+msgstr "IPTインスタンスおよびIPTで登録されたデータやメタデータはGBIFレジストリに接続され、GBIFネットワークやポータルを通じて参照できるようインデックス化され、一般に利用できるようになります。また、IPTにDataCiteアカウントを設定することで、データセットにDOIを付与し、データリポジトリとして活用することも可能です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr ""
+msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。GBIFのさまざまな参加者は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、[GBIF.org]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
 msgid "Several factors have provided motivation for GBIF to lead the development of the IPT:"
-msgstr ""
+msgstr "GBIFがIPTの開発を主導するようになったのは、いくつかの要因があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:22
 msgid "limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;"
-msgstr ""
+msgstr "大規模なデータセットを容易に公開・転送するできる従来の公開ツール（DiGIR、TAPIR、BioCASe）の制限"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:23
