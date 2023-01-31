@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2023-01-31 05:02\n"
+"PO-Revision-Date: 2023-01-31 05:57\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -205,58 +205,58 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:35
 #, no-wrap
 msgid "Upload a zipped IPT resource configuration folder"
-msgstr "IPTリソース設定フォルダをzipでアップロード"
+msgstr "IPTリソース設定フォルダをzipファイルでアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
 msgid "It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will *not* copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name."
-msgstr ""
+msgstr "zip圧縮されたIPTリソース設定フォルダから、リソースのコピーを作成することができます。リソースがIPTの互換性のあるバージョンの下で作成されていることが条件です。事実上、これはリソースのすべてのメタデータ、ソース・データ、およびマッピングをコピーします。リソースの登録情報、バージョン履歴、DOI、バージョン番号、マネージャー、出版状況、作成日、最終出版日、またリソースの省略名はコピーされません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:39
 msgid "To do so, follow these instructions:"
-msgstr ""
+msgstr "以下がその手順です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:41
 msgid "Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the `$data-directory/resources` folder, and named using the resource short name. For example, if the resource had short name \"ants\", it would be found at `$data-directory/resources/ants`."
-msgstr ""
+msgstr "コピーしたいリソースに対応するリソース設定フォルダを探します。リソース設定フォルダは、`$data-directory/resources`フォルダ内に格納され、リソースの省略名が名前になっています。例えば、リソースの省略名が「ants」であれば、$data-directory/resources/antsに置かれています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:42
 msgid "Zip (compress) the resource configuration folder: `ants/` → `ants.zip`"
-msgstr ""
+msgstr "リソース設定フォルダ `ants/` → `ants.zip` をZIP（圧縮）する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:43
 msgid "On the \"Create a New Resource\" section on the \"Manage Resource Menu\" page:"
-msgstr ""
+msgstr "「リソース管理メニュー」ページの「新規リソースを作成する」で"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:44
 msgid "Enter a new resource short name. You can preserve the zipped resource's short name, provided it doesn't already exist in your IPT."
-msgstr ""
+msgstr "新しいリソースの省略名を入力します。IPTにまだなければ、zip圧縮されたリソースの省略名をそのまま用いることができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:45
 msgid "Click on the button labelled \"Choose File\", then navigate to and select the intended zipped resource configuration folder."
-msgstr ""
+msgstr "「ファイルを選択」ボタンをクリックし、zip圧縮されたリソース設定フォルダーを選択します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:46
 msgid "After selecting the file, its name will appear next to the \"Choose File\" button. Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource."
-msgstr ""
+msgstr "ファイルを選択すると、「ファイルを選択」ボタンの横にファイル名が表示されるので、「作成」ボタンをクリックします。選択したファイルのインポートに問題がある場合、エラーメッセージが表示されます。インポートが成功すると、リソースのメタデータ、ソースデータ、マッピングがすべてzip圧縮されたリソースから新しいリソースにコピーされた「リソースの概要」ページが表示されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:47
 #, no-wrap
 msgid "Upload a metadata file"
-msgstr ""
+msgstr "メタデータファイルのアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "IPTは、GBIFメタデータプロファイルに準拠した有効なデータセットのメタデータファイルをインポートまたはエクスポートすることができます。GBIF EML メタデータプロファイルに関する情報、および GBIFメタデータプロファイルダーウィンコアに準拠したメタデータ文書の作成方法については、[GBIF Metadata Profile – How To Guide]に記載されています。メタデータファイルをインポートするには、リソースタイプ「メタデータのみ」を選択し、「ファイルを選択」ボタンをクリックし、目的のメタデータファイルを選択します。ファイルを選択すると、「ファイルを選択」ボタンの横にファイル名が表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
@@ -267,29 +267,29 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:53
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the <<Basic Metadata>> page of the metadata."
-msgstr ""
+msgstr "「作成」ボタンをクリックします。選択したファイルのインポートに問題がある場合、エラーメッセージが表示されます。インポートに成功すると、メタデータが入力された「リソースの概要」ページが表示されます。これはメタデータのみのリソースなので、ソースデータとマッピングセクションは非表示のままです。後でプライマリデータセットを追加する場合は、メタデータの<Basic Metadata>ページでリソースの種類を変更するだけです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:54
 #, no-wrap
 msgid "Edit an existing resource"
-msgstr ""
+msgstr "既存のリソースを編集する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:56
 msgid "The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section for details on how to edit various aspects of the resource."
-msgstr ""
+msgstr "既存のリソースの表には、現在のユーザーが編集可能なリソースのみが表示されます。リソースを編集するには、リソースの表でリソースの名前をクリックします。リンク先では、選択したリソースの「リソース概要」ページが表示されます。リソースのさまざまなデータを編集する方法の詳細については、「リソース管理メニュー」の「リソース概要」の見出しの下にある説明を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:57
 #, no-wrap
 msgid "Resource Overview"
-msgstr ""
+msgstr "リソースの概要"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:59
 msgid "This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections."
-msgstr ""
+msgstr "このページでは、管理者権限を持つユーザーがリソースの設定を様々な角度から変更することができます。リソースの名称は、ページ上部のメニューバーに表示されます。リソースにタイトルが与えられていない場合は、リソースの省略名がページ上部に表示され、タイトルの代わりとなります。リソース名の下には、左側にリソース構成のカテゴリを、右側に対応するセクションを示す表が表示されます。表中の情報アイコンは、管理者が各カテゴリを使用する際のガイドとなります。これらの各カテゴリは、次のセクションで詳しく説明する通り、個別に設定されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:60
@@ -306,18 +306,18 @@ msgstr "ソースデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:64
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr ""
+msgstr "リソース概要ページのこのエリアでは、ユーザーがファイル、データベース、URLからIPTに一次データをインポートすることができます。リソースにソースデータがない場合はメタデータのみのリソースとみなされ、データセットまたはコレクションに関する情報を持つが、一次データはありません。ソースが互いに関連している場合、リソースを複数のデータソースに接続することが可能です。複数のデータソースの関連付けについての詳細は、ダーウィンコアText Guideの[Implementation Guide] セクションで説明されています。以下は、テキストファイル、データベースソース、またはURLで利用可能なテキストファイルから、ソースデータを選択する予備手順の説明です。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:65
 #, no-wrap
 msgid "File as data source"
-msgstr ""
+msgstr "ファイルをデータソースとする"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Select \"File\" from the dropdown box and click on the button labelled \"Browse…\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "IPTは、非圧縮の区切りテキストファイル（CSV、tab、その他の区切り文字を使用したファイル）、またはZipやGzipで圧縮された同等のファイルをインポートすることができます。Excelファイルにも対応しています。「参照」というボタンをクリックして、インポートするファイルを選択します。ファイル名は、英数字（A-Z、0-9）、スペース、アンダースコア、フルストップ、括弧、ハイフンのみ利用可能です。ファイルを選択すると、「参照」ボタンの右側にファイル名が表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -330,48 +330,48 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:71
 msgid "Click on the button labelled \"Clear\" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it)."
-msgstr ""
+msgstr "「消去」ボタンをクリックすると、選択したファイルが削除され、データソースが選択される前の状態に戻ります。また、「追加」ボタンをクリックすると、ソース・データ・ファイルの詳細ページが表示されます（同名のファイルを上書きする恐れがある場合は、本当に上書きするかどうかを確認するダイアログが表示されます）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:73
 msgid "If the IPT detects the number of columns in a mapped data source has changed when overwriting it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "IPTは、マッピングされたデータソースを上書きする際にそのカラム数が変更されたことを検出した場合、そのマッピングを更新するよう警告します。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:75
 #, no-wrap
 msgid "Upload limits"
-msgstr ""
+msgstr "アップロード上限"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:78
 msgid "The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:"
-msgstr ""
+msgstr "IPTのアップロードサイズは200MBに制限されています。しかし、IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がありません。200MBを超えるデータセットをIPTに読み込む場合は、以下の回避策を推奨します。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:80
 msgid "compress the file with Zip or Gzip"
-msgstr ""
+msgstr "ZipまたはGZipでファイル圧縮する"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr ""
+msgstr "IPTがサポートする多くのデータベースのうちの1つにデータをロードする。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
 msgid "retrieve the file from a URL"
-msgstr ""
+msgstr "URLからファイルを取得する"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:83
 msgid "split the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)"
-msgstr ""
+msgstr "ファイルを分割する（データセットが公開されるとき、IPTはファイルをマッピングされた順に結合します）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:86
 msgid "This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr ""
+msgstr "このページには、リソースの名前と、ファイルの特性（可読性、検出された列数、ファイルへの絶対パス、ファイルサイズ、検出された行数、ファイルが最後にIPTにロードされた日付）の概要が表示されます。ソース データ ファイルの詳細ページでは、選択したファイルのコンテンツを記述するパラメーターを表示および編集し、これらの設定を使用してファイルを分析およびプレビューすることができます。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:87
@@ -383,32 +383,32 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:90
 #, no-wrap
 msgid "*Source Name* - the name of the file selected, without the file extension.\n"
-msgstr ""
+msgstr "ソース名 - 選択されたファイルの名前（拡張子なし）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:91
 #, no-wrap
 msgid "*Readable* - this icon indicates whether data are accessible using the file format information provided on this page.\n"
-msgstr ""
+msgstr "可読性 - このページで提供されるファイル形式情報を使用してデータにアクセスできるかどうかを示すアイコン"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:92
 #, no-wrap
 msgid "*File* - the full path to the location of the file to use as the data source.\n"
-msgstr ""
+msgstr "ファイル - データソースとして使用するファイルの場所へのフルパス"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:93
 #: en/modules/ROOT/pages/manage-resources.adoc:127
 #, no-wrap
 msgid "*Columns* - the number of columns in the dataset as configured using the parameters on this page.\n"
-msgstr ""
+msgstr "列数 - このページのパラメータを使用して設定された、データセットの列数"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:94
 #, no-wrap
 msgid "*Rows* - the number of rows found in the data file. (Note: This number helps check if all records are identified.)\n"
-msgstr ""
+msgstr "行数 - データファイルで見つかった行数（注：すべてのレコードが識別されているかどうかを確認するのに便利です）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:95
@@ -729,25 +729,25 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:188
 msgid "To the right of the sidebar are rows of information divided into two columns of information; the first column (left-hand side) lists the names of fields in the extension; the second column (right-hand side) contains a set of controls (select boxes, text boxes) to set the value the extension field is supposed to contain. If a field name has been chosen in the source data field select box, text labelled \"Source Sample\" and a button labelled \"Translate\" will appear below it. Descriptions of the controls that may appear in the right-hand column of the data mapping table are given below:"
-msgstr ""
+msgstr "右側のサイドバーには、2列に分かれた情報が並んでいます。最初の列（左側）には、拡張機能のフィールド名が表示され、2番目の列（右側）には、拡張機能フィールドに含まれると思われる値を設定するコントロール群（セレクトボックス、テキストボック）が表示されます。ソースデータフィールドのセレクトボックスでフィールド名を選択した場合、その下に「ソースサンプル」と書かれたテキストと「翻訳」と書かれたボタンが表示されます。データ マッピング テーブルの右側の列に表示されるコントロールの説明は次のとおりです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:190
 #, no-wrap
 msgid "*Data source field select box* - The left-hand select box is either blank or contains the name of a field from the data source. The IPT fills as many selections as it can from extension field names that match a data source field name. All of the remaining source field select boxes are left blank, signifying that the extension field has not been mapped to a source data field. If a field name is selected, the resource will use the value from that field in the source data as the value for the extension field in the Darwin Core Archive created by the IPT when the resource is published.\n"
-msgstr ""
+msgstr "データソースフィールドセレクトボックス - 左側のセレクトボックスは空欄か、データソースのフィールド名が含まれています。IPTは、データソースのフィールド名と一致する拡張フィールド名からできるだけ多くの選択項目を入力します。残りのソース・フィールドのセレクト・ボックスはすべて空欄のままです。これは、拡張フィールドがソース・データ・ フィールドにマッピングされていないことを意味します。フィールド名が選択されると、リソースはソースデータのそのフィールドの値を、リソースの公開時にIPTによって作成されるダーウィンコア・アーカイブの拡張フィールドの値として使用します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:191
 #, no-wrap
 msgid "*Data source field select box* - ID field - This field can be matched to a source data field, or it can be set to \"No ID\" signifying that the field will not be mapped to a source data field. The ID field is required in order to link records from the two sources together. The ID can be auto-generated from the \"Line Number\" or \"UUID Generator\", but this feature is exclusively available when mapping a source to the Taxon Core Type's taxonID field.\n"
-msgstr ""
+msgstr "データソースフィールドセレクトボックス -IDフィールド - このフィールドはソースデータフィールドにマッチさせることができ、また「IDなし」に設定すると、このフィールドはソースデータフィールドにマッピングされません。IDフィールドは、2つのソースからのレコードを一緒にリンクするために必要です。ID は \"Line Number\" または \"UUID Generator\" から自動生成できますが、この機能はソースをタクソン・コア・タイプの タクソンID フィールドにマッピングする場合にのみ使用可能です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:192
 #, no-wrap
 msgid "*Constant value text box* - To set the published value of any non-identifier extension field to a single value for every record in the data source, enter the desired constant for the extension field in the text box to the right of the source field select box. To activate the text box, make sure that no value is selected in the source field select box. Example:\n"
-msgstr ""
+msgstr "定数値のテキストボックス - 識別子以外の拡張フィールドの公開値を、データソースのすべてのレコードに対して単一の値に設定するには、ソースフィールドセレクトボックスの右側にあるテキストボックスに拡張フィールドに必要な定数を入力します。テキストボックスを有効にするには、ソースフィールドセレクトボックスでどの値も選択されていないことを確認してください。例："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:193
@@ -759,7 +759,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:196
 #, no-wrap
 msgid "*Constant controlled value select box* - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.\n"
-msgstr ""
+msgstr "定数制御値セレクトボックス - 拡張フィールドの右側の列に、テキストボックスの代わりに2つ目のセレクトボックスがある場合、そのフィールドは管理された語彙によって管理されていることを意味します。この場合、テキスト・ボックスに定数を入力する代わりに、定数値として使用する値を語彙リストから選択します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:197
@@ -771,7 +771,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:200
 #, no-wrap
 msgid "*Use resource DOI* - (Special constant controlled value) It is possible to set the default value for datasetID equal to the resource DOI. This option only applies to extensions having the Darwin Core term http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], such as the Occurrence extension. To activate the checkbox, make sure that no source data field has been selected and no constant value has been entered.\n"
-msgstr ""
+msgstr "リソースDOIの使用（特別な定数制御値） - datasetIDのデフォルト値をリソースDOIと同様に設定することができます。 このオプションは、オカレンス拡張機能など、ダーウィンコア用語datasetIDを持つ拡張機能にのみ適用されます。 チェックボックスを有効にするには、ソースデータフィールドが選択されておらず、定数値が入力されていないことを確認してください。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:201
@@ -783,13 +783,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:204
 #, no-wrap
 msgid "*Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon beside the controlled value select box. Click on this icon to open a <<Vocabulary detail page>> in a new browser tab on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.\n"
-msgstr ""
+msgstr "語彙詳細ボタン - 統制語彙によって管理される拡張フィールドには、統制値選択ボックスの横にアイコンが表示されます。 このアイコンをクリックして、新しいブラウザタブで語彙の詳細ページを開きます。このページには、さまざまな言語での説明と代替のシノニムを含む、拡張フィールドで受け入れられる値のリストがあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:205
 #, no-wrap
 msgid "*Source Sample* - This area shows actual values from the first five records of the selected field of the source data, separated by spaces and the character `|`. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.\n"
-msgstr ""
+msgstr "ソースサンプル - この領域には、ソースデータの選択されたフィールドの最初の5つのレコードの実際の値が、スペースと記号`|`で区切られて表示されます。 これは、ソースデータフィールドの内容が、マップされている拡張フィールドに適切かどうかをユーザーが理解するのに役立ちます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:206
@@ -801,7 +801,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:209
 #, no-wrap
 msgid "*Translate* - Click on this button to open a <<Value Translation page>> on which distinct values in the selected field of the source data can be translated to new values in the archive generated by the IPT for this data resource. After the translations have been entered and saved, the Data Mapping page will appear again, and will display text as a link in place of the \"Translate\" button to show the number of values for which there are translations having values different from the original values. Click on this link to reopen the <<Value Translation page>> for this extension field.\n"
-msgstr ""
+msgstr "翻訳 - このボタンをクリックして、<Value Translation page>を開きます。このページでは、ソースデータの選択したフィールドの個別の値を、このデータリソースのIPTによって生成されたアーカイブの新しい値に変換できます。 翻訳を入力して保存すると、「データマッピング」ページが再び表示され、「翻訳」ボタンの代わりにテキストがリンクとして表示され、元の値とは異なる値の翻訳がある値の数が示されます。 このリンクをクリックして、この拡張フィールドの<Value Translation page>を再度開きます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:210
