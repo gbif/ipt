@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2022-12-20 21:10\n"
+"PO-Revision-Date: 2023-01-31 05:02\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -96,17 +96,17 @@ msgstr "追加のメタデータ"
 #: en/modules/ROOT/pages/manage-resources.adoc:1
 #, no-wrap
 msgid "Manage Resources Menu"
-msgstr ""
+msgstr "リソース管理メニュー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:4
 msgid "This menu is visible to users with an Admin or Manager role."
-msgstr ""
+msgstr "このメニューは、管理責任者（Admin）または管理者（Manager）のロールを持つユーザーに表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:6
 msgid "This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources."
-msgstr ""
+msgstr "このページでは、適切なロールを持つユーザー（管理者と管理責任者）が、既存のリソースに変更を加えたり、新しいリソースを作成したりすることができます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:7
@@ -118,71 +118,71 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:9
 #, no-wrap
 msgid "Manage Resources Table"
-msgstr ""
+msgstr "リソース管理テーブル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
 msgid "When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:home.adoc#public-resource-table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:"
-msgstr ""
+msgstr "リソース管理ページを最初に開くと、現在のユーザーが変更する権限を持つ既存のリソース（このユーザーが作成したものと、このユーザーが他のユーザーから管理の招待を受けたものを含む）の表が表示されます。名前、機関、タイプ、サブタイプ、レコード、最終更新日、最終公開日、次回公開日の列の詳細については、[Public Resources Table]セクションの情報を参照してください。また、リソース管理テーブルには、リソースの基本情報として、次の列があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
 msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#public-resource-table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
-msgstr ""
+msgstr "可視性 - リソースを閲覧するためのアクセス権を持つ人を示すカテゴリーです。リソースが「公開」である場合、すべてのユーザーがホームページの「パプリックリソーステーブル」でリソースを見ることができます。リソースが「非公開」の場合、「リソース管理テーブル」では、リソースを作成したユーザー、リソースの管理に招待されたユーザー、および管理者権限を持つユーザーのみが見ることができます。リソースの管理に他のユーザーを招待する方法については、「リソースの管理者」セクションの「リソースの概要」下の「リソース管理」セクションに記載されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:14
 #, no-wrap
 msgid "*Author* - the IPT user who created the resource.\n"
-msgstr ""
+msgstr "作成者 - リソースを作成したIPTユーザー。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:15
 #, no-wrap
 msgid "Create a New Resource"
-msgstr ""
+msgstr "新規リソースの作成"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
 msgid "Below the Manage Resource table is a form that can be used to create a new resource. First, a unique \"shortname\" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., \"firstresource\" or \"first_resource\", but not \"first resource\" or \"première ressource!\"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:"
-msgstr ""
+msgstr "リソース管理テーブルの下には、新しいリソースを作成するためのフォームがあります。まず、リソースに固有の「shortname」を指定する必要があります。この「省略名」は、IPTインスタンス内でリソースを一意に識別するために使用され、インターネット経由でリソースにアクセスするためのURL内で使用されます。省略名は3文字以上でなければならず、英数字（A-Z、a-z、0-9）を含むことはできますが、空白、ハイフンやアンダースコア以外の句読点、アクセント付きの文字（例えば「firstresource」や「first_resource」ではなく、「first resource」あるいは「première ressource!」）を用いることはできません。次に、オプションのリソースタイプを設定することができる。ただし、オプションのアーカイブリソース（下記参照）を読み込むとリソースタイプは自動的に決定され、この選択を上書きすることに注意してください。さらに、オプションのアーカイブリソースをアップロードすることができます。以下のセクションでは、新しいリソースのもととなる、3つの異なるアーカイブされたリソースについて説明します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>>,"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブのアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
 msgid "<<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,"
-msgstr ""
+msgstr "IPTリソース設定フォルダのzipによるアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>>."
-msgstr ""
+msgstr "メタデータファイルのアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr ""
+msgstr "もちろん、既存のアーカイブリソースを読み込まずに、まったく新しいリソースを作成することも可能です。このオプションでは、リソース構成は、ソースデータファイルのアップロード（またはデータベースやURLへのリンク）、およびその中のフィールドを適切な拡張子の用語にマッピングするなど、IPTフォームから全体的に作成される必要があります。IPTには200MBのファイルアップロード制限がありますが、IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がないことに注意してください。ファイルアップロードの制限を回避する方法については、ファイルアップロードの制限についての注意を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "まず、上記のように新しいリソースの省略名を入力し、「作成」ボタンをクリックします。すると、リソースの概要ページが表示されます。「リソース管理」ページの各セクションを、「リソース概要」セクションの「リソース管理メニュー」の見出しに記載されている内容に基づいて、入力していきます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブのアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
 msgid "The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "IPTは、200MBまでの有効なダーウィンコア・アーカイブファイルをインポートすることができます。ダーウィンコア・アーカイブに関する情報は[Darwin Core web site]に掲載されており、IPT の利用に関する詳細な情報が記載されています。ダーウィンコア・アーカイブをインポートするには、「ファイルを選択」というラベルのボタンをクリックし、目的のアーカイブファイルを移動して選択します。ファイルを選択すると、ファイル名が「ファイルを選択」ボタンの横に表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:29
@@ -193,7 +193,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:32
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process."
-msgstr ""
+msgstr "「作成」ボタンをクリックしてください。選択したファイルのインポートに問題がある場合はエラーメッセージが表示されます。インポートに成功するとリソース概要ページが表示され、ページ上部にインポートプロセスの結果を示すメッセージが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:33
@@ -205,7 +205,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:35
 #, no-wrap
 msgid "Upload a zipped IPT resource configuration folder"
-msgstr ""
+msgstr "IPTリソース設定フォルダをzipでアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
