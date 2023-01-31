@@ -540,7 +540,7 @@ This metadata page contains information about other aspects of the resource not 
 image::ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png[]
 
 * *Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.
-* *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Published Versions>> section).
+* *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).
 * *Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.
 * *Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.
 * *Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
@@ -550,17 +550,17 @@ image::ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png[]
 ** *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
 ** *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
 
-=== Published Versions
+=== Publication
 This area of the Resource Overview page allows a user to publish a version of the resource.
 
 image::ipt2/manage/IPTManageResourcePublish.png[]
 
-Click on the button labelled "Publish" to trigger publishing a new version. The button labelled "Publish" will be enabled if
+Click on the three dot menu and select "Publish" option to trigger publishing a new version. The "Publish" option will be enabled if
 
 . the required metadata for the resource are complete, and
 . the user has the role "Manager with/without registration rights".
 
-When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" button, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:
+When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:
 
 image::ipt2/manage/IPTManageResourcePublishMajor.png[]
 
@@ -576,11 +576,14 @@ image::ipt2/manage/IPTManageResourcePublishTable.png[]
 .This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
 image::ipt2/manage/IPTManageResourcePublishTable2.png[]
 
-* *Version*: - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the "View" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the "Preview" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
-* *Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.
-* *DOI*: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
-* *Published on*: - to date the current version was published on / the date the pending version will be published on.
-* *Publication log*: - click the download button to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.
+* *Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the three dot menu, click the "View" option to see the current version's homepage. In the pending version item, click the "Preview" option to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
+* *Current* - current already published version.
+* *Pending* - next version.
+* *License* - resource license (e.g. CC0 1.0).
+* *DOI* - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
+* *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.
+* *Published on* - to date the current version was published on / the date the pending version will be published on.
+* *Publication log* - option in the three dot menu. Click that to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.
 
 ==== Publishing steps
 
@@ -629,7 +632,7 @@ image::ipt2/manage/IPTManageResourcePublishingStatus.png[]
 
 === Auto-publishing
 
-To turn on automated publishing, select "Edit" in the Auto-publishing section.
+To turn on automated publishing, in the Auto-publishing section click the three dot menu and select "Edit".
 
 image::ipt2/manage/IPTManageResourceAutoPublishingStatus.png[]
 
@@ -637,42 +640,40 @@ Select one of the 5 publishing intervals (annually, biannually, monthly, weekly,
 
 image::ipt2/manage/IPTManageResourceAutoPublishingSetup.png[]
 
-When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The "Edit" button can be used to change or disable auto-publishing.
+When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The "Edit" option can be used to change or disable auto-publishing.
 
 In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
 === Visibility
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
-* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labelled "Public". A message will appear at the top of the page saying that the status has been changed to "Public".
+* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.
 +
+--
 image::ipt2/manage/IPTManageResourceVisibilityPrivate.png[]
 
-* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.
+When the resource is ready for public visibility, click on the three dot menu and select option labelled "Change". Clicking on the option labelled "Change" will display a modal window with two options. You can make the resource public right away or at a set date
+
+image::ipt2/manage/IPTManageResourceVisibilityMakePublic1.png[]
+
+image::ipt2/manage/IPTManageResourceVisibilityMakePublic2.png[]
+
+After submitting the form a message will appear at the top of the page saying that the status has been changed to "Public".
+--
+
+* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>). Be aware the visibility of a resource assigned a DOI cannot be changed to private.
 +
 --
-image::ipt2/manage/IPTManageResourceVisibilityPublicNeedToPublish.png[]
-
-Two buttons appear in the left-hand section of the visibility area. Clicking on the button labelled "Private" will remove the resource entirely from public visibility and return it to the private state. The button labelled "Register" will only be enabled if
-
-. the required metadata for the resource are complete,
-. the resource has been published (see the explanation of the <<Published Versions>> area of the Resource Overview page, below), and
-. the user has the role "Manager with registration rights" (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user.
-
 image::ipt2/manage/IPTManageResourceVisibilityPublic.png[]
 
-Finally, click on the button labelled "Register" to register the resource with the GBIF Registry.
+One option appear in the three dot menu of the visibility area. Clicking on the option labelled "Change" will display a modal window
 
-NOTE: If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below
+image::ipt2/manage/IPTManageResourceVisibilityMakePrivate.png[]
 
-Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled "Yes" to appear at the bottom of the dialog box. Click on "Yes" to register the resource, or click on "No" to defer the decision and close the dialog box.
-
-image::ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png[]
-
-If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered".
+Clicking on button labelled "Yes" will remove the resource entirely from public visibility and return it to the private state.
 --
 
-* *Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.
+* *Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.
 +
 --
 image::ipt2/manage/IPTManageResourceVisibilityRegistered.png[]
@@ -680,13 +681,37 @@ image::ipt2/manage/IPTManageResourceVisibilityRegistered.png[]
 If the resource has already been registered, every time the "Publish" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the "Delete a Resource" section under the "Resource Overview" heading in the "Manage Resources Menu" section.
 --
 
+=== Registration
+
+The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry.
+
+image::ipt2/manage/IPTManageResourceRegistration.png[]
+
+Registration is enabled when:
+
+. the required metadata for the resource are complete,
+. the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and
+. the user has the role "Manager with registration rights" (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user.
+
+Click on the three dot menu and select the option labelled "Register" to register the resource with the GBIF Registry.
+
+NOTE: If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below
+
+Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled "Yes" to appear at the bottom of the dialog box. Click on "Yes" to register the resource, or click on "No" to defer the decision and close the dialog box.
+
+image::ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png[]
+
+If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered". Registration section when the resource is registered:
+
+image::ipt2/manage/IPTManageResourceRegistration2.png[]
+
 === Networks
 
 This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)].
 
 image::ipt2/manage/IPTManageResourceNetworks.png[]
 
-To add the resource to a network, select it from the dropdown list and click "Add".  To remove it, click the icon on the right of the network name.
+To add the resource to a network, click on the three dot menu and select the "Add" option. To remove it, click the three dot menu on the network item and select "Delete".
 
 IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk.
 
@@ -694,7 +719,7 @@ IMPORTANT: Please only add your resource to a network with the approval of the n
 
 image::ipt2/manage/IPTManageResourceManagers.png[]
 
-Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labelled "Delete" to the right of the email address in the manager listing.
+Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the three dot menu and selecting option labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the respective three dot menu and selecting the option labelled "Delete".
 
 image::ipt2/manage/IPTManageResourceManagerAdded.png[]
 
