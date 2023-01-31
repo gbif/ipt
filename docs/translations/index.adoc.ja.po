@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-01-31 04:06\n"
+"PO-Revision-Date: 2023-01-31 05:02\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -89,89 +89,89 @@ msgstr "GBIFがIPTの開発を主導するようになったのは、いくつ�
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:22
 msgid "limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;"
-msgstr "大規模なデータセットを容易に公開・転送するできる従来の公開ツール（DiGIR、TAPIR、BioCASe）の制限"
+msgstr "大規模なデータセットを容易に公開・転送するできる従来の公開ツール（DiGIR、TAPIR、BioCASe）が制限を受けたため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:23
 msgid "the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions."
-msgstr ""
+msgstr "インデックス作成時に出版社のサーバーとGBIFのサーバーの両方の負荷を軽減するため。DiGIR、TAPIR、BioCASeからのインデックス作成では、HTTPリクエストとレスポンスのやりとりが繰り返され、負荷が大きくなってしまいました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:24
 msgid "the need to speed up the process of indexing biodiversity occurrence datasets;"
-msgstr ""
+msgstr "生物多様性データセットのインデックス作成の高速化のため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:25
 msgid "the need to offer additional benefits and services to the data publishers to encourage data publication;"
-msgstr ""
+msgstr "データ公開者にさらなるサービスやメリットを提供し、データ公開を促進するため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:26
 msgid "the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata."
-msgstr ""
+msgstr "名前チェックリストやデータセットのメタデータなど、特定の種類の生物多様性データを公開するための適切なツールがなかったため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:28
 msgid "To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org."
-msgstr ""
+msgstr "IPTの仕組みを理解するために、データセットがGBIF.orgを通じて適切に公開・登録される様子を25分の簡単な動画で見てみましょう。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:33
 #, no-wrap
 msgid "Users"
-msgstr ""
+msgstr "ユーザー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:36
 msgid "If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
-msgstr ""
+msgstr "もしIPTを試してみたいだけなら、helpdesk@gbif.org にメールを送って[Demo IPT]のアカウントを申請してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:42
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately."
-msgstr ""
+msgstr "IPTユーザーのサポートグループである[IPT Mailing List]に必ずご登録ください。IPTを可能な限り安全かつ堅牢にするためには、IPTを最新の状態にしておくことが不可欠です。IPTの管理責任者は、すぐに更新できるよう、最新のリリースの通知を受け取るためにサインアップしておく必要があります。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:43
 #, no-wrap
 msgid "Developers"
-msgstr ""
+msgstr "開発者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:46
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr ""
+msgstr "IPTの開発はGBIFが中心となって指揮していますが、コーディングはコミュニティの努力によるもので、誰でも参加することができます。まずは、[Open Issues]を見て、取り組んでみたいことを見つけてください。その貢献は、リポジトリのブランチまたはフォークを使用した[pull request]の形で歓迎されることに留意してください。開発者向けの詳しい説明は、[here]をご覧ください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:47
 #, no-wrap
 msgid "Translators"
-msgstr ""
+msgstr "翻訳者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:50
 msgid "The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here]."
-msgstr ""
+msgstr "IPTのユーザーインターフェイスやマニュアルも国際化が必要ですが、コミュニティの活動ですので、どなたでも参加できます。翻訳者を対象とした詳細な指示は、[here]で見つけることができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:52
 msgid "Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian."
-msgstr ""
+msgstr "コミュニティの多大な努力と、ローカリゼーションツール[Crowdin]の力を借りて、ユーザーインターフェースはすでに7ヶ国語（英語・フランス語・スペイン語・中国語（繁体字）・ポルトガル語（ブラジル）・日本語・ロシア語）に翻訳されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:53
 #, no-wrap
 msgid "Acknowledgements"
-msgstr ""
+msgstr "謝辞"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:56
 msgid "A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world."
-msgstr ""
+msgstr "このソフトの成功には、多くの献身的なボランティアが貢献しています。皆様のご協力により、IPTは世界中で使用される素晴らしいツールになりました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:57
 msgid "https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations."
-msgstr ""
+msgstr "[Crowdin]は、このオープンソースプロジェクトを支援するため、GBIFに同社のローカリゼーション管理プラットフォームへの無償アクセスを提供しています。Crowdinは、多言語への同時翻訳の管理を可能にします。"
 
