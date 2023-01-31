@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2023-01-31 07:01\n"
+"PO-Revision-Date: 2023-01-31 08:11\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1532,31 +1532,31 @@ msgstr "コンテンツ提供者 - データセットにコンテンツを提供
 #: en/modules/ROOT/pages/manage-resources.adoc:403
 #, no-wrap
 msgid "*Custodian Steward*: an agent who is responsible for/takes care of the data set\n"
-msgstr ""
+msgstr "保管者/世話人 - データセットの管理責任をもつ代理人"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:404
 #, no-wrap
 msgid "*Distributor*: an agent involved in the publishing/distribution chain of a data set\n"
-msgstr ""
+msgstr "販売代理店 - データセットの公開/配信に関わる代理者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:405
 #, no-wrap
 msgid "*Editor*: an agent associated with editing a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "編集者 - データセットを使用した出版物、またはデータ論文の編集に関連する代理人"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:406
 #, no-wrap
 msgid "*Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page\n"
-msgstr ""
+msgstr "メタデーア提供者 - メタデータを提供する代理人（基本メタデータページのメタデータプロバイダと同じ）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:407
 #, no-wrap
 msgid "*Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)\n"
-msgstr ""
+msgstr "オリジネーター - データセットを最初に収集/準備した人（基本メタデータのページのクリエーターと同じ）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:408
