@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2023-01-31 05:57\n"
+"PO-Revision-Date: 2023-01-31 07:01\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -759,7 +759,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:196
 #, no-wrap
 msgid "*Constant controlled value select box* - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.\n"
-msgstr "定数制御値セレクトボックス - 拡張フィールドの右側の列に、テキストボックスの代わりに2つ目のセレクトボックスがある場合、そのフィールドは管理された語彙によって管理されていることを意味します。この場合、テキスト・ボックスに定数を入力する代わりに、定数値として使用する値を語彙リストから選択します。"
+msgstr "定数制御値セレクトボックス - 拡張フィールドの右側の列に、テキストボックスの代わりに2つ目のセレクトボックスがある場合、そのフィールドは統制語彙によって管理されていることを意味します。この場合、テキスト・ボックスに定数を入力する代わりに、定数値として使用する値を語彙リストから選択します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:197
@@ -807,31 +807,31 @@ msgstr "翻訳 - このボタンをクリックして、<Value Translation page>
 #: en/modules/ROOT/pages/manage-resources.adoc:210
 #, no-wrap
 msgid "*Filter* - The filter allows the user to include only records that match a criterion set for one of the source data fields. To use the filter, first select from the drop down whether you want the filter to be applied *After Translation* or *Before Translation* (in other words, after translations on the source data have been applied, or before - refer to Translation section above for more details about translation). Then, choose the field upon which the criterion will be based using the left select box. The text box at the right may contain a value against which to compare the value of the field in the source data. Do not enclose the value with any punctuation. The second select box allows the user to choose a comparison operator from among the following:\n"
-msgstr ""
+msgstr "フィルター - フィルターを使用すると、ユーザーは、ソースデータフィールドの1つに設定された基準に一致するレコードのみを含めることができます。フィルタを使用するには最初に、ソースデータの翻訳が適用される前後のどちらでフィルタを適用するかどうかをドロップダウンから選択します（翻訳については、上記の翻訳セクションを参照してください）。 次に、左側の選択ボックスを使用して、基準の基になるフィールドを選択します。右側のテキストボックスには、ソースデータのフィールドの値と比較するための値が含まれている場合があります。値を句読点で囲まないでください。2番目の選択ボックスを使用すると、ユーザーは次の中から比較演算子を選択できます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:213
 #, no-wrap
 msgid "*IsNull* - this operator is true if the source data field is empty. In this case no value is needed in the text box at the right. If there is a value in the text box, it will be ignored.\n"
-msgstr ""
+msgstr "IsNull - この演算子は、ソースデータフィールドが空の場合にtrueになります。この場合、右側のテキストボックスに値は必要ありません。テキストボックスに値がある場合、その値は無視されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:214
 #, no-wrap
 msgid "*IsNotNull* - this operator is true if the source data field is not empty. In this case no value is needed in the text box at the right. If there is a value in the text box, it will be ignored.\n"
-msgstr ""
+msgstr "IsNotNull - この演算子は、ソースデータフィールドが空でない場合にtrueになります。この場合、右側のテキストボックスに値は必要ありません。テキストボックスに値がある場合、その値は無視されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:215
 #, no-wrap
 msgid "*Equals* - this operator is true if the source data field is equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will not be included in the filtered data set.\n"
-msgstr ""
+msgstr "Equals - ソースデータフィールドが右側のテキストボックスの値と等しい場合、この演算子はtrueです。同等性は文字列照合に基づいて評価されるため、レコードのデータソース値が2.0で、テキストボックスの値が2の場合、レコードはフィルター処理されたデータセットに含まれません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:216
 #, no-wrap
 msgid "*NotEquals* - this operator is true if the source data field is not equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will be included in the filtered data set.\n"
-msgstr ""
+msgstr "NotEquals - この演算子は、ソースデータフィールドが右側のテキストボックスの値と等しくない場合にtrueになります。 同等性は文字列照合に基づいて評価されるため、レコードのデータソース値が2.0で、テキストボックスの値が2の場合、レコードはフィルター処理されたデータセットに含まれます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:217
@@ -849,66 +849,66 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:223
 #, no-wrap
 msgid "*Required fields* - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together.\n"
-msgstr ""
+msgstr "必須フィールド - コアタイプまたは拡張機能にマッピングする必要のある必須プロパティがある場合、それらの名前が強調表示されます。 [basisOfRecord]がオカレンスコアにマップされていない場合、 basisOfRecordパブリケーションは失敗することに注意してください。 また、IDフィールドには特殊なケースがあります。これは、2つのソースをリンクする場合にのみ必要です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:225
 msgid "In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following sections, links, and buttons:"
-msgstr ""
+msgstr "ページ上部の拡張機能と上記の2列に関する説明情報に加えて、データマッピングページには次のセクション、リンク、およびボタンが含まれる場合があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:227
 #, no-wrap
 msgid "*Resource Title* - clicking on this link will navigate to the Resource Overview page without saving any of the pending changes.\n"
-msgstr ""
+msgstr "リソースタイトル - このリンクをクリックすると、保留中の変更を保存せずに「リソース概要」ページに移動します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:228
 #, no-wrap
 msgid "*Hide unmapped Fields* - this filter/link will remove from view on this page all fields that have not yet been mapped, leaving only those with completed mappings. To view again those fields that have not been mapped, click on the \"Show all\" link.\n"
-msgstr ""
+msgstr "マッピングされていないフィールドの非表示 - このフィルター/リンクは、まだマップされていないすべてのフィールドをこのページのビューから削除し、マッピングが完了したフィールドのみを残します。マップされていないフィールドを再度表示するには、「すべて表示」リンクをクリックします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:229
 #, no-wrap
 msgid "*Show all fields* - this filter/link will make all fields visible, whether mapped already or not. This link appears only after the \"Hide Unmapped Fields\" link has been invoked.\n"
-msgstr ""
+msgstr "すべてのフィールドを表示 - このフィルター/リンクにより、既にマップされているかどうかに関係なく、すべてのフィールドが表示されます。このリンクは、「マップされていないフィールドを非表示」リンクが呼び出された後にのみ表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:230
 #, no-wrap
 msgid "*Hide redundant classes* - this filter/link will remove from view on this page all fields belonging to classes/groups of terms that are redundant. A class is redundant, if it is already included in the core extension. To view again those fields that belong to redundant classes, click on the \"Show all classes\" link. This link appears only after the \"Show all classes\" link has been invoked.\n"
-msgstr ""
+msgstr "冗長なクラスを非表示 - このフィルター/リンクは、冗長な用語のクラス/グループに属するすべてのフィールドをこのページのビューから削除します。クラスがすでにコア拡張に含まれている場合、そのクラスは冗長です。冗長クラスに属するフィールドを再度表示するには、「すべてのクラスを表示」リンクをクリックします。このリンクは、「すべてのクラスを表示」リンクが呼び出された後にのみ表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:231
 #, no-wrap
 msgid "*Show all classes* - this filter/link will make all fields belonging to redundant classes/groups visible. This link appears only after the \"Hide redundant classes\" link has been invoked.\n"
-msgstr ""
+msgstr "すべてのクラスを表示 -このフィルター/リンクにより、冗長なクラス/グループに属するすべてのフィールドが表示されます。このリンクは、「冗長なクラスを非表示」リンクが呼び出された後にのみ表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:232
 #, no-wrap
 msgid "*Save* - clicking on any of the potentially many buttons labelled \"Save\" will change the pending changes on the page.\n"
-msgstr ""
+msgstr "保存 -「保存 」というラベルの付いた多くのボタンのいずれかをクリックすると、ページで保留中の変更が保存されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:233
 #, no-wrap
 msgid "*Delete* - clicking this button will remove the entire mapping to a data source, not just the mapped fields, and return to the Resource Overview page.\n"
-msgstr ""
+msgstr "消去 - このボタンをクリックすると、マップされたフィールドだけでなく、データソースへのマッピング全体が削除され、「リソース概要」ページに戻ります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:234
 #, no-wrap
 msgid "*Back* - clicking on this button will abandon all changes that have been made on this page since it was last saved and return to the Resource Overview page.\n"
-msgstr ""
+msgstr "戻る - このボタンをクリックすると、このページが最後に保存されてから行われたすべての変更が破棄され、「リソース概要」ページに戻ります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:235
 #, no-wrap
 msgid "*Unmapped columns* - this section contains a list of columns in the source file, table, or view that have not been mapped. This list can help to determine if everything from the source has been mapped that should be mapped.\n"
-msgstr ""
+msgstr "マッピングされていない列 - このセクションには、マップされていないソースファイル、テーブル、またはビューの列のリストが含まれます。このリストは、マッピングする必要のあるソースからのすべてがマッピングされているかどうかを判断するのに役立ちます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:236
@@ -920,7 +920,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:239
 #, no-wrap
 msgid "*Redundant term classes* - this section contains a list of classes whose terms are redundant, meaning that these classes already appear in the core extension. Ideally, a term that has been mapped in the core extension doesn't need to be re-mapped again in an extension. Hiding redundant terms also has the additional benefit of making the mapping page easier to use for the user.\n"
-msgstr ""
+msgstr "冗長用語クラス - このセクションには、用語が冗長であるクラスのリストが含まれています。つまり、これらのクラスはすでにコア拡張機能に含まれています。 理想的には、コア拡張機能にマップされた用語を、拡張機能に再度マップする必要はありません。 冗長な用語を非表示にすると、マッピングページがユーザーにとって使いやすくなるという利点もあります。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:240
@@ -932,12 +932,12 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:242
 #, no-wrap
 msgid "Value Translation page"
-msgstr ""
+msgstr "値の翻訳ページ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:245
 msgid "When this page opens for the first time it shows a message at the top giving the number of distinct values of the selected field in the source data, up to 1000 values. The page shows the name and description of the extension field for which translations are being made. If the field is governed by a controlled vocabulary, information about that vocabulary and an icon to open a Vocabulary Detail page (see Vocabulary Detail button explanation, above) will appear under the field description. Below the field description is a table showing the distinct values of the field found in the source data under the column heading \"Source Value\" with text boxes under the column heading \"Translated Value\". Enter the value to which the Source Value should be translated in the text box. The icon to the left of the translated value text box indicates if the value provided exists in the vocabulary for this term."
-msgstr ""
+msgstr "このページを初めて開くと、ソースデータ内の選択したフィールドの異なる値の数（最大1000）を示すメッセージが上部に表示されます。このページには、翻訳対象の拡張フィールドの名前と説明が表示されます。そのフィールドが統制語彙によって支配されている場合、その語彙に関する情報と語彙の詳細ページ（上記の語彙の詳細ボタンの説明を参照）を開くためのアイコンが、フィールドの説明の下に表示されます。フィールドの説明の下には、ソース・データで見つかったそのフィールドの個別の値を示す表が、「ソース値」列と「変換後の値」列の下にテキスト・ボックスの見出しで表示されます。テキスト ボックスには、ソース値の変換先の値を入力します。翻訳された値のテキストボックスの左側にあるアイコンは、提供された値がこの用語の語彙に存在するかどうかを示します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:246
@@ -948,48 +948,48 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:249
 msgid "Bounding the table above and below by the following set of buttons:"
-msgstr ""
+msgstr "以下のボタンのセットで表の上下を囲む"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:251
 #, no-wrap
 msgid "*Save* - click on this button to save all of the changes that have been made on this page and return to the Data Mapping page.\n"
-msgstr ""
+msgstr "保存 - このボタンをクリックすると、このページで行われたすべての変更が保存され、データマッピングページに戻ります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:252
 #, no-wrap
 msgid "*Delete* - click on this button to remove all translations for this field and return to the Data Mapping page.\n"
-msgstr ""
+msgstr "消去 - このボタンをクリックすると、このフィールドのすべての翻訳が削除され、データマッピングページに戻ります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:253
 #, no-wrap
 msgid "*Reload* - click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.\n"
-msgstr ""
+msgstr "リロード - このボタンをクリックすると、ソースデータを再度検索し、異なる値を検索します。既存の翻訳が保持され、ソースデータから新しい個別の値が翻訳なしでリストに表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:254
 #, no-wrap
 msgid "*Automap* - this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.\n"
-msgstr ""
+msgstr "自動マップ - このボタンは、フィールドが統制語彙によって支配されている場合にのみ表示されます。このボタンをクリックすると、既知の同義語に基づく標準的な値が「翻訳された値」に自動的に入力されます。ソースデータの値のうち、既知の同義語がないものは空欄のままになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:255
 #, no-wrap
 msgid "*Cancel* - click on this button to close the Value Translation page without saving any of the changes that have been made.\n"
-msgstr ""
+msgstr "キャンセル - このボタンをクリックすると、変更内容を保存せずに値の翻訳ページを閉じます。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:256
 #, no-wrap
 msgid "Vocabulary detail page"
-msgstr ""
+msgstr "語彙の詳細ページ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:258
 msgid "This page shows a list of concepts within the vocabulary. In the context of mapping data, it shows a list of accepted values that can be used for the extension field. Each concept may contain a description, its preferred synonyms (in various languages), plus any alternative synonyms (in various languages)."
-msgstr ""
+msgstr "このページでは、語彙内の概念の一覧を表示します。マッピングデータの文脈では、拡張子フィールドに使用できる値の一覧が表示されます。各概念には、説明、優先シノニム（さまざまな言語）、および代替同義語（さまざまな言語）を含めることができます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:259
@@ -1006,7 +1006,7 @@ msgstr "メタデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled \"Edit\" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page."
-msgstr ""
+msgstr "リソース概要ページのこのエリアでは、ユーザーがリソースのメタデータを編集することができます。左側のパネルにある「編集」ボタンをクリックすると、メタデータを編集することができます。右側のパネルには、メタデータが最後に変更された日時が表示されます。すべてのリソースは、i) GBIFネットワークで公開され、ii) DataCiteに登録される（DOIが割り当てられる） ために、最小限の記述的メタデータのセットを必要とします。必要なメタデータのいずれかが欠落している場合、リソース概要ページが開き、ページのメタデータエリアに警告が表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1017,12 +1017,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:267
 msgid "An existing resource EML file can be uploaded, replacing any existing metadata.  To do this, click the \"Browse\" button and choose the EML file."
-msgstr ""
+msgstr "既存のリソース EMLファイルをアップロードして、既存のメタデータを置き換えることができます。「参照」ボタンをクリックし、EMLファイルを選択してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:269
 msgid "Clicking on the \"Edit\" button opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr ""
+msgstr "「編集」ボタンをクリックすると、一連のメタデータページのうち最初のページである「基本メタデータ」ページが表示されます。各ページは、入力終了後に「保存」ボタンをクリックすると、順次表示されます。最後のメタデータページで保存すると、「基本メタデータ」ページに戻ります。メタデータページで「キャンセル」ボタンをクリックすると、そのページでの変更が無視され、リソース概要ページに戻ります。各メタデータページの右側の列には、すべてのメタデータページへのリンクが表示され、簡単に参照・移動することができます。リンクをクリックすると、そのトピックのメタデータページが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:270
@@ -1033,12 +1033,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:273
 msgid "Following is a list of the metadata pages and their contents:"
-msgstr ""
+msgstr "以下は、メタデータのページとその内容の一覧です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:276
 msgid "All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organization."
-msgstr ""
+msgstr "このページのメタデータフィールドはすべて必須項目です。各連絡先には、少なくとも姓、役職、または機関を入力する必要があります。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:277
@@ -1050,55 +1050,55 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:280
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr ""
+msgstr "タイトル - リソースのタイトルです。このタイトルはIPT全体を通してリソースの名前として表示されます。このタイトルは、GBIFレジストリにも表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:281
 #, no-wrap
 msgid "*Publishing Organization* - the organization responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's rights holder and publishing organization when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organization does not appear in the list it may be added by the IPT Administrator (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.\n"
-msgstr ""
+msgstr "公開機関- そのリソースの公開（制作、リリース、保有）に責任を持つ機関。リソースをGBIFに登録する際、およびDOI登録の際にメタデータを提出する際に、リソースの権利者および公開機関として使用されます。また、このリソースの引用を自動生成する際にも使用されますので（自動生成をオンにしている場合）、役割の重要性を考慮してください。希望する機関がリストに表示されない場合は、IPT管理者が追加することができます（「管理メニュー」セクションの「機関の設定」の見出しにある情報を参照してください）。リソースがGBIFに登録されるか、DOIが割り当てられると、選択は変更できなくなるので注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:282
 #, no-wrap
 msgid "*Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.\n"
-msgstr ""
+msgstr "アップデート頻度 - 最初のリソースが公開された後、リソースに変更が加えられる頻度です。便宜上、この値は自動公開間隔（自動公開がオンになっている場合）に初期設定されますが、後からいつでも上書きすることが可能です。リソースのメンテナンス頻度の説明は、追加メタデータページにも入力できることに注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:283
 #, no-wrap
 msgid "*Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field \"other\" can be selected. Review the information under the \"Configure Core Types and Extensions\" heading of the \"Administration Menu\" section.\n"
-msgstr ""
+msgstr "タイプ - リソースのタイプ。このフィールドの値はリソースのコアマッピングに依存し、Darwinコアマッピングがすでに作成されている場合は編集できなくなります。希望するタイプがリストにない場合、「その他」フィールドを選択できます。「管理メニュー」の「コアタイプおよび拡張機能の設定」の見出しにある情報を確認してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:284
 #, no-wrap
 msgid "*Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection.\n"
-msgstr ""
+msgstr "サブタイプ - リソースのサブタイプ。このフィールドのオプションは、「Type」フィールドに依存します。希望するサブタイプがリストにない場合、このフィールドはデフォルトの選択のままにしておくことができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:285
 #, no-wrap
 msgid "*Metadata Language* - the language in which the metadata are written.\n"
-msgstr ""
+msgstr "メタデータ言語 - メタデータが記述される言語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:286
 #, no-wrap
 msgid "*Resource Language* - the language in which the data for the resource are written.\n"
-msgstr ""
+msgstr "リソース言語 - リソースデータが記述されている言語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:287
 #, no-wrap
 msgid "*Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.\n"
-msgstr ""
+msgstr "データライセンス - リソースに適用するライセンス。著作物の適切な利用方法を定義するための標準的な方法を提供します。GBIFは、データの可能な限り幅広い使用と応用を奨励するために、3つの（デフォルトの）機械読み取り可能なオプション（CC0 1.0、CC-BY 4.0、CC-BY-NC 4.0）の中から、できるだけ制約の少ないライセンスを採用することを公開者に推奨しています。GBIFの方針については、[here]をご覧ください。3つのオプションのうち1つを選択できないと思われる場合は、GBIF事務局（participation@gbif.org）までご連絡ください。レコードレベルでのライセンスの適用方法については、[How To Apply a License To a Dataset]を参照してください。IPTのデフォルトのライセンス セットを変更する方法については、IPT wikiの[Applying a License to a Dataset]ページを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:288
 #, no-wrap
 msgid "*Description* - a brief overview of the resource broken into paragraphs. This should provide enough information to help potential users of the data to understand if it may be of interest.\n"
-msgstr ""
+msgstr "概要 - リソースの簡単な概要を段落単位で記述します。データの潜在的なユーザーが、そのデータに興味があるかどうかを理解するのに役立つ十分な情報を提供しなければなりません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:289
@@ -1473,24 +1473,24 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:388
 #, no-wrap
 msgid "*Thesaurus/Vocabulary* - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter \"n/a\" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.\n"
-msgstr ""
+msgstr "シソーラス/ボキャブラリー - セット内のキーワードの元となるシソーラスまたは統制語彙の名前を入力します。キーワードがシソーラス/語彙に支配されていない場合、このテキストボックスに該当しないことを示す「n/a」を入力します。例：IRISキーワードシソーラス"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:389
 #, no-wrap
 msgid "*Keyword List* - enter a list of keywords, separated by commas that describe or are related to the resource.\n"
-msgstr ""
+msgstr "キーワード一覧 - リソースを説明する、またはリソースに関連するキーワードのリストをカンマで区切って入力します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:390
 #, no-wrap
 msgid "*Add new keyword set* - click on this link to initiate a form for an additional keyword set.\n"
-msgstr ""
+msgstr "新しいキーワードセットの追加 - このリンクをクリックすると、キーワードセットを追加するためのフォームが表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:394
 msgid "This metadata pages contains information about one or more people or organizations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <<Basic Metadata>> page. Explanations for the remainder of the controls are given below."
-msgstr ""
+msgstr "このメタデータページには、「基本メタデータ」ページですでに説明した情報に加えて、リソースに関連する人々や<Basic Metadata><Basic Metadata>機関に関する情報が含まれています。このページのコントロールの多くは、<Basic Metadata>ページの「リソース連絡先」のコントロールと共通です。残りのコントロールについては、以下に説明します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:395
@@ -1502,31 +1502,31 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:398
 #, no-wrap
 msgid "*Copy details from resource contact* - if this person or organization is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.\n"
-msgstr ""
+msgstr "リソースコンタクトから詳細をコピー - この人物または機関が「基本メタデータ」ページの最初のリソース連絡先と同じ場合、このリンクをクリックすると、すべての詳細が関連当事者の同等のフィールドにコピーされます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:399
 #, no-wrap
 msgid "*Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.\n"
-msgstr ""
+msgstr "この関係者を削除 - このリンクをクリックすると、リンクのすぐ下にある関係者を削除できます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr ""
+msgstr "ロール - このセレクトボックスには、関係者がリソースに関連して[list of possible roles]が表示されます。セレクトボックスの左側にある情報アイコンをクリックすると、利用可能な権限の説明が表示されます。セレクトボックスで、関係者に最も適した権限を選択します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:401
 #, no-wrap
 msgid "*Author*: an agent associated with authoring a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "著者 - データセットを使用した出版物、またはデータペーパーの著作に関連する代理人"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:402
 #, no-wrap
 msgid "*Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)\n"
-msgstr ""
+msgstr "コンテンツ提供者 - データセットにコンテンツを提供した代理人（記述されるデータセットは合成物である可能性があります）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:403
