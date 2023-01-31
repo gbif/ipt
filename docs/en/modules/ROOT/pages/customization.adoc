@@ -1,5 +1,7 @@
 = How to Style Your IPT
 
+For simple customization in versions 2.6 or higher please use xref:administration.adoc[UI Management].
+
 [WARNING]
 ====
 Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue].
