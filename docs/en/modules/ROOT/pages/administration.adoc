@@ -41,7 +41,7 @@ The IPT tests the Public URL for accessibility from the client computer when the
 This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually.
 
 == Configure User accounts
-This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.
+This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. It's possible to delete users or reset IPT passwords from table by clicking on icons on the right side.
 
 image::ipt2/administration/IPTAdminUserAccounts.png[]
 
@@ -110,7 +110,11 @@ Following are explanations of the specific information to select or enter:
 === Edit GBIF registration
 After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly.
 
-image::ipt2/administration/IPTAdminEditRegistration.png[]
+image::ipt2/administration/IPTAdminEditRegistration1.png[]
+
+Edit tokens view:
+
+image::ipt2/administration/IPTAdminEditRegistration2.png[]
 
 == Configure Organizations
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used.
@@ -175,6 +179,12 @@ For any extension that has already been installed in the IPT, it can be removed 
 For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
 
 image::ipt2/administration/IPTAdminExtensionsUpdate.png[]
+
+== UI Management
+
+IPT logo and color scheme can be managed at the UI Management page.
+
+image::ipt2/administration/IPTAdminUIManagement.png[]
 
 == View IPT logs
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.
