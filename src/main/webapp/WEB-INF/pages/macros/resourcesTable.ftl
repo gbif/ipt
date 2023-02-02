@@ -73,7 +73,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 
             $('#tableContainer').html('<table  class="display dataTable resourcesTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
-                ajax: <#if shownPublicly>'/api/resources'<#else>'/manager-api/resources'</#if>,
+                ajax: <#if shownPublicly>'${baseURL}/api/resources'<#else>'${baseURL}/manager-api/resources'</#if>,
                 "bProcessing": true,
                 "bServerSide": true,
                 "displayStart": start,

@@ -190,7 +190,7 @@
                         <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>

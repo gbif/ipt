@@ -428,6 +428,16 @@
             $('#metadata-modal').modal('hide');
         });
 
+        // close DOI modal to show confirmation modal instead
+        $("#deleteDoi").on("click", function () {
+            $('#reserve-doi-modal').modal('hide');
+        });
+
+        // close DOI modal to show confirmation modal instead
+        $("#reserveDoi").on("click", function () {
+            $('#reserve-doi-modal').modal('hide');
+        });
+
         function showPublicationModal() {
             var dialogWindow = $("#publication-modal");
             dialogWindow.modal('show');
@@ -1709,14 +1719,13 @@
                             <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                         </div>
                     <#elseif resource.identifierStatus == "UNRESERVED">
-                        <div class="callout callout-primary text-smaller">
+                        <div class="callout callout-info text-smaller">
                             <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
                         </div>
                     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
                         <div class="callout callout-danger text-smaller">
                             <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
                         </div>
-                        <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
                     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
                         <div class="callout callout-info text-smaller">
                             <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>

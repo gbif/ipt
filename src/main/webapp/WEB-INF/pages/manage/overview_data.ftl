@@ -1,4 +1,5 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
+<#assign lastModifiedNotSet><@s.text name='basic.lastModified.not.set'/></#assign>
 
 <!-- Represents source data and mapping data sections on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
@@ -60,8 +61,6 @@
             <#if (resource.sources?size>0)>
                 <div class="details mt-3">
                     <div class="row g-2">
-                        <#assign lastModifiedNotSet><@s.text name='basic.lastModified.not.set'/></#assign>
-
                         <#list resource.sources as src>
                             <div class="col-xl-6">
                                 <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 source-item">
@@ -249,7 +248,7 @@
                                     <i class="bi bi-arrow-right"></i>
                                     <strong>${m.extension.title}</strong>
                                     <br>
-                                    <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
+                                    <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                 </div>
                                 <div class="my-auto d-flex justify-content-end pt-0">
                                     <div class="dropdown">
@@ -296,7 +295,7 @@
                                                 <i class="bi bi-arrow-right"></i>
                                                 <strong>${ext.title}</strong>
                                                 <br>
-                                                <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!}</small>
+                                                <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                             </div>
                                             <div class="my-auto d-flex justify-content-end mapping-item-actions">
                                                 <div class="dropdown">
