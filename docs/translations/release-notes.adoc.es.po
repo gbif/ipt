@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-01-30 16:42+0000\n"
-"PO-Revision-Date: 2023-01-30 16:46\n"
+"PO-Revision-Date: 2023-02-02 09:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -54,7 +54,7 @@ msgstr "Notas de la versión"
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
 msgid "*IPT Versions: pass:[2.5.*, 2.6.*, 2.7.*]*\n"
-msgstr ""
+msgstr "*Versiones IPT: aplica:[2.5.*, 2.6.*, 2.7.*]*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
@@ -161,7 +161,7 @@ msgstr "Realice una copia de seguridad del directorio de datos existente y de cu
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:54
 msgid "Without shutting down Tomcat, replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`)."
-msgstr ""
+msgstr "Sin apagar Tomcat, sustituya el archivo .war anterior por la última edición, pero mantenga el mismo nombre (por ejemplo, `ipt.war`)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:56
