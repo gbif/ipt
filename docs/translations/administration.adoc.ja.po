@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2023-02-02 09:27\n"
+"PO-Revision-Date: 2023-02-02 12:15\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -60,13 +60,13 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.\n"
-msgstr "IPTデータディレクトリ - IPTのすべての構成、リソース、およびログファイルが格納されているサーバー上のディレクトリを示します。"
+msgstr "IPTデータディレクトリ - IPTのすべての構成、リソース、およびログファイルが格納されているサーバー上のディレクトリを示します。リソース\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:16
 #, no-wrap
 msgid "*IPT administrator email* - This is the email shown on the login page to users who have forgotten their password.  If it is not set, the first administrator user's email is used.\n"
-msgstr "IPT管理者メールアドレス - パスワードを忘れたユーザーにログインページで表示されるメールです。設定されていない場合は、最初の管理者ユーザーの電子メールが使用されます。"
+msgstr "IPT管理者メールアドレス - パスワードを忘れたユーザーにログインページで表示されるメールです。設定されていない場合は、最初の管理者ユーザーの電子メールが使用されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
@@ -144,7 +144,7 @@ msgstr "アーカイブモード - IPTですべてのリソースのすべての
 #: en/modules/ROOT/pages/administration.adoc:38
 #, no-wrap
 msgid "*Number of archived versions* - When archival mode is enabled, setting this configuration value to a number will keep that many old versions, but automatically delete older versions.\n"
-msgstr "保存するバージョンの数 - アーカイブ・モードが有効な場合、この設定値に数値を設定すると、その数だけ以前のバージョンを保持し、それより古いバージョンは自動的に削除されます。"
+msgstr "保存するバージョンの数 - アーカイブ・モードが有効な場合、この設定値に数値を設定すると、その数だけ以前のバージョンを保持し、それより古いバージョンは自動的に削除されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:39
