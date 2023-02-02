@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-02 13:26+0000\n"
-"PO-Revision-Date: 2023-02-02 13:58\n"
+"PO-Revision-Date: 2023-02-02 16:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-7-2-february-2023,2.7.2>>."
-msgstr ""
+msgstr "La versión estable actual es la <<2-7-2-febrero-2023,2.7.2>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
@@ -49,17 +49,17 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:16
 #, no-wrap
 msgid "*2.7.2* – February 2023"
-msgstr ""
+msgstr "*2.7.2* - Febrero 2023"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.2/ipt-2.7.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.2/ipt-2.7.2.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[Paquetes Linux] o xref:installation.adoc#installation-from-docker[Usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "xref:2.5@release-notes.adoc[IPT v2.7.2 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.7.2]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -84,7 +84,7 @@ msgstr "xref:2.5@index.adoc[Manual del usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "Addressed https://github.com/gbif/ipt/milestone/44?closed=1[1 issue]."
-msgstr ""
+msgstr "Abordada https://github.com/gbif/ipt/milestone/44?closed=1[1 incidencia]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
@@ -123,7 +123,7 @@ msgstr "Los usuarios actuales deben actualizarse a esta versión siguiendo las i
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "This minor release addresses the bug with translations."
-msgstr ""
+msgstr "Esta actualización menor soluciona el error con las traducciones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
@@ -139,27 +139,27 @@ msgstr "Los problemas menores y los asuntos de seguridad se abordarán en parche
 #: en/modules/ROOT/pages/releases.adoc:32
 #, no-wrap
 msgid "*2.7.1* – January 2023"
-msgstr ""
+msgstr "*2.7.1* - Enero 2023"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:35
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.1/ipt-2.7.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.1/ipt-2.7.1.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[Paquetes Linux] o xref:installation.adoc#installation-from-docker[Usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:36
 msgid "xref:2.5@release-notes.adoc[IPT v2.7.1 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.7.1]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:38
 msgid "Addressed https://github.com/gbif/ipt/milestone/43?closed=1[2 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/43?closed=1[2 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:43
 msgid "This minor release brings bug fixes for issue with resource tables and with DOI management."
-msgstr ""
+msgstr "Esta actualización menor incluye correcciones de errores en las tablas de recursos y en la administración de DOI."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:44
