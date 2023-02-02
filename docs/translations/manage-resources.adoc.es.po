@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-12-20 20:00+0000\n"
-"PO-Revision-Date: 2023-02-02 09:28\n"
+"PO-Revision-Date: 2023-01-26 11:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -482,7 +482,7 @@ msgstr "*Formato de fecha*: un código que describe el formato de los elementos 
 #: en/modules/ROOT/pages/manage-resources.adoc:106
 #, no-wrap
 msgid "*Selected Worksheet* - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet. After changing the sheet click *Analyse* to update the row/column information.\n"
-msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de selección muestra los nombres de todas las hojas de cálculo del archivo/libro de Excel. Sólo puede utilizar una hoja de cálculo como fuente de datos, por defecto aparecerá señeccionada la primera hoja del archivo. Despues de seleccionar la hoja de calculo que contenga los datos haga clic en  *Analizar* para actualizar la información de  filas y columnas."
+msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de selección muestra los nombres de todas las hojas de cálculo del archivo/libro de Excel. Sólo puede utilizar una hoja de cálculo como fuente de datos, por defecto aparecerá señeccionada la primera hoja del archivo. Despues de seleccionar la hoja de calculo que contenga los datos haga clic en  *Analizar* para actualizar la información de  filas y columnas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
@@ -1050,7 +1050,7 @@ msgstr "ipt2/manage/IPTManageResourceMetadataBasicMetadata.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:280
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr "*Título*: el título del recurso. Este título aparecerá como el nombre del recurso en todo el IPT. El título también aparecerá en el Registro de GBIF y formará parte de la citación. Utilice un título descriptivo para los usuarios del conjunto de datos. \"Colección Aves de Tanzania en el Museo de Historia Natural de Dinamarca (SNM)\" es un buen título, ¡\"aves_tz_snm\" no lo es! Evite usar nombres de archivo o acrónimos conocidos solo dentro de su organización."
+msgstr "*Título*: el título del recurso. Este título aparecerá como el nombre del recurso en todo el IPT. El título también aparecerá en el Registro de GBIF y formará parte de la citación. Utilice un título descriptivo para los usuarios del conjunto de datos. \"Colección Aves de Tanzania en el Museo de Historia Natural de Dinamarca (SNM)\" es un buen título, ¡\"aves_tz_snm\" no lo es! Evite usar nombres de archivo o acrónimos conocidos solo dentro de su organización.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:281
@@ -2175,7 +2175,7 @@ msgstr "El editor del recurso debe ingresar un resumen de los cambios que se le 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:565
 msgid "On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below."
-msgstr "A la derecha hay una tabla que compara la versión actual con la versión pendiente. Los administradores de recursos pueden utilizar esta tabla para gestionar el versionado de sus recursos, previsualizar la versión pendiente y revisar y validar la versión actual. Para obtener explicaciones sobre las filas de información de la tabla, consulte la siguiente información."
+msgstr ""
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:566
@@ -2205,7 +2205,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:573
 #, no-wrap
 msgid "*Version*: - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr "*Versión*: - el número de versión que rastrea la `versión_mayor.versión_menor` de la versión actual/pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el administrador del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, hecho que se realiza reservando un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. En la columna de la versión actual, haga clic en el botón \"Ver\" para ver la página de inicio de la versión actual. Suponiendo que se haya publicado un DwC-A, haga clic en image:ipt2/manage/checkmark.png[width=40,height=40] para validarlo utilizando el https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. En la columna de la versión pendiente, haga clic en el botón \"Vista previa\" para ver una vista preliminar de la página de inicio de la versión pendiente. La vista previa de la página de inicio es sólo para los administradores de recursos, y les permite asegurarse que el recurso está listo para ser publicado.\n"
+msgstr "*Versión*: - el número de versión que sigue la `versión_mayor.versión_menor` de la versión actual/pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, hecho que se realiza reservando un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. En la columna de la versión actual, haga clic en el botón \"Ver\" para ver la página de inicio de la versión actual. Suponiendo que se haya publicado un DwC-A, haga clic en image:ipt2/manage/checkmark.png[width=40,height=40] para validarlo utilizando el https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. En la columna de la versión pendiente, haga clic en el botón \"Vista previa\" para ver una vista preliminar de la página de inicio de la versión pendiente. La vista previa de la página de inicio es privada sólo para los editores de recursos, y les permite asegurarse que el recurso está listo para ser publicado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:574
@@ -2408,12 +2408,12 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:623
 #, no-wrap
 msgid "Auto-publishing"
-msgstr "Publicación automática"
+msgstr "Autopublicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:626
 msgid "To turn on automated publishing, select \"Edit\" in the Auto-publishing section."
-msgstr "Para activar la publicación automática, seleccione \"Editar\" en la sección Publicación automática."
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:627
@@ -2424,7 +2424,7 @@ msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:630
 msgid "Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press \"Save\"."
-msgstr "Seleccione uno de los 5 intervalos de publicación (anual, semestral, mensual, semanal o diario) y elija una hora, después haga clic en \"Guardar\"."
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:631
@@ -2435,12 +2435,12 @@ msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
 msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" button can be used to change or disable auto-publishing."
-msgstr "Cuando la publicación automática está activada, el intervalo de publicación y la próxima fecha de publicación se muestran claramente en la sección de publicación automática. El botón \"Editar\" permite modificar o desactivar la publicación automática."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:636
 msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
-msgstr "En caso de fallo, la publicación se reintentará automáticamente hasta 3 veces más. Esto evita bucles de publicación infinitos. Los recursos configurados para publicarse automáticamente, pero que no hayan finalizado con éxito, tendrán una fecha de próxima publicación pasada y aparecerán resaltados en las tablas de recursos públicos y de administración."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:637
@@ -2555,7 +2555,7 @@ msgstr "Redes"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:679
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
-msgstr "Esta sección permite que el recurso sea incluido en una o más redes de GBIF - colecciones de conjuntos de datos potencialmente de muchos publicadores, normalmente sobre un mismo tema. La mayor red de GBIF es  el https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Sistema de Información sobre Biodiversidad Oceánica (OBIS)]."
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:680
@@ -2566,12 +2566,12 @@ msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:683
 msgid "To add the resource to a network, select it from the dropdown list and click \"Add\".  To remove it, click the icon on the right of the network name."
-msgstr "Para agregar el recurso a una red, selecciónelo en la lista desplegable y haga clic en \"Agregar\".  Para eliminarlo, haga clic en el icono situado a la derecha del nombre de la red."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:685
 msgid "Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk."
-msgstr "Por favor, sólo agregue su recurso a una red con la aprobación de los administradores de la red o de la mesa de ayuda de GBIF."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:686
@@ -2605,7 +2605,7 @@ msgstr "Eliminar un recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will show two options."
-msgstr "Al hacer clic en el botón \"Eliminar\" de la página Vista General del Recurso, aparecerán dos opciones."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:699
@@ -2628,7 +2628,7 @@ msgstr "ipt2/manage/IPTManageResourceDelete.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:704
 msgid "Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org."
-msgstr "Cualquiera de las dos opciones eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos.  La primera también eliminará el recurso de GBIF.org."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:706

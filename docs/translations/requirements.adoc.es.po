@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2023-02-02 09:28\n"
+"PO-Revision-Date: 2022-10-14 20:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -91,7 +91,7 @@ msgstr "La versión actual del IPT está probada para funcionar con Java 8 o 9. 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "See the installation instructions for notes on operating system and servlet container versions."
-msgstr "Consulte las instrucciones de instalación para obtener información sobre las versiones del sistema operativo y del contenedor de servlets."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:24

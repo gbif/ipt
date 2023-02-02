@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-08-05 14:53+0000\n"
-"PO-Revision-Date: 2023-02-02 09:29\n"
+"PO-Revision-Date: 2022-09-21 03:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -209,15 +209,15 @@ msgstr "**Última modificación por**: usuario del IPT que modificó por última
 #: en/modules/ROOT/pages/home.adoc:49
 #, no-wrap
 msgid "Deletion of a version"
-msgstr "Eliminación de una versión"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:52
 msgid "Resource managers and administrators can delete old published versions of a dataset."
-msgstr "Los administradores de recursos pueden eliminar versiones publicadas antiguas de un conjunto de datos."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:53
 msgid "First use the version history table to find and open the version to be deleted, then click *Delete version* at the top of the page. The latest published version of a resource cannot be deleted."
-msgstr "En primer lugar, utilice la tabla del historial de versiones para buscar y abrir la versión que desea eliminar y, a continuación, haga clic en *Borrar versión* en la parte superior de la página. La última versión publicada de un recurso no puede eliminarse."
+msgstr ""
 
