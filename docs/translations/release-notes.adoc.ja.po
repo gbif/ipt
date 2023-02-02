@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 16:22+0000\n"
-"PO-Revision-Date: 2022-11-04 16:27\n"
+"POT-Creation-Date: 2023-01-30 16:42+0000\n"
+"PO-Revision-Date: 2023-01-30 16:46\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -53,7 +53,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
-msgid "*IPT Versions: pass:[2.6.*]*\n"
+msgid "*IPT Versions: pass:[2.5.*, 2.6.*, 2.7.*]*\n"
 msgstr ""
 
 #. type: Plain text
