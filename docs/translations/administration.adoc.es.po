@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 15:39\n"
+"PO-Revision-Date: 2023-02-02 09:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -60,19 +60,19 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.\n"
-msgstr ""
+msgstr "*Directorio de datos del IPT* - Muestra el directorio del servidor donde se almacenan la configuración, los recursos y los archivos de log del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:16
 #, no-wrap
 msgid "*IPT administrator email* - This is the email shown on the login page to users who have forgotten their password.  If it is not set, the first administrator user's email is used.\n"
-msgstr ""
+msgstr "*Correo electrónico del administrador de IPT* - Este es el correo electrónico que se muestra en la página de inicio de sesión a los usuarios que han olvidado su contraseña.  Si no está configurado, se utiliza el correo electrónico del primer usuario administrador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
 #, no-wrap
 msgid "[[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.\n"
-msgstr "[[url-pública]] *URL pública*: esta es la URL que direcciona a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público.\n"
+msgstr "[[public-url]] *URL pública*: esta es la URL que direcciona a la raíz de esta instalación IPT. La URL se establece automáticamente durante la instalación del IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública del IPT para usar el localhost, por ejemplo, no permitirá que la instancia IPT se registre con GBIF, se asocie con una organización, ni que los recursos sean de acceso público.\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/administration.adoc:20
@@ -144,7 +144,7 @@ msgstr "*Modo archivo*: marque esta casilla si desea que su IPT guarde todas las
 #: en/modules/ROOT/pages/administration.adoc:38
 #, no-wrap
 msgid "*Number of archived versions* - When archival mode is enabled, setting this configuration value to a number will keep that many old versions, but automatically delete older versions.\n"
-msgstr ""
+msgstr "*Número de versiones archivadas* - Cuando el modo de archivo está activado, si se establece este valor de configuración en un número, se conservarán ese número de versiones antiguas, pero se borrarán automáticamente las versiones más antiguas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:39
