@@ -585,8 +585,7 @@ msgstr "語彙には、コアタイプや拡張機能の特定の用語が取り
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:150
 msgid "Following the lists of installed Core Types and Extensions, there is a section labelled \"Synchronize Extensions and Vocabularies\" having a single button labelled \"Synchronize\". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section."
-msgstr "インストールされているコアタイプと拡張機能のリストに続いて、「拡張機能と語彙を同期させる」というセクションがあり、「同期」というボタンが1つ付いています。GBIFレジストリに存在し、まだインストールされていないコアタイプと拡張機能の最新バージョンが、語彙セクションの下にリストアップされています。\n"
-" \n"
+msgstr "インストールされているコアタイプと拡張機能のリストに続いて、「拡張機能と語彙を同期させる」というセクションがあり、「同期」というボタンが1つ付いています。GBIFレジストリに存在し、まだインストールされていないコアタイプと拡張機能の最新バージョンが、語彙セクションの下にリストアップされています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:151

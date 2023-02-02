@@ -371,7 +371,7 @@ msgstr "ファイルを分割する（データセットが公開されるとき
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:86
 msgid "This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr "このページには、リソースの名前と、ファイルの特性（公開状況、検出された列数、ファイルへの絶対パス、ファイルサイズ、検出された行数、ファイルが最後にIPTにロードされた日付）の概要が表示されます。ソース データ ファイルの詳細ページでは、選択したファイルのコンテンツを記述するパラメーターを表示および編集し、これらの設定を使用してファイルを分析およびプレビューすることができます。\n"
+msgstr "このページには、リソースの名前と、ファイルの特性（公開状況、検出された列数、ファイルへの絶対パス、ファイルサイズ、検出された行数、ファイルが最後にIPTにロードされた日付）の概要が表示されます。ソース データ ファイルの詳細ページでは、選択したファイルのコンテンツを記述するパラメーターを表示および編集し、これらの設定を使用してファイルを分析およびプレビューすることができます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:87
@@ -1219,7 +1219,7 @@ msgstr "リソース作成者 - リソースを作成した人および機関を
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:314
 msgid "the person(s) or organization(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource can add themselves as an associated party with role 'publisher'."
-msgstr "IPTに表示されるリソースの作成や公開の責任を持つ個人または機関は、役割'publisher'を持つ関係者として自分自身を追加することができます。\n"
+msgstr "IPTに表示されるリソースの作成や公開の責任を持つ個人または機関は、役割'publisher'を持つ関係者として自分自身を追加することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:316
@@ -2490,7 +2490,7 @@ msgstr "リソースに必要なメタデータが完成していて、"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:653
 msgid "the resource has been published (see the explanation of the <<Published Versions>> area of the Resource Overview page, below), and"
-msgstr "リソースが公開されており（以下「リソース概要」ページの<Published Versions>の説明を参照）、\n"
+msgstr "リソースが公開されており（以下「リソース概要」ページの<Published Versions>の説明を参照）、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:654
@@ -2684,7 +2684,7 @@ msgstr "GBIFデータセットページに、既存の登録済みリソース�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:722
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
-msgstr "所有者が異なる場合は、GBIFレジストリの更新が必要です。更新が必要である旨、メールにて helpdesk@gbif.org まで連絡してください。\n"
+msgstr "所有者が異なる場合は、GBIFレジストリの更新が必要です。更新が必要である旨、メールにて helpdesk@gbif.org まで連絡してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:724
