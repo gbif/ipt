@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-02-02 09:28\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -63,7 +63,7 @@ msgstr "Para migrar el IPT a otro servidor, solo asegúrese de copiar todo el co
 #: en/modules/ROOT/pages/faq.adoc:13
 #, no-wrap
 msgid "My GBIF IPT instance is slow. What can I do to improve performance?"
-msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar el rendimiento? "
+msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar el rendimiento?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:16
@@ -484,7 +484,7 @@ msgstr "Si el mapeo con el estándar es a la {latest-dwc-event}[Extensión de ev
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:186
 msgid "If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to \"other\"."
-msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT  (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
+msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:188
@@ -575,7 +575,7 @@ msgstr "Reiniciar Tomcat."
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:228
 msgid "Last, press the \"update registration\" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#edit-gbif-registration[this section] of the user manual."
-msgstr "Por último presione el botón \"actualizar registro\" en la página de Edición del Registro de GBIF. Esto propagará el cambio hacia el Registro de GBIF. Para mayor información acerca de esta actualización, puede consultar xref:administration.adoc#edit-gbif-registration[esta sección] del manual de usuario. "
+msgstr "Por último presione el botón \"actualizar registro\" en la página de Edición del Registro de GBIF. Esto propagará el cambio hacia el Registro de GBIF. Para mayor información acerca de esta actualización, puede consultar xref:administration.adoc#edit-gbif-registration[esta sección] del manual de usuario."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:229
@@ -597,7 +597,7 @@ msgstr "Usando un editor de texto, abra el archivo `config/users.xml` del direct
 #: en/modules/ROOT/pages/faq.adoc:235
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
-msgstr "¿Cómo migro un conjunto de datos de una instalación de IPT a otra? "
+msgstr "¿Cómo migro un conjunto de datos de una instalación de IPT a otra?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:237
@@ -612,7 +612,7 @@ msgstr "Apague el servidor del IPT anterior, solo para asegurar que nadie haga n
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:240
 msgid "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy the whole dataset folder"
-msgstr "En el IPT anterior vaya a  `/old-ipt-datadir/resources/[dataset_name]` y copie toda la carpeta del conjunto de datos"
+msgstr "En el IPT anterior vaya a `/old-ipt-datadir/resources/[dataset_name]` y copie toda la carpeta del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:241
