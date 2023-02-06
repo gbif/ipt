@@ -70,7 +70,7 @@ For further reference, a description of each element in the GBIF Metadata Profil
 
 The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation.
 
-If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3).
+If at any time the metadata are modified, the user only has to update the document and click “Publish” on the Manage Resource page to publish a new version of the document (resource) (Figure 3).
 
 .Screenshot of the Published Versions section of the Manage Resource page of the IPT.
 image::figures/ipt_published_versions.png[]

@@ -5,7 +5,7 @@ The following sections explain in detail the capabilities of an IPT instance tha
 == User interface controls
 Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labelled "Save". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon.
 
-*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.
+*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the {threelines} button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.
 
 .Menu bar before login or after a user having no special role logs in, with the Home menu active:
 image::ipt2/controls/IPTMenuBarHomeAbout.png[width=125,height=52]
@@ -32,9 +32,9 @@ Example select box and label for the user role, with Admin selected: image:ipt2/
 
 **Links** - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).
 
-Example link to the account information page for the logged in user: image:ipt2/controls/Control-LinkExample.png[]
+Example link: image:ipt2/controls/Control-LinkExample.png[]
 
-**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
+**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on any other place to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
 
 Example information icon for character encoding after the UTF-8 link was selected: image:ipt2/controls/Information-CharacterEncoding.png[width=464]
 
@@ -50,15 +50,15 @@ image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]
 
 **Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.
 
-Example table sorted in ascending order by the column labelled "Name".
+Example table sorted in ascending order by the column labelled "Organization name".
 image:ipt2/controls/Control-TableSortedAscending.png[]
 
-Example table sorted in descending order by the column labelled "Type".
+Example table sorted in descending order by the column labelled "Alias".
 image:ipt2/controls/Control-TableSortedDescending.png[]
 
 === File upload
 
-Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files].
+The IPT allows uploading files when (xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files])
 
 image:ipt2/controls/Control-UploadCreateResource.png[width=238]
 
@@ -78,10 +78,10 @@ Header, logged in, English language chosen for the user interface:
 
 image::ipt2/controls/IPTHeaderLoggedIn.png[width=350,height=54]
 
-* **Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.
-* **Logout** - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.
-* **Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.
-* **Language selection** - In the upper right-hand corner of the page is a icon allowing the display language of the IPT to be changed. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.
+* **Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the login form, and then click on the "Login" button. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.
+* **Logout** - If someone is logged in to the IPT, the initials of the person who is logged in is given in the upper right-hand corner of the page. Clicking on this reveals a dropdown with a "Logout" link.
+* **Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "User accounts" heading in the "Administration Menu" section.
+* **Language selection** - In the upper right-hand corner of the page is an icon allowing the display language of the IPT to be changed. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.
 * **Health status** - Also in the upper right-hand corner of the page is an icon for the "Health Status" page. This shows some information useful for troubleshooting, such as whether the IPT can contact GBIF's servers, available disk space and (for logged-in users) server version information.
 
 === Footer

@@ -9,6 +9,8 @@ asciidoc:
   attributes:
     idprefix: '@'
     idseparator: '-@'
+    threedots: '┇'
+    threelines: '☰'
     # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
     eml-location: https://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores
