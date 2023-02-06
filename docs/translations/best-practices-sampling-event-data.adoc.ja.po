@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-17 09:56+0000\n"
-"PO-Revision-Date: 2022-11-17 10:08\n"
+"PO-Revision-Date: 2023-02-06 08:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -36,7 +36,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:5
 #, no-wrap
 msgid "Document control"
-msgstr ""
+msgstr "文書管理"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -45,7 +45,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "推奨される引用"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:59
