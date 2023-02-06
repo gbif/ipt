@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2022-02-03 17:09\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -137,7 +137,7 @@ msgstr "Dentro de WEB-INF de un IPT en ejecución hay un solo archivo `datadir.l
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:44
 msgid "The hidden file `.gbifreg` indicates whether the data directory is linked to the production or test registry. Once set, this cannot be changed from the UI!"
-msgstr "El archivo oculto \".gbifreg\" indica si el directorio de datos está vinculado al registro de producción o de prueba. Una vez configurado, esto no se puede cambiar desde la interfaz de usuario. "
+msgstr "El archivo oculto \".gbifreg\" indica si el directorio de datos está vinculado al registro de producción o de prueba. Una vez configurado, esto no se puede cambiar desde la interfaz de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:46
@@ -234,7 +234,7 @@ msgstr "Diseño HTML"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!"
-msgstr "Los enlaces deben utilizarse siempre  con `+++${baseURL}/my/ipt/link.do+++` ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
+msgstr "Los enlaces deben utilizarse siempre con `+++${baseURL}/my/ipt/link.do+++` ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:83
