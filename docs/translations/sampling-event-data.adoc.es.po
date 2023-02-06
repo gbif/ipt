@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-09-15 07:03+0000\n"
-"PO-Revision-Date: 2023-02-02 09:28\n"
+"PO-Revision-Date: 2023-02-06 19:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -253,7 +253,7 @@ msgstr "P. ¿Cómo puedo publicar datos de ausencia?"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:68
 #, no-wrap
 msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
-msgstr "*A.* *Paso 1*:  Puede hacer explícitas las ausencias de especies añadiendo un registro biológico para cada especie que podría haber sido observada en el momento y lugar del muestreo, pero que no fue observada, estableciendo los siguientes campos:"
+msgstr "*A.* *Paso 1*:  Puede hacer explícitas las ausencias de especies añadiendo un registro biológico para cada especie que podría haber sido observada en el momento y lugar del muestreo, pero que no fue observada, estableciendo los siguientes campos:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:70
