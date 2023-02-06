@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2023-02-02 09:28\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -115,9 +115,7 @@ msgstr "Para instalar IPT en Red Hat 7, CentOS 7 o similar, primero agregue el r
 msgid "yum install yum-utils\n"
 "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
 "yum install ipt\n"
-msgstr "yum install yum-utils\n"
-"yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
-"yum install ipt"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:44
@@ -129,8 +127,7 @@ msgstr "Opcionalmente, edite `/etc/sysconfig/ipt` para cambiar el puerto y el di
 #, no-wrap
 msgid "systemctl enable ipt\n"
 "systemctl start ipt\n"
-msgstr "systemctl enable ipt\n"
-"systemctl start ipt\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:52
