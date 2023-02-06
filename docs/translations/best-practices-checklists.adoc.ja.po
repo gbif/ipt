@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2023-02-06 08:19\n"
+"PO-Revision-Date: 2023-02-06 19:30\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -115,25 +115,25 @@ msgstr "「種チェックリスト」と分類学の「カタログ」という
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:39
 #, no-wrap
 msgid "*Name lists* – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.\n"
-msgstr "名前リスト - 分類学上の状態を明示しない、単純な種名のリストです。ただし、一般に認められている分類名で構成されていることが示唆されています。このようなリストは総じて、地域的またはテーマ的な文脈に含まれる一連の分類群を区別することを意図しています。"
+msgstr "名前リスト - 分類学上の状態を明示しない、単純な種名のリストです。ただし、一般に認められている分類名で構成されていることが示唆されています。このようなリストは総じて、地域的またはテーマ的な文脈に含まれる一連の分類群を区別することを意図しています。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Nomenclatural lists (Nomenclators)* – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.\n"
-msgstr "命名リスト（命名者） - 名目分類を含む名称のリストで、それぞれの命名規約で規定された命名行為を表す科学名称の公開用例の登録簿を意味します。これらの行為の多くは、新しい学名の「原記載」ですが、他に修正、レクトタイプ化および各コードで規定されるその他の行為が含まれる場合があります。シノニムは分類学上の概念としてこれらのリストに含まれるのではなく、（植物学者にとって）新たに確立された組み合わせがバシオニムにリンクされ、命名法上のシノニムとなる場合にのみ含まれます。"
+msgstr "命名リスト（命名者） - 名目分類を含む名称のリストで、それぞれの命名規約で規定された命名行為を表す科学名称の公開用例の登録簿を意味します。これらの行為の多くは、新しい学名の「原記載」ですが、他に修正、レクトタイプ化および各コードで規定されるその他の行為が含まれる場合があります。シノニムは分類学上の概念としてこれらのリストに含まれるのではなく、（植物学者にとって）新たに確立された組み合わせがバシオニムにリンクされ、命名法上のシノニムとなる場合にのみ含まれます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:41
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
-msgstr "分類学的チェックリスト  - 分類学的状態を明示し、シノニムとして扱われる名前を含めることで、命名リストを拡張したリストです。このカテゴリの単純な分類学的リストは、シノニムの根拠に関する具体的な詳細を提供しません。分類群は、多くの場合、分類体系に整理されています。また、「分類目録」という用語は、この分類やその他の分類の例を指す場合（特にその資料が検証済みの出版物や分類学的地位の詳細を含んでいる場合）に使用されることがあります。"
+msgstr "分類学的チェックリスト - 分類学的状態を明示し、シノニムとして扱われる名前を含めることで、命名リストを拡張したリストです。このカテゴリの単純な分類学的リストは、シノニムの根拠に関する具体的な詳細を提供しません。分類群は、多くの場合、分類体系に整理されています。また、「分類目録」という用語は、この分類やその他の分類の例を指す場合（特にその資料が検証済みの出版物や分類学的地位の詳細を含んでいる場合）に使用されることがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:42
 #, no-wrap
 msgid "*Annotated Checklists* - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymized checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.\n"
-msgstr "注釈付きチェックリスト - このカテゴリは、一般名、脅威の状態、分布、基本的な記述情報などの他のデータタイプ（注釈）を、シノニムのコアチェックリストに追加することによって、分類学的チェックリストを拡張します。注釈の種類が、詳細な診断説明や図解、分子データ、標本など、分類群を効果的に定義、または限定するのに十分な詳細を提供する場合、その注釈付きリストは以下に定義する2つのカテゴリーのいずれかに分類される可能性があります。"
+msgstr "注釈付きチェックリスト - このカテゴリは、一般名、脅威の状態、分布、基本的な記述情報などの他のデータタイプ（注釈）を、シノニムのコアチェックリストに追加することによって、分類学的チェックリストを拡張します。注釈の種類が、詳細な診断説明や図解、分子データ、標本など、分類群を効果的に定義、または限定するのに十分な詳細を提供する場合、その注釈付きリストは以下に定義する2つのカテゴリーのいずれかに分類される可能性があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:43
