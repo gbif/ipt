@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2022-10-14 20:14\n"
+"PO-Revision-Date: 2023-02-02 09:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -102,7 +102,7 @@ msgstr "RPM (Red Hat, CentOS etc)"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see [this issue](https://github.com/gbif/ipt/issues/1646) if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
-msgstr ""
+msgstr "Los paquetes para Red Hat 8, CentOS 8 Stream, Rocky Linux 8 o similares están siendo desarrollados.  Por favor, consulte [este issue](https://github.com/gbif/ipt/issues/1646) si puede ayudar con las pruebas, o utilice Red Hat 7 / CentOS 7 en su lugar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:35
@@ -115,7 +115,9 @@ msgstr "Para instalar IPT en Red Hat 7, CentOS 7 o similar, primero agregue el r
 msgid "yum install yum-utils\n"
 "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
 "yum install ipt\n"
-msgstr ""
+msgstr "yum install yum-utils\n"
+"yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
+"yum install ipt"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:44
@@ -183,7 +185,7 @@ msgstr "No es necesario usar un proxy inverso, pero en caso de que lo implemente
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:72
 msgid "The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 3.0, 3.1 or 4.0."
-msgstr ""
+msgstr "Los contenedores de servlets más utilizados para desplegar el IPT son Tomcat, Jetty y Wildfly.  El contenedor de servlets debe ser compatible con Servlet Specification 3.0, 3.1 o 4.0."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:73
@@ -194,7 +196,7 @@ msgstr "Tomcat"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:76
 msgid "The IPT has been tested and works well with recent releases of Tomcat 8.5 or 9. The Apache Tomcat documentation can be found on https://tomcat.apache.org/."
-msgstr ""
+msgstr "El IPT ha sido probado y funciona bien con versiones recientes de Tomcat 8.5 o 9. La documentación de Apache Tomcat puede consultarse en https://tomcat.apache.org/."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:78
@@ -296,7 +298,7 @@ msgstr "Jetty"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:134
 msgid "_As a very rough guide, on CentOS 7, to run a single instance of the IPT:_"
-msgstr ""
+msgstr "_Como una guía muy aproximada, en CentOS 7, se puede ejecutar una sola instancia del IPT:_."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:139
