@@ -41,7 +41,7 @@ The IPT tests the Public URL for accessibility from the client computer when the
 This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually.
 
 == Configure User accounts
-This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. It's possible to delete users or reset IPT passwords from table by clicking on icons on the right side.
+This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. Users can be deleted or passwords reset by clicking on icons on the right side.
 
 image::ipt2/administration/IPTAdminUserAccounts.png[]
 
@@ -112,7 +112,7 @@ After the IPT has been registered, this page allows a user to update the IPT reg
 
 image::ipt2/administration/IPTAdminEditRegistration1.png[]
 
-Edit tokens view:
+Edit organization's shared tokens view:
 
 image::ipt2/administration/IPTAdminEditRegistration2.png[]
 
@@ -182,7 +182,7 @@ image::ipt2/administration/IPTAdminExtensionsUpdate.png[]
 
 == UI Management
 
-IPT logo and color scheme can be managed at the UI Management page.
+The IPT logo and colour scheme can be managed from the UI Management page.
 
 image::ipt2/administration/IPTAdminUIManagement.png[]
 

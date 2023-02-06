@@ -5,7 +5,7 @@ The following sections explain in detail the capabilities of an IPT instance tha
 == User interface controls
 Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labelled "Save". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon.
 
-*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.
+*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the {threelines} button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.
 
 .Menu bar before login or after a user having no special role logs in, with the Home menu active:
 image::ipt2/controls/IPTMenuBarHomeAbout.png[width=125,height=52]
@@ -58,7 +58,7 @@ image:ipt2/controls/Control-TableSortedDescending.png[]
 
 === File upload
 
-IPT allows uploading files (xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files])
+The IPT allows uploading files when (xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files])
 
 image:ipt2/controls/Control-UploadCreateResource.png[width=238]
 
