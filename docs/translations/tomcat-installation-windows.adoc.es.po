@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-12-20 20:30\n"
+"PO-Revision-Date: 2023-02-06 19:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -92,7 +92,7 @@ msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalaci�
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
 #, no-wrap
 msgid "Apache Tomcat Setup Config Options"
-msgstr "Opciones de configuración de la instalación de Apache Tomcat "
+msgstr "Opciones de configuración de la instalación de Apache Tomcat"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
