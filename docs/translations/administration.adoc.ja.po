@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2023-02-02 09:27\n"
+"PO-Revision-Date: 2023-02-06 19:30\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -60,19 +60,19 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.\n"
-msgstr "IPTデータディレクトリ - IPTのすべての構成、リソース、およびログファイルが格納されているサーバー上のディレクトリを示します。"
+msgstr "IPTデータディレクトリ - IPTのすべての構成、リソース、およびログファイルが格納されているサーバー上のディレクトリを示します。リソース\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:16
 #, no-wrap
 msgid "*IPT administrator email* - This is the email shown on the login page to users who have forgotten their password.  If it is not set, the first administrator user's email is used.\n"
-msgstr "IPT管理者メールアドレス - パスワードを忘れたユーザーにログインページで表示されるメールです。設定されていない場合は、最初の管理者ユーザーの電子メールが使用されます。"
+msgstr "IPT管理者メールアドレス - パスワードを忘れたユーザーにログインページで表示されるメールです。設定されていない場合は、最初の管理者ユーザーの電子メールが使用されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
 #, no-wrap
 msgid "[[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.\n"
-msgstr "[public-url]公開URL - これは、この IPT インストールのルートを指す URL です。このURLは、IPTのインストール中に自動的に設定されます。IPTが完全に機能するためには、パブリックURLはインターネット経由でアクセス可能である必要があります。例えば、IPTのパブリックURLをローカルホストに設定すると、IPTのインスタンスがGBIFに登録されず、IPTが機関と関連付けられず、リソースがパブリックにアクセスできなくなります。"
+msgstr "[public-url]公開URL - これは、この IPT インストールのルートを指す URL です。このURLは、IPTのインストール中に自動的に設定されます。IPTが完全に機能するためには、パブリックURLはインターネット経由でアクセス可能である必要があります。例えば、IPTのパブリックURLをローカルホストに設定すると、IPTのインスタンスがGBIFに登録されず、IPTが機関と関連付けられず、リソースがパブリックにアクセスできなくなります。\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/administration.adoc:20
@@ -98,7 +98,7 @@ msgstr "IPTのデータディレクトリ内で、config/ipt.properties ファ�
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:27
 msgid "in the `ipt.properties` file, change the line starting with `ipt.baseURL` to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\\://example.org\\:7001/ipt` for http://example.org:7001/ipt."
-msgstr "`ipt.properties`ファイルの `ipt.baseURL`で始まる行を、バックスラッシュを使用してコロン文字をエスケープし、新しいポートで新しいURLに変更します。例えば、http://example.org:7001/ipt に  `ipt.baseURL=http\\://example.org\\:7001/ipt` と入力します。"
+msgstr "`ipt.properties`ファイルの `ipt.baseURL`で始まる行を、バックスラッシュを使用してコロン文字をエスケープし、新しいポートで新しいURLに変更します。例えば、http://example.org:7001/ipt に `ipt.baseURL=http\\://example.org\\:7001/ipt` と入力します。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:28
@@ -114,43 +114,43 @@ msgstr "このマニュアルの次のセクション「すべてのリソース
 #: en/modules/ROOT/pages/administration.adoc:33
 #, no-wrap
 msgid "*Institutional proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.\n"
-msgstr "機関プロキシURL - IPT がインストールされているサーバーがインターネットに直接 HTTP/HTTPS アクセスできず、代わりに機関プロキシ サーバーを介して HTTP/HTTPS 要求の送信をルートする必要がある場合、ホスト アドレスとポート番号をここに入力します。例えば、`http://proxy.example.org:8080`"
+msgstr "機関プロキシURL - IPT がインストールされているサーバーがインターネットに直接 HTTP/HTTPS アクセスできず、代わりに機関プロキシ サーバーを介して HTTP/HTTPS 要求の送信をルートする必要がある場合、ホスト アドレスとポート番号をここに入力します。例えば、`http://proxy.example.org:8080`\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:34
 #, no-wrap
 msgid "*Google Analytics key* - If you would like to track the use of your instance of the IPT with Google Analytics, you can enable it to do so by entering your Google Analytics key in this text box. This is distinct from enabling GBIF to track the use of this instance of the IPT, which can be enabled using the check box described below. For more information about Google Analytics, see https://www.google.com/intl/en/analytics/.\n"
-msgstr "Googleアナリティクスキー - IPTのインスタンスの使用状況をGoogleアナリティクスで追跡したい場合は、このテキストボックスにGoogleアナリティクスのキーを入力することで、追跡できるようにすることができます。これは、後述のチェックボックスを使用して有効にできる、IPTインスタンスの使用を追跡するためにGBIFを有効にすることとは異なります。Googleアナリティクスの詳細については、https://www.google.com/intl/en/analytics/ を参照してください。"
+msgstr "Googleアナリティクスキー - IPTのインスタンスの使用状況をGoogleアナリティクスで追跡したい場合は、このテキストボックスにGoogleアナリティクスのキーを入力することで、追跡できるようにすることができます。これは、後述のチェックボックスを使用して有効にできる、IPTインスタンスの使用を追跡するためにGBIFを有効にすることとは異なります。Googleアナリティクスの詳細については、https://www.google.com/intl/en/analytics/ を参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:35
 #, no-wrap
 msgid "*Enable GBIF Analytics* - Check this box if you would like to enable GBIF to track this instance of the IPT with Google Analytics.\n"
-msgstr "GBIFアナリティクスを有効にする - GBIFを有効にして、GoogleアナリティクスでIPTのこのインスタンスを追跡したい場合は、このボックスをオンにします。"
+msgstr "GBIFアナリティクスを有効にする - GBIFを有効にして、GoogleアナリティクスでIPTのこのインスタンスを追跡したい場合は、このボックスをオンにします。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:36
 #, no-wrap
 msgid "*Debugging Mode* - Check this box if you would like the IPT to begin logging in the verbose debugging mode. Debugging mode is generally unnecessary unless you are trying to track a problem with the IPT. The IPT log file is located in the file debug.log in the IPT's data directory. The data directory is set during the first step in the installation process (see the Getting Started Guide). Refer to the information under the \"View IPT logs\" heading of the \"Administration Menus\" section for an easy way for users having the Admin role to view the debug.log file.\n"
-msgstr "デバッグモード - IPTに詳細デバッグモードでログを開始させたい場合は、このボックスをチェックします。デバッグモードは、IPTの問題を追跡するのでなければ、通常不要です。IPTログファイルは、IPTのデータディレクトリにある debug.log というファイルに格納されます。データディレクトリは、インストールプロセスの最初のステップで設定されます（「はじめに」を参照）。管理者ロールを持つユーザーが debug.log ファイルを簡単に表示する方法については、「管理メニュー」セクションの「IPT ログの表示」の下にある情報を参照してください。"
+msgstr "デバッグモード - IPTに詳細デバッグモードでログを開始させたい場合は、このボックスをチェックします。デバッグモードは、IPTの問題を追跡するのでなければ、通常不要です。IPTログファイルは、IPTのデータディレクトリにある debug.log というファイルに格納されます。データディレクトリは、インストールプロセスの最初のステップで設定されます（「はじめに」を参照）。管理者ロールを持つユーザーが debug.log ファイルを簡単に表示する方法については、「管理メニュー」セクションの「IPT ログの表示」の下にある情報を参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:37
 #, no-wrap
 msgid "*Archival Mode* - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.\n"
-msgstr "アーカイブモード - IPTですべてのリソースのすべての公開バージョンをアーカイブしたい場合は、このボックスをチェックします。これにより、リソースのバージョン履歴を追跡できるようになります。チェックを外すと、古いバージョンは最新版で上書きされます。ディスク容量が足りなくならないように注意してください。"
+msgstr "アーカイブモード - IPTですべてのリソースのすべての公開バージョンをアーカイブしたい場合は、このボックスをチェックします。これにより、リソースのバージョン履歴を追跡できるようになります。チェックを外すと、古いバージョンは最新版で上書きされます。ディスク容量が足りなくならないように注意してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:38
 #, no-wrap
 msgid "*Number of archived versions* - When archival mode is enabled, setting this configuration value to a number will keep that many old versions, but automatically delete older versions.\n"
-msgstr "保存するバージョンの数 - アーカイブ・モードが有効な場合、この設定値に数値を設定すると、その数だけ以前のバージョンを保持し、それより古いバージョンは自動的に削除されます。"
+msgstr "保存するバージョンの数 - アーカイブ・モードが有効な場合、この設定値に数値を設定すると、その数だけ以前のバージョンを保持し、それより古いバージョンは自動的に削除されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:39
 #, no-wrap
 msgid "*IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.\n"
-msgstr "IPT サーバーの場所 - このページのこのエリアでは、管理者が IPT がインストールされているサーバーの場所の地理的座標（緯度と経度）を設定することができます。この座標を設定することで、GBIF は世界中の登録された IPTインストールの中でこの位置をマップすることができます。"
+msgstr "IPT サーバーの場所 - このページのこのエリアでは、管理者が IPT がインストールされているサーバーの場所の地理的座標（緯度と経度）を設定することができます。この座標を設定することで、GBIF は世界中の登録された IPTインストールの中でこの位置をマップすることができます。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:40
@@ -201,49 +201,49 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:54
 #, no-wrap
 msgid "*Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.\n"
-msgstr "Eメール  - ユーザーの現在のEメールアドレスは、IPT内でログインするための識別子として使用され、変更することはできません。"
+msgstr "Eメール - ユーザーの現在のEメールアドレスは、IPT内でログインするための識別子として使用され、変更することはできません。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
 #, no-wrap
 msgid "*Note*: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.\n"
-msgstr "注：Eメールアドレスの変更が必要な場合、新しいEメールアドレスで新規ユーザーアカウントを作成し、古いEメールアドレスを持つユーザーアカウントを削除することを推奨します。"
+msgstr "注：Eメールアドレスの変更が必要な場合、新しいEメールアドレスで新規ユーザーアカウントを作成し、古いEメールアドレスを持つユーザーアカウントを削除することを推奨します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:56
 #, no-wrap
 msgid "*First name* - The first name of the user.\n"
-msgstr "名前 - ユーザーの名前"
+msgstr "名前 - ユーザーの名前\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:57
 #, no-wrap
 msgid "*Last name* - The last name of the user.\n"
-msgstr "姓 - ユーザーの姓"
+msgstr "姓 - ユーザーの姓\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:58
 #, no-wrap
 msgid "*Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role \"Manager without registration rights\" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role \"Manager with registration rights\" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.\n"
-msgstr "ロール - IPTのこのインストールに関して、ユーザーが持つ権限。管理責任者ユーザーは、IPTのインスタンスのすべての側面に変更を加えることができます。登録権限のない管理者ロールを持つユーザーは、IPT インスタンス内で作成した、または管理するよう招待されたリソースを作成、編集、削除、管理することができます。登録権限を持つ管理者というロールを持つユーザーは、GBIFネットワークにリソースを登録する追加機能を持ちます。その他のユーザーは、IPTにログインしてリソースを見ることはできますが、変更を加えることはできません。"
+msgstr "ロール - IPTのこのインストールに関して、ユーザーが持つ権限。管理責任者ユーザーは、IPTのインスタンスのすべての側面に変更を加えることができます。登録権限のない管理者ロールを持つユーザーは、IPT インスタンス内で作成した、または管理するよう招待されたリソースを作成、編集、削除、管理することができます。登録権限を持つ管理者というロールを持つユーザーは、GBIFネットワークにリソースを登録する追加機能を持ちます。その他のユーザーは、IPTにログインしてリソースを見ることはできますが、変更を加えることはできません。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:59
 #, no-wrap
 msgid "*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.\n"
-msgstr "パスワード - ユーザーのパスワードは4文字以上で構成され、IPTアプリケーションから回復することはできないため、忘れずに、安全である必要があります。"
+msgstr "パスワード - ユーザーのパスワードは4文字以上で構成され、IPTアプリケーションから回復することはできないため、忘れずに、安全である必要があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:60
 #, no-wrap
 msgid "*Note*: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the \"Account\" link in the header in the upper right corner of every page after logging in.\n"
-msgstr "注：ユーザーのパスワードがわからなくなった場合、管理責任者ロールを持つユーザーによって、自動的に生成された新しい値にリセットすることができます。この新しいパスワードをリセットされたユーザーに伝えるのは、管理者ユーザーの責任です。ユーザーは、ログイン後の各ページの右上にあるヘッダーの「アカウント」リンクからアクセスできるIPTアカウントページでパスワードを入力し、任意のパスワードに変更することができます。"
+msgstr "注：ユーザーのパスワードがわからなくなった場合、管理責任者ロールを持つユーザーによって、自動的に生成された新しい値にリセットすることができます。この新しいパスワードをリセットされたユーザーに伝えるのは、管理者ユーザーの責任です。ユーザーは、ログイン後の各ページの右上にあるヘッダーの「アカウント」リンクからアクセスできるIPTアカウントページでパスワードを入力し、任意のパスワードに変更することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:61
 #, no-wrap
 msgid "*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
-msgstr "パスワードの確認 - パスワードのテキストボックスに入力されたパスワードと一致するかで、意図したとおりに入力されたか確認します。"
+msgstr "パスワードの確認 - パスワードのテキストボックスに入力されたパスワードと一致するかで、意図したとおりに入力されたか確認します。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:62
@@ -266,13 +266,13 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:68
 #, no-wrap
 msgid "*Reset password* - If a user forgets a password, clicking on the button labelled \"Reset Password\" can generate a new one, after which a new password is given in an information message at the top of the page.\n"
-msgstr "パスワードのリセット - ユーザーがパスワードを忘れた場合、「パスワードのリセット」ボタンをクリックすると、新しいパスワードが生成され、その後、ページの上部に表示されるメッセージで新しいパスワードが発行されます。"
+msgstr "パスワードのリセット - ユーザーがパスワードを忘れた場合、「パスワードのリセット」ボタンをクリックすると、新しいパスワードが生成され、その後、ページの上部に表示されるメッセージで新しいパスワードが発行されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:69
 #, no-wrap
 msgid "*Note*: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.\n"
-msgstr "注意：IPTはこの変更を該当ユーザーに通知しないので、パスワードをリセットした管理者は新しいパスワードをユーザーに通知する責任があります。"
+msgstr "注意：IPTはこの変更を該当ユーザーに通知しないので、パスワードをリセットした管理者は新しいパスワードをユーザーに通知する責任があります。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:70
@@ -330,25 +330,25 @@ msgstr "検証に失敗した場合、GBIFレジストリとIPT間の通信に�
 #: en/modules/ROOT/pages/administration.adoc:86
 #, no-wrap
 msgid "*No Internet connectivity* - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labelled \"Validate\" button is clicked. Restore Internet connectivity before trying to proceed with registration.\n"
-msgstr "インターネットに接続されていない - IPT が正しく機能するには、アクティブなインターネット接続が必要です。「有効化」ボタンをクリックしたときにインターネットへ接続されていなかった場合、エラーが発生します。登録を続行する前に、インターネット接続を回復してください。"
+msgstr "インターネットに接続されていない - IPT が正しく機能するには、アクティブなインターネット接続が必要です。「有効化」ボタンをクリックしたときにインターネットへ接続されていなかった場合、エラーが発生します。登録を続行する前に、インターネット接続を回復してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:87
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "公開URLまたは機関プロキシURLが正しくない - 公開URLは、IPTセットアッププロセス中に自動的に検出・設定されます (「初期セットアップ」セクションを参照)。IPT がインストールされているサーバーの構成を変更すると、公開URLまたは機関プロキシURLの変更が必要になる場合があります。公開URLと機関プロキシURLは、「IPT の構成」ページで変更できます (「IPT の構成」セクションの公開URLと機関プロキシURLの説明を参照してください)。"
+msgstr "公開URLまたは機関プロキシURLが正しくない - 公開URLは、IPTセットアッププロセス中に自動的に検出・設定されます (「初期セットアップ」セクションを参照)。IPT がインストールされているサーバーの構成を変更すると、公開URLまたは機関プロキシURLの変更が必要になる場合があります。公開URLと機関プロキシURLは、「IPT の構成」ページで変更できます (「IPT の構成」セクションの公開URLと機関プロキシURLの説明を参照してください)。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:88
 #, no-wrap
 msgid "*Firewall* - If the Internet connection is live, a firewall may be preventing connections to the public URL or institutional proxy. Change the firewall or institutional proxy settings to all outside connections.\n"
-msgstr "ファイアウォール - インターネット接続が生きている場合、ファイアウォールが公開URLまたは機関プロキシへの接続を妨げている可能性があります。ファイアウォールまたは機関プロキシの設定をすべての外部接続に変更します。"
+msgstr "ファイアウォール - インターネット接続が生きている場合、ファイアウォールが公開URLまたは機関プロキシへの接続を妨げている可能性があります。ファイアウォールまたは機関プロキシの設定をすべての外部接続に変更します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:89
 #, no-wrap
 msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).\n"
-msgstr "GBIFレジストリへのアクセス不能 - これまでのエラーは発生していないのに、GBIFレジストリとの通信に失敗しているというエラーメッセージが表示された場合は、GBIFヘルプデスク (helpdesk@gbif.org) までGBIFレジストリへの接続に問題があることをご報告ください。"
+msgstr "GBIFレジストリへのアクセス不能 - これまでのエラーは発生していないのに、GBIFレジストリとの通信に失敗しているというエラーメッセージが表示された場合は、GBIFヘルプデスク (helpdesk@gbif.org) までGBIFレジストリへの接続に問題があることをご報告ください。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:90
@@ -377,67 +377,67 @@ msgstr "以下は、選択・入力する情報の具体的な説明です。"
 #: en/modules/ROOT/pages/administration.adoc:99
 #, no-wrap
 msgid "*Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.\n"
-msgstr "機関 - セレクトボックスには、GBIFレジストリに登録されている機関のリストが表示されます。このIPTインスタンスが関連付けられる単一の機関を選択します。リスト上でお探しの機関が見つからない場合は、GBIFレジストリ（https://www.gbif.org/publisher/search）を使用して、その機関が異なる名前で登録されているかどうかを確認します。機関がGBIFに未登録の場合は、IPTの登録を進める前に、GBIFヘルプデスクに連絡し、機関の登録をお願いします。ヘルプアイコンをクリックし、役に立つGBIFヘルプデスクのリンクをクリックすると、デフォルトのメールクライアントでメールテンプレートが開き、必要な情報を記入してから送信するだけです。"
+msgstr "機関 - セレクトボックスには、GBIFレジストリに登録されている機関のリストが表示されます。このIPTインスタンスが関連付けられる単一の機関を選択します。リスト上でお探しの機関が見つからない場合は、GBIFレジストリ（https://www.gbif.org/publisher/search）を使用して、その機関が異なる名前で登録されているかどうかを確認します。機関がGBIFに未登録の場合は、IPTの登録を進める前に、GBIFヘルプデスクに連絡し、機関の登録をお願いします。ヘルプアイコンをクリックし、役に立つGBIFヘルプデスクのリンクをクリックすると、デフォルトのメールクライアントでメールテンプレートが開き、必要な情報を記入してから送信するだけです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:100
 #, no-wrap
 msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
-msgstr "機関の共有トークン - 選択した機関のGBIFレジストリに登録されている共有トークンをこのテキストボックスに入力し、ユーザーがその機関とIPTインスタンスを関連付けるために必要な権限を持っていることを検証する必要があります。機関の共有トークンがない場合は、登録した連絡先に要求することができます。機関選択ボックスで機関を選択すると、機関の記録上の主要な連絡先へのリンクが、機関の共有トークンのテキストボックスの下に表示されます。共有トークンは、「保存」ボタンをクリックすると、IPT登録の認証に使用されます。"
+msgstr "機関の共有トークン - 選択した機関のGBIFレジストリに登録されている共有トークンをこのテキストボックスに入力し、ユーザーがその機関とIPTインスタンスを関連付けるために必要な権限を持っていることを検証する必要があります。機関の共有トークンがない場合は、登録した連絡先に要求することができます。機関選択ボックスで機関を選択すると、機関の記録上の主要な連絡先へのリンクが、機関の共有トークンのテキストボックスの下に表示されます。共有トークンは、「保存」ボタンをクリックすると、IPT登録の認証に使用されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:101
 #, no-wrap
 msgid "*Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.\n"
-msgstr "エイリアス - IPTのこのインスタンス内の機関を表すために便利な名前またはコードを入力します。エイリアスは、IPTのユーザーインターフェイスの機関のセレクトボックスで、正式な機関名の代わりに表示されます。"
+msgstr "エイリアス - IPTのこのインスタンス内の機関を表すために便利な名前またはコードを入力します。エイリアスは、IPTのユーザーインターフェイスの機関のセレクトボックスで、正式な機関名の代わりに表示されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:102
 #, no-wrap
 msgid "*Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.\n"
-msgstr "リソースを公開できますか？ - 選択した機関もIPTのこのインスタンスで公開されたリソースと関連付けることができる場合は、これをオンにします。チェックを外すと、機関はリソースと関連付けるために利用可能な機関のリストに表示されません。この機関は、IPTインスタンスのホストではなく、IPTインスタンスを介して公開されたリソースのいずれかのためのものである場合にのみ、チェックを外してください。"
+msgstr "リソースを公開できますか？ - 選択した機関もIPTのこのインスタンスで公開されたリソースと関連付けることができる場合は、これをオンにします。チェックを外すと、機関はリソースと関連付けるために利用可能な機関のリストに表示されません。この機関は、IPTインスタンスのホストではなく、IPTインスタンスを介して公開されたリソースのいずれかのためのものである場合にのみ、チェックを外してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:103
 #, no-wrap
 msgid "*Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.\n"
-msgstr "IPT インストールのタイトル - GBIFレジストリで使用されるIPTインストールのタイトルを入力します。タイトルは、レジストリでIPTインストールを一覧表示および検索するために使用される主な情報です。"
+msgstr "IPT インストールのタイトル - GBIFレジストリで使用されるIPTインストールのタイトルを入力します。タイトルは、レジストリでIPTインストールを一覧表示および検索するために使用される主な情報です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:104
 #, no-wrap
 msgid "*Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.\n"
-msgstr "このIPTインストールの説明 - GBIFレジストリで使用されるIPTインストールの説明を入力します。この説明は、特定のメタデータフィールド以外の情報を共有できるようにすることで、レジストリのユーザーがIPTインスタンスの重要性をさらに理解できるようにすることを目的としています。"
+msgstr "このIPTインストールの説明 - GBIFレジストリで使用されるIPTインストールの説明を入力します。この説明は、特定のメタデータフィールド以外の情報を共有できるようにすることで、レジストリのユーザーがIPTインスタンスの重要性をさらに理解できるようにすることを目的としています。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:105
 #, no-wrap
 msgid "*Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.\n"
-msgstr "連絡先名 - IPTインストールに関する情報のために連絡を受ける人の名前を入力する。この担当者は、IPTインスタンスの管理者の役割を持ち、インストールに関する技術的な詳細を理解している人である必要があります。"
+msgstr "連絡先名 - IPTインストールに関する情報のために連絡を受ける人の名前を入力する。この担当者は、IPTインスタンスの管理者の役割を持ち、インストールに関する技術的な詳細を理解している人である必要があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:106
 #, no-wrap
 msgid "*Contact Email* - enter the current email address of the person whose name is given in the Contact Name.\n"
-msgstr "連絡先Eメール - 「連絡先名」で指定された人物の現在のEメールアドレスを入力します。"
+msgstr "連絡先Eメール - 「連絡先名」で指定された人物の現在のEメールアドレスを入力します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:107
 #, no-wrap
 msgid "*IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.\n"
-msgstr "IPTパスワード - GBIFレジストリのこのIPTインストールのエントリを編集するために使用されるパスワードを入力します。"
+msgstr "IPTパスワード - GBIFレジストリのこのIPTインストールのエントリを編集するために使用されるパスワードを入力します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:108
 #, no-wrap
 msgid "*Save* - when all of the information above is entered or selected, click on the button labelled \"Save\" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.\n"
-msgstr "保存 - 上記のすべての情報を入力または選択したら、「保存」ボタンをクリックして、GBIFレジストリにIPTインストールを登録します。IPTインストールの登録に成功すると、「GBIFの設定」登録ページには、IPTがすでに登録され、選択した機関と関連付けられていることが表示されます。また、登録に成功すると、「管理」メニューから「機関の設定」ページにアクセスできるようになります。"
+msgstr "保存 - 上記のすべての情報を入力または選択したら、「保存」ボタンをクリックして、GBIFレジストリにIPTインストールを登録します。IPTインストールの登録に成功すると、「GBIFの設定」登録ページには、IPTがすでに登録され、選択した機関と関連付けられていることが表示されます。また、登録に成功すると、「管理」メニューから「機関の設定」ページにアクセスできるようになります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:109
 #, no-wrap
 msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Publish all resources\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
-msgstr "注：IPTの登録（リソースの登録ではなく、「リソース管理」セクションの「リソース概要」見出しの「公開状況」セクション、および「管理メニュー」セクションの「すべてのリソースの公開」見出しの情報を参照）への変更は、GBIFヘルプデスク（helpdesk@gbif.org）と相談しながら行う必要があります。"
+msgstr "注：IPTの登録（リソースの登録ではなく、「リソース管理」セクションの「リソース概要」見出しの「公開状況」セクション、および「管理メニュー」セクションの「すべてのリソースの公開」見出しの情報を参照）への変更は、GBIFヘルプデスク（helpdesk@gbif.org）と相談しながら行う必要があります。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:110
@@ -499,55 +499,55 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:130
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
-msgstr "機関名 - GBIFレジストリに登録されている機関の名称です。注：これは変更できません。"
+msgstr "機関名 - GBIFレジストリに登録されている機関の名称です。注：これは変更できません。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:131
 #, no-wrap
 msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
-msgstr "機関共有トークン - GBIFレジストリの機関のエントリを編集するために使用されるべき共有トークンです。"
+msgstr "機関共有トークン - GBIFレジストリの機関のエントリを編集するために使用されるべき共有トークンです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:132
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
-msgstr "機関のエイリアス - IPTインスタンス内の利便性のために機関に与えられた名前。エイリアスではなく、正式な機関名は、IPTの機関の選択リストで表示されます。"
+msgstr "機関のエイリアス - IPTインスタンス内の利便性のために機関に与えられた名前。エイリアスではなく、正式な機関名は、IPTの機関の選択リストで表示されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:133
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
-msgstr "リソースの公開が可能 - このチェックボックスは、機関がIPTのリソースと関連付けることができるかどうかを示しています。このボックスがチェックされている機関のみが、リソースと関連付けられるリストに表示されます。"
+msgstr "リソースの公開が可能 - このチェックボックスは、機関がIPTのリソースと関連付けることができるかどうかを示しています。このボックスがチェックされている機関のみが、リソースと関連付けられるリストに表示されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to register DOIs for resources; can be either DataCite. *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). *Note*: confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
-msgstr "DOI登録機関DOI - リソースのDOIを登録するために使用されるアカウントの種類。注：アカウントは、DataCiteのメンバーとの契約に署名した後に機関に発行され、1つ以上のドメイン（例：gbif.org）に1つ以上のプレフィックス（例：10.5072）の下にDOIを登録する許可を与えるものです。注：アカウントがIPTのドメイン/公開URLの下で実際にDOIを登録できることを確認してください。そうでなければ、IPT経由の登録は機能しません。"
+msgstr "DOI登録機関DOI - リソースのDOIを登録するために使用されるアカウントの種類。注：アカウントは、DataCiteのメンバーとの契約に署名した後に機関に発行され、1つ以上のドメイン（例：gbif.org）に1つ以上のプレフィックス（例：10.5072）の下にDOIを登録する許可を与えるものです。注：アカウントがIPTのドメイン/公開URLの下で実際にDOIを登録できることを確認してください。そうでなければ、IPT経由の登録は機能しません。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
-msgstr "アカウントのユーザー名 - 機関に発行されたDataCiteアカウントのユーザー名（シンボル）です。"
+msgstr "アカウントのユーザー名 - 機関に発行されたDataCiteアカウントのユーザー名（シンボル）です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
-msgstr "アカウントのパスワード - 機関に発行されたDataCiteアカウントのパスワード。"
+msgstr "アカウントのパスワード - 機関に発行されたDataCiteアカウントのパスワード。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:137
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a test prefix (see https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) when running the IPT in test mode.\n"
-msgstr "DOIプレフィックス/ショルダー - DOIを作成する際に使用される優先DOIプレフィックス/ショルダー。これは、機関に発行されたアカウントに固有のものです。注：テストモードでIPTを実行するときは、常にテストプレフィックス（ https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/ を参照）を使用します。"
+msgstr "DOIプレフィックス/ショルダー - DOIを作成する際に使用される優先DOIプレフィックス/ショルダー。これは、機関に発行されたアカウントに固有のものです。注：テストモードでIPTを実行するときは、常にテストプレフィックス（ https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/ を参照）を使用します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
-msgstr "アカウント有効化 - このDataCiteアカウントが、IPTがデータセットのDOIを登録するために使用する唯一のアカウントであるかどうかを示します。一度にアクティブにできるDataCiteアカウントは1つだけです。"
+msgstr "アカウント有効化 - このDataCiteアカウントが、IPTがデータセットのDOIを登録するために使用する唯一のアカウントであるかどうかを示します。一度にアクティブにできるDataCiteアカウントは1つだけです。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:139

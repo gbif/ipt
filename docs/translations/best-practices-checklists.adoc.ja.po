@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-01-13 12:18\n"
+"PO-Revision-Date: 2023-02-06 19:30\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -29,32 +29,32 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "はじめに"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Species Checklists"
-msgstr ""
+msgstr "種のチェックリストを発行する最適な方法"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:4
 #: en/modules/ROOT/pages/dwca-guide.adoc:4
 msgid "Version 2.1"
-msgstr ""
+msgstr "バージョン 2.1"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:5
 #, no-wrap
 msgid "figures/cover_art_stilt.png"
-msgstr ""
+msgstr "figures/cover_art_stilt.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:7
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:5
 #, no-wrap
 msgid "Document control"
-msgstr ""
+msgstr "文書管理"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:19
@@ -64,7 +64,11 @@ msgid "| Version | Description             | Date of release | Author(s)\n\n"
 "| https://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen\n\n"
 "| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak\n\n"
 "| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett\n"
-msgstr ""
+msgstr "| Version | Description             | Date of release | Author(s)\n\n"
+"| 1.0     | Release Version         | 1 April 2011    | David Remsen\n\n"
+"| https://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen\n\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak\n\n"
+"| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -73,63 +77,63 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "推奨される引用"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
-msgstr ""
+msgstr "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:27
 msgid "_Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
-msgstr ""
+msgstr "_カバーアート製作: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:31
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "このガイドでは、分類学的チェックリスト情報を標準的な方法で共有するための手段として、ダーウィンコア・アーカイブ (DwC-A) フォーマットの活用方法について詳しく説明します。また、ダーウィンコア・アーカイブフォーマットの特定のコンポーネントと、コア分類学データクラスをサポートする拡張機能に焦点を当て、共有データの価値を最大化するためにこれらのコンポーネントを最適に利用する方法について推奨事項を説明します。本書はダーウィンコア・アーカイブフォーマットの詳細な概要を提供するものではなく、[Darwin Core Archives How-to Guide]を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:33
 msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility."
-msgstr ""
+msgstr "DwC-Aフォーマットとここで説明する特定のプロファイルは、国際的に認められ批准された、分類学データ共有のためのデータ交換フォーマットです。すべてのデータ交換基準は、一方では技術的な範囲と能力、他方では社会的な受け入れと取り込みのバランスを取る必要があります。シンプルなソリューションでは、使いやすさを優先して、適用範囲や複雑さが犠牲になります。非常に複雑なフォーマットは、あらゆる種類のデータを表現するためのより完全なソリューションを提供しますが、単純さを犠牲にして、サポートするソフトウェアと専門知識を必要とします。ダーウィンコア・アーカイブフォーマットは、この両端の中間的な位置づけにあります。分類学的チェックリストの主要な要素に焦点を当て、このコア構造にリンクさせることで、より充実したデータ タイプのセットを可能にします。アーカイブに含まれるデータは、基本的な構造化テキストファイルに慣れている多くの生物学者やデータ管理者が容易に理解し、使用することができます。比較的簡単に作成・利用でき、分類学的データリソースを構成する重要な要素の多くをサポートする国際基準を提供することにより、GBIFは、チェックリストの作成者と管理者に、データを共有する標準的なアプローチを提供し、その後の引用と彼らの仕事の認識への共通のアプローチを促進することを期待しています。また、標準的な形式は、関連性と実用性を高めます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:34
 #, no-wrap
 msgid "Scope"
-msgstr ""
+msgstr "対象範囲"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:37
 msgid "The terms “species checklist” and taxonomic “catalogue” may refer to an overlapping range of taxonomic resources. All of these products contain sets of scientific names that implicitly or explicitly refer to taxa. The set of names included in such a list may be constrained by taxonomic group, geographic region, or by a theme, such as invasive species, or some combination of all three. In order of increasing detail these include the following resource typesfootnote:[These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”]."
-msgstr ""
+msgstr "「種チェックリスト」と分類学の「カタログ」という用語は、重複する範囲の分類学的リソースを指す場合があります。これらの製品はすべて、暗黙的または明示的に分類を参照する学名のセットを含んでいます。このようなリストに含まれる名前のセットは、分類群、地理的地域、または移入種のようなテーマによって、あるいはその3つの組み合わせによって制約されることがあります。詳細な順に、以下のリソースタイプfootnote:[These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”]が含まれます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:39
 #, no-wrap
 msgid "*Name lists* – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.\n"
-msgstr ""
+msgstr "名前リスト - 分類学上の状態を明示しない、単純な種名のリストです。ただし、一般に認められている分類名で構成されていることが示唆されています。このようなリストは総じて、地域的またはテーマ的な文脈に含まれる一連の分類群を区別することを意図しています。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Nomenclatural lists (Nomenclators)* – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.\n"
-msgstr ""
+msgstr "命名リスト（命名者） - 名目分類を含む名称のリストで、それぞれの命名規約で規定された命名行為を表す科学名称の公開用例の登録簿を意味します。これらの行為の多くは、新しい学名の「原記載」ですが、他に修正、レクトタイプ化および各コードで規定されるその他の行為が含まれる場合があります。シノニムは分類学上の概念としてこれらのリストに含まれるのではなく、（植物学者にとって）新たに確立された組み合わせがバシオニムにリンクされ、命名法上のシノニムとなる場合にのみ含まれます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:41
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
-msgstr ""
+msgstr "分類学的チェックリスト - 分類学的状態を明示し、シノニムとして扱われる名前を含めることで、命名リストを拡張したリストです。このカテゴリの単純な分類学的リストは、シノニムの根拠に関する具体的な詳細を提供しません。分類群は、多くの場合、分類体系に整理されています。また、「分類目録」という用語は、この分類やその他の分類の例を指す場合（特にその資料が検証済みの出版物や分類学的地位の詳細を含んでいる場合）に使用されることがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:42
 #, no-wrap
 msgid "*Annotated Checklists* - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymized checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.\n"
-msgstr ""
+msgstr "注釈付きチェックリスト - このカテゴリは、一般名、脅威の状態、分布、基本的な記述情報などの他のデータタイプ（注釈）を、シノニムのコアチェックリストに追加することによって、分類学的チェックリストを拡張します。注釈の種類が、詳細な診断説明や図解、分子データ、標本など、分類群を効果的に定義、または限定するのに十分な詳細を提供する場合、その注釈付きリストは以下に定義する2つのカテゴリーのいずれかに分類される可能性があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:43

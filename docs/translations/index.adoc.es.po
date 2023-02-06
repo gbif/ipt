@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2022-09-21 03:07\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,7 +26,7 @@ msgstr "La forma más sencilla de empezar a utilizar el IPT es solicitar una cue
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
 #: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
-msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Introducción] es su punto de inicio. "
+msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Introducción] es su punto de inicio."
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17

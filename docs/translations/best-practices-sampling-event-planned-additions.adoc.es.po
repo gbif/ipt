@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2022-02-04 16:43\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -203,7 +203,7 @@ msgstr "Muestreo de macrófitos"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data - planned additions and notes for revision"
-msgstr "Adiciones previstas y notas para la revisión de la sección Buenas prácticas en la publicación de datos de eventos de muestreo. "
+msgstr "Adiciones previstas y notas para la revisión de la sección Buenas prácticas en la publicación de datos de eventos de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:4
@@ -294,7 +294,7 @@ msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de d
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:55
 msgid "#TODO:# Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr "#PORHACER:# Guiar a los usuarios sobre cómo introducir las descripciones originales. Por ejemplo, el ID o código proporcionado para el evento original debe ser introducido en  dwc:fieldNumber; el ID o código proporcionado para la observación del registro debe ser introducido en dwc:recordNumber."
+msgstr "#PORHACER:# Guiar a los usuarios sobre cómo introducir las descripciones originales. Por ejemplo, el ID o código proporcionado para el evento original debe ser introducido en dwc:fieldNumber; el ID o código proporcionado para la observación del registro debe ser introducido en dwc:recordNumber."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:59
