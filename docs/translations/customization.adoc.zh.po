@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:15\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:37\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:28
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:12
+#: en/modules/ROOT/pages/customization.adoc:14
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
@@ -37,48 +37,53 @@ msgstr ""
 msgid "How to Style Your IPT"
 msgstr ""
 
-#. type: delimited block =
-#: en/modules/ROOT/pages/customization.adoc:6
-msgid "Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue]."
+#. type: Plain text
+#: en/modules/ROOT/pages/customization.adoc:4
+msgid "For simple customization in versions 2.6 or higher please use xref:administration.adoc[UI Management]."
 msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:8
+msgid "Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue]."
+msgstr ""
+
+#. type: delimited block =
+#: en/modules/ROOT/pages/customization.adoc:10
 msgid "Basic customizations can be made by editing `$tomcat/webapps/ipt/styles/main.css`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:11
+#: en/modules/ROOT/pages/customization.adoc:13
 msgid "Styling an IPT requires deployment using a servlet container like Tomcat.  A deployment from Linux packages or Docker could only be styled by overriding the `custom.css` file in a forward proxy."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:15
+#: en/modules/ROOT/pages/customization.adoc:17
 msgid "The following guide explains how to customize the IPT, and preserve your customization when upgrading your IPT's version."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:17
+#: en/modules/ROOT/pages/customization.adoc:19
 msgid "In short, customization can be achieved by applying CSS overrides."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:19
+#: en/modules/ROOT/pages/customization.adoc:21
 msgid "Apply your desired CSS overrides in `custom.css` (choose a different colour scheme for example). You can find this file inside the deployed WAR folder, e.g. `$tomcat/webapps/ipt/styles`. The original https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/custom.css[custom.css] comes pre-populated with a set of example CSS overrides to change the colours used in buttons, links, etc."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:20
+#: en/modules/ROOT/pages/customization.adoc:22
 msgid "Upon completion, backup the `custom.css` file somewhere safe so that it can be added once again after each IPT upgrade, which unfortunately will overwrite the `custom.css` file each time."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/customization.adoc:22
+#: en/modules/ROOT/pages/customization.adoc:24
 msgid "Take a look at the screenshot to see the effect of changing the default CSS."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/customization.adoc:23
+#: en/modules/ROOT/pages/customization.adoc:25
 #, no-wrap
 msgid "ipt2/customization/IPTCustomizedStyle.png"
 msgstr ""
