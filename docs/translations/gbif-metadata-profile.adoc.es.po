@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-12-20 11:04+0000\n"
-"PO-Revision-Date: 2023-02-02 10:57\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:28
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:12
+#: en/modules/ROOT/pages/customization.adoc:14
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
@@ -151,7 +151,7 @@ msgstr "En total, el IPT cuenta con 12 formatos de metadatos diferentes que orga
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
-#: en/modules/ROOT/pages/manage-resources.adoc:274
+#: en/modules/ROOT/pages/manage-resources.adoc:273
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "Metadatos básicos"
@@ -169,7 +169,7 @@ msgstr "Cobertura geográfica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:328
+#: en/modules/ROOT/pages/manage-resources.adoc:330
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "Cobertura taxonómica"
@@ -178,7 +178,7 @@ msgstr "Cobertura taxonómica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:352
+#: en/modules/ROOT/pages/manage-resources.adoc:356
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "Cobertura temporal"
@@ -190,35 +190,35 @@ msgstr "Otras palabras clave"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:391
+#: en/modules/ROOT/pages/manage-resources.adoc:397
 #, no-wrap
 msgid "Associated Parties"
 msgstr "Partes asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:418
+#: en/modules/ROOT/pages/manage-resources.adoc:424
 #, no-wrap
 msgid "Project Data"
 msgstr "Datos del proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:437
+#: en/modules/ROOT/pages/manage-resources.adoc:443
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "Métodos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:450
+#: en/modules/ROOT/pages/manage-resources.adoc:456
 #, no-wrap
 msgid "Citations"
 msgstr "Referencias"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:478
+#: en/modules/ROOT/pages/manage-resources.adoc:484
 #, no-wrap
 msgid "Collection Data"
 msgstr "Datos de la colección"
@@ -230,7 +230,7 @@ msgstr "Datos físicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:529
+#: en/modules/ROOT/pages/manage-resources.adoc:535
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "Metadatos adicionales"
@@ -281,8 +281,8 @@ msgstr "El IPT publica el documento de metadatos y se asegura de que sea validad
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
-msgid "If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr "Si en algún momento se modifican los metadatos, el usuario solo tiene que actualizar el documento y hacer clic en el botón “Publicar” en la página \"Administrar recurso\" para publicar una nueva versión del documento (recurso) (Figura 3)."
+msgid "If at any time the metadata are modified, the user only has to update the document and click “Publish” on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
+msgstr ""
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
