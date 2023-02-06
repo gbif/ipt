@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:01\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:37\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -29,12 +29,12 @@ msgstr "此選單只有系統管理員登入時顯示。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
-msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labelled \"Organizations\" will remain disabled by default until the GBIF registration options have been set."
+msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button."
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
-#: en/modules/ROOT/pages/initial-setup.adoc:67
+#: en/modules/ROOT/pages/initial-setup.adoc:69
 #, no-wrap
 msgid "ipt2/administration/IPTAdminBeforeRegistration.png"
 msgstr ""
@@ -171,7 +171,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:45
-msgid "This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins."
+msgid "This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. Users can be deleted or passwords reset by clicking on icons on the right side."
 msgstr ""
 
 #. type: Target for macro image
@@ -369,7 +369,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:97
-#: en/modules/ROOT/pages/administration.adoc:128
+#: en/modules/ROOT/pages/administration.adoc:132
 msgid "Following are explanations of the specific information to select or enter:"
 msgstr ""
 
@@ -453,242 +453,270 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:113
 #, no-wrap
-msgid "ipt2/administration/IPTAdminEditRegistration.png"
+msgid "ipt2/administration/IPTAdminEditRegistration1.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:116
+msgid "Edit organization's shared tokens view:"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/administration.adoc:117
+#, no-wrap
+msgid "ipt2/administration/IPTAdminEditRegistration2.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:115
+#: en/modules/ROOT/pages/administration.adoc:119
 #, no-wrap
 msgid "Configure Organizations"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:117
+#: en/modules/ROOT/pages/administration.adoc:121
 msgid "This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the \"Configure GBIF registration\" heading of the \"Administration Menu\" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:119
+#: en/modules/ROOT/pages/administration.adoc:123
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:120
+#: en/modules/ROOT/pages/administration.adoc:124
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgs.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:122
+#: en/modules/ROOT/pages/administration.adoc:126
 #, no-wrap
 msgid "Edit organization"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:124
+#: en/modules/ROOT/pages/administration.adoc:128
 msgid "On this page a user having the Admin role can edit the organization. Click on the button labelled \"Edit\" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:125
+#: en/modules/ROOT/pages/administration.adoc:129
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgsEditOrg.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:130
+#: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:131
+#: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:132
+#: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:133
+#: en/modules/ROOT/pages/administration.adoc:137
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:134
+#: en/modules/ROOT/pages/administration.adoc:138
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to register DOIs for resources; can be either DataCite. *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). *Note*: confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:135
+#: en/modules/ROOT/pages/administration.adoc:139
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:136
+#: en/modules/ROOT/pages/administration.adoc:140
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:137
+#: en/modules/ROOT/pages/administration.adoc:141
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a test prefix (see https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) when running the IPT in test mode.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:138
+#: en/modules/ROOT/pages/administration.adoc:142
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:139
+#: en/modules/ROOT/pages/administration.adoc:143
 #, no-wrap
 msgid "Add organization"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:141
+#: en/modules/ROOT/pages/administration.adoc:145
 msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:142
+#: en/modules/ROOT/pages/administration.adoc:146
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgsAddOrg.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:144
+#: en/modules/ROOT/pages/administration.adoc:148
 #, no-wrap
 msgid "Configure Core Types and Extensions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:146
+#: en/modules/ROOT/pages/administration.adoc:150
 msgid "This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence, Taxon, and Event for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the \"Darwin Core Mappings\" heading of the \"Resource Overview\" section."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:148
+#: en/modules/ROOT/pages/administration.adoc:152
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:150
+#: en/modules/ROOT/pages/administration.adoc:154
 msgid "Following the lists of installed Core Types and Extensions, there is a section labelled \"Synchronize Extensions and Vocabularies\" having a single button labelled \"Synchronize\". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:151
+#: en/modules/ROOT/pages/administration.adoc:155
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensions.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:155
+#: en/modules/ROOT/pages/administration.adoc:159
 msgid "The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labelled either \"Install\" or \"Remove\". If the extension is out-of-date, another button labelled \"Update\" will also appear. In the right-hand column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the date it was issued (released), the number of properties (fields, terms) in the extension, the name of the extension, its namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at http://rs.tdwg.org/dwc/terms/guides/text/.  Following are the actions that can be taken with respect to extensions:"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:156
+#: en/modules/ROOT/pages/administration.adoc:160
 #, no-wrap
 msgid "Synchronize Extensions and Vocabularies"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:158
+#: en/modules/ROOT/pages/administration.adoc:162
 msgid "An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating in the IPT. Click on the button labelled \"Synchronize\" to synchronize existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronization was successful or if there were any errors."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:159
+#: en/modules/ROOT/pages/administration.adoc:163
 #, no-wrap
 msgid "View extension details"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:161
-msgid "The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension."
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:162
-#, no-wrap
-msgid "ipt2/administration/IPTAdminExtensionsDetail.png"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:165
-msgid "For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label \"Vocabulary:\". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers."
+msgid "The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension."
 msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:166
 #, no-wrap
+msgid "ipt2/administration/IPTAdminExtensionsDetail.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:169
+msgid "For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label \"Vocabulary:\". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/administration.adoc:170
+#, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:168
+#: en/modules/ROOT/pages/administration.adoc:172
 #, no-wrap
 msgid "Install extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:170
+#: en/modules/ROOT/pages/administration.adoc:174
 msgid "For any of the extensions that have not yet been installed in the IPT, there is a button labelled \"Install\" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:171
+#: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
 msgid "Remove extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:173
+#: en/modules/ROOT/pages/administration.adoc:177
 msgid "For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled \"Remove\". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:174
+#: en/modules/ROOT/pages/administration.adoc:178
 #, no-wrap
 msgid "Update extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:176
+#: en/modules/ROOT/pages/administration.adoc:180
 msgid "For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled \"Update\". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:177
+#: en/modules/ROOT/pages/administration.adoc:181
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:179
+#: en/modules/ROOT/pages/administration.adoc:183
+#, no-wrap
+msgid "UI Management"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:186
+msgid "The IPT logo and colour scheme can be managed from the UI Management page."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/administration.adoc:187
+#, no-wrap
+msgid "ipt2/administration/IPTAdminUIManagement.png"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/administration.adoc:189
 #, no-wrap
 msgid "View IPT logs"
 msgstr "查看 IPT 的日誌檔"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:181
+#: en/modules/ROOT/pages/administration.adoc:191
 msgid "Messages generated from actions taken while running the IPT are logged to files for reference in the directory called \"logs\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled \"complete log file\". The contents of the complete log file may be useful when reporting an apparent bug."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:182
+#: en/modules/ROOT/pages/administration.adoc:192
 #, no-wrap
 msgid "ipt2/administration/IPTAdminLogs.png"
 msgstr ""
