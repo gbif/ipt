@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-09-19 13:12+0000\n"
-"PO-Revision-Date: 2022-09-19 13:17\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
-#: en/modules/ROOT/pages/initial-setup.adoc:67
+#: en/modules/ROOT/pages/initial-setup.adoc:69
 #, no-wrap
 msgid "ipt2/administration/IPTAdminBeforeRegistration.png"
 msgstr ""
@@ -180,24 +180,30 @@ msgstr ""
 msgid "ipt2/setup/IPTSetup2.png"
 msgstr ""
 
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:61
+#, no-wrap
+msgid "ipt2/setup/IPTSetup2-1.png"
+msgstr ""
+
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:62
+#: en/modules/ROOT/pages/initial-setup.adoc:64
 msgid "When all of the information on the page is complete and correct, click on the button labelled \"Save\" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/initial-setup.adoc:63
+#: en/modules/ROOT/pages/initial-setup.adoc:65
 #, no-wrap
 msgid "ipt2/setup/IPTSetupFinished.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:66
-msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization. The Organizations button is disabled by default until the GBIF registration options have been set."
+#: en/modules/ROOT/pages/initial-setup.adoc:68
+msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:69
+#: en/modules/ROOT/pages/initial-setup.adoc:71
 msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
 msgstr ""
 
