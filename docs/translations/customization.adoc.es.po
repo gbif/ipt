@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2023-02-07 20:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -40,7 +40,7 @@ msgstr "Cómo diseñar su IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:4
 msgid "For simple customization in versions 2.6 or higher please use xref:administration.adoc[UI Management]."
-msgstr ""
+msgstr "Para una personalización sencilla en las versiones 2.6 o superior, utilice xref:administration.adoc[Administración UI]."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:8
