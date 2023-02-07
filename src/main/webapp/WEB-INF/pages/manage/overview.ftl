@@ -226,11 +226,17 @@
 
         $("#network").change(function (e) {
             var network = this.options[e.target.selectedIndex].value;
-
             if (network) {
                 $("#add-network").show();
+                // OBIS network key (show callout)
+                if (network === "2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6") {
+                    $("#obis-network-validation-notification").show();
+                } else {
+                    $("#obis-network-validation-notification").hide();
+                }
             } else {
                 $("#add-network").hide();
+                $("#obis-network-validation-notification").hide();
             }
         });
 
@@ -1592,6 +1598,9 @@
                 <div class="modal-body">
                     <#if resource.key?has_content && (potentialNetworks?size>0)>
                         <div>
+                            <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
+                                <@s.text name="manage.overview.networks.obis.notification"/>
+                            </div>
                             <form action='resource-addNetwork.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <select name="id" class="form-select my-1" id="network" size="1">
