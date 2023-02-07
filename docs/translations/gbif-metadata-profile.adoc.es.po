@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-02-07 20:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -282,7 +282,7 @@ msgstr "El IPT publica el documento de metadatos y se asegura de que sea validad
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
 msgid "If at any time the metadata are modified, the user only has to update the document and click “Publish” on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr ""
+msgstr "Si en algún momento se modifican los metadatos, el usuario solo tiene que actualizar el documento y hacer clic en el botón “Publicar” en la página \"Administrar recurso\" para publicar una nueva versión del documento (recurso) (Figura 3)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
