@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-02-06 19:31\n"
+"PO-Revision-Date: 2023-02-07 13:01\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -157,7 +157,7 @@ msgstr "IPTのユーザーインターフェイスやマニュアルも国際化
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:52
 msgid "Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian."
-msgstr "コミュニティの多大な努力と、ローカリゼーションツール[Crowdin]の力を借りて、ユーザーインターフェースはすでに7ヶ国語（英語・フランス語・スペイン語・中国語（繁体字）・ポルトガル語（ブラジル）・日本語・ロシア語）に翻訳されています。"
+msgstr "コミュニティの多大な努力と、ローカリゼーションツールlink:https://crowdin.com/project/gbif-ipt[Crowdin]の力を借りて、ユーザーインターフェースはすでに7ヶ国語（英語・フランス語・スペイン語・中国語（繁体字）・ポルトガル語（ブラジル）・日本語・ロシア語）に翻訳されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:53
@@ -173,5 +173,5 @@ msgstr "このソフトの成功には、多くの献身的なボランティア
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:57
 msgid "https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations."
-msgstr "[Crowdin]は、このオープンソースプロジェクトを支援するため、GBIFに同社のローカリゼーション管理プラットフォームへの無償アクセスを提供しています。Crowdinは、多言語への同時翻訳の管理を可能にします。"
+msgstr "https://crowdin.com/[Crowdin]は、このオープンソースプロジェクトを支援するため、GBIFに同社のローカリゼーション管理プラットフォームへの無償アクセスを提供しています。Crowdinは、多言語への同時翻訳の管理を可能にします。"
 
