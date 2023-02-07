@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2023-02-07 20:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,7 +30,7 @@ msgstr "Este menú es visible únicamente para los usuarios que tienen el rol de
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
 msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button."
-msgstr ""
+msgstr "Esta sección describe cada una de las funciones a las que se puede acceder desde el menú Administración. Al hacer clic en el menú Administración, se abre una página (consulte la imagen de la pantalla a continuación) desde la que se puede acceder a cada una de estas tareas administrativas específicas haciendo clic en el botón correspondiente."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
@@ -172,7 +172,7 @@ msgstr "Configurar cuentas de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:45
 msgid "This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. Users can be deleted or passwords reset by clicking on icons on the right side."
-msgstr ""
+msgstr "Esta página permite al usuario con rol Administrador, crear, modificar y eliminar cuentas de usuario. Cuando se abre la página, muestra una tabla de usuarios existentes e información básica acerca de ellos, incluyendo sus nombres, direcciones de correo electrónico, roles y la fecha y hora de su ultimo inicio de sesión. Los usuarios pueden eliminar o restablecer sus contraseñas haciendo clic en los iconos de la derecha."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:46
@@ -454,18 +454,18 @@ msgstr "Una vez registrado el IPT, esta página permite al usuario actualizar la
 #: en/modules/ROOT/pages/administration.adoc:113
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistration1.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistration1.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:116
 msgid "Edit organization's shared tokens view:"
-msgstr ""
+msgstr "Editar la vista de tokens compartidos de la organización:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:117
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistration2.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistration2.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:119
@@ -696,13 +696,13 @@ msgstr "Gestión de la interfaz de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:186
 msgid "The IPT logo and colour scheme can be managed from the UI Management page."
-msgstr ""
+msgstr "El logotipo de IPT y el esquema de colores se pueden administrar desde la página de administración de la interfaz de usuario."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:187
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUIManagement.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminUIManagement.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:189
