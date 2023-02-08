@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 05:22\n"
+"PO-Revision-Date: 2023-02-08 06:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -303,7 +303,7 @@ msgstr "各リソースには、管理責任者または管理者のいずれか
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr "ユーザーが何かしらのリソースの作成者である場合、そのユーザーを削除することはできません。ユーザーのリソースへのアクセスを制限するには、ユーザーのロールをユーザータイプにダウングレードしてください。ユーザーのロールを変更する方法については、link:https://ipt.gbif.org/manual/en/ipt/latest/administration#modify-an-existing-user[既存のユーザーを変更する]セクションを参照してください。"
+msgstr "ユーザーが何かしらのリソースの作成者である場合、そのユーザーを削除することはできません。ユーザーのリソースへのアクセスを制限するには、ユーザーのロールをユーザータイプにダウングレードしてください。ユーザーのロールを変更する方法については、link:https://ipt.gbif.org/manual/ja/ipt/latest/administration#modify-an-existing-user[既存のユーザーを変更する]セクションを参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:78
@@ -314,7 +314,7 @@ msgstr "GBIF登録オプションの設定"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:80
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr "このページでは、GBIFレジストリにIPTインスタンスを登録することができます（まだ登録されていない場合）。IPTは、IPTのリソースを機関と関連付けたり（「管理メニュー」セクションの「機関の設定」見出しの情報を参照）、公開したり（xref:manage-resources.adoc#published-versions[公開バージョン]セクションを参照）する前に登録されている必要があります。登録されたIPTとその公開リソースに関する情報は、レジストリのサービスを通じて検索可能になり、IPTで公開された公開リソースのデータは、GBIFポータルを通じて検索できるようにインデックス化されます。すでにIPTが登録されている場合は、link:https://ipt.gbif.org/manual/en/ipt/latest/administration#edit-gbif-registration[GBIF登録内容を編集する]ページでIPTの登録情報を編集することができます。"
+msgstr "このページでは、GBIFレジストリにIPTインスタンスを登録することができます（まだ登録されていない場合）。IPTは、IPTのリソースを機関と関連付けたり（「管理メニュー」セクションの「機関の設定」見出しの情報を参照）、公開したり（xref:manage-resources.adoc#published-versions[公開バージョン]セクションを参照）する前に登録されている必要があります。登録されたIPTとその公開リソースに関する情報は、レジストリのサービスを通じて検索可能になり、IPTで公開された公開リソースのデータは、GBIFポータルを通じて検索できるようにインデックス化されます。すでにIPTが登録されている場合は、link:https://ipt.gbif.org/manual/ja/ipt/latest/administration#edit-gbif-registration[GBIF登録内容を編集する]ページでIPTの登録情報を編集することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:82
@@ -336,7 +336,7 @@ msgstr "*インターネットに接続されていない* - IPT が正しく機
 #: en/modules/ROOT/pages/administration.adoc:87
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "*公開URLまたは機関プロキシURLが正しくない* - 公開URLは、IPTセットアッププロセス中に自動的に検出・設定されます (xref:initial-setup.adoc[初期セットアップ]セクションを参照)。IPT がインストールされているサーバーの構成を変更すると、公開URLまたは機関プロキシURLの変更が必要になる場合があります。公開URLと機関プロキシURLは、「IPT の構成」ページで変更できます (link:https://ipt.gbif.org/manual/en/ipt/latest/administration#configure-ipt-settings[IPT の構成]セクションの公開URLと機関プロキシURLの説明を参照してください)。\n"
+msgstr "*公開URLまたは機関プロキシURLが正しくない* - 公開URLは、IPTセットアッププロセス中に自動的に検出・設定されます (xref:initial-setup.adoc[初期セットアップ]セクションを参照)。IPT がインストールされているサーバーの構成を変更すると、公開URLまたは機関プロキシURLの変更が必要になる場合があります。公開URLと機関プロキシURLは、「IPT の構成」ページで変更できます (link:https://ipt.gbif.org/manual/ja/ipt/latest/administration#configure-ipt-settings[IPT の構成]セクションの公開URLと機関プロキシURLの説明を参照してください)。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:88
@@ -481,7 +481,7 @@ msgstr "このページは、IPTインスタンスがGBIFレジストリに正�
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:123
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr "リソースにDOIを割り当てることができるIPTは、DataCiteアカウントで構成された機関も持っている必要があります。DataCiteアカウントを設定するために、機関はリソースを公開できる（リソースと 関連付けられる）必要はありません。一度に登録できるDataCiteアカウントは1つだけで、IPTのアーカイブモードもオンになっている必要があります（アーカイブモードの詳細については、link:https://ipt.gbif.org/manual/en/ipt/latest/administration#configure-ipt-settings[IPTの設定]セクションを参照してください）。機関のリストには、どの機関がDataCiteアカウントで設定され、このIPTインスタンスのすべてのリソースのDOIを登録するためにどの機関が選択されたかが表示されます。"
+msgstr "リソースにDOIを割り当てることができるIPTは、DataCiteアカウントで構成された機関も持っている必要があります。DataCiteアカウントを設定するために、機関はリソースを公開できる（リソースと 関連付けられる）必要はありません。一度に登録できるDataCiteアカウントは1つだけで、IPTのアーカイブモードもオンになっている必要があります（アーカイブモードの詳細については、link:https://ipt.gbif.org/manual/ja/ipt/latest/administration#configure-ipt-settings[IPTの設定]セクションを参照してください）。機関のリストには、どの機関がDataCiteアカウントで設定され、このIPTインスタンスのすべてのリソースのDOIを登録するためにどの機関が選択されたかが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:124
