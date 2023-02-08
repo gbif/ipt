@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-02-08 03:12\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -123,19 +123,19 @@ msgstr "リソース管理テーブル"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
 msgid "When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:home.adoc#public-resource-table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:"
-msgstr "リソース管理ページを最初に開くと、現在のユーザーが変更する権限を持つ既存のリソース（このユーザーが作成したものと、このユーザーが他のユーザーから管理の招待を受けたものを含む）の表が表示されます。名前、機関、タイプ、サブタイプ、レコード、最終更新日、最終公開日、次回公開日の列の詳細については、[Public Resources Table]セクションの情報を参照してください。また、リソース管理テーブルには、リソースの基本情報として、次の列があります。"
+msgstr "リソース管理ページを最初に開くと、現在のユーザーが変更する権限を持つ既存のリソース（このユーザーが作成したものと、このユーザーが他のユーザーから管理の招待を受けたものを含む）の表が表示されます。名前、機関、タイプ、サブタイプ、レコード、最終更新日、最終公開日、次回公開日の列の詳細については、xref:home.adoc#public-resource-table[公開リソーステーブル]セクションの情報を参照してください。また、リソース管理テーブルには、リソースの基本情報として、次の列があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
 msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#public-resource-table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
-msgstr "公開状況 - リソースを閲覧するためのアクセス権を持つ人を示すカテゴリーです。リソースが「公開」である場合、すべてのユーザーがホームページの「パプリックリソーステーブル」でリソースを見ることができます。リソースが「非公開」の場合、「リソース管理テーブル」では、リソースを作成したユーザー、リソースの管理に招待されたユーザー、および管理者権限を持つユーザーのみが見ることができます。リソースの管理に他のユーザーを招待する方法については、「リソースの管理者」セクションの「リソース概要」下の「リソース管理」セクションに記載されています。\n"
+msgstr "*公開状況* - リソースを閲覧するためのアクセス権を持つ人を示すカテゴリーです。リソースが「公開」である場合、すべてのユーザーがホームページのxref:home.adoc#public-resource-table[公開リソーステーブル] でリソースを見ることができます。リソースが「非公開」の場合、「リソース管理テーブル」では、リソースを作成したユーザー、リソースの管理に招待されたユーザー、および管理者権限を持つユーザーのみが見ることができます。リソースの管理に他のユーザーを招待する方法については、「リソースの管理者」セクションの「リソース概要」下の「リソース管理」セクションに記載されています。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:14
 #, no-wrap
 msgid "*Author* - the IPT user who created the resource.\n"
-msgstr "作成者 - リソースを作成したIPTユーザー。\n"
+msgstr "*作成者* - リソースを作成したIPTユーザー。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:15
@@ -166,7 +166,7 @@ msgstr "メタデータファイルのアップロード"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr "もちろん、既存のアーカイブリソースを読み込まずに、まったく新しいリソースを作成することも可能です。このオプションでは、リソース構成は、ソースデータファイルのアップロード（またはデータベースやURLへのリンク）、およびその中のフィールドを適切な拡張子の用語にマッピングするなど、IPTフォームから全体的に作成される必要があります。IPTには200MBのファイルアップロード制限がありますが、IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がないことに注意してください。ファイルアップロードの制限を回避する方法については、ファイルアップロードの制限についての注意を参照してください。"
+msgstr "もちろん、_既存のアーカイブリソース_を読み込まずに、まったく新しいリソースを作成することも可能です。このオプションでは、リソース構成は、ソースデータファイルのアップロード（またはデータベースやURLへのリンク）、およびその中のフィールドを適切な拡張子の用語にマッピングするなど、IPTフォームから全体的に作成される必要があります。*IPTには200MBのファイルアップロード制限があります*が、*IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がない*ことに注意してください。ファイルアップロードの制限を回避する方法については、ファイルアップロードの制限についての注意を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
@@ -182,7 +182,7 @@ msgstr "ダーウィンコア・アーカイブのアップロード"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
 msgid "The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr "IPTは、200MBまでの有効なダーウィンコア・アーカイブファイルをインポートすることができます。ダーウィンコア・アーカイブに関する情報は[Darwin Core web site]に掲載されており、IPT の利用に関する詳細な情報が記載されています。ダーウィンコア・アーカイブをインポートするには、「ファイルを選択」というラベルのボタンをクリックし、目的のアーカイブファイルを移動して選択します。ファイルを選択すると、ファイル名が「ファイルを選択」ボタンの横に表示されます。"
+msgstr "IPTは、200MBまでの有効なダーウィンコア・アーカイブファイルをインポートすることができます。ダーウィンコア・アーカイブに関する情報はlink:https://dwc.tdwg.org/[ダーウィンコア ウェブサイト]に掲載されており、IPT の利用に関する詳細な情報はxref:dwca-guide.adoc[こちら]に記載されています。ダーウィンコア・アーカイブをインポートするには、「ファイルを選択」というラベルのボタンをクリックし、目的のアーカイブファイルを移動して選択します。ファイルを選択すると、ファイル名が「ファイルを選択」ボタンの横に表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:29
@@ -210,7 +210,7 @@ msgstr "IPTリソース設定フォルダをzipファイルでアップロード
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
 msgid "It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will *not* copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name."
-msgstr "zip圧縮されたIPTリソース設定フォルダから、リソースのコピーを作成することができます。リソースがIPTの互換性のあるバージョンの下で作成されていることが条件です。事実上、これはリソースのすべてのメタデータ、ソース・データ、およびマッピングをコピーします。リソースの登録情報、バージョン履歴、DOI、バージョン番号、マネージャー、出版状況、作成日、最終出版日、またリソースの省略名はコピーされません。"
+msgstr "zip圧縮されたIPTリソース設定フォルダから、リソースのコピーを作成することができます。リソースがIPTの互換性のあるバージョンの下で作成されていることが条件です。事実上、これはリソースのすべてのメタデータ、ソース・データ、およびマッピングをコピーします。リソースの登録情報、バージョン履歴、DOI、バージョン番号、マネージャー、出版状況、作成日、最終出版日、またリソースの省略名は*コピーされません*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:39
@@ -256,7 +256,7 @@ msgstr "メタデータファイルのアップロード"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr "IPTは、GBIFメタデータプロファイルに準拠した有効なデータセットのメタデータファイルをインポートまたはエクスポートすることができます。GBIF EML メタデータプロファイルに関する情報、および GBIFメタデータプロファイルダーウィンコアに準拠したメタデータ文書の作成方法については、[GBIF Metadata Profile – How To Guide]に記載されています。メタデータファイルをインポートするには、リソースタイプ「メタデータのみ」を選択し、「ファイルを選択」ボタンをクリックし、目的のメタデータファイルを選択します。ファイルを選択すると、「ファイルを選択」ボタンの横にファイル名が表示されます。"
+msgstr "IPTは、GBIFメタデータプロファイルに準拠した有効なデータセットのメタデータファイルをインポートまたはエクスポートすることができます。GBIF EML メタデータプロファイルに関する情報、および GBIFメタデータプロファイルダーウィンコアに準拠したメタデータ文書の作成方法については、xref:gbif-metadata-profile.adoc[GBIFメタデータプロファイル – 使いかた]に記載されています。メタデータファイルをインポートするには、リソースタイプ「メタデータのみ」を選択し、「ファイルを選択」ボタンをクリックし、目的のメタデータファイルを選択します。ファイルを選択すると、「ファイルを選択」ボタンの横にファイル名が表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
@@ -306,7 +306,7 @@ msgstr "ソースデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:64
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr "リソース概要ページのこのエリアでは、ユーザーがファイル、データベース、URLからIPTに一次データをインポートすることができます。リソースにソースデータがない場合はメタデータのみのリソースとみなされ、データセットまたはコレクションに関する情報を持つが、一次データはありません。ソースが互いに関連している場合、リソースを複数のデータソースに接続することが可能です。複数のデータソースの関連付けについての詳細は、ダーウィンコアText Guideの[Implementation Guide] セクションで説明されています。以下は、テキストファイル、データベースソース、またはURLで利用可能なテキストファイルから、ソースデータを選択する予備手順の説明です。"
+msgstr "リソース概要ページのこのエリアでは、ユーザーがファイル、データベース、URLからIPTに一次データをインポートすることができます。リソースにソースデータがない場合はメタデータのみのリソースとみなされ、データセットまたはコレクションに関する情報を持つが、一次データはありません。ソースが互いに関連している場合、リソースを複数のデータソースに接続することが可能です。複数のデータソースの関連付けについての詳細は、ダーウィンコアText Guideのlink:https://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[導入ガイド]セクションで説明されています。以下は、テキストファイル、データベースソース、またはURLで利用可能なテキストファイルから、ソースデータを選択する予備手順の説明です。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:65
@@ -356,7 +356,7 @@ msgstr "ZipまたはGZipでファイル圧縮する"
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr "IPTが対応する多くのデータベースのうちの1つにデータをロードします。"
+msgstr "xref:database-connection.adoc[IPTが対応する多くのデータベース]のうちの1つにデータをロードします。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
@@ -507,7 +507,7 @@ msgstr "データソースとしてのデータベース"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "IPTは、データベース接続を使用して、テーブルまたはビューからデータをインポートすることができます。サポートされているデータベース接続の一覧は、xref:database-connection.adoc[対応データベース]に記載されています。データベースをデータソースとして設定するには、{threedots}メニューをクリックし、「追加」を選択します。次に、モーダルウィンドウのドロップダウンにあるソースデータタイプのリストから「データベース」を選択し、「接続」と書かれたボタンをクリックします。ソースデータベースの詳細ページが表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
@@ -583,7 +583,7 @@ msgstr "データベースパスワード - データベースに接続する際
 #: en/modules/ROOT/pages/manage-resources.adoc:134
 #, no-wrap
 msgid "*SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section), change the SQL Statement to return the full intended data set.\n"
-msgstr "SQLステートメント - ソースデータベースからデータを読み込むために使用される構造化クエリ言語ステートメントです。この文は設定されたデータベースにそのまま送信されるので、関数、group by文、制限、ユニオンなど、データベースのネイティブ機能（対応している場合）を使用することができます。例：SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id.SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id. 大きなデータソースをテストする場合、SELECT文の中に、クエリによって返される行数を制限する適切な言語を含めると良いでしょう。例えば、MySQLでは、SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10です。ステートメントがダーウィンコアマッピング（次のセクションを参照）で完全にテストされたら、SQLステートメントを変更し、目的のデータセットを返します。\n"
+msgstr "*SQLステートメント* - ソースデータベースからデータを読み込むために使用される構造化クエリ言語ステートメントです。この文は設定されたデータベースにそのまま送信されるので、関数、group by文、制限、ユニオンなど、データベースのネイティブ機能（対応している場合）を使用することができます。例：`SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`。大きなデータソースをテストする場合、SELECT文の中に、クエリによって返される行数を制限する適切な言語を含めると良いでしょう。例えば、MySQLでは、`SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10` です。ステートメントがダーウィンコアマッピング（次のセクションを参照）で完全にテストされたら、SQLステートメントを変更し、目的のデータセットを返します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:135
@@ -770,7 +770,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:199
 #, no-wrap
 msgid "*Use resource DOI* - (Special constant controlled value) It is possible to set the default value for datasetID equal to the resource DOI. This option only applies to extensions having the Darwin Core term http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], such as the Occurrence extension. To activate the checkbox, make sure that no source data field has been selected and no constant value has been entered.\n"
-msgstr "リソースDOIの使用（特別な定数制御値） - datasetIDのデフォルト値をリソースDOIと同様に設定することができます。 このオプションは、オカレンス拡張機能など、ダーウィンコア用語datasetIDを持つ拡張機能にのみ適用されます。 チェックボックスを有効にするには、ソースデータフィールドが選択されておらず、定数値が入力されていないことを確認してください。\n"
+msgstr "リソースDOIの使用（特別な定数制御値） - データセットIDのデフォルト値をリソースDOIと同様に設定することができます。 このオプションは、オカレンス拡張機能など、ダーウィンコア用語link:http://rs.tdwg.org/dwc/terms/#datasetID[データセットID]を持つ拡張機能にのみ適用されます。 チェックボックスを有効にするには、ソースデータフィールドが選択されておらず、定数値が入力されていないことを確認してください。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:200
@@ -848,7 +848,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:222
 #, no-wrap
 msgid "*Required fields* - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together.\n"
-msgstr "必須フィールド - コアタイプまたは拡張機能にマッピングする必要のある必須プロパティがある場合、それらの名前が強調表示されます。 [basisOfRecord]がオカレンスコアにマップされていない場合、 basisOfRecordパブリケーションは失敗することに注意してください。 また、IDフィールドには特殊なケースがあります。これは、2つのソースをリンクする場合にのみ必要です。\n"
+msgstr "必須フィールド - コアタイプまたは拡張機能にマッピングする必要のある必須プロパティがある場合、それらの名前が強調表示されます。 link:http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]がオカレンスコアにマップされていない場合、 basisOfRecordパブリケーションは失敗することに注意してください。 また、IDフィールドには特殊なケースがあります。これは、2つのソースをリンクする場合にのみ必要です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:224
@@ -1049,7 +1049,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:279
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr "タイトル - リソースのタイトルです。このタイトルはIPT全体を通してリソースの名前として表示されます。このタイトルは、GBIFレジストリにも表示されます。\n"
+msgstr "タイトル - リソースのタイトルです。このタイトルはIPT全体を通してリソースの名前として表示されます。このタイトルは、GBIFレジストリにも表示され、引用の一部を形成します。データセットの利用者のために、説明的なタイトルを使ってください。 「Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)」は良いタイトルですが、「aves_tz_snm」はダメです！あなたの組織内だけで知られているファイル名や略称は使わないでください．\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:280
@@ -1091,7 +1091,7 @@ msgstr "リソース言語 - リソースデータが記述されている言語
 #: en/modules/ROOT/pages/manage-resources.adoc:286
 #, no-wrap
 msgid "*Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.\n"
-msgstr "データライセンス - リソースに適用するライセンス。著作物の適切な利用方法を定義するための標準的な方法を提供します。GBIFは、データの可能な限り幅広い使用と応用を奨励するために、3つの（デフォルトの）機械読み取り可能なオプション（CC0 1.0、CC-BY 4.0、CC-BY-NC 4.0）の中から、できるだけ制約の少ないライセンスを採用することを公開者に推奨しています。GBIFの方針については、[here]をご覧ください。3つのオプションのうち1つを選択できないと思われる場合は、GBIF事務局（participation@gbif.org）までご連絡ください。レコードレベルでのライセンスの適用方法については、[How To Apply a License To a Dataset]を参照してください。IPTのデフォルトのライセンス セットを変更する方法については、IPT wikiの[Applying a License to a Dataset]ページを参照してください。\n"
+msgstr "データライセンス - リソースに適用するライセンス。著作物の適切な利用方法を定義するための標準的な方法を提供します。GBIFは、データの可能な限り幅広い使用と応用を奨励するために、3つの（デフォルトの）機械読み取り可能なオプション（CC0 1.0、CC-BY 4.0、CC-BY-NC 4.0）の中から、できるだけ制約の少ないライセンスを採用することを公開者に推奨しています。GBIFの方針については、link:http://www.gbif.org/terms/licences[こちら]をご覧ください。3つのオプションのうち1つを選択できないと思われる場合は、GBIF事務局（participation@gbif.org）までご連絡ください。レコードレベルでのライセンスの適用方法については、[How To Apply a License To a Dataset]を参照してください。IPTのデフォルトのライセンス セットを変更する方法については、IPT wikiのxref:applying-license.adoc[ライセンスをデータセットに適用]ページを参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:287
@@ -1206,7 +1206,7 @@ msgstr "ホームページ - リソースの問い合わせ先のワールドワ
 #: en/modules/ROOT/pages/manage-resources.adoc:440
 #, no-wrap
 msgid "*Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the xref:user-id.adoc[Add a New User ID Directory] page in the IPT wiki.\n"
-msgstr "個人ディレクトリ - 個人IDが登録されている個人ディレクトリシステムのURLです。デフォルトのディレクトリは、ORCID、ResearchID、LinkedIn、Google Scholarの4つから選択することができます。IPTのデフォルトのディレクトリセットを変更したい場合は、IPT wikiの[Add a New User ID Directory]ページを参照してください。\n"
+msgstr "個人ディレクトリ - 個人IDが登録されている個人ディレクトリシステムのURLです。デフォルトのディレクトリは、ORCID、ResearchID、LinkedIn、Google Scholarの4つから選択することができます。IPTのデフォルトのディレクトリセットを変更したい場合は、IPT wikiの xref:user-id.adoc[新規ユーザーIDディレクトリを追加]ページを参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:309
@@ -1545,7 +1545,7 @@ msgstr "この関係者を削除 - このリンクをクリックすると、リ
 #: en/modules/ROOT/pages/manage-resources.adoc:406
 #, no-wrap
 msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr "ロール - このセレクトボックスには、関係者がリソースに関連して[list of possible roles]が表示されます。セレクトボックスの左側にある情報アイコンをクリックすると、利用可能な権限の説明が表示されます。セレクトボックスで、関係者に最も適した権限を選択します。\n"
+msgstr "ロール - このセレクトボックスには、関係者がリソースに関連してlink:https://rs.gbif.org/vocabulary/gbif/agent_role.xml[利用可能なロールリスト]が表示されます。セレクトボックスの左側にある情報アイコンをクリックすると、利用可能な権限の説明が表示されます。セレクトボックスで、関係者に最も適した権限を選択します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:407
@@ -1781,7 +1781,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:463
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr "GBIF.orgのデータセットページでは、自由形式の引用は上書きされます。詳しくは[GBIF FAQ]をご覧ください。"
+msgstr "GBIF.orgのデータセットページでは、自由形式の引用は上書きされます。詳しくはlink:https://www.gbif.org/faq?q=citation[GBIF FAQ]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:465
@@ -1814,7 +1814,7 @@ msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisl
 #: en/modules/ROOT/pages/manage-resources.adoc:474
 #, no-wrap
 msgid "*Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.\n"
-msgstr "自動生成 - 自動生成をオンにすると、IPTがリソース引用を自動生成します。 自動生成で用いられる引用形式はDataCiteが推奨する形式に基づいており、データ引用原則の共同宣言を満たしています。 この形式にはバージョン番号が含まれていますが、これは継続的に更新されるデータセットにとって特に重要です。 引用形式の詳細については、IPTwikiの[Dataset Citation Format]ページを参照してください。\n"
+msgstr "自動生成 - 自動生成をオンにすると、IPTがリソース引用を自動生成します。 自動生成で用いられる引用形式はDataCiteが推奨する形式に基づいており、データ引用原則の共同宣言を満たしています。 この形式にはバージョン番号が含まれていますが、これは継続的に更新されるデータセットにとって特に重要です。 引用形式の詳細については、IPT wikiのxref:citation.adoc[データセット引用フォーマット]ページを参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:475
@@ -1915,7 +1915,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:500
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr "標本保存の方法 - その資料が対象とする標本保存方法のリストで、非生物コレクションの劣化を防ぐために使用されるプロセスまたは技術を示します。{latest-preservation-method}に基づいた値を選択することができます。標本の準備や保存方法のリストをデータマッピングのDwC用語の準備（http://rs.tdwg.org/dwc/terms/preparations）に含めることができることを忘れないようにしてください。生体保存のための処置については何も選択しないでください。これはコレクションの学芸員ユニットに関連することがあります。\n"
+msgstr "標本保存の方法 - その資料が対象とする標本保存方法のリストで、非生物コレクションの劣化を防ぐために使用されるプロセスまたは技術を示します。{latest-preservation-method}[GBIF標本保存法用語]に基づいた値を選択することができます。標本の準備や保存方法のリストをデータマッピングのDwC用語の準備（http://rs.tdwg.org/dwc/terms/preparations）に含めることができることを忘れないようにしてください。生体保存のための処置については何も選択しないでください。これはコレクションの学芸員ユニットに関連することがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:501
@@ -2236,7 +2236,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:579
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the {threedots} menu, click the \"View\" option to see the current version's homepage. In the pending version item, click the \"Preview\" option to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr ""
+msgstr "*バージョン* - 現在のバージョン/保留中のバージョンの `major_version.minor_version` を追跡するバージョン番号です。リソースが科学的に重要な変更を受けるたびに、リソース管理者は保留中のバージョンに新しいDOIを予約することによって、新しいメジャーバージョンを確保する必要があります。IPTのバージョニングポリシーの詳細な説明は、xref:versioning.adoc[データセットバージョン管理ポリシー]を参照してください。{threedots}メニューの \"見る\"をクリックすると、現在のバージョンのトップページが表示されます。保留中のバージョンの項目で、「プレビュー」オプションをクリックすると、保留中のバージョンのホームページのプレビューが表示されます。ホームページのプレビューはリソース管理者のみに公開され、リソースが公開できる状態にあることを確認することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:580
@@ -2309,7 +2309,7 @@ msgstr "マッピングによって設定された現在の一次リソースデ
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:595
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
-msgstr "IPTのアーカイブモードがオンになっている場合（IPT設定の構成セクションを参照）、 dwca-n.zip というダーウィンコア・アーカイブファイルのインクリメンタルバージョンも保存されます。"
+msgstr "IPTのアーカイブモードがオンになっている場合（ xref:administration.adoc#configure-ipt-settings[IPT設定の構成]セクションを参照）、 dwca-n.zip というダーウィンコア・アーカイブファイルのインクリメンタルバージョンも保存されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:596
@@ -2345,7 +2345,7 @@ msgstr "コアデータファイルにコアレコード識別子を表す列（
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:606
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr "ダーウィンコアの用語basisOfRecordは、オカレンス拡張の必須用語である。したがって、IPTは、各起床データファイルにbasisOfRecord列があることを検証します。さらに、IPTは、各オカレンスレコードにbasisOfRecordが存在し、その値がダーウィンコアタイプボキャブラリーと一致することを確認する。"
+msgstr "ダーウィンコアの用語link:http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]は、オカレンス拡張の必須用語である。したがって、IPTは、各起床データファイルにbasisOfRecord列があることを検証します。さらに、IPTは、各オカレンスレコードにbasisOfRecordが存在し、その値が{latest-basis-of-record}[ダーウィンコアタイプ・ボキャブラリー]と一致することを確認する。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:607
@@ -2356,7 +2356,7 @@ msgstr "リソースへのDOIの割り当て"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:610
 msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the \"Configure Organizations\" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki."
-msgstr "最も素晴らしいのは、リソースに科学的に重要な変更があるたびに、新しいDOIを割り当てることです。IPTがリソースにDOIを割り当てられるようにするには、まずIPT管理者がDataCiteアカウントでIPTに関連する機関を設定する必要があります。以下を参照してください。「機関の設定」のセクションで説明されています。そうしないと、Published VersionsセクションのDOIボタンが表示されなくなります。IPTでDataCiteアカウントを有効にすると、リソース管理者はこのアカウントを使ってリソースのDOIを予約、削除、登録、停止、再有効化することができます。これらの各DOI操作については、以下で詳しく説明します。IPTがどのようにデータセットにDOIを割り当てるかについては、IPT wikiのDOI Workflowsのページを参照してください。"
+msgstr "最も素晴らしいのは、リソースに科学的に重要な変更があるたびに、新しいDOIを割り当てることです。IPTがリソースにDOIを割り当てられるようにするには、まずIPT管理者がDataCiteアカウントでIPTに関連する機関を設定する必要があります。以下を参照してください。「機関の設定」のセクションで説明されています。そうしないと、Published VersionsセクションのDOIボタンが表示されなくなります。IPTでDataCiteアカウントを有効にすると、リソース管理者はこのアカウントを使ってリソースのDOIを予約、削除、登録、停止、再有効化することができます。これらの各DOI操作については、以下で詳しく説明します。IPTがどのようにデータセットにDOIを割り当てるかについては、IPT wikiのxref:doi-workflow.adoc[DOIワークフロー]のページを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:612
@@ -2659,7 +2659,7 @@ msgstr "ネットワーク"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:710
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
-msgstr "このセクションでは、リソースが1つまたは複数のGBIFネットワーク（多くの出版社から提供される可能性のある、通常は1つのテーマに関するデータセットのコレクション）に含まれることを許可しています。GBIFで最大のネットワークは、https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)] です。"
+msgstr "このセクションでは、リソースが1つまたは複数のGBIFネットワーク（多くの出版社から提供される可能性のある、通常は1つのテーマに関するデータセットのコレクション）に含まれることを許可しています。GBIFで最大のネットワークは、link:https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)] です。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:711
@@ -2768,7 +2768,7 @@ msgstr "IPTリソースの公開状況が公開であり、登録されていな
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
-msgstr "既存の登録リソースの所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（[Add Organization]セクションを参照）"
+msgstr "既存の登録リソースの所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[期間を追加]セクションを参照）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:749
