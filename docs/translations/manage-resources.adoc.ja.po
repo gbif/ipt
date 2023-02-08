@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 05:23\n"
+"PO-Revision-Date: 2023-02-08 06:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -151,22 +151,22 @@ msgstr "リソース管理テーブルの下には、新しいリソースを作
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>>,"
-msgstr "ダーウィンコア・アーカイブのアップロード"
+msgstr "link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#upload-a-darwin-core-archive[ダーウィンコア・アーカイブのアップロード]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
 msgid "<<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,"
-msgstr "IPTリソース設定フォルダのzipによるアップロード"
+msgstr "link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#upload-a-zipped-ipt-resource-configuration-folder[IPTリソース設定フォルダのzipによるアップロード]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>>."
-msgstr "メタデータファイルのアップロード"
+msgstr "link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#upload-a-metadata-file[メタデータファイルのアップロード]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr "もちろん、_既存のアーカイブリソース_を読み込まずに、まったく新しいリソースを作成することも可能です。このオプションでは、リソース構成は、ソースデータファイルのアップロード（またはデータベースやURLへのリンク）、およびその中のフィールドを適切な拡張子の用語にマッピングするなど、IPTフォームから全体的に作成される必要があります。*IPTには200MBのファイルアップロード制限があります*が、*IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がない*ことに注意してください。ファイルアップロードの制限を回避する方法については、ファイルアップロードの制限についての注意を参照してください。"
+msgstr "もちろん、_既存のアーカイブリソース_を読み込まずに、まったく新しいリソースを作成することも可能です。このオプションでは、リソース構成は、ソースデータファイルのアップロード（またはデータベースやURLへのリンク）、およびその中のフィールドを適切な拡張子の用語にマッピングするなど、IPTフォームから全体的に作成される必要があります。*IPTには200MBのファイルアップロード制限があります*が、*IPTがエクスポート/公開できるダーウィンコア・アーカイブのサイズには制限がない*ことに注意してください。ファイルアップロードの制限を回避する方法については、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#upload-limits[ファイルアップロードの制限]についての注意を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
@@ -267,7 +267,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:53
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the <<Basic Metadata>> page of the metadata."
-msgstr "「作成」ボタンをクリックします。選択したファイルのインポートに問題がある場合、エラーメッセージが表示されます。インポートに成功すると、メタデータが入力された「リソースの概要」ページが表示されます。これはメタデータのみのリソースなので、ソースデータとマッピングセクションは非表示のままです。後でプライマリデータセットを追加する場合は、メタデータの<Basic Metadata>ページでリソースの種類を変更するだけです。"
+msgstr "「作成」ボタンをクリックします。選択したファイルのインポートに問題がある場合、エラーメッセージが表示されます。インポートに成功すると、メタデータが入力された「リソースの概要」ページが表示されます。これはメタデータのみのリソースなので、ソースデータとマッピングセクションは非表示のままです。後でプライマリデータセットを追加する場合は、メタデータのlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#basic-metadata[基本のメタデータ]ページでリソースの種類を変更するだけです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:54
@@ -626,7 +626,7 @@ msgstr "ipt2/manage/IPTManageResourceSourceURL.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:152
 msgid "From this point, the process is very similar to using a file as a data source.  See the <<File as data source>> section for an explanation of the page."
-msgstr "ここからは、ファイルをデータソースとして使用する場合と非常によく似た手順となります。ページの説明については、<File as data source>の項を参照してください。"
+msgstr "ここからは、ファイルをデータソースとして使用する場合と非常によく似た手順となります。ページの説明については、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#file-as-data-source[ファイルをデータソースとする]の項を参照してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:153
@@ -653,7 +653,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:161
 msgid "After the desired core type or extension is selected, click on the button labelled \"Add\" to open the <<Data Source selection page>>."
-msgstr "目的のコアタイプや拡張子を選択したら、「追加」ボタンをクリックして、<Data Source selection page>を開きます。"
+msgstr "目的のコアタイプや拡張子を選択したら、「追加」ボタンをクリックして、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#data-source-selection-page[データソース選択ページ]を開きます。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:162
@@ -685,7 +685,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:172
 msgid "Select the data source to map, and then click on the button labelled \"Save\". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping)."
-msgstr "マッピングするデータソースを選択し、「保存」と書かれたボタンをクリックします。「データマップの詳細ページ」が表示されます（実際のマッピングについては、以下のデータマッピングの詳細ページをご覧ください）。"
+msgstr "マッピングするデータソースを選択し、「保存」と書かれたボタンをクリックします。データマッピングの詳細ページが表示されます（実際のマッピングについては、以下のlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#data-mapping-detail-page[データマップの詳細ページ]をご覧ください）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:174
@@ -782,7 +782,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:203
 #, no-wrap
 msgid "*Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon beside the controlled value select box. Click on this icon to open a <<Vocabulary detail page>> in a new browser tab on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.\n"
-msgstr "*語彙詳細ボタン* - 統制語彙によって管理される拡張フィールドには、統制値選択ボックスの横にアイコンが表示されます。 このアイコンをクリックして、新しいブラウザタブで語彙の詳細ページを開きます。このページには、さまざまな言語での説明と代替のシノニムを含む、拡張フィールドで受け入れられる値のリストがあります。\n"
+msgstr "*語彙詳細ボタン* - 統制語彙によって管理される拡張フィールドには、統制値選択ボックスの横にアイコンが表示されます。 このアイコンをクリックして、新しいブラウザタブでlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#vocabulary-detail-page[語彙の詳細ページ]を開きます。このページには、さまざまな言語での説明と代替のシノニムを含む、拡張フィールドで受け入れられる値のリストがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:204
@@ -800,7 +800,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:208
 #, no-wrap
 msgid "*Translate* - Click on this button to open a <<Value Translation page>> on which distinct values in the selected field of the source data can be translated to new values in the archive generated by the IPT for this data resource. After the translations have been entered and saved, the Data Mapping page will appear again, and will display text as a link in place of the \"Translate\" button to show the number of values for which there are translations having values different from the original values. Click on this link to reopen the <<Value Translation page>> for this extension field.\n"
-msgstr "*翻訳* - このボタンをクリックして、<Value Translation page>を開きます。このページでは、ソースデータの選択したフィールドの個別の値を、このデータリソースのIPTによって生成されたアーカイブの新しい値に変換できます。 翻訳を入力して保存すると、「データマッピング」ページが再び表示され、「翻訳」ボタンの代わりにテキストがリンクとして表示され、元の値とは異なる値の翻訳がある値の数が示されます。 このリンクをクリックして、この拡張フィールドの<Value Translation page>を再度開きます。\n"
+msgstr "*翻訳* - このボタンをクリックして、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#value-translation-page[値の翻訳ページ]を開きます。このページでは、ソースデータの選択したフィールドの個別の値を、このデータリソースのIPTによって生成されたアーカイブの新しい値に変換できます。 翻訳を入力して保存すると、「データマッピング」ページが再び表示され、「翻訳」ボタンの代わりにテキストがリンクとして表示され、元の値とは異なる値の翻訳がある値の数が示されます。 このリンクをクリックして、この拡張フィールドのlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#value-translation-page[値の翻訳ページ]を再度開きます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:209
@@ -1021,7 +1021,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:268
 msgid "Clicking on the \"Edit\" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr "「編集」ボタンをクリックすると、一連のメタデータページのうち最初のページであるlink:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページが表示されます。各ページは、入力終了後に「保存」ボタンをクリックすると、順次表示されます。最後のメタデータページで保存すると、link:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページに戻ります。メタデータページで「キャンセル」ボタンをクリックすると、そのページでの変更が無視され、リソース概要ページに戻ります。各メタデータページの右側の列には、すべてのメタデータページへのリンクが表示され、簡単に参照・移動することができます。リンクをクリックすると、そのトピックのメタデータページが表示されます。"
+msgstr "「編集」ボタンをクリックすると、一連のメタデータページのうち最初のページであるlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページが表示されます。各ページは、入力終了後に「保存」ボタンをクリックすると、順次表示されます。最後のメタデータページで保存すると、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページに戻ります。メタデータページで「キャンセル」ボタンをクリックすると、そのページでの変更が無視され、リソース概要ページに戻ります。各メタデータページの右側の列には、すべてのメタデータページへのリンクが表示され、簡単に参照・移動することができます。リンクをクリックすると、そのトピックのメタデータページが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:269
@@ -1521,7 +1521,7 @@ msgstr "*新しいキーワードセットの追加* - このリンクをクリ�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 msgid "This metadata pages contains information about one or more people or organizations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <<Basic Metadata>> page. Explanations for the remainder of the controls are given below."
-msgstr "このメタデータページには、「基本メタデータ」ページですでに説明した情報に加えて、リソースに関連する人々や<Basic Metadata><Basic Metadata>機関に関する情報が含まれています。このページのコントロールの多くは、<Basic Metadata>ページの「リソースの問い合わせ先」のコントロールと共通です。残りのコントロールについては、以下に説明します。"
+msgstr "このメタデータページには、「基本メタデータ」ページですでに説明した情報に加えて、リソースに関連する人々や機関に関する情報が含まれています。このページのコントロールの多くは、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#basic-metadata[基本のメタデータ]ページの「リソースの問い合わせ先」のコントロールと共通です。残りのコントロールについては、以下に説明します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:401
@@ -2099,7 +2099,7 @@ msgstr "*作成日* - リソースの最初のバージョンが公開された�
 #: en/modules/ROOT/pages/manage-resources.adoc:543
 #, no-wrap
 msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).\n"
-msgstr "*発行日* - リソースが最後に発行された日付です。この値は公開時に自動的に設定されます。（link:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#publication[公開]セクションを参照）\n"
+msgstr "*発行日* - リソースが最後に発行された日付です。この値は公開時に自動的に設定されます。（link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#publication[公開]セクションを参照）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:544
@@ -2129,7 +2129,7 @@ msgstr "*追加情報* - プロジェクトの歴史、現在のデータを使�
 #: en/modules/ROOT/pages/manage-resources.adoc:548
 #, no-wrap
 msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr "*代替識別子* - このセクションには、リソースの追加識別子または代替識別子のリストが含まれます。リソースが公開されると、そのリソースに対するIPTのURLが識別子のリストに追加されます。リソースに新しいDOIが割り当てられた（IPTを使用した）とき、IPTはこのDOIが識別子のリストの最初に置かれるようにします。リソースがGBIFレジストリに登録された場合、レジストリ固有のリソースキーも識別子のリストに追加されます。リソースがGBIFレジストリの既存の登録リソースを表している場合、既存の登録リソースUUIDを識別子のリストに追加することができます。これにより、IPTリソースは全く新しいリソースを登録するのではなく、登録時に既存のリソースを更新することができるようになります。リソースを移行する方法の詳細については、<Migrate a Resource,this>を参照してください。\n"
+msgstr "*代替識別子* - このセクションには、リソースの追加識別子または代替識別子のリストが含まれます。リソースが公開されると、そのリソースに対するIPTのURLが識別子のリストに追加されます。リソースに新しいDOIが割り当てられた（IPTを使用した）とき、IPTはこのDOIが識別子のリストの最初に置かれるようにします。リソースがGBIFレジストリに登録された場合、レジストリ固有のリソースキーも識別子のリストに追加されます。リソースがGBIFレジストリの既存の登録リソースを表している場合、既存の登録リソースUUIDを識別子のリストに追加することができます。これにより、IPTリソースは全く新しいリソースを登録するのではなく、登録時に既存のリソースを更新することができるようになります。リソースを移行する方法の詳細については、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#migrate-a-resource[リソースの移行]を参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:549
@@ -2278,7 +2278,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:586
 #, no-wrap
 msgid "*Publication log* - option in the {threedots} menu. Click that to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
-msgstr ""
+msgstr "*公開ログ* - メニュー内の{threedots}オプション。クリックすると、公開ログの現在のバージョンを表示します。リソース管理者は、公開に失敗した原因を診断するためなどに公開ログを利用するできます。内容のより詳細な説明は、以下のlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#publishing-status-page[出版状況]ページで説明します。これは保留中のバージョンでは利用されません。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:587
@@ -2540,7 +2540,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:664
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>). Be aware the visibility of a resource assigned a DOI cannot be changed to private.\n"
-msgstr ""
+msgstr "*パブリック* - パブリックリソースは、リソースがインストールされているIPTインスタンスを使用しているすべての人に表示されます（IPTホームページのパブリックリソースのテーブルにあります）。リソースに予約済みのDOIがある場合、そのDOIは、次にリソースが公開されたときに登録されます。リソースは、ホームページのURLまたはDOIを知っている人なら誰でも、インターネット経由で最終的にアクセスできます。 ただしリソースは、GBIFレジストリ（link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#registration[登録]を参照）に登録されるまで、GBIF Webサイトからグローバルに検出することはできません。DOIが割り当てられたリソースの公開状況をプライベートに変更できないことに注意してください。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:666
@@ -2568,7 +2568,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
-msgstr ""
+msgstr "*登録済み* - GBIFネットワークに登録されたリソースは、GBIFウェブサイトから発見することができ、リソースからのデータはGBIFポータルからインデックスされアクセスすることが可能です。登録後、GBIFにインデックスされるまでに1時間程度かかることがありますのでご注意ください。登録が完了すると、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#registration[登録]の領域にGBIFに登録された情報の概要が表示されます。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:678
@@ -2611,7 +2611,7 @@ msgstr "リソースに必要なメタデータが完成していて、"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:693
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
-msgstr ""
+msgstr "リソースが公開されており（以下「リソース概要」ページの「link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#publication[公開]」の説明を参照）、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:694
@@ -2626,7 +2626,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:698
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
-msgstr "DiGIR、BioCASe、TAPIRに登録されているリソースを更新する場合は、以下の<Migrate a Resource>の項を参照してください。"
+msgstr "DiGIR、BioCASe、TAPIRに登録されているリソースを更新する場合は、以下のlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#migrate-a-resource[リソースの移行]の項を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
