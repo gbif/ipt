@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2023-02-08 06:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -138,65 +138,65 @@ msgstr "注釈付きチェックリスト - このカテゴリは、一般名、
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:43
 #, no-wrap
 msgid "*Flora or Faunal lists* – These are typically books that provide detailed species accounts for a particular region. Details may include many of the data types included in annotated checklists but include specific data types, such as detailed descriptions and illustrations, specimen references and other details that explicitly define (circumscribe) the taxon within the scope of the region which is not necessarily global.\n"
-msgstr ""
+msgstr "*植物相または動物相のリスト* - これらは通常、特定の地域の詳細な種の説明を提供する書籍です。詳細には、注釈付きチェックリストに含まれる多くのデータタイプが含まれますが、詳細な説明や図版、標本参照など、必ずしもグローバルではない地域の範囲内で分類群を明確に定義（限定）するような特定のデータタイプを含むことがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:44
 #, no-wrap
 msgid "*Monographs* – Monographs are detailed species accounts often published as books for a particular taxon group at the global scale. It will contain detailed nomenclature and synonymy and taxon circumscription details, that include textual descriptions and illustrations, details of specimens examined and included in the definition, and a bibliography of examined literature.\n"
-msgstr ""
+msgstr "*モノグラフ* - モノグラフは、世界規模で特定の分類群についてしばしば書籍として出版される詳細な種の説明です。モノグラフには詳細な命名法、同義性、分類群の詳細が含まれ、本文の説明や図版、調査した標本の詳細、調査した文献の書誌などが含まれます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:46
 msgid "The Darwin Core Archive format with the <<GBIF Checklist Extensions>> supports the exchange of key data elements within all of these checklist data types. The specific degree of coverage depends very much on the individual resource. In this document we will use the term ‘checklist’ in the broad sense as a general term for referring to any or all of the resource categories described above. The specific category types will be used when a specific resource is to be referenced."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブフォーマットとlink:https://ipt.gbif.org/manual/en/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]は、これらすべてのチェックリストデータタイプの中の主要なデータ要素の交換をサポートしています。具体的にどの程度カバーしているかは、個々のリソースに大きく依存します。この文書では、上記のリソースカテゴリーのいずれか、またはすべてを指す一般的な用語として、広義に「チェックリスト」という用語を使用します。特定のカテゴリータイプは、特定のリソースを参照する場合に使用します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:47
 #, no-wrap
 msgid "Darwin Core Archive Format"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ形式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ（DwC-A）は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGzip）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、link:https://ipt.gbif.org/manual/en/ipt/latest/darwin-core[ダーウィンコア・アーカイブハウツーガイド]を参照してください。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
 #, no-wrap
 msgid "Checklist Metadata"
-msgstr ""
+msgstr "チェックリストのメタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:54
 msgid "Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr ""
+msgstr "GBIFのネットワークを通じてチェックリストデータを公開するためには、データセットの出所と範囲を文書化することが必要です。データセットに関する文書は「リソースメタデータ」と呼ばれ、利用者がデータセットの使用に適しているかどうかを評価できるようにします。データセットの文書には、リストの範囲と意図された機能、編集に使われた方法論と資源、作成と管理に関わった個人と機関が記述されています。メタデータはダーウィンコア・アーカイブでXML文書として共有されます。GBIFはEcological Metadata Languageに基づいて、種のチェックリストのためのメタデータプロファ イルを提供します。ハウツーガイドでは、この形式を使用して種のチェックリストを記述するためのすべてのオプションについて説明しています。xref:gbif-metadata-profile.adoc[]を参照してください。"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:55
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr ""
+msgstr "チェックリストデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:58
 msgid "The Darwin Core Archive format provides the structural framework for publishing species checklists. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, containing the basic checklist elements (species list, classification, synonymy) surrounded by a number of ‘*extensions*’, that describe related data types (such as common names). Links between core and extension records are made using a taxon identifier (*taxonID*) data element. In this way, many extension records can exist for each single core taxon record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to species checklists."
-msgstr ""
+msgstr "ダーウィンコアアーカイブ形式は、種のチェックリストを公開するための構造的な枠組みを提供します。ダーウィンコアアーカイブは、標準的なカンマまたはタブ区切り形式の1つまたは複数のテキストファイルで構成されています。ファイルは、基本的なチェックリスト要素（種リスト、分類、同義語）を含む1つの*コアファイル*を、関連するデータ型（一般名など）を記述する多数の「*拡張子*」で囲んだ星のような方法で論理的に配置されています。コアと拡張機能のレコード間のリンクは、分類群ID（*taxonID*）データエレメントを使用して行われます。このようにして、1 つのコア分類群レコードに対して多くの拡張レコードを存在させることができます。この「スタースキーマ」は、種のチェックリストに共通する多くの種類の注釈をサポートする、シンプルなリレーショナルデータモデルを提供します。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:59
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブデータファイルの「スタースキーマ」での表示"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:60
 #, no-wrap
 msgid "figures/dwc-a_checklist.png"
-msgstr ""
+msgstr "figures/dwc-a_checklist.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
@@ -204,94 +204,96 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
-msgstr ""
+msgstr "データファイルのフォーマットに関する推奨事項"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:65
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr ""
+msgstr "理解を容易にするために、このガイドの用語*フィールド*を使用して、ユーザーデータがマップされる分類学的公開プロファイルのダーウィンコア用語セットを参照する場合があります。 たとえば、ダーウィンコアの用語である学名を参照する場合は、:dwc：scientificNameフィールド*の使用を参照します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:67
 msgid "It is recommended to use tab or Comma-Separated-Values instead of custom field delimiters and quotes."
-msgstr ""
+msgstr "カスタムフィールド区切り文字と引用符の代わりに、タブまたはカンマ区切り値を使用することをお勧めします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:68
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:61
 msgid "Be careful and consistent with quotation."
-msgstr ""
+msgstr "注意して、見積もりと一致させてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:69
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:62
 msgid "Encode text files as UTF-8"
-msgstr ""
+msgstr "テキストファイルをUTF-8でエンコードしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:70
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
 msgid "Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `\\r` to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the HTML `<br>` tag."
-msgstr ""
+msgstr "データフィールドのすべての改行を必ず置き換えてください。つまり、`\\r` `\\n`または`\\r\\n`を単純なスペースに置き換えるか、`$$`のような2文字を使用して`\\r`を置き換え、改行を保持する場合は改行を省略してください。 。 もう1つのオプションは、改行をHTMLの`<br>`タグに置き換えることです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\\N` or `\\NULL`, but no other text sequence!"
-msgstr ""
+msgstr "nullを空の文字列としてエンコードします。つまり、2つの区切り文字、`\\N`または`\\NULL`の間に文字はありませんが、他のテキストシーケンスはありません。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:72
 #, no-wrap
 msgid "Sharing Scientific Names"
-msgstr ""
+msgstr "学名の共有"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:75
 msgid "The Darwin Core supports more than one way to share a scientific name. This includes the following options:"
-msgstr ""
+msgstr "ダーウィンコアは、学名を共有するためのいくつかの方法に対応しています。以下の通りです。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:76
 #, no-wrap
 msgid "A. Concatenated in the scientificName field"
-msgstr ""
+msgstr "A. 学名フィールドに連結される"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:82
 #, no-wrap
 msgid "| scientificName\n\n"
 "| Gerardia paupercula var. borealis (Pennell) Deam\n"
-msgstr ""
+msgstr "| 学名\n\n"
+"| Gerardia paupercula var. borealis (Pennell) Deam\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:85
 msgid "The *dwc:scientificName* field stores the full scientific name of a taxon including authorship. This field should always be populated with data even if the names are split into component parts (as in C. below). Databases that do not provide a clean separation between the name part and the authorship part of the name should use this field for the entire concatenated name string. This may be needed for hybrid formulas, *sensu strictu* names, autonyms and other non-trivial binomials. This field is generally used in combination with the *dwc:taxonRank* field to store the scientific name parts of a full taxonomic list including the higher taxa."
-msgstr ""
+msgstr "*dwc:scientificName*フィールドには、著者を含む分類群の完全な学名が格納されます。このフィールドは、名前が構成要素に分割されている場合でも（下記C.のように）常にデータが入力されている必要があります。名前の部分と著者名の部分をきれいに分離できないデータベースでは、連結された名前文字列全体に対してこのフィールドを使用する必要があります。これはハイブリッド式、*sensu strictu*名、autonyms、その他の非自明な二項対立に必要となる場合があります。このフィールドは一般的に*dwc:taxonRank*フィールドと組み合わせて、上位分類を含む完全な分類リストの学名部分を格納するために使用されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:86
 #, no-wrap
 msgid "B. Separate Name and Authorship parts"
-msgstr ""
+msgstr "B. 名前部分と著作権部分の分離"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:92
 #, no-wrap
 msgid "| scientificName                | scientificNameAuthorship\n\n"
 "| Gerardia paupercula var. borealis | (Pennell) Deam\n"
-msgstr ""
+msgstr "| 学名                | 学名著者名\n\n"
+"| Gerardia paupercula var. borealis | (Pennell) Deam\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:95
 msgid "Some databases separate a scientific name into a name part and an authorship part. In this case the *dwc:scientificName* and *dwc:scientificNameAuthorship* fields should be used."
-msgstr ""
+msgstr "データベースによっては、学名を名前の部分と著者の部分に分けているものもあります。この場合、*dwc:scientificName*と*dwc:scientificNameAuthorship*フィールドを使用する必要があります。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:96
 #, no-wrap
 msgid "C. Separated into name parts"
-msgstr ""
+msgstr "C. ネームパーツに分類"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:102
