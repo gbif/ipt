@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-02-07 13:01\n"
+"PO-Revision-Date: 2023-02-08 02:13\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,13 +20,13 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
 #: en/modules/ROOT/pages/index.adoc:38
 msgid "The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
-msgstr "IPTを使い始める最も簡単な方法は、信頼できるデータホスティングセンターに無料のアカウントを申請することです。これにより、自分のデータセットを管理し、自分のサーバーでIPTをセットアップして維持する手間なしにGBIF.orgを通じてそれらを公開することができます。"
+msgstr "IPTを使い始める最も簡単な方法は、xref:data-hosting-centres.adoc[信頼できるデータホスティングセンター]に無料のアカウントを申請することです。これにより、自分のデータセットを管理し、自分のサーバーでIPTをセットアップして維持する手間なしに GBIF.org を通じてそれらを公開することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
 #: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
-msgstr "また、IPTのインスタンスを自分でセットアップする場合は、[Getting Started Guide]を利用してください。"
+msgstr "また、IPTのインスタンスを自分でセットアップする場合は、xref:getting-started.adoc[はじめに]を利用してください。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
@@ -44,7 +44,7 @@ msgstr "GBIF 統合バブリッシングツールキット（IPT） ユーザー
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
 msgid "_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._"
-msgstr "ダウンロードを含む最新版の情報は、[Releases]ページをご覧ください。"
+msgstr "_ダウンロードを含む最新版の情報は、xref:releases.adoc[リリース]ページをご覧ください。_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
@@ -79,7 +79,7 @@ msgstr "IPTインスタンスおよびIPTで登録されたデータやメタデ
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。GBIFのさまざまな参加者は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、[GBIF.org]をご覧ください。"
+msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。https://www.gbif.org/participation/participant-list[GBIFのさまざまな参加者]は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、https://www.gbif.org/[GBIF.org]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
@@ -125,12 +125,12 @@ msgstr "ユーザー"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:36
 msgid "If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
-msgstr "もしIPTを試してみたいだけなら、helpdesk@gbif.org にメールを送って[Demo IPT]のアカウントを申請してください。"
+msgstr "もしIPTを試してみたいだけなら、 helpdesk@gbif.org にメールを送ってhttps://ipt.gbif.org/[デモIPT]のアカウントを申請してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:42
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately."
-msgstr "IPTユーザーのサポートグループである[IPT Mailing List]に必ずご登録ください。IPTを可能な限り安全かつ堅牢にするためには、IPTを最新の状態にしておくことが不可欠です。IPTの管理責任者は、すぐに更新できるよう、最新のリリースの通知を受け取るためにサインアップしておく必要があります。"
+msgstr "IPTユーザーのサポートグループであるhttps://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]に必ずご登録ください。IPTを可能な限り安全かつ堅牢にするためには、IPTを最新の状態にしておくことが不可欠です。IPTの管理責任者は、すぐに更新できるよう、最新のリリースの通知を受け取るためにサインアップしておく必要があります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:43
@@ -141,7 +141,7 @@ msgstr "開発者"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:46
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr "IPTの開発はGBIFが中心となって指揮していますが、コーディングはコミュニティの努力によるもので、誰でも参加することができます。まずは、[Open Issues]を見て、取り組んでみたいことを見つけてください。その貢献は、リポジトリのブランチまたはフォークを使用した[pull request]の形で歓迎されることに留意してください。開発者向けの詳しい説明は、[here]をご覧ください。"
+msgstr "IPTの開発はGBIFが中心となって指揮していますが、コーディングはコミュニティの努力によるもので、誰でも参加することができます。まずは、https://github.com/gbif/ipt/issues[未解決の問題]を見て、取り組んでみたいことを見つけてください。その貢献は、リポジトリのブランチまたはフォークを使用したhttps://help.github.com/articles/creating-a-pull-request/[プルリクエスト]の形で歓迎されることに留意してください。開発者向けの詳しい説明は、xref:developer-guide.adoc[こちら]をご覧ください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:47
@@ -152,7 +152,7 @@ msgstr "翻訳者"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:50
 msgid "The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here]."
-msgstr "IPTのユーザーインターフェイスやマニュアルも国際化が必要ですが、コミュニティの活動ですので、どなたでも参加できます。翻訳者を対象とした詳細な指示は、[here]で見つけることができます。"
+msgstr "IPTのユーザーインターフェイスやマニュアルも国際化が必要ですが、コミュニティの活動ですので、どなたでも参加できます。翻訳者を対象とした詳細な指示は、xref:translations.adoc[こちら]で見つけることができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:52
