@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2023-02-08 06:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -52,7 +52,7 @@ msgstr "推奨される引用"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブデータファイルの「スタースキーマ」での表示"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
@@ -60,31 +60,31 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
-msgstr ""
+msgstr "データファイルのフォーマットに関する推奨事項"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:68
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:61
 msgid "Be careful and consistent with quotation."
-msgstr ""
+msgstr "注意して、見積もりと一致させてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:69
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:62
 msgid "Encode text files as UTF-8"
-msgstr ""
+msgstr "テキストファイルをUTF-8でエンコードしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:70
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
 msgid "Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `\\r` to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the HTML `<br>` tag."
-msgstr ""
+msgstr "データフィールドのすべての改行を必ず置き換えてください。つまり、`\\r` `\\n`または`\\r\\n`を単純なスペースに置き換えるか、`$$`のような2文字を使用して`\\r`を置き換え、改行を保持する場合は改行を省略してください。 。 もう1つのオプションは、改行をHTMLの`<br>`タグに置き換えることです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\\N` or `\\NULL`, but no other text sequence!"
-msgstr ""
+msgstr "nullを空の文字列としてエンコードします。つまり、2つの区切り文字、`\\N`または`\\NULL`の間に文字はありませんが、他のテキストシーケンスはありません。"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
