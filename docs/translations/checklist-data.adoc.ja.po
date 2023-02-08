@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-02-24 12:21\n"
+"PO-Revision-Date: 2023-02-08 06:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr ""
+msgstr "チェックリストデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:4
