@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 04:28\n"
+"PO-Revision-Date: 2023-02-08 05:23\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1021,7 +1021,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:268
 msgid "Clicking on the \"Edit\" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr ""
+msgstr "「編集」ボタンをクリックすると、一連のメタデータページのうち最初のページであるlink:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページが表示されます。各ページは、入力終了後に「保存」ボタンをクリックすると、順次表示されます。最後のメタデータページで保存すると、link:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#basic-metadata[基本メタデータ]ページに戻ります。メタデータページで「キャンセル」ボタンをクリックすると、そのページでの変更が無視され、リソース概要ページに戻ります。各メタデータページの右側の列には、すべてのメタデータページへのリンクが表示され、簡単に参照・移動することができます。リンクをクリックすると、そのトピックのメタデータページが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:269
@@ -2099,7 +2099,7 @@ msgstr "*作成日* - リソースの最初のバージョンが公開された�
 #: en/modules/ROOT/pages/manage-resources.adoc:543
 #, no-wrap
 msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).\n"
-msgstr ""
+msgstr "*発行日* - リソースが最後に発行された日付です。この値は公開時に自動的に設定されます。（link:https://ipt.gbif.org/manual/en/ipt/latest/manage-resources#publication[公開]セクションを参照）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:544
@@ -2398,7 +2398,7 @@ msgstr "*非アクティブ化* - 登録されたDOIは削除できず、リソ�
 #: en/modules/ROOT/pages/manage-resources.adoc:618
 #, no-wrap
 msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr "再アクティブ化：非アクティブ化されたDOIは、削除されたリソースに対応します。DOIを再活性化するためには、リソースの削除を取り消す必要があります。リソースの削除を取り消すとデータは再びダウンロード可能になり、DOIはこのリソースの最終発行版に対応します。DOIの更新が反映されるまで、最大24時間かかることがありますのでご注意ください。\n"
+msgstr "*再アクティブ化* - 非アクティブ化されたDOIは、削除されたリソースに対応します。DOIを再活性化するためには、リソースの削除を取り消す必要があります。リソースの削除を取り消すとデータは再びダウンロード可能になり、DOIはこのリソースの最終発行版に対応します。DOIの更新が反映されるまで、最大24時間かかることがありますのでご注意ください。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:619
@@ -2415,13 +2415,13 @@ msgstr "「公開ステータス」という名前のページには、各公開
 #: en/modules/ROOT/pages/manage-resources.adoc:624
 #, no-wrap
 msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
-msgstr "リソース概要 - このリンクは、公開したばかりのリソースの「リソース管理」ページに移動します。\n"
+msgstr "*リソース概要* - このリンクは、公開したばかりのリソースの「リソース管理」ページに移動します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:625
 #, no-wrap
 msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
-msgstr "パブリケーションログ - ここをクリックすると、公開プロセスの詳細情報を含む「publication.log」というファイルのダウンロードが開始されます。 このファイルには、管理者が公開中に起きた問題を特定するのに有用な情報が含まれています。例えば\n"
+msgstr "*パブリケーションログ* - ここをクリックすると、公開プロセスの詳細情報を含む「publication.log」というファイルのダウンロードが開始されます。 このファイルには、管理者が公開中に起きた問題を特定するのに有用な情報が含まれています。例えば\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:626
@@ -2445,7 +2445,7 @@ msgstr "列数がマップされた数から不足しているレコードの数
 #: en/modules/ROOT/pages/manage-resources.adoc:629
 #, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
-msgstr "ログメッセージ - 公開ステータスページには、publication.logというファイルに送信された情報の概要が表示されます。この情報は、IPTのデータディレクトリ内のリソースのディレクトリに保存され、ログメッセージ概要のすぐ上にある「ログ公開」からアクセスできます。 \n"
+msgstr "*ログメッセージ* - 公開ステータスページには、publication.logというファイルに送信された情報の概要が表示されます。この情報は、IPTのデータディレクトリ内のリソースのディレクトリに保存され、ログメッセージ概要のすぐ上にある「ログ公開」からアクセスできます。 \n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:630
@@ -2715,13 +2715,13 @@ msgstr "リソースの概要ページで「削除」と書かれたボタンを
 #: en/modules/ROOT/pages/manage-resources.adoc:730
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
-msgstr "IPTとGBIF.orgから削除する\n"
+msgstr "*IPTとGBIF.orgから削除する*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:731
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
-msgstr "IPTのみから削除(オーファン)\n"
+msgstr "*IPTのみから削除(オーファン)*\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:732
@@ -2758,17 +2758,17 @@ msgstr "この方法では、IPTリソースがGBIFレジストリで対応す�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:745
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
-msgstr "既存の登録済みリソースをIPTリソースに移行するには、以下の手順に従ってください。"
+msgstr "*既存の登録済みリソース*を*IPTリソース*に移行するには、以下の手順に従ってください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:747
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
-msgstr "IPTリソースの公開状況が公開であり、登録されていないことを確認します。"
+msgstr "*IPTリソース*の公開状況が公開であり、登録されていないことを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
-msgstr "既存の登録リソースの所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[期間を追加]セクションを参照）"
+msgstr "*既存の登録リソース*の所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[機関を追加]セクションを参照）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:749
@@ -2778,12 +2778,12 @@ msgstr "「基本メタデータ」ページのドロップダウンリストか
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:750
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr "既存の登録済みリソースのGBIFデータセットページに移動します。IPTをテストモードで動作させているか、本番モードで動作させているかによって、それぞれ https://www.gbif-uat.org/dataset または https://www.gbif.org/dataset にアクセスすることになります。"
+msgstr "*既存の登録済みリソース*のGBIFデータセットページに移動します。IPTをテストモードで動作させているか、本番モードで動作させているかによって、それぞれ https://www.gbif-uat.org/dataset または https://www.gbif.org/dataset にアクセスすることになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:751
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
-msgstr "GBIFデータセットページに、既存の登録済みリソースの所有機関が正しく表示されていることを確認します。"
+msgstr "GBIFデータセットページに、*既存の登録済みリソース*の*所有機関*が正しく表示されていることを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
@@ -2798,7 +2798,7 @@ msgstr "GBIFデータセットページのURLからGBIFレジストリ UUIDを�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:756
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
-msgstr "このUUIDを、「追加のメタデータ」ページのIPTリソースの代替識別子のリストに追加します。「追加のメタデータ」ページを保存することを忘れないでください。"
+msgstr "このUUIDを、「追加のメタデータ」ページの*IPTリソース*の代替識別子のリストに追加します。「追加のメタデータ」ページを保存することを忘れないでください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:757
@@ -2825,7 +2825,7 @@ msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:764
 #, no-wrap
 msgid "*Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:\n"
-msgstr "helpdesk@gbif.org にアップデートの通知メールを送ってください。メールには以下を記入してください。\n"
+msgstr "*helpdesk@gbif.org にアップデートの通知メールを送ってください。*メールには以下を記入してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:765
