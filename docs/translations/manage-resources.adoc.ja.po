@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 06:45\n"
+"PO-Revision-Date: 2023-02-09 05:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -317,7 +317,7 @@ msgstr "ファイルをデータソースとする"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the {threedots} menu at \"Source Data\" and select \"Add\". Then select \"File\" from the dropdown box in the modal window and click on the button labelled \"Browse…\" or \"Choose file\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "IPTは、非圧縮の区切りテキストファイル（CSV、tab、その他の区切り文字を使用したファイル）、またはZipやGzipで圧縮された同等のファイルをインポートすることができます。Excelファイルにも対応しています。「参照」というボタンをクリックして、インポートするファイルを選択します。ファイル名は、英数字（A-Z、0-9）、スペース、アンダースコア、フルストップ、括弧、ハイフンのみ利用が可能です。ファイルを選択すると、「参照」ボタンの右側にファイル名が表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -437,7 +437,7 @@ msgstr "*解析* - このボタンをクリックすると、このページの�
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* - click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*プレビュー* - このボタンをクリックすると、ファイル内のデータの解釈を見ることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -486,7 +486,7 @@ msgstr "*選択したワークシート* - （Excelファイルのみ）この�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file. To reopen the Source Data File detail page just click on the appropriate item."
-msgstr ""
+msgstr "ファイルが正しく解釈されるようにデータソースのパラメータを設定したら、「保存」ボタンをクリックして、この設定を保存します。保存に成功するとリソース概要ページが表示され、ソースデータエリアの右側の列にファイルの概要が表示されます。また、「編集」ボタンが表示され、ソースデータファイルのサマリーが右側の列に表示され、ユーザーはソースデータファイルの詳細ページを再び開くことができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:112
@@ -547,7 +547,7 @@ msgstr "*分析* - このボタンをクリックすると、このページの�
 #: en/modules/ROOT/pages/manage-resources.adoc:128
 #, no-wrap
 msgid "*Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page.\n"
-msgstr ""
+msgstr "*プレビュー* - このボタンをクリックすると、このページのデータベース接続設定に基づいたデータの説明を見ることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:129
@@ -605,7 +605,7 @@ msgstr "URLをデータソースとする"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:142
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Click the {threedots} menu and select \"Add\". Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "IPTは、非圧縮の区切りテキストファイル（CSV、タブ、その他の区切り文字を使用したファイル）をURLから直接インポートすることができます。「ソースデータ」のソースデータタイプドロップダウンリストから「URL」を選択し、フルURL（`http://`または`https://`を含む）を以下のボックスに入力またはコピーして貼り付けます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:146
@@ -642,7 +642,7 @@ msgstr "リソース概要ページのこのエリアでは、受信データの
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:157
 msgid "Once these conditions have been met, the dropdown will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the \"Configure Core Types and Extensions\" heading in the \"Administration Menu\" section for an explanation of how to install extensions."
-msgstr ""
+msgstr "これらの条件が満たされると、ダーウィンコア・マッピングエリアの左側の列に、インストールされているコアタイプと拡張機能のリストが表示されたセレクトボックスが表示されます。コアタイプを選択し、マップする拡張機能を選択する前にマップしてください。データソースにマッピングするフィールドと一致するフィールドを持つ、適切な拡張機能を選択します。適切なコアタイプまたは拡張機能がセレクトボックスに表示されない場合は、まずインストールする必要があります。拡張機能のインストール方法については、「管理メニュー」の「コアタイプおよび拡張機能の設定」の項目を参照してください。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:158
@@ -690,7 +690,7 @@ msgstr "マッピングするデータソースを選択し、「保存」と書
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:174
 msgid "After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the {threedots} menu and select \"Preview\" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version."
-msgstr ""
+msgstr "新しいマッピングが追加されると、ダーウィンコアマッピングエリアの右列に表示されます。このエリアには、リソースのすべてのマッピングのリストが、コアタイプマッピングと拡張機能マッピングに分かれて表示されます。マッピングの横にある「編集」ボタンをクリックして変更するか、プレビューアイコンをクリックしてマッピングを確認してください。リソース管理者は、新しいバージョンを公開する前にすべてのマッピングを確認することを推奨します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:175
