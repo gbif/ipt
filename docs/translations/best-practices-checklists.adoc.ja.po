@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 04:52\n"
+"PO-Revision-Date: 2023-02-10 05:55\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -736,7 +736,7 @@ msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:292
 msgid "IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance."
-msgstr "IPTユーザーは、IPT内の各ソースファイルに対して、複数値のデリミタを定義する必要があります。追加のガイダンスについては、IPTユーザーマニュアルの「ソースデータ」のセクションを参照してください。"
+msgstr "IPTユーザーは、IPT内の各ソースファイルに対して、複数値のデリミタを定義する必要があります。追加のガイダンスについては、IPTユーザーマニュアルのxref:manage-resources.adoc#source-data[ソースデータ]のセクションを参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:293
@@ -965,147 +965,147 @@ msgstr "figures/myristica_fragrans.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
 msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
-msgstr ""
+msgstr "もしソースデータセットが、リストで参照されている分類群に対してグローバルにユニークな識別子を提供している場合、それを派生データセットの*taxonID*として使用することができます。このようにすることで、元の分類群との明確なリンクが確保され、非常におすすめです。さらに、方言名のレコードには、方言名で使用されている言語を特定する言語参照を付けることが推奨されます。言語情報の共有には、link:http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 言語コード] を使用するのが最良の方法です。地方名は地域ごとに異なる用途を持つことがあり、これは*dwc:locality*要素、またはより正確でないレベルでは *dwc:country*を使って指定することができる。国名は、link:http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166 国名コード]があれば、それを利用することが推奨されます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:360
 #, no-wrap
 msgid "Sharing Species Descriptions"
-msgstr ""
+msgstr "種の解説を共有する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
-msgstr ""
+msgstr "分類群に関連する記述情報の共有に対応しています。説明文データは、{latest-description}[Taxon Description extension]を用いて、関連する別のファイルとして共有されます。記述データは個別の記述タイプに割り当てることができ、拡張機能でデータを公開すると、1 つの分類群に複数の記述レコードをリンクすることができ、分類群ごとに比較的豊富なデータセットをサポートします。説明情報を記述するために、{latest-description-type}[description type vocabulary]を使用することが推奨されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:364
 #, no-wrap
 msgid "Multi-line descriptions"
-msgstr ""
+msgstr "複数行の説明"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:367
 msgid "Descriptive information should be limited to single paragraph text blocks. Multiple paragraphs containing line breaks should be avoided or carefully managed in order to maintain the integrity of the resultant text file output as the Darwin Core Archive. Multi-line data fields served as text files require the record delimiters, which are usually line break characters, to be distinct from the line breaks used within a multi-line field. The best method for supporting multiple lines in a single field is to replace breaking characters with a non-breaking character or character set that a user can replace with proper breaks when the data is parsed and used. One option is to use the HTML break tag `<br>`."
-msgstr ""
+msgstr "説明情報は、単一段落のテキストブロックに限定する必要があります。 改行を含む複数の段落は、ダーウィンコア・アーカイブとして出力される結果のテキストファイルの整合性を維持するために、回避するか、慎重に管理する必要があります。 テキストファイルとして機能する複数行のデータフィールドでは、複数行のフィールド内で使用される改行とは異なるレコード区切り文字（通常は改行文字）が必要です。 1つのフィールドで複数行をサポートするための最良の方法は、改行文字を、データが解析および使用されるときにユーザーが適切な改行に置き換えることができる非改行文字または文字セットに置き換えることです。 1つのオプションは、HTMLブレークタグ`<br>`を使用することです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:368
 #, no-wrap
 msgid "Sharing Species Distributions"
-msgstr ""
+msgstr "種の分布を共有する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:371
 msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
-msgstr ""
+msgstr "配布データの共有がサポートされています。 配布データは、{latest-species-distribution}[Species Distribution extension]を使用して、別個の関連ファイルとして共有されます。 これにより、分類群ごとに複数の配布レコードを公開できます。 分布拡張は、国または地域の分布の説明を指定するために使用されるだけでなく、分類群の脅威ステータス、導入されているかどうか、ネイティブなど、およびその他のプロパティに関する参照された分布の認定も対応します。 特定の定義された領域に関連付けられています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:373
 msgid "The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element."
-msgstr ""
+msgstr "明確に地域を指定するための推奨される最良の方法は、*dwc:localityID*要素で公開される解決可能な、またはよく知られた地域識別子を介することです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:375
 msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
-msgstr ""
+msgstr "*dwc：country*要素を使用する場合は、link:http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166 国名コード]を使用することをお勧めします。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:376
 #, no-wrap
 msgid "Sharing References"
-msgstr ""
+msgstr "リファレンスを共有する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr ""
+msgstr "書誌引用の共有がサポートされています。 書誌データは、{latest-references}[References extension]を使用して別個の関連ファイルとして共有されます。{latest-references}[References extension]は、モノグラフおよび注釈付きチェックリストでのシノニム情報の共有に使用するために推奨および設計されています。 解析された引用の共有をサポートしているため、*dwc:namePublishedIn*などのコアデータファイル内の引用を保存するデータ要素の一部よりも詳細な引用形式を提供します。 この拡張機能は、{latest-reference-type}[the Reference Type vocabulary]プロパティを介した参照の分類学的および命名上の修飾をサポートします。これは、{latest-reference-type}[the Reference Type vocabulary]とともに使用すると、分類群に関連する一連の参照を区別するために使用できます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:380
 #, no-wrap
 msgid "Sharing Type information"
-msgstr ""
+msgstr "タイプ情報の共有"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:383
 msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
-msgstr ""
+msgstr "タイプと標本に関する情報の共有がサポートされています。これらのデータは、タイプと標本の拡張を使用して、別個の関連ファイルとして共有されます。タイプ標本、タイプ種、属に関する基本情報の共有をサポートします。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:384
 #, no-wrap
 msgid "Sharing Links and Identifiers"
-msgstr ""
+msgstr "リンクと識別子の共有"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here]."
-msgstr ""
+msgstr "{latest-identifier}[Alternate Identifier Extension]を使用して、関連する外部リソースへの複数のリンクを共有および説明することができます。 これにより、データ発行者は、解決可能な識別子を介してソースデータベースまたはドキュメントにリンクを埋め込むことができます。 おそらくWebページとより機械可読なWebサービス応答の両方にリンクする複数の識別子が、単一の分類群に提供される場合があります。 識別子が解決可能である場合にユーザーが応答情報を解釈する方法を知ることができるように、各レコードにフォーマットを含めることをお勧めします。 これは通常、このフィールドに*MIME type*（または*MIME type*）を含めることによって行われます。 メディアタイプの完全なリストは、link:https://www.iana.org/assignments/media-types/media-types.xhtml[こちら]から入手できます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:388
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
-msgstr ""
+msgstr "種のページへの動的リンクの作成"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:391
 msgid "Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The Darwin Core Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a Darwin Core Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile]."
-msgstr ""
+msgstr "多くの場合、ソースデータベースへのリンクは一般的な形式に従い、URLで使用される識別子番号または分類群名のみが異なります。これにより、冗長で肥大化した拡張子ファイルが生成される可能性があります。ダーウィンコア・アーカイブ形式は、URLテンプレートを定義するためのより効率的な方法をサポートします。これは、一度だけ定義する必要があり、変数をテンプレートに埋め込むことができるため、データ内の分類群ごとにURLのセットを繰り返し繰り返す必要がありません。これは、ダーウィンコア・アーカイブのXMLメタファイルコンポーネントを介して行われます。リファレンス拡張機能は使用しません。これには、XMLメタファイルを編集する必要があり、XMLにある程度精通している必要があります。GBIFは、xref:gbif-metadata-profile.adoc[ダーウィンコアメタファイルへの完全なガイドを提供します]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:393
 msgid "The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “\\{id}.” The following examples illustrate these features:"
-msgstr ""
+msgstr "メタファイルは、WebページまたはWebサービス呼び出しを参照する可能性のあるメタファイル内の変数の作成をサポートします。この変数はURLに埋め込まれ、URLのパラメーターの1つとして分類群識別子または分類群名を含めることができます。公開されたデータの任意の列は、中括弧「{}」でインデックス番号を囲むことによって参照できます。コアデータファイルの分類群識別子は、変数「{id}」を介して参照することもできます。次の例は、これらの機能を示しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:395
 msgid "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial Numbers (TSN) to provide links to taxon pages on its web site."
-msgstr ""
+msgstr "統合分類情報システム（ITIS）は、分類シリアル番号（TSN）を使用して、Webサイトの分類ページへのリンクを提供します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:398
 msgid "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
-msgstr ""
+msgstr "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:400
 msgid "If a core data file is published using the ITIS TSN system a link can be composed and tied to the “identifier” term in the core data standard using the following syntax."
-msgstr ""
+msgstr "コアデータファイルがITIS TSNシステムを使用して公開されている場合、次の構文を使用して、リンクを作成し、コアデータ標準の「識別子」用語に関連付けることができます。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:403
 #, no-wrap
 msgid "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:406
 msgid "where the original numeric value is replaced by the variable `\\{id}`. This value would be derived from the core ID."
-msgstr ""
+msgstr "ここで、元の数値は変数`\\{id}`に置き換えられます。この値はコアIDから取得されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:409
 msgid "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It also supports name-based searches that can also be encoded as URLs. For example,"
-msgstr ""
+msgstr "The 2010 Catalogue of Life Annual Checklistには、同様の識別子が記載されています。また、URLとしてエンコードできる名前ベースの検索もサポートしています。例えば、"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:413
 #, no-wrap
 msgid "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
-msgstr ""
+msgstr "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:415
 msgid "embeds a scientific name “Struthio camelus” into a URL. Full scientific name combinations can be published in the core data file using the Darwin Core term “scientificName.” If we assume that this term represented the 12th column in our core data file we could use the syntax"
-msgstr ""
+msgstr "学名「Struthio camelus」をURLに埋め込みます。完全な科学名の組み合わせは、ダーウィンコア語彙「scientificName」を使用してコアデータファイルで公開できます。この用語がコアデータファイルの12番目の列を表すと仮定すると、構文を使用できます。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:418
 #, no-wrap
 msgid "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:421
