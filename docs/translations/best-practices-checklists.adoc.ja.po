@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 02:23\n"
+"PO-Revision-Date: 2023-02-10 03:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -763,116 +763,116 @@ msgstr "メタデータの引用と帰属"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:302
 msgid "The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:"
-msgstr ""
+msgstr "GBIFメタデータプロファイルは、引用と帰属に貢献するリソースレベルのデータ要素をサポートし、チェックリストの範囲と出所の詳細な記述を可能にします。すべてのメタデータ要素への完全な参照リストは、この文書の範囲を超えており、xref:gbif-metadata-profile.adoc[利用可能]ですが、特定の引用と帰属に関連する要素は以下のとおりです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
 #, no-wrap
 msgid "*Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.\n"
-msgstr ""
+msgstr "*知的財産権* - メタデータプロファイルには、リソースの権利管理に関する声明、またはクリエイティブ・コモンズ・ライセンスなど、そのような情報を提供するサービスへの参照が含まれます。また、データセットの意図された使用と目的を記述する要素も含まれます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:305
 #, no-wrap
 msgid "*Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.\n"
-msgstr ""
+msgstr "*個人と機関* - メタデータプロファイルは、データセットに関連するあらゆる個人、組織、機関を記述することができます。これらのエージェントは、データセットに関連するさまざまな役割を与えられ、各リソースへの URL を含むことができます。このセクションではチェックリストに貢献した個人と機関を記述し、リンクするための一つの方法を紹介します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:306
 #, no-wrap
 msgid "*Source URL* – Links to the homepage of the source\n"
-msgstr ""
+msgstr "*ソースURL* - ソースのホームページへのリンクです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:307
 #, no-wrap
 msgid "*Project Information* – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.\n"
-msgstr ""
+msgstr "*プロジェクト情報* - チェックリストが特定のプロジェクト（「The Catalogue of Life」など）にリンクされている場合、そのプロジェクトを詳細に説明するためのフィールドがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:308
 #, no-wrap
 msgid "*Citation* – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
-msgstr ""
+msgstr "*引用* - この要素では、チェックリストの発行者が、チェックリストのデータを使用する際にどのように引用するかを正確に指定できます。（例：*“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:309
 #, no-wrap
 msgid "*Bibliography* – A complete bibliography of sources can be described and included in the metadata document.\n"
-msgstr ""
+msgstr "*書誌情報* - 出典の完全な書誌情報を記述し、メタデータ文書に含めることができます。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:310
 #, no-wrap
 msgid "Data-level Citation and Attribution"
-msgstr ""
+msgstr "データレベルの引用と帰属"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:313
 msgid "Attribution and citation information recorded in the metadata document is common to all data records in a dataset. In some cases, additional granularity is needed even down to individual records. In these cases, there are record-level terms that are recommended for use in specifying citation and attribution information."
-msgstr ""
+msgstr "メタデータ文書に記録されている帰属・引用情報は、データセット内の全データレコードに共通するものです。場合によっては、個々のレコードに至るまでさらに細かい情報が必要なこともあります。このような場合、引用と帰属の情報を指定するために使用することが推奨されるレコードレベルの用語があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:315
 #, no-wrap
 msgid "*dwc:nameAccordingTo* : This term can be used to identify the individual or citation that serves as the authoritative taxonomic reference for the record. (Example “Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”)\n"
-msgstr ""
+msgstr "*dwc:nameAccordingTo* ： この用語は、そのレコードの権威ある分類学的参照として機能する個人または引用を特定するために使用することができます。(例：“Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”)\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:316
 #, no-wrap
 msgid "*dwc:nameAccordingToID*: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.\n"
-msgstr ""
+msgstr "*dwc:nameAccordingToID* ： 前述のnameAccordingToの参照を返す一意の識別子（例えばURLなど）です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:317
 #, no-wrap
 msgid "*dwc:datasetName*: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)\n"
-msgstr ""
+msgstr "*dwc:datasetName* ： レコードが外部データセットから派生している場合、このデータセットをテキスト文字列として引用することができます。(例：\"World Register of Marine Species, cited on 12 April 2011\")\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:318
 #, no-wrap
 msgid "*dwc:datasetID* – An identifier that refers to a dataset, preferably resolvable.\n"
-msgstr ""
+msgstr "*dwc:datasetID* ： データセットを参照する識別子で、解決可能であることが望ましいです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:319
 #, no-wrap
 msgid "*dc:source* – Link to the source web page\n"
-msgstr ""
+msgstr "*dc:source* ： ソースウェブページへのリンク\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:320
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
-msgstr ""
+msgstr "使用例1 - 複数の寄与するデータセットからなるチェックリスト（例：Catalogue of Life、PESI、WoRMS）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:323
 msgid "A taxonomic dataset may be a composite of multiple contributing sources, each of which needs to be acknowledged in addition to the collective resource itself. There are many examples of this. Perhaps the largest such collective effort is the Catalogue of Life Annual Checklist which aims to provide a complete listing of all the worlds living species. The checklist itself is composed of individual datasets that represent major taxonomic groups. Each of these resources, in turn, may be composed of contributions from a sub-network of specialists."
-msgstr ""
+msgstr "分類学的データセットは複数の貢献するソースの複合体である場合があり、集合的なリソース自体に加えて、それぞれのソースを認識する必要があります。このような例はたくさんあります。そのような集団的努力の中で最も大きなものは、おそらくCatalogue of Life Annual Checklistでしょう。これは、世界中のすべての生物種の完全なリストを提供することを目的としています。このチェックリスト自体は、主要な分類群を表す個々のデータセットで構成されています。これらのリソースはそれぞれ、専門家のサブネットワークからの貢献で構成されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:325
 msgid "Other examples include the Pan-European Species list, which is composed of a number of contributing datasets that include Fauna Europaea, the European Register of Marine Species, Euro+Med PlantBase and others. The World Register of Marine Species represents another such network."
-msgstr ""
+msgstr "他には、Fauna Europaea、European Register of Marine Species、Euro+Med PlantBase などのデータセットから構成される Pan-European Species list の例があります。The World Register of Marine Speciesもそのようなネットワークの一つです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:327
 msgid "The recommended practice for effectively documenting the provenance of these sorts of resources can be summarized as follows."
-msgstr ""
+msgstr "このようなリソースの出典を効率的に文書化するために推奨される方法は、以下の通りです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:329
 msgid "A single metadata document is created to represent the collective resource itself, (e.g., the Catalogue of Life, the The World Register of Marine Species, etc.) This metadata document provides the proper citation, agents, rights, and other elements identified above. This document filename is referenced the Darwin Core Archive descriptor file, meta.xml. This links the document to the entire DwC-A dataset. Recommended best practice is that this file uses the GBIF metadata profile and be named EML.xml. In this case, the metadata descriptor XML would look like this:"
-msgstr ""
+msgstr "このメタデータ文書は、適切な引用、代理人、権利、および上記で特定されたその他の要素を提供する、（the Catalogue of Life, the The World Register of Marine Speciesなどの）集合的なリソース自体を表す単一のメタデータ文書が作成されます。この文書のファイル名は、ダーウィンコア・アーカイブ記述子ファイルである meta.xml を参照しています。これにより、ドキュメントとDwC-Aデータセット全体がリンクされます。推奨される最良の方法は、このファイルがGBIFメタデータプロファイルを使用し、EML.xmlという名前になることです。この場合、メタデータ記述子XMLは以下のようになります。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:332
 #, no-wrap
 msgid "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
-msgstr ""
+msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
