@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 07:55\n"
+"PO-Revision-Date: 2023-02-10 07:52\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -106,144 +106,148 @@ msgid "| Version | Description             | Date of release | Author(s)\n\n"
 "| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak\n"
 "| https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData[2.1] | Minor changes, clean up | Aug 2018   | Marie Grosjean\n"
 "| xref:best-practices-sampling-event-data.adoc[2.2] | Conversion to Asciidoctor | May 2021 | Matthew Blissett\n"
-msgstr ""
+msgstr "| Version | Description             | Date of release | Author(s)\n\n"
+"| https://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama\n"
+"| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData[2.1] | Minor changes, clean up | Aug 2018   | Marie Grosjean\n"
+"| xref:best-practices-sampling-event-data.adoc[2.2] | Conversion to Asciidoctor | May 2021 | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
 msgid "GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
-msgstr ""
+msgstr "GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/ja/ipt/{page-version}/best-practices-sampling-event-data"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:24
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "このガイドでは、サンプリングイベント情報を標準的な方法で共有するための手段として、ダーウィンコア・アーカイブ (DwC-A) フォーマットの活用方法について詳しく説明します。また、ダーウィンコア・アーカイブフォーマットの特定のコンポーネントと、コアイベントデータクラスをサポートする拡張機能に焦点を当て、共有データの価値を最大化するためにこれらのコンポーネントを最適に利用する方法について推奨事項を説明します。本書はダーウィンコア・アーカイブフォーマットの詳細な概要を提供するものではなく、xref:darwin-core.adoc[ダーウィンコア・アーカイブ ハウツーガイド]を参照してください。"
 
 #.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
 msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data.  A standard format also increases relevance and utility."
-msgstr ""
+msgstr "DwC-Aフォーマットとここで説明する特定のプロファイルは、サンプリング・イベント・データを共有するための国際的に認められ批准されたデータ交換フォーマットです。すべてのデータ交換標準は、一方では技術的な範囲と能力、他方では社会的な受け入れと取り込みのバランスを取る必要があります。シンプルなソリューションでは、使いやすさを優先して、対象範囲と複雑さが犠牲になります。非常に複雑なフォーマットは、あらゆる種類のデータを表現するためのより完全なソリューションを提供しますが、単純さを犠牲にして、サポートするソフトウェアと専門知識を必要とします。ダーウィンコア・アーカイブフォーマットは、この両端の中間的な位置づけにあります。これはサンプリングイベントデータの主要な要素に焦点を当て、このコア構造にリンクさせることで、より充実したデータタイプのセットを可能にします。アーカイブに含まれるデータは、基本的な構造化テキストファイルに慣れている多くの生態学者やデータ管理者が容易に理解し、使用することができます。この国際標準によって、GBIFはサンプリングイベントデータの共有を促進し、サンプリングイベントデータを作成し扱うコミュニティの仕事を引用し認識するための共通のアプローチを促進することを期待しています。また、標準的なフォーマットは関連性と実用性を高めます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:7
 #, no-wrap
 msgid "What is sampling-event data?"
-msgstr ""
+msgstr "サンプリングイベントデータとは？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:32
 msgid "Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programs. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data."
-msgstr ""
+msgstr "サンプリングイベントデータは、何千もの環境、生態学、および天然資源調査から得られるデータの一種です。これらは単発の調査であったり、モニタリングプログラムであったりします。このようなデータは通常、定量的で、校正されており、個体群の変化や傾向を検出できるように特定のプロトコルに従います。これは、生物多様性データの大部分を占める日和見的な観察・採集データとは対照的である。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
-msgstr ""
+msgstr "DwC-Aでサンプリング・イベント・データを表現するには？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:36
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ (DwC-A) は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGZIP）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、xref:darwin-core.adoc[ダーウィンコア・アーカイブ：ハウツーガイド]を参照してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
 #, no-wrap
 msgid "Sampling-event Metadata"
-msgstr ""
+msgstr "サンプリングイベントメタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:40
 msgid "Documenting the provenance and scope of datasets is required in order to publish sampling-event data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the sampling methodologies used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for sampling-event datasets based on the Ecological Metadata Language. A How-to guide describes all the options for describing a sampling-event dataset using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr ""
+msgstr "GBIFネットワークを通じてサンプリングイベント・データを公開するためには、データセットの出所と範囲を文書化することが必要です。データセットの文書化は「リソースメタデータ」と呼ばれ、利用者がデータセットの利用適性を評価できるようにするものです。データセットの編集に使われたサンプリング方法や、その作成と管理に関わった個人と機関について記述することができます。メタデータはダーウィンコア・アーカイブでXML文書として共有される。GBIFは、Ecological Metadata Languageに基づくサンプリングイベントデータセットのためのメタデータプロファイルを提供します。ハウツーガイドでは、この形式を使用してサンプリングイベントデータセットを記述するためのすべてのオプションについて説明しています。xref:gbif-metadata-profile.adoc[GBIFメタデータプロファイル-ハウツーガイド]を参照してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
 #, no-wrap
 msgid "Sampling-event Data"
-msgstr ""
+msgstr "サンプリングイベントデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
 msgid "The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘*extensions*’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (*eventID*) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ形式は、サンプリングイベントデータを公開するための構造的な枠組みを提供します。ダーウィンコア・アーカイブは、標準的なカンマまたはタブ区切り形式の1つまたは複数のテキストファイルで構成されています。ファイルは、サンプリングイベント（サンプリングプロトコル、サンプルサイズ、場所など）をリストした1つのコアファイルを、関連するデータタイプ（種のオカレンス、測定、サンプリングイベントに関連する事実など）を記述した多数の「*拡張機能*」で囲んだ星のような方法で論理的に配置されています。コアと拡張レコード間のリンクは、イベント識別子（*eventID*）データ要素を使用して行われます。このようにして、1つのコアイベントレコードに対して多くの拡張レコードを存在させることができます。この「スタースキーマ」は、サンプリングイベントデータセットに共通する多くの種類の注釈をサポートする単純なリレーショナルデータモデルを提供します。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:46
 #: en/modules/ROOT/pages/dwca-guide.adoc:31
 #, no-wrap
 msgid "figures/dwc-a_event.png"
-msgstr ""
+msgstr "figures/dwc-a_event.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:49
 msgid "An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study."
-msgstr ""
+msgstr "サンプリングイベントデータをエンコードする別の方法は、コアファイルに種のオカレンスをリストアップし、関連するデータタイプ（種のオカレンスに関連する測定値など）を記述するいくつかの拡張子で囲むことです。プロットまたはサイトが研究の主な焦点である場合、コアファイルにサンプリングイベントをリストすることが望ましいことに注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:52
 msgid "Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.  Discussion on this prototype extension are taking place on GitHub but there is no solution available yet."
-msgstr ""
+msgstr "現在のDwC-Aスタースキーマには限界があります。例えば、測定値や事実を同じデータセット内のイベントとオカレンスの両方にリンクさせることはできません。このプロトタイプの拡張に関する議論はGitHubで行われていますが、まだ解決策はありません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
 msgid "Please check the https://www.gbif.org/data-quality-requirements-sampling-events[data quality requirements for sampling events]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the https://www.gbif.org/tools/data-validator[GBIF data validator]."
-msgstr ""
+msgstr "https://www.gbif.org/data-quality-requirements-sampling-events[イベントのサンプリングに必要なデータ品質]をご確認ください。ダーウィンコア・アーカイブを手動で生成する場合、一意の識別子を含む*recordID*フィールドを追加する必要がある可能性があることに注意してください（このフィールドは、IPTを使用している場合、自動的に生成されます）。ダーウィンコア・アーカイブの構造に関する詳細は、link:https://dwc.tdwg.org/text/[TDWG ダーウィンコア・テキストガイド]を参照してください。アーカイブはいつでもlink:https://www.gbif.org/tools/data-validator[GBIF data validator]で確認することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:58
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr ""
+msgstr "理解を容易にするために、このガイドの用語*field*を使用して、ユーザーデータがマップされるサンプリングイベント公開プロファイルのダーウィンコア用語セットを参照する場合があります。たとえば、ダーウィンコアの用語である*scientificName*を参照する場合は、*dwc:scientificName field*の使用を参照します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:60
 msgid "It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes."
-msgstr ""
+msgstr "カスタムフィールド区切り文字と引用符の代わりに、TABまたはカンマ区切り値を使用することをお勧めします。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
 #, no-wrap
 msgid "Sample size"
-msgstr ""
+msgstr "サンプルサイズ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:68
 msgid "The following Darwin Core fields store the sample size of a sampling event:"
-msgstr ""
+msgstr "次のダーウィンコアフィールドには、サンプリングイベントのサンプルサイズが格納されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
 #, no-wrap
 msgid "*sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeValue* : サンプリングイベントのサンプルのサイズ（期間、長さ、面積、または量）を測定するための数値。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:71
 #, no-wrap
 msgid "*sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeUnit* : サンプリングイベントでのサンプルのサイズ（継続時間、長さ、面積、または体積）の測定単位。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr ""
+msgstr "*sampleSizeValue*の値は数値であり、対応するサンプルサイズ単位が必要です。サンプルサイズ単位の値は、SI単位/派生単位、または測定単位系に従ってSI内での使用が許可されているその他の非SI単位（分、時間、日、リットルなど）のみを使用するように制限する必要があります。以下の表1に例を示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 msgid "You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "サンプリングエリアは、適切なWKT形状や緯度経度点位置で表現することができます。正しく行えば、サンプリングが行われた方向も導き出すことができます。例えば、WKT形状LINESTRINGを使用して表現された海洋トロールラインは、開始点と終了点を書くための標準的な表記に基づいて、トロールの方向を決定することができます。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
 #, no-wrap
 msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
-msgstr ""
+msgstr "sampleSizeValueとsampleSizeUnitは、3平方メートル、1リットルなどのように一緒に使用する必要があります。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:84
@@ -253,42 +257,46 @@ msgid "| sampleSizeValue | sampleSizeUnit\n\n"
 "| 3 | m2\n"
 "| 17 | km\n"
 "| 1 | litre\n"
-msgstr ""
+msgstr "| sampleSizeValue | sampleSizeUnit\n\n"
+"| 2 | hour\n"
+"| 3 | m2\n"
+"| 17 | km\n"
+"| 1 | litre\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "数量と豊富さ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:89
 msgid "The following Darwin Core fields are also required to be used as a pair:"
-msgstr ""
+msgstr "また、以下のダーウィンコアフィールドは、ペアで使用することが必須です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
 #, no-wrap
 msgid "*organismQuantity*: a numeric or enumeration value for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantity* : 生物の量を表す数値または列挙値。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:92
 #, no-wrap
 msgid "*organismQuantityType*: the type of quantification system used for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantityType* : 生物の量に使用される定量化システムのタイプ。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
 msgid "Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass."
-msgstr ""
+msgstr "表2に値の例を示す。organismQuantityの値は数値または列挙型で、例えば 生物量タイプ\"individuals\" の場合は \"27\" 、 生物量タイプ\"%biomass\" の場合は \"12.5\" 、 生物量タイプ\"BraunBlanquetScale\" の場合は \"r\" です。生物量タイプの値（すなわち、測定される実体）は、\"Individuals\"、\"%Biomass\"、\"%Biovolume\"、\"%Species\"、\"%Coverage\"、 \"BraunBlanquetScale\"、\"DominScale\" といった用語から構成されている小さな統制語彙を使用するとよいでしょう。organismQuantity値と組み合わせた場合の例です。DominScaleでは \"+\"、BraunBlanquetScaleでは \"5\"、%Biomassでは \"45\"です。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
 #, no-wrap
 msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
-msgstr ""
+msgstr "organismQuantityとorganismQuantityTypeは必ず併用します。例えば、14 個体のカウント、あるいは Braun Blanquetスケールのコード値 \"r \"などです。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
@@ -298,105 +306,109 @@ msgid "| organismQuantity | organismQuantityType\n\n"
 "| r | BraunBlanquetScale\n"
 "| 0.4 | %Species\n"
 "| 31 | %Biomass\n"
-msgstr ""
+msgstr "| organismQuantity | organismQuantityType\n\n"
+"| 14 | individuals\n"
+"| r | BraunBlanquetScale\n"
+"| 0.4 | %Species\n"
+"| 31 | %Biomass\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "サンプリングイベントを一意に特定する方法"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:109
 msgid "Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.  In the absence of a GUID, publishers may reuse the original fieldNumber."
-msgstr ""
+msgstr "各イベントは dwc:eventID と、場合によっては dwc:parentEventID を使って一意に識別されます。識別子の種類と形式は任意ですが、パブリッシャーは永続的なグローバルユニークな識別子を選択することを推奨します。GUID がない場合、パブリッシャーはオリジナルの fieldNumber を再利用することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 msgid "Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared."
-msgstr ""
+msgstr "既存の安定した識別子を再利用し、既に宣言されているイベントに対して新しい識別子を作らないように注意してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "イベントの階層をどのようにとらえるか"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
 msgid "Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3)."
-msgstr ""
+msgstr "サンプリングイベントは、共通の親識別子を介して互いに関連付けることができます（例：ネストしたサンプル）。例えば、Whittaker Plot内のいくつかのサブサンプリングイベントは、それぞれ独自のeventID（例えば、\"A1:1\"、\"A1:2\"）を持ち、共通のparentEventID（例えば \"A1\"）を共有するので、それらを簡単にリンクすることができます（表4および図3参照）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:117
 msgid "Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata."
-msgstr ""
+msgstr "関係の性質（例：モニタリングシリーズの一部）に関するさらに詳細な情報は、付属のメタデータのプロジェクトセクションに記述することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 msgid "You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
-msgstr ""
+msgstr "また、以下のxref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]を参照することもできます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "不在データの取り込み方法"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 msgid "Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
-msgstr ""
+msgstr "以下のxref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]をご参照ください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "補足マルチメディアの入れ方"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:127
 msgid "You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "データの解釈を容易にするために、補足メディアを含めることができます。例えば、植生データの場合、データを解釈する際に、スキャンしたオリジナルのリレベシートへのリンクを含めると便利です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
 msgid "The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links."
-msgstr ""
+msgstr "関連するファイルは外部サーバーでホストされ、dwc:associatedMediaと dwc:associatedReferencesを通してオカレンスにリンクされていなければなりません。これらのファイルは、フォーマットタイプが指定されている限り、画像、テキスト、またはその両方の組み合わせであってもよいです。JPG、PNGなどの画像はサムネイルとして表示され、PDFはクリック可能なリンクとして表示されます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
-msgstr ""
+msgstr "サンプリングイベントデータの公開"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:132
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr ""
+msgstr "識別子にGUIDを使用する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:135
 msgid "A number of fields require the usage of unique identifiers: dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID."
-msgstr ""
+msgstr "dwc:occurrenceID、dwc:eventID、dwc:organismID、dwc:locationIDなどのフィールドは、一意な識別子を必要とします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:137
 msgid "As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDentifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr ""
+msgstr "前述の通り、特定のフォーマットは強制されませんが、出版社にはGlobal Unique IDentifiers（GUID）を使用するようアドバイスしています。そのような識別子を提供するオンラインサービスがいくつかあります。例えば、http://www.geonames.org/ を使って dwc:locationID の識別子を見つける（あるいは新しい識別子を生成する）ことができます。例えば、http://sws.geonames.org/10793757/ はグリーンランドの湖の GUID です。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:138
 #, no-wrap
 msgid "Protect location of sensitive species"
-msgstr ""
+msgstr "影響を受けやすい生物種の地理情報を保護する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:141
@@ -731,26 +743,28 @@ msgstr ""
 #, no-wrap
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:306
 #, no-wrap
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:311
 #, no-wrap
 msgid "*_Opisthograptis luteolata_* : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).\n"
-msgstr ""
+msgstr "*_Opisthograptis luteolata_* : 16日間の観測で11個体が観測されました。1日あたりの個体数は0.68個体（11/16）です。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:312
 #, no-wrap
 msgid "Lepidoptera survey II"
-msgstr ""
+msgstr "鱗翅目調査 II"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:321
@@ -758,7 +772,9 @@ msgstr ""
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
 "| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
+"| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:330
@@ -766,13 +782,15 @@ msgstr ""
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
 "| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
+"| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:333
 #, no-wrap
 msgid "*Extension (Measurement-or-Fact) table*\n"
-msgstr ""
+msgstr "拡張（オカレンス）テーブル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:341
@@ -782,20 +800,24 @@ msgid "| EventID | measurementType | measurementValue | measurementUnit | measur
 "| 1014-tr023m | Wind speed | light | | |\n"
 "| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
 "| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
-msgstr ""
+msgstr "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
+"| 1014-tr023m | Temp | 20 | Degree C |  |\n"
+"| 1014-tr023m | Wind speed | light | | |\n"
+"| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
+"| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:347
 #, no-wrap
 msgid "*_Pieras rapae_* :  A total of 1 individual from 250 sq metres was obtained in this sampling event.\n"
 "Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension.\n"
-msgstr ""
+msgstr "*_ピエール・ラパエ（Pieras rapae ）_*：250平方メートルから1個体採取。いくつかの環境測定（例：気温、風速、曇り）については、測定または事実の拡張に含まれます。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:348
 #, no-wrap
 msgid "Reef fish survey"
-msgstr ""
+msgstr "サンゴ礁魚類調査"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:357
@@ -803,7 +825,9 @@ msgstr ""
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
 "| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
+"| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:368
@@ -813,25 +837,29 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| 506003329 | Acanthurus xanthopterus | 1 | individuals |\n"
 "| 506003329 | Aulostomus chinensis | 4 | individuals |\n"
 "| 506003329 | Axoclinus cocoensis | 1 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"| 506003329 | Acanthurus nigricans | 42 | individuals |\n"
+"| 506003329 | Acanthurus xanthopterus | 1 | individuals |\n"
+"| 506003329 | Aulostomus chinensis | 4 | individuals |\n"
+"| 506003329 | Axoclinus cocoensis | 1 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:373
 #, no-wrap
 msgid "*_Aulostomus chinensis_* : A total of 4 individuals from 500 sq metres were obtained in this sampling event.\n"
-msgstr ""
+msgstr "*_Aulostomus chinensis_* : 今回のサンプリングでは、500平方メートルから合計4個体が採取されました。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:374
 #, no-wrap
 msgid "Nested samples"
-msgstr ""
+msgstr "ネストしたサンプル"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:376
 #, no-wrap
 msgid "Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout)."
-msgstr ""
+msgstr "13のサブプロットからなるWhittakerプロットのこの例のように、いくつかのサブプロットが親イベントIDに関連している場合があります（プロットのレイアウトは図3を参照してください）。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:394
@@ -851,13 +879,27 @@ msgid "| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSi
 "| A1.11 | A1 |  | 1 | m^2 |  |  | | |\n"
 "| A1.12 | A1 |  | 1 | m^2 |  |  | | |\n"
 "| A1.13 | A1 |  | 1 | m^2 |  |  | | |\n"
-msgstr ""
+msgstr "| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 1984-03-18 | Monarch | 55.72 | 13.28 |\n"
+"| A1.1 | A1 |  | 100 | m^2 |  |  | | |\n"
+"| A1.2 | A1 |  | 10 | m^2 |  |  | | |\n"
+"| A1.3 | A1 |  | 10 | m^2 |  |  | | |\n"
+"| A1.4 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.5 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.6 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.7 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.8 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.9 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.10 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.11 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.12 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.13 | A1 |  | 1 | m^2 |  |  | | |\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:396
 #, no-wrap
 msgid "A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area."
-msgstr ""
+msgstr "面積の異なる13のサブプロットからなるWhittakerプロットの模式図。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:397
@@ -869,18 +911,18 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:399
 #, no-wrap
 msgid "Additional information that could also be included or was previously included"
-msgstr ""
+msgstr "追加で記載される可能性のある情報、または過去に記載された情報"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:402
 msgid "The Event core elements are mainly drawn from the DwC classes Event, Location and Geological Context (Table 3). The Occurrence extension elements are drawn from the Occurrence, Taxon and Identification classes. For reasons of consistency, the Occurrence extension includes all terms found in the Occurrence core. Thus Event, Location and Geological Context terms are also listed for the Occurrence extension but are actually redundant. Note the IPT hides redundant terms by default when mapping for the user’s convenience."
-msgstr ""
+msgstr "イベントのコア要素は、主にDwCのイベント、ロケーション、地質コンテキストクラスから抽出されています（表3）。オカレンスの拡張要素は、Occurrence、Taxon、Identification の各クラスから抽出されたものです。一貫性を保つため、発生拡張にはオカレンスコアに含まれるすべての用語が含まれます。したがって、Event、Location、Geological Contextの用語もオカレンス拡張にリストされていますが、実際には重複しています。IPTでは、ユーザーの利便性を考慮して、マッピング時に冗長な用語をデフォルトで非表示にすることに注意してください。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:403
 #, no-wrap
 msgid "Placement of the sample related terms in the Event core and Occurrence extension."
-msgstr ""
+msgstr "Event coreとOccurrence extensionにおけるサンプル関連用語の位置づけ。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:411
@@ -889,21 +931,24 @@ msgid "| Event Core\n"
 "| eventID, parentEventID, samplingProtocol, sampleSizeValue, sampleSizeUnit, samplingTaxaRange, siteTreatment, siteID, layer\n\n"
 "| Occurrence Extension\n"
 "| eventID, organismQuantity, organismQuantityType, siteID+, layer+\n"
-msgstr ""
+msgstr "| Event Core\n"
+"| eventID, parentEventID, samplingProtocol, sampleSizeValue, sampleSizeUnit, samplingTaxaRange, siteTreatment, siteID, layer\n\n"
+"| Occurrence Extension\n"
+"| eventID, organismQuantity, organismQuantityType, siteID+, layer+\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:414
 msgid "The \"+\" symbol indicates proposed new terms not yet ratified."
-msgstr ""
+msgstr "「+」記号は、まだ承認されていない、提案された新しい用語を示します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:415
 #, no-wrap
 msgid "Planned additions and notes for revision:"
-msgstr ""
+msgstr "計画されている追加と改訂に関する注記："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:417
 msgid "xref:best-practices-sampling-event-planned-additions.adoc[]"
-msgstr ""
+msgstr "xref:best-practices-sampling-event-planned-additions.adoc[]"
 
