@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 05:55\n"
+"PO-Revision-Date: 2023-02-10 07:52\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1110,82 +1110,82 @@ msgstr "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/se
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:421
 msgid "where `\\{12}` represents the 12th column value that will be substituted in the URL."
-msgstr ""
+msgstr "ここで、`\\{12}`は、URLで置き換えられる12番目の列の値を表します。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:423
 #, no-wrap
 msgid "GBIF Checklist Extensions"
-msgstr ""
+msgstr "GBIFチェックリスト拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:426
 msgid "The core data file in a checklist contains taxon records. The set of terms that can be used to describe a taxon record is defined by the Taxon (Core) Extension."
-msgstr ""
+msgstr "チェックリストのコアデータファイルには、分類群の記録が含まれています。 分類群レコードを説明するために使用できる一連の用語は、分類群（コア）拡張機能によって定義されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:428
 msgid "Each taxon record can be extended with one or more records in an extension file. The set of terms that can be used to describe each extension record is defined by its Extension."
-msgstr ""
+msgstr "各分類群レコードは、拡張ファイル内の1つ以上のレコードで拡張できます。各拡張レコードを説明するために使用できる一連の用語は、その拡張によって定義されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:430
 msgid "Below is the complete list of Extensions that can be used to provide additional information about a taxon record:"
-msgstr ""
+msgstr "以下は、分類群レコードに関する追加情報を提供するために使用できる拡張機能の完全なリストです。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:431
 #, no-wrap
 msgid "Taxon (Core) Extension"
-msgstr ""
+msgstr "分類群（コア）拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:434
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
-msgstr ""
+msgstr "最新版発行日：{latest-dwc-taxon}[{date-dwc-taxon}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 msgid "Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms."
-msgstr ""
+msgstr "この一連の用語を使用して、分類、シノニム、その他の重要な要素を含む種のチェックリストの基本的な情報を提供します。このリストの各行は、受け入れられた名前またはシノニムのいずれかの分類群名を表します。このクラスの用語は、分類情報を表すためのさまざまなメソッドをサポートしています。分類は、界、門、綱などの列と「スプレッドシートスタイル」で共有することも、直接の親のIDを含むフィールドを持つ各分類群行と「データベーススタイル」で共有することもできます。表には、受け入れ可能な用語の完全なリストが含まれていることに注意してください。チェックリストを共有するための最小要件は、種のリストと同じくらい小さいですが、付随するIDを強くお勧めします。この用語のリストを使用して、共有するデータに最適な用語を特定します。用語名に躊躇しないでください。説明を読んで、関連する用語を見つけてください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:437
 #, no-wrap
 msgid "Vernacular Names Extension"
-msgstr ""
+msgstr "通俗名の拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:440
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
-msgstr ""
+msgstr "最新版発行日：{latest-vernacularname}[{date-vernacularname}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 msgid "This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID."
-msgstr ""
+msgstr "この拡張機能は、コアデータファイル内の分類群にリンクされている一般的な（一般的な）名前に関連する情報を共有する手段を提供します。複数の固有名は、*taxonID*を介して同じ分類群にリンクできます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:443
 #, no-wrap
 msgid "References Extension"
-msgstr ""
+msgstr "リファレンス拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:446
 msgid "Latest version issued: {latest-references}[{date-references}]"
-msgstr ""
+msgstr "最新版発行日：{latest-references}[{date-references}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 msgid "Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists."
-msgstr ""
+msgstr "この拡張機能を使用して、コアデータファイル内の分類群に関連する1つ以上の書誌リファレンスを記述します。タイプフィールドを使用して、リファレンスを修飾します。この拡張機能は、参照される同義チェックリストの共有をサポートします。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:449
 #, no-wrap
 msgid "Species Distribution Extension"
-msgstr ""
+msgstr "種の説明の拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:452
