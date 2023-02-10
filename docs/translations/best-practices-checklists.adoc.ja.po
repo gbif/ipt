@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 00:00\n"
+"PO-Revision-Date: 2023-02-10 02:23\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -82,7 +82,7 @@ msgstr "推奨される引用"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
-msgstr "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
+msgstr "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/jp/ipt/{page-version}/best-practices-checklists"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:27
@@ -92,12 +92,12 @@ msgstr "_カバーアート製作: Gregory Basco, Black-necked stilt, Himantopus
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:31
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "このガイドでは、分類学的チェックリスト情報を標準的な方法で共有するための手段として、ダーウィンコア・アーカイブ (DwC-A) フォーマットの活用方法について詳しく説明します。また、ダーウィンコア・アーカイブフォーマットの特定のコンポーネントと、コア分類学データクラスをサポートする拡張機能に焦点を当て、共有データの価値を最大化するためにこれらのコンポーネントを最適に利用する方法について推奨事項を説明します。本書はダーウィンコア・アーカイブフォーマットの詳細な概要を提供するものではなく、[Darwin Core Archives How-to Guide]を参照してください。"
+msgstr "このガイドでは、分類学的チェックリスト情報を標準的な方法で共有するための手段として、ダーウィンコア・アーカイブ (DwC-A) フォーマットの活用方法について詳しく説明します。また、ダーウィンコア・アーカイブフォーマットの特定のコンポーネントと、コア分類学データクラスをサポートする拡張機能に焦点を当て、共有データの価値を最大化するためにこれらのコンポーネントを最適に利用する方法について推奨事項を説明します。本書はダーウィンコア・アーカイブフォーマットの詳細な概要を提供するものではなく、xref:darwin-core.adoc[ダーウィンコア・アーカイブ ハウツーガイド]を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:33
 msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility."
-msgstr "DwC-Aフォーマットとここで説明する特定のプロファイルは、国際的に認められ批准された、分類学データ共有のためのデータ交換フォーマットです。すべてのデータ交換基準は、一方では技術的な範囲と能力、他方では社会的な受け入れと取り込みのバランスを取る必要があります。シンプルなソリューションでは、使いやすさを優先して、適用範囲や複雑さが犠牲になります。非常に複雑なフォーマットは、あらゆる種類のデータを表現するためのより完全なソリューションを提供しますが、単純さを犠牲にして、サポートするソフトウェアと専門知識を必要とします。ダーウィンコア・アーカイブフォーマットは、この両端の中間的な位置づけにあります。分類学的チェックリストの主要な要素に焦点を当て、このコア構造にリンクさせることで、より充実したデータ タイプのセットを可能にします。アーカイブに含まれるデータは、基本的な構造化テキストファイルに慣れている多くの生物学者やデータ管理者が容易に理解し、使用することができます。比較的簡単に作成・利用でき、分類学的データリソースを構成する重要な要素の多くをサポートする国際基準を提供することにより、GBIFは、チェックリストの作成者と管理者に、データを共有する標準的なアプローチを提供し、その後の引用と彼らの仕事の認識への共通のアプローチを促進することを期待しています。また、標準的な形式は、関連性と実用性を高めます。"
+msgstr "DwC-Aフォーマットとここで説明する特定のプロファイルは、国際的に認められ批准された、分類学データ共有のためのデータ交換フォーマットです。すべてのデータ交換基準は、一方では技術的な範囲と能力、他方では社会的な受け入れと取り込みのバランスを取る必要があります。シンプルなソリューションでは、使いやすさを優先して、適用範囲や複雑さが犠牲になります。非常に複雑なフォーマットは、あらゆる種類のデータを表現するためのより完全なソリューションを提供しますが、単純さを犠牲にして、サポートするソフトウェアと専門知識を必要とします。ダーウィンコア・アーカイブフォーマットは、この両端の中間的な位置づけにあります。分類学的チェックリストの主要な要素に焦点を当て、このコア構造にリンクさせることで、より充実したデータタイプのセットを可能にします。アーカイブに含まれるデータは、基本的な構造化テキストファイルに慣れている多くの生物学者やデータ管理者が容易に理解し、使用することができます。比較的簡単に作成・利用でき、分類学的データリソースを構成する重要な要素の多くをサポートする国際基準を提供することにより、GBIFは、チェックリストの作成者と管理者に、データを共有する標準的なアプローチを提供し、その後の引用と彼らの仕事の認識への共通のアプローチを促進することを期待しています。また、標準的な形式は、関連性と実用性を高めます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:34
@@ -149,7 +149,7 @@ msgstr "*モノグラフ* - モノグラフは、世界規模で特定の分類�
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:46
 msgid "The Darwin Core Archive format with the <<GBIF Checklist Extensions>> supports the exchange of key data elements within all of these checklist data types. The specific degree of coverage depends very much on the individual resource. In this document we will use the term ‘checklist’ in the broad sense as a general term for referring to any or all of the resource categories described above. The specific category types will be used when a specific resource is to be referenced."
-msgstr "ダーウィンコア・アーカイブフォーマットとlink:https://ipt.gbif.org/manual/en/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]は、これらすべてのチェックリストデータタイプの中の主要なデータ要素の交換をサポートしています。具体的にどの程度カバーしているかは、個々のリソースに大きく依存します。この文書では、上記のリソースカテゴリーのいずれか、またはすべてを指す一般的な用語として、広義に「チェックリスト」という用語を使用します。特定のカテゴリータイプは、特定のリソースを参照する場合に使用します。"
+msgstr "ダーウィンコア・アーカイブフォーマットとlink:https://ipt.gbif.org/manual/jp/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]は、これらすべてのチェックリストデータタイプの中の主要なデータ要素の交換をサポートしています。具体的にどの程度カバーしているかは、個々のリソースに大きく依存します。この文書では、上記のリソースカテゴリーのいずれか、またはすべてを指す一般的な用語として、広義に「チェックリスト」という用語を使用します。特定のカテゴリータイプは、特定のリソースを参照する場合に使用します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:47
@@ -160,7 +160,7 @@ msgstr "ダーウィンコア・アーカイブ形式"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "ダーウィンコア・アーカイブ（DwC-A）は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGzip）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、link:https://ipt.gbif.org/manual/en/ipt/latest/darwin-core[ダーウィンコア・アーカイブハウツーガイド]を参照してください。"
+msgstr "ダーウィンコア・アーカイブ（DwC-A）は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGzip）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、link:https://ipt.gbif.org/manual/jp/ipt/latest/darwin-core[ダーウィンコア・アーカイブハウツーガイド]を参照してください。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
@@ -209,7 +209,7 @@ msgstr "データファイルのフォーマットに関する推奨事項"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:65
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr "理解を容易にするために、このガイドの用語*フィールド*を使用して、ユーザーデータがマップされる分類学的公開プロファイルのダーウィンコア用語セットを参照する場合があります。 たとえば、ダーウィンコアの用語である学名を参照する場合は、:dwc：scientificNameフィールド*の使用を参照します。"
+msgstr "理解を容易にするために、このガイドの用語*フィールド*を使用して、ユーザーデータがマップされる分類学的公開プロファイルのダーウィンコア用語セットを参照する場合があります。 たとえば、ダーウィンコアの用語である学名を参照する場合は、*dwc:scientificNameフィールド*の使用を参照します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:67
@@ -364,7 +364,7 @@ msgstr "*dwc:parentNameUsageID*に格納されている、直系の親タクソ�
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:124
 msgid "A sample classification for a single species, the tiger, “*Panthera tigris*”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that *dwc:scientificName* provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names."
-msgstr ""
+msgstr "以下に、単一種であるトラ \"*Panthera tigris*\" の分類例を示します。階層構造の最上位は親を持たないので、親識別子は空欄でなければならないことに注意してください。この場合、*dwc:scientificName*は名前を保存するための共通のフィールドを提供しますが、名前の一通りのオプションは上記「学名の共有」で説明されていることに注意してください。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:135
@@ -377,76 +377,83 @@ msgid "| taxonID | taxonRank | scientificName         | parentNameUsageID\n\n"
 "| 5           | Family        | Felidae                    | 4\n"
 "| 6           | Genus         | Panthera                   | 5\n"
 "| 7           | Species       | Panthera tigris (Linnaeus) | 6\n"
-msgstr ""
+msgstr "| taxonID | taxonRank          | scientificName                      | parentNameUsageID\n\n"
+"| 1            | 界                         | Animalia                                  |\n"
+"| 2            | 目                         | Chordata                                 | 1\n"
+"| 3            | 綱                         | Mammalia                              | 2\n"
+"| 4            | 目                         | Carnivora                                | 3\n"
+"| 5            | 科                         | Felidae                                    | 4\n"
+"| 6            | 属                         | Panthera                                 | 5\n"
+"| 7            | 種                         | Panthera tigris (Linnaeus)   | 6\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:137
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:167
 #, no-wrap
 msgid "Advantages"
-msgstr ""
+msgstr "メリット"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:140
 #, no-wrap
 msgid "*Efficiency* – A normalized classification stores a single reference for each taxon in the hierarchy.\n"
-msgstr ""
+msgstr "*効率性* - 正規化された分類は、階層内の各分類群に対して1つのリファレンスを保存します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:141
 #, no-wrap
 msgid "*Referential integrity* – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.\n"
-msgstr ""
+msgstr "*参照整合性* - 各分類群の構成要素には、その直属の親を明示的に参照する明確な識別子があります。分類学上の階層が完全であり、適切に形成されていることを簡単に確認できます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:142
 #, no-wrap
 msgid "*Extensibility* – All taxa are identified with distinct taxon identifiers. This enables higher taxa to be more richly documented through the use of extensions in the same manner as species records.\n"
-msgstr ""
+msgstr "*拡張性* - すべての分類群は、個別の分類群識別子で識別されます。このため、種の記録と同様に拡張子を使用することで、高次の分類群をより豊かに記録することができます。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:143
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:172
 #, no-wrap
 msgid "Disadvantages"
-msgstr ""
+msgstr "デメリット"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:146
 #, no-wrap
 msgid "*Convenience* - A normalized classification does not provide an intuitive view of the classification hierarchy when viewed in raw tabular form. Many biologists manage classifications in a less efficient, but more visually intuitive, *denormalized format*, described below. Transforming a denormalized classification to the normalized form is difficult to manually perform.\n"
-msgstr ""
+msgstr "*利便性* - 正規化された分類は、生の表形式で見た場合、分類階層の直感的なビューを提供しません。多くの生物学者は、効率は悪いものの視覚的に直感的な、以下に説明する非正規化形式で分類を管理しています。非正規化された分類を正規化された形式に変換することは、手作業で行うには困難です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:148
 msgid "A *dwc:parentNameUsageID* must point to an existing record in the dataset. It is invalid to point to higher taxon identifiers that do not exist as records."
-msgstr ""
+msgstr "*dwc:parentNameUsageID*はデータセット内の既存のレコードを指している必要があります。レコードとして存在しない上位分類群識別子を指定することはできません。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:149
 #, no-wrap
 msgid "Denormalized Classifications"
-msgstr ""
+msgstr "非正規化されたクラス分類"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:152
 msgid "This format is familiar to anyone who manages species information in spreadsheets. In a denormalized classification, each row of the data table refers to one of the terminal taxa, such as a species, and a complete set of parent taxa as a set of columns, one for each parent taxon."
-msgstr ""
+msgstr "この形式は、表計算ソフトで種の情報を管理している人なら誰でも知っているものです。非正規化分類では、データテーブルの各行が種のような末端の分類群の1つを参照し、親分類群の完全なセットを列として、各親分類群に対して1つずつ参照します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:154
 msgid "This format is not the recommended method for sharing taxonomic data using Darwin Core Archives but is supported by GBIF as it is in common use in many species lists. If this is the method by which data will be shared, it is highly recommended that"
-msgstr ""
+msgstr "この形式は、ダーウィンコア・アーカイブを使用した分類学データの共有には推奨されませんが、多くの種のリストで一般的に使用されているため、GBIFはこの形式をサポートしています。この方法でデータを共有する場合、以下を行うことを強く推奨します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:156
 msgid "Each higher taxon column is completely populated. Avoid blanks as in the Plantae example below."
-msgstr ""
+msgstr "各上位分類群の列は完全に入力されている。以下のPlantaeの例のように、空欄は避けてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:157
 msgid "Ensure taxonomic integrity of the list. For example ensure that two species in a common genus share the same family. Ensure that if synonyms are included in separate rows, that their classification matches that of the accepted taxon."
-msgstr ""
+msgstr "リストの分類学的整合性を確保してください。例えば、共通の属に属する2つの種が同じ科を共有していることを確認します。同義語が別の行に含まれている場合、その分類が受け入れた分類子の分類と一致することを確認してください。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:165
@@ -456,68 +463,72 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
 "| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
 "| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
+"| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
+"| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:170
 #, no-wrap
 msgid "*Legibility* - The primary advantage of this format is that it is easy to read and the taxonomic hierarchy can be evaluated by simply reading columns.\n"
-msgstr ""
+msgstr "*可読性* - このフォーマットの第一の利点は、読みやすく、列を読むだけで分類学上の階層を評価できることである。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:171
 #, no-wrap
 msgid "*Convenient* – Spreadsheet applications and many relational databases make it easy to implement this structure for storing hierarchical data.\n"
-msgstr ""
+msgstr "*利便性* - 表計算アプリケーションや多くの関連データベースでは、この構造を簡単に実装して、階層的なデータを保存することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:175
 #, no-wrap
 msgid "*Higher likelihood of referential integrity loss* – Higher taxa are repeated in this format which can increase the chance that two identical taxa may be spelled differently. Other similar risks are possible with this format. For example it is possible for two instances of the same taxon (example “Felidae”) to be assigned to two different parents, resulting in a conflict of hierarchical integrity.\n"
-msgstr ""
+msgstr "*参照整合性が損なわれる可能性が高い* - 高次分類群がフォーマット内で繰り返されるため、2 つの同じ分類群のスペルが異なる可能性が高くなります。このフォーマットでは、他の同様のリスクも発生する可能性があります。たとえば、同じ分類群（上記「Felidae」など）の 2 つのインスタンスが異なる親に割り当てられる可能性があり、その結果、階層的な整合性が損なわれる可能性があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:176
 #, no-wrap
 msgid "*Lack of details for higher taxa* – This format treats higher taxa as properties of a species, not as separate taxon records themselves. Therefore, this format does not allow properties of higher taxa to be shared either in the core file or in any extensions.\n"
-msgstr ""
+msgstr "*上位分類群の詳細がない* - このフォーマットにおいて上位分類群は、独立した分類群レコードとしてではなく、種のプロパティとして扱われます。したがって、このフォーマットでは、コアファイルでも拡張ファイルでも、上位分類のプロパティを共有することができません。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:177
 #, no-wrap
 msgid "Other classification-related recommendations"
-msgstr ""
+msgstr "その他の分類に関する推奨事項"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:180
 msgid "Try to include a Kingdom and a nomenclatural code reference for all records even for basic species lists."
-msgstr ""
+msgstr "基本的な種リストであっても、すべての記録に王国と命名コードの参照を含めるようにしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:181
 msgid "Try to include Kingdom, Phylum and Family as a minimal classification for denormalized classifications."
-msgstr ""
+msgstr "非正規化された分類のための最小限の分類として、Kingdom, Phylum, Familyを含めるようにしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:182
 msgid "If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-guide.adoc[] for details on mapping global values."
-msgstr ""
+msgstr "データセット全体で同じであれば，用語と値の静的マッピングを使用することを検討してください。グローバルな値のマッピングの詳細については、xref:dwca-guide.adoc[ダーウィンコア・アーカイブ：ハウツーガイド]を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:183
 #, no-wrap
 msgid "Classification Formats not recommended for publishing"
-msgstr ""
+msgstr "公開にあたって推奨されない分類フォーマット"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:186
 msgid "The following examples illustrate data configurations that can fit the profile *but are not recommended or supported by GBIF* (i.e., GBIF parsers would not handle these cases properly)"
-msgstr ""
+msgstr "以下の例は、プロファイルに適合しますが、GBIFが推奨・対応しない（つまり、GBIFパーサーがこれらのケースを適切に扱えない）データ構成を示すものです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:189
 msgid "This example identifies the referent taxon as the last column containing taxon values."
-msgstr ""
+msgstr "この例では、参照する分類子を、分類子の値を含む最後の列として識別しています。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:200
@@ -530,12 +541,19 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 "| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         | Animalia    | Chordata   |           |           |            |\n"
+"| 999         | Animalia    | Chordata   | Mammalia  |           |            |\n"
+"| 1000        | Animalia    | Chordata   | Mammalia  | Carnivora |            |\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
+"| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:203
 msgid "This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once"
-msgstr ""
+msgstr "この例は、上記と似ていますが、上位分類群名を一度だけ記録することで、整合性エラーを減らそうとするものです。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:214
@@ -548,23 +566,30 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        |             |            |           |           | Felidae    |\n"
 "| 1002        |             |            |           |           |            | Panthera tigris\n"
 "| 1003        |             |            |           |           |            | Panthera leo\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         |             | Chordata   |           |           |            |\n"
+"| 999         |             |            | Mammalia  |           |            |\n"
+"| 1000        |             |            |           | Carnivora |            |\n"
+"| 1001        |             |            |           |           | Felidae    |\n"
+"| 1002        |             |            |           |           |            | Panthera tigris\n"
+"| 1003        |             |            |           |           |            | Panthera leo\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:217
 msgid "Please avoid publishing data in these configurations."
-msgstr ""
+msgstr "これらの構成でデータを公開することは避けてください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:218
 #, no-wrap
 msgid "Publishing Synonymy"
-msgstr ""
+msgstr "シノニムの公開"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:221
 msgid "Darwin Core Archive supports the publication of synonyms in species checklists. A synonym is published as a separate record in the core data file. A synonym references the accepted taxon record through the use of the *dwc:acceptedNameUsageID* field. This field contains the *dwc:taxonID* representing the accepted taxon record. In the simplified example below, the first record represents the accepted name for a taxon and records 2 and 3 are synonyms."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブは、種のチェックリストにおけるシノニムの公開をサポートしています。シノニムは、コアデータファイルの別の記録として公開されます。シノニムは *dwc:acceptedNameUsageID* フィールドを使用して、受け入れ分類子レコードを参照します。このフィールドには、受理された分類群レコードを表す *dwc:taxonID* が含まれます。以下の単純化した例では、最初のレコードが採用された分類群名を表し、レコード2と3がシノニムです。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:231
@@ -576,23 +601,29 @@ msgid "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclat
 "| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus\n\n"
+"| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |\n"
+"| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |\n"
+"| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |\n"
+"| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:234
 msgid "A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
-msgstr ""
+msgstr "シノニムレコードには、個別の*dwc:taxonID*を含めることをお勧めします。でなければ、*dwc:taxonID*がまったく含まれない場合があります。 受け入れられたタクソンレコードと同じ*dwc:taxonID*を使用してはなりません。 シノニムの最も簡潔な表現は、上記の例で提供されているとおりです。シノニムは個別のレコードとしてリストされ、*dwc:acceptedNameUsageID*を使用して受け入れられたタクソンレコードを「ポイント」します。 この簡潔なシノニムは、コア分類群クラス要素に限定されたシノニムの詳細を含む基本的なタクソンチェックリストの公開をサポートします。*dwc:taxonomicStatus*フィールドは、レコードのステータスを確認します。 この分野の推奨語彙が {latest-taxonomic-status}[利用可能]です。 シノニムの背後にある理論的根拠をサポートする可能性のある追加の命名法の詳細は、*dwc:nomenclaturalStatus*フィールドと{latest-nomenclatural-status}[対応語彙]を使用して含めることができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:236
 msgid "Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is included in each synonym record and by utilizing the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the <<GBIF Checklist Extensions>> to a single synonym record in the core data file. If a *dwc:taxonID* is not provided for a synonym record, extensions cannot be used as they rely on the *dwc:taxonID* to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared *dwc:taxonID* is highlighted in the example."
-msgstr ""
+msgstr "各シノニムレコードに一意の *dwc:taxonID* が含まれるようにし、チェックリストの注釈の共有をサポートするために利用可能な拡張機能を利用することで、詳細なシノニムをサポートすることができます。これは、link:https://ipt.gbif.org/manual/ja/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]でサポートされている1つ以上の書誌レコード、標本レコード、およびその他のデータタイプを、コアデータファイル内の1つのシノニムレコードにリンクすることを可能するものです。シノニムレコードに*dwc:taxonID*が提供されていない場合、拡張機能はコアファイルのタクソンレコードへのリンクを提供するために*dwc:taxonID*に依存するので使用することができません。以下の簡単な例では、リファレンス拡張機能を使用してシノニムの書誌情報を提供するために、2つのファイル（表として表現）を使用することを説明しています。この例では、共有される*dwc:taxonID*が強調表示されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:238
 #, no-wrap
 msgid "*Taxon.txt* data file\n"
-msgstr ""
+msgstr "*Taxon.txt* データファイル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:245
@@ -601,13 +632,16 @@ msgid "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 "| 1           | Coeligena helianthea  | 1                       | accepted\n"
 "| 2           | Ornismya helianthea   | 1                       | synonym\n"
 "| 3           | Helianthea helianthea | 1                       | synonym\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
+"| 1           | Coeligena helianthea  | 1                       | accepted\n"
+"| 2           | Ornismya helianthea   | 1                       | synonym\n"
+"| 3           | Helianthea helianthea | 1                       | synonym\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:248
 #, no-wrap
 msgid "*References.txt* data file\n"
-msgstr ""
+msgstr "*References.txt* データファイル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:254
@@ -615,40 +649,42 @@ msgstr ""
 msgid "| taxonID | Bibliographic citation\n\n"
 "| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.\n"
 "| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269.\n"
-msgstr ""
+msgstr "| taxonID | Bibliographic citation\n\n"
+"| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.\n"
+"| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:257
 #, no-wrap
 msgid "*Other Synonymy Do’s and Don’ts*\n"
-msgstr ""
+msgstr "*シノニムに関するその他の注意事項*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:259
 msgid "An *dwc:acceptedNameUsageID* must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records."
-msgstr ""
+msgstr "*dwc:acceptedNameUsageID*は、データセット内の既存のレコードを指し示している必要があります。レコードとして存在しない受け入れ分類名を示すことは無効です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:260
 msgid "Do not confuse the *dwc:higherTaxonID* used to describe a classification with the *dwc:acceptedNameUsageID* used to describe the taxonomic status of a record."
-msgstr ""
+msgstr "分類を表すために使われる*dwc:higherTaxonID*と、レコードの分類学的状態を表すために使われる*dwc:acceptedNameUsageID*を混同しないようにしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:261
 msgid "Do not “chain” synonyms. A synonym should only point to accepted taxon records via *dwc:acceptedNameUsageID*. They should never point to another synonym."
-msgstr ""
+msgstr "シノニムを「連鎖」させないでください。シノニムは*dwc:acceptedNameUsageID*を介してのみ、受理された分類群レコードを指すべきです。他のシノニムを指すべきではありません。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:262
 #, no-wrap
 msgid "Nomenclatural Synonymy"
-msgstr ""
+msgstr "命名法上のシノニム"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:265
 #, no-wrap
 msgid "*Nomenclatural synonymy* is supported in the core data file through the use of the *dwc:originalNameUsageID* field. This field refers to the row representing the original taxon reference for the name. This record is recommended to provide a bibliographic citation in the *dwc:namePublishedIn* field, which refers to the publication in which the name was originally established.\n"
-msgstr ""
+msgstr "コアデータファイルでは、*dwc:originalNameUsageID*フィールドを使用することで*命名法上のシノニム*がサポートされています。このフィールドは、その名称の元の分類子を示す行を参照します。このレコードは、*dwc:namePublishedIn*フィールドに、その名前が最初に確立された出版物を参照する書誌的引用を提供することが推奨されます。\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:272
@@ -657,28 +693,31 @@ msgid "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
 "| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
 "| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
 "| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
-msgstr ""
+msgstr "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
+"| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
+"| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
+"| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:275
 msgid "Nomenclatural and taxonomic synonyms may be designated in the same taxon record."
-msgstr ""
+msgstr "命名法上の同義語と分類学上の同義語は、同じ分類群記録で指定することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:277
 msgid "An *dwc:originalNameUsageID* must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records."
-msgstr ""
+msgstr "*dwc:originalNameUsageID*は、データセット内の既存のレコードを指していなければなりません。レコードとして存在しない、受け付けられた分類群を指すことは無効です。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:278
 #, no-wrap
 msgid "Pro-parte Synonymy"
-msgstr ""
+msgstr "pro parteシノニム"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:281
 msgid "Sometimes the same name may be a synonym for more than one accepted taxon or may be both an accepted taxon name and a synonym. These are caused by splits and circumscription changes where, for example, a series of types may be divided among multiple taxa. The recommended practice for sharing pro-parte synonyms is represented in the example. In this example, *Vireo solitarius* is an accepted taxon name and it is also included in the synonymy for both *Vireo cassinii* and *Vireo plumbeus*. In the case of the synonyms, they are represented as a single record with accepted taxon reference concatenated in the *dwc:acceptedNameUsageID* field and separated by a pipe (“|”) character."
-msgstr ""
+msgstr "同じ名前が複数の分類群に対してシノニムとなる場合や、分類群名とシノニムの両方を兼ねている場合があります。これらは、例えば、一連の型が複数の分類群に分割されるような、分割や周縁化によって生じます。pro parteシノニムを共有するために推奨される方法を例に挙げます。この例では、*Vireo solitarius*は認められた分類名であり、*Vireo cassinii*と*Vireo plumbeus*の両方のシノニムにも含まれています。シノニムの場合、*dwc:acceptedNameUsageID*フィールドで連結され、パイプ文字（\"|\"）で区切られた受入分類群参照で1つのレコードとして表現されます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:289
@@ -688,34 +727,38 @@ msgid "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 "| 2           | Vireo cassinii     | 2                       | accepted\n"
 "| 3           | Vireo plumbeus     | 3                       | accepted\n"
 "| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
+"| 1           | Vireo solitarius   | 1                       | accepted\n"
+"| 2           | Vireo cassinii     | 2                       | accepted\n"
+"| 3           | Vireo plumbeus     | 3                       | accepted\n"
+"| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:292
 msgid "IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance."
-msgstr ""
+msgstr "IPTユーザーは、IPT内の各ソースファイルに対して、複数値のデリミタを定義する必要があります。追加のガイダンスについては、IPTユーザーマニュアルの「ソースデータ」のセクションを参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:293
 #, no-wrap
 msgid "Citation and Attribution"
-msgstr ""
+msgstr "引用と帰属"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:296
 msgid "Taxonomic checklists often represent significant intellectual and financial efforts on the part of the individuals and organizations who compile them. Some checklists may be derived from, or may reference, other source checklists to create new distinct thematic, regional or taxonomic views of the same source authority. Proper attribution and visibility of these sources is therefore a high priority."
-msgstr ""
+msgstr "分類学上のチェックリストは多くの場合、それを編集する個人や機関の知的、財政的な努力の結晶です。チェックリストの中には、同じ原典から派生したものや、他の原典を参照し、テーマ別、地域別、分類別の新しい見解を作り出しているものもあります。したがって、これらの出典を適切に表示することは優先されるべきです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:298
 msgid "The DwC-A format provides a range of options and recommendations for providing proper citation and attribution. This range extends from global citation and attribution information that form part of the resource metadata down to record-level data elements. These options support the provision of multiple levels of attribution."
-msgstr ""
+msgstr "DwC-A 形式では、適切な引用と帰属を行うためのさまざまなオプションと推奨事項を提供しています。この範囲は、リソースのメタデータの一部を形成するグローバルな引用と帰属の情報から、レコードレベルのデータ要素に至るまで広がっています。これらのオプションは、複数レベルの帰属の提供をサポートします。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:299
 #, no-wrap
 msgid "Metadata Citation and Attribution"
-msgstr ""
+msgstr "メタデータの引用と帰属"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:302
