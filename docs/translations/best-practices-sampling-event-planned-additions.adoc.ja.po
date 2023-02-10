@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2023-02-08 06:45\n"
+"PO-Revision-Date: 2023-02-10 07:52\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -29,84 +29,84 @@ msgstr "データファイルのフォーマットに関する推奨事項"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:7
 #, no-wrap
 msgid "What is sampling-event data?"
-msgstr ""
+msgstr "サンプリングイベントデータとは？"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
-msgstr ""
+msgstr "DwC-Aでサンプリング・イベント・データを表現するには？"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
 #, no-wrap
 msgid "Sampling-event Metadata"
-msgstr ""
+msgstr "サンプリングイベントメタデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
 #, no-wrap
 msgid "Sampling-event Data"
-msgstr ""
+msgstr "サンプリングイベントデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
 #, no-wrap
 msgid "Sample size"
-msgstr ""
+msgstr "サンプルサイズ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "数量と豊富さ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "サンプリングイベントを一意に特定する方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "イベントの階層をどのようにとらえるか"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "不在データの取り込み方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "補足マルチメディアの入れ方"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
-msgstr ""
+msgstr "サンプリングイベントデータの公開"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:132
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr ""
+msgstr "識別子にGUIDを使用する"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
