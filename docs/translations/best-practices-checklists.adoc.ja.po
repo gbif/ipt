@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 03:18\n"
+"PO-Revision-Date: 2023-02-10 04:52\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -82,7 +82,7 @@ msgstr "推奨される引用"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
-msgstr "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/jp/ipt/{page-version}/best-practices-checklists"
+msgstr "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/ja/ipt/{page-version}/best-practices-checklists"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:27
@@ -149,7 +149,7 @@ msgstr "*モノグラフ* - モノグラフは、世界規模で特定の分類�
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:46
 msgid "The Darwin Core Archive format with the <<GBIF Checklist Extensions>> supports the exchange of key data elements within all of these checklist data types. The specific degree of coverage depends very much on the individual resource. In this document we will use the term ‘checklist’ in the broad sense as a general term for referring to any or all of the resource categories described above. The specific category types will be used when a specific resource is to be referenced."
-msgstr "ダーウィンコア・アーカイブフォーマットとlink:https://ipt.gbif.org/manual/jp/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]は、これらすべてのチェックリストデータタイプの中の主要なデータ要素の交換をサポートしています。具体的にどの程度カバーしているかは、個々のリソースに大きく依存します。この文書では、上記のリソースカテゴリーのいずれか、またはすべてを指す一般的な用語として、広義に「チェックリスト」という用語を使用します。特定のカテゴリータイプは、特定のリソースを参照する場合に使用します。"
+msgstr "ダーウィンコア・アーカイブフォーマットとlink:https://ipt.gbif.org/manual/ja/ipt/latest/best-practices-checklists#gbif-checklist-extensions[GBIFチェックリスト拡張機能]は、これらすべてのチェックリストデータタイプの中の主要なデータ要素の交換をサポートしています。具体的にどの程度カバーしているかは、個々のリソースに大きく依存します。この文書では、上記のリソースカテゴリーのいずれか、またはすべてを指す一般的な用語として、広義に「チェックリスト」という用語を使用します。特定のカテゴリータイプは、特定のリソースを参照する場合に使用します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:47
@@ -160,7 +160,7 @@ msgstr "ダーウィンコア・アーカイブ形式"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "ダーウィンコア・アーカイブ（DwC-A）は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGzip）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、link:https://ipt.gbif.org/manual/jp/ipt/latest/darwin-core[ダーウィンコア・アーカイブハウツーガイド]を参照してください。"
+msgstr "ダーウィンコア・アーカイブ（DwC-A）は、ダーウィンコアの用語を利用して、チェックリストデータを自己完結型の単一データセットとして作成する情報学データ規格です。アーカイブ内のファイルの集まりが自己完結型のデータセットを形成し、単一の圧縮（ZipまたはGzip）ファイルとして提供することができます。データセットは、記述的なメタデータ文書と、1つまたは複数のデータファイルのセットで構成されています。DwC-Aの詳細については、link:https://ipt.gbif.org/manual/ja/ipt/latest/darwin-core[ダーウィンコア・アーカイブハウツーガイド]を参照してください。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
@@ -877,90 +877,90 @@ msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
 msgid "Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the *dwc:datasetID* term. If the metadata documents are included in the archive itself, the *dwc:datasetID* equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document."
-msgstr ""
+msgstr "各コンポーネントデータセットについて、追加のメタデータドキュメントを作成し、アーカイブに含めることができます。これにより、各サブコンポーネントデータセットは、「親」データセットと同様に、推奨される引用や貢献した個人など、完全に文書化されます。これらのデータセットはコレクション全体を文書化するものではないので、meta.xml記述子ファイルでは参照されません。代わりに、*dwc:datasetID*という語彙を使って、個々のデータレコードから参照されます。メタデータのドキュメントがアーカイブ自体に含まれている場合、*dwc:datasetID*はドキュメントのファイル名と等しくなります。あるいは、URLやその他の一意で解決可能な識別子を参照することもできます。あまり推奨されませんが、構造化されたメタデータドキュメントとは対照的に、データセットを説明するシンプルなウェブページへのURLを追加する方法もあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:336
 msgid "To cite individuals at the record level, providing a 3rd level of citation, it is recommended to use the *dwc:nameAccordingTo* field. Additional record-level terms are provided above."
-msgstr ""
+msgstr "レコードレベルで個人を引用し、第3レベルの引用を提供するには、*dwc:nameAccordingTo*フィールドを使用することが推奨されます。その他のレコードレベルの用語は上記で説明しています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:337
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
-msgstr ""
+msgstr "使用例2 - 1つまたは複数の信頼できるソースから導き出されたチェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:340
 msgid "A species checklist in this use case is compiled for a specific purpose but derives it’s basic taxonomic structure from one or more external taxonomic checklists that serve as *authority files*. The new compilation may include additional annotations to the basic source record that apply to the new lists focus. An example might be a European national species checklist derived from a database such as Fauna Europaea or the Catalogue of Life, which, in principle, provide the complete listing for a country as a subset of their own coverage. A national list may then add additional regional details such as a national threat status or some other property of interest, resulting in a new, derived dataset. In this case, it is important to be able to provide record-level attribution and linkages to the source dataset. The recommended means to do this are as follows."
-msgstr ""
+msgstr "この使用例における種のチェックリストは、特定の目的のために編集されますが、その基本的な分類学的構造は、*オーソリティファイル*として機能する1つ以上の外部分類学チェックリストに由来しています。新しい編集物には、新しいリストの焦点に適用される基本的なソースレコードへの追加注釈が含まれることがあります。たとえば、Fauna Europaea や Catalogue of Life などのデータベースから作成したヨーロッパ各国の種のチェックリストは、原則として、ある国の完全なリストをその国の範囲のサブセットとして提供します。国のリストは、国の脅威の状態やその他の関心のある特性など、地域の詳細を追加することができ、その結果、新しいデータセットが作成されます。この場合、レコードレベルでの帰属と、元データセットとの関連付けを提供できることが重要です。そのために推奨される手段は以下の通りです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:342
 msgid "A single metadata document is created to represent the new, derived resource itself (e.g., National Checklist of the Netherlands). Datasets that are referenced can be cited in this metadata document."
-msgstr ""
+msgstr "新しい派生リソースそのものを表す 1 つのメタデータ文書が作成されます（例：National Checklist of the Netherlands）。参照されるデータセットは、このメタデータ文書で引用することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:343
 msgid "Fully described as organizations with a role of Contributor and links to the source web site."
-msgstr ""
+msgstr "コントリビューターの役割を持つ機関として完全に記述され、ソースのWebサイトへのリンクがあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:344
 msgid "Cited in the bibliographic section with the citation represented as recommended by the referenced dataset."
-msgstr ""
+msgstr "引用されたデータセットが、推奨される形式で書誌事項欄に引用されていること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:345
 msgid "In the data files, additional attribution and linkages can be made at the record-level. This includes:"
-msgstr ""
+msgstr "データファイルでは、レコードレベルでの追加的な帰属や関連付けを行うことができます。これには以下のようなものがあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:346
 msgid "Referencing the dataset by name in *dwc:datasetName*"
-msgstr ""
+msgstr "*dwc:datasetName*でデータセット名を参照すしていること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:347
 msgid "Referencing the dataset by ID (such as URL) in *dwc:datasetID* and linking to the dataset home page"
-msgstr ""
+msgstr "*dwc:datasetID*でデータセットをID（URLなど）で参照し、データセットのホームページへリンクできます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:348
 msgid "Providing a link to a corresponding species page on the referenced dataset web site using *dc:source*"
-msgstr ""
+msgstr "*dc:source*を使用して、参照するデータセットウェブサイトの対応する種のページへのリンクを提供できます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:349
 msgid "If dc:source is reserved for pointing to URL for the derived database, a link to the source database can still be added using the Alternative Identifiers extension."
-msgstr ""
+msgstr "*dc:source*が派生データベースのURLを指すために予約されている場合でも、代替識別子拡張機能を使用してソースデータベースへのリンクを追加することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:350
 msgid "If the source dataset provides globally unique identifiers for the taxa referenced in the list, they can be used as the *taxonID* in the derived dataset. This ensures an explicit link to the source taxon and is highly recommended if available."
-msgstr ""
+msgstr "もしソースデータセットが、リストで参照されている分類群に対してグローバルにユニークな識別子を提供している場合、それを派生データセットの*taxonID*として使用することができます。これにより、ソース分類群への明確なリンクが確保されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:351
 msgid "Use the *dwc:nameAccordingTo* or *dwc:nameAccordingToID* to refer to the taxon definition in the corresponding source record as a citation or a URL."
-msgstr ""
+msgstr "*dwc:nameAccordingTo*または*dwc:nameAccordingToID*を使って、対応するソースレコードのタクソン定義を引用またはURLとして参照します。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:352
 #, no-wrap
 msgid "Sharing Vernacular Names"
-msgstr ""
+msgstr "方言名（地方名）の共有"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
-msgstr ""
+msgstr "分類学的チェックリストの分類群に関連する方言名データの共有に対応しています。方言名は、{latest-vernacularname}[Vernacular Names extension]を使用した、別の関連ファイルとして共有されます。この拡張子は、地域的および形態的な修飾子を含む、方言名の使用方法を説明するための豊富なプロパティセットをサポートしています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:356
 #, no-wrap
 msgid "figures/myristica_fragrans.png"
-msgstr ""
+msgstr "figures/myristica_fragrans.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
@@ -1190,28 +1190,28 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:452
 msgid "Latest version issued: {latest-species-distribution}[{date-species-distribution}]"
-msgstr ""
+msgstr "最新版発行日：{latest-species-distribution}[{date-species-distribution}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:455
 msgid "Use this extension to share information on one or more distribution references for a taxon. One or more locality records may be linked to the same taxon. For example multiple localities, regions, or countries may be listed. Use this extension to describe the threat status for a taxon, seasonal distribution changes, and other properties linked to a taxon in a particular region."
-msgstr ""
+msgstr "この拡張機能は、ある分類群の1つまたは複数の分布リファレンスに関する情報を共有するために使用します。同じ分類群に対して、1つまたは複数の産地記録をリンクすることができます。例えば、複数の地域、地方、国が記載されている場合があります。この拡張機能を使用して、ある分類群に対する脅威の状態、季節的な分布の変化、および特定の地域におけるある分類群に関連するその他の特性を記述します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:456
 #, no-wrap
 msgid "Species Description Extension"
-msgstr ""
+msgstr "種の解説を共有する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:459
 msgid "Latest version issued: {latest-description}[{date-description}]"
-msgstr ""
+msgstr "最新版発行日：{latest-description}[{date-description}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:462
 msgid "Use this extension to provide descriptive text for a taxon. This is typically in the form of a single paragraph per record as would be normally stored in a database. Descriptions can be qualified by a type to indicate, for example that the description is related to, for example, the morphology conservation, reproduction, etc. Multiple descriptions equal multiple records in a descriptions file."
-msgstr ""
+msgstr "この拡張機能を使用して、タクソンの説明テキストを提供します。これは通常、データベースに格納されるような、レコードごとに一段落という形式です。説明文は、例えば形態保存や繁殖などに関する説明であることを示すために、 タイプで修飾することができます。複数の記述がある場合、記述ファイルには複数のレコードが存在することになります。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:463
@@ -1222,42 +1222,42 @@ msgstr "代替識別子"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:466
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
-msgstr ""
+msgstr "最新版発行日：{latest-identifier}[{date-identifier}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:468
 msgid "Use this extension if you have more than one identifier or link to information about the taxon. A source database, may, for example provide access to the source data records through a web page, a web service, and a resolvable identifier such as LSID, DOI or other means."
-msgstr ""
+msgstr "この拡張子は、その分類群に関する情報への識別子やリンクが複数ある場合に使用します。ソースデータベースは、例えばウェブページ、ウェブサービス、およびLSID、DOIなどの解決可能な識別子を通じて、ソースデータレコードへのアクセスを提供することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:469
 #, no-wrap
 msgid "Types and Specimens Extension"
-msgstr ""
+msgstr "タイプと標本数の拡張機能"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:472
 msgid "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
-msgstr ""
+msgstr "最新版発行日：{latest-typesandspecimen}[{date-typesandspecimen}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:474
 msgid "Use this extension to share data relating to one or more specimens or type references linked to the core taxon"
-msgstr ""
+msgstr "コア分類群にリンクされた1つまたは複数の標本またはタイプリファレンスに関連するデータを共有するには、この拡張機能を使用します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:475
 #, no-wrap
 msgid "Resource Relationship Extension"
-msgstr ""
+msgstr "リソース関係拡張機能"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:478
 msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
-msgstr ""
+msgstr "最新版発行日：{latest-resource-relation}[{date-resource-relation}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:479
 msgid "This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list."
-msgstr ""
+msgstr "この拡張機能は、コアタクソンが他の分類群（ソースリスト内またはレコードに含まれる）と持っている1つ以上の関係を記述するために使用されます。例えば、コア種リストに記載されているハチが受粉する植物種のリスト（1種につき1レコード）を提供するために利用することができます。"
 
