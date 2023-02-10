@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 07:55\n"
+"PO-Revision-Date: 2023-02-10 00:00\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -300,7 +300,8 @@ msgstr "C. ネームパーツに分類"
 #, no-wrap
 msgid "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n\n"
 "| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
-msgstr ""
+msgstr "| 属名 | 種形容語 | 分類階級 | 亜種エピテーゼ | 学名の著者\n\n"
+"| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:105
