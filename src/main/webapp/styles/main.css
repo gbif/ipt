@@ -472,7 +472,10 @@ header, .dropdown-menu {
 }
 
 /* Material UI icons */
-a.icon-button, a.icon-button:hover, label.icon-button, label.icon-button:hover {
+a.icon-button:not(.overview-action-button),
+a.icon-button:hover:not(.overview-action-button),
+label.icon-button,
+label.icon-button:hover:not(.overview-action-button) {
     color: rgb(78, 86, 95) !important;
 }
 
@@ -882,6 +885,15 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 /* Overview buttons */
 .overview-action-button {
     font-size: 1.25rem !important;
+    font-weight: 500;
+    padding: 4px;
+    border-radius: 10px;
+    color: #58687b !important;
+}
+
+.overview-action-button:hover {
+    background-color: rgba(var(--color-gbif-primary), 0.05);
+    color: rgb(var(--color-gbif-primary)) !important;
 }
 
 .overview-action-button-icon {
@@ -890,15 +902,19 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     fill: #4e565f;
 }
 
+.overview-action-button-icon:hover {
+    fill: rgb(var(--color-gbif-primary));
+}
+
 .overview-action-button:hover {
     color: #4e565f;
 }
 
 .overview-action-button:hover .overview-action-button-icon {
-    fill: #4e565f !important;
+    fill: rgb(var(--color-gbif-primary));
 }
 
-.overview-item-action-icon {
+.overview-item-action-icon, .overview-item-dropdown-icon {
     fill: #4e565f;
     height: 1em;
     vertical-align: -0.125em !important;
@@ -1473,6 +1489,13 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 .fw-400 {
     font-weight: 400;
 }
+
+@media (max-width:575px) {
+    .d-sm-max-none {
+        display: none;
+    }
+}
+
 
 /* Modal windows START */
 .modal-confirm .modal-content {
