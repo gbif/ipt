@@ -466,7 +466,7 @@ header, .dropdown-menu {
 /* Logo, header, menu etc. END */
 
 /* Overview */
-.source-item:hover, .mapping-item:hover, .network-item:hover, .manager-item:hover, .version-item:hover, .registration-item:hover {
+.source-item:hover, .mapping-item:hover, .network-item:hover, .version-item:hover, .registration-item:hover {
     background-color: rgba(0, 0, 0, 0.04);
     cursor: pointer;
 }

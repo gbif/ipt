@@ -24,25 +24,6 @@
                     </svg>
                     <@s.text name="button.add"/>
                 </a>
-<#--                <div class="dropdown">-->
-<#--                    <a class="icon-button icon-material-actions overview-action-button source-action" type="button" href="#" id="dropdown-source-actions" data-bs-toggle="dropdown" aria-expanded="false">-->
-<#--                        -->
-<#--                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
-<#--                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>-->
-<#--                        </svg>-->
-<#--                    </a>-->
-
-<#--                    <ul class="dropdown-menu" aria-labelledby="dropdown-source-actions">-->
-<#--                        <li>-->
-<#--                            <a id="add-source-button" class="dropdown-item action-link" type="button" href="#">-->
-<#--                                <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
-<#--                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>-->
-<#--                                </svg>-->
-<#--                                <@s.text name="button.add"/>-->
-<#--                            </a>-->
-<#--                        </li>-->
-<#--                    </ul>-->
-<#--                </div>-->
             </div>
         </div>
 
@@ -220,25 +201,6 @@
                 </svg>
                 <@s.text name="button.add"/>
             </a>
-
-<#--            <div class="dropdown">-->
-<#--                <a class="icon-button icon-material-actions overview-action-button mapping-action" type="button" href="#" id="dropdown-mapping-actions" data-bs-toggle="dropdown" aria-expanded="false">-->
-<#--                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
-<#--                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>-->
-<#--                    </svg>-->
-<#--                </a>-->
-
-<#--                <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-actions">-->
-<#--                    <li>-->
-<#--                        <a id="add-mapping-button" class="dropdown-item action-link" type="button" href="#">-->
-<#--                            <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
-<#--                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>-->
-<#--                            </svg>-->
-<#--                            <@s.text name="button.add"/>-->
-<#--                        </a>-->
-<#--                    </li>-->
-<#--                </ul>-->
-<#--            </div>-->
         </div>
     </div>
 

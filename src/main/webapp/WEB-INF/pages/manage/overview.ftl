@@ -99,6 +99,17 @@
             location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
+        $(".network-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openNetworkDetails(e);
+        });
+
+        function openNetworkDetails(e) {
+            var networkKey = e.currentTarget.attributes["data-ipt-network-key"].nodeValue;
+            location.href = '${cfg.portalUrl}/network/' + networkKey;
+        }
+
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true});
         $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
@@ -1128,14 +1139,26 @@
                                     <div class="row g-2">
                                         <#list resourceNetworks as n>
                                             <div class="col-xl-6">
-                                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller">
+                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller" data-ipt-network-key="${(n.key)!}">
                                                     <div class="my-auto ps-2">
-                                                        <strong>${n.title!""}</strong><br>
+                                                        <strong class="fs-smaller">${n.title!""}</strong><br>
                                                         <small>${(n.key)!}</small>
                                                     </div>
 
                                                     <div class="d-flex justify-content-end my-auto network-item-actions">
-                                                        <div class="dropdown">
+                                                        <a title="<@s.text name="manage.overview.networks.view.gbif"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="${cfg.portalUrl}/network/${n.key!}">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <div class="dropdown d-sm-none">
                                                             <a class="icon-button icon-material-actions network-item-action" type="button" href="#" id="dropdown-network-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                     <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
@@ -1203,9 +1226,9 @@
                             <div class="details mt-3">
                                 <div class="row g-2">
                                     <div class="col-xl-6">
-                                        <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                        <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
                                             <div class="my-auto ps-2">
-                                                <strong>${resource.creator.name!}</strong><br>
+                                                <strong class="fs-smaller">${resource.creator.name!}</strong><br>
                                                 <small><@s.text name="manage.overview.resource.managers.creator"/>
                                                     | ${resource.creator.email}</small>
                                             </div>
@@ -1216,14 +1239,20 @@
                                     <#if (resource.managers?size>0)>
                                         <#list resource.managers as u>
                                             <div class="col-xl-6">
-                                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
                                                     <div class="my-auto ps-2">
-                                                        <strong>${u.name}</strong><br>
+                                                        <strong class="fs-smaller">${u.name}</strong><br>
                                                         <small><@s.text name="manage.overview.resource.managers.manager"/>
                                                             | ${u.email}</small>
                                                     </div>
                                                     <div class="d-flex justify-content-end my-auto manager-item-actions">
-                                                        <div class="dropdown">
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <div class="dropdown d-sm-none">
                                                             <a class="icon-button icon-material-actions manager-item-action" type="button" href="#" id="dropdown-manager-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                     <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
