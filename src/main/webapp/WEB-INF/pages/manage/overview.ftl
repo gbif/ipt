@@ -868,24 +868,12 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <div class="dropdown">
-                                    <a class="icon-button icon-material-actions overview-action-button autopublish-action" type="button" href="#" id="dropdown-autopublish-actions" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                        </svg>
-                                    </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-autopublish-actions">
-                                        <li>
-                                            <a id="edit-autopublish-button" class="dropdown-item action-link" type="button" href="auto-publish.do?r=${resource.shortname}">
-                                                <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                </svg>
-                                                <@s.text name="button.edit"/>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="auto-publish.do?r=${resource.shortname}">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.edit"/>
+                                </a>
                             </div>
                         </div>
 
@@ -927,53 +915,37 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <div class="dropdown">
-                                    <a class="icon-button icon-material-actions overview-action-button visibility-action" type="button" href="#" id="dropdown-visibility-actions" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                <#if resource.status=="PRIVATE">
+                                    <#assign actionMethod>makePublic</#assign>
+                                    <form action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                    <#assign actionMethod>makePrivate</#assign>
+                                    <form action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <input name="unpublish" type="hidden" value="Change"/>
+                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                <#else>
+                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                         </svg>
-                                    </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-visibility-actions">
-                                        <#if resource.status=="PRIVATE">
-                                            <#assign actionMethod>makePublic</#assign>
-                                            <li>
-                                                <form action='resource-${actionMethod}.do' method='post'>
-                                                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                                                    <button id="makePublic" class="dropdown-item action-link" type="submit">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.change'/>
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-                                            <#assign actionMethod>makePrivate</#assign>
-                                            <li>
-                                                <form action='resource-${actionMethod}.do' method='post'>
-                                                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                                                    <input name="unpublish" type="hidden" value="Change"/>
-                                                    <button class="confirmMakePrivate dropdown-item action-link" type="submit">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.change'/>
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        <#else>
-                                            <li>
-                                                <button id="show-visibility-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.change'/>
-                                                </button>
-                                            </li>
-                                        </#if>
-                                    </ul>
-                                </div>
+                                        <@s.text name='button.change'/>
+                                    </button>
+                                </#if>
                             </div>
                         </div>
 
@@ -1030,102 +1002,78 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <div class="dropdown">
-                                    <a class="icon-button icon-material-actions overview-action-button registration-action" type="button" href="#" id="dropdown-registration-actions" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                <#if resource.status!="REGISTERED">
+                                    <#if !currentUser.hasRegistrationRights()>
+                                        <!-- Hide register button and show warning: user must have registration rights -->
+                                        <#assign visibilityConfirmRegistrationWarning>
+                                            <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                                        </#assign>
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name='button.register'/>
+                                        </button>
+                                    <#elseif missingValidPublishingOrganisation?string == "true">
+                                        <!-- Hide register button and show warning: user must assign valid publishing organisation -->
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name='button.register'/>
+                                        </button>
+                                    <#elseif missingRegistrationMetadata?string == "true">
+                                        <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name='button.register'/>
+                                        </button>
+                                    <#elseif !resource.isLastPublishedVersionPublic()>
+                                        <!-- Hide register button and show warning: last published version must be publicly available to register -->
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name='button.register'/>
+                                        </button>
+                                    <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                        <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                            </svg>
+                                            <@s.text name='button.register'/>
+                                        </button>
+                                    <#else>
+                                        <form action="resource-registerResource.do" method="post">
+                                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                                            <button id="register-resource-button" class="confirmRegistration text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+                                                </svg>
+                                                <@s.text name='button.register'/>
+                                            </button>
+                                        </form>
+                                    </#if>
+                                <#else>
+                                    <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                         </svg>
-                                    </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-registration-actions">
-                                        <#if resource.status!="REGISTERED">
-                                            <#if !currentUser.hasRegistrationRights()>
-                                                <!-- Hide register button and show warning: user must have registration rights -->
-                                                <#assign visibilityConfirmRegistrationWarning>
-                                                    <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                                </#assign>
-                                                <li>
-                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.register'/>
-                                                    </button>
-                                                </li>
-                                            <#elseif missingValidPublishingOrganisation?string == "true">
-                                                <!-- Hide register button and show warning: user must assign valid publishing organisation -->
-                                                <li>
-                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.register'/>
-                                                    </button>
-                                                </li>
-                                            <#elseif missingRegistrationMetadata?string == "true">
-                                                <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
-                                                <li>
-                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.register'/>
-                                                    </button>
-                                                </li>
-                                            <#elseif !resource.isLastPublishedVersionPublic()>
-                                                <!-- Hide register button and show warning: last published version must be publicly available to register -->
-                                                <li>
-                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.register'/>
-                                                    </button>
-                                                </li>
-                                            <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                                <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <li>
-                                                    <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                        </svg>
-                                                        <@s.text name='button.register'/>
-                                                    </button>
-                                                </li>
-                                            <#else>
-                                                <li>
-                                                    <form action="resource-registerResource.do" method="post">
-                                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                                        <button id="register-resource-button" class="confirmRegistration dropdown-item action-link" type="submit">
-                                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                            </svg>
-                                                            <@s.text name='button.register'/>
-                                                        </button>
-                                                    </form>
-                                                </li>
-                                            </#if>
-                                        <#else>
-                                            <li>
-                                                <button id="show-registration-disabled-modal" class="dropdown-item action-link" type="button">
-                                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                    </svg>
-                                                    <@s.text name='button.register'/>
-                                                </button>
-                                            </li>
-                                        </#if>
-                                    </ul>
-                                </div>
+                                        <@s.text name='button.register'/>
+                                    </button>
+                                </#if>
                             </div>
                         </div>
 
                         <div class="row mt-4">
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.registration.intro"/>
-                            </p>
-
                             <#if resource.status=="REGISTERED" && resource.key??>
+                                <p class="mb-0">
+                                    <@s.text name="manage.overview.registration.intro"/>
+                                </p>
+
                                 <div class="details mt-3">
                                     <div class="row g-2">
                                         <div class="col-12">
@@ -1143,6 +1091,10 @@
                                         </div>
                                     </div>
                                 </div>
+                            <#else>
+                                <p class="mb-0">
+                                    <@s.text name="manage.overview.registration.notRegistered"/>
+                                </p>
                             </#if>
                         </div>
                     </div>
@@ -1158,33 +1110,20 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <div class="dropdown">
-                                    <a class="icon-button icon-material-actions overview-action-button networks-action" type="button" href="#" id="dropdown-networks-actions" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                        </svg>
-                                    </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-networks-actions">
-                                        <li>
-                                            <button id="add-network-button" class="dropdown-item action-link">
-                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                                <@s.text name='button.add'/>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a id="add-network-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                    </svg>
+                                    <@s.text name="button.add"/>
+                                </a>
                             </div>
                         </div>
 
                         <div class="mt-4">
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.networks.intro"/>
-                            </p>
-
                             <#if resource.key?has_content && (resourceNetworks?size>0)>
+                                <p class="mb-0">
+                                    <@s.text name="manage.overview.networks.intro"/>
+                                </p>
                                 <div class="details mt-3">
                                     <div class="row g-2">
                                         <#list resourceNetworks as n>
@@ -1228,6 +1167,10 @@
                                         </#list>
                                     </div>
                                 </div>
+                            <#else>
+                                <p class="mb-0">
+                                    <@s.text name="manage.overview.networks.noNetworks"/>
+                                </p>
                             </#if>
                         </div>
                     </div>
@@ -1243,24 +1186,12 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <div class="dropdown">
-                                    <a class="icon-button icon-material-actions overview-action-button networks-action" type="button" href="#" id="dropdown-networks-actions" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                        </svg>
-                                    </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-networks-actions">
-                                        <li>
-                                            <button id="add-manager-button" class="dropdown-item action-link">
-                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                                <@s.text name='button.add'/>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a id="add-manager-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                    </svg>
+                                    <@s.text name="button.add"/>
+                                </a>
                             </div>
                         </div>
 
