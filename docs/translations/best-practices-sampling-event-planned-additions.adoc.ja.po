@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2023-02-13 06:14\n"
+"PO-Revision-Date: 2023-02-13 07:22\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -319,40 +319,40 @@ msgstr "置き換える場合、新しいサンプリングイベントのバー
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:66
 msgid "What are the benefits of producing the sampling event version?"
-msgstr ""
+msgstr "サンプリングイベントバージョンを作成するメリットは何ですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:70
 msgid "#TODO:# Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded)."
-msgstr ""
+msgstr "#TODO:# 追跡中の個体のIDを格納するためにdwc:organicIDを使用し、追跡中の各個体を表すために単一のイベント（それが記録された関連するオカレンスを含む）を使用することによって、鳥の追跡データなどの生きている個体の連続したモニタリングをモデル化する方法に関する推奨事項を提供する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:74
 msgid "#TODO:# Provide a recommendation on how to manage issues related to the dataset using GitHub's issue management system, just like INBO does for example."
-msgstr ""
+msgstr "#TODO:# INBOが行っているように、GitHubの課題管理システムを使ってデータセットに関連する課題を管理する方法について、推奨事項を提示する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:78
 msgid "#TODO:# Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable."
-msgstr ""
+msgstr "#TODO:# カスタムスクリプトやプログラム（クロス表のデータ変換用など）を、INBOが行っているように、他の公開者のためにGitHubを使って一般公開する方法について勧告を行うこと。この勧告では、スクリプトをより使いやすくするために、スクリプトの実行方法に関する詳細な説明書を含めることをユーザーに奨励すること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:82
 msgid "#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardize it into DwC."
-msgstr ""
+msgstr "#TODO:# 公開者には、DwCへの標準化を試みる前に、サンプリングイベント、特にサンプリング方法について可能な限り文書化するようアドバイスしています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:86
 msgid "#TODO:# Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID."
-msgstr ""
+msgstr "#TODO:# 公開者には、サンプリングの前に、サンプリング事象、特にサンプリング方法について可能な限り文書化するよう助言する。 公開者には、同じ研究背景から生まれた関連データセットを、ユーザーが容易に検索できるようにリンクする方法について助言する。公開者は、DwC-Aスタースキーマの制限を回避するために、別々のデータセットを公開しなければならないかもしれない。公開者は、同じサンプリングイベントから派生した別々のオカレンスデータセットを公開することもできる。現在の推奨は、Project.ID使用してそれらをリンクし、DwC に標準化することです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:90
 msgid "#TODO:# Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc."
-msgstr ""
+msgstr "#TODO:# 雑誌記事、プロジェクトノート、論文など、関連する出版物へのリンクを含めることで、データセットの解釈を容易にする方法についての推奨事項を提供する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:96
 msgid "#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr ""
+msgstr "#TODO:# サンプリングイベントデータセットとして再公開されたDutch Vegetation Database（LVD）バージョンに基づく更新例。Relevé拡張は、入門書の公開後に大きな変更がありました。LVDと植生サンプリングイベントデータのデータモデルについての詳細は、https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html を参照してください。"
 
