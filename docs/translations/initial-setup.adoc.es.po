@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-07 20:20\n"
+"PO-Revision-Date: 2023-02-13 19:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -200,7 +200,7 @@ msgstr "ipt2/setup/IPTSetupFinished.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:68
 msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization."
-msgstr ""
+msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administración del IPT (ver la captura de pantalla a continuación), donde pueden continuar configurando el IPT. Por favor revise la explicación de todas las funciones de \"Administración\" antes de continuar. En la sección xref:administration.adoc[\"Menú de administración\"] se detallan las opciones que se presentan en esta pantalla. Antes de añadir recursos al IPT el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF y asociar el IPT a una organización. El botón “Organizaciones” estará desactivado hasta que se hayan establecido las opciones de registro en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:71
