@@ -101,7 +101,6 @@
 
         $(".network-item-link").click(function (e) {
             e.preventDefault();
-            displayProcessing();
             openNetworkDetails(e);
         });
 
@@ -112,7 +111,6 @@
 
         $(".registration-item-link").click(function (e) {
             e.preventDefault();
-            displayProcessing();
             openRegistrationDetails(e);
         });
 
@@ -1120,7 +1118,7 @@
                                         <div class="col-12">
                                             <div class="fs-smaller-2 d-flex justify-content-between registration-item border rounded-2 mx-1 p-1 py-2 text-smaller">
                                                 <div class="my-auto ps-2 registration-item-link">
-                                                    <strong class="overview-registered-title">${resource.title!resource.shortname}</strong>
+                                                    <strong class="overview-registered-title fs-smaller">${resource.title!resource.shortname}</strong>
                                                     <br>
                                                     <small>${resource.key}</small>
                                                     <#if resource.organisation??>
