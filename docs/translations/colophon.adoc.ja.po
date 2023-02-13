@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2023-02-13 07:22\n"
+"PO-Revision-Date: 2023-02-13 08:55\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -37,7 +37,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:13
 msgid "The link:../../../en/[English user manual] adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for the English user manual is as follows:"
-msgstr ""
+msgstr "この link:https://ipt.gbif.org/manual/ja/[IPTユーザーマニュアル] は、これまでのIPTユーザーマニュアル（Réveillon 2009、Wieczorek & Braak 2016）を調整し、構築しています。このユーザーマニュアルの推奨される引用方法は以下の通りです。"
 
 #.  English user manual citation
 #. type: Plain text
@@ -77,27 +77,27 @@ msgstr "ライセンス"
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:36
 msgid "The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an \"as is\" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License."
-msgstr ""
+msgstr "GBIF統合パブリッシングツールキットは、Apache License Version 2.0 のもとで公開されているオープンソースソフトウェアです。本使用許諾のコピーは、http://www.apache.org/licenses/LICENSE-2.0 で入手できます。法律によって要求される場合、または書面で合意される場合を除き、本ソフトウェアは本使用許諾下で「現状のまま」配布され、明示または黙示を問わず、いかなる場合において何ら保証するものではありません。本使用許諾下での権利と制限を規定する具体的な文言については、本使用許諾を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:38
 msgid "This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:"
-msgstr ""
+msgstr "このユーザーマニュアルは、Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License の下でリリースされています。このライセンスのコピーは http://creativecommons.org/licenses/by-nc-sa/3.0/ で入手できます。詳細については実際のライセンス文書を参照する必要がありますが、一般的な用語としては、以下の条件の下で作品を自由にコピー、配布、送信、リミックス、改変することができると記載されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:40
 msgid "you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);"
-msgstr ""
+msgstr "このページで指定された方法で著作物を引用すること（ただし、GBIFまたはGBIF事務局が、あなたやあなたの著作物の利用を支持していると示唆するような方法でないこと）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:41
 msgid "you may not use this work for commercial purposes;"
-msgstr ""
+msgstr "本作品を商業目的で使用することはできません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:42
 msgid "if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one."
-msgstr ""
+msgstr "この著作物を改変、変形、または構築した場合、あなたはこの著作物と同一または類似のライセンスの下でのみ、結果として生じた著作物を頒布することができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:43
