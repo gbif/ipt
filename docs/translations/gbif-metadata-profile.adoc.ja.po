@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-02-13 08:55\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -48,7 +48,7 @@ msgstr "推奨される引用"
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "手順"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:7
