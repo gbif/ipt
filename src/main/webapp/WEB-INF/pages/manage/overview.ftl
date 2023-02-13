@@ -117,7 +117,27 @@
         });
 
         function openRegistrationDetails(e) {
-            location.href = '${cfg.portalUrl}/dataset/' + '${resource.key!}';
+            location.href = '${cfg.portalUrl}/dataset/${resource.key!}';
+        }
+
+        $(".published-version-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openPublishedVersionDetails(e);
+        });
+
+        function openPublishedVersionDetails(e) {
+            location.href = '${baseURL}/resource?r=${resource.shortname}';
+        }
+
+        $(".next-version-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openNextVersionDetails(e);
+        });
+
+        function openNextVersionDetails(e) {
+            location.href = '${baseURL}/resource/preview?r=${resource.shortname}';
         }
 
 
@@ -720,7 +740,7 @@
                                             <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
 
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
-                                                <div class="ps-2">
+                                                <div class="ps-2 published-version-item-link">
                                                     <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong></span><br>
                                                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-current">${lastPublishedTitle?cap_first}</span>
                                                     <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span>
@@ -728,13 +748,38 @@
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
                                                     </#if>
                                                     <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${lastPublishedVersionStatus}">${lastPublishedVersionStatus?cap_first}</span><br>
-                                                    <small>
-                                                        ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
-                                                    </small>
+                                                    <span class="fs-smaller-2">
+                                                        <small>
+                                                            ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
+                                                        </small>
+                                                    </span>
                                                 </div>
 
                                                 <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                    <div class="dropdown">
+                                                    <a title="<@s.text name="button.view"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource?r=${resource.shortname}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <#if (resource.coreType)! != "metadata">
+                                                        <a title="${pubLogTitle?cap_first}" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-2-7H7v-2h10v2zm-4 4H7v-2h6v2z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <#if report??>
+                                                            <a title="${pubRepTitle?cap_first}" id="toggleReport" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#anchor-publish">
+                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-5.5-6c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM12 9c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4zm0 6.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </#if>
+                                                    </#if>
+
+                                                    <div class="dropdown d-sm-none">
                                                         <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
@@ -785,7 +830,7 @@
 
                                     <div class="col-xl-6" style="height: 100%">
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
-                                            <div class="ps-2">
+                                            <div class="ps-2 next-version-item-link">
                                                 <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span><br>
                                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-pending">${nextPublishedTitle?cap_first}</span>
                                                 <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense resource.getEml().parseLicenseUrl()/></span>
@@ -793,17 +838,42 @@
                                                     <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
                                                 </#if>
                                                 <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${resource.status?lower_case}">${resource.status?lower_case?cap_first}</span><br>
-                                                <small>
-                                                    <#if resource.nextPublished??>
-                                                        ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
-                                                    <#else>
-                                                        <@s.text name="manage.overview.published.date.not.set"/>
-                                                    </#if>
-                                                </small>
+                                                <span class="fs-smaller-2">
+                                                    <small>
+                                                        <#if resource.nextPublished??>
+                                                            ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
+                                                        <#else>
+                                                            <@s.text name="manage.overview.published.date.not.set"/>
+                                                        </#if>
+                                                    </small>
+                                                </span>
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <div class="dropdown">
+                                                <#assign doiActionName>
+                                                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
+                                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
+                                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
+                                                    <#else><@s.text name="button.reserve"/> DOI<#t>
+                                                    </#if>
+                                                </#assign>
+
+                                                <#if !missingMetadata>
+                                                    <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                        </svg>
+                                                    </a>
+                                                </#if>
+
+                                                <a title="${doiActionName}" id="reserve-doi" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
+                                                    <svg class="icon-button-svg" viewBox="0 0 24 24">
+                                                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
+                                                    </svg>
+                                                </a>
+
+                                                <div class="dropdown d-sm-none">
                                                     <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-pending" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
@@ -825,17 +895,9 @@
                                                         <li>
                                                             <a id="reserve-doi" class="dropdown-item action-link" type="button" href="#">
                                                                 <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M8 11h8v2H8zm12.1 1H22c0-2.76-2.24-5-5-5h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1zM3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM19 12h-2v3h-3v2h3v3h2v-3h3v-2h-3z"></path>
+                                                                    <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
                                                                 </svg>
-                                                                <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED">
-                                                                    <@s.text name="button.reserve"/> DOI
-                                                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                                                                    <@s.text name="button.delete"/> DOI
-                                                                <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-                                                                    <@s.text name="button.reserve.new"/> DOI
-                                                                <#else>
-                                                                    <@s.text name="button.reserve"/> DOI
-                                                                </#if>
+                                                                ${doiActionName}
                                                             </a>
                                                         </li>
                                                     </ul>
