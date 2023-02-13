@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2023-02-10 07:52\n"
+"PO-Revision-Date: 2023-02-13 06:14\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -113,63 +113,63 @@ msgstr "識別子にGUIDを使用する"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
-msgstr ""
+msgstr "逐語的データの保存"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "プロジェクトデータを1つのデータセットとして公開する"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr ""
+msgstr "オカレンスデータをサンプリングイベント・データとして再公開する"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "生体の連続的なモニタリングのモデル化"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "データセットに関連する問題の管理"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "データセットの生成やクリーニングに用いられたスクリプトやプログラムの共有"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "データセット・メタデータにサンプリングイベントデータを記述する"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "関連するデータセットへのリンク"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "関連する研究をリストアップする"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
@@ -183,138 +183,138 @@ msgstr "例"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
-msgstr ""
+msgstr "淡水産無脊椎動物調査"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr ""
+msgstr "汽水域の無脊椎動物調査"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr ""
+msgstr "大型植物調査"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data - planned additions and notes for revision"
-msgstr ""
+msgstr "サンプリングイベントデータの公開におけるベストプラクティス - 追加予定と改訂のための注意点"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:4
 msgid "Version 2.0"
-msgstr ""
+msgstr "バージョン 2.0"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:6
 msgid "Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[]."
-msgstr ""
+msgstr "xref:best-practices-sampling-event-data.adoc[サンプリングイベントデータのベストプラクティス]で追加で記載される可能性のある情報、または過去に記載された情報"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
 msgid "#TODO:# Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension."
-msgstr ""
+msgstr "#TODO:# DwC-A スタースキーマの制限を回避する方法に関する勧告を提供します。例えば、同じデータセットで は、測定値と事実をイベントとオカレンスの両方に関連付けることができません。現在の対処法では、公開者が別々のデータセットを公開する必要があります。注）OBISは、この制限を克服するのに役立つ拡張（測定値と事実）のプロトタイピングを行っています。このプロトタイプ拡張機能に関する議論は、こちらのGitHubで行われています。しかし、このプロトタイプの拡張機能では、測定値または事実がオカレンスに関連するのかイベントに関連するのかを明確にできないという問題が提起されています。代替案の1つとして、OBIS 拡張で検討されているように、測定または事実の拡張に属性として eventID（および occurrenceID）を追加する代わりに resourceID（およびおそらく resourceType）を追加することが考えられます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:18
 msgid "#TODO:# Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "#TODO:# 適切なWKT形状または単純な緯度/経度点の位置を選択することにより、サンプリングエリアをどのように表現するかについての推奨事項を提供します。正しく行われれば、サンプリングが行われた方向も導き出すことができます。例えば、WKT形状LINESTRINGを使用して表現された海洋トロールラインは、開始点と終了点を書くための標準的な表記に基づいて、トロールの方向を決定することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:23
 msgid "#TODO:# Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers:"
-msgstr ""
+msgstr "#TODO:# 永続的なグローバル一意識別子を使って dwc:eventID と dwc:parentEventID を記入する方法について、ユーザーをより良く手助けできるようになりました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:25
 msgid "dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared."
-msgstr ""
+msgstr "dwc:eventID は永続的なグローバル一意識別子であるべきです。既存の安定した識別子を再利用することを忘れないで下さい。既に宣言されているイベントに対して、新しい識別子を作らないで下さい。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:26
 msgid "In the absence of a GUID, and as a last resort, reuse the original fieldNumber."
-msgstr ""
+msgstr "GUIDがない場合、また最後の手段として、元のfieldNumberを再利用する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:30
 msgid "#TODO:# Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID"
-msgstr ""
+msgstr "#TODO:# dwc:parentEventIDの適切な使用により、イベントの階層（再帰的なデータ型）を発行する方法をより良くユーザーに案内できるようになりました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:34
 msgid "#TODO:# Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus"
-msgstr ""
+msgstr "#TODO:# 上記のFAQから情報を転送し、dwc:occurrenceStatusを適切に使用してDwCで存在/不在データを公開する方法をユーザーに案内する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:38
 msgid "#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "#TODO:# データの解釈を容易にするために、補足メディアをどのように含めるかについて推奨します。例えば、植生データの場合、データを解釈する際にスキャンしたオリジナルの relevé シートへのリンクを含めると便利です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:43
 msgid "#TODO:# Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr ""
+msgstr "#TODO:# 公開者にGUIDを使用するようアドバイスし、dwc:occasionID、dwc:eventID、dwc:organismID、dwc:locationID などの該当フィールドにGUIDを作成する方法のガイダンスと一緒に提供する。例えば、http://www.geonames.org/ を使って dwc:locationID の識別子を見つける（または新たに生成する）ことが可能です。例えば、http://sws.geonames.org/10793757/ はグリーンランドの湖のGUIDです。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:44
 #, no-wrap
 msgid "Filling in the required and recommended terms"
-msgstr ""
+msgstr "必要条件と推奨条件を記入する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:47
 msgid "#TODO:# Guide users how to obfuscate the location of sensitive species, such as by:"
-msgstr ""
+msgstr "#TODO:# センシティブな種の場所を難読化する方法をユーザーに案内する、など。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:48
 msgid "Simply removing these species from the dataset"
-msgstr ""
+msgstr "単にこれらの種をデータセットから削除する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:49
 msgid "Publishing the species identifications at Genus level only"
-msgstr ""
+msgstr "属レベルでのみ種同定を公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:50
 msgid "Publishing the sensitive/protected species in a separate dataset"
-msgstr ""
+msgstr "センシティブな種/保護種を別のデータセットで公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:51
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records"
-msgstr ""
+msgstr "難読化された機密データポイントをメインデータセットで公開し、難読化されていない詳細をアクセス制限付きの別データセットで公開する（両方のデータセットに全データレコードを含む）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:55
 msgid "#TODO:# Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr ""
+msgstr "#TODO:# 逐語的な説明を入力する方法をユーザーに案内する。例えば、元のイベントに与えられたIDまたはコードはdwc:fieldNumberに、元のオカレンス観察に与えられたIDまたはコードはdwc:recordNumberに入力されるべきです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:59
 msgid "#TODO:# Provide a recommendation on how to publish data produced from large projects. The current recommendation is to publish a single dataset, because dividing it into multiple datasets results in more duplication of effort entering metadata. Publishers insisting on publishing multiple datasets should link them using Project.ID in EML."
-msgstr ""
+msgstr "#TODO:# 大規模プロジェクトから生み出されるデータの公開方法について、推奨事項を提示する。複数のデータセットに分割すると、メタデータを入力する作業が重複するため、現状では1つのデータセットで公開することを推奨しています。複数のデータセットを公開することにこだわる公開者は、EMLのProject.IDを使用してデータセットをリンクする必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:63
 msgid "#TODO:# Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:"
-msgstr ""
+msgstr "#TODO:# 既存のオカレンスデータセットをサンプリングイベント形式に移行するための論理的根拠とガイダンスを提供する。以下の質問に答える必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:64
 msgid "Should the sampling event version replace the existing occurrence version, or should both versions be kept online at the same time?"
-msgstr ""
+msgstr "サンプリングイベントのバージョンは、既存のオカレンス・バージョンを置き換えるべきでしょうか、それとも両方のバージョンを同時にオンラインにしておくべきでしょうか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:65
 msgid "If replacing, should the new sampling event version be assigned a brand new DOI?"
-msgstr ""
+msgstr "置き換える場合、新しいサンプリングイベントのバージョンは、新しいDOIを割り当てるべきですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:66
