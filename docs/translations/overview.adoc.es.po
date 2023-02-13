@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:39\n"
+"PO-Revision-Date: 2023-02-13 19:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "La mayoría de los controles de la interfaz de usuario tienen modos habi
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
 msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the {threelines} button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.\n"
-msgstr ""
+msgstr "*Menús*: en el IPT aparece una barra de menús en casi todas las páginas. (En las pantallas pequeñas, aparece debajo del botón {threelines} ).  El menú contiene elementos que guían a los usuarios a temas fundamentales. Los elementos del menú aparecen en función de lo que el usuario actual está autorizado a ver según su rol.\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/overview.adoc:10
@@ -128,7 +128,7 @@ msgstr "*Enlaces*: abre una página distinta de aquella en la que se encuentra e
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
 msgid "Example link: image:ipt2/controls/Control-LinkExample.png[]"
-msgstr ""
+msgstr "Enlace ejemplo: image:ipt2/controls/Control-LinkExample.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:38
