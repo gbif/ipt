@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-02-08 06:45\n"
+"PO-Revision-Date: 2023-02-13 07:22\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -26,42 +26,42 @@ msgstr "チェックリストデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:4
 msgid "Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitized collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as xref:occurrence-data.adoc[Occurrence Data]. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata]."
-msgstr ""
+msgstr "あるカテゴリー（例えば分類学的、地理的、形質ベース、レッドリスト、作物の野生親戚）に属する種のリストで、オプションとして各種に関連する上位分類または追加形質からなるリソースです。このようなデータセットの例としては、世界的または地域的な分類学的チェックリスト、世界的または国レベルのレッドリスト、未桁化コレクションに含まれる種のカタログ、公園のチェックリストなどがある。もし十分な情報が元データセットにあれば（あるいはチェックリストのすべての種に一貫して適用されていれば）、これらのデータセットはオカレンスデータとして提示することが推奨される。これらのデータセットには、リソースメタデータに含まれるものと同じ基本的な記述情報が含まれます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/checklist-data.adoc:5
 #, no-wrap
 msgid "How to transform your data into checklist data"
-msgstr ""
+msgstr "チェックリストデータに変換する方法"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/checklist-data.adoc:7
 #, no-wrap
 msgid "ipt2/flow-cd.png"
-msgstr ""
+msgstr "ipt2/flow-cd.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:10
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
-msgstr ""
+msgstr "最終的には、ダーウィンコア（DwC）の用語名を列名として使用したテーブル構造にデータを変換する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr ""
+msgstr "すべての<<必須DwCフィールド,必須DwCフィールド>>と<<推奨DwCフィールド,推奨DwCフィールド>>を含む<<テンプレート,Excelテンプレート>>にデータを入れてみてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr ""
+msgstr "または、データがxref:database-connection.adoc[対応データベース]に保存されている場合は、DwCの列名を使ってSQLテーブル（ビュー）を書くことができます。<<必須DwCフィールド,必須DwCフィールド>>をすべて含み、<<推奨DwCフィールド,推奨DwCフィールド>>をできるだけ多く追加するように注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:16
 msgid "For extra guidance, you can refer to the guide xref:best-practices-checklists.adoc[Best Practices in Publishing Species Checklists] and look at the <<Exemplar Datasets,exemplar datasets>>."
-msgstr ""
+msgstr "さらに詳しいガイダンスとして、ガイドlink:https://ipt.gbif.org/manual/ja/ipt/latest/best-practices-checklists[種のチェックリストを発行する際のベストプラクティス]を参照し、模範となるデータセットを見てください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -69,17 +69,18 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr ""
+msgstr "テンプレート"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:21
 msgid "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr ""
+msgstr "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Excelテンプレート]]\n"
+"link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Excelテンプレート（サンプルデータ付き）]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:23
 msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}[list]."
-msgstr ""
+msgstr "それを入力し、IPTにアップロードします。できるだけ多くのDwC用語で補強するようにしてください。コア・テーブルに追加のDwCカラムを追加することはできますが、この{latest-dwc-taxon}[リスト]にあるDwC用語のみを追加してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -87,23 +88,23 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required DwC fields"
-msgstr ""
+msgstr "DwCの必須項目"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:27
 msgid "https://dwc.tdwg.org/terms/#dwc:taxonID[taxonID]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonID[taxonID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:29
 msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -111,23 +112,23 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:36
 #, no-wrap
 msgid "Recommended DwC fields"
-msgstr ""
+msgstr "DwCの推奨フィールド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
 msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - 可能であれば、他の上位分類も"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:34
 msgid "https://dwc.tdwg.org/terms/#dwc:parentNameUsageID[parentNameUsageID] - in situations where a taxonomy is meant to be published"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:parentNameUsageID[parentNameUsageID] - 分類が公開されることを意図しているとき"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:35
 msgid "https://dwc.tdwg.org/terms/#dwc:acceptedNameUsageID[acceptedNameUsageID] - in situations where a taxonomy is meant to be published"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:acceptedNameUsageID[acceptedNameUsageID] - 分類が公開されることを意図しているとき"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -136,12 +137,12 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr ""
+msgstr "サンプルデータセット"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:39
 msgid "Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
-msgstr ""
+msgstr "Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPTホームページ]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -150,41 +151,41 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "よくある質問"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:42
 #, no-wrap
 msgid "Q. *How do I add common names to a taxon record?*"
-msgstr ""
+msgstr "Q. *分類群レコードに普通名を追加するにはどうしたらよいですか？*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:45
 #, no-wrap
 msgid "*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this {latest-vernacularname}[list]. You can upload this table to the IPT, and map it to the {latest-vernacularname}[Vernacular Name extension].\n"
-msgstr ""
+msgstr "*A.* 普通名のテーブルを作成してください。このテーブルには、taxonIDカラムが含まれている必要があります。そうすれば、各行は（コア）タクソンレコードにリンクすることができます。一般名テーブルには追加のカラムを追加できますが、この{latest-vernacularname}[リスト]にある用語名のみを使用します。このテーブルをIPTにアップロードし、{latest-vernacularname}[Vernacular Name拡張]に対応させることができます。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:46
 #, no-wrap
 msgid "Q. *How do I add the threat status of a species as defined by IUCN?*"
-msgstr ""
+msgstr "Q. *IUCNが定義する種の脅威の状態を追加するにはどうすればよいですか？*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:49
 #, no-wrap
 msgid "*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this {latest-species-distribution}[list]. You can upload this table to the IPT, and map it to the {latest-species-distribution}[Species Distribution extension].\n"
-msgstr ""
+msgstr "*A.* 分類群の地理的分布のテーブルを作成してください。ここにはtaxonIDの列が含まれていなければなりません。そうすれば、各行が（コア）分類群レコードにリンクすることができます。地理的分布表には脅威の状態などの列を追加することができますが、この{latest-species-distribution}[リスト]にある用語名のみを使用します。この表をIPTにアップロードして、{latest-species-distribution}[Species Distribution拡張]に対応させることができます。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:50
 #, no-wrap
 msgid "Q. *Can I update the https://doi.org/10.15468/39omei[GBIF Backbone Taxonomy] with names from my checklist?*"
-msgstr ""
+msgstr "Q. *チェックリストの名称でGBIF基幹分類法を更新できますか?*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:52
 #, no-wrap
 msgid "*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] and https://dwc.tdwg.org/terms/#dwc:family[family], be of high data quality meaning it has few name usage issues, include https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship] of names, supplying the https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn] reference, etc.\n"
-msgstr ""
+msgstr "*A.* はい、できます。これを行うには、チェックリストを公開し、GBIFがサポートするライセンス（CC0、CC-BY、CC-BY-NC）の下でオンラインで一般に利用できるようにし、GBIFに登録する必要があります。その後GBIFは、その名前がバックボーンとどのように重複しているかを見るなどして、それが適切なバックボーンソースであるかどうかを手動で確認することができます。チェックリストは、少なくともlink:https://dwc.tdwg.org/terms/#dwc:kingdom[界]やlink:https://dwc.tdwg.org/terms/#dwc:family[科]などの最小限の分類を提供し、名称の使用上の問題が少ないという意味でデータの質が高く、名称のlink:https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship]を含み、link:https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn]を供給すること等が理想的です。\n"
 
