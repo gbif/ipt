@@ -666,10 +666,10 @@
                                 <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.DwC.Mappings'/></a></li>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
-                            <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
-                            <li><a href="#anchor-autopublish" class="sidebar-navigation-link"><@s.text name='manage.overview.autopublish.title'/></a></li>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
+                            <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
                             <li><a href="#anchor-registration" class="sidebar-navigation-link"><@s.text name='manage.overview.registration'/></a></li>
+                            <li><a href="#anchor-autopublish" class="sidebar-navigation-link"><@s.text name='manage.overview.autopublish.title'/></a></li>
                             <li><a href="#anchor-networks" class="sidebar-navigation-link"><@s.text name='manage.overview.networks.title'/></a></li>
                             <li><a href="#anchor-managers" class="sidebar-navigation-link"><@s.text name='manage.overview.resource.managers'/></a></li>
                         </ul>
@@ -684,6 +684,88 @@
                         <#include "/WEB-INF/pages/manage/overview_data.ftl"/>
                         <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
                     </#if>
+
+                    <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
+                    <div class="py-5 border-bottom section" id="visibility">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
+                                    <#assign visibilityTitleInfo>
+                                        <@s.text name='manage.overview.visibility.description'/>
+                                    </#assign>
+
+                                    <@popoverTextInfo visibilityTitleInfo/>
+                                    <@s.text name='manage.overview.visibility'/>
+                                </h5>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <#if resource.status=="PRIVATE">
+                                    <#assign actionMethod>makePublic</#assign>
+                                    <form action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                    <#assign actionMethod>makePrivate</#assign>
+                                    <form action='resource-${actionMethod}.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                                        <input name="unpublish" type="hidden" value="Change"/>
+                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                            <@s.text name='button.change'/>
+                                        </button>
+                                    </form>
+                                <#else>
+                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                        </svg>
+                                        <@s.text name='button.change'/>
+                                    </button>
+                                </#if>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="mb-0">
+                                <#if resource.status=="PRIVATE">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
+                                        <@s.text name="resource.status.private"/>
+                                    </span>
+                                    <#if resource.makePublicDate?has_content>
+                                        <@s.text name="manage.resource.status.intro.private.public.scheduled">
+                                            <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
+                                        </@s.text>
+                                    <#else>
+                                        <@s.text name="manage.resource.status.intro.private"/>
+                                    </#if>
+                                <#elseif resource.status=="PUBLIC">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
+                                        <@s.text name="resource.status.public"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.public"/>
+                                <#elseif resource.status=="REGISTERED">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
+                                        <@s.text name="resource.status.registered"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.registered"/>
+                                <#elseif resource.status=="DELETED">
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
+                                        <@s.text name="resource.status.deleted"/>
+                                    </span>
+                                    <@s.text name="manage.resource.status.intro.deleted"/>
+                                </#if>
+                            </p>
+                        </div>
+                    </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
@@ -941,131 +1023,6 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
-                    <div class="py-5 border-bottom section" id="autopublish">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <@popoverPropertyInfo "manage.overview.autopublish.description"/>
-                                    <@s.text name="manage.overview.autopublish.title"/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="auto-publish.do?r=${resource.shortname}">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.edit"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="mb-0">
-                                <#if resource.usesAutoPublishing()>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
-                                <#else>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
-                                        <@s.text name="manage.overview.autopublish.disabled"/>
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
-                                </#if>
-                            </p>
-
-                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                </div>
-                            </#if>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
-                    <div class="py-5 border-bottom section" id="visibility">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <#assign visibilityTitleInfo>
-                                        <@s.text name='manage.overview.visibility.description'/>
-                                    </#assign>
-
-                                    <@popoverTextInfo visibilityTitleInfo/>
-                                    <@s.text name='manage.overview.visibility'/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <#if resource.status=="PRIVATE">
-                                    <#assign actionMethod>makePublic</#assign>
-                                    <form action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
-                                    <#assign actionMethod>makePrivate</#assign>
-                                    <form action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <input name="unpublish" type="hidden" value="Change"/>
-                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                <#else>
-                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
-                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                        </svg>
-                                        <@s.text name='button.change'/>
-                                    </button>
-                                </#if>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="mb-0">
-                                <#if resource.status=="PRIVATE">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
-                                        <@s.text name="resource.status.private"/>
-                                    </span>
-                                    <#if resource.makePublicDate?has_content>
-                                        <@s.text name="manage.resource.status.intro.private.public.scheduled">
-                                            <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
-                                        </@s.text>
-                                    <#else>
-                                        <@s.text name="manage.resource.status.intro.private"/>
-                                    </#if>
-                                <#elseif resource.status=="PUBLIC">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
-                                        <@s.text name="resource.status.public"/>
-                                    </span>
-                                    <@s.text name="manage.resource.status.intro.public"/>
-                                <#elseif resource.status=="REGISTERED">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
-                                        <@s.text name="resource.status.registered"/>
-                                    </span>
-                                    <@s.text name="manage.resource.status.intro.registered"/>
-                                <#elseif resource.status=="DELETED">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
-                                        <@s.text name="resource.status.deleted"/>
-                                    </span>
-                                    <@s.text name="manage.resource.status.intro.deleted"/>
-                                </#if>
-                            </p>
-                        </div>
-                    </div>
-
                     <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
                     <div class="py-5 border-bottom section" id="registration">
 
@@ -1206,6 +1163,49 @@
                                 <p class="mb-0">
                                     <@s.text name="manage.overview.registration.notRegistered"/>
                                 </p>
+                            </#if>
+                        </div>
+                    </div>
+
+                    <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
+                    <div class="py-5 border-bottom section" id="autopublish">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <h5 class="my-auto text-gbif-header-2 fw-400">
+                                    <@popoverPropertyInfo "manage.overview.autopublish.description"/>
+                                    <@s.text name="manage.overview.autopublish.title"/>
+                                </h5>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="auto-publish.do?r=${resource.shortname}">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.edit"/>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="mb-0">
+                                <#if resource.usesAutoPublishing()>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                                    </span>
+                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                <#else>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
+                                        <@s.text name="manage.overview.autopublish.disabled"/>
+                                    </span>
+                                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
+                                </#if>
+                            </p>
+
+                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
+                                </div>
                             </#if>
                         </div>
                     </div>
