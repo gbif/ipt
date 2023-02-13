@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-02-24 12:21\n"
+"PO-Revision-Date: 2023-02-13 08:56\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "手順"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:16
