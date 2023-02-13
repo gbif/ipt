@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-13 05:10\n"
+"PO-Revision-Date: 2023-02-13 06:13\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -440,125 +440,125 @@ msgstr "難読化された機密データポイントをメインデータセッ
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
-msgstr ""
+msgstr "逐語的データの保存"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
 msgid "Although verbatim data and descriptions are not visible on the GBIF.org web interface, they are made available to the community through downloads. When entering verbatim description, make sure to link them to the original event or occurrence. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr ""
+msgstr "逐語的なデータや説明はGBIF.orgのウェブインターフェースでは見ることができませんが、ダウンロードすることでコミュニティに公開されます。逐語的な説明を入力する場合は、必ず元の事象または発生にリンクさせるようにしてください。例えば、元の事象に与えられたIDまたはコードはdwc:fieldNumberに、元の発生観察に与えられたIDまたはコードはdwc:recordNumberに入力されるべきものです。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "プロジェクトデータを1つのデータセットとして公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
 msgid "Data produced from a large sampling project should be published as a single dataset if possible. If you must publish multiple datasets, we encourage linking them using a common project identifier in the metadata."
-msgstr ""
+msgstr "大規模なサンプリングプロジェクトから作成されたデータは、可能であれば1つのデータセットとして公開する必要があります。どうしても複数のデータセットとして公開しなければならない場合は，メタデータに共通のプロジェクト識別子を用いてリンクさせることを推奨します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr ""
+msgstr "オカレンスデータをサンプリングイベント・データとして再公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:159
 msgid "Sampling events provide better documentation and benefit both the scientific community and policy makers (https://www.gbif.org/sampling-event-data[read more]).  We encourage strongly the republishing of occurrence data as sampling-event data when possible."
-msgstr ""
+msgstr "サンプリングイベントは、より良いドキュメントを提供し、科学界と政策立案者の両方に利益をもたらします（詳しくはlink:https://www.gbif.org/sampling-event-data[こちら]）。私たちは、可能な限り、オカレンスデータをサンプリングイベントデータとして再公開することを強く推奨します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr ""
+msgstr "そのために、新しいサンプリングイベント・データセットを作成し、GBIFヘルプデスク（helpdesk@gbif.org）へメールを送ってください。このメールには、オカレンスデータセットと新しいデータセットの両方のUUIDを記入する必要があります。そうすれば、最初のデータセットをインデックス解除する前に、新しいデータセットにリンクさせることができ、それによってオカレンスの重複を避け、引用を維持することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "生体の連続的なモニタリングのモデル化"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:165
 msgid "If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event."
-msgstr ""
+msgstr "データセットが鳥の追跡データのような、生きている個体の連続的なモニタリングを含んでいる場合、追跡されている個体のIDを格納するためにdwc:organicIDを使用することができます。また、追跡されている各個体を1つのイベントとして表現する必要があります。"
 
 #.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:168
 #, no-wrap
 msgid "Continuous data quality improvement"
-msgstr ""
+msgstr "継続的なデータ品質の改善"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "データセットに関連する問題の管理"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 msgid "If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by GitHub."
-msgstr ""
+msgstr "可能であれば，GitHubなどの課題管理システムを使って、あるデータセットに関連するすべての課題を追跡することをお勧めします。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "データセットの生成やクリーニングに用いられたスクリプトやプログラムの共有"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
 msgid "Ideally, custom scripts and programs used to transform data should be made publicly available on GitHub. Other publishers will benefit from accessing these scripts along with detailed instructions on how to use them."
-msgstr ""
+msgstr "データ変換に使用したカスタムスクリプトやプログラムは、GitHubで一般に公開されるのが理想的です。他の公開者は、これらのスクリプトとその使用方法の詳細な説明にアクセスすることで利益を得ることができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "データセット・メタデータにサンプリングイベントデータを記述する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:181
 msgid "Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies."
-msgstr ""
+msgstr "公開者は，特にサンプリングの方法論に重点を置いて，可能な限りデータセットを文書化する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
 msgid "Besides the https://www.gbif.org/data-quality-requirements-sampling-events[mandatory requirements], the metadata should include information about the extent of study, the sampling methods, the quality control and limitations of the study.  Although information about fieldwork can be part of the data content, you may describe the sampling location and conditions in the metadata as well."
-msgstr ""
+msgstr "必須の要件に加えて、メタデータには、調査の範囲、サンプリング方法、品質管理、調査の限界に関する情報を含めるべきです。フィールドワークに関する情報はデータ内容の一部でもよいですが、サンプリングの場所や条件についてもメタデータに記述することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "関連するデータセットへのリンク"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 msgid "Some datasets may come from the same research project or may be related in certain context. The current recommendation is to link them using a project identifier."
-msgstr ""
+msgstr "データセットの中には、同じ研究プロジェクトから生まれたものや、ある文脈で関連するものがあるかもしれません。現在推奨されているのは、プロジェクト識別子を使ってリンクさせることです。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "関連する研究をリストアップする"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
 msgid "You can make your dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc,. in the bibliographic citation or in the external link part of the metadata."
-msgstr ""
+msgstr "雑誌記事、プロジェクトノートや論文など、関連する出版物へのリンクを書誌引用またはメタデータの外部リンク部分に含めることで、データセットの解釈を容易にすることができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
@@ -570,14 +570,14 @@ msgstr "例"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
 msgid "Following are some examples of typical sampling-event data sets. In each case, the key fields in the Event core and Occurrence extension are provided. For some examples, additional extensions such as Relevé and measurement-or-fact are also included."
-msgstr ""
+msgstr "以下は、典型的なサンプリングイベント・データセットの例です。各ケースで、Event core と Occurrence extension の主要なフィールドが提供されています。いくつかの例では、Relevé や measurement-or-fact などの追加拡張も含まれています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:197
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
-msgstr ""
+msgstr "淡水産無脊椎動物調査"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:200
@@ -587,7 +587,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:351
 #, no-wrap
 msgid "*Core (Event) table*\n"
-msgstr ""
+msgstr "*コア（イベント）テーブル*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:206
@@ -595,7 +595,9 @@ msgstr ""
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude\n\n"
 "| C_1428 | AQEM | 1.25 | m^2 | 2006-06-21 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369\n"
 "| B_1538 | AQEM | 1.25 | m^2 | 2008-11-06 | Kinzig W3 Bulau | 50.1316 | 8.9657\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude\n\n"
+"| C_1428 | AQEM | 1.25 | m^2 | 2006-06-21 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369\n"
+"| B_1538 | AQEM | 1.25 | m^2 | 2008-11-06 | Kinzig W3 Bulau | 50.1316 | 8.9657\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:209
@@ -606,7 +608,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:360
 #, no-wrap
 msgid "*Extension (Occurrence) table*\n"
-msgstr ""
+msgstr "拡張（オカレンス）テーブル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:217
@@ -616,7 +618,11 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| C_1428 | _Ephemera danica_ | 15 | individuals |\n"
 "| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
 "| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"| C_1428 | _Baetis rhodani_ | 14 | individuals |\n"
+"| C_1428 | _Ephemera danica_ | 15 | individuals |\n"
+"| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
+"| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:220
@@ -627,19 +633,19 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:371
 #, no-wrap
 msgid "*Explanation*\n"
-msgstr ""
+msgstr "*説明*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
 msgid "_Ephemera danica_ : A total of 14 individuals from 1.25 square meters were obtained in this sampling event. The derived individuals per sq meter count is 11.2 (14/1.25)."
-msgstr ""
+msgstr "_Ephemera danica_：1.25平方メートルから合計14個体採取されました。1平方メートルあたりの個体数は11.2（14/1.25）です。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr ""
+msgstr "汽水域の無脊椎動物調査"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:232
@@ -647,7 +653,9 @@ msgstr ""
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
 "| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
+"| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:241
@@ -655,13 +663,15 @@ msgstr ""
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "| IA1 | _Abra ovata_ | 57 | individuals |\n"
 "| IA3 | _Bittium reticulatum_ | 113 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"| IA1 | _Abra ovata_ | 57 | individuals |\n"
+"| IA3 | _Bittium reticulatum_ | 113 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:244
 #, no-wrap
 msgid "*Extension (Measuremenr-or-Fact) table*\n"
-msgstr ""
+msgstr "拡張（測定値や事実）テーブル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:250
@@ -669,74 +679,79 @@ msgstr ""
 msgid "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
 "| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --\n"
 "| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --\n"
-msgstr ""
+msgstr "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
+"| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --\n"
+"| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:255
 #, no-wrap
 msgid "*_Abra ovata_* : A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.\n"
-msgstr ""
+msgstr "*_Abra ovata_*：サンプリングイベントIA1で、0.04平方メートルから合計57個体が得られました。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
 msgid "Each event can also have measurements or facts associated with it, e.g., environmental measurements like sediment temperature and redox potential (Eh)."
-msgstr ""
+msgstr "各イベントには、それに関連する測定値や事実、たとえば、堆積物の温度や酸化還元電位（Eh）などの環境測定値を含めることもできます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr ""
+msgstr "大型植物調査"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:261
 msgid "Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr ""
+msgstr "この例は、サンプリングイベントデータセットとして再公開された以前のバージョンのDutch Vegetation Database（LVD）に基づいていることに注意してください。Relevé拡張機能は、入門書の公開後に大幅な変更が加えられました。LVDと植生サンプリングイベントデータのデータモデルの詳細については、link:https：//gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.htmlを参照してください。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:266
 #, no-wrap
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:274
 #, no-wrap
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:277
 #, no-wrap
 msgid "*Extension (Relevé) table*\n"
-msgstr ""
+msgstr "拡張（Relevé）テーブル\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:282
 #, no-wrap
 msgid "| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ...\n\n"
 "| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | --\n"
-msgstr ""
+msgstr "| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ...\n\n"
+"| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | --\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:287
 #, no-wrap
 msgid "*_Acer psuedoplatanus_* : In the 100 sq meters surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale.\n"
-msgstr ""
+msgstr "*_Acer psuedoplatanus_*：100平方メートルの調査において、Braun Blanquetスケールで「r」と報告されました。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:289
 msgid "Additional vegetation plot measurements such as vegetation community type (syntaxon) % coverage values that are typical of TurboVeg type databases are captured in a Relevé (vegetation-plot) extension."
-msgstr ""
+msgstr "TurboVegタイプのデータベースによく見られる植生群落タイプ（syntaxon）％カバー値のような追加の植生プロット測定は、Relevé（植生プロット）拡張で取り込まれています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:290
 #, no-wrap
 msgid "Lepidoptera survey I"
-msgstr ""
+msgstr "鱗翅目調査 I"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:298
