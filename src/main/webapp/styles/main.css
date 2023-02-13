@@ -920,10 +920,6 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     vertical-align: -0.125em !important;
 }
 
-.overview-version-title, .overview-registered-title {
-    font-size: 1rem !important;
-}
-
 /* Style form elements START */
 .form-label {
     font-size: 0.875rem !important;

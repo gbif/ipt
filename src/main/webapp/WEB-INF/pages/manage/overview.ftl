@@ -110,6 +110,17 @@
             location.href = '${cfg.portalUrl}/network/' + networkKey;
         }
 
+        $(".registration-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openRegistrationDetails(e);
+        });
+
+        function openRegistrationDetails(e) {
+            location.href = '${cfg.portalUrl}/dataset/' + '${resource.key!}';
+        }
+
+
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true});
         $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
@@ -1088,8 +1099,8 @@
                                 <div class="details mt-3">
                                     <div class="row g-2">
                                         <div class="col-12">
-                                            <div class="registration-item border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
-                                                <div class="ps-2">
+                                            <div class="fs-smaller-2 d-flex justify-content-between registration-item border rounded-2 mx-1 p-1 py-2 text-smaller">
+                                                <div class="my-auto ps-2 registration-item-link">
                                                     <strong class="overview-registered-title">${resource.title!resource.shortname}</strong>
                                                     <br>
                                                     <small>${resource.key}</small>
@@ -1097,6 +1108,33 @@
                                                         |
                                                         <small>${resource.organisation.name!"Organisation"}</small>
                                                     </#if>
+                                                </div>
+
+                                                <div class="d-flex justify-content-end my-auto registration-item-actions">
+                                                    <a title="<@s.text name="manage.overview.registration.view"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <div class="dropdown d-sm-none">
+                                                        <a class="icon-button icon-material-actions registration-item-action" type="button" href="#" id="dropdown-registration-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                            </svg>
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-registration-item-actions-current">
+                                                            <li>
+                                                                <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
+                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                    </svg>
+                                                                    <@s.text name="manage.overview.registration.view"/>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1139,8 +1177,8 @@
                                     <div class="row g-2">
                                         <#list resourceNetworks as n>
                                             <div class="col-xl-6">
-                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item text-smaller" data-ipt-network-key="${(n.key)!}">
-                                                    <div class="my-auto ps-2">
+                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item" data-ipt-network-key="${(n.key)!}">
+                                                    <div class="my-auto ps-2 network-item-link">
                                                         <strong class="fs-smaller">${n.title!""}</strong><br>
                                                         <small>${(n.key)!}</small>
                                                     </div>
@@ -1226,7 +1264,7 @@
                             <div class="details mt-3">
                                 <div class="row g-2">
                                     <div class="col-xl-6">
-                                        <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                        <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item">
                                             <div class="my-auto ps-2">
                                                 <strong class="fs-smaller">${resource.creator.name!}</strong><br>
                                                 <small><@s.text name="manage.overview.resource.managers.creator"/>
@@ -1239,7 +1277,7 @@
                                     <#if (resource.managers?size>0)>
                                         <#list resource.managers as u>
                                             <div class="col-xl-6">
-                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item text-smaller">
+                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item">
                                                     <div class="my-auto ps-2">
                                                         <strong class="fs-smaller">${u.name}</strong><br>
                                                         <small><@s.text name="manage.overview.resource.managers.manager"/>
