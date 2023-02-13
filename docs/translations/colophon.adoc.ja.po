@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2022-01-13 12:18\n"
+"PO-Revision-Date: 2023-02-13 07:22\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/colophon.adoc:1
 #, no-wrap
 msgid "Colophon"
-msgstr ""
+msgstr "奥付"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:3
@@ -61,18 +61,18 @@ msgstr ""
 #: en/modules/ROOT/pages/colophon.adoc:29
 #, no-wrap
 msgid "Copyright"
-msgstr ""
+msgstr "著作権表示"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:32
 msgid "The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–{localyear} by the Global Biodiversity Information Facility Secretariat."
-msgstr ""
+msgstr "GBIF統合出版ツールキットおよび本ユーザーマニュアルの著作権は、© 2016-{localyear} 生物多様性グローバル情報ファシリティ事務局に帰属します。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:33
 #, no-wrap
 msgid "License"
-msgstr ""
+msgstr "ライセンス"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:36
