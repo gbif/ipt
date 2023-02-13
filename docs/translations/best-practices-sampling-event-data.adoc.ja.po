@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 07:52\n"
+"PO-Revision-Date: 2023-02-13 05:10\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -413,27 +413,27 @@ msgstr "影響を受けやすい生物種の地理情報を保護する"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:141
 msgid "If your dataset contains sensitive species, there are several ways to handle it:"
-msgstr ""
+msgstr "データセットにセンシティブな種が含まれている場合、これらの対処法があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:143
 msgid "Simply removing these species from the dataset,"
-msgstr ""
+msgstr "単にデータセットから該当種を削除する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:144
 msgid "Publishing the species identifications at Genus level only,"
-msgstr ""
+msgstr "属レベルでのみ種同定を公開する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:145
 msgid "Publishing the sensitive/protected species in a separate dataset,"
-msgstr ""
+msgstr "センシティブな種/保護種を別のデータセットで公開する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records."
-msgstr ""
+msgstr "難読化された機密データポイントをメインデータセットで公開し、難読化されていない詳細をアクセス制限付きの別データセットで公開する（両方のデータセットに全データレコードを含む）。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
