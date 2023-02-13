@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2023-02-13 07:22\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -29,50 +29,50 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "はじめに"
 
 #. type: Title =
 #: en/modules/ROOT/pages/citation.adoc:1
 #, no-wrap
 msgid "Dataset Citation Format"
-msgstr ""
+msgstr "データセット引用形式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:4
 msgid "the citation format used in the IPT is not used by GBIF.org.  See https://www.gbif.org/faq?q=citation for background information on this."
-msgstr ""
+msgstr "IPTで使用されている引用形式は、GBIF.orgでは使用されません。これに関する背景情報は、https://www.gbif.org/faq?q=citation を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:8
 msgid "Since IPT v2.2 data publishers can choose to let the IPT auto-generate a citation for their dataset. Before publishers had to enter their own citation."
-msgstr ""
+msgstr "IPT v2.2以降、データ公開者は、IPTにデータセットの引用形式を自動生成させることを選択できます。以前は、公開者が自分で引用形式を入力する必要がありました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:10
 msgid "The auto-generated citation format includes the dataset version number and DOI. Human readers can use the DOI to link to the dataset homepage, and can use the version number to locate and download the exact version. This enables reproducing scientific results based on usage of the dataset."
-msgstr ""
+msgstr "自動生成される引用の形式には、データセットのバージョン番号とDOIが含まれます。読者はDOIからデータセットのホームページへリンクし、バージョン番号から正確なバージョンを検索してダウンロードすることができます。これにより、データセットを利用した科学的成果を再現することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:12
 msgid "A detailed description of the IPT's citation format is described below. It is important to note that the format is based on DataCite’s preferred citation format, and satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]. For more information about the DataCite format, you can refer to Section 2.2 Citation of their http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Metadata Schema]. Each part of the citation is described in the table below, with several examples given afterwards."
-msgstr ""
+msgstr "IPTの引用形式の詳細については、以下に記述します。このフォーマットはDataCiteの推奨する引用フォーマットに基づき、link:https://www.force11.org/datacitation[データ引用原則の共同宣言]を満たしていることが重要です。DataCiteのフォーマットについては，同社のlink:http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[メタデータスキーマ]のSection 2.2 Citationを参照することができます。引用の各部分は以下の表で説明され，その後にいくつかの例が示されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:13
 #, no-wrap
 msgid "Citation Format"
-msgstr ""
+msgstr "引用形式"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/citation.adoc:17
 #, no-wrap
 msgid "Creators¹ (PublicationYear²): Title³. Version⁴. Publisher⁵. ResourceType⁶. Identifier⁷\n"
-msgstr ""
+msgstr "Creators¹ (PublicationYear²): Title³. Version⁴. Publisher⁵. ResourceType⁶. Identifier⁷\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:20
 msgid "7 citation parts explained:"
-msgstr ""
+msgstr "7つの引用パートを解説。"
 
 #. type: Table
 #: en/modules/ROOT/pages/citation.adoc:46
@@ -93,44 +93,59 @@ msgid "| Citation Part\n"
 "| Type of resource published. A description of the type of resource constructed using the ResourceTypeGeneral/ResourceType pair: ResourceTypeGeneral will always be equal to “Dataset”, and the ResourceType is a single term specifying the specific type of dataset, e.g. \"Occurrence\" or \"Checklist\".\n\n"
 "| 7. Identifier\n"
 "| The DOI (digital object identifier) handle that resolves to the online dataset. If a DOI is lacking, a link to the online IPT dataset page will be used instead. A DOI is highly preferred, since the DOI guarantees persistent access, whereas the IPT URL can change. For citation purposes, DataCite recommends that DOIs are displayed as linkable, permanent URLs.\n"
-msgstr ""
+msgstr "| 引用部門\n"
+"| 説明\n\n"
+"| 1. 作成者\n"
+"| データセットの作成に携わった1人以上の個人，グループ，機関 データセットに貢献したすべての人をリストアップしてください（link:https://www.force11.org/datacitation#JDCP2[データ引用の原則2]を参照）。ただし作成者は，ジャーナルが組版の際に全リストを切り捨てる可能性があることに注意してください（例：link:http://www.nature.com/sdata/for-authors/submission-guidelines#references[Natureのガイドライン]では，6人の作成者で切り捨てられます）。作成者は、姓を先に、名前のイニシャルを後に記載します。作成者は，データセットの作成に果たした役割の重要度に従ってリストアップし、最も重要な作成者を最初に表示します。複数の作成者はカンマで区切ります。\n\n"
+"| 2. 出版年\n"
+"| データセットのバージョンが公開された年です。\n\n"
+"| 3. タイトル\n"
+"| データセットのタイトルです。タイトルの最初の単語のみ頭文字を大文字にし、タイトルは引用文献に記載されているのと同じように書き、最後にフルストップで終わるようにします。\n\n"
+"| 4. バージョン\n"
+"| データセットのバージョンです。データセットが公開されるたびに，IPTが新しいバージョン番号を割り当てます。バージョンは，「Version major_version.minor_version」と記述します。このバージョン番号によって、「ある主張を裏付ける特定のデータの識別・入手・検証」が可能になります。（link:https://www.force11.org/datacitation#JDCP7[データ引用の原則7]を参照）\n\n"
+"| 5. 公開者\n"
+"| データセットを公開した（所有する）機関です。データを保管しているリポジトリへの謝意を示すために，リポジトリ名を作成者の下に記載することができます。\n\n"
+"| 6. リソースタイプ\n"
+"| 公開されているリソースの種類です。ResourceTypeGeneral/ResourceTypeのペアを用いて構築されたリソースの種類の説明です。ResourceTypeGeneralは常に \"Dataset\"と等しく、ResourceTypeは \"Occurrence \"や \"Checklist \"など、データセットの特定のタイプを示す単一の用語です。\n\n"
+"| 7. 識別子\n"
+"| オンラインデータセットに解決するDOI（digital object identifier）ハンドルです。DOIがない場合、IPTのオンラインデータセットページへのリンクが代わりに使われます。IPTのURLは変更される可能性がありますが、DOIは持続的なアクセスを保証するため、DOIが非常に好ましいです。引用のためには、DataCiteはDOIをリンク可能な恒久的なURLとして表示することを推奨しています。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:48
 #, no-wrap
 msgid "Example Citations"
-msgstr ""
+msgstr "引用例"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:50
 #, no-wrap
 msgid "Example citation for occurrence dataset, with institutional creator, and DOI:"
-msgstr ""
+msgstr "オカレンスデータセットの引用例です（機関作成者、DOIを含む）。"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:53
 msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
-msgstr ""
+msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:55
 #, no-wrap
 msgid "Example citation for checklist dataset, with more than 9 creators, and DOI:"
-msgstr ""
+msgstr "チェックリストデータセット（作成者が9人以上）の引用例、およびDOIです。"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:58
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
-msgstr ""
+msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:60
 #, no-wrap
 msgid "Example citation for occurrence dataset with 3 creators, and without DOI:"
-msgstr ""
+msgstr "3人の作成者がいるオカレンスデータセットの引用例（DOIなし）です。"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:63
 msgid "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
-msgstr ""
+msgstr "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
 
