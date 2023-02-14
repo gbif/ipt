@@ -1043,59 +1043,76 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .type-occurrence {
-    background: #bfbbde !important;
+    background: #5EA642 !important;
+    color: white;
 }
 
 .type-checklist {
-    background: #cbe5be !important;
+    background: #947AB2 !important;
+    color: white;
 }
 
 .type-metadata {
-    background: #7aced8 !important;
+    background: #6885C0 !important;
     color: white !important;
 }
 
 .type-samplingevent {
-    background: #f9d7e7 !important;
+    background: #4BA0CA !important;
+    color: white;
 }
 
 .type-other {
-    background: #7b6d6a !important;
+    background: #7B7979 !important;
     color: white !important;
 }
 
 .type-taxonomicauthority {
-    background: #fff5a0 !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-nomenclatorauthority {
-    background: #a7bfe3 !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-inventorythematic {
-    background: #dfd1b4 !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-inventoryregional {
-    background: #fbdeda !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-globalspeciesdataset {
-    background: #f1cb9d !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-derivedfromoccurrence {
-    background: #d1cfe7 !important;
+    border: 1px solid;
+    background: white !important;
+    color: #947AB2 !important;
 }
 
 .type-specimen {
-    background: #c7a2cd !important;
-    color: white !important;
+    border: 1px solid;
+    background: white !important;
+    color: #5EA642 !important;
 }
 
 .type-observation {
-    background: #e59eac !important;
-    color: white !important;
+    border: 1px solid;
+    background: white !important;
+    color: #5EA642 !important;
 }
 
 .user-admin {
