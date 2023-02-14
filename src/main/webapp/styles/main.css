@@ -1024,22 +1024,20 @@ div.dataTables_processing>div:last-child>div {
     background: #a5d0e6 !important;
 }
 
-.status-public {
-    background: #cbe5be !important;
+.status-public, .statuspublic {
+    color: #5EA642 !important;
 }
 
-.status-private {
-    background: #F8C4B4 !important;
+.status-private, .statusprivate {
+    color: #4e565f !important;
 }
 
-.status-deleted {
-    background: #ff8787 !important;
-    color: white !important;
+.status-deleted, .statusdeleted {
+    color: tomato !important;
 }
 
-.status-registered {
-    background: #2c91bf !important;
-    color: white !important;
+.status-registered, .statusregistered {
+    color: #5EA642 !important;
 }
 
 .type-occurrence {

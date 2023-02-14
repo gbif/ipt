@@ -1468,7 +1468,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiStatus(PublicationStatus status, Locale locale) {
     String localizedStatus = textProvider.getTexts(locale).getString("manage.home.visible." + status.name().toLowerCase());
-    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-" + status.name().toLowerCase() + "\">" + localizedStatus + "</span>";
+    String icon;
+    if (status == PublicationStatus.REGISTERED) {
+      icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
+    } else {
+      icon = "<i class=\"bi bi-circle fs-smaller-2 me-1\"></i>";
+    }
+    return "<span class=\"status-" + status.name().toLowerCase() + "\">" +
+        icon +
+        "<span>" +
+        localizedStatus +
+        "</span>" +
+        "</span>";
   }
 
   @Override
