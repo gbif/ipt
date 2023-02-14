@@ -593,7 +593,11 @@
 
             <div class="text-center mt-1">
                 <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    ${resource.title!resource.shortname}
+                    <#if resource.title?has_content>
+                        ${resource.title}
+                    <#else>
+                        ${resource.shortname}
+                    </#if>
                 </h1>
 
                 <div class="mt-2">
