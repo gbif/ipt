@@ -615,13 +615,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .resource-table-link) {
     color: rgb(var(--link-color)) !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .metadata-action-link, .resource-table-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .metadata-action-link, .resource-table-link):hover {
     color: rgb(var(--link-color)) !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
@@ -1387,7 +1387,19 @@ div#record_graph .color-bar {
 
 /* Resource mini logo in the table */
 .resourceminilogo {
-    width: 30px;
+    width: 5em;
+}
+
+.resource-table-link {
+    color: #4e565f !important;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.resource-table-link:hover {
+    color: #4e565f !important;
+    filter: brightness(0.85);
+    text-decoration: underline !important;
 }
 
 

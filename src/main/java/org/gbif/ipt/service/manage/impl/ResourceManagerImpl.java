@@ -1417,7 +1417,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return link to records section
    */
   private String toUiRecordsPublished(SimplifiedResource resource) {
-    return "<a href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + resource.getRecordsPublished() + "</a>";
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + resource.getRecordsPublished() + "</a>";
   }
 
   /**
@@ -1444,7 +1444,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toResourceHomeLink(SimplifiedResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    return "<a href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
   }
 
   /**
@@ -1456,7 +1456,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toResourceManageLink(SimplifiedResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    return "<a href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
   }
 
   /**
