@@ -132,6 +132,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -165,7 +166,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -1306,7 +1306,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiOrganization(resource));
     result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
     result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
-    result.add(toUiRecordsPublished(resource));
+    result.add(toUiRecordsPublished(resource, locale));
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
@@ -1335,7 +1335,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiOrganization(resource));
     result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
     result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
-    result.add(toUiRecordsPublished(resource));
+    result.add(toUiRecordsPublished(resource, locale));
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
@@ -1411,13 +1411,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Converts raw data to UI format.
-   * Wraps number of published records into a link
+   * Wraps number of published records into a link and format number according to the locale.
    *
    * @param resource lightweight resource
+   * @param locale locale
    * @return link to records section
    */
-  private String toUiRecordsPublished(SimplifiedResource resource) {
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + resource.getRecordsPublished() + "</a>";
+  private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
+    NumberFormat format = NumberFormat.getInstance(locale);
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
   }
 
   /**
@@ -1474,7 +1476,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       icon = "<i class=\"bi bi-circle fs-smaller-2 me-1\"></i>";
     }
-    return "<span class=\"status-" + status.name().toLowerCase() + "\">" +
+    return "<span class=\"text-nowrap status-" + status.name().toLowerCase() + "\">" +
         icon +
         "<span>" +
         localizedStatus +
