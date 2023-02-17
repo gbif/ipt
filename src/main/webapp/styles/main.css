@@ -997,19 +997,21 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .autopublish-enabled {
-    background: #cbe5be !important;
+    background: #C9E1C0 !important;
+    color: #4e565f !important;
 }
 
 .autopublish-disabled {
-    background: #fff1a6 !important;
+    background: #F8DFA3 !important;
 }
 
 .metadata-incomplete {
-    background: #F8C4B4 !important;
+    background: #F1BDB8 !important;
 }
 
 .metadata-complete {
-    background: #cbe5be !important;
+    background: #C9E1C0 !important;
+    color: #4e565f !important;
 }
 
 .version-current {
@@ -1020,8 +1022,14 @@ div.dataTables_processing>div:last-child>div {
     background: #ecb7ea !important;
 }
 
-.doi-pill {
-    background: #a5d0e6 !important;
+.license-pill, .doi-pill {
+    border: 1px solid;
+    color: rgb(var(--color-gbif-primary));
+    border-radius: 8px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .status-public, .statuspublic {

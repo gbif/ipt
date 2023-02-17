@@ -825,15 +825,27 @@
 
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                                 <div class="ps-2 published-version-item-link">
-                                                    <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong></span><br>
-                                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-current">${lastPublishedTitle?cap_first}</span>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span>
+                                                    <span class="me-2 overview-version-title">
+                                                        <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
+                                                    </span>
+                                                    <span class="fs-smaller-2 status-${lastPublishedVersionStatus}">
+                                                        <#if lastPublishedVersionStatus == "registered">
+                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
+                                                        <#elseif lastPublishedVersionStatus == "public">
+                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
+                                                        <#elseif lastPublishedVersionStatus == "private">
+                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                        <#elseif lastPublishedVersionStatus == "deleted">
+                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.deleted"/>
+                                                        </#if>
+                                                    </span><br>
                                                     <#if resource.isAlreadyAssignedDoi()>
-                                                        <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
+                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
-                                                    <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${lastPublishedVersionStatus}">${lastPublishedVersionStatus?cap_first}</span><br>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <span class="fs-smaller-2">
                                                         <small>
+                                                            ${lastPublishedTitle?cap_first} |
                                                             ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
                                                         </small>
                                                     </span>
@@ -913,17 +925,33 @@
                                     </#if>
 
                                     <div class="col-xl-6" style="height: 100%">
+                                        <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                             <div class="ps-2 next-version-item-link">
-                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span><br>
-                                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill version-pending">${nextPublishedTitle?cap_first}</span>
-                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill"><@shortLicense resource.getEml().parseLicenseUrl()/></span>
+                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span>
+                                                <span class="fs-smaller-2 status-${nextVersionStatus}">
+                                                    <#if nextVersionStatus == "registered">
+                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
+                                                    <#elseif nextVersionStatus == "public">
+                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
+                                                    <#elseif nextVersionStatus == "private">
+                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                    <#elseif nextVersionStatus == "deleted">
+                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.deleted"/>
+                                                    </#if>
+                                                </span><br>
                                                 <#if resource.isAlreadyAssignedDoi()>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill doi-pill">${resource.versionHistory[0].doi!}</span>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                 </#if>
-                                                <span title="${visibilityTitle?cap_first}" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-${resource.status?lower_case}">${resource.status?lower_case?cap_first}</span><br>
+                                                <#if resource.getEml().parseLicenseUrl()?has_content>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
+                                                <#else>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                </#if>
                                                 <span class="fs-smaller-2">
                                                     <small>
+                                                        ${nextPublishedTitle?cap_first} |
                                                         <#if resource.nextPublished??>
                                                             ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                         <#else>
