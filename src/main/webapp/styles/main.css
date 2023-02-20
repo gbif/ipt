@@ -888,18 +888,19 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     font-weight: 500;
     padding: 4px;
     border-radius: 10px;
-    color: #58687b !important;
+    color: rgb(var(--color-gbif-primary)) !important;
 }
 
 .overview-action-button:hover {
     background-color: rgba(var(--color-gbif-primary), 0.05);
     color: rgb(var(--color-gbif-primary)) !important;
+    filter: brightness(0.85);
 }
 
 .overview-action-button-icon {
     height: 1em;
     vertical-align: -0.125em !important;
-    fill: #4e565f;
+    fill: rgb(var(--color-gbif-primary));
 }
 
 .overview-action-button-icon:hover {
