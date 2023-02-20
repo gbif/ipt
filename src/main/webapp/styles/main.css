@@ -1037,7 +1037,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .status-private, .statusprivate {
-    color: #4e565f !important;
+    color: #868484 !important;
 }
 
 .status-deleted, .statusdeleted {

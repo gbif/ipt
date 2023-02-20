@@ -739,8 +739,8 @@
                         <div class="mt-4">
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
-                                    <span class="text-nowrap status-private">
-                                        <i class="bi bi-circle me-1"></i>
+                                    <span class="fs-smaller text-nowrap status-private">
+                                        <i class="bi bi-circle-fill"></i>
                                         <@s.text name="resource.status.private"/>
                                     </span>
                                     <#if resource.makePublicDate?has_content>
@@ -751,20 +751,20 @@
                                         <@s.text name="manage.resource.status.intro.private"/>
                                     </#if>
                                 <#elseif resource.status=="PUBLIC">
-                                    <span class="text-nowrap status-public">
-                                        <i class="bi bi-circle me-1"></i>
+                                    <span class="fs-smaller text-nowrap status-public">
+                                        <i class="bi bi-circle"></i>
                                         <@s.text name="resource.status.public"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.public"/>
                                 <#elseif resource.status=="REGISTERED">
-                                    <span class="fs-smaller-2 text-nowrap status-registered">
-                                        <i class="bi bi-circle-fill me-1"></i>
+                                    <span class="fs-smaller text-nowrap status-registered">
+                                        <i class="bi bi-circle-fill"></i>
                                         <@s.text name="resource.status.registered"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.registered"/>
                                 <#elseif resource.status=="DELETED">
-                                    <span class="fs-smaller-2 text-nowrap status-deleted">
-                                        <i class="bi bi-circle me-1"></i>
+                                    <span class="fs-smaller text-nowrap status-deleted">
+                                        <i class="bi bi-circle-fill"></i>
                                         <@s.text name="resource.status.deleted"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.deleted"/>
