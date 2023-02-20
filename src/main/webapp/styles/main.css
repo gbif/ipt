@@ -1038,7 +1038,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .status-deleted, .statusdeleted {
-    color: tomato !important;
+    color: #E37C72 !important;
 }
 
 .status-registered, .statusregistered {
