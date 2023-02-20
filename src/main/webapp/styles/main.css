@@ -1121,21 +1121,10 @@ div.dataTables_processing>div:last-child>div {
     color: #5EA642 !important;
 }
 
-.user-admin {
-    background: #009EFF !important;
-    color: white !important;
-}
-
-.user-manager {
-    background: #7DE5ED !important;
-}
-
-.user-publisher {
-    background: #C7F2A4 !important;
-}
-
-.user-user {
-    background: #FFE15D !important;
+.user-admin, .user-manager, .user-publisher, .user-user {
+    background: white !important;
+    border: 1px solid;
+    color: #4C9C2E !important;
 }
 
 /* Base styles for dataTable badges */
