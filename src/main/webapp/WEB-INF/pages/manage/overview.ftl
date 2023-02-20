@@ -740,7 +740,7 @@
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
                                     <span class="fs-smaller text-nowrap status-private">
-                                        <i class="bi bi-circle-fill"></i>
+                                        <i class="bi bi-circle"></i>
                                         <@s.text name="resource.status.private"/>
                                     </span>
                                     <#if resource.makePublicDate?has_content>
@@ -838,7 +838,7 @@
                                                         <#elseif lastPublishedVersionStatus == "public">
                                                             <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
                                                         <#elseif lastPublishedVersionStatus == "private">
-                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.private"/>
+                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
                                                         <#elseif lastPublishedVersionStatus == "deleted">
                                                             <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
                                                         </#if>
@@ -940,7 +940,7 @@
                                                     <#elseif nextVersionStatus == "public">
                                                         <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
                                                     <#elseif nextVersionStatus == "private">
-                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.private"/>
+                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
                                                     <#elseif nextVersionStatus == "deleted">
                                                         <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
                                                     </#if>

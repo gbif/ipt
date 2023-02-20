@@ -1471,7 +1471,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private String toUiStatus(PublicationStatus status, Locale locale) {
     String localizedStatus = textProvider.getTexts(locale).getString("manage.home.visible." + status.name().toLowerCase());
     String icon;
-    if (status == PublicationStatus.PUBLIC) {
+    if (status == PublicationStatus.PUBLIC || status == PublicationStatus.PRIVATE) {
       icon = "<i class=\"bi bi-circle fs-smaller-2 me-1\"></i>";
     } else {
       icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
