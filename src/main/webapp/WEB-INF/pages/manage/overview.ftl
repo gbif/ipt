@@ -838,9 +838,9 @@
                                                         <#elseif lastPublishedVersionStatus == "public">
                                                             <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
                                                         <#elseif lastPublishedVersionStatus == "private">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.private"/>
                                                         <#elseif lastPublishedVersionStatus == "deleted">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.deleted"/>
+                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
                                                         </#if>
                                                     </span><br>
                                                     <#if resource.isAlreadyAssignedDoi()>
@@ -940,9 +940,9 @@
                                                     <#elseif nextVersionStatus == "public">
                                                         <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
                                                     <#elseif nextVersionStatus == "private">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.private"/>
                                                     <#elseif nextVersionStatus == "deleted">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.deleted"/>
+                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
                                                     </#if>
                                                 </span><br>
                                                 <#if resource.isAlreadyAssignedDoi()>
