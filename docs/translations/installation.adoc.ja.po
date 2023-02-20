@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2022-10-14 20:14\n"
+"POT-Creation-Date: 2023-02-20 14:50+0000\n"
+"PO-Revision-Date: 2023-02-20 15:32\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
-msgid "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see [this issue](https://github.com/gbif/ipt/issues/1646) if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
+msgid "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
 msgstr ""
 
 #. type: Plain text
