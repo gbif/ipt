@@ -739,7 +739,8 @@
                         <div class="mt-4">
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-private">
+                                    <span class="text-nowrap status-private">
+                                        <i class="bi bi-circle me-1"></i>
                                         <@s.text name="resource.status.private"/>
                                     </span>
                                     <#if resource.makePublicDate?has_content>
@@ -750,17 +751,20 @@
                                         <@s.text name="manage.resource.status.intro.private"/>
                                     </#if>
                                 <#elseif resource.status=="PUBLIC">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-public">
+                                    <span class="text-nowrap status-public">
+                                        <i class="bi bi-circle me-1"></i>
                                         <@s.text name="resource.status.public"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.public"/>
                                 <#elseif resource.status=="REGISTERED">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-registered">
+                                    <span class="fs-smaller-2 text-nowrap status-registered">
+                                        <i class="bi bi-circle-fill me-1"></i>
                                         <@s.text name="resource.status.registered"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.registered"/>
                                 <#elseif resource.status=="DELETED">
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill status-deleted">
+                                    <span class="fs-smaller-2 text-nowrap status-deleted">
+                                        <i class="bi bi-circle me-1"></i>
                                         <@s.text name="resource.status.deleted"/>
                                     </span>
                                     <@s.text name="manage.resource.status.intro.deleted"/>
@@ -840,9 +844,9 @@
                                                         </#if>
                                                     </span><br>
                                                     <#if resource.isAlreadyAssignedDoi()>
-                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <span class="fs-smaller-2">
                                                         <small>
                                                             ${lastPublishedTitle?cap_first} |
@@ -942,12 +946,12 @@
                                                     </#if>
                                                 </span><br>
                                                 <#if resource.isAlreadyAssignedDoi()>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                 </#if>
                                                 <#if resource.getEml().parseLicenseUrl()?has_content>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
                                                 <#else>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                 </#if>
                                                 <span class="fs-smaller-2">
                                                     <small>
