@@ -277,11 +277,11 @@
 body {
     font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
     padding-top: 3.5rem; /* Separates nav and main */
-    color: #4e565f;
+    color: #575757;
 }
 
 table {
-    color: #4e565f !important;
+    color: #575757 !important;
 }
 
 /* Login container */
@@ -907,10 +907,6 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     fill: rgb(var(--color-gbif-primary));
 }
 
-.overview-action-button:hover {
-    color: #4e565f;
-}
-
 .overview-action-button:hover .overview-action-button-icon {
     fill: rgb(var(--color-gbif-primary));
 }
@@ -1389,13 +1385,13 @@ div#record_graph .color-bar {
 }
 
 .resource-table-link {
-    color: #4e565f !important;
+    color: #575757 !important;
     font-weight: 500;
     text-decoration: none;
 }
 
 .resource-table-link:hover {
-    color: #4e565f !important;
+    color: #575757 !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
 }
