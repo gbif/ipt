@@ -397,7 +397,7 @@
 
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-temporal" class="text-smaller" href="">
+                                        <a id="preview-inferred-temporal" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -408,12 +408,12 @@
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                         ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
-                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
-                                        <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
+                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                            <span>
+                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.reinfer"/></span>
                                         </a>
                                     </div>
@@ -430,7 +430,7 @@
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
                                         <div class="handle d-flex justify-content-end mt-4">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href="">
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -512,7 +512,7 @@
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-2">
-                                <a id="plus" href="" class="text-smaller">
+                                <a id="plus" href="" class="metadata-action-link">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -528,7 +528,7 @@
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="base-temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="handle d-flex justify-content-end mt-4">
-                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>

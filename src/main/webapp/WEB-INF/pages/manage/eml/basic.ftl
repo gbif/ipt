@@ -353,7 +353,7 @@
                             <#list eml.description as item>
                                 <div id="item-${item_index}" class="handle item pb-4 border-bottom">
                                     <div class="handle columnLinks my-2 d-flex justify-content-end">
-                                        <a id="removeLink-${item_index}" class="removeLink text-smaller mt-1" href="">
+                                        <a id="removeLink-${item_index}" class="removeLink metadata-action-link mt-1" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -367,7 +367,7 @@
                             </#list>
                         </div>
                         <div class="addNew my-2">
-                            <a id="plus" href="" class="text-smaller">
+                            <a id="plus" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -379,7 +379,7 @@
 
                         <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks my-2 d-flex justify-content-end">
-                                <a id="removeLink" class="removeLink text-smaller" href="">
+                                <a id="removeLink" class="removeLink metadata-action-link" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -409,7 +409,7 @@
                                 <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="contact-copy-${contact_index}" href="" class="text-smaller">
+                                            <a id="contact-copy-${contact_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -419,7 +419,7 @@
                                             </a>
                                         </div>
                                         <div>
-                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink text-smaller" href="">
+                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -484,7 +484,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-contact" href="" class="text-smaller">
+                            <a id="plus-contact" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -497,7 +497,7 @@
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="contact-copy" href="" class="text-smaller">
+                                    <a id="contact-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -507,7 +507,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="contact-removeLink" class="removeContactLink text-smaller" href="">
+                                    <a id="contact-removeLink" class="removeContactLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -570,7 +570,7 @@
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="creator-copy-${creator_index}" href="" class="text-smaller">
+                                            <a id="creator-copy-${creator_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -580,7 +580,7 @@
                                             </a>
                                         </div>
                                         <div class="text-end">
-                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink text-smaller" href="">
+                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -645,7 +645,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-creator" href="" class="text-smaller">
+                            <a id="plus-creator" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -658,7 +658,7 @@
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copy" href="" class="text-smaller">
+                                    <a id="creator-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -668,7 +668,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="creator-removeLink" class="removeCreatorLink text-smaller" href="">
+                                    <a id="creator-removeLink" class="removeCreatorLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -731,7 +731,7 @@
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="text-smaller">
+                                            <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -741,7 +741,7 @@
                                             </a>
                                         </div>
                                         <div class="text-end">
-                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink text-smaller" href="">
+                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -806,7 +806,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-metadataProvider" href="" class="text-smaller">
+                            <a id="plus-metadataProvider" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -819,7 +819,7 @@
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copy" href="" class="text-smaller">
+                                    <a id="metadataProvider-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -829,7 +829,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink text-smaller" href="">
+                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>

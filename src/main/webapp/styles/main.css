@@ -1694,6 +1694,19 @@ button.close {
     }
 }
 
+.metadata-action-link {
+    font-size: 0.75rem !important;
+    font-weight: 500;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.metadata-action-link:hover {
+    background-color: rgba(var(--link-color), 0.05);
+    text-decoration: none !important;
+    filter: brightness(0.85);
+}
+
 .bd-main {
     grid-area: main;
 }

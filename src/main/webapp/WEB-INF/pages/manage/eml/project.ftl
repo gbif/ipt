@@ -146,7 +146,7 @@
                                         <div id="personnel-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                                 <div>
-                                                    <a id="personnel-copy-${item_index}" href="" class="text-smaller">
+                                                    <a id="personnel-copy-${item_index}" href="" class="metadata-action-link">
                                                         <span>
                                                             <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -156,7 +156,7 @@
                                                     </a>
                                                 </div>
                                                 <div>
-                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink text-smaller" href="">
+                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink metadata-action-link" href="">
                                                         <span>
                                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -190,7 +190,7 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-personnel" href="" class="text-smaller">
+                                    <a id="plus-personnel" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -207,7 +207,7 @@
                             <div id="baseItem-personnel" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="personnel-copy" href="" class="text-smaller">
+                                        <a id="personnel-copy" href="" class="metadata-action-link">
                                             <span>
                                                 <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -217,7 +217,7 @@
                                         </a>
                                     </div>
                                     <div class="text-end">
-                                        <a id="personnel-removeLink" class="removePersonnelLink text-smaller" href="">
+                                        <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>

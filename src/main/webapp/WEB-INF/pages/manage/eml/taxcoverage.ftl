@@ -198,7 +198,7 @@
 
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-taxonomic" class="text-smaller" href="">
+                                        <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -231,7 +231,7 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
                                         <div class="handle d-flex justify-content-end mt-2">
-                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
+                                            <a id="removeLink-${item_index}" class="removeLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -246,8 +246,8 @@
                                         </div>
 
                                         <!-- Taxon list-->
-                                        <div class="my-2 text-smaller">
-                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1" href="">
+                                        <div class="my-2 fs-smaller-2">
+                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1 metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -271,7 +271,7 @@
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
                                                         <div class="handle d-flex justify-content-end mt-2 py-1">
-                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
+                                                            <a id="trash-${item_index}-${subItem_index}" class="metadata-action-link" href="">
                                                                 <span>
                                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -299,7 +299,7 @@
                                             </#if>
                                         </div>
                                         <div class="pb-1 mt-3">
-                                            <a id="plus-subItem-${item_index}" href="" class="text-smaller">
+                                            <a id="plus-subItem-${item_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -313,7 +313,7 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus plus-taxcoverage text-smaller" href="">
+                                <a id="plus" class="plus plus-taxcoverage metadata-action-link" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -371,7 +371,7 @@
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="handle d-flex justify-content-end mt-2">
-                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -387,7 +387,7 @@
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="">
+                                    <a id="taxonsLink" class="show-taxonList metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -404,7 +404,7 @@
                                 </div>
                                 <div id="subItems" class="my-2"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
-                                    <a id="plus-subItem" href="" class="text-smaller">
+                                    <a id="plus-subItem" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -417,7 +417,7 @@
 
                             <div id="subItem-9999" class="sub-item mt-3" style="display:none">
                                 <div class="handle d-flex justify-content-end mt-2 py-1">
-                                    <a id="trash" class="text-smaller" href="">
+                                    <a id="trash" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
