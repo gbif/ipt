@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-10-14 17:06+0000\n"
+"POT-Creation-Date: 2023-02-20 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid ""
 "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being "
-"developed.  Please see [this issue](https://github.com/gbif/ipt/issues/1646) "
+"developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] "
 "if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
 msgstr ""
 
