@@ -1680,7 +1680,11 @@
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
-                    <#if resource.key?has_content && (potentialNetworks?size>0)>
+                    <#if resource.status == "DELETED">
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.networks.deleted"/>
+                        </div>
+                    <#elseif resource.key?has_content && (potentialNetworks?size>0)>
                         <div>
                             <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
                                 <@s.text name="manage.overview.networks.obis.notification"/>
@@ -1695,10 +1699,6 @@
                                 </select>
                                 <@s.submit id="add-network" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
-                        </div>
-                    <#elseif resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.networks.deleted"/>
                         </div>
                     <#else>
                         <div class="callout callout-warning text-smaller">
