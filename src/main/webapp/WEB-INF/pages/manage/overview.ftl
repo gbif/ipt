@@ -1620,8 +1620,14 @@
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
-                    <!-- resources cannot be published if the mandatory metadata is missing -->
-                    <#if missingMetadata>
+                    <!-- resources cannot be published if it's deleted -->
+                    <#if resource.status == "DELETED">
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.published.deleted"/>
+                        </div>
+
+                        <!-- resources cannot be published if the mandatory metadata is missing -->
+                    <#elseif missingMetadata>
                         <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.published.missing.metadata"/>
                         </div>
@@ -1705,6 +1711,10 @@
                                 </select>
                                 <@s.submit id="add-network" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
+                        </div>
+                    <#elseif resource.status == "DELETED">
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.networks.deleted"/>
                         </div>
                     <#else>
                         <div class="callout callout-warning text-smaller">

@@ -1,5 +1,12 @@
 <#macro publish resource>
-    <#if missingMetadata>
+    <#if resource.status == "DELETED">
+        <button id="publish-button-show-warning" class="publishDeletedResource text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
+            </svg>
+            <@s.text name="button.publish"/>
+        </button>
+    <#elseif missingMetadata>
         <!-- resources cannot be published if the mandatory metadata is missing -->
         <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
             <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
