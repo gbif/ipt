@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-02-21 11:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -147,7 +147,7 @@ msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-ch
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:27
 msgid "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]]"
+msgstr "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:29
