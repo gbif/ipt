@@ -1008,15 +1008,7 @@ div.dataTables_processing>div:last-child>div {
 
 .metadata-complete {
     background: #C9E1C0 !important;
-    color: #4e565f !important;
-}
-
-.version-current {
-    background: #b1caf6 !important;
-}
-
-.version-pending {
-    background: #ecb7ea !important;
+    color: #575757 !important;
 }
 
 .license-pill, .doi-pill {
