@@ -884,7 +884,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* Overview buttons */
 .overview-action-button {
-    font-size: 1.25rem !important;
+    font-size: 0.875rem !important;
     font-weight: 500;
     padding: 4px;
     border-radius: 10px;

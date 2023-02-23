@@ -18,7 +18,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <a id="add-source-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button source-action fs-smaller-2" type="button" href="#">
+                <a id="add-source-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button source-action" type="button" href="#">
                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                     </svg>
@@ -195,7 +195,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <a id="add-mapping-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button mapping-action fs-smaller-2" type="button" href="#">
+            <a id="add-mapping-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button mapping-action" type="button" href="#">
                 <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                 </svg>

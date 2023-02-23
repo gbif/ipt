@@ -706,7 +706,7 @@
                                     <#assign actionMethod>makePublic</#assign>
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                             </svg>
@@ -718,7 +718,7 @@
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
                                         <input name="unpublish" type="hidden" value="Change"/>
-                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                             </svg>
@@ -726,7 +726,7 @@
                                         </button>
                                     </form>
                                 <#else>
-                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                         <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                         </svg>
@@ -1067,7 +1067,7 @@
                                         <#assign visibilityConfirmRegistrationWarning>
                                             <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                         </#assign>
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                             </svg>
@@ -1075,7 +1075,7 @@
                                         </button>
                                     <#elseif missingValidPublishingOrganisation?string == "true">
                                         <!-- Hide register button and show warning: user must assign valid publishing organisation -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                             </svg>
@@ -1083,7 +1083,7 @@
                                         </button>
                                     <#elseif missingRegistrationMetadata?string == "true">
                                         <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                             </svg>
@@ -1091,7 +1091,7 @@
                                         </button>
                                     <#elseif !resource.isLastPublishedVersionPublic()>
                                         <!-- Hide register button and show warning: last published version must be publicly available to register -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                             </svg>
@@ -1099,7 +1099,7 @@
                                         </button>
                                     <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                         <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                             </svg>
@@ -1108,7 +1108,7 @@
                                     <#else>
                                         <form action="resource-registerResource.do" method="post">
                                             <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <button id="register-resource-button" class="confirmRegistration text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="submit">
+                                            <button id="register-resource-button" class="confirmRegistration text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
                                                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                                 </svg>
@@ -1117,7 +1117,7 @@
                                         </form>
                                     </#if>
                                 <#else>
-                                    <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+                                    <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                         <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                             <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                                         </svg>
@@ -1196,7 +1196,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="auto-publish.do?r=${resource.shortname}">
+                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="auto-publish.do?r=${resource.shortname}">
                                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                     </svg>
@@ -1239,7 +1239,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <a id="add-network-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+                                <a id="add-network-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                     </svg>
@@ -1327,7 +1327,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <a id="add-manager-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+                                <a id="add-manager-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                     </svg>

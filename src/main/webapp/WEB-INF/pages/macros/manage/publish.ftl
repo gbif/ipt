@@ -1,6 +1,6 @@
 <#macro publish resource>
     <#if resource.status == "DELETED">
-        <button id="publish-button-show-warning" class="publishDeletedResource text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button">
+        <button id="publish-button-show-warning" class="publishDeletedResource text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
             </svg>
@@ -8,7 +8,7 @@
         </button>
     <#elseif missingMetadata>
         <!-- resources cannot be published if the mandatory metadata is missing -->
-        <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+        <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
             <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
@@ -18,7 +18,7 @@
         </a>
     <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-        <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+        <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
             <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
@@ -34,7 +34,7 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
             <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-            <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+            <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                 </svg>
@@ -49,7 +49,7 @@
 
         <#if !currentUser.hasRegistrationRights()>
             <!-- the user must have registration rights -->
-            <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+            <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                 <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                     <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                         <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
@@ -62,7 +62,7 @@
         <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
         || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
         && !organisationWithPrimaryDoiAccount??>
-            <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" type="button" href="#">
+            <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                 <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                     <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                         <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
@@ -81,7 +81,7 @@
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-                        <button class="confirmPublishMajorVersionWithoutDOI text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+                        <button class="confirmPublishMajorVersionWithoutDOI text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                             </svg>
@@ -95,7 +95,7 @@
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-                        <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+                        <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                 <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                             </svg>
@@ -110,7 +110,7 @@
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-                    <button class="confirmPublishMajorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+                    <button class="confirmPublishMajorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                         <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                             <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                         </svg>
@@ -125,7 +125,7 @@
                 <input name="r" type="hidden" value="${resource.shortname}"/>
                 <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-                <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+                <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                     <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                         <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                     </svg>
@@ -139,7 +139,7 @@
                 <input name="r" type="hidden" value="${resource.shortname}"/>
                 <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-                <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+                <button class="confirmPublishMinorVersion text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                     <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                         <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                     </svg>
@@ -154,7 +154,7 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
             <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
-            <button class="confirmPublishMajorVersionWithoutDOI text-gbif-header-2 icon-button icon-material-actions overview-action-button fs-smaller-2" id="publishButton" name="publish" value="Publish" type="submit">
+            <button class="confirmPublishMajorVersionWithoutDOI text-gbif-header-2 icon-button icon-material-actions overview-action-button" id="publishButton" name="publish" value="Publish" type="submit">
                 <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                     <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
                 </svg>
