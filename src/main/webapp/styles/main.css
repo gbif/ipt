@@ -889,6 +889,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     padding: 4px;
     border-radius: 10px;
     color: rgb(var(--color-gbif-primary)) !important;
+    margin-right: 0.25rem;
 }
 
 .overview-action-button:hover {
