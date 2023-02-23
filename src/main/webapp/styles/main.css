@@ -901,6 +901,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     height: 1em;
     vertical-align: -0.125em !important;
     fill: rgb(var(--color-gbif-primary));
+    margin-right: 0.2rem;
 }
 
 .overview-action-button-icon:hover {
