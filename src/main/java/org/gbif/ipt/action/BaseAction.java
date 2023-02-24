@@ -145,30 +145,6 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
         + Integer.valueOf(primaryColorHex.substring(5, 7), 16);
   }
 
-  public String getSecondaryColor() {
-    String secondaryColorHex = cfg.getColorSchemeConfig().getSecondaryColor();
-    return ""
-        + Integer.valueOf(secondaryColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(secondaryColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(secondaryColorHex.substring(5, 7), 16);
-  }
-
-  public String getWarningColor() {
-    String warningColorHex = cfg.getColorSchemeConfig().getWarningColor();
-    return ""
-        + Integer.valueOf(warningColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(warningColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(warningColorHex.substring(5, 7), 16);
-  }
-
-  public String getDangerColor() {
-    String dangerColorHex = cfg.getColorSchemeConfig().getDangerColor();
-    return ""
-        + Integer.valueOf(dangerColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(dangerColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(dangerColorHex.substring(5, 7), 16);
-  }
-
   public String getNavbarColor() {
     String navbarColorHex = cfg.getColorSchemeConfig().getNavbarColor();
     return ""

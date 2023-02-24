@@ -25,9 +25,9 @@
     <style>
         :root {
             --color-gbif-primary: ${primaryColor!"97, 168, 97"};
-            --color-gbif-danger: ${dangerColor!"227, 99, 112"};
-            --color-gbif-secondary: ${secondaryColor!"78, 86, 95"};
-            --color-gbif-warning: ${warningColor!"255, 193, 8"};
+            --color-gbif-danger: ${"227, 99, 112"};
+            --color-gbif-secondary: ${"78, 86, 95"};
+            --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};

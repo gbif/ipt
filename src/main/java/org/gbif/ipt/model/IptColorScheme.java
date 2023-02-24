@@ -21,12 +21,6 @@ public class IptColorScheme {
 
   public static final String PRIMARY_COLOR_PROPERTY = "primaryColor";
   public static final String PRIMARY_COLOR_DEFAULT_VALUE = "#61a861";
-  public static final String SECONDARY_COLOR_PROPERTY = "secondaryColor";
-  public static final String SECONDARY_COLOR_DEFAULT_VALUE = "#4e565f";
-  public static final String WARNING_COLOR_PROPERTY = "warningColor";
-  public static final String WARNING_COLOR_DEFAULT_VALUE = "#ffc108";
-  public static final String DANGER_COLOR_PROPERTY = "dangerColor";
-  public static final String DANGER_COLOR_DEFAULT_VALUE = "#e36370";
   public static final String NAVBAR_COLOR_PROPERTY = "navbarColor";
   public static final String NAVBAR_COLOR_DEFAULT_VALUE = "#78b578";
   public static final String NAVBAR_LINK_COLOR_PROPERTY = "navbarLinkColor";
@@ -35,9 +29,6 @@ public class IptColorScheme {
   public static final String LINK_COLOR_DEFAULT_VALUE = "#4ba2ce";
 
   private String primaryColor = "#61a861";
-  private String secondaryColor = "#4e565f";
-  private String warningColor = "#ffc108";
-  private String dangerColor = "#e36370";
   private String navbarColor = "#78b578";
   private String navbarLinkColor = "#ffffff";
   private String linkColor = "#4ba2ce";
@@ -47,9 +38,6 @@ public class IptColorScheme {
 
   public IptColorScheme(Properties props) {
     setPrimaryColor(props.getProperty(PRIMARY_COLOR_PROPERTY));
-    setSecondaryColor(props.getProperty(SECONDARY_COLOR_PROPERTY));
-    setWarningColor(props.getProperty(WARNING_COLOR_PROPERTY));
-    setDangerColor(props.getProperty(DANGER_COLOR_PROPERTY));
     setNavbarColor(props.getProperty(NAVBAR_COLOR_PROPERTY));
     setNavbarLinkColor(props.getProperty(NAVBAR_LINK_COLOR_PROPERTY));
     setLinkColor(props.getProperty(LINK_COLOR_PROPERTY));
@@ -58,9 +46,6 @@ public class IptColorScheme {
   public Properties toProperties() {
     Properties props = new Properties();
     props.setProperty(PRIMARY_COLOR_PROPERTY, primaryColor);
-    props.setProperty(SECONDARY_COLOR_PROPERTY, secondaryColor);
-    props.setProperty(WARNING_COLOR_PROPERTY, warningColor);
-    props.setProperty(DANGER_COLOR_PROPERTY, dangerColor);
     props.setProperty(NAVBAR_COLOR_PROPERTY, navbarColor);
     props.setProperty(NAVBAR_LINK_COLOR_PROPERTY, navbarLinkColor);
     props.setProperty(LINK_COLOR_PROPERTY, linkColor);
@@ -73,30 +58,6 @@ public class IptColorScheme {
 
   public void setPrimaryColor(String primaryColor) {
     this.primaryColor = primaryColor;
-  }
-
-  public String getSecondaryColor() {
-    return secondaryColor;
-  }
-
-  public void setSecondaryColor(String secondaryColor) {
-    this.secondaryColor = secondaryColor;
-  }
-
-  public String getWarningColor() {
-    return warningColor;
-  }
-
-  public void setWarningColor(String warningColor) {
-    this.warningColor = warningColor;
-  }
-
-  public String getDangerColor() {
-    return dangerColor;
-  }
-
-  public void setDangerColor(String dangerColor) {
-    this.dangerColor = dangerColor;
   }
 
   public String getNavbarColor() {
@@ -129,9 +90,6 @@ public class IptColorScheme {
     if (o == null || getClass() != o.getClass()) return false;
     IptColorScheme that = (IptColorScheme) o;
     return Objects.equals(primaryColor, that.primaryColor)
-        && Objects.equals(secondaryColor, that.secondaryColor)
-        && Objects.equals(warningColor, that.warningColor)
-        && Objects.equals(dangerColor, that.dangerColor)
         && Objects.equals(navbarColor, that.navbarColor)
         && Objects.equals(navbarLinkColor, that.navbarLinkColor)
         && Objects.equals(linkColor, that.linkColor);
@@ -139,16 +97,13 @@ public class IptColorScheme {
 
   @Override
   public int hashCode() {
-    return Objects.hash(primaryColor, secondaryColor, warningColor, dangerColor, navbarColor, navbarLinkColor, linkColor);
+    return Objects.hash(primaryColor, navbarColor, navbarLinkColor, linkColor);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", IptColorScheme.class.getSimpleName() + "[", "]")
         .add("primaryColor='" + primaryColor + "'")
-        .add("secondaryColor='" + secondaryColor + "'")
-        .add("warningColor='" + warningColor + "'")
-        .add("dangerColor='" + dangerColor + "'")
         .add("navbarColor='" + navbarColor + "'")
         .add("navbarLinkColor='" + navbarLinkColor + "'")
         .add("linkColor='" + linkColor + "'")
