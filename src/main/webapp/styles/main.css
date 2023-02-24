@@ -1409,7 +1409,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 /* Resource deletion buttons */
 .confirmDeletion {
     border: none;
-    color: #212529;
+    color: #575757;
 }
 
 
@@ -1752,6 +1752,12 @@ button.close {
 .anchor-home-resource-page-2 {
     height: 90px;
     margin-top: -104px;
+}
+
+@media (max-width: 1399px) {
+    .resource-table {
+        overflow-x: auto;
+    }
 }
 
 .logoImg>img {
