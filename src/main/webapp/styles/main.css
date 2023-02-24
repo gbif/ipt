@@ -615,13 +615,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .resource-table-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .resource-table-link) {
     color: rgb(var(--link-color)) !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .metadata-action-link, .resource-table-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .metadata-action-link, .resource-table-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link):hover {
     color: rgb(var(--link-color)) !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
@@ -1119,48 +1119,56 @@ div.dataTables_processing>div:last-child>div {
 }
 
 /* Extensions */
-.extension-action-button {
-    font-size: 0.75rem !important;
+.extension-action-button, .action-link-button {
     font-weight: 500;
     padding: 4px;
     border-radius: 10px;
     margin-right: 0.25rem;
     border: none !important;
     background: none;
+    text-decoration: none;
 }
 
-.extension-action-button-primary {
+.extension-action-button {
+    font-size: 0.75rem !important;
+}
+
+.action-link-button {
+    font-size: 0.875rem !important;
+}
+
+.extension-action-button-primary, .action-link-button-primary {
     color: rgb(var(--color-gbif-primary)) !important;
 }
 
-.extension-action-button-danger {
+.extension-action-button-danger, .action-link-button-danger {
     color: rgb(var(--color-gbif-danger)) !important;
     fill: rgb(var(--color-gbif-danger)) !important;
 }
 
-.extension-action-button-primary:hover {
+.extension-action-button-primary:hover, .action-link-button-primary:hover {
     background-color: rgba(var(--color-gbif-primary), 0.05);
     color: rgb(var(--color-gbif-primary)) !important;
     filter: brightness(0.85);
 }
 
-.extension-action-button-danger:hover {
+.extension-action-button-danger:hover, .action-link-button-danger:hover {
     background-color: rgba(var(--color-gbif-danger), 0.05);
     color: rgb(var(--color-gbif-danger)) !important;
     filter: brightness(0.85);
 }
 
-.extension-action-button-icon {
+.extension-action-button-icon, .action-link-button-icon {
     height: 1em;
     vertical-align: -0.125em !important;
     margin-right: 0.2rem;
 }
 
-.extension-action-button-primary .extension-action-button-icon {
+.extension-action-button-primary .extension-action-button-icon, .action-link-button-primary .action-link-button-icon {
     fill: rgb(var(--color-gbif-primary)) !important;
 }
 
-.extension-action-button-danger .extension-action-button-icon {
+.extension-action-button-danger .extension-action-button-icon, .action-link-button-danger .action-link-button-icon {
     fill: rgb(var(--color-gbif-danger)) !important;
 }
 

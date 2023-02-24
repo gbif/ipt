@@ -280,10 +280,16 @@
                                 <@s.text name="admin.uiManagement.iptLogo"/>
                             </label>
                             <@s.file cssClass="form-control my-1" name="file"/>
-                            <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                            <a href="#" class="action-link-button action-link-button-primary" id="buttonUpload">
+                                <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                </svg>
                                 <@s.text name="button.upload"/>
                             </a>
-                            <a href="#" class="button btn btn-outline-gbif-danger" id="buttonRemove">
+                            <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
+                                <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                </svg>
                                 <@s.text name="button.remove"/>
                             </a>
                         </div>
