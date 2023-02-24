@@ -137,7 +137,7 @@
                     <#else>
                         <#assign noBrakeForExamples = false />
                     </#if>
-                    <#if field.field.example?has_content>
+                    <#if (field.field.example)?has_content>
                         <#if !noBrakeForExamples>
                             <br/><br/>
                         </#if>
@@ -147,7 +147,11 @@
                                 <code>${ex}</code><#sep>, </#sep>
                             </#list>
                         <#else>
-                            <code>${field.field.example}</code>
+                            <#if field.field.example?is_boolean>
+                                <code>${field.field.example?string("true", "false")}</code>
+                            <#else>
+                                <code>${field.field.example}</code>
+                            </#if>
                         </#if>
                     <#else>
                         <@s.text name="basic.no.description"/>

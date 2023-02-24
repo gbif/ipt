@@ -167,10 +167,18 @@
                                                             <em><@s.text name="basic.examples"/></em>:
                                                             <#if field.example?is_collection>
                                                                 <#list field.example as ex>
-                                                                    <code>${ex}</code><#sep>, </#sep>
+                                                                    <#if field.example?is_boolean>
+                                                                        <code>${ex?string("true", "false")}</code><#sep>, </#sep>
+                                                                    <#else>
+                                                                        <code>${ex}</code><#sep>, </#sep>
+                                                                    </#if>
                                                                 </#list>
                                                             <#else>
-                                                                <code>${field.example}</code>
+                                                                <#if field.example?is_boolean>
+                                                                    <code>${field.example?string("true", "false")}</code>
+                                                                <#else>
+                                                                    <code>${field.example}</code>
+                                                                </#if>
                                                             </#if>
                                                         </p>
                                                     </#if>
