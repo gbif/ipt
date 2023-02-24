@@ -467,8 +467,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    */
   private void finishInstallSubschema(File tmpFile, String schemaIdentifier, String schemaName, DataSubschema dataSubschema) throws IOException {
     Objects.requireNonNull(tmpFile);
-    Objects.requireNonNull(dataSubschema);
-    Objects.requireNonNull(dataSubschema.getName());
+    Objects.requireNonNull(dataSubschema, "Subschema must not be null");
+    Objects.requireNonNull(dataSubschema.getName(), "Subschema name is required");
 
     try {
       File installedFile = getDataSchemaFile(schemaIdentifier, schemaName, dataSubschema.getName());
