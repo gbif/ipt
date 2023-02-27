@@ -278,7 +278,7 @@
                             <#list dataSchema.subSchemas as subSchema>
                                 <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
                                     <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
-                                    <div id="${subSchema.name}" <#if !subSchema_has_next>style="height: 100vh; min-height: 200px;"</#if> class="mt-5">
+                                    <div id="${subSchema.name}" class="mt-5">
                                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                             ${subSchema.title}
                                         </h4>
