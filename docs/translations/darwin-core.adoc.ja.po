@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-02-28 02:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -25,40 +25,40 @@ msgstr "ダーウインコア"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:5
 msgid "Darwin Core is a http://www.tdwg.org/activities/darwincore/[TDWG] standard, which is based on the ideas of the popular http://dublincore.org/documents/dcmi-terms/[terms from the Dublin Core Metadata Initiative].  A fundamental principle of the Darwin Core as a library of terms is to keep the definition of terms distinct from the technology used to share them, e.g. XML or RDF."
-msgstr ""
+msgstr "Darwin Coreは、link:http://www.tdwg.org/activities/darwincore/[TDWG]標準であり、広く知られるlink:http://dublincore.org/documents/dcmi-terms/[ダブリンコア・メタデータ・イニシアチブ用語]の理念に基づいています。 用語のライブラリとしてのDarwin Coreの基本原則は、用語の定義を、XMLやRDFなど、用語を共有するために使用する技術から区別しておくことです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:6
 #, no-wrap
 msgid "IPT and Darwin Core"
-msgstr ""
+msgstr "IPTとダーウィンコア"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:8
 msgid "The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. The dataset types are Occurrence, Checklist, and Metadata records, each of which has a fixed set of terms to describe it."
-msgstr ""
+msgstr "IPTには、ダーウィンコア（DwC）用語に基づく生物多様性コアデータセットタイプが組み込まれています。データセットタイプはオカレンス、チェックリスト、メタデータの各レコードで、それぞれを記述するための決まった用語があります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:9
 #, no-wrap
 msgid "Darwin Core History"
-msgstr ""
+msgstr "ダーウィンコアの歴史"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:13
 msgid "Until the ratification of Darwin Core as a standard it was used to describe primary species occurrence data, in particular through DiGIR and XML encoding.  When we were looking for a very simple checklist data exchange format and with the rise of tagging of species on Flickr, it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the Darwin Core terms in use already."
-msgstr ""
+msgstr "Darwin Coreが標準として批准されるまでは、主要な種のオカレンスデータを記述するために、特にDiGIRやXMLエンコーディングが利用されていました。 私たちが非常にシンプルなチェックリストのデータ交換フォーマットを探していたとき、またFlickrで種のタグ付けが盛んになったときに、ダブリンコアの伝統に則ったシンプルな生物多様性の用語が非常に有用であり、実際にすでに使われているダーウィンコア用語とよく重なることが明らかになったのです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:14
 #, no-wrap
 msgid "Terms"
-msgstr ""
+msgstr "用語解説"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:16
 msgid "All Darwin Core terms are defined in http://rs.tdwg.org/dwc/terms/index.htm[Darwin Core Terms: a quick reference guide]."
-msgstr ""
+msgstr "すべてのダーウィンコア用語は、link:http://rs.tdwg.org/dwc/terms/index.htm[ダーウィンコア用語：クイックリファレンスガイド]で定義されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:20
