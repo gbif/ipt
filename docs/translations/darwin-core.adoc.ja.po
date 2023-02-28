@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2023-02-28 02:16\n"
+"PO-Revision-Date: 2023-02-28 03:11\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -63,185 +63,186 @@ msgstr "すべてのダーウィンコア用語は、link:http://rs.tdwg.org/dwc
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:20
 msgid "A single DwC term, in IPT often called a property, can be used once for each record.  Generally it is free text, but the definition often recommends certain formats or vocabularies to use, e.g. the ISO 2 letter country codes for the `dwc:countryCode` term."
-msgstr ""
+msgstr "1つのDwC用語は、IPTではプロパティとも呼ばれ、各レコードに一度だけ使用することができます。一般にそれはフリーテキストですが、定義ではしばしば特定のフォーマットやボキャブラリーを使用するよう推奨しています。例えば、`dwc:countryCode` にはISO 2文字の国コードが使用されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:21
 #, no-wrap
 msgid "Patterns"
-msgstr ""
+msgstr "パターン"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:22
 #, no-wrap
 msgid "ID terms"
-msgstr ""
+msgstr "ID用語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:26
 msgid "DwC provides many of terms for identifiers. Some can be used to define a record (such as occurrenceID for an Occurrence record; taxonID for a Taxon record), while others (such as higherGeographyID) refer to an identifier for information stored outside the record.  For example `namePublishedInID` is used to refer to an identifier (perhaps a DOI or other resolvable identifier) for the publication in which a scientificName was originally established.  Note that `taxonID` used within an occurrence dataset would function as a pointer to a taxon defined somewhere else, such as in a checklist dataset, while `taxonID` within a Taxon record would act as the identifier for that record."
-msgstr ""
+msgstr "DwCでは、識別子を表す多くの用語が用意されています。レコードを定義するために使用できるもの（オカレンスレコードの occurrenceID やタクソンレコードの taxonID など）もあれば、レコードの外部に保存される情報の識別子を指すもの（higherGeographyID など）もあります。たとえば、`namePublishedInID` は 学名が最初に確立された出版物の識別子 (おそらく DOI または他の解決可能な識別子) を参照するために使用されます。出現頻度データセット内で使用される `taxonID` は、チェックリストデータセットなど他の場所で定義された分類群へのポインタとして機能し、一方、タクソンレコード内の `taxonID` はそのレコードの識別子として機能することに注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:29
 msgid "Most ID terms have a corresponding full text term, e.g. `acceptedNameUsageID` and `acceptedNameUsage`.  These serve two purposes:"
-msgstr ""
+msgstr "ほとんどのID用語は、`acceptedNameUsageID` や `acceptedNameUsage` のように、対応するフルテキスト用語を持っています。これらには2つの目的があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:31
 msgid "In the absence of an identifier they can be used to refer to another record, in this case the accepted/valid taxon."
-msgstr ""
+msgstr "識別子がない場合、他のレコード（この場合は受理された/有効な分類）を参照するために使用することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:32
 msgid "They provide a human readable context that persists even if the identifier cannot be resolved"
-msgstr ""
+msgstr "識別子が解決できない場合でも、人間が読めるコンテキストを提供します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:34
 msgid "It therefore makes sense to provide both if possible."
-msgstr ""
+msgstr "そのため、可能ならその両方を提供することに意味があります。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:35
 #, no-wrap
 msgid "Denormalized Hierarchies"
-msgstr ""
+msgstr "非正規化ヒエラルキー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:39
 msgid "The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherParentNameUsage(ID)` and `higherGeography(ID)`.  In addition to this _adjacency list_ , the most popular ranks can be published as a denormalized hierarchy for each record, effectively repeating this information across many records. But it does provide a quick, short and human readable classification for each record in isolation of the entire dataset."
-msgstr ""
+msgstr "地理や分類は、 `higherParentNameUsage(ID)`や`higherGeography(ID)`という用語によって、地名や分類の柔軟な階層構造として表現することが可能です。この_隣接リスト_に加え、最も人気のあるランクを各レコードの非正規化された階層として公開することができ、この情報は多くのレコードで効果的に繰り返されます。しかし、これは、データセット全体から切り離された各レコードに対して、迅速で短く、人間が読みやすい分類を提供するものです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:41
 msgid "Taxonomic denormalized classification: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`"
-msgstr ""
+msgstr "分類学的な非正規化クラスです。`kingdom`、`phylum`、`class`、`order`、`family`、`genus`、`subgenus`になります"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:42
 msgid "Geographic denormalized classification: `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`"
-msgstr ""
+msgstr "地理的な非正規化クラス：`continent`、`waterBody`、`islandGroup`、`island`、`country` / `countryCode`、`stateProvince`、`county`、`municipality`となります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:45
 msgid "As with full text ID terms above this introduces the possibility of _data integrity problems_, as the ID term might resolve into something different than the denormalized hierarchy. In this case the IPT follows the recommendation of the following precedence of terms for resolving the hierarchy:"
-msgstr ""
+msgstr "上記のフルテキストID用語と同様に、ID用語が非正規化された階層とは異なるものに解決される可能性があるため、データの整合性に問題が発生する可能性があります。この場合、IPTは、階層を解決するために、以下の用語の優先順位の推奨に従います。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/darwin-core.adoc:49
 #, no-wrap
 msgid "ID term >> Text term >> Denormalized term\n"
 "higherTaxonID >> higherTaxon >> kingdom,family,...\n"
-msgstr ""
+msgstr "ID用語 >> テキスト用語 >> 非正規化用語\n"
+"higherTaxonID >> higherTaxon >> kingdom,family,...\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:51
 #, no-wrap
 msgid "Verbatim terms"
-msgstr ""
+msgstr "逐語的な用語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:55
 msgid "Quite a few terms have a corresponding verbatim term. This is to cater the publication of the exact verbatim transcription of certain attributes as they were found in the underlying specimen label, observation fieldbook or literature. This way the `verbatimEventDate` can be used to publish the exact transcription of the collecting date, while `eventDate` can be encoded in a standard ISO date time representation."
-msgstr ""
+msgstr "多くの用語には、それに対応する逐語的な用語があります。これは、標本ラベル、観察ノート・文献に記載されているような特定の属性を正確に逐語的に書き起こして公開することを可能にするためです。このように、'verbatimEventDate' は、収集日の正確な複製を公開するために使用され、'eventDate' は標準ISO日時表現でエンコードされます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:56
 #, no-wrap
 msgid "Primary data"
-msgstr ""
+msgstr "一時データ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:60
 msgid "All DwC terms can be used to describe an occurrence record.  It is recommended to publish at least the following terms.  Terms flagged with !!! have to be present to be recognized by the current GBIF indexing:"
-msgstr ""
+msgstr "すべてのDwC用語はオカレンス記録を記述するために使用することができます。少なくとも以下の用語は掲載することが推奨されます。「!!!」の付いた用語は、現在のGBIFの索引で認識されるため、存在しなければなりません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:62
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:63
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:64
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#institutionCode[institutionCode] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#institutionCode[institutionCode] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:65
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#collectionCode[collectionCode] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#collectionCode[collectionCode] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:66
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber[catalogNumber] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber[catalogNumber] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:67
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#recordedBy[recordedBy]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#recordedBy[recordedBy]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:68
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#eventDate[eventDate]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:69
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#year[year]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#year[year]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:70
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#typeStatus[typeStatus]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#typeStatus[typeStatus]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:71
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#scientificName[scientificName] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#scientificName[scientificName] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:72
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#kingdom[kingdom]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#kingdom[kingdom]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:73
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#family[family]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#family[family]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:74
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#locality[locality]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#locality[locality]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:75
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLongitude[decimalLongitude]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#decimalLongitude[decimalLongitude]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:76
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLatitude[decimalLatitude]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#decimalLatitude[decimalLatitude]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:77
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#coordinateUncertaintyInMeters[coordinateUncertaintyInMeters]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#coordinateUncertaintyInMeters[coordinateUncertaintyInMeters]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:78
 #, no-wrap
 msgid "Example"
-msgstr ""
+msgstr "例"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/darwin-core.adoc:106
@@ -271,65 +272,89 @@ msgid "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
 "genus=Festuca\n"
 "specificEpithet=anatolica\n"
 "infraspecificEpithet=anatolica\n"
-msgstr ""
+msgstr "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
+"institutionCode=BGBM\n"
+"collectionCode=B\n"
+"basisOfRecord=preservedspecimen\n"
+"catalogNumber=1159\n"
+"eventDate=1999-08-06 00:00:00.0\n"
+"collector=Markus Döring\n"
+"continent=Asia\n"
+"country=TR\n"
+"stateProvince=Adana\n"
+"locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m\n"
+"minimumElevationInMeters=2900\n"
+"decimalLatitude=37.82800\n"
+"decimalLongitude=35.13600\n"
+"geodeticDatum=WGS84\n"
+"identifiedBy=Markus Döring\n"
+"scientificName=Festuca anatolica subsp. anatolica\n"
+"kingdom=Plantae\n"
+"phylum=Magnoliophyta\n"
+"class=\n"
+"order=Cyperales\n"
+"family=Poaceae\n"
+"genus=Festuca\n"
+"specificEpithet=anatolica\n"
+"infraspecificEpithet=anatolica\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:108
 #, no-wrap
 msgid "Checklists"
-msgstr ""
+msgstr "チェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:110
 msgid "Checklists are confined to ± the taxonomic subset of all Darwin Core terms."
-msgstr ""
+msgstr "チェックリストは、すべてのダーウィンコア用語の分類学的サブセットに限定されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:112
 msgid "See the xref:checklist-data.adoc[recommendations on how to publish species checklists]."
-msgstr ""
+msgstr "xref:checklist-data.adoc[種のチェックリストの公開方法に関する推奨事項]を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:113
 #, no-wrap
 msgid "The Darwin Core Archive"
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:116
 msgid "Darwin Core Archives (DwC-A) are the new, primary means of publishing data to the GBIF network.  They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ（DwC-A）は、GBIFネットワークにデータを公開するための新しい主な手段です。DwC-Aは_データセット全体_を含み、_シンプルなテキストファイル_に基づいており、_カスタムソフトウェア_を使ってIPTを使わずにとても簡単に作成することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:117
 #, no-wrap
 msgid "Darwin Core Extensions"
-msgstr ""
+msgstr "ダーウィンコア拡張"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:120
 msgid "Recognizing that DwC only covers the core biodiversity metadata, extensions to Darwin core are a common need across all communities.  The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms."
-msgstr ""
+msgstr "DwCが生物多様性のコアメタデータしかカバーしていないことを認識し、ダーウィンコアの拡張はすべてのコミュニティで共通のニーズであります。最も簡単な方法は、新しい名前空間に新しい用語を作成し、その用語で通常のdwcレコードを単純に拡張することです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:123
 msgid "Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.  In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible."
-msgstr ""
+msgstr "1つの拡張子に対して複数のサブレコードが必要となることがよくあります。例えば、1つの種に対して多くの通称があったり、1つの標本に対して複数の画像があったりする場合です。このような豊かな関連性のある記録を共有するために、*スタースキーム*が使われています。一つのコアレコードに対して、異なる拡張機能（例：画像と同定）を持つ拡張レコードをいくつでも作成することが可能です。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:124
 #, no-wrap
 msgid "The Archive Format"
-msgstr ""
+msgstr "アーカイブ形式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:130
 msgid "The Darwin Core Archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.  A Darwin Core Archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.  The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].  A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here]."
-msgstr ""
+msgstr "ダーウィンコア・アーカイブ形式は、dwcレコードと拡張子を比較的簡単なテキストベースの形式で公開する手段を提供します。ダーウィンコア・アーカイブは、テキストファイルのセットを共通のパッケージにバンドルし、1つのアーカイブファイルにzip圧縮したものです。フォーマットは link:http://rs.tdwg.org/dwc/terms/guides/text/index.htm[ダーウィンコアテキストガイドライン]に従います。典型的なパッケージは以下の図に示されており、link:http://code.google.com/p/gbif-ecat/wiki/DwCArchive[ここ]で詳しく説明されているコンポーネントで構成されています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/darwin-core.adoc:131
 #, no-wrap
 msgid "figures/dwca.png"
-msgstr ""
+msgstr "figures/dwca.png"
 
