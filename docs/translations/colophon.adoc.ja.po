@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2023-02-13 08:55\n"
+"PO-Revision-Date: 2023-02-28 02:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -48,14 +48,14 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:"
-msgstr ""
+msgstr "このユーザーマニュアルの日本語訳は国立科学博物館によって作成されました。この訳の推奨される引用形式は以下の通りです。"
 
 #.  Translated user manual citation
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:27
 msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
-msgstr ""
+msgstr "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (National Museum of Nature and Science, japan, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29
