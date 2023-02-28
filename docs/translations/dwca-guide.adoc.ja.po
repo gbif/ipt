@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-02-10 07:52\n"
+"PO-Revision-Date: 2023-02-28 04:13\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -42,13 +42,13 @@ msgstr "figures/dwc-a_event.png"
 #: en/modules/ROOT/pages/data-preparation.adoc:29
 #: en/modules/ROOT/pages/dwca-guide.adoc:219
 msgid "http://www.gnu.org/software/libiconv/"
-msgstr ""
+msgstr "http://www.gnu.org/software/libiconv/"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:30
 #: en/modules/ROOT/pages/dwca-guide.adoc:220
 msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
-msgstr ""
+msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
@@ -62,7 +62,7 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:226
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
-msgstr ""
+msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 
 #. type: Title =
 #: en/modules/ROOT/pages/dwca-guide.adoc:1
