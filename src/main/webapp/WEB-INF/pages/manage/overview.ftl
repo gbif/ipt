@@ -238,6 +238,14 @@
             }
         });
 
+        $("#datapackageMetadataCancel").click(function (e) {
+            e.preventDefault();
+            $("#datapackageMetadataFile").prop("value", "");
+            $("#datapackageMetadataReplace").hide();
+            $("#datapackageMetadataCancel").hide();
+            $("#datapackage-metadata-validate").hide();
+        });
+
         $("#emlCancel").click(function(event) {
             event.preventDefault();
             $("#emlFile").prop("value", "");
@@ -1613,7 +1621,7 @@
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <div class="row">
                                     <div class="col-12">
-                                        <@s.file name="datapackageMetadataFile" cssClass="form-control form-control-sm my-1"/>
+                                        <@s.file name="datapackageMetadataFile" cssClass="form-control my-1"/>
                                     </div>
                                     <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
                                         <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
