@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"POT-Creation-Date: 2022-11-28 13:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:4
-#: en/modules/ROOT/pages/dwca-guide.adoc:4
-msgid "Version 2.1"
-msgstr ""
-
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
@@ -29,6 +23,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
+#: en/modules/ROOT/pages/dwca-guide.adoc:4
+msgid "Version 2.2"
 msgstr ""
 
 #. type: Target for macro image
@@ -52,8 +52,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
-#: en/modules/ROOT/pages/faq.adoc:207
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
+#: en/modules/ROOT/pages/faq.adoc:216
 msgid "{blank}"
 msgstr ""
 

@@ -26,7 +26,7 @@ versionsTable macro: Generates a data table that has pagination.
         ];
 
         $(document).ready(function() {
-            $('#vtableContainer').html( '<table class="display table table-sm" id="rtable"></table>' );
+            $('#vtableContainer').html( '<table class="hover row-border dataTable compact" id="rtable"></table>' );
             $('#rtable').dataTable( {
                 "bFilter": false,
                 "aaData": aDataSet,

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-03 13:50+0000\n"
-"PO-Revision-Date: 2022-11-04 15:32\n"
+"POT-Creation-Date: 2022-11-28 13:40+0000\n"
+"PO-Revision-Date: 2023-02-06 19:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -27,8 +27,8 @@ msgstr "Preguntas frecuentes"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
-#: en/modules/ROOT/pages/faq.adoc:207
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
+#: en/modules/ROOT/pages/faq.adoc:216
 msgid "{blank}"
 msgstr "{blank}"
 
@@ -63,7 +63,7 @@ msgstr "Para migrar el IPT a otro servidor, solo asegúrese de copiar todo el co
 #: en/modules/ROOT/pages/faq.adoc:13
 #, no-wrap
 msgid "My GBIF IPT instance is slow. What can I do to improve performance?"
-msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar el rendimiento? "
+msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar el rendimiento?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:16
@@ -276,7 +276,7 @@ msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:111
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr "Lo único que falta es agregar la información de la organización a la cuenta DataCite (p. ej., el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration-adoc#editar-una-organización[Editar una organización] del manual de usuario."
+msgstr "Lo único que falta es agregar la información de la organización a la cuenta DataCite (p. ej., el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#editar-una-organización[Editar una organización] del manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
@@ -416,115 +416,135 @@ msgid "How do I change the publishing organization of my resource? The drop down
 msgstr "¿Cómo cambio la organización que publica mi recurso? El menú desplegable de la página de metadatos básicos está desactivado."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:162
-msgid "Please be aware the publishing organization cannot be changed after the resource has been either registered with GBIF or assigned a DOI."
-msgstr "Tenga en cuenta que la organización que publica el recurso no se puede cambiar después de que el recurso se haya registrado en GBIF o se le haya asignado un DOI."
+#: en/modules/ROOT/pages/faq.adoc:163
+msgid "Ideally, the publishing organization should not be changed after the resource has been either registered with GBIF or assigned a DOI."
+msgstr "Idealmente, organización publicadora del recurso no debe cambiarse después de que el recurso se haya registrado en GBIF o se le haya asignado un DOI."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:164
-msgid "In order to change the publishing organization, you need to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here]."
-msgstr "Para cambiar la organización de publicación, debe volver a publicar el recurso y luego reestablecer la organización deseada. Para simplificar el proceso, puede volver a generar el conjunto de datos desde su carpeta de recursos IPT comprimida. Las instrucciones de como realizarlo se encuentran xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:166
-msgid "You should migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr "Debe migrar el recurso de la antigua organización de publicación a la nueva siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]. Por favor, preste mucha atención al paso 5, en el que tendrá que pedir al Centro de ayuda de GBIF que actualice el Registro de GBIF."
+#: en/modules/ROOT/pages/faq.adoc:165
+msgid "That being said, there are two ways to change the publishing organization."
+msgstr "Dicho esto, hay dos formas de cambiar la organización publicadora."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:168
-msgid "Lastly, you can delete old resource using the \"Delete from the IPT only (orphan)\" option on the edit resource page."
-msgstr "Por último, puede eliminar el recurso antiguo utilizando la opción \"Eliminar solo del IPT (huérfano)\" en la página de edición del recurso."
+msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
+msgstr "La forma más sencilla es volver a publicar el recurso y, a continuación, ajustar la organización publicadora deseada. Para simplificar el proceso, puede volver a crear el conjunto de datos desde su carpeta de recursos IPT comprimida. Encontrará instrucciones sobre cómo hacerlo xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí].  Si migra el recurso de la antigua organización publicadora a la nueva organización publicadora siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]: Por favor, preste mucha atención al paso 5, donde tendrá que pedir al Helpdesk de GBIF que actualice el Registro de GBIF (GBIF Registry)."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:170
+msgid "The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):"
+msgstr "La otra forma de proceder es trabajar directamente en el directorio IPT. Antes de empezar, haga una copia de seguridad de sus archivos. A continuación, edite el archivo resource.xml del conjunto de datos en el que desea trabajar (en su servidor, en la carpeta IPT):"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:172
+msgid "In `<organisation>`, replace the current UUID by the UUID of the organization you would like to be the new publishing organization,"
+msgstr "En `<organisation>`, reemplace el UUID actual por el UUID de la organización que desea que sea la nueva organización publicadora,"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:173
+msgid "Restart the IPT (restart Tomcat, restart the IPT service, etc),"
+msgstr "Reinicie el IPT (reinicie Tomcat, reinicie el servicio IPT, etc.),"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:174
+msgid "Check that no error message appears in your IPT when you click publish."
+msgstr "Compruebe que no aparezca ningún mensaje de error en su IPT al hacer clic en publicar."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:176
+msgid "In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
+msgstr "Adicionalmente, *por favor contacte con el Helpdesk de GBIF y pida que la organización sea actualizada en el Registro de GBIF (GBIF Registry)* (esta parte es muy importante)."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:169
+#: en/modules/ROOT/pages/faq.adoc:178
 #, no-wrap
 msgid "How do I change the type of an existing resource?"
 msgstr "¿Cómo cambio el tipo de un recurso existente?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:172
+#: en/modules/ROOT/pages/faq.adoc:181
 msgid "The type of a resource is derived from its core mapping:"
 msgstr "El tipo de un recurso se deriva de su mapeo con el estándar:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:174
+#: en/modules/ROOT/pages/faq.adoc:183
 msgid "If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to \"occurrence\"."
 msgstr "Si el mapeo con el estándar es a la {latest-dwc-occurrence}[Extensión de registro biológico], el tipo es igual a \"occurrence\"."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:175
+#: en/modules/ROOT/pages/faq.adoc:184
 msgid "If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to \"checklist\"."
 msgstr "Si el mapeo con el estándar es a {latest-dwc-taxon}[Extensión del taxón], el tipo es igual a \"checklist\"."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:176
+#: en/modules/ROOT/pages/faq.adoc:185
 msgid "If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to \"sampling-event\"."
 msgstr "Si el mapeo con el estándar es a la {latest-dwc-event}[Extensión de evento], el tipo es igual a \"sampling-event\"."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:177
+#: en/modules/ROOT/pages/faq.adoc:186
 msgid "If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to \"other\"."
-msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT  (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
+msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:179
+#: en/modules/ROOT/pages/faq.adoc:188
 msgid "Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published."
 msgstr "Por lo tanto, para cambiar el tipo de recurso, debe cambiar su mapeo con los términos. Para cambiar un recurso de tipo \"occurrence\" al tipo \"checklist\", por ejemplo, simplemente elimine todo el mapeo con los términos de la extensión \"occurrence\" y luego vuelva a crear el mapeo para los términos de \"Taxon\". Para finalizar el cambio se debe publicar una nueva versión del recurso. Si el recurso se ha registrado con GBIF, su tipo se actualizará automáticamente después de que se haya vuelto a publicar."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:180
+#: en/modules/ROOT/pages/faq.adoc:189
 #, no-wrap
 msgid "What are some tricks to simplify the authoring and maintenance of metadata?"
 msgstr "¿Cuáles son algunos trucos para simplificar la creación y el mantenimiento de los metadatos?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:182
+#: en/modules/ROOT/pages/faq.adoc:191
 msgid "Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:"
 msgstr "Los conjuntos de datos pueden cambiar con el tiempo. Mantener los metadatos de los conjuntos de datos actualizados puede ser una carga, ya que las inconsistencias pueden comenzar a aparecer con el paso del tiempo. A continuación, se muestra una lista de trucos que puede utilizar para simplificar la creación de los metadatos y facilitar su mantenimiento a través del tiempo:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:184
+#: en/modules/ROOT/pages/faq.adoc:193
 msgid "use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:manage-resources.adoc#basic-metadata[here]."
 msgstr "use el ORCID de un contacto en lugar de proporcionar su correo electrónico y otros campos que son susceptibles al cambio si la persona cambia de trabajo. Para más información de cómo proporcionar un contacto ORCID consulte xref:manage-resources.adoc#basic-metadata[aquí]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:185
+#: en/modules/ROOT/pages/faq.adoc:194
 msgid "for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts."
 msgstr "para conjuntos de datos que continúan cambiando/creciendo (versus conjuntos de datos estáticos) evite especificar conteos exactos en las descripciones textuales, p. ej., para registros o conteos de taxones."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:186
+#: en/modules/ROOT/pages/faq.adoc:195
 msgid "use the IPT's citation xref:manage-resources.adoc#citations[Auto-generation feature] instead of supplying a manually created data citation."
 msgstr "utilice la xref:manage-resources.adoc#citations[función de generación automática] de citas del IPT en lugar de proporcionar una cita de los datos creada manualmente."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:187
+#: en/modules/ROOT/pages/faq.adoc:196
 msgid "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon list feature] instead of supplying each taxon manually one at a time when entering the taxonomic coverage."
 msgstr "al ingresar la cobertura taxonómica utilice la importación por medio de la xref:manage-resources.adoc#taxonomic-coverage[función de lista de taxones] del IPT en lugar de proporcionar cada taxón manualmente, uno por uno."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:188
+#: en/modules/ROOT/pages/faq.adoc:197
 #, no-wrap
 msgid "How do I change the hosting organization of my IPT?"
 msgstr "¿Cómo cambio la organización de alojamiento de mi IPT?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:191
+#: en/modules/ROOT/pages/faq.adoc:200
 msgid "the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence."
 msgstr "las instrucciones a continuación asumen que su IPT ya ha sido registrado e implican cambios manuales que requieren competencia técnica."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:193
+#: en/modules/ROOT/pages/faq.adoc:202
 msgid "First, ensure the desired hosting organization has been added to your IPT. You can do this through the user interface. For help adding a new organization to your IPT, refer to xref:administration.adoc#add-organization[this section] of the user manual."
 msgstr "En primer lugar, asegúrese de que la organización de alojamiento deseada ha sido añadida a su IPT. Puede hacerlo a través de la interfaz de usuario. Si necesita ayuda para añadir una nueva organización a su IPT, consulte xref:administration.adoc#add-organization[esta sección] del manual de usuario."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:195
+#: en/modules/ROOT/pages/faq.adoc:204
 msgid "Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:"
 msgstr "A continuación, realice los siguientes 2 cambios manuales en el archivo registration2.xml ubicado dentro del folder /config del directorio de datos de su IPT:"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:204
+#: en/modules/ROOT/pages/faq.adoc:213
 #, no-wrap
 msgid "<registration>\n"
 "  <registry>\n"
@@ -536,7 +556,7 @@ msgstr "<registration>\n"
 "      <key>UUID de la deseada organización de alojo</key>\n"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:214
+#: en/modules/ROOT/pages/faq.adoc:223
 #, no-wrap
 msgid "<registration>\n"
 "  <registry>\n"
@@ -548,193 +568,193 @@ msgstr "<registration>\n"
 "      <organisationKey>UUID de la deseada organización de alojamiento</key>\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:217
+#: en/modules/ROOT/pages/faq.adoc:226
 msgid "Restart Tomcat."
 msgstr "Reiniciar Tomcat."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:219
+#: en/modules/ROOT/pages/faq.adoc:228
 msgid "Last, press the \"update registration\" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#edit-gbif-registration[this section] of the user manual."
-msgstr "Por último presione el botón \"actualizar registro\" en la página de Edición del Registro de GBIF. Esto propagará el cambio hacia el Registro de GBIF. Para mayor información acerca de esta actualización, puede consultar xref:administration.adoc#edit-gbif-registration[esta sección] del manual de usuario. "
+msgstr "Por último presione el botón \"actualizar registro\" en la página de Edición del Registro de GBIF. Esto propagará el cambio hacia el Registro de GBIF. Para mayor información acerca de esta actualización, puede consultar xref:administration.adoc#edit-gbif-registration[esta sección] del manual de usuario."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:220
+#: en/modules/ROOT/pages/faq.adoc:229
 #, no-wrap
 msgid "How do I reset the admin password?"
 msgstr "¿Cómo restablezco la contraseña del administrador?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:223
+#: en/modules/ROOT/pages/faq.adoc:232
 msgid "If you have forgotten the admin password, the server administrator will need to reset it."
 msgstr "Si ha olvidado la contraseña del administrador, el administrador del servidor deberá restablecerla."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:225
+#: en/modules/ROOT/pages/faq.adoc:234
 msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
 msgstr "Usando un editor de texto, abra el archivo `config/users.xml` del directorio de datos del IPT. Busque el usuario administrador (con `role=\"Admin\"`) y reemplace la contraseña encriptada con `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`. Reinicie el IPT. A continuación puede iniciar como un usuario administrador con la contraseña `Ga_1bxiedrvNHSyK`, por supuesto, esta contraseña debe ser cambiada."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:226
+#: en/modules/ROOT/pages/faq.adoc:235
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
-msgstr "¿Cómo migro un conjunto de datos de una instalación de IPT a otra? "
+msgstr "¿Cómo migro un conjunto de datos de una instalación de IPT a otra?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:228
+#: en/modules/ROOT/pages/faq.adoc:237
 msgid "This migration process must be done directly on the server following the next steps:"
 msgstr "Este proceso de migración debe realizarse directamente en el servidor siguiendo los siguientes pasos:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:230
+#: en/modules/ROOT/pages/faq.adoc:239
 msgid "Shut down the old IPT server; just to check no-one makes any changes."
 msgstr "Apague el servidor del IPT anterior, solo para asegurar que nadie haga ningún cambio."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:231
+#: en/modules/ROOT/pages/faq.adoc:240
 msgid "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy the whole dataset folder"
-msgstr "En el IPT anterior vaya a  `/old-ipt-datadir/resources/[dataset_name]` y copie toda la carpeta del conjunto de datos"
+msgstr "En el IPT anterior vaya a `/old-ipt-datadir/resources/[dataset_name]` y copie toda la carpeta del conjunto de datos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:232
+#: en/modules/ROOT/pages/faq.adoc:241
 msgid "In the new IPT go to `/new-ipt-datadir/resources/` and paste the dataset folder"
 msgstr "En el IPT nuevo vaya a `/new-ipt-datadir/resources/` y pegue la carpeta del conjunto de datos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:233
+#: en/modules/ROOT/pages/faq.adoc:242
 msgid "Restart the new IPT server"
 msgstr "Reinicie el nuevo servidor IPT"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:234
+#: en/modules/ROOT/pages/faq.adoc:243
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
 msgstr "Publique el conjunto de datos en el nuevo IPT (actualiza el punto terminal)."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:235
+#: en/modules/ROOT/pages/faq.adoc:244
 #, no-wrap
 msgid "Indexing by GBIF"
 msgstr "Indexación por GBIF"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:237
+#: en/modules/ROOT/pages/faq.adoc:246
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
 msgstr "¿Cuánto tiempo tarda GBIF en comenzar a (re)indexar mi conjunto de datos?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:240
+#: en/modules/ROOT/pages/faq.adoc:249
 msgid "The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on."
 msgstr "La respuesta depende de la longitud de la cola de indexación de GBIF, del tamaño de su conjunto de datos y de si el servicio de indexación de GBIF está activado."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:242
+#: en/modules/ROOT/pages/faq.adoc:251
 msgid "Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor]."
 msgstr "Normalmente GBIF tardará entre 5 y 60 minutos en comenzar la indexación de su conjunto de datos. Puede llevar varias horas terminar la indexación de grandes conjuntos de datos una vez que se inician (aquellos con varios millones de registros), así que tenga paciencia. En la parte inferior de la https://www.gbif.org/health[página de salud del sistema de GBIF] se muestra la longitud de la cola de indexación, y la cola completa se puede visualizar en el https://registry.gbif.org/monitoring/running-crawls[monitor de avance]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:244
+#: en/modules/ROOT/pages/faq.adoc:253
 msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
 msgstr "Si cree que GBIF no pudo indexar su conjunto de datos satisfactoriamente, envíe sus comentarios directamente a través de GBF.org o envíe un correo electrónico al Centro de ayuda de GBIF<helpdesk@gbif.org> para investigar qué sucedió. Si está interesado en saber por qué es posible que GBIF no haya (re)indexado su conjunto de datos, consulte lo siguiente."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:245
+#: en/modules/ROOT/pages/faq.adoc:254
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
 msgstr "¿Por qué GBIF aún no ha (re)indexó mi conjunto de datos?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:248
+#: en/modules/ROOT/pages/faq.adoc:257
 msgid "Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected."
 msgstr "Eventualmente, GBIF apaga su servicio de indexación para realizar mantenimiento (vea los enlaces en la pregunta anterior). Esta es la razón más frecuente de por qué los conjuntos de datos no son indexados tan rápido como se espera."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:250
+#: en/modules/ROOT/pages/faq.adoc:259
 msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
 msgstr "Si cree que GBIF no pudo indexar su conjunto de datos, envíe sus comentarios directamente a través de GBF.org o envíe un correo electrónico al Centro de ayuda de GBIF <helpdesk@gbif.org> para investigar qué sucedió."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:251
+#: en/modules/ROOT/pages/faq.adoc:260
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
 msgstr "¿Con qué frecuencia GBIF reindexa mis conjuntos de datos?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:254
+#: en/modules/ROOT/pages/faq.adoc:263
 msgid "GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT."
 msgstr "GBIF automáticamente intenta reindexar un conjunto de datos registrado cada vez que se actualiza su registro. Esto sucede cada vez que el conjunto de datos se vuelve a publicar a través del IPT."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:256
+#: en/modules/ROOT/pages/faq.adoc:265
 msgid "To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days."
 msgstr "Para los conjuntos de datos no publicados mediante el IPT, GBIF automáticamente intenta reindexar cada 7 días todos los conjuntos de datos registrados."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:258
+#: en/modules/ROOT/pages/faq.adoc:267
 msgid "GBIF will only reindex a dataset if its last published date has changed since the last time it was indexed."
 msgstr "GBIF solo reindexará un conjunto de datos si su última fecha de publicación ha cambiado desde la última vez que se indexó."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:259
+#: en/modules/ROOT/pages/faq.adoc:268
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
 msgstr "¿Qué tipos de conjuntos de datos indexa/admite GBIF?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:262
+#: en/modules/ROOT/pages/faq.adoc:271
 msgid "GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GBIF currently only indexes species occurrence records, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible."
 msgstr "GBIF acepta 4 clases de conjunto de datos descritos xref:how-to-publish.adoc[aquí]. Actualmente, GBIF solo indexa los registros biológicos de especies, que pueden proporcionarse como registros del estándar o como registros de una extensión. En el caso de conjuntos de datos de eventos de muestreo, los registros biológicos de especies de una extensión serán ampliados con información que proviene desde su evento del estándar, siempre que sea posible."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:263
+#: en/modules/ROOT/pages/faq.adoc:272
 #, no-wrap
 msgid "Why is my dataset citation different on GBIF.org?"
 msgstr "¿Por qué la cita de mi conjunto de datos es diferente en GBIF.org?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:266
+#: en/modules/ROOT/pages/faq.adoc:275
 msgid "The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ]."
 msgstr "El IPT acepta citas de los conjuntos de datos en texto libre, sin embargo, estas se sobrescriben en la página del conjunto de datos en GBIF.org. Puede averiguar por qué en https://www.gbif.org/faq?q=citation[Preguntas frecuentes de GBIF.org]."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:267
+#: en/modules/ROOT/pages/faq.adoc:276
 #, no-wrap
 msgid "Why is GBIF unable to access my IPT over HTTPS?"
-msgstr ""
+msgstr "¿Por qué GBIF no puede acceder a mi IPT a través de HTTPS?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:270
+#: en/modules/ROOT/pages/faq.adoc:279
 msgid "This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat etc).  Ensure you can access your server through the command line (`curl https://ipt.example.org`), from computers outside your organization's network (e.g. from a personal phone) and run an https://www.ssllabs.com/ssltest/[SSL Server Test]."
-msgstr ""
+msgstr "Esto suele deberse a una mala configuración del servidor web (Apache, IIS, Tomcat, etc.).  Asegúrese de que puede acceder a su servidor a través de la línea de comandos (`curl https://ipt.example.org`), desde dispositivos externos a la red de su organización (por ejemplo, desde un teléfono personal) y ejecute una https://www.ssllabs.com/ssltest/[Prueba de servidor SSL]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:272
+#: en/modules/ROOT/pages/faq.adoc:281
 msgid "Any errors like \"unable to get local issuer certificate\" or \"certificate chain incomplete\" will usually prevent GBIF's systems from accessing your IPT."
-msgstr ""
+msgstr "Cualquier error como \"unable to get local issuer certificate\" o \"certificate chain incomplete\" normalmente impedirá que los sistemas de GBIF accedan a su IPT."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:274
+#: en/modules/ROOT/pages/faq.adoc:283
 msgid "To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT."
-msgstr ""
+msgstr "Para solucionarlos, consulte la documentación de su servidor web o pida consejo a su departamento informático.  Por lo general, estos problemas no están relacionados con el IPT."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:275
+#: en/modules/ROOT/pages/faq.adoc:284
 #, no-wrap
 msgid "Indexing by others"
 msgstr "Indexación por otros"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:277
+#: en/modules/ROOT/pages/faq.adoc:286
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr "¿Cómo puedo exportar una lista de recursos publicados en mi IPT?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:280
+#: en/modules/ROOT/pages/faq.adoc:289
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
 msgstr "Algunas organizaciones necesitan indexar su propio IPT, a menudo para incluir registros de cada recurso en un sistema público de datos abiertos o similar. El IPT es compatible con DCAT (Vocabulario de catálogo de datos) para permitir esto. La exportación al DCAT está disponible en `/dcat`, por ejemplo, https://ipt.gbif.org/dcat."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:281
+#: en/modules/ROOT/pages/faq.adoc:290
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
 msgstr "Una alternativa es https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], aunque esto solo incluirá conjuntos de datos publicados en GBIF."
 

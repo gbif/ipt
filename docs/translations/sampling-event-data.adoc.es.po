@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-09-15 07:03+0000\n"
-"PO-Revision-Date: 2022-11-04 14:43\n"
+"PO-Revision-Date: 2023-02-06 19:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -132,12 +132,12 @@ msgstr "Alternativamente, si sus datos se almacenan en una xref:database-connect
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:18
 msgid "Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
-msgstr ""
+msgstr "Cada registro de evento de muestreo debe incluir todos los <<Campos DwC requeridos,campos DwC requeridos>> y tantos <<Campos DwC recomendados,campos DwC recomendados>> como sea posible. Puede ampliar su tabla con columnas DwC adicionales, pero sólo con los términos DwC de esta {latest-dwc-event}[lista]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:20
 msgid "Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event."
-msgstr ""
+msgstr "Del mismo modo, cada registro biológico de una especie debe incluir todos los xref:occurrence-data.adoc#required-dwc-fields[campos DwC requeridos] y tantos xref:occurrence-data.adoc#recommended-dwc-fields[campos DwC recomendados] como sea posible. Puede aumentar su tabla con columnas DwC adicionales, pero sólo con términos DwC de esta {latest-dwc-occurrence}[lista]. Algunos términos DwC serán redundantes, es decir, se añadirán tanto a los registros de eventos de muestreo como a los registros biológicos de especies. Como regla general, intente no añadir términos redundantes con los mismos valores. Sin embargo, no hay problema si tienen valores diferentes, por ejemplo, si quiere definir la ubicación de un evento y luego definir ubicaciones más específicas para registros individuales. De lo contrario, cuando la ubicación de los registros individuales no se suministra, su ubicación se hereda del evento."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:22

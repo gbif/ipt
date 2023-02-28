@@ -13,7 +13,8 @@
         });
         $("#peekBtn").click(function (e) {
             e.preventDefault();
-            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}");
+            displayProcessing();
+            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", hideProcessing);
             $("#modalbox").show();
         });
         $("#modalbox").click(function (e) {
@@ -30,6 +31,9 @@
                 sqlBlock.slideUp("slow");
             }
         });
+
+        $("#save").on("click", displayProcessing);
+        $("#analyze").on("click", displayProcessing);
 
         $(document.body).on('click', '.helpOptionLink', function (e) {
             e.preventDefault();
@@ -71,7 +75,7 @@
                     <div class="text-center text-uppercase fw-bold fs-smaller-2">
                         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center mb-0">
-                                <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                                 <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.source"/></li>
                             </ol>

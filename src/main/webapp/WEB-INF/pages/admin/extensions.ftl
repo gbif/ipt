@@ -7,6 +7,8 @@
         $(document).ready(function(){
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         });
+
+        $("#synchronise").on("click", displayProcessing);
     </script>
 
     <#macro extensionRow ext currentIndex numberOfExtensions>
@@ -65,12 +67,24 @@
                     <#if !ext.isLatest()>
                         <form action='updateExtension.do' method='post'>
                             <input type='hidden' name='id' value='${ext.rowType}' />
-                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary me-1" name="update" key="button.update"/>
+
+                            <button type="submit" value="Update" id="update" name="update" class="confirm extension-action-button extension-action-button-primary me-1">
+                                <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"></path>
+                                </svg>
+                                <@s.text name="button.update"/>
+                            </button>
                         </form>
                     </#if>
                     <form action='extension.do' method='post'>
                         <input type='hidden' name='id' value='${ext.rowType}' />
-                        <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger" key="button.remove"/>
+
+                        <button type="submit" value="Delete" id="delete" name="delete" class="extension-action-button extension-action-button-danger">
+                            <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                            </svg>
+                            <@s.text name="button.remove"/>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -231,7 +245,13 @@
                         <div class="actions d-flex justify-content-end">
                             <form action='extension.do' method='post'>
                                 <input type='hidden' name='url' value='${ext.url}' />
-                                <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
+
+                                <button type="submit" value="Install" id="install" name="install" class="extension-action-button extension-action-button-primary">
+                                    <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M20 17H4V5h8V3H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h4v2h8v-2h4c1.1 0 2-.9 2-2v-3h-2v3z"></path><path d="m17 14 5-5-1.41-1.41L18 10.17V3h-2v7.17l-2.59-2.58L12 9z"></path>
+                                    </svg>
+                                    <@s.text name="button.install"/>
+                                </button>
                             </form>
                         </div>
                     </div>

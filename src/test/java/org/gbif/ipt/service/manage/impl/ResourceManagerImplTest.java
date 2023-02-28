@@ -32,6 +32,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SimplifiedResource;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -69,7 +70,7 @@ import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -102,6 +103,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -114,7 +116,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class ResourceManagerImplTest {
@@ -199,6 +203,9 @@ public class ResourceManagerImplTest {
     // mock resource link used as EML GUID
     when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
     when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
+//    // mock
+//    when(mockAppConfig.getDataDir().resourceEmlFile("res2", any(BigDecimal.class)))
+//        .thenReturn(FileUtils.getClasspathFile("resources/res2/eml.xml"));
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
@@ -346,9 +353,9 @@ public class ResourceManagerImplTest {
     assertNull(res.getUpdateFrequency());
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
-    assertNull(res.getMetadataModified());
-    assertNull(res.getMappingsModified());
-    assertNull(res.getSourcesModified());
+    assertNotNull(res.getMetadataModified());
+    assertNotNull(res.getMappingsModified());
+    assertNotNull(res.getSourcesModified());
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
@@ -591,9 +598,9 @@ public class ResourceManagerImplTest {
     assertNull(res.getUpdateFrequency());
     assertNull(res.getNextPublished());
     // the other last modified dates were also reset
-    assertNull(res.getMetadataModified());
-    assertNull(res.getMappingsModified());
-    assertNull(res.getSourcesModified());
+    assertNotNull(res.getMetadataModified());
+    assertNotNull(res.getMappingsModified());
+    assertNotNull(res.getSourcesModified());
   }
 
   /**
@@ -1096,14 +1103,7 @@ public class ResourceManagerImplTest {
     // indicate resource is ready to be published, by setting its status to Public
     resource.setStatus(PublicationStatus.PUBLIC);
 
-    // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<>();
-    Resource r1 = new Resource();
-    r1.setKey(UUID.fromString(registeredDigirResourceUUID));
-    r1.setTitle("Herpetology");
-    organisationsResources.add(r1);
-
-    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+    when(mockRegistryManager.isResourceBelongsToOrganisation(anyString(), anyString())).thenReturn(true);
 
     manager.register(resource, organisation, ipt, baseAction);
 
@@ -1146,14 +1146,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<>();
-    Resource r1 = new Resource();
-    // resource has different UUID than the one in the alternate identifiers list - interpreted as failed migration
-    r1.setKey(UUID.fromString(UUID.randomUUID().toString()));
-    r1.setTitle("Herpetology");
-    organisationsResources.add(r1);
-
-    when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
+    when(mockRegistryManager.isResourceBelongsToOrganisation(anyString(), anyString())).thenReturn(false);
 
     assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
@@ -1860,9 +1853,11 @@ public class ResourceManagerImplTest {
   @Test
   public void testRestoreVersion() throws Exception {
     // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+    ResourceManagerImpl resourceManager = spy(getResourceManagerImpl());
     // prepare resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
+
+    doReturn(new SimplifiedResource()).when(resourceManager).toSimplifiedResourceReconstructedVersion(any());
 
     // add versionHistory for version 2.0
     Date released20 = new Date();
@@ -1986,10 +1981,12 @@ public class ResourceManagerImplTest {
   @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   public void testLoad() throws Exception {
-    ResourceManagerImpl manager = getResourceManagerImpl();
+    ResourceManagerImpl manager = spy(getResourceManagerImpl());
     // mock finding resource.xml file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+
+    doReturn(new SimplifiedResource()).when(manager).toSimplifiedResourceReconstructedVersion(any());
 
     // construct resource directory with a few resources
     File resourceDirectory = FileUtils.createTempDir();

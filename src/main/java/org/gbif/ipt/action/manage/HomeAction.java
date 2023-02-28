@@ -16,60 +16,42 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.model.datatable.DatatableRequest;
+import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.MapUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.json.annotations.JSON;
 
 import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
-  private List<Resource> resources = new ArrayList<>();
+  private static final long serialVersionUID = -7395504502586148676L;
+
+  private DatatableResult resources = new DatatableResult();
 
   private final ResourceManager resourceManager;
-  private final VocabulariesManager vocabManager;
-  private final DataSchemaManager schemaManager;
-  private Map<String, String> types;
-  private Map<String, String> datasetSubtypes;
   private List<Organisation> organisations;
 
   @Inject
   public HomeAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                    ResourceManager resourceManager, VocabulariesManager vocabManager, DataSchemaManager schemaManager) {
+                    ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
-    this.vocabManager = vocabManager;
-    this.schemaManager = schemaManager;
   }
 
   @Override
   public String execute() {
-    resources = resourceManager.list(getCurrentUser());
-
-    // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<>();
-    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
-      types.put(installedSchema.getName(), installedSchema.getTitle());
-    }
-    types = MapUtils.getMapWithLowercaseKeys(types);
-
-    // Dataset Subtypes list, derived from XML vocabulary
-    datasetSubtypes = new LinkedHashMap<>();
-    datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
-    datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
+    DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
+    resources = resourceManager.list(getCurrentUser(), dr);
 
     // load organisations able to host
     organisations = registrationManager.list();
@@ -77,26 +59,40 @@ public class HomeAction extends BaseAction {
     return SUCCESS;
   }
 
-  public List<Resource> getResources() {
+  /**
+   * Constructs request object from HTTP request to get required resources.
+   *
+   * @param request HTTP request
+   * @return resource request object
+   */
+  private DatatableRequest getRequestParameters(HttpServletRequest request) {
+    DatatableRequest result = new DatatableRequest();
+    result.setLocale(getLocaleLanguage());
+    getRequestParameter(request, Constants.DATATABLE_SEARCH_PARAM)
+        .map(StringUtils::trimToEmpty)
+        .ifPresent(result::setSearch);
+    getRequestParameter(request, Constants.DATATABLE_ORDER_DIRECTORY_PARAM)
+        .ifPresent(result::setSortOrder);
+    getRequestParameter(request, Constants.DATATABLE_ORDER_COLUMN_PARAM)
+        .map(Integer::parseInt)
+        .ifPresent(result::setSortFieldIndex);
+    getRequestParameter(request, Constants.DATATABLE_START_PARAM)
+        .map(Long::parseLong)
+        .ifPresent(result::setOffset);
+    getRequestParameter(request, Constants.DATATABLE_LENGTH_PARAM)
+        .map(Integer::parseInt)
+        .ifPresent(result::setLimit);
+
+    return result;
+  }
+
+  @JSON
+  public DatatableResult getResources() {
     return resources;
   }
 
-  /**
-   * Get map of resource types to populate resource type selection.
-   *
-   * @return map of resource types
-   */
-  public Map<String, String> getTypes() {
-    return types;
-  }
-
-  /**
-   * A map of dataset subtypes keys to internationalized values.
-   *
-   * @return map of dataset subtypes
-   */
-  public Map<String, String> getDatasetSubtypes() {
-    return datasetSubtypes;
+  public int getResourcesSize() {
+    return resources != null ? resources.getTotalRecords() : 0;
   }
 
   /**

@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model;
 
-import org.gbif.metadata.DateUtils;
+import org.gbif.metadata.eml.ipt.util.DateUtils;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;

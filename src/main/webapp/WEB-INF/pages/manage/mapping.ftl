@@ -101,6 +101,8 @@
 
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
 
+            $("#save").on("click", displayProcessing);
+
             // show only required and mapped fields
             $("#toggleFields").click(function() {
                 if(showAll){
@@ -237,7 +239,7 @@
     <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
-            <#list peek as row>
+            <#list peek! as row>
                 <#if row??>
                     <#if row[index]?has_content && row[index]!=" ">
                         <code>${row[index]}</code>
@@ -370,7 +372,7 @@
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
                 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                         <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                         <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
                     </ol>

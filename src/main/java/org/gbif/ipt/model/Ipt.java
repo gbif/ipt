@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Ipt extends AgentBase implements Serializable {
 
   private static final long serialVersionUID = 78945123624747L;
+
   private UUID organisationKey;
   private String language;
   private String logoUrl;
@@ -129,6 +130,7 @@ public class Ipt extends AgentBase implements Serializable {
     if (wsPassword == null) {
       this.wsPassword = new Password();
     }
+
     this.wsPassword.password = wsPassword;
   }
 

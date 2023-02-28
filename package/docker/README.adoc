@@ -8,7 +8,7 @@ We regularly publish IPT releases as Docker images to https://hub.docker.com/r/g
 
 == To run the Docker image
 
-Refer to https://ipt.gbif.org/manual/en/ipt/2.6/installation#installation-using-docker[Installation using Docker] in the IPT User Manual.
+Refer to https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-using-docker[Installation using Docker] in the IPT User Manual.
 
 == Upgrading
 

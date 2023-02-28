@@ -114,6 +114,10 @@
       <result name="success" type="redirect">${baseURL}/home.do</result>
       <result name="input">/WEB-INF/pages/admin/registration.ftl</result>
     </action>
+    <action name="changeTokens" class="org.gbif.ipt.action.admin.RegistrationAction" method="changeTokens">
+      <result name="success" type="redirect">${baseURL}/home.do</result>
+      <result name="input">/WEB-INF/pages/admin/registration.ftl</result>
+    </action>
 
     <action name="organisations" class="org.gbif.ipt.action.admin.OrganisationsAction" method="list">
       <result>/WEB-INF/pages/admin/organisations.ftl</result>

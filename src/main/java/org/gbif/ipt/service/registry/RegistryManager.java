@@ -152,6 +152,8 @@ public interface RegistryManager {
   /**
    * Retrieves a list of all registered Resources associated to an Organization. If the name and UUID of the resource
    * cannot be populated, it isn't returned with the list.
+   * @deprecated as of 2.6.4 due to inefficiency.
+   * Use {@link RegistryManager#isResourceBelongsToOrganisation(String, String)} instead
    *
    * @param key organization key (UUID in String format)
    *
@@ -159,7 +161,21 @@ public interface RegistryManager {
    *
    * @throws RegistryException if the list could not be retrieved for any reason
    */
+  @SuppressWarnings("DeprecatedIsStillUsed")
+  @Deprecated
   List<Resource> getOrganisationsResources(String key) throws RegistryException;
+
+  /**
+   * Checks whether resource belongs to (published by) the organisation with the key.
+   *
+   * @param key resource key (UUID in String format)
+   * @param organisationKey organization key (UUID in String format)
+   *
+   * @return true/false
+   *
+   * @throws RegistryException if resource or organisation key are wrong
+   */
+  boolean isResourceBelongsToOrganisation(String key, String organisationKey) throws RegistryException;
 
   /**
    * Retrieves a list of Networks for the resource from the Registry.

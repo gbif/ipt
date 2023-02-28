@@ -11,9 +11,6 @@
     <script>
         $(document).ready(function() {
             $('#primaryColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#secondaryColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#warningColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#dangerColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
             $('#navbarColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
             $('#navbarLinkColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
             $('#linkColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
@@ -53,9 +50,6 @@
             }
 
             $("#primaryColor-colorBox").css("background", "${colorScheme.primaryColor}");
-            $("#secondaryColor-colorBox").css("background", "${colorScheme.secondaryColor}");
-            $("#warningColor-colorBox").css("background", "${colorScheme.warningColor}");
-            $("#dangerColor-colorBox").css("background", "${colorScheme.dangerColor}");
             $("#navbarColor-colorBox").css("background", "${colorScheme.navbarColor}");
             $("#navbarLinkColor-colorBox").css("background", "${colorScheme.navbarLinkColor}");
             $("#linkColor-colorBox").css("background", "${colorScheme.linkColor}");
@@ -63,18 +57,6 @@
             // on color select (in select2 component)
             $("#primaryColor-select").on("select2:select", function (e) {
                 $("#primaryColor-colorBox").css("background", e.params.data.id)
-            });
-
-            $("#secondaryColor-select").on("select2:select", function (e) {
-                $("#secondaryColor-colorBox").css("background", e.params.data.id)
-            });
-
-            $("#warningColor-select").on("select2:select", function (e) {
-                $("#warningColor-colorBox").css("background", e.params.data.id)
-            });
-
-            $("#dangerColor-select").on("select2:select", function (e) {
-                $("#dangerColor-colorBox").css("background", e.params.data.id)
             });
 
             $("#navbarColor-select").on("select2:select", function (e) {
@@ -94,27 +76,6 @@
                 $("#primaryColor").click();
             });
             $("#primaryColor").change(function (e) {
-                changeColorsOnClick(e);
-            });
-
-            $("#secondaryColor-colorBoxWrapper").click(function () {
-                $("#secondaryColor").click();
-            });
-            $("#secondaryColor").change(function (e) {
-                changeColorsOnClick(e);
-            });
-
-            $("#warningColor-colorBoxWrapper").click(function () {
-                $("#warningColor").click();
-            });
-            $("#warningColor").change(function (e) {
-                changeColorsOnClick(e);
-            });
-
-            $("#dangerColor-colorBoxWrapper").click(function () {
-                $("#dangerColor").click();
-            });
-            $("#dangerColor").change(function (e) {
                 changeColorsOnClick(e);
             });
 
@@ -165,18 +126,6 @@
                 initializeSelectAbsentValue("primaryColor", "${colorScheme.primaryColor}")
                 </#if>
 
-                <#if !colors['${colorScheme.secondaryColor}']??>
-                initializeSelectAbsentValue("secondaryColor", "${colorScheme.secondaryColor}")
-                </#if>
-
-                <#if !colors['${colorScheme.warningColor}']??>
-                initializeSelectAbsentValue("warningColor", "${colorScheme.warningColor}")
-                </#if>
-
-                <#if !colors['${colorScheme.dangerColor}']??>
-                initializeSelectAbsentValue("dangerColor", "${colorScheme.dangerColor}")
-                </#if>
-
                 <#if !colors['${colorScheme.navbarColor}']??>
                 initializeSelectAbsentValue("navbarColor", "${colorScheme.navbarColor}")
                 </#if>
@@ -213,21 +162,6 @@
                 $primaryColorSelect.val("#61a861");
                 $primaryColorSelect.trigger('change');
                 $("#primaryColor-colorBox").css("background", "#61a861");
-
-                var $secondaryColorSelect = $("#secondaryColor-select");
-                $secondaryColorSelect.val("#4e565f");
-                $secondaryColorSelect.trigger('change');
-                $("#secondaryColor-colorBox").css("background", "#4e565f");
-
-                var $warningColorSelect = $("#warningColor-select");
-                $warningColorSelect.val("#ffc108");
-                $warningColorSelect.trigger('change');
-                $("#warningColor-colorBox").css("background", "#ffc108");
-
-                var $dangerColorSelect = $("#dangerColor-select");
-                $dangerColorSelect.val("#e36370");
-                $dangerColorSelect.trigger('change');
-                $("#dangerColor-colorBox").css("background", "#e36370");
 
                 var $navbarColorSelect = $("#navbarColor-select");
                 $navbarColorSelect.val("#78b578");
@@ -337,14 +271,25 @@
                     <@s.hidden name="removeLogo" id="removeLogo" value="false" required="true" />
 
                     <!-- App Logo -->
-                    <div id="logofields" class="row g-3">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.uiManagement.logo"/>
+                    </h4>
+                    <div id="logofields" class="row g-3 mb-5">
                         <div class="col-lg-6">
-                            <@s.label for="file" class="form-label text-smaller" value="IPT logo" />
+                            <label for="file" class="form-label">
+                                <@s.text name="admin.uiManagement.iptLogo"/>
+                            </label>
                             <@s.file cssClass="form-control my-1" name="file"/>
-                            <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                            <a href="#" class="action-link-button action-link-button-primary" id="buttonUpload">
+                                <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                </svg>
                                 <@s.text name="button.upload"/>
                             </a>
-                            <a href="#" class="button btn btn-outline-gbif-danger" id="buttonRemove">
+                            <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
+                                <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                </svg>
                                 <@s.text name="button.remove"/>
                             </a>
                         </div>
@@ -357,10 +302,13 @@
                     </div>
 
                     <!-- App colors -->
-                    <div class="row g-3 mt-5">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.uiManagement.colors"/>
+                    </h4>
+                    <div class="row g-3">
                         <div class="col-lg-6">
                             <label for="primaryColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.primaryColor"/>
+                                <@s.text name="admin.uiManagement.primaryColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.primaryColor" id="primaryColor-select" class="form-select">
@@ -379,74 +327,32 @@
                             </div>
                         </div>
 
+                        <!-- Links -->
                         <div class="col-lg-6">
-                            <label for="secondaryColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.secondaryColor"/>
+                            <label for="linkColor-select" class="form-label">
+                                <@s.text name="admin.uiManagement.linkColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
-                                <select name="colorScheme.secondaryColor" id="secondaryColor-select" class="form-select">
+                                <select name="colorScheme.linkColor" id="linkColor-select" class="form-select">
                                     <#list colors as colorHex, colorName>
-                                        <option value="${colorHex}" <#if colorScheme.secondaryColor == colorHex>selected</#if> >
+                                        <option value="${colorHex}" <#if colorScheme.linkColor == colorHex>selected</#if> >
                                             ${colorName}
                                         </option>
                                     </#list>
                                 </select>
-                                <input id="secondaryColor" type="color" data-target-element-id="secondaryColor" style='opacity:0;width:100px;height:100%;position:absolute;'/>
-                                <span id="secondaryColor-colorBoxWrapper" class="input-group-append">
+                                <input id="linkColor" type="color" data-target-element-id="linkColor" style='opacity:0;width:100px;height:100%;position:absolute;'/>
+                                <span id="linkColor-colorBoxWrapper" class="input-group-append">
                                     <span class="input-group-text colorpicker-input-addon" data-original-title="" title="" tabindex="0">
-                                        <i id="secondaryColor-colorBox" style="background: rgb(var(--color-gbif-secondary));"></i>
+                                        <i id="linkColor-colorBox" style="background: rgb(var(--link-color));"></i>
                                     </span>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
-                            <label for="warningColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.warningColor"/>
-                            </label>
-                            <div class="input-group">
-                                <select name="colorScheme.warningColor" id="warningColor-select" class="form-select">
-                                    <#list colors as colorHex, colorName>
-                                        <option value="${colorHex}" <#if colorScheme.warningColor == colorHex>selected</#if> >
-                                            ${colorName}
-                                        </option>
-                                    </#list>
-                                </select>
-                                <input id="warningColor" type="color" data-target-element-id="warningColor" style='opacity:0;width:100px;height:100%;position:absolute;'/>
-                                <span id="warningColor-colorBoxWrapper" class="input-group-append">
-                                    <span class="input-group-text colorpicker-input-addon" data-original-title="" title="" tabindex="0">
-                                        <i id="warningColor-colorBox" style="background: rgb(var(--color-gbif-warning));"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label for="dangerColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.dangerColor"/>
-                            </label>
-                            <div class="input-group">
-                                <select name="colorScheme.dangerColor" id="dangerColor-select" class="form-select">
-                                    <#list colors as colorHex, colorName>
-                                        <option value="${colorHex}" <#if colorScheme.dangerColor == colorHex>selected</#if> >
-                                            ${colorName}
-                                        </option>
-                                    </#list>
-                                </select>
-                                <input id="dangerColor" type="color" data-target-element-id="dangerColor" style='opacity:0;width:100px;height:100%;position:absolute;'/>
-                                <span id="dangerColor-colorBoxWrapper" class="input-group-append">
-                                    <span class="input-group-text colorpicker-input-addon" data-original-title="" title="" tabindex="0">
-                                        <i id="dangerColor-colorBox" style="background: rgb(var(--color-gbif-danger));"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-5">
+                        <!-- Navigation bar -->
                         <div class="col-lg-6">
                             <label for="navbarColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.navbarColor"/>
+                                <@s.text name="admin.uiManagement.navbarColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.navbarColor" id="navbarColor-select" class="form-select">
@@ -467,7 +373,7 @@
 
                         <div class="col-lg-6">
                             <label for="navbarLinkColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.navbarLinkColor"/>
+                                <@s.text name="admin.uiManagement.navbarLinkColor"/> <span class="text-gbif-danger">&#42;</span>
                             </label>
                             <div class="input-group">
                                 <select name="colorScheme.navbarLinkColor" id="navbarLinkColor-select" class="form-select">
@@ -485,29 +391,7 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row g-3 mt-5">
-                        <div class="col-lg-6">
-                            <label for="linkColor-select" class="form-label">
-                                <@s.text name="admin.uiManagement.linkColor"/>
-                            </label>
-                            <div class="input-group">
-                                <select name="colorScheme.linkColor" id="linkColor-select" class="form-select">
-                                    <#list colors as colorHex, colorName>
-                                        <option value="${colorHex}" <#if colorScheme.linkColor == colorHex>selected</#if> >
-                                            ${colorName}
-                                        </option>
-                                    </#list>
-                                </select>
-                                <input id="linkColor" type="color" data-target-element-id="linkColor" style='opacity:0;width:100px;height:100%;position:absolute;'/>
-                                <span id="linkColor-colorBoxWrapper" class="input-group-append">
-                                    <span class="input-group-text colorpicker-input-addon" data-original-title="" title="" tabindex="0">
-                                        <i id="linkColor-colorBox" style="background: rgb(var(--link-color));"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>

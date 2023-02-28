@@ -25,7 +25,7 @@ public final class MapUtils {
   /**
    * Iterates over a map, and copies each entry to a new Map. The only difference, is that the
    * key is replaced with an all lowercase key instead.
-   *
+   * <p>
    * All keys in Map are converted to lowercase in order to standardize keys across different versions of the IPT, as
    * well as to facilitate grouping of subtypes.
    *
@@ -37,6 +37,14 @@ public final class MapUtils {
     Map<String, String> copy = new LinkedHashMap<>();
     for (Map.Entry<String, String> entry : m.entrySet()) {
       copy.put(entry.getKey().toLowerCase(), entry.getValue());
+    }
+    return copy;
+  }
+
+  public static Map<String, String> getMapWithSnakecaseKeys(Map<String, String> m) {
+    Map<String, String> copy = new LinkedHashMap<>();
+    for (Map.Entry<String, String> entry : m.entrySet()) {
+      copy.put(StringUtils.camelToSnake(entry.getKey()), entry.getValue());
     }
     return copy;
   }

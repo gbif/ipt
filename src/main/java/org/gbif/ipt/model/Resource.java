@@ -23,10 +23,10 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -47,6 +48,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -109,6 +111,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date lastPublished;
   // next time resource is scheduled to be published
   private Date nextPublished;
+  // date/time resource is scheduled to become public
+  private Date makePublicDate;
   // core record count
   private int recordsPublished = 0;
   // record counts by extension: Map<rowType, count>
@@ -898,6 +902,41 @@ public class Resource implements Serializable, Comparable<Resource> {
     return sb.toString();
   }
 
+  public String getLogoUrl() {
+    if (eml != null) {
+      return eml.getLogoUrl();
+    }
+    return null;
+  }
+
+  public String getSubject() {
+    if (eml != null) {
+      return eml.getSubject();
+    }
+    return null;
+  }
+
+  public String getOrganisationName() {
+    if (organisation != null) {
+      return organisation.getName();
+    }
+    return null;
+  }
+
+  public String getOrganisationAlias() {
+    if (organisation != null) {
+      return organisation.getAlias();
+    }
+    return null;
+  }
+
+  public String getCreatorName() {
+    if (creator != null) {
+      return creator.getName();
+    }
+    return null;
+  }
+
   /**
    * @return true if this resource is mapped to at least one core extension
    */
@@ -1347,16 +1386,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String generateResourceCitation(@NotNull BigDecimal version, @NotNull URI homepage) {
     StringBuilder sb = new StringBuilder();
 
-    // make list of verified authors (having first and last name)
-    List<String> verifiedAuthorList = new ArrayList<>();
-    for (Agent creator : getEml().getCreators()) {
-      String authorName = getAuthorName(creator);
-      if (authorName != null) {
-        verifiedAuthorList.add(authorName);
-      }
-    }
+    // make list of verified agents (having first and last name)
+    Set<String> verifiedAuthorList = new LinkedHashSet<>();
+    Stream.of(getEml().getCreators(), getEml().getMetadataProviders())
+        .flatMap(Collection::stream)
+        .map(this::getCitationAgentName)
+        .filter(StringUtils::isNotEmpty)
+        .forEach(verifiedAuthorList::add);
 
-    // add comma separated authors
+    // add comma separated agents
     Iterator<String> iter = verifiedAuthorList.iterator();
     while (iter.hasNext()) {
       sb.append(iter.next());
@@ -1371,7 +1409,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);
-      sb.append("): ");
+      sb.append("). ");
     }
 
     // add title
@@ -1379,7 +1417,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     sb.append(". ");
 
     // add version
-    sb.append("v");
+    sb.append("Version ");
     sb.append(version.toPlainString());
     sb.append(". ");
 
@@ -1391,10 +1429,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
-    sb.append("Dataset");
     if (getCoreType() != null) {
-      sb.append("/");
       sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
+      sb.append(" dataset");
     }
     sb.append(". ");
 
@@ -1414,30 +1451,32 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Construct author name for citation. Name must have a last name and at least one first name to be included. If
-   * both the first and last name are left blank on purpose, the organisation name can be used as an alternative.
+   * Construct citation agent name for citation. Name must have a last name and at least one first name to be included.
+   * If both the first and last name are left blank on purpose, the organisation name can be used as an alternative.
    *
-   * @param creator creator
+   * @param agent agent
    *
-   * @return author name
+   * @return agent name
    */
-  protected String getAuthorName(Agent creator) {
+  protected String getCitationAgentName(Agent agent) {
     StringBuilder sb = new StringBuilder();
-    String lastName = StringUtils.trimToNull(creator.getLastName());
-    String firstNames = StringUtils.trimToNull(creator.getFirstName());
-    String organisation = StringUtils.trimToNull(creator.getOrganisation());
-    if (lastName != null && firstNames != null) {
+    String lastName = StringUtils.trimToNull(agent.getLastName());
+    String firstNames = StringUtils.trimToNull(agent.getFirstName());
+    String organisation = StringUtils.trimToNull(agent.getOrganisation());
+    if (lastName != null) {
       sb.append(lastName);
-      sb.append(" ");
-      // add first initial of each first name, capitalized
-      String[] names = firstNames.split("\\s+", -1);
-      for (int i = 0; i < names.length; i++) {
-        sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
-        if (i < names.length - 1) {
-          sb.append(" ");
+      if (firstNames != null) {
+        sb.append(" ");
+        // add first initial of each first name, capitalized
+        String[] names = firstNames.split("\\s+", -1);
+        for (int i = 0; i < names.length; i++) {
+          sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
+          if (i < names.length - 1) {
+            sb.append(" ");
+          }
         }
       }
-    } else if (lastName == null && firstNames == null && organisation != null) {
+    } else if (firstNames == null && organisation != null) {
       sb.append(organisation);
     }
     return sb.toString();
@@ -1603,6 +1642,14 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean hasOccurrenceMapping() {
     return !getMappings(Constants.DWC_ROWTYPE_OCCURRENCE).isEmpty();
+  }
+
+  public Date getMakePublicDate() {
+    return makePublicDate;
+  }
+
+  public void setMakePublicDate(Date makePublicDate) {
+    this.makePublicDate = makePublicDate;
   }
 
   public boolean isDataPackage() {

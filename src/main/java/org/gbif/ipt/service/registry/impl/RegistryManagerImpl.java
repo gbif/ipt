@@ -41,9 +41,9 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.validation.AgentValidator;
 import org.gbif.ipt.validation.ContributorValidator;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
@@ -68,6 +68,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -349,9 +350,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   /**
    * Returns the URI that will return a list of Resources associated to an Organization in JSON.
+   *
+   * @deprecated as of 2.6.4 due to inefficiency. Can be too many datasets in the organisation.
+   * Use {@link RegistryManagerImpl#getResourceBelongsToOrganisationUri(String, String)} instead
    */
+  @Deprecated
   private String getOrganisationsResourcesUri(final String organisationKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/resource.json?organisationKey=", organisationKey);
+  }
+
+  /**
+   * Returns the URI that will return whether resource belongs to organisation with the key.
+   */
+  private String getResourceBelongsToOrganisationUri(final String resourceKey, final String organisationKey) {
+    return cfg.getRegistryUrl() + "/registry/resource/" + resourceKey + "/belongs/organisation/" + organisationKey;
   }
 
   /**
@@ -383,7 +395,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       LOG.error(msg);
+    } catch (JsonSyntaxException e) {
+      // add startup error message that explains the consequence of the error
+      String msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      LOG.error(msg);
     }
+
     // populate Organisation list
     List<Organisation> organisations = new ArrayList<>();
     int invalid = 0;
@@ -521,10 +539,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
   }
 
+  @Override
+  public boolean isResourceBelongsToOrganisation(String key, String organisationKey) throws RegistryException {
+    String url = getResourceBelongsToOrganisationUri(key, organisationKey);
+    String rawContent = requestHttpGetFromRegistry(url).getContent();
+    return BooleanUtils.toBoolean(rawContent);
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
+  @Deprecated
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
     List<Map<String, String>> resourcesTemp;
     String url = getOrganisationsResourcesUri(organisationKey);
@@ -592,6 +618,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
         warnings.addStartupError(msg);
         LOG.error(msg);
+      } catch (JsonSyntaxException e) {
+        // add startup error message that explains the consequence of the error
+        String msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        LOG.error(msg);
       }
     }
 
@@ -622,6 +653,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      LOG.error(msg);
+    } catch (JsonSyntaxException e) {
+      // add startup error message that explains the consequence of the error
+      String msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       LOG.error(msg);
     }

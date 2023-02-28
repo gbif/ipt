@@ -5,7 +5,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl">
 
-<form id="create" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
+<form id="create-form" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -29,7 +29,7 @@
 
                 <div class="mt-2">
                     <#if (organisations?size>0) >
-                        <@s.submit form="create" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="create" key="button.create"/>
+                        <@s.submit form="create-form" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="create" key="button.create"/>
                     </#if>
                     <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button">
                         <@s.text name="button.cancel"/>
@@ -55,6 +55,7 @@
                         }
                     });
                     $("#import-dwca-section").slideUp('fast');
+                    $("#create").on("click", displayProcessing);
                 });
             </script>
 

@@ -35,7 +35,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

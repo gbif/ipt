@@ -5,8 +5,7 @@
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/usersTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
-    <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
     <script>
         $(document).ready(function(){
             var initConfirmationModal = function () {
@@ -52,7 +51,7 @@
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
                 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
                         <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.users"/></li>
                     </ol>
                 </nav>

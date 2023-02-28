@@ -75,6 +75,32 @@ public interface VocabulariesManager {
   Map<String, String> getI18nVocab(String uri, String lang, boolean sortAlphabetically);
 
   /**
+   * Returns a regular map of dataset types than can be used to populate html select dropdowns with
+   * keys=vocabulary concept identifiers and values=preferred term for the given language.
+   * Defaults to english if no term for the requested language exists.
+   *
+   * @param lang               a 2 character iso language code, e.g. DE
+   * @param sortAlphabetically if true sort map values alphabetically, otherwise use native ordering
+   *
+   * @return return dataset types vocabulary map for given language sorted alphabetically, or an empty map if no
+   * vocabulary concepts could be populated
+   */
+  Map<String, String> getI18nDatasetTypesVocab(String lang, boolean sortAlphabetically);
+
+  /**
+   * Returns a regular map of dataset subtypes than can be used to populate html select dropdowns with
+   * keys=vocabulary concept identifiers and values=preferred term for the given language.
+   * Defaults to english if no term for the requested language exists.
+   *
+   * @param lang               a 2 character iso language code, e.g. DE
+   * @param sortAlphabetically if true sort map values alphabetically, otherwise use native ordering
+   *
+   * @return return dataset subtypes vocabulary map for given language sorted alphabetically, or an empty map if no
+   * vocabulary concepts could be populated
+   */
+  Map<String, String> getI18nDatasetSubtypesVocab(String lang, boolean sortAlphabetically);
+
+  /**
    * Lists all installed vocabularies.
    *
    * @return all installed vocabularies

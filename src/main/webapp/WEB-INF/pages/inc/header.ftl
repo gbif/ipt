@@ -11,18 +11,23 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-borders.css" />
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/dataTables.bootstrap5-1.10.23.min.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/jquery.dataTables-1.13.1.min.css" />
 
     <!-- Bootstrap icons -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
     <!-- IPT CSS -->
     <style>
         :root {
             --color-gbif-primary: ${primaryColor!"97, 168, 97"};
-            --color-gbif-danger: ${dangerColor!"227, 99, 112"};
-            --color-gbif-secondary: ${secondaryColor!"78, 86, 95"};
-            --color-gbif-warning: ${warningColor!"255, 193, 8"};
+            --color-gbif-danger: ${"227, 99, 112"};
+            --color-gbif-secondary: ${"78, 86, 95"};
+            --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
@@ -36,7 +41,6 @@
 [#--    <link rel="shortcut icon" href="${baseURL}/appLogo.do" type="image/x-icon" />--]
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script src="${baseURL}/js/modernizr.js"></script>

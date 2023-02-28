@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
-msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.\n"
+msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the {threelines} button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.\n"
 msgstr ""
 
 #. type: Block title
@@ -149,15 +149,13 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
-msgid ""
-"Example link to the account information page for the logged in user: image:"
-"ipt2/controls/Control-LinkExample.png[]"
+msgid "Example link: image:ipt2/controls/Control-LinkExample.png[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:38
 #, no-wrap
-msgid "**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.\n"
+msgid "**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on any other place to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.\n"
 msgstr ""
 
 #. type: Plain text
@@ -206,14 +204,15 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:55
 msgid ""
-"Example table sorted in ascending order by the column labelled \"Name\".  "
-"image:ipt2/controls/Control-TableSortedAscending.png[]"
+"Example table sorted in ascending order by the column labelled "
+"\"Organization name\".  image:ipt2/controls/Control-TableSortedAscending."
+"png[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:58
 msgid ""
-"Example table sorted in descending order by the column labelled \"Type\".  "
+"Example table sorted in descending order by the column labelled \"Alias\".  "
 "image:ipt2/controls/Control-TableSortedDescending.png[]"
 msgstr ""
 
@@ -226,9 +225,9 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:62
 msgid ""
-"Files can be uploaded in the IPT during two actions: when xref:manage-"
-"resources.adoc#create-a-new-resource[creating a new resource], or when xref:"
-"manage-resources.adoc#source-data[adding new source data files]."
+"The IPT allows uploading files when (xref:manage-resources.adoc#create-a-new-"
+"resource[creating a new resource], or when xref:manage-resources.adoc#source-"
+"data[adding new source data files])"
 msgstr ""
 
 #. type: Plain text
@@ -294,25 +293,25 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:82
 #, no-wrap
-msgid "**Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the \"Login\" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the \"Configure User accounts\" heading in the \"Administration Menu\" section. The process of initializing the IPT creates the first user having the Admin role.\n"
+msgid "**Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the login form, and then click on the \"Login\" button. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the \"User accounts\" heading in the \"Administration Menu\" section. The process of initializing the IPT creates the first user having the Admin role.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:83
 #, no-wrap
-msgid "**Logout** - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a \"Logout\" link.\n"
+msgid "**Logout** - If someone is logged in to the IPT, the initials of the person who is logged in is given in the upper right-hand corner of the page. Clicking on this reveals a dropdown with a \"Logout\" link.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:84
 #, no-wrap
-msgid "**Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the \"Configure User accounts\" heading in the \"Administration Menu\" section.\n"
+msgid "**Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the \"User accounts\" heading in the \"Administration Menu\" section.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:85
 #, no-wrap
-msgid "**Language selection** - In the upper right-hand corner of the page is a icon allowing the display language of the IPT to be changed. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.\n"
+msgid "**Language selection** - In the upper right-hand corner of the page is an icon allowing the display language of the IPT to be changed. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.\n"
 msgstr ""
 
 #. type: Plain text

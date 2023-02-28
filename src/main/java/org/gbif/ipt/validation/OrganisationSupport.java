@@ -28,7 +28,7 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
-import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.ipt.model.Agent;
 
 import java.util.Date;
 import java.util.UUID;
@@ -166,6 +166,17 @@ public class OrganisationSupport {
       }
     }
     return valid;
+  }
+
+  public void validateOrganisationToken(BaseAction action, UUID organisationKey, String organisationToken) {
+    // validate if the key+password combination validates to true
+    if (organisationKey != null && organisationToken != null) {
+      if (organisationKey.toString().length() > 0 && organisationToken.length() > 0) {
+        if (!registryManager.validateOrganisation(organisationKey.toString(), organisationToken)) {
+          action.addFieldError("hostingOrganisationToken", action.getText("validation.organisation.password.invalid"));
+        }
+      }
+    }
   }
 
   /**

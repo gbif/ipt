@@ -300,7 +300,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private static final String ACCEPTED_FILE_NAMES = "[\\w.\\-\\s\\)\\(]+";
 
-  // Allowed characters in file names: alpha-numeric characters, plus ".", "-", "_", ")", "(", and " "
+  // Allowed characters in file names: alphanumeric characters, plus ".", "-", "_", ")", "(", and " "
   private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
 
   @Inject
@@ -325,7 +325,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
-   * Tests if the the file name is composed of alpha-numeric characters, plus ".", "-", "_", ")", "(", and " ".
+   * Tests if the file name is composed of alphanumeric characters, plus ".", "-", "_", ")", "(", and " ".
    *
    * @param fileName the file name
    *
@@ -349,7 +349,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private TextFileSource addTextFile(File file) throws ImportException {
     TextFileSource src = new TextFileSource();
     try {
-      // anaylze individual files using the dwca reader
+      // analyze individual files using the dwca reader
       Archive arch = DwcFiles.fromLocation(file.toPath());
       copyArchiveFileProperties(arch.getCore(), src);
     } catch (UnknownDelimitersException e) {

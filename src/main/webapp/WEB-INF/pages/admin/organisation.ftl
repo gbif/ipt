@@ -44,7 +44,8 @@
                         $('#organisation\\.nodeName').val(data.nodeName);
 
                         //Create a contact link to prefill an email to request a password from an Organisation
-                        var contactLink = '<div class="mt-2"><a href=\"mailto:';
+                        var contactLink = '<div class="mt-2">';
+                        contactLink += '<a href=\"mailto:';
                         contactLink += data.primaryContactEmail;
                         contactLink += '?subject=';
                         contactLink += 'Shared token request for ';
@@ -52,7 +53,8 @@
                         contactLink += '&body=';
                         contactLink += emailContent;
                         contactLink += '\">';
-                        contactLink += 'Click here to contact';
+                        contactLink += '<svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ContactSupportOutlinedIcon" tabindex="-1" title="ContactSupportOutlined"><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"></path></svg>';
+                        contactLink += ' Click here to contact';
                         contactLink += '</a> ';
                         contactLink += orgName;
                         contactLink += "</div>";
@@ -69,19 +71,38 @@
                 $(".doiAgencyField").css("display", "");
             }
 
+            function hideDoiRegistrationFields() {
+                $("#organisation\\.doiRegistrationAgency").val('');
+                $("#organisation\\.agencyAccountUsername").val('');
+                $("#organisation\\.agencyAccountPassword").val('');
+                $("#organisation\\.doiPrefix").val('');
+                $('#organisation\\.agencyAccountPrimary').attr('checked', false);
+                $(".doiAgencyField").hide();
+            }
+
+            function showDoiRegistrationFields() {
+                $(".doiAgencyField").show();
+            }
+
             $('#organisation\\.doiRegistrationAgency').change(function() {
                 var doiRegistrationAgency = $('#organisation\\.doiRegistrationAgency :selected').val();
 
                 if (doiRegistrationAgency) {
-                    $(".doiAgencyField").css("display", "");
+                    showDoiRegistrationFields();
                 } else {
-                    $("#organisation\\.agencyAccountUsername").val('');
-                    $("#organisation\\.agencyAccountPassword").val('');
-                    $("#organisation\\.doiPrefix").val('');
-                    $('#organisation\\.agencyAccountPrimary').attr('checked', false);
-                    $(".doiAgencyField").css("display", "none");
+                    hideDoiRegistrationFields();
                 }
             });
+
+            $("#doiRegistrationAgencyAssociation").change(function () {
+                if (!$('#doiRegistrationAgencyAssociation').is(':checked')) {
+                    hideDoiRegistrationFields();
+                } else {
+                    showDoiRegistrationFields();
+                }
+            });
+
+            $("#save").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -100,8 +121,8 @@
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
                 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                        <li class="breadcrumb-item"><a href="/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
                         <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.organisations.organisation"/></li>
                     </ol>
                 </nav>
@@ -138,8 +159,8 @@
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
                 <div class="row g-3">
                     <#if id?has_content>
-                        <div class="col-lg-6">
-                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
+                        <div class="col-lg-4">
+                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true requiredField=true/>
                         </div>
 
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
@@ -169,34 +190,36 @@
                         <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
                                 </#assign>
-                                <label for="organisation.key" class="form-label">
-                                    <@s.text name="admin.organisation.key"/> &#42;
-                                </label>
-                                <a tabindex="0" role="button"
-                                   class="popover-link"
-                                   data-bs-toggle="popover"
-                                   data-bs-trigger="focus"
-                                   data-bs-html="true"
-                                   data-bs-content="${selectOrganisationInfo}">
-                                    <i class="bi bi-info-circle text-gbif-primary"></i>
-                                </a>
+                                <div class="d-flex text-smaller">
+                                    <a tabindex="0" role="button"
+                                       class="popover-link"
+                                       data-bs-toggle="popover"
+                                       data-bs-trigger="focus"
+                                       data-bs-html="true"
+                                       data-bs-content="${selectOrganisationInfo}">
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                    </a>&nbsp;
+                                    <label for="organisation.key" class="form-label">
+                                        <@s.text name="admin.organisation.key"/> <span class="text-gbif-danger">&#42;</span>
+                                    </label>
+                                </div>
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>
-                            <div id="requestDetails" class="mt-0"></div>
+                            <div id="requestDetails" class="mt-0 text-smaller"></div>
                         </div>
                     </#if>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
                     </div>
 
@@ -208,7 +231,17 @@
                         </#if>
                     </div>
 
-                    <div class="col-lg-6">
+                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content />
+
+                    <div class="col-12">
+                        <#if id?has_content>
+                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?string}" help="i18n"/>
+                        <#else>
+                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="false" help="i18n"/>
+                        </#if>
+                    </div>
+
+                    <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>
                         <@select name="organisation.doiRegistrationAgency" value="${organisation.doiRegistrationAgency!''}" options=doiRegistrationAgencies help="i18n" i18nkey="admin.organisation.doiRegistrationAgency" includeEmpty=true />
                     </div>
 

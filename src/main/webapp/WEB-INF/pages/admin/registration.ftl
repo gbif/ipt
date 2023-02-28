@@ -12,6 +12,37 @@
     </script>
     <script>
         $(document).ready(function(){
+            $("#edit-registration-radio").change(function () {
+                if ($('#edit-registration-radio').is(':checked')) {
+                    displayEditRegistrationView();
+                }
+            });
+
+            $("#change-tokens-radio").change(function () {
+                if ($('#change-tokens-radio').is(':checked')) {
+                    displayChangeTokensView();
+                }
+            });
+
+            function displayChangeTokensView() {
+                $('#tokens-block').show();
+                $('#registration-block').hide();
+                $('#tokens').show();
+                $('#update').hide();
+            }
+
+            function displayEditRegistrationView() {
+                $('#tokens-block').hide();
+                $('#registration-block').show();
+                $('#tokens').hide();
+                $('#update').show();
+            }
+
+            if (window.location.href.indexOf("changeTokens") > -1) {
+                displayChangeTokensView();
+                $('#change-tokens-radio').prop("checked", true);
+            }
+
             $('#organisation\\.key').change(function() {
 
                 var organisationSelected = $('#organisation\\.key :selected');
@@ -33,7 +64,7 @@
                 if(organisationKey) {
                     var url = '${registryURL}organisation/' + organisationKey + ".json";
 
-                    $.getJSON(url,function(data){
+                    $.getJSON(url, function (data) {
                         $('#organisation\\.primaryContactType').val(data.primaryContactType);
                         $('#organisation\\.primaryContactName').val(data.primaryContactName);
                         $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
@@ -41,7 +72,8 @@
                         $('#organisation\\.nodeName').val(data.nodeName);
 
                         //Create a contact link to prefill an email to request a password from an Organisation
-                        var contactLink = '<div class="mt-2"><a href=\"mailto:';
+                        var contactLink = '<div class="mt-2">';
+                        contactLink += '<a href=\"mailto:';
                         contactLink += data.primaryContactEmail;
                         contactLink += '?subject=';
                         contactLink += 'Shared token request for ';
@@ -49,15 +81,48 @@
                         contactLink += '&body=';
                         contactLink += emailContent;
                         contactLink += '\">';
-                        contactLink += 'Click here to contact';
+                        contactLink += '<svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ContactSupportOutlinedIcon" tabindex="-1" title="ContactSupportOutlined"><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"></path></svg>';
+                        contactLink += ' Click here to contact';
                         contactLink += '</a> ';
                         contactLink += orgName;
                         contactLink += "</div>";
                         $('#requestDetails').html(contactLink);
                     });
+
+                    var installationsUrl = "https://api.gbif.org/v1/organization/" + organisationKey + "/installation";
+
+                    // for test env (UAT)
+                    if ("${cfg.registryUrl!}".indexOf("gbif-uat") !== -1) {
+                        installationsUrl = "https://api.gbif-uat.org/v1/organization/" + organisationKey + "/installation";
+                    }
+
+                    $.getJSON(installationsUrl, function (data) {
+                        var numberOfIptInstallations = 0;
+
+                        for (var i in data.results) {
+                            console.log(data.results[i])
+                            console.log(data.results[i].type)
+                            if (data.results[i].type === "IPT_INSTALLATION") {
+                                numberOfIptInstallations++;
+                            }
+                        }
+
+                        if (numberOfIptInstallations > 0) {
+                            // do not remove, will be substituted in installationsWarningText
+                            var organizationPortalLink = "<a href=\"${cfg.portalUrl!}/publisher/" + organisationKey + "\">" + orgName + "</a>";
+                            var installationsWarningText = `<@s.text name="admin.registration.duplicate.warning"/>`;
+                            var installationsCallout = $("#installations-warning");
+                            installationsCallout.html(installationsWarningText);
+                            installationsCallout.show();
+                        }
+                    });
                 } else {
                     // remove link
                     $("#requestDetails").empty();
+                    // erase installations warning
+                    var installationsCallout = $("#installations-warning");
+                    installationsCallout.text("");
+                    installationsCallout.hide();
                 }
             });
 
@@ -87,6 +152,8 @@
                 });
 
             });
+
+            $("#update").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -112,6 +179,7 @@
                 <div class="mt-2">
                     <#if hostingOrganisation?has_content>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="registration" name="update" id="update" key="button.updateRegistration" />
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="changeTokens" name="tokens" id="tokens" key="button.updateTokens" cssStyle="display: none;"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="registration" name="cancel" key="button.cancel"/>
                     <#else>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
@@ -134,31 +202,71 @@
                     <@s.text name="admin.registration.registered2"><@s.param><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></@s.param></@s.text>
                 </p>
 
-                <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
-                <form id="registration" class="topForm half" action="updateRegistration" method="post">
-                    <div class="row g-3">
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
-                        </div>
-
-                        <div class="col-12">
-                            <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
-                        </div>
-
-                        <#-- For future release. Will replace contact name below
-                        <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
-                        <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
-                        -->
-
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
-                        </div>
-
-                        <div class="col-lg-6">
-                            <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
-                        </div>
+                <div class="py-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="edit-registration-radio" value="edit-registration" checked>
+                        <label class="form-check-label" for="edit-profile-radio"><@s.text name="admin.ipt.registration"/></label>
                     </div>
-                </form>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="change-tokens-radio" value="change-tokens">
+                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens.title"/></label>
+                    </div>
+                </div>
+
+                <div id="registration-block" class="py-3">
+                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.ipt.registration"/>
+                    </h4>
+                    <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
+                    <form id="registration" class="needs-validation" action="updateRegistration" method="post" novalidate>
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+                            </div>
+
+                            <div class="col-12">
+                                <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
+                            </div>
+
+                            <#-- For future release. Will replace contact name below
+                            <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
+                            <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+                            -->
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tokens-block" style="display: none;" class="py-3">
+                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
+                        <@s.text name="admin.ipt.tokens.title"/>
+                    </h4>
+
+                    <p class="mb-3 pb-3">
+                        <@s.text name="admin.ipt.tokens.intro"/>
+                    </p>
+
+                    <form id="changeTokens" class="needs-validation" action="changeTokens" method="post" novalidate>
+                        <@s.hidden id="tokenChange" name="tokenChange" value="true" />
+
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@input name="hostingOrganisationToken" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="registeredIptPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 />
+                            </div>
+                        </div>
+                    </form>
+                </div>
             <#else>
                 <#-- BASE URL has not been validated, disable the form -->
                 <#if !validatedBaseURL>
@@ -193,38 +301,45 @@
                         </div>
                     </div>
                 </#if>
+
                 <div id="registrationFormDiv" class="mt-4" style="display: none;" >
 
                     <form id="registrationForm" class="needs-validation" action="registration.do" method="post" novalidate>
                         <div class="row g-3">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <#assign selectOrganisationInfo>
                                         <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
                                     </#assign>
-                                    <label for="organisation.key" class="form-label">
-                                        <@s.text name="admin.organisation.key"/> &#42;
-                                    </label>
-                                    <a tabindex="0" role="button"
-                                       class="popover-link"
-                                       data-bs-toggle="popover"
-                                       data-bs-trigger="focus"
-                                       data-bs-html="true"
-                                       data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-gbif-primary"></i>
-                                    </a>
+                                    <div class="d-flex text-smaller">
+                                        <a tabindex="0" role="button"
+                                           class="popover-link"
+                                           data-bs-toggle="popover"
+                                           data-bs-trigger="focus"
+                                           data-bs-html="true"
+                                           data-bs-content="${selectOrganisationInfo}">
+                                            <i class="bi bi-info-circle text-gbif-primary"></i>
+                                        </a>&nbsp;
+                                        <label for="organisation.key" class="form-label">
+                                            <@s.text name="admin.organisation.key"/> <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                    </div>
                                     <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
                                     <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                                 </div>
-                                <div id="requestDetails" class="mt-0"></div>
+                                <div id="requestDetails" class="mt-0 text-smaller"></div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />
+                            </div>
+
+                            <div class="col-12">
+                                <div id="installations-warning" class="callout callout-warning" style="display: none;"></div>
                             </div>
 
                             <div class="col-12">
@@ -239,6 +354,10 @@
 
                             <div class="col-lg-6">
                                 <@input name="ipt.name" i18nkey="admin.ipt.name" type="text" maxlength=255 size=150 requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
                             </div>
 
                             <div class="col-12">
@@ -258,11 +377,6 @@
                             </div>
 
                             <@s.hidden id="admin.ipt.primaryContactType" name="ipt.primaryContactType" value="technical"/>
-
-                            <div class="col-lg-6">
-                                <@input name="ipt.wsPassword" i18nkey="admin.ipt.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
-                            </div>
-
                             <@s.hidden id="organisation.name" name="organisation.name" />
                             <@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
                         </div>

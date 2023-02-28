@@ -18,6 +18,60 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#associatedParty-items');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#associatedParty-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.associatedParties[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.associatedParties[" + index + "].lastName");
+                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.associatedParties[" + index + "].position");
+                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.associatedParties[" + index + "].organisation");
+                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.associatedParties[" + index + "].address.address");
+                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.associatedParties[" + index + "].address.city");
+                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.associatedParties[" + index + "].address.province");
+                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.associatedParties[" + index + "].address.country");
+                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.associatedParties[" + index + "].address.postalCode");
+                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.associatedParties[" + index + "].phone");
+                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.associatedParties[" + index + "].email");
+                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.associatedParties[" + index + "].homepage");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.associatedParties[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.associatedParties[" + index + "].userIds[0].identifier");
+                    $("div#" + elementId + " select[id$='role']").attr("name", "eml.associatedParties[" + index + "].role");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
     <style>
@@ -26,6 +80,7 @@
             max-width: 600px;
         }
     </style>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <#assign currentMetadataPage = "parties"/>
@@ -43,7 +98,7 @@
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                         </ol>
@@ -84,16 +139,16 @@
                             </p>
 
                             <!-- retrieve some link names one time -->
-                            <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+                            <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
 
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                        <div class="columnLinks mt-2 d-flex justify-content-between">
+                                        <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copyDetails-${item_index}" href="" class="text-smaller">
+                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -103,7 +158,7 @@
                                                 </a>
                                             </div>
                                             <div class="text-end">
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink text-smaller" href="">
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -151,7 +206,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <#if (eml.associatedParties[item_index].userIds[0].directory)??>
-                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.associatedParties[item_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
+                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.associatedParties[item_index].userIds[0].directory!]!}"/>
                                             <#else>
                                                 <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                             </#if>
@@ -171,7 +226,7 @@
                             </div>
 
                             <div class="addNew col-12 mt-2">
-                                <a id="plus-associatedParty" href="" class="text-smaller">
+                                <a id="plus-associatedParty" href="" class="metadata-action-link">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -186,9 +241,9 @@
 
 
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="columnLinks mt-2 d-flex justify-content-between">
+                                <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copyDetails" href="" class="text-smaller">
+                                        <a id="associatedParty-copy" href="" class="metadata-action-link">
                                             <span>
                                                 <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -198,7 +253,7 @@
                                         </a>
                                     </div>
                                     <div class="text-end">
-                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink text-smaller" href="">
+                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -262,6 +317,52 @@
         </div>
     </form>
 
+    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="resource" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.resource"/>
+                            </label>
+                            <select name="resource" id="resource" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agentType" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agentType"/>
+                            </label>
+                            <select name="agentType" id="agentType" size="1" class="form-select">
+                                <option value=""></option>
+                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agent" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agent"/>
+                            </label>
+                            <select name="agent" id="agent" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div>
+                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

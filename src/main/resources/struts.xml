@@ -197,6 +197,13 @@
   </package>
 
   <package name="ipt-api" namespace="/api" extends="json-default">
+    <action name="resources" class="org.gbif.ipt.action.portal.HomeAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">resources</param>
+      </result>
+    </action>
+
     <action name="health" class="org.gbif.ipt.action.HealthAction">
       <result name="success" type="json">
         <param name="noCache">true</param>

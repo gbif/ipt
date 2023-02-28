@@ -172,6 +172,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return map;
   }
 
+  @Override
+  public Map<String, String> getI18nDatasetTypesVocab(String lang, boolean sortAlphabetically) {
+    return getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, lang, sortAlphabetically);
+  }
+
+  @Override
+  public Map<String, String> getI18nDatasetSubtypesVocab(String lang, boolean sortAlphabetically) {
+    return getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, lang, sortAlphabetically);
+  }
+
   /**
    * Retrieve vocabulary file by its resolvable URI.
    *

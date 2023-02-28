@@ -19,6 +19,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.UUID;
+
 import com.google.inject.Inject;
 
 public class AboutAction extends BaseAction {
@@ -27,6 +29,9 @@ public class AboutAction extends BaseAction {
 
   private final AppConfig cfg;
   private String title;
+  private UUID iptKey;
+  private String iptDescription;
+  private String hostingOrganisationName;
 
   @Inject
   public AboutAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
@@ -44,7 +49,17 @@ public class AboutAction extends BaseAction {
 
   @Override
   public void prepare() {
-    Ipt ipt = getIpt();
+    Ipt ipt = registrationManager.getIpt();
+    Organisation org = registrationManager.getHostingOrganisation();
+
+    if (ipt != null) {
+      iptKey = ipt.getKey();
+      iptDescription = ipt.getDescription();
+    }
+
+    if (org != null) {
+      hostingOrganisationName = org.getName();
+    }
 
     // if registered - get title from registration data
     // if not - try to get title form ipt.properties
@@ -58,30 +73,15 @@ public class AboutAction extends BaseAction {
     }
   }
 
-  /**
-   * This method is called from about.ftl.
-   *
-   * @return the organisation hosting this IPT instance, or null if the IPT hasn't been registered yet.
-   */
-  public Organisation getHostingOrganisation() {
-    Organisation org = registrationManager.getHostingOrganisation();
-    if (org != null) {
-      org.setPassword(null);
-    }
-    return org;
+  public UUID getIptKey() {
+    return iptKey;
   }
 
-  /**
-   * This method is called from about.ftl.
-   *
-   * @return the IPT instance information, or null if the IPT hasn't been registered yet.
-   */
-  public Ipt getIpt() {
-    Ipt ipt = registrationManager.getIpt();
-    // remove password from IPT data
-    if (ipt != null) {
-      ipt.setWsPassword(null);
-    }
-    return ipt;
+  public String getIptDescription() {
+    return iptDescription;
+  }
+
+  public String getHostingOrganisationName() {
+    return hostingOrganisationName;
   }
 }

@@ -5,17 +5,6 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
     <script>
         $(document).ready(function(){
-            // make labels size the same (issue for ru locale)
-            $(window).on("load resize",function(){
-                var lb = $("label.form-label");
-                lb.height('');
-                var heights = lb.map(function() {
-                    return $(this).height();
-                }).get();
-                maxHeight = Math.max.apply(null, heights);
-                lb.css("height", maxHeight);
-            });
-
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -42,6 +31,85 @@
                 var pos = invalidElement.offset().top - 100;
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
+            }
+
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_taxcoverages = initAndGetSortable('#items');
+            sortable_taxcoverages[0].addEventListener('sortupdate', changeInputNamesTaxCoverageAfterDragging);
+            sortable_taxcoverages[0].addEventListener('drag', dragScroll);
+
+            $("[id^='subItems-']").each(function (index) {
+                const sortable_taxa = initAndGetSortable("#" + $(this)[0].id);
+                sortable_taxa[0].addEventListener('sortupdate', changeInputNamesTaxonAfterDragging);
+                sortable_taxa[0].addEventListener('drag', dragScroll);
+            });
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesTaxonAfterDragging(e) {
+                displayProcessing();
+                var targetId = e.target.id;
+                var parentIndex = targetId.split("-")[1];
+                var items = $("#" + e.target.id + " div.sub-item");
+
+                items.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='scientificName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].scientificName");
+                    $("div#" + elementId + " input[id$='commonName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].commonName");
+                    $("div#" + elementId + " select[id$='rank']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].rank");
+                });
+
+                hideProcessing();
+            }
+
+            function changeInputNamesTaxCoverageAfterDragging(e) {
+                displayProcessing();
+                var items = $("#items div.item");
+
+                items.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
+                    console.log("div#" + elementId + " input[id^='add-button']");
+                    console.log($("div#" + elementId + " input[id^='add-button']"));
+                    $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
+
+                    var scientificNames = $("#" + elementId + " input[id$='scientificName']");
+                    scientificNames.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].scientificName");
+                    });
+
+                    var commonNames = $("#" + elementId + " input[id$='commonName']");
+                    commonNames.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].commonName");
+                    });
+
+                    var ranks = $("#" + elementId + " select[id$='rank']");
+                    ranks.each(function (sub_index) {
+                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].rank");
+                    });
+                });
+
+                hideProcessing();
             }
         });
     </script>
@@ -86,7 +154,7 @@
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                         </ol>
@@ -130,7 +198,7 @@
 
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-taxonomic" class="text-smaller" href="">
+                                        <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -161,9 +229,9 @@
                                 <!-- Adding the taxonomic coverages that already exists on the file -->
                                 <#assign next_agent_index=0 />
                                 <#list eml.taxonomicCoverages as item>
-                                    <div id='item-${item_index}' class="item border-bottom">
-                                        <div class="d-flex justify-content-end mt-2">
-                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
+                                    <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
+                                        <div class="handle d-flex justify-content-end mt-2">
+                                            <a id="removeLink-${item_index}" class="removeLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -178,8 +246,8 @@
                                         </div>
 
                                         <!-- Taxon list-->
-                                        <div class="my-2 text-smaller">
-                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1" href="">
+                                        <div class="my-2 fs-smaller-2">
+                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1 metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -198,12 +266,12 @@
                                                 <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
-                                        <div id="subItems" class="mt-2">
+                                        <div id="subItems-${item_index}" class="mt-2">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
-                                                    <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
-                                                        <div class="d-flex justify-content-end mt-2">
-                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
+                                                    <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
+                                                        <div class="handle d-flex justify-content-end mt-2 py-1">
+                                                            <a id="trash-${item_index}-${subItem_index}" class="metadata-action-link" href="">
                                                                 <span>
                                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -212,31 +280,26 @@
                                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                                             </a>
                                                         </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100">
+
+                                                        <div class="row flex-grow-1 g-3">
+                                                            <div class="col-lg-4">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100">
+                                                            <div class="col-lg-4">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-lg-4">
-                                                            <div class="w-100 me-2">
-                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
+                                                            <div class="col-lg-4">
+                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks! value="${(eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank)!?lower_case}"/>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
                                                 </#list>
                                             </#if>
                                         </div>
                                         <div class="pb-1 mt-3">
-                                            <a id="plus-subItem-${item_index}" href="" class="text-smaller">
+                                            <a id="plus-subItem-${item_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -250,7 +313,7 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus text-smaller" href="">
+                                <a id="plus" class="plus plus-taxcoverage metadata-action-link" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -304,11 +367,11 @@
                             <!-- internal parameter -->
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
-                            <!-- The base form that is going to be cloned every time an user click on the 'add' link -->
+                            <!-- The base form that is going to be cloned every time a user click on the 'add' link -->
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
-                                <div class="d-flex justify-content-end mt-2">
-                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                <div class="handle d-flex justify-content-end mt-2">
+                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -324,7 +387,7 @@
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="">
+                                    <a id="taxonsLink" class="show-taxonList metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -341,7 +404,7 @@
                                 </div>
                                 <div id="subItems" class="my-2"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
-                                    <a id="plus-subItem" href="" class="text-smaller">
+                                    <a id="plus-subItem" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -352,9 +415,9 @@
                                 </div>
                             </div>
 
-                            <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
-                                <div class="d-flex justify-content-end mt-2">
-                                    <a id="trash" class="text-smaller" href="">
+                            <div id="subItem-9999" class="sub-item mt-3" style="display:none">
+                                <div class="handle d-flex justify-content-end mt-2 py-1">
+                                    <a id="trash" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -363,21 +426,18 @@
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                     </a>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="w-100">
+
+                                <div class="row g-3">
+                                    <div class="col-lg-4">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4">
-                                    <div class="w-100">
+                                    <div class="col-lg-4">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4">
-                                    <div class="w-100 me-2">
-                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
+                                    <div class="col-lg-4">
+                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks! />
                                     </div>
                                 </div>
                             </div>

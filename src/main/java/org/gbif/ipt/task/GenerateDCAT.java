@@ -25,11 +25,11 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.BBox;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.GeospatialCoverage;
-import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.BBox;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 
 import java.io.File;
 import java.io.InputStream;
@@ -198,9 +198,8 @@ public class GenerateDCAT {
           resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
           resource.getKey());
 
-        // make sure it has a license and records published
-        if (publishedPublicVersion.getRecordsPublished() > 0 && publishedPublicVersion.getEml() != null
-            && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
+        // make sure it has a license
+        if (publishedPublicVersion.getEml() != null && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
 
           feed.append(createDCATDatasetInformation(publishedPublicVersion));
           feed.append("\n");

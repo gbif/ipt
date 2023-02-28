@@ -29,7 +29,7 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
-NOTE: Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see [this issue](https://github.com/gbif/ipt/issues/1646) if you can help with testing, or use Red Hat 7 / CentOS 7 instead.
+NOTE: Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing, or use Red Hat 7 / CentOS 7 instead.
 
 To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
 

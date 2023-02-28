@@ -14,7 +14,6 @@
         // a function called when adding new temporal coverages
         // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
-            initCalendar();
             calculateCount();
 
             function calculateCount() {
@@ -30,7 +29,7 @@
                 event.preventDefault();
                 var idNewForm = "temporal-" + count;
                 var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
-                // Add the fields depending of the actual value in the select
+                // Add the fields depending on the actual value in the select
                 var typeSubForm = $("#tempTypes").prop("value");
                 //Adding the 'sub-form' to the new form.
                 addTypeForm(newForm, typeSubForm, true);
@@ -159,22 +158,18 @@
                     var popovers = $("#" + idNewForm + " a.popover-link");
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
                     popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
-
-                    initCalendar("#date-" + index);
                 }
                 if (typeSubForm === FORMATION_PERIOD) {
                     $("#" + idNewForm + " [id^='formation-']").attr("id", "formation-" + index);
                     $("#" + idNewForm + " [id$='formationPeriod']").attr("id", "eml.temporalCoverages[" + index + "].formationPeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initCalendar("#formation-" + index);
                 }
                 if (typeSubForm === LIVING_TIME_PERIOD) {
                     $("#" + idNewForm + " [id^='living-']").attr("id", "living-" + index);
                     $("#" + idNewForm + " [id$='livingTimePeriod']").attr("id", "eml.temporalCoverages[" + index + "].livingTimePeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initCalendar("#living-" + index);
                 }
                 if (typeSubForm === SINGLE_DATE) {
                     $("#" + idNewForm + " [id^='single-']").attr("id", "single-" + index);
@@ -185,8 +180,6 @@
                     // replace generic 'inputName-startDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
                     var popovers = $("#" + idNewForm + " a.popover-link");
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
-
-                    initCalendar("#single-" + index);
                 }
 
                 initInfoPopovers($("#" + idNewForm)[0]);
@@ -269,8 +262,56 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#temporals');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#temporals div.tempo");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='startDate']").attr("name", "eml.temporalCoverages[" + index + "].startDate");
+                    $("div#" + elementId + " input[id$='endDate']").attr("name", "eml.temporalCoverages[" + index + "].endDate");
+                    $("div#" + elementId + " input[id$='formationPeriod']").attr("name", "eml.temporalCoverages[" + index + "].formationPeriod");
+                    $("div#" + elementId + " input[id$='livingTimePeriod']").attr("name", "eml.temporalCoverages[" + index + "].livingTimePeriod");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
+    <style>
+        input {
+            max-height: 2.375rem !important;
+        }
+    </style>
 
     <title><@s.text name='manage.metadata.tempcoverage.title'/></title>
     <#assign currentMetadataPage = "tempcoverage"/>
@@ -313,7 +354,7 @@
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                         </ol>
@@ -356,7 +397,7 @@
 
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-temporal" class="text-smaller" href="">
+                                        <a id="preview-inferred-temporal" class="metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -367,12 +408,12 @@
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                         ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
-                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
-                                        <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
+                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                            <span>
+                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.reinfer"/></span>
                                         </a>
                                     </div>
@@ -388,8 +429,8 @@
                                 <#assign next_agent_index=0 />
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
-                                        <div class="d-flex justify-content-end mt-4">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href="">
+                                        <div class="handle d-flex justify-content-end mt-4">
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -408,10 +449,10 @@
                                             <div id="date-${temporalCoverage_index}" class="typeForm col-12">
                                                 <div class="row g-3">
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" value="${eml.temporalCoverages[temporalCoverage_index].endDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -419,7 +460,7 @@
                                         <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                 </div>
 
                                             </div>
@@ -438,7 +479,6 @@
                                                 </div>
                                             </div>
                                         </#if>
-
                                     </div>
                                 </#list>
                             </div>
@@ -472,7 +512,7 @@
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-2">
-                                <a id="plus" href="" class="text-smaller">
+                                <a id="plus" href="" class="metadata-action-link">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -487,8 +527,8 @@
 
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="base-temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
-                                <div class="d-flex justify-content-end mt-4">
-                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                <div class="handle d-flex justify-content-end mt-4">
+                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -506,10 +546,10 @@
                             <div id="date-99999" class="typeForm col-12" style="display:none">
                                 <div class="row g-3">
                                     <div class="col-lg-6">
-                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n"/>
                                     </div>
                                     <div class="col-lg-6">
-                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n"/>
                                     </div>
                                 </div>
                             </div>
@@ -517,7 +557,7 @@
                             <!-- SINGLE DATE -->
                             <div id="single-99999" class="typeForm col-lg-6" style="display:none">
                                 <div>
-                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"} />
+                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" />
                                 </div>
                             </div>
 

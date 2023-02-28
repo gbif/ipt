@@ -19,6 +19,8 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.datatable.DatatableRequest;
+import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -29,7 +31,7 @@ import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
-import org.gbif.registry.metadata.InvalidEmlException;
+import org.gbif.metadata.eml.InvalidEmlException;
 
 import java.io.File;
 import java.io.IOException;
@@ -180,8 +182,7 @@ public interface ResourceManager {
   List<Resource> list(PublicationStatus status);
 
   /**
-   * List all resources in the IPT whose last published version was public (at the time of publication). This
-   * is used to populate the list of resources publicly shown on the IPT home page.
+   * List all resources in the IPT whose last published version was public (at the time of publication).
    * </br>
    * If a resource is registered with GBIF, it is assumed the resource is public and therefore is included in the list.
    * Please note only resource published using IPT v2.2 or later store a VersionHistory.
@@ -191,6 +192,18 @@ public interface ResourceManager {
   List<Resource> listPublishedPublicVersions();
 
   /**
+   * List all resources in the IPT whose last published version was public (at the time of publication). This
+   * is used to populate the list of resources publicly shown on the IPT home page.
+   * Simplified - contain only fields required for the resources table.
+   * </br>
+   * If a resource is registered with GBIF, it is assumed the resource is public and therefore is included in the list.
+   * Please note only resource published using IPT v2.2 or later store a VersionHistory.
+   *
+   * @return list of resources wrapped by DatatableResult class
+   */
+  DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request);
+
+  /**
    * list all resource that can be managed by a given user.
    *
    * @param user User
@@ -198,6 +211,16 @@ public interface ResourceManager {
    * @return list of resources, or an empty list if none were found
    */
   List<Resource> list(User user);
+
+  /**
+   * list all resource that can be managed by a given user.
+   *
+   * @param user User
+   * @param request request parameters
+   *
+   * @return list of resources wrapped by DatatableResult class
+   */
+  DatatableResult list(User user, DatatableRequest request);
 
   /**
    * Load all configured resources from the data directory into memory.

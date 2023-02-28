@@ -10,6 +10,30 @@
  -->
 <struts>
 
+  <package name="ipt-manager-api" extends="ipt-api,ipt-default" namespace="/manager-api">
+    <default-interceptor-ref name="managerStack"/>
+
+    <action name="resources" class="org.gbif.ipt.action.manage.HomeAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">resources</param>
+      </result>
+    </action>
+
+    <action name="suggest-resources" class="org.gbif.ipt.action.manage.MetadataAgentSuggesterAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">suggestedResources</param>
+      </result>
+    </action>
+
+    <action name="suggest-agents" class="org.gbif.ipt.action.manage.MetadataAgentSuggesterAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">suggestedAgents</param>
+      </result>
+    </action>
+  </package>
 
   <!-- The entry to the manage section -->
   <package name="manage" extends="ipt-default" namespace="/manage">
@@ -90,7 +114,7 @@
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
+      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelMakePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">

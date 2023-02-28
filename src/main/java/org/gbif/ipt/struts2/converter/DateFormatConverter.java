@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.struts2.converter;
 
-import org.gbif.metadata.DateUtils;
+import org.gbif.metadata.eml.ipt.util.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

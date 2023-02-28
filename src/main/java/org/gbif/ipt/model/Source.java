@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model;
 
+import java.util.Date;
+
 /**
  * A data source for mappings, exposing a record/row iterator through the SourceManager implementation.
  */
@@ -58,4 +60,6 @@ public interface Source {
   void setReadable(boolean readable);
 
   void setResource(Resource resource);
+
+  void setLastModified(Date date);
 }

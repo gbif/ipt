@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:00\n"
+"POT-Creation-Date: 2022-12-20 11:04+0000\n"
+"PO-Revision-Date: 2023-02-06 08:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "推奨される引用"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
@@ -194,28 +194,28 @@ msgstr "アソーシエート"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:402
+#: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "Project Data"
 msgstr "プロジェクトデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:421
+#: en/modules/ROOT/pages/manage-resources.adoc:437
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "収集方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:434
+#: en/modules/ROOT/pages/manage-resources.adoc:450
 #, no-wrap
 msgid "Citations"
 msgstr "引用論文"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:462
+#: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "Collection Data"
 msgstr "コレクションデータ"
@@ -227,7 +227,7 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:513
+#: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "追加のメタデータ"

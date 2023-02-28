@@ -18,6 +18,50 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_physical_data = initAndGetSortable('#items');
+
+            sortable_physical_data[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_physical_data[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='name']").attr("name", "eml.physicalData[" + index + "].name");
+                    $("div#" + elementId + " input[id$='charset']").attr("name", "eml.physicalData[" + index + "].charset");
+                    $("div#" + elementId + " input[id$='distributionUrl']").attr("name", "eml.physicalData[" + index + "].distributionUrl");
+                    $("div#" + elementId + " input[id$='format']").attr("name", "eml.physicalData[" + index + "].format");
+                    $("div#" + elementId + " input[id$='formatVersion']").attr("name", "eml.physicalData[" + index + "].formatVersion");
+                });
+
+                hideProcessing();
+            }
         });
     </script>
 
@@ -37,7 +81,7 @@
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                         </ol>
@@ -90,8 +134,8 @@
                                 <div id="items">
                                     <#list eml.physicalData as item>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="mt-2 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
+                                            <div class="handle mt-2 d-flex justify-content-end">
+                                                <a id="removeLink-${item_index}" class="removeLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -120,7 +164,7 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus" href="" class="text-smaller">
+                                    <a id="plus" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -135,8 +179,8 @@
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="mt-2 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                <div class="handle mt-2 d-flex justify-content-end">
+                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>

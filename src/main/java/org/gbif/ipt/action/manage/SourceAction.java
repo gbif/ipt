@@ -186,7 +186,11 @@ public class SourceAction extends ManagerBaseAction {
         .endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
         try {
           File tmpDir = dataDir.tmpDir();
-          List<File> files = CompressionUtil.decompressFile(tmpDir, file);
+          // in case of a file to override auto-generated name
+          String unzippedFileName = fileFileName != null
+              ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
+
+          List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
           addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
 
           // validate if at least one file already exists to ask confirmation
@@ -473,6 +477,10 @@ public class SourceAction extends ManagerBaseAction {
 
   @Override
   public String save() throws IOException {
+    if (source != null) {
+      source.setLastModified(new Date());
+    }
+
     // treat jdbc special
     if (source != null && rdbms != null) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
@@ -494,7 +502,7 @@ public class SourceAction extends ManagerBaseAction {
             problem = sourceManager.analyze(source);
           }
         } catch (AlreadyExistingException e) {
-          // shouldnt really happen as we validate this beforehand - still catching it here to be safe
+          // shouldn't really happen as we validate this beforehand - still catching it here to be safe
           addActionError(getText("manage.source.existing"));
         }
       } else {
@@ -564,9 +572,12 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setSqlSourcePassword(String sqlSourcePassword) {
     if (source != null && source instanceof SqlSource) {
-      ((SqlSource) source).setPassword(sqlSourcePassword);
-      // source should be re-analyzed after password update
-      this.analyze = true;
+      // ignore empty password
+      if (StringUtils.isNotBlank(sqlSourcePassword)) {
+        ((SqlSource) source).setPassword(sqlSourcePassword);
+        // source should be re-analyzed after password update
+        this.analyze = true;
+      }
     }
   }
 
@@ -618,7 +629,7 @@ public class SourceAction extends ManagerBaseAction {
 
         // restore password if it was not sent from UI
         if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
-          src.setPassword(sqlSourcePasswordCache);
+          ((SqlSource) source).setPassword(sqlSourcePasswordCache);
         }
 
         // pure ODBC connections need only a DSN, no server

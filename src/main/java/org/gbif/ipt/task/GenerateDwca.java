@@ -96,6 +96,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
   private Map<String, String> basisOfRecords;
+  private Map<String, String> basisOfRecordsSnakeCase;
   private Exception exception;
   private AppConfig cfg;
   private static final int ID_COLUMN_INDEX = 0;
@@ -415,7 +416,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private File sortCoreDataFile(ArchiveFile file, int column) throws IOException {
     // retrieve the core file
-    File unsorted = file.getLocationFile();
+    File unsorted = file.getLocationFiles().get(0);
 
     // create a new file that will store the records sorted by column
     File sorted = new File(unsorted.getParentFile(), SORTED_FILE_PREFIX + unsorted.getName());
@@ -460,11 +461,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * Populate basisOfRecords map from XML vocabulary, used to validate basisOfRecord values.
    */
   private void loadBasisOfRecordMapFromVocabulary() {
-    if (basisOfRecords == null) {
+    if (basisOfRecords == null || basisOfRecordsSnakeCase == null) {
       basisOfRecords = new HashMap<>();
-      basisOfRecords
-        .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false));
-      basisOfRecords = MapUtils.getMapWithLowercaseKeys(basisOfRecords);
+      basisOfRecordsSnakeCase = new HashMap<>();
+      Map<String, String> basisOfRecordsVocab =
+          vocabManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false);
+      basisOfRecords = MapUtils.getMapWithLowercaseKeys(basisOfRecordsVocab);
+      basisOfRecordsSnakeCase = MapUtils.getMapWithSnakecaseKeys(basisOfRecordsVocab);
     }
   }
 
@@ -808,7 +811,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       recordsWithNoBasisOfRecord.getAndIncrement();
     } else {
       // check basisOfRecord matches vocabulary (lower case comparison). E.g. specimen matches Specimen are equal
-      if (!basisOfRecords.containsKey(bor.toLowerCase())) {
+      if (!basisOfRecords.containsKey(bor.toLowerCase()) && !basisOfRecordsSnakeCase.containsKey(bor.toLowerCase())) {
         writePublicationLogMessage("Line #" + line + " has basisOfRecord [" + bor
                                    + "] that does not match the Darwin Core Type Vocabulary");
         recordsWithNonMatchingBasisOfRecord.getAndIncrement();

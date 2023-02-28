@@ -1,6 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -136,6 +137,80 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_contacts = initAndGetSortable('#contact-items');
+            const sortable_creators = initAndGetSortable('#creator-items');
+            const sortable_metadataProviders = initAndGetSortable('#metadataProvider-items');
+            const sortable_description = initAndGetSortable('#items');
+
+            sortable_contacts[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_creators[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_metadataProviders[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
+            sortable_description[0].addEventListener('sortupdate', function(e) {
+                // recalculate names!
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " textarea").attr("name", "eml.description[" + index + "]");
+                });
+
+                hideProcessing();
+            });
+
+            sortable_contacts[0].addEventListener('drag', dragScroll);
+            sortable_creators[0].addEventListener('drag', dragScroll);
+            sortable_metadataProviders[0].addEventListener('drag', dragScroll);
+            sortable_description[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeAgentInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#contact-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.contacts[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.contacts[" + index + "].lastName");
+                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.contacts[" + index + "].position");
+                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.contacts[" + index + "].organisation");
+                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.contacts[" + index + "].address.address");
+                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.contacts[" + index + "].address.city");
+                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.contacts[" + index + "].address.province");
+                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.contacts[" + index + "].address.country");
+                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.contacts[" + index + "].address.postalCode");
+                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.contacts[" + index + "].phone");
+                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.contacts[" + index + "].email");
+                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.contacts[" + index + "].homepage");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.contacts[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.contacts[" + index + "].userIds[0].identifier");
+                });
+
+                hideProcessing();
+            }
         });
 
     </script>
@@ -155,7 +230,7 @@
                 <div class="text-center text-uppercase fw-bold fs-smaller-2">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                         </ol>
@@ -276,9 +351,9 @@
                         <@textinline name="eml.description" help="i18n" requiredField=true/>
                         <div id="items">
                             <#list eml.description as item>
-                                <div id="item-${item_index}" class="item paragraphk pb-4 border-bottom">
-                                    <div class="my-2 d-flex justify-content-end">
-                                        <a id="removeLink-${item_index}" class="removeLink text-smaller mt-1" href="">
+                                <div id="item-${item_index}" class="handle item pb-4 border-bottom">
+                                    <div class="handle columnLinks my-2 d-flex justify-content-end">
+                                        <a id="removeLink-${item_index}" class="removeLink metadata-action-link mt-1" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -292,7 +367,7 @@
                             </#list>
                         </div>
                         <div class="addNew my-2">
-                            <a id="plus" href="" class="text-smaller">
+                            <a id="plus" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -303,8 +378,8 @@
                         </div>
 
                         <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
-                            <div class="my-2 d-flex justify-content-end">
-                                <a id="removeLink" class="removeLink text-smaller" href="">
+                            <div class="handle columnLinks my-2 d-flex justify-content-end">
+                                <a id="removeLink" class="removeLink metadata-action-link" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -317,7 +392,7 @@
                         </div>
 
                         <!-- retrieve some link names one time -->
-                        <#assign copyLink><@s.text name="eml.resourceCreator.copyLink"/></#assign>
+                        <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
                         <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
                         <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
                         <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
@@ -332,11 +407,19 @@
                         <div id="contact-items">
                             <#list eml.contacts as contact>
                                 <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
-                                        <!-- Do not show copy-from-resource-contact link for the first contact -->
-                                        <div>&nbsp;</div>
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink text-smaller" href="">
+                                            <a id="contact-copy-${contact_index}" href="" class="metadata-action-link">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${copyLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -384,7 +467,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if (eml.contacts[contact_index].userIds[0].directory)??>
-                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.contacts[contact_index].userIds[0].directory?replace('http://orcid.org/', 'https://orcid.org/')}"/>
+                                            <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.contacts[contact_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.contacts[${contact_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -401,7 +484,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-contact" href="" class="text-smaller">
+                            <a id="plus-contact" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -412,9 +495,9 @@
                         </div>
 
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="contact-copyDetails" href="" class="text-smaller">
+                                    <a id="contact-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -424,7 +507,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="contact-removeLink" class="removeContactLink text-smaller" href="">
+                                    <a id="contact-removeLink" class="removeContactLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -485,9 +568,9 @@
                         <div id="creator-items">
                             <#list eml.creators as creator>
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="creator-copyDetails-${creator_index}" href="" class="text-smaller">
+                                            <a id="creator-copy-${creator_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -497,7 +580,7 @@
                                             </a>
                                         </div>
                                         <div class="text-end">
-                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink text-smaller" href="">
+                                            <a id="creator-removeLink-${creator_index}" class="removeCreatorLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -545,7 +628,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.creators[creator_index].userIds[0]??>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.creators[creator_index].userIds[0].directory!}"/>
+                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -562,7 +645,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-creator" href="" class="text-smaller">
+                            <a id="plus-creator" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -573,9 +656,9 @@
                         </div>
 
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copyDetails" href="" class="text-smaller">
+                                    <a id="creator-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -585,7 +668,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="creator-removeLink" class="removeCreatorLink text-smaller" href="">
+                                    <a id="creator-removeLink" class="removeCreatorLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -642,23 +725,23 @@
 
                     <div class="my-3 p-3">
                         <!-- Metadata Providers -->
-                        <@textinline name="eml.metadataProvider.plural" help="i18n" requiredField=true/>
+                        <@textinline name="eml.metadataProvider.plural" help="i18n"/>
                         <div id="metadataProvider-items">
                             <#list eml.metadataProviders as metadataProvider>
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                    <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="" class="text-smaller">
+                                            <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
-                                                <span><@s.text name="eml.resourceCreator.copyLink" /></span>
+                                                <span><@s.text name="eml.metadataAgent.copyLink" /></span>
                                             </a>
                                         </div>
                                         <div class="text-end">
-                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink text-smaller" href="">
+                                            <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink metadata-action-link" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -706,7 +789,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${eml.metadataProviders[metadataProvider_index].userIds[0].directory!}"/>
+                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory!]!}"/>
                                         <#else>
                                             <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
                                         </#if>
@@ -723,7 +806,7 @@
                         </div>
 
                         <div class="addNew my-2">
-                            <a id="plus-metadataProvider" href="" class="text-smaller">
+                            <a id="plus-metadataProvider" href="" class="metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -734,9 +817,9 @@
                         </div>
 
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-4 d-flex justify-content-between">
+                            <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copyDetails" href="" class="text-smaller">
+                                    <a id="metadataProvider-copy" href="" class="metadata-action-link">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
@@ -746,7 +829,7 @@
                                     </a>
                                 </div>
                                 <div class="text-end">
-                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink text-smaller" href="">
+                                    <a id="metadataProvider-removeLink" class="removeMetadataProviderLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -808,6 +891,53 @@
         </div>
     </div>
 </form>
+
+    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="resource" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.resource"/>
+                            </label>
+                            <select name="resource" id="resource" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agentType" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agentType"/>
+                            </label>
+                            <select name="agentType" id="agentType" size="1" class="form-select">
+                                <option value=""></option>
+                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agent" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agent"/>
+                            </label>
+                            <select name="agent" id="agent" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div>
+                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

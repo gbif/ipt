@@ -34,8 +34,8 @@
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
                 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                        <li class="breadcrumb-item"><a href="#"><@s.text name="breadcrumb.admin.users"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                        <li class="breadcrumb-item"><a href="${baseURL}/admin/users.do"><@s.text name="breadcrumb.admin.users"/></a></li>
                         <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.users.user"/></li>
                     </ol>
                 </nav>
@@ -57,12 +57,12 @@
                 </#if>
 
                 <div class="mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>
+                    <@s.submit tabindex=7 cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>
                     <#if "${newUser!}"=="no">
-                        <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
-                        <@s.submit cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                        <@s.submit tabindex=8 cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
+                        <@s.submit tabindex=9 cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
                     </#if>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
+                    <@s.submit tabindex=10 cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
                 </div>
             </div>
         </div>
@@ -82,27 +82,27 @@
                     <@s.hidden name="id" value="${(user.email)!}" required="true"/>
 
                     <div class="col-md-6">
-                        <@input name="user.firstname" />
+                        <@input tabindex=1 name="user.firstname" />
                     </div>
 
                     <div class="col-md-6">
-                        <@input name="user.lastname" />
+                        <@input tabindex=2 name="user.lastname" />
                     </div>
 
                     <div class="col-md-6">
-                        <@input name="user.email" disabled=id?has_content/>
+                        <@input tabindex=3 name="user.email" disabled=id?has_content/>
                     </div>
 
                     <div class="col-md-6">
-                        <@select name="user.role" value=(user.role)! javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
+                        <@select name="user.role" tabindex=4 value=(user.role)! javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
                     </div>
 
                     <#if "${newUser!}"!="no">
                         <div class="col-md-6">
-                            <@input name="user.password" type="password" />
+                            <@input name="user.password" type="password" tabindex=5 />
                         </div>
                         <div class="col-md-6">
-                            <@input name="password2" i18nkey="user.password2" type="password"/>
+                            <@input name="password2" i18nkey="user.password2" type="password" tabindex=6/>
                         </div>
                     </#if>
                 </div>

@@ -4,9 +4,9 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
 <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
-<script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
-<@resourcesTable shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
+<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
+
+<@resourcesTable resources=resources shownPublicly=true numResourcesShown=10 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">
@@ -25,7 +25,7 @@
 
             <#if (resources?size>0)>
                 <div class="text-smaller text-gbif-primary mb-2">
-                    <@s.text name="portal.home.resources.available"><@s.param>${resources?size}</@s.param></@s.text>
+                    <@s.text name="portal.home.resources.available"><@s.param>${resourcesSize}</@s.param></@s.text>
                 </div>
             <#else>
                 <div class="text-smaller text-gbif-danger mb-2">
@@ -38,7 +38,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
+        <div id="tableContainer" class="resource-table text-smaller pt-2"></div>
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>

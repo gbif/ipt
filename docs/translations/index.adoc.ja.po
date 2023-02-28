@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-02-06 19:31\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,158 +20,158 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
 #: en/modules/ROOT/pages/index.adoc:38
 msgid "The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
-msgstr ""
+msgstr "IPTを使い始める最も簡単な方法は、信頼できるデータホスティングセンターに無料のアカウントを申請することです。これにより、自分のデータセットを管理し、自分のサーバーでIPTをセットアップして維持する手間なしにGBIF.orgを通じてそれらを公開することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
 #: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
-msgstr ""
+msgstr "また、IPTのインスタンスを自分でセットアップする場合は、[Getting Started Guide]を利用してください。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
 #: en/modules/ROOT/pages/index.adoc:30
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
-msgstr ""
+msgstr "IPTを利用してGBIF.orgで生物多様性データを公開する方法"
 
 #. type: Title =
 #: en/modules/ROOT/pages/index.adoc:1
 #, no-wrap
 msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
-msgstr ""
+msgstr "GBIF 統合バブリッシングツールキット（IPT） ユーザーマニュアル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
 msgid "_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._"
-msgstr ""
+msgstr "ダウンロードを含む最新版の情報は、[Releases]ページをご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
 msgid "The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:"
-msgstr ""
+msgstr "GBIF統合パブリッシングツールキット（IPT）は、4種類の生物多様性関連情報を簡単に共有できる、自由に利用可能なオープンソースWebアプリケーションです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:8
 msgid "primary taxon occurrence data"
-msgstr ""
+msgstr "主要な分類群のオカレンスデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
 msgid "taxon checklists"
-msgstr ""
+msgstr "分類群チェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:10
 msgid "sampling event data"
-msgstr ""
+msgstr "サンプリングイベントデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11
 msgid "general metadata about data sources."
-msgstr ""
+msgstr "データソース全般のメタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:13
 msgid "An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository."
-msgstr ""
+msgstr "IPTインスタンスおよびIPTで登録されたデータやメタデータはGBIFレジストリに接続され、GBIFネットワークやポータルを通じて参照できるようインデックス化され、一般に利用できるようになります。また、IPTにDataCiteアカウントを設定することで、データセットにDOIを付与し、データリポジトリとして活用することも可能です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr ""
+msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。GBIFのさまざまな参加者は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、[GBIF.org]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
 msgid "Several factors have provided motivation for GBIF to lead the development of the IPT:"
-msgstr ""
+msgstr "GBIFがIPTの開発を主導するようになったのは、いくつかの要因があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:22
 msgid "limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;"
-msgstr ""
+msgstr "大規模なデータセットを容易に公開・転送するできる従来の公開ツール（DiGIR、TAPIR、BioCASe）が制限を受けたため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:23
 msgid "the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions."
-msgstr ""
+msgstr "インデックス作成時に出版社のサーバーとGBIFのサーバーの両方の負荷を軽減するため。DiGIR、TAPIR、BioCASeからのインデックス作成では、HTTPリクエストとレスポンスのやりとりが繰り返され、負荷が大きくなってしまいました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:24
 msgid "the need to speed up the process of indexing biodiversity occurrence datasets;"
-msgstr ""
+msgstr "生物多様性データセットのインデックス作成の高速化のため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:25
 msgid "the need to offer additional benefits and services to the data publishers to encourage data publication;"
-msgstr ""
+msgstr "データ公開者にさらなるサービスやメリットを提供し、データ公開を促進するため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:26
 msgid "the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata."
-msgstr ""
+msgstr "名前チェックリストやデータセットのメタデータなど、特定の種類の生物多様性データを公開するための適切なツールがなかったため。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:28
 msgid "To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org."
-msgstr ""
+msgstr "IPTの仕組みを理解するために、データセットがGBIF.orgを通じて適切に公開・登録される様子を25分の簡単な動画で見てみましょう。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:33
 #, no-wrap
 msgid "Users"
-msgstr ""
+msgstr "ユーザー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:36
 msgid "If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
-msgstr ""
+msgstr "もしIPTを試してみたいだけなら、helpdesk@gbif.org にメールを送って[Demo IPT]のアカウントを申請してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:42
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately."
-msgstr ""
+msgstr "IPTユーザーのサポートグループである[IPT Mailing List]に必ずご登録ください。IPTを可能な限り安全かつ堅牢にするためには、IPTを最新の状態にしておくことが不可欠です。IPTの管理責任者は、すぐに更新できるよう、最新のリリースの通知を受け取るためにサインアップしておく必要があります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:43
 #, no-wrap
 msgid "Developers"
-msgstr ""
+msgstr "開発者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:46
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr ""
+msgstr "IPTの開発はGBIFが中心となって指揮していますが、コーディングはコミュニティの努力によるもので、誰でも参加することができます。まずは、[Open Issues]を見て、取り組んでみたいことを見つけてください。その貢献は、リポジトリのブランチまたはフォークを使用した[pull request]の形で歓迎されることに留意してください。開発者向けの詳しい説明は、[here]をご覧ください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:47
 #, no-wrap
 msgid "Translators"
-msgstr ""
+msgstr "翻訳者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:50
 msgid "The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here]."
-msgstr ""
+msgstr "IPTのユーザーインターフェイスやマニュアルも国際化が必要ですが、コミュニティの活動ですので、どなたでも参加できます。翻訳者を対象とした詳細な指示は、[here]で見つけることができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:52
 msgid "Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian."
-msgstr ""
+msgstr "コミュニティの多大な努力と、ローカリゼーションツール[Crowdin]の力を借りて、ユーザーインターフェースはすでに7ヶ国語（英語・フランス語・スペイン語・中国語（繁体字）・ポルトガル語（ブラジル）・日本語・ロシア語）に翻訳されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:53
 #, no-wrap
 msgid "Acknowledgements"
-msgstr ""
+msgstr "謝辞"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:56
 msgid "A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world."
-msgstr ""
+msgstr "このソフトの成功には、多くの献身的なボランティアが貢献しています。皆様のご協力により、IPTは世界中で使用される素晴らしいツールになりました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:57
 msgid "https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations."
-msgstr ""
+msgstr "[Crowdin]は、このオープンソースプロジェクトを支援するため、GBIFに同社のローカリゼーション管理プラットフォームへの無償アクセスを提供しています。Crowdinは、多言語への同時翻訳の管理を可能にします。"
 

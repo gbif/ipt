@@ -106,8 +106,11 @@ public class PublishingMonitor {
                       // ensure resource has not exceeded the maximum number of publication failures
                       if (!resourceManager.hasMaxProcessFailures(resource)) {
                         try {
+                          // reset version change summary
+                          resource.setChangeSummary(null);
+
                           LOG.debug("Monitor: " + resource.getTitleAndShortname() + " v# " + nextVersion.toPlainString()
-                                  + " due to be auto-published: " + next.toString());
+                                  + " due to be auto-published: " + next);
                           resourceManager.publish(resource, nextVersion, null);
                         } catch (PublicationException e) {
                           if (PublicationException.TYPE.LOCKED == e.getType()) {
@@ -142,6 +145,15 @@ public class PublishingMonitor {
                               + "] since it is already in progress");
                     }
                   }
+                }
+              }
+
+              // ensure resource is due to become public
+              if (resource.getMakePublicDate() != null && resource.getMakePublicDate().before(now)) {
+                try {
+                  resourceManager.visibilityToPublic(resource, null);
+                } catch (Exception e) {
+                  LOG.error("Resource " + resource.getShortname() + " failed to go public automatically", e);
                 }
               }
             }

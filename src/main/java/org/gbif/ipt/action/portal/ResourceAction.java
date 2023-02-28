@@ -33,12 +33,12 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.TaxonKeyword;
-import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
+import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,11 +50,13 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -64,6 +66,7 @@ import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,8 +94,8 @@ public class ResourceAction extends PortalBaseAction {
   private DataDir dataDir;
   private Eml eml;
   private DataPackageMetadata dpMetadata;
-  private Set<Agent> mergedContacts = new HashSet<>();
-  private Set<Agent> deduplicatedProjectPersonnel = new HashSet<>();
+  private Set<Agent> mergedContacts = new LinkedHashSet<>();
+  private Set<Agent> deduplicatedProjectPersonnel = new LinkedHashSet<>();
   private Map<String, Set<String>> contactRoles = new HashMap<>();
   private Map<String, Set<String>> projectPersonnelRoles = new HashMap<>();
   private boolean metadataOnly;
@@ -332,7 +335,19 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   public String rss() {
-    resources = resourceManager.latest(page, 25);
+    String resourceShortname = req.getParameter(Constants.REQ_PARAM_RESOURCE);
+
+    if (resourceShortname == null) {
+      resources = resourceManager.latest(page, 25);
+    } else {
+      Resource r = resourceManager.get(resourceShortname);
+      if (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED) {
+        resources = Collections.singletonList(resourceManager.get(resourceShortname));
+      } else {
+        resources = new ArrayList<>();
+      }
+    }
+
     return SUCCESS;
   }
 
@@ -804,7 +819,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   public Set<Agent> getMergedContacts() {
     if (mergedContacts.isEmpty()) {
-      Stream.of(eml.getCreators(), eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties())
+      Stream.of(eml.getCreators(), eml.getMetadataProviders(), eml.getContacts(), eml.getAssociatedParties())
           .flatMap(Collection::stream)
           .filter(Objects::nonNull)
           .filter(this::isValidAgent)

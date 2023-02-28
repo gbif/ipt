@@ -17,8 +17,8 @@ import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
 import java.io.FileNotFoundException;

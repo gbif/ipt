@@ -28,9 +28,9 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.metadata.eml.TaxonKeyword;
-import org.gbif.metadata.eml.TaxonomicCoverage;
+import org.gbif.metadata.eml.ipt.IptEmlWriter;
+import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
+import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +141,7 @@ public class ResourceActionTest {
 
     // mock returning EML file, with actual resource metadata
     File emlFile = File.createTempFile("eml-3.0.xml", ".xml");
-    EmlWriter.writeEmlFile(emlFile, resource.getEml());
+    IptEmlWriter.writeEmlFile(emlFile, resource.getEml());
     when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlFile);
 
     // mock returning RTF file, with empty content

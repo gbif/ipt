@@ -64,11 +64,11 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
-import org.gbif.registry.metadata.InvalidEmlException;
+import org.gbif.metadata.eml.InvalidEmlException;
+import org.gbif.metadata.eml.ipt.EmlFactory;
+import org.gbif.metadata.eml.ipt.model.Citation;
+import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
@@ -78,6 +78,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -114,6 +116,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   // logging
   private static final Logger LOG = LogManager.getLogger(OverviewAction.class);
 
+  private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+  private static final DateFormat DATE_FORMAT_UI = new SimpleDateFormat("d MMMM yyyy HH:mm");
   private static final String PUBLISHING = "publishing";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
@@ -146,6 +150,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   private boolean validateDatapackageMetadata = false;
   private String summary;
+  private String makePublicDateTime;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -822,14 +827,25 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (PublicationStatus.PRIVATE == resource.getStatus()) {
-      try {
-        resourceManager.visibilityToPublic(resource, this);
-        addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
-          .toString()}));
-      } catch (InvalidConfigException e) {
-        LOG.error("Can't publish resource " + resource, e);
+      // set "make public" date
+      if (StringUtils.isNotEmpty(makePublicDateTime)) {
+        try {
+          Date date = DATE_FORMAT.parse(makePublicDateTime);
+          resource.setMakePublicDate(date);
+          saveResource();
+          addActionMessage(getText("manage.overview.changed.publication.status.become.public", new String[] {DATE_FORMAT_UI.format(date)}));
+        } catch (Exception e) {
+          LOG.error("Can't set make public date " + resource, e);
+        }
+      } else {
+        try {
+          resourceManager.visibilityToPublic(resource, this);
+          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+              .toString()}));
+        } catch (InvalidConfigException e) {
+          LOG.error("Can't publish resource " + resource, e);
+        }
       }
-
     } else {
       addActionWarning(getText("manage.overview.resource.invalid.operation",
         new String[] {resource.getShortname(), resource.getStatus().toString()}));
@@ -837,20 +853,32 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return execute();
   }
 
+  public String cancelMakePublic() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    resource.setMakePublicDate(null);
+    saveResource();
+    addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+        .toString()}));
+
+    return execute();
+  }
+
   /**
    * Reserve a DOI for a resource. Constructs the DOI metadata document, and registers it without making it public.
-   *
+   * <p>
    * Can be done for any resource with any status.
-   *
+   * <p>
    * To accommodate resources with existing DOIs, this method checks if the resource has an existing DOI.
    * If the prefix of the existing DOI matches the prefix of the IPT primary DOI account, the DOI will be automatically
    * reused. Otherwise, the user must remove the DOI to reserve a new one, or update the DOI prefix used by the IPT
    * primary DOI account.
-   *
+   * <p>
    * Must add DOI to EML alternative identifiers, and set DOI as EML citation identifier (unpublished EML)
-   *
+   * <p>
    * DOI can be used on mapping core (datasetID field).
-   *
+   * <p>
    * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
    * In this case, the previous DOI must be replaced by the new DOI.
    */
@@ -1774,6 +1802,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public String getSummary() {
     return StringUtils.trimToNull(summary);
+  }
+
+  public String getMakePublicDateTime() {
+    return makePublicDateTime;
+  }
+
+  public void setMakePublicDateTime(String makePublicDateTime) {
+    this.makePublicDateTime = makePublicDateTime;
   }
 
   public boolean isDataPackageResource() {

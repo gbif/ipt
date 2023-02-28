@@ -95,6 +95,12 @@ public final class Constants {
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
   public static final String TEST_DOI_PREFIX = "10.21373";
 
+  public static final String DATATABLE_ORDER_COLUMN_PARAM = "order[0][column]";
+  public static final String DATATABLE_ORDER_DIRECTORY_PARAM = "order[0][dir]";
+  public static final String DATATABLE_LENGTH_PARAM = "length"; // limit
+  public static final String DATATABLE_START_PARAM = "start"; // offset
+  public static final String DATATABLE_SEARCH_PARAM = "search[value]";
+
   public static final UUID DEFAULT_ORG_KEY = UUID.fromString("625a5522-1886-4998-be46-52c66dd566c9");
 
   // First published version number

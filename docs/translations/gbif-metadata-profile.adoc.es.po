@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 13:51+0000\n"
-"PO-Revision-Date: 2022-11-04 14:02\n"
+"POT-Creation-Date: 2022-12-20 11:04+0000\n"
+"PO-Revision-Date: 2023-02-02 10:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -110,8 +110,7 @@ msgstr "Hay varias formas de escribir un documento de metadatos conforme al Perf
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:31
 msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
-msgstr "Si los metadatos que describen a un conjunto de datos se publican usando archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (según los términos Darwin Core) que describe. Para obtener ayuda de cómo crear un archivo DwC-A completo consulte xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide].\n\n"
-"Si los metadatos que describen un conjunto de datos también se publican usando los Archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (basados en los términos Darwin Core) que describe. Para obtener ayuda sobre cómo crear un archivo DwC-A completo, consulte xref:dwca-guide.adoc[Guía práctica de los Archivos Darwin Core]."
+msgstr "Si los metadatos que describen a un conjunto de datos se publican usando archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (según los términos Darwin Core) que describe. Para obtener ayuda de cómo crear un archivo DwC-A completo consulte xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:33
@@ -198,28 +197,28 @@ msgstr "Partes asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:402
+#: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "Project Data"
 msgstr "Datos del proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:421
+#: en/modules/ROOT/pages/manage-resources.adoc:437
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "Métodos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:434
+#: en/modules/ROOT/pages/manage-resources.adoc:450
 #, no-wrap
 msgid "Citations"
 msgstr "Referencias"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:462
+#: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "Collection Data"
 msgstr "Datos de la colección"
@@ -231,7 +230,7 @@ msgstr "Datos físicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:513
+#: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "Metadatos adicionales"

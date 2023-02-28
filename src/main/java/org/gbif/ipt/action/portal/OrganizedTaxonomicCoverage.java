@@ -17,8 +17,8 @@ import java.util.List;
 
 /**
  * Class similar to TaxonomicCoverage, but the TaxonomicKeywords are OrganizedTaxonomicKeywords.
- *
- *  * @see org.gbif.metadata.eml.TaxonomicCoverage in project gbif-metadata-profile
+ * <p>
+ * @see org.gbif.metadata.eml.ipt.model.TaxonomicCoverage in project gbif-metadata-profile
  */
 public class OrganizedTaxonomicCoverage {
 

@@ -22,6 +22,10 @@
     </div>
 </footer>
 
+<div class="dataTables_processing" style="display: none;">
+    <div><div></div><div></div><div></div><div></div></div>
+</div>
+
 <div id="modalbox">
     <div id="modalback"></div>
     <div id="modalcontainer">
@@ -31,6 +35,7 @@
 
 <script src="${baseURL}/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="${baseURL}/js/form-validation.js"></script>
+<script src='${baseURL}/js/sortable/html5sortable-0.13.3.js'></script>
 <script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

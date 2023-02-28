@@ -6,7 +6,8 @@
             titleQuestion : "<@s.text name="basic.confirm"/>",
             yesAnswer : "<@s.text name='basic.yes'/>",
             cancelAnswer : "<@s.text name='basic.no'/>",
-            buttonType: "primary"
+            buttonType: "primary",
+            processing: true
         });
     });
 </script>
