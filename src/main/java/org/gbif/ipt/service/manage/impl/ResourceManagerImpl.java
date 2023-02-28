@@ -39,6 +39,7 @@ import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldConstraints;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
@@ -288,7 +289,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     String shortname = resource.getShortname();
     File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
     Resource publishedPublicVersion = ResourceUtils
-        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
+        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getSchemaIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
             resource.findVersionHistory(v), versionEmlFile, resource.getKey());
 
     SimplifiedResource result = new SimplifiedResource();
@@ -309,6 +310,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLastPublished(publishedPublicVersion.getLastPublished());
     result.setNextPublished(resource.getNextPublished());
     result.setCreatorName(resource.getCreatorName());
+    result.setDataPackage(resource.isDataPackage());
 
     // was last published version later registered but never republished? Fix for issue #1319
     if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
@@ -345,6 +347,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLastPublished(resource.getLastPublished());
     result.setNextPublished(resource.getNextPublished());
     result.setCreatorName(resource.getCreatorName());
+    result.setDataPackage(resource.isDataPackage());
 
     return result;
   }
@@ -1274,6 +1277,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    // add data packages
+    List<DataSchema> installedSchemas = schemaManager.list();
+    for (DataSchema installedSchema : installedSchemas) {
+      datasetTypes.put(installedSchema.getName(), installedSchema.getName());
+    }
+
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
@@ -1511,6 +1520,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
     NumberFormat format = NumberFormat.getInstance(locale);
+    if (resource.isDataPackage()) {
+      return "<span>--</span>";
+    }
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
   }
 
@@ -1589,6 +1601,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    // add data packages
+    List<DataSchema> installedSchemas = schemaManager.list();
+    for (DataSchema installedSchema : installedSchemas) {
+      datasetTypes.put(installedSchema.getName(), installedSchema.getName());
+    }
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));

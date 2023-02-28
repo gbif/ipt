@@ -41,6 +41,7 @@ public class SimplifiedResource {
 
   private String organisationAlias;
   private boolean published;
+  private boolean dataPackage;
 
   public String getShortname() {
     return shortname;
@@ -170,6 +171,14 @@ public class SimplifiedResource {
     this.creatorName = creatorName;
   }
 
+  public boolean isDataPackage() {
+    return dataPackage;
+  }
+
+  public void setDataPackage(boolean dataPackage) {
+    this.dataPackage = dataPackage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -189,32 +198,35 @@ public class SimplifiedResource {
         && Objects.equals(modified, that.modified)
         && Objects.equals(lastPublished, that.lastPublished)
         && Objects.equals(nextPublished, that.nextPublished)
-        && Objects.equals(creatorName, that.creatorName);
+        && Objects.equals(creatorName, that.creatorName)
+        && Objects.equals(dataPackage, that.dataPackage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationAlias, organisationName, coreType, subtype, modified, published, lastPublished, nextPublished, creatorName);
+    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationAlias,
+        organisationName, coreType, subtype, modified, published, lastPublished, nextPublished, creatorName, dataPackage);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", SimplifiedResource.class.getSimpleName() + "[", "]")
-        .add("shortname='" + shortname + "'")
-        .add("title='" + title + "'")
-        .add("status=" + status)
-        .add("recordsPublished=" + recordsPublished)
         .add("logoUrl='" + logoUrl + "'")
-        .add("subject='" + subject + "'")
-        .add("organisationAlias='" + organisationAlias + "'")
+        .add("title='" + title + "'")
         .add("organisationName='" + organisationName + "'")
         .add("coreType='" + coreType + "'")
         .add("subtype='" + subtype + "'")
+        .add("recordsPublished=" + recordsPublished)
         .add("modified=" + modified)
-        .add("published=" + published)
         .add("lastPublished=" + lastPublished)
         .add("nextPublished=" + nextPublished)
+        .add("status=" + status)
         .add("creatorName='" + creatorName + "'")
+        .add("shortname='" + shortname + "'")
+        .add("subject='" + subject + "'")
+        .add("organisationAlias='" + organisationAlias + "'")
+        .add("published=" + published)
+        .add("dataPackage=" + dataPackage)
         .toString();
   }
 }

@@ -1039,7 +1039,7 @@ div.dataTables_processing>div:last-child>div {
     color: #5EA642 !important;
 }
 
-.type-occurrence {
+.type-occurrence, .type-camtrap-dp {
     background: #5EA642 !important;
     color: white;
 }
@@ -1636,6 +1636,10 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 .modal-header .close {
     padding: 1rem 1rem;
     margin: -1rem -1rem -1rem auto;
+}
+
+#metadata-modal {
+    z-index: 1059 !important;
 }
 
 button.close {

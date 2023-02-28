@@ -188,77 +188,101 @@
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
     <#if dataPackageResource>
-        <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
-            <#assign mappingsInfo>
-                <@s.text name='manage.overview.mappings.info'/>
-            </#assign>
-            <@popoverTextInfo mappingsInfo/>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <h5 class="my-auto text-gbif-header-2 fw-400">
+                    <#assign mappingsInfo>
+                        <@s.text name='manage.overview.mappings.info'/>
+                    </#assign>
+                    <@popoverTextInfo mappingsInfo/>
 
-            <@s.text name='manage.overview.mappings'/>
-        </h5>
+                    <@s.text name='manage.overview.mappings'/>
+                </h5>
+            </div>
 
-        <div class="row">
-            <div class="col-lg-9 ps-lg-5 order-lg-last">
-                <div>
-                    <p>
-                        <@s.text name='manage.overview.mappings.description'/>
-                    </p>
+            <div class="d-flex justify-content-end">
+                <form action='schemaMapping.do' method='post'>
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <input name="id" type="hidden" value="${resource.schemaIdentifier}">
+                    <button name="add" class="icon-button icon-material-actions overview-action-button" type="submit">
+                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                        </svg>
+                        <@s.text name="button.add"/>
+                    </button>
+                </form>
+            </div>
+        </div>
 
-                    <#if !(potentialCores?size>0)>
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.mappings.cantdo"/>
-                        </div>
-                    </#if>
-
-                    <div class="details mb-3">
+        <#if mappingsModifiedSinceLastPublication || resource.lastPublished??>
+            <div class="text-smaller">
+                <small>
+                    <span>
                         <#if mappingsModifiedSinceLastPublication>
                             <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
                         <#elseif resource.lastPublished??>
                             <@s.text name="manage.overview.notModified"/>
                         </#if>
-                    </div>
+                    </span>
+                </small>
+            </div>
+        </#if>
 
-                    <#if resource.schemaIdentifier?has_content>
-                        <div class="details">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-borderless text-smaller">
-                                    <#list resource.getDataSchemaMappings() as m>
-                                        <tr <#if m_index==0>class="mapping_row"</#if>>
-                                            <th class="col-4">${m.dataSchemaFile!}</th>
-                                            <td>
-                                                ${m.fieldsMapped!} <@s.text name='manage.overview.mappings.fields.mapped'/> <a class="fw-bold" style="color:#4e565f !important;" href="source.do?r=${resource.shortname}&id=${m.source.name}">${(m.source.name)!}</a><br>
-                                                ${(m.lastModified?datetime?string.medium)!}
-                                            </td>
-                                            <td class="d-flex justify-content-end py-0">
-                                                <a class="icon-button icon-button-sm" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EditIcon" aria-label="fontSize large">
-                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                    </svg>
-                                                </a>
-                                                <a class="icon-button icon-button-sm icon-material-delete delete-mapping" type="button" href="delete-schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
-                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </#list>
-                                </table>
+        <div class="row mt-4">
+            <p>
+                <@s.text name='manage.overview.mappings.description'/>
+            </p>
+
+            <#if resource.schemaIdentifier?has_content>
+                <div class="details">
+                    <div class="row g-2">
+                        <#list resource.getDataSchemaMappings() as m>
+                            <div class="col-xl-6">
+                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
+                                    <div class="fs-smaller-2 schema-mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                        <strong class="fs-smaller">${(m.source.name)!}</strong>
+                                        <i class="bi bi-arrow-right"></i>
+                                        <strong class="fs-smaller">${m.dataSchemaFile!}</strong>
+                                        <br>
+                                        <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                    </div>
+                                    <div class="my-auto d-flex justify-content-end pt-0">
+                                        <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                            </svg>
+                                        </a>
+                                        <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="delete-schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </a>
+
+                                        <div class="dropdown d-sm-none">
+                                            <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                </svg>
+                                            </a>
+
+                                            <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                <li>
+                                                    <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
+                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                        </svg>
+                                                        <@s.text name="button.delete"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </#if>
+                        </#list>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col-lg-3 border-lg-right pe-lg-5 rounded">
-                <div>
-                    <form action='schemaMapping.do' method='post'>
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <input name="id" type="hidden" value="${resource.schemaIdentifier}">
-                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
-                    </form>
-                </div>
-            </div>
+            </#if>
         </div>
     <#else>
         <div class="d-flex justify-content-between">

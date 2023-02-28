@@ -228,7 +228,7 @@ public class CreateResourceAction extends POSTAction {
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     List<DataSchema> installedSchemas = schemaManager.list();
     for (DataSchema installedSchema : installedSchemas) {
-      types.put(installedSchema.getName(), installedSchema.getTitle());
+      types.put(installedSchema.getName(), installedSchema.getName());
     }
     types = MapUtils.getMapWithLowercaseKeys(types);
 

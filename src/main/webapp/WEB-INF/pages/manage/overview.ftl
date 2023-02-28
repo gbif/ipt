@@ -99,6 +99,19 @@
             location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
+        $(".schema-mapping-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openSchemaMappingDetails(e);
+        });
+
+        function openSchemaMappingDetails(e) {
+            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
+            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
+            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
+            location.href = 'schemaMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
+        }
+
         $(".network-item-link").click(function (e) {
             e.preventDefault();
             openNetworkDetails(e);
@@ -1570,9 +1583,15 @@
                                 <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add"/>
                             </form>
                         <#else>
-                            <div class="callout callout-warning text-smaller">
-                                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                            </div>
+                            <#if dataPackageResource>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.mappings.cantdo"/>
+                                </div>
+                            <#else>
+                                <div class="callout callout-warning text-smaller">
+                                    <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+                                </div>
+                            </#if>
                         </#if>
                     </div>
                 </div>
@@ -1589,21 +1608,39 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <div class="row">
-                                <div class="col-12">
-                                    <@s.file name="emlFile" cssClass="form-control my-1"/>
+                        <#if dataPackageResource>
+                            <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <@s.file name="datapackageMetadataFile" cssClass="form-control form-control-sm my-1"/>
+                                    </div>
+                                    <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
+                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
+                                    </div>
+                                    <div class="col-12">
+                                        <@s.submit name="datapackageMetadataReplace" cssClass="btn btn-sm btn-outline-gbif-primary my-1 confirmDatapackageMetadataReplace" cssStyle="display: none" key="button.replace"/>
+                                        <@s.submit name="datapackageMetadataCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                                    </div>
                                 </div>
-                                <div id="eml-validate" class="col-12" style="display: none;">
-                                    <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                            </form>
+                        <#else>
+                            <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <@s.file name="emlFile" cssClass="form-control my-1"/>
+                                    </div>
+                                    <div id="eml-validate" class="col-12" style="display: none;">
+                                        <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                                    </div>
+                                    <div class="col-12">
+                                        <@s.submit name="emlReplace" cssClass="btn btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
+                                        <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                                    </div>
                                 </div>
-                                <div class="col-12">
-                                    <@s.submit name="emlReplace" cssClass="btn btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
-                                    <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </#if>
                     </div>
                 </div>
             </div>
