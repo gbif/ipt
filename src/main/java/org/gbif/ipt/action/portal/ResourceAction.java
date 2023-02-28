@@ -425,6 +425,10 @@ public class ResourceAction extends PortalBaseAction {
    * @return Struts2 result string
    */
   public String preview() {
+    if (resource.isDataPackage()) {
+      return previewDataPackage();
+    }
+
     // retrieve unpublished eml.xml, using version = null
     String shortname = resource.getShortname();
     try {
@@ -450,6 +454,40 @@ public class ResourceAction extends PortalBaseAction {
     BigDecimal nextVersion = resource.getNextVersion();
     resource = generatePreviewResource(resource, eml, nextVersion);
     finishLoadingDetail(resource, eml, nextVersion);
+    setPreview(true);
+
+    return SUCCESS;
+  }
+
+  /**
+   * Preview the next published version of the datapackage resource page.
+   *
+   * @return Struts2 result string
+   */
+  private String previewDataPackage() {
+    String shortname = resource.getShortname();
+    String type = resource.getCoreType();
+    try {
+      File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname);
+      LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
+
+      if ("camtrap-dp".equals(type)) {
+        dpMetadata = jsonMapper.readValue(metadataFile, CamtrapMetadata.class);
+      } else {
+        dpMetadata = jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
+      }
+    } catch (FileNotFoundException e) {
+      LOG.error("Metadata file version #" + getStringVersion() + " for resource " + shortname + " not found");
+      return NOT_FOUND;
+    } catch (IOException e) {
+      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
+      LOG.error(msg);
+      addActionError(msg);
+      return ERROR;
+    }
+
+    BigDecimal nextVersion = resource.getNextVersion();
+    resource = generatePreviewDataPackageResource(resource, dpMetadata, nextVersion);
     setPreview(true);
 
     return SUCCESS;
@@ -506,6 +544,50 @@ public class ResourceAction extends PortalBaseAction {
     // show DOI if it will go public on next publication
     if (resource.getDoi() != null && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION
                                       || resource.getIdentifierStatus() == IdentifierStatus.PUBLIC)) {
+      copy.setDoi(resource.getDoi());
+      copy.setIdentifierStatus(IdentifierStatus.PUBLIC);
+      history.setDoi(resource.getDoi());
+      history.setStatus(IdentifierStatus.PUBLIC);
+    }
+    copy.addVersionHistory(history);
+
+    return copy;
+  }
+
+  /**
+   * Similar to generatePreviewResource but for datapackage resources
+   */
+  private Resource generatePreviewDataPackageResource(Resource resource, DataPackageMetadata metadata, BigDecimal nextVersion) {
+    Resource copy = new Resource();
+    copy.setShortname(resource.getShortname());
+    copy.setTitle(resource.getTitle());
+    copy.setLastPublished(resource.getLastPublished());
+    copy.setStatus(resource.getStatus());
+    copy.setOrganisation(resource.getOrganisation());
+    copy.setKey(resource.getKey());
+    copy.setSchemaIdentifier(resource.getSchemaIdentifier());
+
+    // update all version number and pubDate
+    copy.setMetadataVersion(nextVersion);
+
+    Date releaseDate = new Date();
+    copy.setLastPublished(releaseDate);
+    copy.setDataPackageMetadata(metadata);
+
+    // create new VersionHistory
+    List<VersionHistory> histories = new ArrayList<>(resource.getVersionHistory());
+    copy.setVersionHistory(histories);
+    VersionHistory history = new VersionHistory(nextVersion, releaseDate, PublicationStatus.PUBLIC);
+
+    // modifiedBy
+    User modifiedBy = getCurrentUser();
+    if (modifiedBy != null) {
+      history.setModifiedBy(modifiedBy);
+    }
+
+    // show DOI if it will go public on next publication
+    if (resource.getDoi() != null && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION
+        || resource.getIdentifierStatus() == IdentifierStatus.PUBLIC)) {
       copy.setDoi(resource.getDoi());
       copy.setIdentifierStatus(IdentifierStatus.PUBLIC);
       history.setDoi(resource.getDoi());

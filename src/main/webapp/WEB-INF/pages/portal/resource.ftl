@@ -1,4 +1,4 @@
-<#if (resource.schemaIdentifier)?has_content>
+<#if resource.isDataPackage()>
     <#include "/WEB-INF/pages/portal/resource_dp.ftl">
 <#else>
     <#include "/WEB-INF/pages/portal/resource_new.ftl">

@@ -1530,8 +1530,8 @@ button.close {
     border-left: 2px solid rgb(var(--link-color));
 }
 
-#additional, #managers {
-    min-height: 200px;
+#additional, #managers, div#other.section {
+    min-height: 85vh;
 }
 
 .anchor-home-resource-page {
