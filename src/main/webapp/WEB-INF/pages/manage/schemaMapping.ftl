@@ -253,7 +253,7 @@
 
                 <main class="bd-main">
 
-                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                    <div class="bd-toc mt-lg-5 mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <nav id="sidebar-content">
                             <ul>
                                 <li><a id="toggleFields" class="sidebar-link"><@s.text name='manage.mapping.hideEmpty'/></a></li>
@@ -277,8 +277,7 @@
                         <div id="sections" class="mt-4">
                             <#list dataSchema.subSchemas as subSchema>
                                 <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
-                                    <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
-                                    <div id="${subSchema.name}" class="mt-5">
+                                    <div id="${subSchema.name}" class="mt-lg-5">
                                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                             ${subSchema.title}
                                         </h4>
