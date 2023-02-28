@@ -574,6 +574,7 @@
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 <#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
 <#assign metadataType = "metadata"/>
+<#assign isDataPackage = resource.isDataPackage()/>
 
 <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
     <#assign disableRegistrationRights="false"/>
@@ -847,7 +848,11 @@
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                                 <div class="ps-2 published-version-item-link">
                                                     <span class="me-2 overview-version-title">
-                                                        <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
+                                                        <#if isDataPackage>
+                                                            <strong><@s.text name="footer.version"/> ${resource.metadataVersion.toPlainString()}</strong>
+                                                        <#else>
+                                                            <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
+                                                        </#if>
                                                     </span>
                                                     <span class="fs-smaller-2 status-${lastPublishedVersionStatus}">
                                                         <#if lastPublishedVersionStatus == "registered">
@@ -863,7 +868,9 @@
                                                     <#if resource.isAlreadyAssignedDoi()>
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                    <#if !resource.isDataPackage()>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                    </#if>
                                                     <span class="fs-smaller-2">
                                                         <small>
                                                             ${lastPublishedTitle?cap_first} |
