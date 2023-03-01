@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-08-05 14:53+0000\n"
-"PO-Revision-Date: 2023-02-02 09:29\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -59,8 +59,8 @@ msgstr "**Nombre**: el título del recurso tal como figura en el Título de la e
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:13
 #, no-wrap
-msgid "**Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be \"Not registered\". Review the information under the \"Organizations\" heading in the \"Administration Menu\" section for more information about registering organizations and registering a resource under an organization.\n"
-msgstr "**Organización**: la organización bajo la que se ha registrado el recurso. Si el recurso no está registrado, el valor en la columna de Organización será \"No registrado\". Revise la información en el encabezado “Organizaciones” de la sección de \"Menú administración\" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.\n"
+msgid "**Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be \"No organization\". Review the information under the \"Organizations\" heading in the \"Administration Menu\" section for more information about registering organizations and registering a resource under an organization.\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:14

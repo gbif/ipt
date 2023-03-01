@@ -292,9 +292,13 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceArchiveUrl(@NotNull String shortname) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_DWCA)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_DWCA)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
@@ -303,10 +307,14 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceEmlUrl(@NotNull String shortname) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_EML)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_EML)
+        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
   /**
@@ -314,9 +322,13 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceLogoUrl(@NotNull String shortname) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_LOGO)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_LOGO)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 
@@ -333,9 +345,13 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceUri(@NotNull String shortname) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
   }
 
@@ -344,9 +360,13 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceGuid(@NotNull String shortname) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
   }
 
@@ -355,9 +375,13 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceVersionUri(@NotNull String shortname, @NotNull BigDecimal version) {
-    Objects.requireNonNull(getBaseUrl());
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
 
-    return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
       .queryParam(Constants.REQ_PARAM_VERSION, version.toPlainString()).build();
   }
@@ -369,8 +393,6 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceVersionUri(@NotNull String shortname, @NotNull String version) {
-    Objects.requireNonNull(getBaseUrl());
-
     return getResourceVersionUri(shortname, new BigDecimal(version)).toString();
   }
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-02 13:26+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"PO-Revision-Date: 2023-02-13 20:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -311,7 +311,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/34?closed=1[5 incidencia
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:109
 msgid "This release includes small user interface improvements, fixes a bug with database data sources and corrects a problem when deleting which have been assigned a DOI within the IPT. It also fixes the \"Reset Password\" button on the admin page."
-msgstr ""
+msgstr "Esta versión incluye pequeñas mejoras en la interfaz de usuario, corrige un error con las fuentes de datos de la base de datos y corrige un problema al eliminar los que tenían asignado un DOI dentro del IPT. También corrige el botón \"Restablecer contraseña\" en la página de administración."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:110
@@ -332,7 +332,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/33?closed=1[21 incidenci
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:118
 msgid "This version brings new Darwin Core terms (establishmentMeans, degreeOfEstablishment, pathway etc.) It also changes the way user passwords are stored to improve their security. All users are encouraged to upgrade to this version."
-msgstr ""
+msgstr "Esta versión trae nuevos términos de Darwin Core (stablishmentMeans, degreeOfEstablishment, pathway etc.) También cambia la forma en que se almacenan las contraseñas de los usuarios para mejorar su seguridad. Se anima a todos los usuarios a actualizar a esta versión."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:119
