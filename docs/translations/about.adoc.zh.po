@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-03-03 09:15+0000\n"
-"PO-Revision-Date: 2022-03-03 09:42\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -24,49 +24,33 @@ msgstr "選單：關於"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:4
-msgid "The default About page gives information about the current IPT installation, including information about the hosting organization, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called \"config\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The about.ftl file is a FreeMarker template that can contain a combination of HTML and variable references of the form `${host.variable!\"alternate value if null\"}`. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included."
-msgstr "「關於」頁面提供此 IPT 裝置的資訊，包含所在機構（若已註冊的話）。透過編輯 IPT 資料目錄中 config 目錄的 about.ftl 檔案，此頁面用來提供個別 IPT 裝置的客製化內容（請見「管理」選單一節中有關「IPT 設定」一項）。about.ftl 是 FreeMarker 範本，其中包含許多 HTML 標籤及 `${host.variable!\"alternate value if null\"}` 變數。在修改 about.ftl 檔案之後，「關於」頁面將會反映所做的變更。預設的 about.ftl 中提供可用變數的範例。"
+msgid "The default About page gives basic information about the current IPT installation."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/about.adoc:6
+msgid "If the IPT has not been registered the following page is displayed"
+msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/about.adoc:5
+#: en/modules/ROOT/pages/about.adoc:7
 #, no-wrap
 msgid "ipt2/about/IPTAbout.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/about.adoc:8
-msgid "Here is the content of the about.ftl file resulting in the page as viewed above."
-msgstr "這裡是上面所顯示 about.ftl 的檔案內容。"
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/about.adoc:14
-#, no-wrap
-msgid "<h1>About this IPT installation</h1>\n"
-"<#if hostingOrganisation?? && hostingOrganisation.name??>\n"
-"<p>This is a default IPT hosted by ${hostingOrganisation.name}</p>\n"
+#: en/modules/ROOT/pages/about.adoc:10
+msgid "and if the IPT is registered"
 msgstr ""
 
-#. type: delimited block -
-#: en/modules/ROOT/pages/about.adoc:34
+#. type: Target for macro image
+#: en/modules/ROOT/pages/about.adoc:11
 #, no-wrap
-msgid "<p>You can use the following variables about the hosting organization:</p>\n"
-"<ul>\n"
-"  <li>description = ${hostingOrganisation.description!}</li>\n"
-"  <li>name = ${hostingOrganisation.name!}</li>\n"
-"  <li>alias = ${hostingOrganisation.alias!}</li>\n"
-"  <li>homepageURL = ${hostingOrganisation.homepageURL!}</li>\n"
-"  <li>primaryContactType = ${hostingOrganisation.primaryContactType!}</li>\n"
-"  <li>primaryContactName = ${hostingOrganisation.primaryContactName!}</li>\n"
-"  <li>primaryContactDescription = ${hostingOrganisation.primaryContactDescription!}</li>\n"
-"  <li>primaryContactAddress = ${hostingOrganisation.primaryContactAddress!}</li>\n"
-"  <li>primaryContactEmail = ${hostingOrganisation.primaryContactEmail!}</li>\n"
-"  <li>primaryContactPhone = ${hostingOrganisation.primaryContactPhone!}</li>\n"
-"  <li>nodeKey = ${hostingOrganisation.nodeKey!}</li>\n"
-"  <li>nodeName = ${hostingOrganisation.nodeName!}</li>\n"
-"  <li>nodeContactEmail = ${hostingOrganisation.nodeContactEmail!}</li>\n"
-"</ul>\n"
-"<#else>\n"
-"<p id=\"not-registered\">This IPT installation has not been registered yet.</p>\n"
-"</#if>\n"
+msgid "ipt2/about/IPTAboutRegistered.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/about.adoc:13
+msgid "Information displayed on the page can be edited in xref:administration.adoc#configure-gbif-registration-options[Administration → Configure GBIF Registration Options]."
 msgstr ""
 
