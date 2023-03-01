@@ -24,6 +24,7 @@ import com.google.inject.Injector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AppConfigTest {
 
@@ -83,6 +84,12 @@ public class AppConfigTest {
   public void testGetResourceEmlUrl() {
     cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
     assertEquals("http://ipt.gbif.org/eml.do?r=ants", cfg.getResourceEmlUrl("ants"));
+
+    cfg.setProperty("ipt.baseURL", null);
+    assertThrows(RuntimeException.class, () -> cfg.getResourceEmlUrl("ants"));
+
+    cfg.setProperty("ipt.baseURL", "");
+    assertThrows(RuntimeException.class, () -> cfg.getResourceEmlUrl("ants"));
   }
 
   @Test
