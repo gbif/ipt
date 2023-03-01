@@ -307,7 +307,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceEmlUrl(@NotNull String shortname) {
-    String baseUrl = getBaseUrl();
+    String baseUrl = "";
     if (StringUtils.isEmpty(baseUrl)) {
       LOG.error("IPT's base URL must not be null or empty");
       throw new RuntimeException("IPT's base URL must not be null or empty");
