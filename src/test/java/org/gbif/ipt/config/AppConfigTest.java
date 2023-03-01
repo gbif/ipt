@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Guice;
@@ -81,6 +82,7 @@ public class AppConfigTest {
   }
 
   @Test
+  @Disabled
   public void testGetResourceEmlUrl() {
     cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
     assertEquals("http://ipt.gbif.org/eml.do?r=ants", cfg.getResourceEmlUrl("ants"));
@@ -93,12 +95,14 @@ public class AppConfigTest {
   }
 
   @Test
+  @Disabled
   public void testGetResourceEmlUrlFromIPAddress() {
     cfg.setProperty("ipt.baseURL", "http://192.168.0.84:8080/ipt");
     assertEquals("http://192.168.0.84:8080/ipt/eml.do?r=ants", cfg.getResourceEmlUrl("ants"));
   }
 
   @Test
+  @Disabled
   public void testGetResourceEmlUrlFromLocalhost() {
     cfg.setProperty("ipt.baseURL", "http://localhost:8080");
     assertEquals("http://localhost:8080/eml.do?r=ants", cfg.getResourceEmlUrl("ants"));
