@@ -1406,7 +1406,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiOrganization(SimplifiedResource resource) {
     String result = resource.getOrganizationAliasOrName();
-    return result != null && !"No organization".equals(result) ? result : "";
+    return result != null && !"No organization".equals(result) ? result : "--";
   }
 
   /**
