@@ -59,8 +59,7 @@
     </style>
 
     <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
-    <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
     <script>
         $(document).ready(function() {
             // spy scroll and manage sidebar menu
@@ -115,9 +114,34 @@
                     ${dpMetadata.title!resource.shortname}
                 </h1>
 
+                <#if resource.lastPublished?? && resource.organisation??>
+                    <div class="text-gbif-primary text-smaller">
+                        <span>
+                            <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                            <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                                <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                            <#else>
+                                <@s.text name='portal.resource.latest.version'/>
+                            </#if>
+
+                            <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created?date?string.long}</span>
+                                <br>
+                                <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
+                            <#else>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.created?date?string.long_short}</span>
+                                <span style="display: none">${resource.organisation.name}</span>
+                            </#if>
+                        </span>
+                    </div>
+                <#else>
+                    <div class="text-gbif-danger text-smaller">
+                        <@s.text name='portal.resource.published.never.long'/>
+                    </div>
+                </#if>
+
                 <#if resource.lastPublished??>
                     <div class="mt-2">
-
                         <#if managerRights>
                             <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
                                 <@s.text name='button.edit'/>
@@ -148,6 +172,16 @@
                                     <div>
                                         <dt><@s.text name='portal.resource.publicationDate'/>:</dt>
                                         <dd>${dpMetadata.created?date?string.long}</dd>
+                                    </div>
+                                </#if>
+                            </dl>
+                            <dl class="inline mb-0">
+                                <#if (dpMetadata.created)??>
+                                    <div>
+                                        <dt><@s.text name='portal.resource.publishedBy'/>:</dt>
+                                        <dd>
+                                            <a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a>
+                                        </dd>
                                     </div>
                                 </#if>
                             </dl>

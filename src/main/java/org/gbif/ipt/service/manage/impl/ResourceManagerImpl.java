@@ -287,10 +287,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
-    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+
+    File versionMetadataFile = resource.isDataPackage()
+        ? cfg.getDataDir().resourceDatapackageMetadataFile(shortname, v)
+        : cfg.getDataDir().resourceEmlFile(shortname, v);
+
     Resource publishedPublicVersion = ResourceUtils
         .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getSchemaIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
-            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+            resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
 
     SimplifiedResource result = new SimplifiedResource();
     result.setShortname(publishedPublicVersion.getShortname());
