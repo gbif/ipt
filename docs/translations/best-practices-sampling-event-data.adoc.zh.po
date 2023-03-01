@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-17 09:56+0000\n"
-"PO-Revision-Date: 2022-11-17 10:09\n"
+"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"PO-Revision-Date: 2023-02-06 20:37\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:28
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:12
+#: en/modules/ROOT/pages/customization.adoc:14
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3

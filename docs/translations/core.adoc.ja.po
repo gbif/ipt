@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2022-02-24 12:21\n"
+"PO-Revision-Date: 2023-02-13 08:55\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,37 +20,37 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:1
 #, no-wrap
 msgid "How To Add a New Core"
-msgstr ""
+msgstr "新規コアの追加方法"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:4
 msgid "This page contains configuration instructions for advanced IPT users only"
-msgstr ""
+msgstr "このページでは、IPT上級者向けの設定方法を説明します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:6
 msgid "The IPT always ships with 3 cores installed by default: taxon, occurrence, and event. Since IPT 2.1, there is the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. In this way, their community can start trying to map their data to the new core, and iteratively refine its set of properties."
-msgstr ""
+msgstr "IPTは常に3つのコア（タクソン、オカレンス、イベント）をデフォルトでインストールした状態で出荷されます。IPT 2.1以降、カスタムコアをIPTに追加することができるようになり、新しいデータ標準のプロトタイプを作成するコミュニティにとって有用です。この方法では、コミュニティは自分たちのデータを新しいコアにマッピングする試みを開始し、そのプロパティのセットを繰り返し改良することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:8
 msgid "The 3 steps below explain how to"
-msgstr ""
+msgstr "以下の3つのステップで説明します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:10
 msgid "create your new core,"
-msgstr ""
+msgstr "新しいコアを作成し、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:11
 msgid "register it with GBIF, and"
-msgstr ""
+msgstr "GBIFに登録して、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:12
 msgid "configure an IPT to use it."
-msgstr ""
+msgstr "それを使用するIPTを設定する。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
@@ -60,45 +60,45 @@ msgstr ""
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "手順"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:16
 #, no-wrap
 msgid "*Write Core XML Definition*\n"
-msgstr ""
+msgstr "*コアXMLの定義を書く*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:18
 msgid "The core XML definition has to comply with the http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as the {latest-dwc-occurrence}[Darwin Core Occurrence Core]. Please note, the core definition must contain a property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/eventID for the Event Core. The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr ""
+msgstr "コアとなるXMLの定義は、link:http://rs.gbif.org/schema/extension.xsd[GBIF拡張スキーマ]に準拠することが必要です。{latest-dwc-occurrence}[ダーウィンコア・オカレンスコア]など、既存のコア定義を単純に適用するのが最も簡単です。コア定義には、レコード識別子となるプロパティ（例：オカレンスコアの場合は http://rs.tdwg.org/dwc/terms/occurrenceID、イベントコアの場合は http://rs.tdwg.org/dwc/terms/eventID）を含める必要があることに注意してください。新しい非コア拡張の作成プロセスは、コア拡張の場合とまったく同じです。（コアまたは非コア拡張内のプロパティのデータ型として）新しい語彙を作成するプロセスは、XMLの定義がlink:http://rs.gbif.org/schema/thesaurus.xsd[GBIFシソーラススキーマ]に準拠する必要がある点のみ異なります。この場合も、{latest-basis-of-record}[ダーウィンコアタイプ語彙など、既存の語彙定義を適用するのが最も簡単です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:20
 #, no-wrap
 msgid "*Register Core with GBIF*\n"
-msgstr ""
+msgstr "*GBIFにコアを登録する*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:22
 msgid "While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, make a pull request to the rs.gbif.org repository following https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[these instructions]. If it passes inspection, it will be merged in to https://rs.gbif.org/sandbox/core/, and included in the https://gbrdsdev.gbif.org/registry/extensions.json[Sandbox Registry's list of extensions]. When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at https://rs.gbif.org/core/ and included in the https://gbrds.gbif.org/registry/extensions.json[Live Registry's list of extensions] The same process applies to registering non-core extensions and vocabularies."
-msgstr ""
+msgstr "コアの定義がまだ変更されていない間に、GBIFサンドボックスレジストリに登録されます。コアを登録するには、link:https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[こちらの手順]で rs.gbif.org リポジトリにプルリクエストを行います。審査に通れば、https://rs.gbif.org/sandbox/core/ にマージされ、link:https://gbrdsdev.gbif.org/registry/extensions.json[サンドボックスレジストリの拡張機能リスト]に含まれます。コア定義が確定すると、つまり、そのプロパティのセットが凍結されると、https://rs.gbif.org/core/ でホストされ、link:https://gbrds.gbif.org/registry/extensions.json[ライブレジストリの拡張機能リスト]に含まれます。コア以外の拡張機能や語彙を登録する場合も、同じプロセスが適用されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:24
 #, no-wrap
 msgid "*Configure IPT*\n"
-msgstr ""
+msgstr "*IPTを設定する*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr ""
+msgstr "例えば、{sandbox-material-sample}[Material Sample Core]を使用するようにIPTを設定するには、 `$IPT_DATA_DIR/config/ipt.properties`に以下の2行を追加してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
 msgid "be sure to escape any colons like above*"
-msgstr ""
+msgstr "上記のように、コロンがある場合は必ずエスケープしてください*"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/core.adoc:33
@@ -110,5 +110,5 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:36
 msgid "This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#install-extension[install the core]. The core is now available to use in the IPT."
-msgstr ""
+msgstr "これは、IPTがrowType http://rs.tdwg.org/dwc/terms/MaterialSample を持つすべての拡張をコアタイプとして認識し、その識別子の項として http://rs.tdwg.org/dwc/terms/materialSampleID を使用するように設定するものである。複数のコアを指定することができ、パイプ文字の `|` で区切ります。ipt.core_idTerms の最初のエントリが core_rowTypes の最初のエントリの ID となり、以下同様です。最後に、ipt.properties ファイルを保存して、Tomcat を再起動し、xref:administration.adoc#install-extension[コアをインストール]します。これでコアはIPTで使用できるようになりました。"
 
