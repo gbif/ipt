@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-02-13 08:55\n"
+"PO-Revision-Date: 2023-03-02 01:15\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -30,22 +30,22 @@ msgstr "手順"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr ""
+msgstr "データ品質チェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
 msgid "Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets."
-msgstr ""
+msgstr "このチェックリストは、生物多様性データセットのレビューに利用することができます。特に、オカレンスやサンプリングイベントのデータセットをチェックするのに適していることに注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
 msgid "The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:"
-msgstr ""
+msgstr "このチェックリストは、データが完全であること、つまり5つのWに対する有効な答えが含まれていることを確認するのに役立ちます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
 msgid "<<What event happened?>>"
-msgstr ""
+msgstr "<<What event happened?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:9
