@@ -34,6 +34,7 @@ public class DataSchema implements Serializable {
   private String version;
   private URL url;
   private List<DataSubschema> subSchemas = new ArrayList<>();
+  private List<SubSchemaRequirement> subSchemaRequirements = new ArrayList<>();
   private String description;
   private boolean isLatest;
   private Date issued;
@@ -92,6 +93,14 @@ public class DataSchema implements Serializable {
     this.subSchemas = subSchemas;
   }
 
+  public List<SubSchemaRequirement> getSubSchemaRequirements() {
+    return subSchemaRequirements;
+  }
+
+  public void setSubSchemaRequirements(List<SubSchemaRequirement> subSchemaRequirements) {
+    this.subSchemaRequirements = subSchemaRequirements;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -132,13 +141,14 @@ public class DataSchema implements Serializable {
         && Objects.equals(version, that.version)
         && Objects.equals(url, that.url)
         && Objects.equals(subSchemas, that.subSchemas)
+        && Objects.equals(subSchemaRequirements, that.subSchemaRequirements)
         && Objects.equals(description, that.description)
         && Objects.equals(issued, that.issued);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, name, version, url, subSchemas, description, isLatest, issued);
+    return Objects.hash(identifier, title, name, version, url, subSchemas, subSchemaRequirements, description, isLatest, issued);
   }
 
   @Override
@@ -150,6 +160,7 @@ public class DataSchema implements Serializable {
         .add("version='" + version + "'")
         .add("url=" + url)
         .add("subSchemas=" + subSchemas)
+        .add("subSchemaRequirements=" + subSchemaRequirements)
         .add("description='" + description + "'")
         .add("isLatest=" + isLatest)
         .add("issued=" + issued)

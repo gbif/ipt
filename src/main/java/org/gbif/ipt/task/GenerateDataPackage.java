@@ -21,6 +21,7 @@ import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -298,10 +300,21 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     List<DataSchemaMapping> allMappings = resource.getDataSchemaMappings();
+    Set<String> mappedSubSchemas = allMappings.stream()
+        .map(DataSchemaMapping::getDataSchemaFile)
+        .collect(Collectors.toSet());
     DataSchema dataSchema = resource.getDataSchemaMappings().get(0).getDataSchema();
     currSchema = dataSchema.getName();
 
+    // before starting to add subschemas, check all required schemas mapped
+    checkRequiredSubSchemasMapped(mappedSubSchemas, dataSchema);
+
     for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+      // skip un-mapped (optional) schemas
+      if (!mappedSubSchemas.contains(subSchema.getName())) {
+        continue;
+      }
+
       report();
       try {
         addDataFile(subSchema, allMappings);
@@ -313,6 +326,37 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // final reporting
     addMessage(Level.INFO, "All data files completed");
     report();
+  }
+
+  /**
+   * Checks if all required schemas mapped, otherwise throws an exception.
+   *
+   * @param mappedSubSchemas mapped subschemas
+   * @param dataSchema data schema
+   */
+  private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataSchema dataSchema)
+      throws GeneratorException{
+    List<SubSchemaRequirement> requirements = dataSchema.getSubSchemaRequirements();
+
+    for (SubSchemaRequirement requirement : requirements) {
+      // check required entities
+      List<String> requiredRequirement = requirement.getRequired();
+      if (requiredRequirement != null && !CollectionUtils.containsAll(mappedSubSchemas, requiredRequirement)) {
+        throw new GeneratorException("Required entities must be mapped: " + requiredRequirement);
+      }
+
+      // check anyOf entities
+      List<String> anyOfRequirements = requirement.getAnyOf();
+      if (anyOfRequirements != null && !CollectionUtils.containsAny(anyOfRequirements, mappedSubSchemas)) {
+        throw new GeneratorException("One of the entities must be mapped: " + anyOfRequirements);
+      }
+
+      // check oneOf entities
+      List<String> oneOfRequirement = requirement.getOneOf();
+      if (oneOfRequirement != null && CollectionUtils.intersection(oneOfRequirement, mappedSubSchemas).size() != 1) {
+        throw new GeneratorException("Only one of the entities must be mapped: " + oneOfRequirement);
+      }
+    }
   }
 
   /**
@@ -399,6 +443,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // add resource to package
     if (dataPackage == null) {
       dataPackage = new Package(Collections.singleton(packageResource));
+      dataPackage.setProperty("profile", "camtrap-dp");
     } else {
       dataPackage.addResource(packageResource);
     }
