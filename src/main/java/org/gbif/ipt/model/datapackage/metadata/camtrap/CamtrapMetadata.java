@@ -117,6 +117,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @Override
   @JsonProperty("resources")
   @JsonDeserialize(contentUsing = CamtrapResource.CamtrapResourceDeserializer.class)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Element(CamtrapResource.class)
   @NotNull(message = "validation.input.required", groups = InternalField.class)
   @Size(min = 3, max = 3, groups = InternalField.class)

@@ -3443,7 +3443,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
     ObjectMapper objectMapper = new ObjectMapper();
     try {
-      objectMapper.writeValue(metadataFile, resource.getDataPackageMetadata());
+      objectMapper.writerWithDefaultPrettyPrinter().writeValue(metadataFile, resource.getDataPackageMetadata());
     } catch (IOException e) {
       // TODO: 21/10/2022 process exception
       throw new RuntimeException(e);
