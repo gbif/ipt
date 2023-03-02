@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-13 08:55\n"
+"PO-Revision-Date: 2023-03-02 05:01\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -55,7 +55,7 @@ msgstr "手順"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Document Control"
-msgstr ""
+msgstr "文書管理"
 
 #. type: Title =
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
