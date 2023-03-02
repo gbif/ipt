@@ -40,9 +40,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
@@ -53,6 +55,7 @@ import com.google.inject.Inject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHEMA;
 import static org.gbif.utils.HttpUtil.success;
 
 public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager  {
@@ -84,7 +87,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     this.resourceManager = resourceManager;
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
-    this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+    this.gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd").create();
   }
 
   @Override
@@ -217,7 +220,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     } catch (Exception e) {
       String msg = baseAction.getText("admin.schemas.install.error", new String[] {dataSchema.getUrl().toString()});
       LOG.error(msg, e);
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA, msg, e);
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA, msg, e);
     }
   }
 
@@ -237,30 +240,31 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       String[] dataSchemaNames = dataSchemasDir.list((current, name) -> new File(current, name).isDirectory());
       FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
       DataSchema dataSchema = null;
-      List<DataSubschema> dataSubschemas;
+      Set<DataSubschema> dataSubschemas;
 
       try {
         if (dataSchemaNames != null) {
           for (String dataSchemaDirectoryName : dataSchemaNames) {
-            dataSubschemas = new ArrayList<>();
+            dataSubschemas = new LinkedHashSet<>();
             File dataSchemaDirectory = new File(dataSchemasDir, dataSchemaDirectoryName);
             File[] files = dataSchemaDirectory.listFiles(filter);
 
             if (files != null) {
-              for (File file : files) {
-                if (file.getName().startsWith("_")) {
-                  dataSchema = loadSchemaFromFile(file);
-                  // keep data schema in local lookup
-                  dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
-                } else {
-                  dataSubschemas.add(loadSubschemaFromFile(file));
-                }
+              File mainSchemaFile = getMainSchemaFileFromFiles(files);
+              dataSchema = loadSchemaFromFile(mainSchemaFile);
+              // keep data schema in local lookup
+              dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
+
+              for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+                // TODO: 02/03/2023 HTTP vs HTTPS concerns
+                String filename = org.gbif.ipt.utils.FileUtils
+                    .getSuffixedFileName(subSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
+                File subSchemaFile = getSubSubschemaFileByName(files, filename);
+                dataSubschemas.add(loadSubschemaFromFile(subSchemaFile));
               }
 
-              if (dataSchema != null) {
-                dataSchema.setSubSchemas(dataSubschemas);
-                dataSchemas.add(dataSchema);
-              }
+              dataSchema.setSubSchemas(dataSubschemas);
+              dataSchemas.add(dataSchema);
             }
             counter++;
           }
@@ -271,6 +275,39 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       }
     }
     return counter;
+  }
+
+  /**
+   * Find and get subschema file from array of files.
+   *
+   * @param files array of files
+   * @param filename subschema file name
+   * @return subschema file from array
+   */
+  private File getSubSubschemaFileByName(File[] files, String filename) {
+    for (File file : files) {
+      if (filename.equals(file.getName())) {
+        return file;
+      }
+    }
+
+    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Sub schema file was not found: " + filename);
+  }
+
+  /**
+   * Find and get main schema file from array of files (it starts with underscore character).
+   *
+   * @param files array of files
+   * @return main schema file
+   */
+  private File getMainSchemaFileFromFiles(File[] files) {
+    for (File file : files) {
+      if (file.getName().startsWith("_")) {
+        return file;
+      }
+    }
+
+    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Main schema file was not found!");
   }
 
   @Override
@@ -403,7 +440,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       return dataSchema;
     } catch (IOException e) {
       LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA,
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
           "Can't access local data schema file");
     }
   }
@@ -429,7 +466,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       return dataSubschema;
     } catch (IOException e) {
       LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA,
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
           "Can't access local data schema file");
     }
   }

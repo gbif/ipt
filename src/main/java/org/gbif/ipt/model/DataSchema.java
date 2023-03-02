@@ -17,8 +17,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
 
 /**
@@ -33,7 +35,7 @@ public class DataSchema implements Serializable {
   private String name;
   private String version;
   private URL url;
-  private List<DataSubschema> subSchemas = new ArrayList<>();
+  private Set<DataSubschema> subSchemas = new LinkedHashSet<>();
   private List<SubSchemaRequirement> subSchemaRequirements = new ArrayList<>();
   private String description;
   private boolean isLatest;
@@ -85,11 +87,11 @@ public class DataSchema implements Serializable {
     this.url = url;
   }
 
-  public List<DataSubschema> getSubSchemas() {
+  public Set<DataSubschema> getSubSchemas() {
     return subSchemas;
   }
 
-  public void setSubSchemas(List<DataSubschema> subSchemas) {
+  public void setSubSchemas(Set<DataSubschema> subSchemas) {
     this.subSchemas = subSchemas;
   }
 
