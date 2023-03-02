@@ -317,7 +317,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       report();
       try {
-        addDataFile(subSchema, allMappings);
+        addDataFile(currSchema, subSchema, allMappings);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing data file", e);
       }
@@ -367,7 +367,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws IOException if problems occurred while persisting new data files
    * @throws GeneratorException if any problem was encountered writing data file
    */
-  public void addDataFile(DataSubschema subschema, List<DataSchemaMapping> allMappings) throws IOException,
+  public void addDataFile(String schemaName, DataSubschema subschema, List<DataSchemaMapping> allMappings) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (subschema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -443,7 +443,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // add resource to package
     if (dataPackage == null) {
       dataPackage = new Package(Collections.singleton(packageResource));
-      dataPackage.setProperty("profile", "camtrap-dp");
+      dataPackage.setProperty("profile", schemaName);
     } else {
       dataPackage.addResource(packageResource);
     }
