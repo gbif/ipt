@@ -249,11 +249,11 @@
                             <div class="col-xl-6">
                                 <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
                                     <div class="fs-smaller-2 schema-mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataSchema.identifier?url}" data-ipt-mapping="${m_index}">
-                                        <strong class="fs-smaller">${(m.source.name)!}</strong>
+                                        <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
                                         <i class="bi bi-arrow-right"></i>
-                                        <strong class="fs-smaller">${m.dataSchemaFile!}</strong>
+                                        <strong class="fs-smaller">${(m.dataSchemaFile)!"?"}</strong>
                                         <br>
-                                        <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                        <small>${(m.fields)!?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>
                                     <div class="my-auto d-flex justify-content-end pt-0">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
