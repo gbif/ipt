@@ -201,16 +201,25 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <form action='schemaMapping.do' method='post'>
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <input name="id" type="hidden" value="${resource.schemaIdentifier}">
-                    <button name="add" class="icon-button icon-material-actions overview-action-button" type="submit">
+                <#if (resource.sources?size>0)>
+                    <form action='schemaMapping.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="id" type="hidden" value="${resource.schemaIdentifier}">
+                        <button name="add" class="icon-button icon-material-actions overview-action-button" type="submit">
+                            <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                            </svg>
+                            <@s.text name="button.add"/>
+                        </button>
+                    </form>
+                <#else>
+                    <a id="add-mapping-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button mapping-action" type="button" href="#">
                         <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                         </svg>
                         <@s.text name="button.add"/>
-                    </button>
-                </form>
+                    </a>
+                </#if>
             </div>
         </div>
 

@@ -57,10 +57,10 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <@selectList name="schemaFile" options=dataSchema.subSchemas objValue="name" objTitle="name" i18nkey="manage.mapping.schemaFile" />
+                            <@selectList name="schemaFile" options=dataSchema.subSchemas objValue="name" objTitle="name" i18nkey="manage.mapping.schemaFile" requiredField=true />
                         </div>
                         <div class="col-sm-6">
-                            <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+                            <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
                         </div>
                     </div>
                 </div>
