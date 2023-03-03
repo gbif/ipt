@@ -26,6 +26,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.validation.DataPackageMappingValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
     // save entire resource config
     saveResource();
+    // report validation without skipping this save
+    validateAndReport();
 
     return defaultResult;
   }
@@ -210,6 +213,27 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         if (automapped > 0) {
           addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
         }
+      }
+
+      if (!isHttpPost()) {
+        validateAndReport();
+      }
+    }
+  }
+
+  /**
+   * Validate the mapping and report any warning or errors, shown on the mapping page.
+   */
+  private void validateAndReport() {
+    if (mapping.getSource() == null) {
+      return;
+    }
+
+    DataPackageMappingValidator validator = new DataPackageMappingValidator();
+    DataPackageMappingValidator.ValidationStatus v = validator.validate(mapping, resource, columns);
+    if (v != null && !v.isValid()) {
+      for (DataSchemaField field : v.getMissingRequiredFields()) {
+        addActionWarning(getText("validation.required", new String[] {field.getName()}));
       }
     }
   }
