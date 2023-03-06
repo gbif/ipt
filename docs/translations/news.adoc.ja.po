@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-03-06 07:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,53 +20,53 @@ msgstr ""
 #: en/modules/ROOT/pages/news.adoc:1
 #, no-wrap
 msgid "News"
-msgstr ""
+msgstr "ニュース"
 
 #.  When updating this page, remember to move information on the old release to releases.adoc.
 #. type: Title ==
 #: en/modules/ROOT/pages/news.adoc:5
 #, no-wrap
 msgid "Latest Release: 2.5.0-RC1"
-msgstr ""
+msgstr "最新リリース：2.5.0-RC1"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:8
 msgid "Version 2.5.0-RC1 is available for download.  Please see the xref:releases.adoc[Releases] page."
-msgstr ""
+msgstr "バージョン2.5.0-RC1はダウンロードできます。xref:releases.adoc[リリース]をご覧ください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/news.adoc:9
 #, no-wrap
 msgid "Next release"
-msgstr ""
+msgstr "次回のリリース"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:12
 msgid "No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[here]."
-msgstr ""
+msgstr "次のバージョンのリリース日はまだ決定していません。 次回のリリースに向けた課題への取り組み状況は、link:https://github.com/gbif/ipt/milestones[こちら]で確認できます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:14
 msgid "Minor issues and security issues will be addressed in patch releases."
-msgstr ""
+msgstr "細かな問題やセキュリティ上の課題については、パッチリリースで対応する予定です。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/news.adoc:15
 #, no-wrap
 msgid "Featured content"
-msgstr ""
+msgstr "注目のコンテンツ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:18
 #, no-wrap
 msgid "*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete\n"
-msgstr ""
+msgstr "*データセットの検証でお困りですか？*この新しい xref:data-quality-checklist[データ品質チェックリスト] を参照してください。このチェックリストは、特にオカレンスデータセットやサンプリングイベントデータセットの検証に適しており、データセットが有効かつ完全であることを保証するのに役立ちます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:20
 #, no-wrap
 msgid "*Confused about what types of data GBIF supports?* *Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!\n"
-msgstr ""
+msgstr "*GBIFがどのような種類のデータに対応しているのかが分かりませんか？**データの公開方法、GBIFへの登録方法について迷っていませんか？*新しい xref:how-to-publish[公開方法ガイド] をご覧ください。GBIF.orgで公開できる生物多様性データの4つの種類について、またそのそれぞれのデータについて、公開の手順を簡単に説明しています。さらに、公開をさらに簡単にするためのシンプルなExcelテンプレートもご利用してみてください！\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:21
