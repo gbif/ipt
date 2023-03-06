@@ -430,7 +430,7 @@
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>${removeSourceLink?lower_case?cap_first}</span>
+                                                    <span>${removeLicenseLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
@@ -531,7 +531,7 @@
                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                     </svg>
                 </span>
-                <span>${removeSourceLink?lower_case?cap_first}</span>
+                <span>${removeLicenseLink?lower_case?cap_first}</span>
             </a>
         </div>
         <div class="col-lg-6">
