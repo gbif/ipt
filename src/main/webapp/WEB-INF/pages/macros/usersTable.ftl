@@ -11,7 +11,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
         /* organisation list */
         var aDataSet = [
             <#list users as u>
-            ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
+            ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}" class="resource-table-link">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
                 '${u.email?replace("'", "\\'")?replace("\"", '\\"')!}',
                 '<span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill user-${u.role?lower_case}"><@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/></span>',
                 '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"never"}',
