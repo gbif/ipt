@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 07:52\n"
+"PO-Revision-Date: 2023-03-06 01:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -268,7 +268,7 @@ msgstr "| 学名\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:85
 msgid "The *dwc:scientificName* field stores the full scientific name of a taxon including authorship. This field should always be populated with data even if the names are split into component parts (as in C. below). Databases that do not provide a clean separation between the name part and the authorship part of the name should use this field for the entire concatenated name string. This may be needed for hybrid formulas, *sensu strictu* names, autonyms and other non-trivial binomials. This field is generally used in combination with the *dwc:taxonRank* field to store the scientific name parts of a full taxonomic list including the higher taxa."
-msgstr "*dwc:scientificName*フィールドには、著者を含む分類群の完全な学名が格納されます。このフィールドは、名前が構成要素に分割されている場合でも（下記C.のように）常にデータが入力されている必要があります。名前の部分と著者名の部分をきれいに分離できないデータベースでは、連結された名前文字列全体に対してこのフィールドを使用する必要があります。これはハイブリッド式、*sensu strictu*名、autonyms、その他の非自明な二項対立に必要となる場合があります。このフィールドは一般的に*dwc:taxonRank*フィールドと組み合わせて、上位分類を含む完全な分類リストの学名部分を格納するために使用されます。"
+msgstr "*dwc:scientificName*フィールドには、著者を含む分類群の完全な学名が格納されます。このフィールドは、名前が構成要素に分割されている場合でも（下記C.のように）常にデータが入力されている必要があります。名前の部分と著者名の部分をきれいに分離できないデータベースでは、連結された名前文字列全体に対してこのフィールドを使用する必要があります。これはハイブリッド式、*sensu strictu*名、オートニム、その他の非自明な二項対立に必要となる場合があります。このフィールドは一般的に*dwc:taxonRank*フィールドと組み合わせて、上位分類を含む完全な分類リストの学名部分を格納するために使用されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:86
