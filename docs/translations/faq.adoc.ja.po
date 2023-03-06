@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 01:27\n"
+"PO-Revision-Date: 2023-03-06 02:38\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -203,186 +203,186 @@ msgstr "2文字の言語コードは、IPTで使用されているコードと�
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:83
 msgid "Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change."
-msgstr ""
+msgstr "IPTを新しいバージョンにアップグレードするたびに、再度同様に変更を行う必要がありますのでご注意ください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:84
 #, no-wrap
 msgid "How can I switch the IPT from test mode to production mode?"
-msgstr ""
+msgstr "IPTをテストモードから本番モードに切り替えるにはどうしたらいいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:87
 msgid "Switching the IPT from test mode to production mode cannot be done automatically. This is by design, because each mode connects to a different registry (test mode uses the GBIF UAT Registry while production mode uses the GBIF Live Registry)."
-msgstr ""
+msgstr "IPTのテストモードから本番モードへの切り替えは、自動的には行うことができません。これは、各モードが異なるレジストリに接続するためで（テストモードはGBIF UAT Registry、本番モードはGBIF Live Registryを使用する）、設計上のものです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:89
 msgid "Therefore to switch to production mode you need to setup an entirely new IPT instance in production mode."
-msgstr ""
+msgstr "したがって、本番モードに切り替えるには、本番モードでまったく新しいIPTインスタンスをセットアップする必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:91
 msgid "To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply \"upload an existing IPT resource using its zipped resource configuration folder.\" There are complete instructions on how to do this xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here]."
-msgstr ""
+msgstr "リソースを再作成する時間を節約するために、「テスト」リソースを本番用IPTに転送することができます。これを行うには、単に「既存のIPTリソースを、そのzip圧縮されたリソース構成フォルダを使用してアップロードする」だけです。この方法については、xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[こちら]に詳しい説明があります。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:92
 #, no-wrap
 msgid "What outgoing connections does the IPT make?"
-msgstr ""
+msgstr "IPTはどのような発信接続を行うのでしょうか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:95
 msgid "During setup, and in test mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif-uat.org and https://tools.gbif.org."
-msgstr ""
+msgstr "セットアップ中およびテストモードでは、IPTはhttps://gbrds.gbif-uat.org、https://tools.gbif.org に安全なHTTPS発信接続を行います。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:97
 msgid "If configured in production mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif.org."
-msgstr ""
+msgstr "本番モードで構成されている場合は、IPT は https://gbrds.gbif.org に安全な HTTPS発信接続を行います。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:99
 msgid "In both modes, the IPT makes normal HTTP outgoing connections to http://rs.gbif.org.  If you install particular additional vocabularies, the IPT will retrieve them from raw.githubusercontent.com or eol.org."
-msgstr ""
+msgstr "どちらのモードでも、IPT は http://rs.gbif.org に通常の HTTP通信接続を行います。特定の追加語彙をインストールした場合、IPTは raw.githubusercontent.com または eol.org から語彙を取得することになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:101
 msgid "We recommend configuring your firewall to allow outbound access on ports 80 and 443 to all GBIF servers: `130.225.43.0/24`."
-msgstr ""
+msgstr "すべてのGBIFサーバー `130.225.43.0/24` に対して、ポート80および443のアウトバウンドアクセスを許可するよう、ファイアウォールを設定することをお勧めします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:103
 msgid "Before version 2.3.4, connections were made using HTTP, rather than HTTPS, to http://gbrds.gbif.org and http://gbrdsdev.gbif.org.  HTTP connections use port 80."
-msgstr ""
+msgstr "バージョン2.3.4以前は、http://gbrds.gbif.orgやhttp://gbrdsdev.gbif.org、HTTPSではなく、HTTPで接続を行っていました。HTTP接続はポート80を使用します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:104
 #, no-wrap
 msgid "How can I configure my IPT to assign DOIs to datasets?"
-msgstr ""
+msgstr "データセットにDOIを割り当てるには、IPTをどのように設定すればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:107
 msgid "In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain."
-msgstr ""
+msgstr "データセットにDOIを割り当てるには、IPTにDataCiteアカウントを設定し、それ自体がIPTのドメインの下でDOIをミントするように設定されていることが必要です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:109
 msgid "The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the xref:administration.adoc#add-organization[Add Organization] section of the User Manual."
-msgstr ""
+msgstr "アカウント保有機関は、すでに機関としてIPTに関連付けられている必要があります。IPTに機関を関連付ける方法については、ユーザーマニュアルの xref:administration.adoc#add-organization[機関の追加]を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:111
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr ""
+msgstr "あとは、DataCiteのアカウント情報を機関に追加し（ユーザー名、パスワード、プレフィックスなど）、「Account activated」のチェックリストにチェックが入っていることを確認するだけです。機関の編集やフォームの各フィールドの説明については、ユーザーマニュアルのxref:administration.adoc#edit-organization[機関を編集]のセクションを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
 msgid "If you work for a GBIF ‘country' Node, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time."
-msgstr ""
+msgstr "GBIFの「国別」ノードにお勤めの方は、mailto:helpdesk@gbif.org[GBIFヘルプデスク]にご連絡いただき、無料のDataCiteアカウントの取得についてお問い合わせください。GBIFはDataCiteに独自のアカウントを持っており、「国別」ノードに独自の無料アカウントを提供できる場合があります（状況に応じて決定されます）。GBIFはこれまで、スペインとコロンビアに対してこれを行いましたが、両国ともIPTをほぼ常時オンラインにしている強力な実績があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:115
 msgid "The following well-maintained IPTs have all been configured with a DataCite accounts, can assign DOIs to datasets, and are thus recognized as a repository in BioSharing.org, which is used by journals such as Nature to refer their authors to one or more repositories that are appropriate for the type of data they have."
-msgstr ""
+msgstr "以下のよく整備されたIPTはすべてDataCiteアカウントを設定し、データセットにDOIを割り当てることができるため、BioSharing.orgのリポジトリとして認識されます。このリポジトリは、Natureなどの雑誌が、著者にデータの種類に適した一つ以上のリポジトリに紹介するために使用されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:117
 msgid "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
-msgstr ""
+msgstr "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:118
 msgid "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
-msgstr ""
+msgstr "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:119
 msgid "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
-msgstr ""
+msgstr "http://ipt.biodiversidad.co/sib/[GBIFコロンビア IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:121
 msgid "Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85"
-msgstr ""
+msgstr "スペインの公開者はすでに標準化されたデータをGBIF Spain IPTに寄託しています。例えば、データセット http://doi.org/10.15470/qomfu6 はScientific Dataに掲載された以下のData Descriptorの土台となっています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:122
 #, no-wrap
 msgid "Usage"
-msgstr ""
+msgstr "使用方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:124
 #, no-wrap
 msgid "Why do published files contain broken lines?"
-msgstr ""
+msgstr "公開されたファイルに改行があるのはなぜですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:126
 msgid "The IPT does not support source files that have multi-line fields (fields that include a newline character (`\\n`) or carriage return (`\\r`)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration."
-msgstr ""
+msgstr "IPTでは、ソースの設定でフィールドクォート（行内のすべてのフィールド/列を囲む1文字）を指定していても、複数行のフィールド（改行文字（`\\n`）や復帰文字（`\\r`）を含むフィールド）を持つソースファイルには対応していません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:128
 msgid "Unless these line breaking characters are removed, the IPT will publish files with broken lines (the columns will appear mixed up)."
-msgstr ""
+msgstr "これらの改行文字を削除しない限り、IPTは改行された（列が混在して見える）ファイルを公開することになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:130
 msgid "To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone."
-msgstr ""
+msgstr "これを解決するには、ソースファイルからこれらの改行文字を削除し、ソースファイルを新しいものに置き換えてから、リソースを再公開すれば問題ありません。ソースファイルをアップロードする際、両者が同じ名前であれば、IPTにファイルを新しく置き換えられることを忘れないでください。そうすれば、マッピングをやり直す必要はありません。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:131
 #, no-wrap
 msgid "Why do published files not include all records?"
-msgstr ""
+msgstr "なぜ、公開されたファイルにはすべての記録が含まれていないのですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:133
 msgid "Check the publication log for exceptions such as:"
-msgstr ""
+msgstr "次のような例外がないか、公開ログを確認してください。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:136
 #, no-wrap
 msgid "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
-msgstr ""
+msgstr "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:139
 msgid "that means you have invalid date value in your data source, which, in this case, is `0000-00-00 00:00:00`."
-msgstr ""
+msgstr "これはデータソースに無効な日付値があることを意味します。この場合は`0000-00-00 00:00:00`です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:142
 msgid "To solve this, you can update the value with \"Null\" value, and update the resource.  Usually, you can rely on the log message to identify the column of interest, like in the example above, it says \"column 65,\" which is the 65th column in the data source."
-msgstr ""
+msgstr "この問題を解消するには、値を「Null」値で更新し、リソースを更新すればよいです。通常、ログメッセージを頼りに対象のカラムを特定することができます。上記の例では、「カラム65」と書かれていますが、これはデータソースの65番目のカラムを表しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:144
 msgid "The `0000-00-00 00:00:00` value in your SQL table could be resulted when importing, while having defined the column with \"Not Null\" and default value as `0000-00-00 00:00:00`."
-msgstr ""
+msgstr "SQLテーブルの列を「Not Null」、デフォルト値を`0000-00-00 00:00:00`と定義しているにもかかわらず、インポート時に`0000-00-00 00:00:00`という値になってしまうことがあります。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:145
 #, no-wrap
 msgid "What does the error \"No space left on device\" mean and how do I fix it?"
-msgstr ""
+msgstr "「デバイスに空き容量がない」というエラーの意味と修正方法を教えてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:147
 msgid "If you found an exception such as:"
-msgstr ""
+msgstr "次のような例外が見つかった場合："
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:150
 #, no-wrap
 msgid "Caused by: java.io.IOException: No space left on device\n"
-msgstr ""
+msgstr "Caused by: java.io.IOException: No space left on device\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:153
