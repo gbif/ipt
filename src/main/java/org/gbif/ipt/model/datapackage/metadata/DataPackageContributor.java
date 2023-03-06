@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A contributor to this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Contributor implements Serializable {
+public class DataPackageContributor implements Serializable {
 
   private final static long serialVersionUID = -288140518286006582L;
 
@@ -186,7 +186,7 @@ public class Contributor implements Serializable {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", Contributor.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", DataPackageContributor.class.getSimpleName() + "[", "]")
         .add("title='" + title + "'")
         .add("path='" + path + "'")
         .add("email='" + email + "'")

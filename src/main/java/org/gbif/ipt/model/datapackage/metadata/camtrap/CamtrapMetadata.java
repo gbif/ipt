@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import org.gbif.ipt.model.datapackage.metadata.Contributor;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageContributor;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Resource;
@@ -239,7 +239,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @Override
   @JsonProperty("contributors")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  public List<Contributor> getContributors() {
+  public List<DataPackageContributor> getContributors() {
     return super.getContributors();
   }
 
@@ -249,7 +249,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("contributors")
-  public void setContributors(List<Contributor> contributors) {
+  public void setContributors(List<DataPackageContributor> contributors) {
     super.setContributors(contributors);
   }
 

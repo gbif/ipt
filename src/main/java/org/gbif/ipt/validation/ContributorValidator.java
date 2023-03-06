@@ -14,7 +14,7 @@
 package org.gbif.ipt.validation;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gbif.ipt.model.datapackage.metadata.Contributor;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageContributor;
 
 /**
  * Perform all kind of validation to the Contributor object.
@@ -26,7 +26,7 @@ public class ContributorValidator extends BaseValidator {
    *
    * @return true if title and email exist. Otherwise, return false.
    */
-  public static boolean hasCompleteContactInfo(Contributor contributor) {
+  public static boolean hasCompleteContactInfo(DataPackageContributor contributor) {
     return StringUtils.isNotEmpty(contributor.getTitle()) && StringUtils.isNoneEmpty(contributor.getEmail());
   }
 }
