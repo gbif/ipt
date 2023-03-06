@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 00:20\n"
+"PO-Revision-Date: 2023-03-06 01:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -539,42 +539,42 @@ msgstr "メタファイル(meta.xml)は有効なXMLであり、link:http://rs.td
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:170
 msgid "The content complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions; the validator uses the production registry."
-msgstr "コンテンツは、GBIFネットワーク内に登録されている既知の拡張機能と用語に準拠しています。注：GBIFは、拡張機能を追跡する本番レジストリと開発レジストリを実行します。バリデーターは実動レジストリーを使用します。"
+msgstr "コンテンツが、GBIFネットワーク内に登録されている既知の拡張機能と用語に準拠していること。注：GBIFは、拡張機能を追跡する本番レジストリと開発レジストリを実行します。バリデーターは実動レジストリーを使用します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:171
 msgid "The resource description file (eml.xml) is valid XML and complies with the GBIF Metadata Profile schema and the official EML schema."
-msgstr "リソース記述ファイル（eml.xml）は有効なXMLであり、GBIFメタデータプロファイルスキーマおよび公式EMLスキーマに準拠しています。"
+msgstr "リソース記述ファイル（eml.xml）が有効なXMLであり、GBIFメタデータプロファイルスキーマおよび公式EMLスキーマに準拠していること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:172
 msgid "Referential integrity — that mapped ID terms in extension files reference existing core records."
-msgstr "参照整合性 - 拡張ファイル内のマップされたID用語は、既存のコアレコードを参照します。"
+msgstr "参照整合性 - 拡張ファイル内のマップされたID用語が既存のコアレコードを参照していること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:173
 msgid "All core IDs are unique"
-msgstr "すべてのコアIDは一意です。"
+msgstr "すべてのコアIDが一意であること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:174
 msgid "That no verbatim null values are found in the data. For example NULL or \\N"
-msgstr ""
+msgstr "データに逐語的なnull値が見つからないこと。たとえば、NULL や \\N など。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:175
 msgid "Taxonomy and locations pass typical GBIF interpretation processes (e.g. coordinates are within the specified country)"
-msgstr ""
+msgstr "分類と位置情報が、一般的なGBIF解釈プロセスに適していること（例：座標が指定された国内に存在する）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:177
 msgid "To use the validator:"
-msgstr ""
+msgstr "バリデーターを利用するには："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:179
 msgid "Upload the DwC-A using the form provided in the Validator web page."
-msgstr ""
+msgstr "ValidatorのWebページにあるフォームを使用してDwC-Aをアップロードする。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:180
@@ -584,105 +584,105 @@ msgstr "確認する、承認する"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:181
 msgid "Review the response that and address any validation errors"
-msgstr ""
+msgstr "レスポンスを確認し、バリデーションエラーに対処する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:182
 msgid "Repeat the process until the file is successfully validated."
-msgstr ""
+msgstr "ファイルが正常に検証されるまで、このプロセスを繰り返す。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:183
 msgid "Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org)."
-msgstr ""
+msgstr "行き詰まった場合は、GBIFヘルプデスク（helpdesk@gbif.org）に連絡してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:184
 #, no-wrap
 msgid "Registration of DwC-As with GBIF"
-msgstr ""
+msgstr "GBIFへのDwC-Asの登録"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:187
 msgid "An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. Each new registration needs to be associated with a publishing organization that has been formally endorsed by a GBIF Participant Node manager. This is a simple quality control step required by the GBIF Participant Node Managers Committee."
-msgstr ""
+msgstr "GBIFレジストリにリソースのエントリを作成し、リソースの発見とアクセスを可能にする必要があります。各新規登録は、GBIF参加ノード管理者によって正式に承認された発行機関と関連付けられなければなりません。これは、GBIF参加ノード管理者委員会が求める簡単な品質管理ステップです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:189
 msgid "Fortunately, the IPT and GBIF API support automatic registration for datasets. Otherwise if you are publishing DwC-As manually, initiate registration by sending an email to helpdesk@gbif.org with the following information:"
-msgstr ""
+msgstr "幸いなことにIPTとGBIFのAPIはデータセットの自動登録に対応していますが、DwC-Asを手動で公開する場合は、以下の情報を記載したメールを helpdesk@gbif.org に送信して登録を行ってください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:191
 msgid "Dataset title"
-msgstr ""
+msgstr "データセット名"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:192
 msgid "Dataset description (copied from metadata file)"
-msgstr ""
+msgstr "データセットの説明（メタデータファイルからコピー）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:193
 msgid "Publishing organization name (must be registered in GBIF, otherwise register it by filling in this https://www.gbif.org/become-a-publisher[online questionnaire])."
-msgstr ""
+msgstr "公開機関名（GBIFに登録されているもの）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:194
 msgid "Your relation to this organization"
-msgstr ""
+msgstr "その機関との関係"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:195
 msgid "Dataset URL (publicly accessible address of zipped DwC-A)"
-msgstr ""
+msgstr "データセットURL（圧縮されたDwC-Aの一般公開アドレス）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:197
 msgid "You will receive a confirmation email, and a URL representing the resource entry in the Registry."
-msgstr ""
+msgstr "確認メールと、レジストリに登録されたリソースのURLが届けば完了です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:199
 msgid "Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information."
-msgstr ""
+msgstr "上級ユーザーは、既存のシステムにGBIF APIを組み込むことでデータセットを一括して登録する許可を得ることができます。link:https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[基本的な例]は、Linux（Bash）シェルスクリプトとして提供されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:200
 #, no-wrap
 msgid "Annex: Preparing Your Data"
-msgstr ""
+msgstr "付録：データの準備"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:202
 #, no-wrap
 msgid "Required and recommended terms"
-msgstr ""
+msgstr "必須用語と推奨用語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:205
 msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
-msgstr ""
+msgstr "ガイド xref:how-to-publish.adoc[GBIF.orgで生物多様性データを公開する方法]では、データの種類ごとに必要な用語と推奨される用語が示されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:207
 msgid "Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "チェックリストデータ：xref:checklist-data.adoc#required-dwc-fields[必須用語] / xref:checklist-data.adoc#recommended-dwc-fields[推奨用語]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:208
 msgid "Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "オカレンスデータ：xref:occurrence-data.adoc#required-dwc-fields[必須用語] / xref:occurrence-data.adoc#recommended-dwc-fields[推奨用語]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:209
 msgid "Sampling-event data: xref:sampling-event-data.adoc#required-dwc-fields[required terms] / xref:sampling-event-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "サンプリングイベントデータ：xref:sampling-event-data.adoc#required-dwc-fields[必須用語] / xref:sampling-event-data.adoc#recommended-dwc-fields[推奨用語]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:210
 msgid "Resource metadata: xref:resource-metadata.adoc#required-dwc-fields[required terms] / xref:resource-metadata.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "リソースメタデータ：xref:resource-metadata.adoc#required-dwc-fields[必須用語] / xref:resource-metadata.adoc#recommended-dwc-fields[推奨用語]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:211
@@ -693,33 +693,33 @@ msgstr "文字エンコード"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:214
 msgid "Recommended best practice is to encode text (data) files using UTF-8."
-msgstr ""
+msgstr "テキスト（データ）ファイルは、UTF-8でエンコードすることをお勧めします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:216
 msgid "The following tools for Linux, Mac and Windows can be used to convert character encodings of files:"
-msgstr ""
+msgstr "ファイルの文字コード変換には、Linux・Mac・Windows用の以下のツールを使用することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:218
 msgid "https://en.wikipedia.org/wiki/Iconv"
-msgstr ""
+msgstr "https://ja.wikipedia.org/wiki/Iconv"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:222
 msgid "Ex.: Convert character encodings from Windows-1252 to UTF-8 using https://linux.die.net/man/1/iconv[*iconv*]:"
-msgstr ""
+msgstr "例）link:https://linux.die.net/man/1/iconv[*iconv*]を使ってWindows-1252からUTF-8への文字エンコードの変換を行います。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:228
 #, no-wrap
 msgid "Data From a Database"
-msgstr ""
+msgstr "データベースからのデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:231
 msgid "It is easy to produce delimited text files from a database using the SQL commands. For MySQL, use the `SELECT INTO outfile` command. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as `\\N` by default. Use the IFNULL() function as shown in the following example to avoid this:"
-msgstr ""
+msgstr "SQLコマンドを使えば、データベースから区切りテキストファイルを簡単に作成することができます。MySQLの場合、`SELECT INTO outfile` コマンドを使用します。結果のファイルのエンコーディングは、使用するサーバ変数と照合順序に依存し、操作を行う前に変更する必要があるかもしれません。MySQLはデフォルトでNULL値を `\\N` としてエクスポートすることに注意してください。これを避けるには、次の例に示すようにIFNULL()関数を使用します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/dwca-guide.adoc:241
@@ -731,22 +731,28 @@ msgid "SELECT\n"
 "  OPTIONALLY ENCLOSED BY '\"'\n"
 "  LINES TERMINATED BY '\\n'\n"
 "  FROM dwc;\n"
-msgstr ""
+msgstr "SELECT\n"
+"  IFNULL(id, ''), IFNULL(scientific_name, ''), IFNULL(count,'')\n"
+"  INTO outfile '/tmp/dwc.txt'\n"
+"  FIELDS TERMINATED BY ','\n"
+"  OPTIONALLY ENCLOSED BY '\"'\n"
+"  LINES TERMINATED BY '\\n'\n"
+"  FROM dwc;\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:244
 msgid "Here are some other recommendations for generating data using SQL queries/functions:"
-msgstr ""
+msgstr "その他に、SQLクエリ/ファンクションを使ったデータ生成のおすすめを以下に挙げます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:246
 msgid "Concatenate or split strings as required, e.g. to construct the full scientific name string (watch out for autonyms)"
-msgstr ""
+msgstr "必要に応じて文字列を連結または分割し、オートニムに注意して完全な学名文字列を作成してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:247
 msgid "Format dates to conform to https://en.wikipedia.org/wiki/ISO_8601[ISO datetime format] (1990-02-03, or 1990-02 if the day is unknown, 1990 if the month is also unknown, 1990-02-03/1990-02-28 to give a range)."
-msgstr ""
+msgstr "link:https://ja.wikipedia.org/wiki/ISO_8601[ISO 日付・時刻表記形式]に準拠した日付のフォーマットです (1990-02-03、あるいは日が不明な場合は1990-02、月も不明な場合は1990、範囲を指定するときは1990-02-03/1990-02-28を与えてください)。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:248
