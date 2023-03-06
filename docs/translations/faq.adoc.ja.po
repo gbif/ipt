@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 03:35\n"
+"PO-Revision-Date: 2023-03-06 04:37\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -495,53 +495,53 @@ msgstr "したがって、リソースのタイプを変更するには、その
 #: en/modules/ROOT/pages/faq.adoc:189
 #, no-wrap
 msgid "What are some tricks to simplify the authoring and maintenance of metadata?"
-msgstr ""
+msgstr "メタデータの作成・保守を簡略化するための工夫はありますか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:191
 msgid "Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:"
-msgstr ""
+msgstr "データセットは時間の経過とともに変化することがあります。データセットのメタデータを常に最新の状態に保つことは、時間の経過とともに不整合が生じ始めるため、負担となる場合があります。以下は、メタデータの作成を簡素化し、時間の経過に伴うメンテナンスを容易にするために活用できる工夫の例です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:193
 msgid "use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:manage-resources.adoc#basic-metadata[here]."
-msgstr ""
+msgstr "連絡先のORCIDを使用して、メールアドレスや他のフィールドを入力する代わりに、その人が転職した場合に変更される可能性のあるフィールドを入力する。ORCIDを提供する方法についての詳細は、xref:manage-resources.adoc#basic-metadata[こちら]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:194
 msgid "for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts."
-msgstr ""
+msgstr "変化・成長し続けるデータセット（静的データセット）について、レコード数や分類群数など、文字による説明で正確な数を指定するのを避ける。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:195
 msgid "use the IPT's citation xref:manage-resources.adoc#citations[Auto-generation feature] instead of supplying a manually created data citation."
-msgstr ""
+msgstr "手動で作成した引用を用いる代わりに、IPTのxref:manage-resources.adoc#citations[引用自動生成機能]を使用する。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:196
 msgid "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon list feature] instead of supplying each taxon manually one at a time when entering the taxonomic coverage."
-msgstr ""
+msgstr "分類範囲を入力する際に、各分類群を一つずつ手入力せずに、IPTの分類群リストによるインポート機能を使用する。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:197
 #, no-wrap
 msgid "How do I change the hosting organization of my IPT?"
-msgstr ""
+msgstr "IPTのホスト機関を変更するにはどうすればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:200
 msgid "the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence."
-msgstr ""
+msgstr "以下の説明は、IPTがすでに登録されており、技術的な能力を必要とする手動変更が伴うことを前提としています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:202
 msgid "First, ensure the desired hosting organization has been added to your IPT. You can do this through the user interface. For help adding a new organization to your IPT, refer to xref:administration.adoc#add-organization[this section] of the user manual."
-msgstr ""
+msgstr "まず、目的のホスティング機関がIPTに追加されていることを確認します。これは、ユーザーインターフェイスから行うことができます。IPT に新しい機関を追加するヘルプについては、ユーザーマニュアルのxref:administration.adoc#add-organization[このセクション]を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:204
 msgid "Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:"
-msgstr ""
+msgstr "次に、IPTデータディレクトリの /config フォルダにある registration2.xml ファイルを、以下の 2 つの方法で手動で変更します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:213
@@ -550,7 +550,10 @@ msgid "<registration>\n"
 "  <registry>\n"
 "    <hostingOrganisation>\n"
 "      <key>UUID of desired hosting organization</key>\n"
-msgstr ""
+msgstr "<registration>\n"
+"  <registry>\n"
+"    <hostingOrganisation>\n"
+"      <key>UUID of desired hosting organization</key>\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:223
@@ -559,86 +562,89 @@ msgid "<registration>\n"
 "  <registry>\n"
 "    <ipt>\n"
 "      <organisationKey>UUID of desired hosting organization</key>\n"
-msgstr ""
+msgstr "<registration>\n"
+"  <registry>\n"
+"    <ipt>\n"
+"      <organisationKey>UUID of desired hosting organization</key>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:226
 msgid "Restart Tomcat."
-msgstr ""
+msgstr "Tomcatを再起動します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:228
 msgid "Last, press the \"update registration\" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#edit-gbif-registration[this section] of the user manual."
-msgstr ""
+msgstr "最後に、GBIF登録編集ページの「登録更新」ボタンを押してください。これにより、GBIFレジストリに変更が反映されます。このアップデートの内容については、ユーザーマニュアルのxref:administration.adoc#edit-gbif-registration[こちら]を参照してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:229
 #, no-wrap
 msgid "How do I reset the admin password?"
-msgstr ""
+msgstr "管理者パスワードをリセットする方法を教えてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:232
 msgid "If you have forgotten the admin password, the server administrator will need to reset it."
-msgstr ""
+msgstr "管理者パスワードを忘れた場合は、サーバー管理者がパスワードを再設定する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:234
 msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
-msgstr ""
+msgstr "テキストエディターで、IPTデータディレクトリにある`config/users.xml`を開いてください。管理責任者（`role=\"Admin\"` となっているユーザー）を見つけ、暗号化されたパスワードを `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6` に置き換えてください。IPTを再起動した後、パスワード `Ga_1bxiedrvNHSyK` で管理責任者ユーザーとしてログインすることができます。もちろん、このパスワードはその後変更してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:235
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
-msgstr ""
+msgstr "あるIPTインストールから別のIPTインストールにデータセットを移行するにはどうすればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:237
 msgid "This migration process must be done directly on the server following the next steps:"
-msgstr ""
+msgstr "この移行作業は、次のステップに従って、サーバー上で直接行う必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:239
 msgid "Shut down the old IPT server; just to check no-one makes any changes."
-msgstr ""
+msgstr "古いIPTサーバーをシャットダウンします。誰も変更しないことを確認するためです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:240
 msgid "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy the whole dataset folder"
-msgstr ""
+msgstr "古いIPTの `/old-ipt-datadir/resources/[dataset_name]` に行き、データセットフォルダ全体をコピーします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:241
 msgid "In the new IPT go to `/new-ipt-datadir/resources/` and paste the dataset folder"
-msgstr ""
+msgstr "新しいIPTで `/new-ipt-datadir/resources/` に移動し、データセットフォルダを貼り付けます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:242
 msgid "Restart the new IPT server"
-msgstr ""
+msgstr "新しいIPTサーバーを再起動します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:243
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
-msgstr ""
+msgstr "新しいIPTでデータセットを公開します（エンドポイントを更新します）。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:244
 #, no-wrap
 msgid "Indexing by GBIF"
-msgstr ""
+msgstr "GBIFによるインデックス作成"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:246
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
-msgstr ""
+msgstr "GBIFがデータセットの（再）インデックス作成を開始するまでには、どのくらいの時間がかかりますか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:249
 msgid "The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on."
-msgstr ""
+msgstr "それは、GBIFのインデックス作成キューの長さ、データセットの大きさ、GBIFのインデックス作成サービスがオンになっているかどうかによって異なります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:251
