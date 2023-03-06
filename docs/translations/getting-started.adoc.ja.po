@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 15:16+0000\n"
-"PO-Revision-Date: 2023-03-06 06:19\n"
+"PO-Revision-Date: 2023-03-06 07:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -25,15 +25,15 @@ msgstr "はじめに – インストールと初期設定について"
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:4
 msgid "This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/ (contact helpdesk@gbif.org for an account). If you do so, refer to xref:overview.adoc[] for details on how to use the screens you will see."
-msgstr ""
+msgstr "このスタートアップガイドは、初めてIPTインスタンスをインストールして実行しようとする人のためのものです。IPT の機能的なインストールを実際に見てみたい場合は、https://ipt.gbif.org/ にある最新の一般リリース版の公開テストインスタンスを使用することができます（アカウントについては helpdesk@gbif.org にお問い合わせください）。その場合、表示される画面の使用方法の詳細については、 xref:overview.adoc[] を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:6
 msgid "Developers who wish to work with the latest revision of the source code should consult the xref:developer-guide.adoc[] section."
-msgstr ""
+msgstr "最新リビジョンのソースコードを使用したい開発者は、xref:developer-guide.adoc[]のセクションを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:7
 msgid "Publishers who would prefer not to run their own IPT may refer to the list of xref:data-hosting-centres.adoc[data hosting centres]."
-msgstr ""
+msgstr "自前でIPTを運用することを望まない公開者は、xref:data-hosting-centres.adoc[データホスティングセンター]のリストを参照することができます。"
 
