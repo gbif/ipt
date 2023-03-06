@@ -12,7 +12,7 @@ organisationsTable macro: Generates a data table that has searching, pagination,
         /* organisation list */
         var aDataSet = [
             <#list linkedOrganisations as o>
-            ['<a id="editLink_${o.key}" href="organisation?id=${o.key}">${o.name?replace("\'", "\\'")?replace("\"", '\\"')}</a>',
+            ['<a id="editLink_${o.key}" class="resource-table-link" href="organisation?id=${o.key}">${o.name?replace("\'", "\\'")?replace("\"", '\\"')}</a>',
                 '<#if o.alias??>${o.alias?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${emptyString}</#if>',
                 '<#if o.canHost><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
                 '<#if o.doiRegistrationAgency??>${o.doiRegistrationAgency}<#else>${emptyString}</#if>',
