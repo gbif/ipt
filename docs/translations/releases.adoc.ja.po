@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-02 13:26+0000\n"
-"PO-Revision-Date: 2023-02-02 13:58\n"
+"PO-Revision-Date: 2023-03-06 07:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -133,7 +133,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
 msgid "Minor issues and security issues will be addressed in patch releases."
-msgstr ""
+msgstr "細かな問題やセキュリティ上の課題については、パッチリリースで対応する予定です。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:32
