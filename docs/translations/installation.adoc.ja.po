@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-20 14:50+0000\n"
-"PO-Revision-Date: 2023-02-20 15:32\n"
+"PO-Revision-Date: 2023-03-06 01:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:5 en/modules/ROOT/pages/installation.adoc:1
 #, no-wrap
 msgid "Installation"
-msgstr ""
+msgstr "インストール"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:3
