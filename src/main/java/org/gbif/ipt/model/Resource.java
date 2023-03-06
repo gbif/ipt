@@ -1047,11 +1047,11 @@ public class Resource implements Serializable, Comparable<Resource> {
       setReplacedDataPackageMetadataVersion(new BigDecimal(dataPackageMetadataVersion.toPlainString()));
     }
     dataPackageMetadataVersion = v;
-    dataPackageMetadata.setVersion(v);
+    dataPackageMetadata.setVersion(v.toPlainString());
   }
 
   public void setMetadataVersion(BigDecimal v) {
-    if (schemaIdentifier != null) {
+    if (isDataPackage()) {
       setDataPackageMetadataVersion(v);
     } else {
       setEmlVersion(v);

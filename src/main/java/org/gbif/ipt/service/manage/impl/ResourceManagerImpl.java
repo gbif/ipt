@@ -2053,15 +2053,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add new version history
     addOrUpdateVersionHistory(resource, version, false, action);
 
-    // not for data packages
-    if (resource.getSchemaIdentifier() == null) {
+    if (resource.isDataPackage()) {
+      publishMetadata(resource, version);
+    } else {
       // publish EML
       publishEml(resource, version);
 
       // publish RTF
       publishRtf(resource, version);
-    } else {
-      publishMetadata(resource, version);
     }
 
     // remove StatusReport from previous publishing round
@@ -2614,7 +2613,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setMetadataVersion(version);
     resource.getDataPackageMetadata().setCreated(new Date());
     // update metadata created (represents date when the resource was last published)
-    resource.getDataPackageMetadata().setVersion(version);
+    resource.getDataPackageMetadata().setVersion(version.toPlainString());
 
     // save all changes to Eml
     saveDatapackageMetadata(resource);
