@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 04:37\n"
+"PO-Revision-Date: 2023-03-06 06:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -649,112 +649,112 @@ msgstr "それは、GBIFのインデックス作成キューの長さ、デー�
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:251
 msgid "Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor]."
-msgstr ""
+msgstr "通常、GBIFがデータセットのインデックス作成を開始するまでに5～60分かかります。大規模なデータセット（数百万レコード）のインデックス作成を開始すると、終了までに数時間かかることがありますので、しばらくお待ちください。link:https://www.gbif.org/health[GBIFヘルスページ]の下部にはインデックス作成キューの長さが表示され、link:https://registry.gbif.org/monitoring/running-crawls[クロールモニター]でキューの全体を確認することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:253
 msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
-msgstr ""
+msgstr "GBIFがデータセットのインデックス作成に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、GBIFヘルプデスク<helpdesk@gbif.org>にメールを送って、何が起こったかを調査してください。GBIFがあなたのデータセットに（再）インデックスを付けなかった理由を知りたい場合は、以下をご覧ください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:254
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
-msgstr ""
+msgstr "なぜGBIFは私のデータセットをまだ（再）インデックス化していないのですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:257
 msgid "Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected."
-msgstr ""
+msgstr "GBIFは、メンテナンスのためインデックス作成サービスを停止することがあります（前問のリンク参照）。データセットのインデックス作成が予想より遅れる原因の多くはこれによるものです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:259
 msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
-msgstr ""
+msgstr "GBIFがお客様のデータセットのインデックス化に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、直接GBIFヘルプデスク<helpdesk@gbif.org>にメールを送り、何が起こったかを調査してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:260
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
-msgstr ""
+msgstr "GBIFはどのくらいの頻度でインデックスを更新しているのですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:263
 msgid "GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT."
-msgstr ""
+msgstr "GBIFは、登録されたデータセットが更新されるたびに、自動的にインデックスを付け直そうとします。これは、データセットがIPT経由で再公開されるたびに行われます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:265
 msgid "To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days."
-msgstr ""
+msgstr "またIPTで公開されていないデータセットに対応するため、GBIFは登録されたすべてのデータセットに対して、7日おきに自動的にインデックスを更新するよう試みます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:267
 msgid "GBIF will only reindex a dataset if its last published date has changed since the last time it was indexed."
-msgstr ""
+msgstr "GBIFは、データセットの最終公開日が前回のインデックス作成時と異なる場合のみ、再インデックス作成を行います。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:268
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
-msgstr ""
+msgstr "GBIFはどのようなデータセットに対応していますか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:271
 msgid "GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GBIF currently only indexes species occurrence records, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible."
-msgstr ""
+msgstr "GBIFは4種類のデータセットに対応しています。GBIFは現在、種のオカレンス記録のみをインデックス化しており、これらはコアレコードまたは拡張レコードとして提供することができます。サンプリングイベント・データセットの場合、拡張レコードの種のオカレンスは、可能な限りそのコアイベント・レコードから得られる情報で補強されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:272
 #, no-wrap
 msgid "Why is my dataset citation different on GBIF.org?"
-msgstr ""
+msgstr "GBIF.orgで、私のデータセットの引用が異なるのはなぜですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:275
 msgid "The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ]."
-msgstr ""
+msgstr "IPTはフリーテキストでのデータセット引用をサポートしていますが、GBIF.orgのデータセットページで上書きされてしまいます。その理由は、link:https://www.gbif.org/faq?q=citation[GBIF.org FAQ]に記載されています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:276
 #, no-wrap
 msgid "Why is GBIF unable to access my IPT over HTTPS?"
-msgstr ""
+msgstr "GBIF が HTTPS で自分ののIPTにアクセスできないのはなぜですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:279
 msgid "This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat etc).  Ensure you can access your server through the command line (`curl https://ipt.example.org`), from computers outside your organization's network (e.g. from a personal phone) and run an https://www.ssllabs.com/ssltest/[SSL Server Test]."
-msgstr ""
+msgstr "これは通常、ウェブサーバ（Apache、IIS、Tomcatなど）の設定ミスが原因です。コマンドライン（`curl https://ipt.example.org`）を使って、組織のネットワーク外のコンピュータ（個人の電話など）からサーバーにアクセスできることを確認し、link:https://www.ssllabs.com/ssltest/[SSLサーバーテスト]を実行します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:281
 msgid "Any errors like \"unable to get local issuer certificate\" or \"certificate chain incomplete\" will usually prevent GBIF's systems from accessing your IPT."
-msgstr ""
+msgstr "「unable to get local issuer certificate」や「certificate chain incomplete」などのエラーが発生すると、通常GBIFのシステムがIPTにアクセスできなくなります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:283
 msgid "To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT."
-msgstr ""
+msgstr "これらのエラーを修正するには、Webサーバーのドキュメントを参照するか、IT部門にアドバイスを求めます。これらの問題は、一般にIPTとは関係ありません。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:284
 #, no-wrap
 msgid "Indexing by others"
-msgstr ""
+msgstr "他の手段でのインデックス作成"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:286
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
-msgstr ""
+msgstr "自分のIPTで公開されているリソースのリストをエクスポートするにはどうすればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:289
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
-msgstr ""
+msgstr "機関によっては、自分自身のIPTにインデックスを付ける必要があり、多くの場合、公開オープンデータ・システムなどに各リソースの記録を含める必要があります。IPTは、これを可能にするためにデータ・カタログ語彙（DCAT）をサポートしています。DCATのエクスポートは、`/dcat`（例：https://ipt.gbif.org/dcat）で可能です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:290
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
-msgstr ""
+msgstr "別の方法として、link:https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API]がありますが、これはGBIFに公開されたデータセットしか含まれません。"
 
