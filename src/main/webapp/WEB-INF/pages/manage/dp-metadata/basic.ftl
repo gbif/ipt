@@ -495,7 +495,7 @@
             <@input name="metadata.contributors.email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
         </div>
         <div class="col-lg-6">
-            <@input name="metadata.contributors.role" help="i18n" i18nkey="datapackagemetadata.contributor.role" />
+            <@select name="metadata.contributors.role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="" />
         </div>
         <div class="col-lg-6">
             <@input name="metadata.contributors.organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
