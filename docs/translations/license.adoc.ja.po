@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2023-03-07 06:39\n"
+"PO-Revision-Date: 2023-03-07 07:41\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -91,7 +91,7 @@ msgstr "licenses.propertiesファイル（例：`/tomcat7/webapps/ipt/WEB-INF/cl
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:30
 msgid "Add a new property defining the license name using the following format:"
-msgstr ""
+msgstr "次のフォーマットを使用して、ライセンス名を定義する新しいプロパティを追加します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:35
@@ -99,12 +99,14 @@ msgstr ""
 msgid "license.name.<prefix>=Name\n"
 "# For example:\n"
 "license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0\n"
-msgstr ""
+msgstr "license.name.<prefix>=Name\n"
+"# For example:\n"
+"license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:38
 msgid "Add a new property defining the license rights statement using the following format:"
-msgstr ""
+msgstr "次のフォーマットを利用して、権利声明を定義する新しいプロパティを追加します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:43
@@ -112,35 +114,37 @@ msgstr ""
 msgid "license.text.<prefix>=Text\n"
 "# For example:\n"
 "license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
-msgstr ""
+msgstr "license.text.<prefix>=Text\n"
+"# For example:\n"
+"license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
 msgid "Double check"
-msgstr ""
+msgstr "再確認"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:47
 msgid "the _prefix_ of both keys matches,"
-msgstr ""
+msgstr "両方のキーの_prefix_が一致し"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:48
 msgid "an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable,"
-msgstr ""
+msgstr "（ライセンスマシンを読み取り可能にするために）ライセンス名とURLを定義するHTMLアンカーがテキストに含まれていて、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:49
 msgid "the name used in the HTML anchor is the same as name used in the name property above."
-msgstr ""
+msgstr "HTMLアンカーで使用される名前が上記のnameプロパティで使用される名前と同じであること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50
 msgid "Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT"
-msgstr ""
+msgstr "次に、IPTをアップグレードすると上書きされるため、licenses.propertiesファイルをバックアップします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
-msgstr ""
+msgstr "サーブレットコンテナ（Tomcatなど）を再起動して、新しい設定を有効にします。"
 
