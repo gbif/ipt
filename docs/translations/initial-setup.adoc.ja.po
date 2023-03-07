@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-03-07 04:32\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -27,44 +27,44 @@ msgstr ""
 #: en/modules/ROOT/pages/initial-setup.adoc:1
 #, no-wrap
 msgid "Initial Setup"
-msgstr ""
+msgstr "初期設定"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:3
 #: en/modules/ROOT/pages/installation.adoc:3
 #, no-wrap
 msgid "Data directory"
-msgstr ""
+msgstr "データディレクトリ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:6
 msgid "This step is only shown if the data directory was not already configured during installation."
-msgstr ""
+msgstr "このステップは、インストール時点でデータディレクトリがまだ設定されていない場合にのみ表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:8
 msgid "The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labelled \"Save\" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the \"Save\" button."
-msgstr ""
+msgstr "最初にIPTを実行するときは、IPTを使用するための準備としていくつかの簡単なステップが表示されます。IPTのセットアップページ（下の画面キャプチャ参照）は、2つのセットアップページのうちの最初のページです。このページでは、公開者がデータライセンスに関する免責事項を読み、理解したことを確認するよう求めています。次に、IPTのインストールに必要なデータを保存する場所を指定します。このページで入力する場所の形式は、IPTがインストールされているOSのディレクトリへの絶対パスの標準に準拠している必要があります。例えば、Windows環境では`C:\\datadir`、UnixおよびMac OS X環境では`/srv/datadir`のようなパスを使用します。またIPTは、選択した場所への書き込み権限を持っている必要があります。IPTに書き込み権限がある場合は、テキストボックスにパスを入力し、「保存」ボタンをクリックすると、そのディレクトリが作成されます。適切な書き込み権限を持つデータディレクトリを最初に作成し、テキストボックスにディレクトリへの絶対パスを入力し、「保存」ボタンをクリックすることも可能です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:10
 msgid "Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart. *The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.* Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation."
-msgstr ""
+msgstr "不注意による変更や削除の可能性があるデータディレクトリを選択しないでください。例えば`/tmp`のように、システム再起動時に空になる可能性があるシステムでは使用しないでください。*データディレクトリは、適切な災害復旧計画に沿って、定期的にバックアップを取る必要があります。*データディレクトリの内容が失われると、リソース、ユーザー、その他の構成情報、およびIPTインストールに対するカスタマイズが失われます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:12
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on \"Save\" in this case will bypass the page titled IPT setup II and present the IPT Administration page."
-msgstr ""
+msgstr "同じバージョンで以前動作していたIPTのデータディレクトリがあり、当時の設定（ユーザーとリソースを含む）を使用したい場合、IPT設定のこの最初のステップでそのデータディレクトリの絶対パスを入力することができます。この場合、「保存」をクリックすると、IPT設定IIと題されたページがスキップされ、IPT管理ページが表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
 msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#file-permissions[the FAQ item on this]."
-msgstr ""
+msgstr "書き込みができない場所であるというエラーが発生した場合は、xref:faq.adoc#file-permissions[FAQのこちら]を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:16
 msgid "Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in."
-msgstr ""
+msgstr "右上の言語名をクリックすると、希望の言語でIPTが利用できるかどうか確認できます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:17
@@ -76,12 +76,12 @@ msgstr ""
 #: en/modules/ROOT/pages/initial-setup.adoc:19
 #, no-wrap
 msgid "Administrator user and URLs"
-msgstr ""
+msgstr "管理責任者ユーザーとURL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:21
 msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:"
-msgstr ""
+msgstr "最初のデータディレクトリの割り当て手順が正しく終了した場合、IPTは、IPTのデフォルトの管理責任者についての情報を入力する必要があり、IPTが実行されるべきモードについての情報、IPTがインターネットからアクセスされる方法とともに、2つ目の設定ページ（以下の画面キャプチャを参照）を表示します。以下は、2つ目の設定ページで表示されるフィールドの説明です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:23
@@ -91,7 +91,7 @@ msgstr "Defaultの管理責任者(Administrator)"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:26
 msgid "The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one."
-msgstr ""
+msgstr "デフォルトの管理責任者は、個別のログインと、IPTインストールのすべての側面に変更を加える権限を持つことになります。デフォルトの管理責任者は、同じ権限を持つ他の管理責任者を含む、追加のユーザーアカウントを作成することができます。管理責任者の追加や削除は可能ですが、IPTは少なくとも常に1人は管理責任者がいなければなりません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:28
