@@ -5,6 +5,7 @@
     <script>
         $(document).ready(function(){
             var relatedIdentifierItems = calcNumberOfItems("relatedIdentifier");
+            var referenceItems = calcNumberOfItems("reference");
 
             function calcNumberOfItems(name) {
                 var lastItem = $("#" + name + "-items .item:last-child").attr("id");
@@ -14,9 +15,8 @@
                     return -1;
             }
 
-            $("#plus-relatedIdentifier").click(function (event) {
-                event.preventDefault();
-                console.log("plus")
+            $("#plus-relatedIdentifier").click(function (e) {
+                e.preventDefault();
                 addNewRelatedIdentifierItem(true);
             });
 
@@ -34,11 +34,23 @@
                 initInfoPopovers(newItem[0]);
             }
 
-            function removeRelatedIdentifierItem(event) {
-                event.preventDefault();
-                var $target = $(event.target);
+            function addNewReferenceItem(effects) {
+                var newItem = $('#baseItem-reference').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#reference-items');
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setReferenceItemIndex(newItem, ++referenceItems);
+            }
+
+            function removeRelatedIdentifierItem(e) {
+                e.preventDefault();
+                var $target = $(e.target);
                 if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
+                    $target = $(e.target).closest('a');
                 }
                 $('#relatedIdentifier-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
                     $(this).remove();
@@ -46,6 +58,21 @@
                         setRelatedIdentifierItemIndex($(this), index);
                     });
                     calcNumberOfItems("relatedIdentifier");
+                });
+            }
+
+            function removeReferenceItem(e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                if (!$target.is('a')) {
+                    $target = $(e.target).closest('a');
+                }
+                $('#reference-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#reference-items .item").each(function (index) {
+                        setReferenceItemIndex($(this), index);
+                    });
+                    calcNumberOfItems("reference");
                 });
             }
 
@@ -78,8 +105,31 @@
                 $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifierType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType");
             }
 
-            $(".removeRelatedIdentifierLink").click(function (event) {
-                removeRelatedIdentifierItem(event);
+            function setReferenceItemIndex(item, index) {
+                item.attr("id", "reference-item-" + index);
+
+                $("#reference-item-" + index + " [id^='reference-removeLink']").attr("id", "reference-removeLink-" + index);
+                $("#reference-removeLink-" + index).click(function (event) {
+                    removeReferenceItem(event);
+                });
+
+                $("#reference-item-" + index + " input").attr("id", "metadata.references[" + index + "]").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#reference-item-" + index + " label").attr("for", "metadata.references[" + index + "]");
+            }
+
+            $(".removeRelatedIdentifierLink").click(function (e) {
+                removeRelatedIdentifierItem(e);
+            });
+
+            $(".removeReferenceLink").click(function (e) {
+                removeReferenceItem(e);
+            });
+
+            $("#plus-reference").click(function (e) {
+                e.preventDefault();
+                addNewReferenceItem(true);
             });
 
             // scroll to the error if present
@@ -206,6 +256,45 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="my-md-3 p-3">
+                            <#assign removeReferenceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
+                            <#assign addReferenceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
+
+                            <!-- List of References -->
+                            <div>
+                                <@textinline name="datapackagemetadata.other.references" help="i18n"/>
+                                <div id="reference-items">
+                                    <#list (metadata.references)! as item>
+                                        <div id="reference-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                <a id="reference-removeLink-${item_index}" href="" class="removeReferenceLink metadata-action-link">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${removeReferenceLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-12">
+                                                <@input name="metadata.references[${item_index}]" i18nkey="datapackagemetadata.other.reference" />
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-reference" class="metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>${addReferenceLink?lower_case?cap_first}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
@@ -234,6 +323,22 @@
         </div>
         <div class="col-lg-6">
             <@select name="metadata.relatedIdentifiers.relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value="" requiredField=true />
+        </div>
+    </div>
+
+    <div id="baseItem-reference" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="reference-removeLink" href="" class="removeReferenceLink metadata-action-link">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    </svg>
+                </span>
+                <span>${removeReferenceLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div class="col-12">
+            <@input name="metadata.references" i18nkey="datapackagemetadata.other.reference" value="" />
         </div>
     </div>
 

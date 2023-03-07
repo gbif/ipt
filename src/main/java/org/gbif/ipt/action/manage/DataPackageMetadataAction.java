@@ -135,6 +135,13 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
 
       case OTHER_SECTION:
+        if (isHttpPost()) {
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+            CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+            camtrapMetadata.getReferences().clear();
+            camtrapMetadata.getRelatedIdentifiers().clear();
+          }
+        }
         break;
 
       default:
