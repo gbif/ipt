@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:39\n"
+"PO-Revision-Date: 2023-03-07 07:41\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -25,30 +25,30 @@ msgstr "概要"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:4
 msgid "The following sections explain in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the xref:getting-started.adoc[Getting Started Guide]. The details of this guide are presented in four sections corresponding to the four \"menus\" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in."
-msgstr ""
+msgstr "以下のセクションでは、xref:getting-started.adoc[はじめに]の説明に従ってインストールされ、初めて実行され、機能テストされたIPTインスタンスの機能を詳細に説明します。このガイドの詳細は、IPTユーザーインターフェースで利用可能な4つの「メニュー」に対応する4つのセクションで紹介されています。いくつかのタブは、適切な権限を持つユーザーがログインしているときにのみ表示されます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/overview.adoc:5
 #, no-wrap
 msgid "User interface controls"
-msgstr ""
+msgstr "ユーザーインターフェース制御"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:7
 msgid "Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labelled \"Save\". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon."
-msgstr ""
+msgstr "ほとんどのユーザーインターフェースコントロールには、有効モードと無効モードがあります。コントロールが有効な場合、クリックされたときにアクションを実行するか（例えばボタン）、コントロールにバインドされた値に変更を加えることができます（例えばテキスト、チェック、セレクトボックスなど）。後者の場合、可能であれば、コントロールが表示されているフォームが保存されるときに、変更内容が保存されることになります（通常、ページ上で「保存」というラベルの付いたボタンをクリックすることで保存されます）。無効なコントロールは、関連する情報の値を表示するが、それが表示された時点で有効な条件下では、その情報を保存することはできません。ほとんどのユーザーインターフェイスのコントロールの目的は、コントロールの上や左に表示される関連ラベルによって示されます。補足的な情報は、関連する情報アイコンからアクセスできることもあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
 msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the {threelines} button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role.\n"
-msgstr ""
+msgstr "*メニュー* - IPTでは、ほぼすべてのページにメニューバーが（表示画面が小さいときは{threelines}ボタンの下に）表示されます。メニューには、ユーザーを基本的なトピックに誘導するメニュー項目が配置されています。メニュー項目は、現在のユーザーが持つ権限にあわせて表示されます。\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/overview.adoc:10
 #, no-wrap
 msgid "Menu bar before login or after a user having no special role logs in, with the Home menu active:"
-msgstr ""
+msgstr "ログイン前、または特別なロールを持たないユーザーがログインした後のメニューバーで、ホームメニューがアクティブになっています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:11
@@ -60,7 +60,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:13
 #, no-wrap
 msgid "Menu after a user having a Manager role logs in, with the Manage Resources menu active:"
-msgstr ""
+msgstr "管理者ロールを持つユーザーがログインした後のメニューで、リソース管理メニューがアクティブになっています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:14
@@ -72,7 +72,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:16
 #, no-wrap
 msgid "Menu after a user having the Admin role logs in, with the Administration menu active:"
-msgstr ""
+msgstr "管理責任者ロールを持つユーザーがログインした後のメニューで、管理メニューがアクティブになっています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:17
@@ -84,12 +84,12 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:20
 #, no-wrap
 msgid "**Text boxes** - allow textual information to be viewed or entered.\n"
-msgstr ""
+msgstr "**テキストボックス** - テキスト情報を表示または入力することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:22
 msgid "Example text box and label for an email address:"
-msgstr ""
+msgstr "メールアドレスのテキストボックスとラベルの例"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:23
@@ -101,29 +101,29 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:26
 #, no-wrap
 msgid "**Check boxes** - allow a value to viewed or set to true (when checked) or false (when unchecked).\n"
-msgstr ""
+msgstr "**チェックボックス** - 値を表示したり、true（チェックしているとき）またはfalse（チェックしていないとき）に設定することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:28
 msgid "Example check box and label to indicate that the IPT can publish resources: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
-msgstr ""
+msgstr "IPT がリソースを公開できることを示すチェックボックスとラベルの例： image:ipt2/controls/Control-CheckboxExample.png[width=233]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:30
 #, no-wrap
 msgid "**Select boxes** - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with \"Select\" (e.g., \"Select a country, territory, or island\"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.\n"
-msgstr ""
+msgstr "**セレクトボックス** - あらかじめ定義された値のリストから、値を表示または選択することができます。セレクトボックスには、選択可能な値の代わりに、選択内容に関する説明テキストが含まれている場合があります。この場合、選択項目は「選択」で始まります（例：「国、領土、島を選択」）。セレクトボックスをクリックすると、セレクトボックスが開き、選択可能な値のリストが表示されます。選択肢の一つをクリックすると、その値が設定されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:32
 msgid "Example select box and label for the user role, with Admin selected: image:ipt2/controls/Control-SelectBoxExample.png[width=522]"
-msgstr ""
+msgstr "ユーザーロールのセレクトボックスとラベルの例（管理責任者：Adminを選択した場合）です。image:ipt2/controls/Control-SelectBoxExample.png[width=522]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:34
 #, no-wrap
 msgid "**Links** - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).\n"
-msgstr ""
+msgstr "**リンク** - リンク先のページとは別のページが開きます。リンクは、同じブラウザのウィンドウ（またはタブ）または別のウィンドウ（またはタブ）で新しいページを開くことができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
