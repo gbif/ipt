@@ -64,7 +64,7 @@ public class Project implements Serializable {
   private String acronym;
 
   /**
-   * Description of the project, ideally <a href="http://commonmark.org/">Markdown</a> formatted. Not to be confused with the description of the package (`package.description`).
+   * Description of the project. Preferably formatted as <a href="http://commonmark.org/">Markdown</a>. Not to be confused with the description of the package (`package.description`).
    */
   @JsonProperty("description")
   private String description;
@@ -76,7 +76,7 @@ public class Project implements Serializable {
   private URI path;
 
   /**
-   * Type of sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <a href="https://doi.org/10.13140/RG.2.2.23409.17767">10.13140/RG.2.2.23409.17767</a>), pages 80-82: `simple random`: random distribution of sampling locations; `systematic random`: random distribution of sampling locations, but arranged in a regular pattern; `clustered random`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
+   * Type of a sampling design/layout. The values are based on <a href="https://doi.org/10.13140/RG.2.2.23409.17767">Wearn & Glover-Kapfer (2017)</a>, pages 80-82: `simpleRandom`: random distribution of sampling locations; `systematicRandom`: random distribution of sampling locations, but arranged in a regular pattern; `clusteredRandom`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
    * (Required)
    */
   @JsonProperty("samplingDesign")
@@ -104,20 +104,12 @@ public class Project implements Serializable {
   private Boolean individualAnimals;
 
   /**
-   * Information about a focal level of the classification process. `sequence`: classifications (i.e. rows in the `observations` resource) are provided at a sequence level (multiple media files can be part of one sequence); `media`: classifications are available for each single media file.
-   * (Required)
-   */
-  @JsonProperty("classificationLevel")
-  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
-  private Project.ClassificationLevel classificationLevel;
-
-  /**
    * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
    * (Required)
    */
-  @JsonProperty("sequenceInterval")
+  @JsonProperty("eventInterval")
   @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
-  private Integer sequenceInterval;
+  private Integer eventInterval;
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -175,7 +167,7 @@ public class Project implements Serializable {
   }
 
   /**
-   * Description of the project, ideally <a href="http://commonmark.org/">Markdown</a> formatted. Not to be confused with the description of the package (`package.description`).
+   * Description of the project. Preferably formatted as <a href="http://commonmark.org/">Markdown</a>. Not to be confused with the description of the package (`package.description`).
    */
   @JsonProperty("description")
   public String getDescription() {
@@ -183,7 +175,7 @@ public class Project implements Serializable {
   }
 
   /**
-   * Description of the project, ideally <a href="http://commonmark.org/">Markdown</a> formatted. Not to be confused with the description of the package (`package.description`).
+   * Description of the project. Preferably formatted as <a href="http://commonmark.org/">Markdown</a>. Not to be confused with the description of the package (`package.description`).
    */
   @JsonProperty("description")
   public void setDescription(String description) {
@@ -207,7 +199,7 @@ public class Project implements Serializable {
   }
 
   /**
-   * Type of a sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <a href="https://doi.org/10.13140/RG.2.2.23409.17767">10.13140/RG.2.2.23409.17767</a>), pages 80-82: `simple random`: random distribution of sampling locations; `systematic random`: random distribution of sampling locations, but arranged in a regular pattern; `clustered random`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
+   * Type of a sampling design/layout. The values are based on <a href="https://doi.org/10.13140/RG.2.2.23409.17767">Wearn & Glover-Kapfer (2017)</a>, pages 80-82: `simpleRandom`: random distribution of sampling locations; `systematicRandom`: random distribution of sampling locations, but arranged in a regular pattern; `clusteredRandom`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
    * (Required)
    */
   @JsonProperty("samplingDesign")
@@ -216,7 +208,7 @@ public class Project implements Serializable {
   }
 
   /**
-   * Type of a sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <a href="https://doi.org/10.13140/RG.2.2.23409.17767">10.13140/RG.2.2.23409.17767</a>), pages 80-82: `simple random`: random distribution of sampling locations; `systematic random`: random distribution of sampling locations, but arranged in a regular pattern; `clustered random`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
+   * Type of a sampling design/layout. The values are based on <a href="https://doi.org/10.13140/RG.2.2.23409.17767">Wearn & Glover-Kapfer (2017)</a>, pages 80-82: `simpleRandom`: random distribution of sampling locations; `systematicRandom`: random distribution of sampling locations, but arranged in a regular pattern; `clusteredRandom`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
    * (Required)
    */
   @JsonProperty("samplingDesign")
@@ -261,39 +253,21 @@ public class Project implements Serializable {
   }
 
   /**
-   * Information about a focal level of the classification process. `sequence`: classifications (i.e. rows in the `observations` resource) are provided at a sequence level (multiple media files can be part of one sequence); `media`: classifications are available for each single media file.
+   * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
    * (Required)
    */
-  @JsonProperty("classificationLevel")
-  public Project.ClassificationLevel getClassificationLevel() {
-    return classificationLevel;
-  }
-
-  /**
-   * Information about a focal level of the classification process. `sequence`: classifications (i.e. rows in the `observations` resource) are provided at a sequence level (multiple media files can be part of one sequence); `media`: classifications are available for each single media file.
-   * (Required)
-   */
-  @JsonProperty("classificationLevel")
-  public void setClassificationLevel(Project.ClassificationLevel classificationLevel) {
-    this.classificationLevel = classificationLevel;
+  @JsonProperty("eventInterval")
+  public Integer getEventInterval() {
+    return eventInterval;
   }
 
   /**
    * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
    * (Required)
    */
-  @JsonProperty("sequenceInterval")
-  public Integer getSequenceInterval() {
-    return sequenceInterval;
-  }
-
-  /**
-   * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
-   * (Required)
-   */
-  @JsonProperty("sequenceInterval")
-  public void setSequenceInterval(Integer sequenceInterval) {
-    this.sequenceInterval = sequenceInterval;
+  @JsonProperty("eventInterval")
+  public void setEventInterval(Integer eventInterval) {
+    this.eventInterval = eventInterval;
   }
 
   @JsonAnyGetter
@@ -306,59 +280,14 @@ public class Project implements Serializable {
     this.additionalProperties.put(name, value);
   }
 
-
   /**
-   * Information about a focal level of the classification process. `sequence`: classifications (i.e. rows in the `observations` resource) are provided at a sequence level (multiple media files can be part of one sequence); `media`: classifications are available for each single media file.
-   */
-  public enum ClassificationLevel {
-
-    SEQUENCE("sequence"),
-    MEDIA("media");
-    private final String value;
-    public final static Map<String, Project.ClassificationLevel> CONSTANTS = new HashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
-
-    static {
-      for (Project.ClassificationLevel c : values()) {
-        CONSTANTS.put(c.value, c);
-        VOCABULARY.put(c.name(), c.value);
-      }
-    }
-
-    ClassificationLevel(String value) {
-      this.value = value;
-    }
-
-    @Override
-    public String toString() {
-      return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-      return this.value;
-    }
-
-    @JsonCreator
-    public static Project.ClassificationLevel fromValue(String value) {
-      Project.ClassificationLevel constant = CONSTANTS.get(value);
-      if (constant == null) {
-        throw new IllegalArgumentException(value);
-      } else {
-        return constant;
-      }
-    }
-
-  }
-
-  /**
-   * Type of sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <a href="https://doi.org/10.13140/RG.2.2.23409.17767">10.13140/RG.2.2.23409.17767</a>), pages 80-82: `simple random`: random distribution of sampling locations; `systematic random`: random distribution of sampling locations, but arranged in a regular pattern; `clustered random`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
+   * Type of sampling design/layout. The values are based on Wearn & Glover-Kapfer (2017, <a href="https://doi.org/10.13140/RG.2.2.23409.17767">10.13140/RG.2.2.23409.17767</a>), pages 80-82: `simpleRandom`: random distribution of sampling locations; `systematicRandom`: random distribution of sampling locations, but arranged in a regular pattern; `clusteredRandom`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
    */
   public enum SamplingDesign {
 
-    SIMPLE_RANDOM("simple random"),
-    SYSTEMATIC_RANDOM("systematic random"),
-    CLUSTERED_RANDOM("clustered random"),
+    SIMPLE_RANDOM("simpleRandom"),
+    SYSTEMATIC_RANDOM("systematicRandom"),
+    CLUSTERED_RANDOM("clusteredRandom"),
     EXPERIMENTAL("experimental"),
     TARGETED("targeted"),
     OPPORTUNISTIC("opportunistic");
@@ -410,8 +339,7 @@ public class Project implements Serializable {
         .add("samplingDesign=" + samplingDesign)
         .add("captureMethod=" + captureMethod)
         .add("individualAnimals=" + individualAnimals)
-        .add("classificationLevel=" + classificationLevel)
-        .add("sequenceInterval=" + sequenceInterval)
+        .add("eventInterval=" + eventInterval)
         .add("additionalProperties=" + additionalProperties)
         .toString();
   }

@@ -114,16 +114,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6">
-                                    <#if (metadata.project.classificationLevel)??>
-                                        <@select name="metadata.project.classificationLevel" help="i18n" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="${metadata.project.classificationLevel!}" requiredField=true />
-                                    <#else>
-                                        <@select name="metadata.project.classificationLevel" help="i18n" includeEmpty=true compareValues=true options=classificationLevels i18nkey="datapackagemetadata.project.classificationLevel" value="" requiredField=true />
-                                    </#if>
-                                </div>
+
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.sequenceInterval" help="i18n" i18nkey="datapackagemetadata.project.sequenceInterval" requiredField=true />
+                                    <@input name="metadata.project.eventInterval" help="i18n" i18nkey="datapackagemetadata.project.eventInterval" requiredField=true />
                                 </div>
                             </div>
                         </div>

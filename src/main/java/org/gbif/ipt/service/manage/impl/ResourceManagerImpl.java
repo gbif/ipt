@@ -1706,7 +1706,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         metadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
       } catch (IOException e) {
-        // TODO: 13/10/2022 implement exception handling
+        LOG.error("Failed to read resource metadata {}", resource.getShortname());
+        LOG.error(e);
         throw new RuntimeException(e);
       }
     } else {

@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CaptureMethod {
 
-  MOTION_DETECTION("motion detection"),
-  TIME_LAPSE("time lapse");
+  MOTION_DETECTION("motionDetection"),
+  TIME_LAPSE("timeLapse");
   private final String value;
   public final static Map<String, CaptureMethod> CONSTANTS = new HashMap<>();
   public final static Map<String, String> VOCABULARY = new HashMap<>();

@@ -261,10 +261,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return Project.SamplingDesign.VOCABULARY;
   }
 
-  public Map<String, String> getClassificationLevels() {
-    return Project.ClassificationLevel.VOCABULARY;
-  }
-
   public Map<String, String> getCaptureMethods() {
     return CaptureMethod.VOCABULARY;
   }

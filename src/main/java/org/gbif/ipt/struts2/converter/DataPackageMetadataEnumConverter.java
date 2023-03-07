@@ -33,9 +33,7 @@ public class DataPackageMetadataEnumConverter extends StrutsTypeConverter {
 
     Object result = null;
 
-    if (toClass == Project.ClassificationLevel.class) {
-      result = Project.ClassificationLevel.fromValue(values[0]);
-    } else if (toClass == Project.SamplingDesign.class) {
+    if (toClass == Project.SamplingDesign.class) {
       result = Project.SamplingDesign.fromValue(values[0]);
     } else if (toClass == Taxonomic.TaxonRank.class) {
       result = Taxonomic.TaxonRank.fromValue(values[0]);
@@ -50,9 +48,7 @@ public class DataPackageMetadataEnumConverter extends StrutsTypeConverter {
 
   @Override
   public String convertToString(Map context, Object o) {
-    if (o instanceof Project.ClassificationLevel) {
-      return ((Project.ClassificationLevel) o).value();
-    } else if (o instanceof Project.SamplingDesign) {
+    if (o instanceof Project.SamplingDesign) {
       return ((Project.SamplingDesign) o).value();
     } else if (o instanceof Taxonomic.TaxonRank) {
       return ((Taxonomic.TaxonRank) o).value();
