@@ -81,14 +81,12 @@
                                 <div class="col-6">
                                     <@input name="metadata.coordinatePrecision" help="i18n" i18nkey="datapackagemetadata.coordinatePrecision" />
                                 </div>
-                                <div class="col-6">
-                                    <@input name="metadata.spatial.type" help="i18n" i18nkey="datapackagemetadata.geographic.type" requiredField=true />
-                                </div>
+                                <input name="metadata.spatial.type" type="hidden" value="Polygon"/>
                             </div>
                         </div>
 
                         <div class="my-md-3 p-3">
-                            <@textinline help="i18n" name="datapackagemetadata.geographic.boundingCoordinates"/>
+                            <@textinline name="datapackagemetadata.geographic.boundingCoordinates"/>
 
                             <div class="row g-3 mt-2">
                                 <div class="col-6">
