@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-03-07 00:05\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: en/modules/ROOT/pages/home.adoc:1
 #, no-wrap
 msgid "Home Menu"
-msgstr ""
+msgstr "ホームメニュー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:4
 msgid "This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list."
-msgstr ""
+msgstr "このページでは、公開されているリソースがある場合はその一覧を表示し、リスト上の任意のリソースの詳細なメタデータを見ることができます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:5
