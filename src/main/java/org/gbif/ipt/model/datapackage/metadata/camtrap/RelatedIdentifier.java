@@ -15,6 +15,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
@@ -176,8 +177,10 @@ public class RelatedIdentifier implements Serializable {
     URL("URL"),
     URN("URN"),
     W_3_ID("w3id");
+
     private final String value;
-    private final static Map<String, RelatedIdentifier.RelatedIdentifierType> CONSTANTS = new HashMap<>();
+
+    private final static Map<String, RelatedIdentifier.RelatedIdentifierType> CONSTANTS = new LinkedHashMap<>();
     public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
@@ -252,8 +255,10 @@ public class RelatedIdentifier implements Serializable {
     IS_REQUIRED_BY("IsRequiredBy"),
     OBSOLETES("Obsoletes"),
     IS_OBSOLETED_BY("IsObsoletedBy");
+
     private final String value;
-    private final static Map<String, RelatedIdentifier.RelationType> CONSTANTS = new HashMap<>();
+
+    private final static Map<String, RelatedIdentifier.RelationType> CONSTANTS = new LinkedHashMap<>();
     public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
@@ -322,8 +327,10 @@ public class RelatedIdentifier implements Serializable {
     TEXT("Text"),
     WORKFLOW("Workflow"),
     OTHER("Other");
+
     private final String value;
-    private final static Map<String, RelatedIdentifier.ResourceTypeGeneral> CONSTANTS = new HashMap<>();
+
+    private final static Map<String, RelatedIdentifier.ResourceTypeGeneral> CONSTANTS = new LinkedHashMap<>();
     public final static Map<String, String> VOCABULARY = new HashMap<>();
 
     static {
