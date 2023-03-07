@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2023-03-06 07:16\n"
+"PO-Revision-Date: 2023-03-07 03:32\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -72,5 +72,5 @@ msgstr "*GBIFがどのような種類のデータに対応しているのかが�
 #: en/modules/ROOT/pages/news.adoc:21
 #, no-wrap
 msgid "*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile.adoc[this new how-to guide].\n"
-msgstr ""
+msgstr "*XMLでのリソースメタデータ記入に興味がありますか？*xref:gbif-metadata-profile.adoc[この新ガイド]を確認してください。\n"
 
