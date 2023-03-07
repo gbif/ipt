@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-20 14:50+0000\n"
-"PO-Revision-Date: 2023-03-07 04:32\n"
+"PO-Revision-Date: 2023-03-07 05:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -32,82 +32,82 @@ msgstr "データディレクトリ"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:6
 msgid "The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run."
-msgstr ""
+msgstr "IPTは設定、リソース、ユーザー、ログをデータディレクトリに保存します。これは、インストール時またはIPTの初回実行時に設定することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
 msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#file-permissions[FAQ entry] if you have problems."
-msgstr ""
+msgstr "Linux上では`/var/lib/ipt`（パッケージインストール時）または`/srv/ipt`（Tomcat内で運用時）が一般的な場所です。またWindowsでは、`C:\\ipt-data`が適切です。IPTは選択した場所への書き込み権限を持っている必要があります。問題がある場合は、xref:faq.adoc#file-permissions[FAQエントリ]を参照してください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:12
 msgid "Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart."
-msgstr ""
+msgstr "不注意による変更や削除の可能性があるデータディレクトリを選択しないでください。例えば、`/tmp`はシステムの再起動時に空になる可能性があるため、使用しないでください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:14
 #, no-wrap
 msgid "*The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.*\n"
-msgstr ""
+msgstr "*データディレクトリは、適切な災害復旧計画に従って、定期的にバックアップを取る必要があります。*\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:16
 msgid "Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation."
-msgstr ""
+msgstr "データディレクトリの内容が失われると、リソース、ユーザー、その他の構成情報およびIPTインストールに対するカスタマイズが失われます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:19
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory below, or during the first step of the IPT setup."
-msgstr ""
+msgstr "同じバージョンで以前運用していたIPTのデータディレクトリがあり、その以前の設定（ユーザーとリソースを含む）を使用したい場合は、そのデータディレクトリの絶対パスを以下に入力するか、IPT設定の最初のステップで入力することができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:20
 #, no-wrap
 msgid "Installation method"
-msgstr ""
+msgstr "インストール方法"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:23
 msgid "There are several ways to install the IPT."
-msgstr ""
+msgstr "IPTのインストールにはいくつか方法があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:25
 msgid "Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated."
-msgstr ""
+msgstr "*Red Hat*、*CentOS*、*Debian*、*Ubuntu*などをお使いの方は、<<Installation from Linux packages,Linuxパッケージ>>から直接インストールすることができます。これは、1台のサーバーに1つのIPTをインストールする場合の最も簡単な方法であり、また更新も最も簡単です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:26
 msgid "Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>."
-msgstr ""
+msgstr "その他の*Linux*ユーザーや全ての*MS Windows*ユーザー、また同じサーバー上で複数のIPTを実行したい方は、代わりにlink:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-within-a-servlet-container[サーブレットコンテナ内でのインストール]のセクションをご覧下さい。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:27
 #, no-wrap
 msgid "*Docker* images are also available, see <<Installation using Docker>>.\n"
-msgstr ""
+msgstr "*Docker*イメージも利用可能です。link:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-using-docker[Dockerを使ったインストール]を参照してください。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:28
 #, no-wrap
 msgid "Installation from Linux packages"
-msgstr ""
+msgstr "Linuxパッケージからのインストール"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:30
 #, no-wrap
 msgid "RPM (Red Hat, CentOS etc)"
-msgstr ""
+msgstr "RPM（Red Hat, CentOSなど）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
-msgstr ""
+msgstr "Red Hat 8、CentOS 8 Stream、Rocky Linux 8などのパッケージは現在開発中です。こちらの link:https://github.com/gbif/ipt/issues/1646[問題] を見てテストにご協力いただくか、代わりにRed Hat 7やCentOS 7をご利用ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:35
 msgid "To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:"
-msgstr ""
+msgstr "Red Hat 7やCentOS 7などにIPTをインストールするには、まずGBIFパッケージリポジトリを追加して、IPTパッケージをインストールします。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:41
@@ -120,7 +120,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:44
 msgid "Optionally, edit `/etc/sysconfig/ipt` to change the default data directory and port.  Finally:"
-msgstr ""
+msgstr "オプションとして、`/etc/sysconfig/ipt`を編集して、デフォルトのデータディレクトリとポートを変更します。最後に"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:49
@@ -132,12 +132,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:52
 msgid "The IPT starts up on port 8080 (unless this was changed above).  Initial logs are visible with `journalctl -u ipt`, but are then logged in the data directory.  Make sure to *back up the IPT data directory*, which is `/var/lib/ipt` by default."
-msgstr ""
+msgstr "（上記で変更されていない場合）IPTはポート8080で起動します。初期ログは`journalctl -u ipt`で見ることができますが、その後データディレクトリにログが記録されます。IPTのデータディレクトリは、デフォルトで`/var/lib/ipt`になっているので、*必ずバックアップをとってください*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:54
 msgid "Successful installation of the IPT packages will make the IPT accessible through a web browser at a URL determined by the server's name and port (e.g., http://server.example.org:8080). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL."
-msgstr ""
+msgstr "IPTパッケージのインストールに成功すると、Webブラウザを通じて、サーバー名とポート（例：http://server.example.org:8080）で決まるURLでIPTにアクセスできるようになります。インストールに成功すると、IPT のURLを使用して、IPTの初期設定ページがWebブラウザに表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:56
@@ -145,13 +145,13 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:114
 #: en/modules/ROOT/pages/installation.adoc:142
 msgid "Then continue to <<Opening the IPT to the Internet>>."
-msgstr ""
+msgstr "続いて、<<_IPTをインターネットに接続する,IPTをインターネットに接続する>>に進みます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:57
 #, no-wrap
 msgid "APT (Debian, Ubuntu etc)"
-msgstr ""
+msgstr "APT（Debian、Ubuntuなど）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:60
@@ -348,7 +348,7 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:162
 #, no-wrap
 msgid "Opening the IPT to the Internet"
-msgstr ""
+msgstr "IPTをインターネットに接続する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:165
