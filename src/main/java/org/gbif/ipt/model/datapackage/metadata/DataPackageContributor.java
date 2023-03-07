@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A contributor to this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataPackageContributor implements Serializable {
+public class DataPackageContributor implements Contributor, Serializable {
 
   private final static long serialVersionUID = -288140518286006582L;
 

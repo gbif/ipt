@@ -18,6 +18,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
@@ -34,6 +35,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class ResourceUtils {
 
@@ -92,11 +95,12 @@ public class ResourceUtils {
       if (isDataPackageResource) {
         // TODO: 22/10/2022 ObjectMapper creation every time
         ObjectMapper jsonMapper = new ObjectMapper();
-        DataPackageMetadata metadata = null;
+        DataPackageMetadata metadata;
         try {
-          metadata = jsonMapper.readValue(versionMetadataFile, DataPackageMetadata.class);
+          metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(schemaIdentifier));
         } catch (IOException e) {
-          // TODO: 22/10/2022 process exception
+          LOG.error("Failed to produce metadata for the data package resource {}", shortname);
+          LOG.error(e);
           throw new RuntimeException(e);
         }
         resource.setDataPackageMetadata(metadata);
@@ -105,10 +109,19 @@ public class ResourceUtils {
         resource.setEml(eml);
       }
     } else {
+      LOG.error("Failed to reconstruct resource: {} not found!", versionMetadataFile.getAbsolutePath());
       throw new IllegalArgumentException(
         "Failed to reconstruct resource: " + versionMetadataFile.getAbsolutePath() + " not found!");
     }
     return resource;
+  }
+
+  private static Class<? extends DataPackageMetadata> getDataPackageClass(String schemaIdentifier) {
+    if (schemaIdentifier.contains(CAMTRAP_DP)) {
+      return CamtrapMetadata.class;
+    } else {
+      return DataPackageMetadata.class;
+    }
   }
 
   /**

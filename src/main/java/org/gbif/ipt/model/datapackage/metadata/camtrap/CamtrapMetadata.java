@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import org.gbif.ipt.model.datapackage.metadata.DataPackageContributor;
+import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Resource;
@@ -44,6 +44,8 @@ import com.opensymphony.xwork2.util.Element;
 public class CamtrapMetadata extends DataPackageMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
+
+  public static final String CAMTRAP_PROFILE = "https://raw.githubusercontent.com/tdwg/camtrap-dp/0.6/camtrap-dp-profile.json";
 
   /**
    * Bibliographic/recommended citation for the package.
@@ -233,23 +235,25 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property. Can include people and organizations.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
    * (Required)
    */
   @Override
   @JsonProperty("contributors")
+  @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
+  @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  public List<DataPackageContributor> getContributors() {
+  public List<Contributor> getContributors() {
     return super.getContributors();
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property. Can include people and organizations.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
    * (Required)
    */
   @Override
   @JsonProperty("contributors")
-  public void setContributors(List<DataPackageContributor> contributors) {
+  public void setContributors(List<Contributor> contributors) {
     super.setContributors(contributors);
   }
 

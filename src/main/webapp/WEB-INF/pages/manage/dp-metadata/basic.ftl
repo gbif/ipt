@@ -344,7 +344,11 @@
                                                 <@input name="metadata.contributors[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].role" help="i18n" i18nkey="datapackagemetadata.contributor.role" />
+                                                <#if (metadata.contributors[item_index].role)??>
+                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="${metadata.contributors[item_index].role}" />
+                                                <#else>
+                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="" />
+                                                </#if>
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="metadata.contributors[${item_index}].organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />

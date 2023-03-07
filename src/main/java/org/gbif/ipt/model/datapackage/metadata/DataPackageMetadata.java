@@ -124,7 +124,7 @@ public class DataPackageMetadata implements Serializable {
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
   @Valid
-  private List<DataPackageContributor> contributors = new ArrayList<>();
+  private List<Contributor> contributors = new ArrayList<>();
 
   /**
    * Keywords
@@ -350,7 +350,7 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  public List<DataPackageContributor> getContributors() {
+  public List<Contributor> getContributors() {
     return contributors;
   }
 
@@ -360,7 +360,7 @@ public class DataPackageMetadata implements Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  public void setContributors(List<DataPackageContributor> contributors) {
+  public void setContributors(List<Contributor> contributors) {
     this.contributors = contributors;
   }
 

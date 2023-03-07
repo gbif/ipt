@@ -57,6 +57,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+
 /**
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
@@ -443,7 +445,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getDataPackageType() {
-    return "camtrap-dp";
+    return CAMTRAP_DP;
   }
 
   public Date getCreated() {

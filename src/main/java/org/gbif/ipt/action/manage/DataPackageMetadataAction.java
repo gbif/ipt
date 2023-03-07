@@ -18,6 +18,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CaptureMethod;
@@ -239,6 +240,10 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenseScopes() {
     return CamtrapLicense.Scope.VOCABULARY;
+  }
+
+  public Map<String, String> getContributorRoles() {
+    return CamtrapContributor.Role.VOCABULARY;
   }
 
   public Map<String, String> getTaxonRanks() {

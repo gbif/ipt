@@ -208,6 +208,7 @@ import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
 import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
+import static org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata.CAMTRAP_PROFILE;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -1710,8 +1711,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       metadata.setName(resource.getShortname());
-      // TODO: 30/10/2022 make profile constant or something
-      metadata.setProfile("https://raw.githubusercontent.com/tdwg/camtrap-dp/0.4/camtrap-dp-profile.json");
+      metadata.setProfile(CAMTRAP_PROFILE);
     }
 
     resource.setDataPackageMetadata(metadata);
