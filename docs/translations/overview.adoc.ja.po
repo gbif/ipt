@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-07 07:41\n"
+"PO-Revision-Date: 2023-03-09 00:05\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -128,7 +128,7 @@ msgstr "**リンク** - リンク先のページとは別のページが開き�
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
 msgid "Example link: image:ipt2/controls/Control-LinkExample.png[]"
-msgstr ""
+msgstr "サンプルリンク：image:ipt2/controls/Control-LinkExample.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:38
