@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-09 00:05\n"
+"PO-Revision-Date: 2023-03-09 01:51\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -134,67 +134,68 @@ msgstr "サンプルリンク：image:ipt2/controls/Control-LinkExample.png[]"
 #: en/modules/ROOT/pages/overview.adoc:38
 #, no-wrap
 msgid "**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on any other place to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.\n"
-msgstr ""
+msgstr "**情報アイコン** - これをクリックすると、その横に表示されているコントロールの意図を説明するメッセージが表示されます。任意のフィールドの横にあるアイコンをクリックすると、コントロールに関するヘルプメッセージが表示されます。その他の場所をクリックすると、メッセージは消えます。一部の情報メッセージにはリンクが含まれており、これを選択すると、コントロールに選択内容に応じた適切な値が入力されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:40
 msgid "Example information icon for character encoding after the UTF-8 link was selected: image:ipt2/controls/Information-CharacterEncoding.png[width=464]"
-msgstr ""
+msgstr "UTF-8リンクを選択した後の文字エンコードに関する情報アイコンの例：image:ipt2/controls/Information-CharacterEncoding.png[width=464]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:42
 #, no-wrap
 msgid "**Documentation icon** image:ipt2/controls/Control-DocumentationIcon.png[width=22] - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.\n"
-msgstr ""
+msgstr "**ドキュメントアイコン** image:ipt2/controls/Control-DocumentationIcon.png[width=22] - このアイコンは、そのテーマについて詳細な情報ページがあることを表しています。アイコンをクリックすると、新しいブラウザーウィンドウでそのページを開くことができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:44
 #, no-wrap
 msgid "**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
-msgstr ""
+msgstr "**ゴミ箱アイコン** image:ipt2/controls/Control-TrashIcon.png[] - このアイコンは、ページ上の他のコントロールと関連付けられています。アイコンをクリックすると、関連するデータが削除されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:46
 #, no-wrap
 msgid "**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
-msgstr ""
+msgstr "**カレンダーアイコン** image:ipt2/controls/Control-CalendarIcon.png[] - このアイコンは、日付を入力するためのテキストフィールドと関連付けられています。このアイコンをクリックすると小さなカレンダーが表示され、現在選択されている月や年を前後にスクロールしたり、別の月や年を選択するためのセレクトボックス、標準的な新暦のカレンダーに配置された曜日などを操作することができます。特定の日を選択すると、関連するテキストボックスに正しい書式で日付が表示されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:48
 msgid "Example calendar associated with an text box labelled \"End Date\" in which 31 Dec 2010 is the current date but not yet selected:"
-msgstr ""
+msgstr "2010年12月31日が現在の日付で、まだ選択されていない「End Date」というテキストボックスと関連付けられたカレンダーの例です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:50
 msgid "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
-msgstr ""
+msgstr "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:52
 #, no-wrap
 msgid "**Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.\n"
-msgstr ""
+msgstr "**ソート可能なテーブル** - 選択したカラムの\n"
+"値で行を昇順または降順に並べることができるテーブルです。先頭行は列のラベルであり、リンクとして表示されます。先頭行をクリックすると、その列の値を使用して表を並べ替えることができます。同じ列のヘッダーをもう一度クリックすると、表を逆方向に並べ替えることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:55
 msgid "Example table sorted in ascending order by the column labelled \"Organization name\".  image:ipt2/controls/Control-TableSortedAscending.png[]"
-msgstr ""
+msgstr "「機関名」の列で昇順にソートした例。 image:ipt2/controls/Control-TableSortedAscending.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:58
 msgid "Example table sorted in descending order by the column labelled \"Alias\".  image:ipt2/controls/Control-TableSortedDescending.png[]"
-msgstr ""
+msgstr "「エイリアス」という列で降順にソートされたテーブルの例。 image:ipt2/controls/Control-TableSortedDescending.png[]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/overview.adoc:59
 #, no-wrap
 msgid "File upload"
-msgstr ""
+msgstr "ファイルをアップロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:62
 msgid "The IPT allows uploading files when (xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files])"
-msgstr ""
+msgstr "IPTは、xref:manage-resources.adoc#create-a-new-resource[新規リソースの作成]、またはxref:manage-resources.adoc#source-data[新規ソースデータファイルの追加]の場合にファイルのアップロードを許可します"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:64
@@ -210,7 +211,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:67
 #, no-wrap
 msgid "Controls that appear on all pages"
-msgstr ""
+msgstr "すべてのページに表示されるコントロール"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:69
@@ -221,7 +222,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:70
 #, no-wrap
 msgid "Header"
-msgstr ""
+msgstr "ヘッダー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:72
@@ -231,7 +232,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:74
 msgid "Header, not logged in, English language chosen for the user interface:"
-msgstr ""
+msgstr "ログイン前、英語選択時のヘッダー"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:75
@@ -242,7 +243,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:78
 msgid "Header, logged in, English language chosen for the user interface:"
-msgstr ""
+msgstr "ログイン後、英語選択時のヘッダー"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:79
@@ -284,12 +285,12 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:87
 #, no-wrap
 msgid "Footer"
-msgstr ""
+msgstr "フッター"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:89
 msgid "The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources."
-msgstr ""
+msgstr "IPTのフッターセクションは多くのページの下部に置かれ、IPTのバージョンに関する情報や重要なリソースへのリンクが表示されます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:90
@@ -301,35 +302,35 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:93
 #, no-wrap
 msgid "**Version** - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.\n"
-msgstr ""
+msgstr "**バージョン** - ページ下部のフッターの左側には、現在動作しているIPTのバージョンが表示されています。このバージョン情報は、IPTにどのような機能が含まれているか、どのようなバグが報告されているかを判断するために使用することができます。これは、バグレポートを作成する際に必要となるバージョン情報です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:94
 #, no-wrap
 msgid "**About the IPT** - This link leads to the https://www.gbif.org/ipt[IPT website], where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.\n"
-msgstr ""
+msgstr "**IPTについて** - このリンクは、link:https://www.gbif.org/ja/ipt[IPTウェブサイト]につながっており、バージョン履歴、ロードマップ、導入統計、その他の関連文書など、IPTの詳細情報を参照することができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:95
 #, no-wrap
 msgid "**User Manual** - This link opens the most recently released online version of the IPT User Manual.\n"
-msgstr ""
+msgstr "**ユーザーマニュアル** - IPTユーザーマニュアルの最新のオンライン版を開きます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/[*Report a bug*] - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the \"New issues\" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for \"Version\", above).\n"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/issues/[*バグレポート*] - このリンクは、既に知られている未解決の問題のリストを開きます。バグを発見したと思ったらまずこのリストを確認して、そのバグがすでに報告されているかどうかを確認します。すでに報告されている場合は、既存のバグレポートにコメントとして新しい情報を追加してください。エンジニアが問題を診断して修正する際に役立つかもしれません。IPTで遭遇したバグと同様のバグがリストにない場合は、「新しい問題」リンクをクリックして新規バグレポートを作成することができます。バグレポートを入力する際には、使用しているIPTのバージョンを含めていただけると助かります（上記の「バージョン」についての説明を参照）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:97
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.\n"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/issues/new[*新項目のリクエスト*] - IPTが現在実装していない機能をリクエストするために設置された、IPT課題追跡のフォームを開きます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:97
 #, no-wrap
 msgid "**Copyright** - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the \"About the IPT\" section of this user manual.\n"
-msgstr ""
+msgstr "**著作権** - IPTソフトの著作権は、生物多様性情報ファシリティ（GBIF）が保有していて、GBIFのホームページへのリンクが用意されています。著作権とライセンスの詳細は、このユーザーマニュアルの「IPTについて」セクションで見ることができます。\n"
 
