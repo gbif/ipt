@@ -18,6 +18,7 @@ import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
@@ -108,7 +109,7 @@ public class Taxonomic implements Serializable {
    */
   @JsonProperty("vernacularNames")
   @Valid
-  private Map<String, String> vernacularNames;
+  private Map<String, String> vernacularNames = new LinkedHashMap<>();
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -323,7 +324,7 @@ public class Taxonomic implements Serializable {
     SUBSPECIES("subspecies");
     private final String value;
     public final static Map<String, Taxonomic.TaxonRank> CONSTANTS = new HashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (Taxonomic.TaxonRank c : values()) {

@@ -15,9 +15,27 @@
                     return -1;
             }
 
+            function calcNumberOfVernacularNamesInSection(index) {
+                var lastItem = $("#vernacularName-items-" + index + " .item:last-child").attr("id");
+                if (lastItem !== undefined)
+                    return parseInt(lastItem.split("-")[3]);
+                else
+                    return -1;
+            }
+
             $("#plus-taxon").click(function (event) {
                 event.preventDefault();
                 addNewTaxonItem(true);
+            });
+
+            $("[id^='plus-vernacularName']").each(function (index, element) {
+                var itemId = $(this)[0].id;
+                var itemIndex = itemId.split("-")[2];
+
+                $(this).click(function (event) {
+                    event.preventDefault();
+                    addNewVernacularNameItem(itemIndex, true);
+                });
             });
 
             function addNewTaxonItem(effects) {
@@ -34,6 +52,20 @@
                 initInfoPopovers(newItem[0]);
             }
 
+            function addNewVernacularNameItem(index, effects) {
+                // calculate number of vernacular names in the item
+                var subIndex = calcNumberOfVernacularNamesInSection(index) + 1;
+                var newItem = $('#baseItem-vernacularName').clone();
+                if (effects) newItem.hide();
+                newItem.appendTo('#vernacularName-items-' + index);
+
+                if (effects) {
+                    newItem.slideDown('slow');
+                }
+
+                setVernacularNameItemIndex(newItem, index, subIndex);
+            }
+
             function removeTaxonItem(event) {
                 event.preventDefault();
                 var $target = $(event.target);
@@ -46,6 +78,24 @@
                         setTaxonItemIndex($(this), index);
                     });
                     calcNumberOfItems("taxon");
+                });
+            }
+
+            function removeVernacularNameItem(event) {
+                event.preventDefault();
+                var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
+                var elementId = $target.attr("id");
+                var elementIdSplit = elementId.split("-");
+                var elementIndex = elementIdSplit[2];
+                var elementSubIndex = elementIdSplit[3];
+                $('#vernacularName-item-' + elementIndex + '-' + elementSubIndex).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#vernacularName-items-" + elementIndex + " .item").each(function (subIndex) {
+                        setVernacularNameItemIndex($(this), elementIndex, subIndex)
+                    });
                 });
             }
 
@@ -78,8 +128,45 @@
                 $("#taxon-item-" + index + " [for$='taxonRank']").attr("for", "metadata.taxonomic[" + index + "].taxonRank");
             }
 
+            function setVernacularNameItemIndex(item, index, subIndex) {
+                item.attr("id", "vernacularName-item-" + index + "-" + subIndex);
+
+                $("#vernacularName-item-" + index + "-" + subIndex + " [id^='vernacularName-removeLink']").attr("id", "vernacularName-removeLink-" + index + "-" + subIndex);
+                $("#vernacularName-removeLink-" + index + "-" + subIndex).click(function (event) {
+                    removeVernacularNameItem(event);
+                });
+
+                $("#vernacularName-item-" + index + "-" + subIndex + " [id$='vernacularNames-key']").attr("id", "vernacularNames-key-" + index + "-" + subIndex).attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#vernacularName-item-" + index + "-" + subIndex + " [id$='vernacularNames-value']").attr("id", "metadata.taxonomic[" + index + "].vernacularNames[" + subIndex + "].value");
+
+                $("#vernacularNames-key-" + index + "-" + subIndex).change(function() {
+                    var newValue = $(this).val();
+                    $("#metadata\\.taxonomic\\[" + index + "\\]\\.vernacularNames\\[" + subIndex + "\\]\\.value").attr("name", "metadata.taxonomic[" + index + "].vernacularNames['" + newValue + "']");
+                });
+            }
+
             $(".removeTaxonLink").click(function (event) {
                 removeTaxonItem(event);
+            });
+
+            $(".removeVernacularNameLink").click(function (event) {
+                removeVernacularNameItem(event);
+            });
+
+            $("[id^='vernacularNames-key-']").each(function () {
+                var value = $(this).val();
+                var itemId = $(this).attr("id");
+                var splitItemId = itemId.split("-");
+                var itemIndex = splitItemId[2];
+                var itemSubIndex = splitItemId[3];
+                $('#metadata\\.taxonomic\\[' + itemIndex + '\\]\\.vernacularNames\\[' + itemSubIndex + '\\]\\.value').attr('name', 'metadata.taxonomic[' + itemIndex + '].vernacularNames[\'' + value + '\']');
+
+                $("#vernacularNames-key-" + itemIndex + "-" + itemSubIndex).change(function() {
+                    var newValue = $(this).val();
+                    $("#metadata\\.taxonomic\\[" + itemIndex + "\\]\\.vernacularNames\\[" + itemSubIndex + "\\]\\.value").attr("name", "metadata.taxonomic[" + itemIndex + "].vernacularNames['" + newValue + "']");
+                });
             });
 
             // scroll to the error if present
@@ -98,7 +185,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <form class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
+    <form id="taxonomic-metadata-form" class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -156,6 +243,8 @@
 
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+                            <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
 
                             <!-- List of Sources -->
                             <div>
@@ -189,6 +278,51 @@
                                                         <@select name="metadata.taxonomic[${item_index}].taxonRank" help="i18n" includeEmpty=true compareValues=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
                                                     </#if>
                                                 </div>
+
+                                                <div class="col-12">
+                                                    <span class="form-label">
+                                                        <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='datapackagemetadata.taxonomic.vernacularNames.help'/>" data-bs-original-title="" title="">
+                                                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                                        </a>
+                                                        <@s.text name="datapackagemetadata.taxonomic.vernacularNames"/>
+                                                    </span>
+                                                </div>
+                                                <#if metadata.taxonomic[item_index].vernacularNames?has_content>
+                                                    <div id="vernacularName-items-${item_index}" class="col-12">
+                                                        <#list metadata.taxonomic[item_index].vernacularNames?keys as vernacularNameKey>
+                                                            <div id="vernacularName-item-${item_index}-${vernacularNameKey_index}" class="row g-3 <#if vernacularNameKey_index != 0>mt-1</#if> item">
+                                                                <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                                    <a id="vernacularName-removeLink-${item_index}-${vernacularNameKey_index}" href="" class="removeVernacularNameLink metadata-action-link">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span>${removeVernacularNameLink?lower_case?cap_first}</span>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-0" name="vernacularNames-key-${item_index}-0" value="${vernacularNameKey}">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[0].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
+                                                                </div>
+                                                            </div>
+                                                        </#list>
+                                                    </div>
+                                                </#if>
+
+                                                <div class="addNew col-12 mt-2">
+                                                    <a id="plus-vernacularName-${item_index}" class="metadata-action-link" href="">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addVernacularNameLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+
                                             </div>
                                         </#list>
                                     </#if>
@@ -233,6 +367,25 @@
         </div>
         <div class="col-lg-6">
             <@select name="metadata.taxonomic.taxonRank" help="i18n" includeEmpty=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
+        </div>
+    </div>
+
+    <div id="baseItem-vernacularName" class="row g-3 mt-1 item" style="display: none;">
+        <div class="columnLinks mt-2 d-flex justify-content-end">
+            <a id="vernacularName-removeLink" href="" class="removeVernacularNameLink metadata-action-link">
+            <span>
+                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                </svg>
+            </span>
+                <span>${removeVernacularNameLink?lower_case?cap_first}</span>
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <input class="form-control" type="text" id="vernacularNames-key" name="vernacularNames-key" value="">
+        </div>
+        <div class="col-lg-6">
+            <input class="form-control" type="text" id="vernacularNames-value" name="vernacularNames-value" value="">
         </div>
     </div>
 
