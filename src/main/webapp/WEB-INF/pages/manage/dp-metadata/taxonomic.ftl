@@ -74,7 +74,7 @@
                 }
                 $('#taxon-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
                     $(this).remove();
-                    $("#taxon-items .item").each(function (index) {
+                    $("#taxon-items > .item").each(function (index) {
                         setTaxonItemIndex($(this), index);
                     });
                     calcNumberOfItems("taxon");
@@ -126,24 +126,49 @@
                     return $(this).attr("id");
                 });
                 $("#taxon-item-" + index + " [for$='taxonRank']").attr("for", "metadata.taxonomic[" + index + "].taxonRank");
+
+                // Reset vernacular names indexes
+                var vernacularNamesBlock = $("#taxon-item-" + index + " .vernacularName-items-wrapper")
+                vernacularNamesBlock.attr("id", "vernacularName-items-" + index);
+
+                $("#vernacularName-items-" + index + " .item").each(function (subIndex) {
+                    setVernacularNameItemIndex($(this), index, subIndex)
+                });
             }
+
 
             function setVernacularNameItemIndex(item, index, subIndex) {
                 item.attr("id", "vernacularName-item-" + index + "-" + subIndex);
 
-                $("#vernacularName-item-" + index + "-" + subIndex + " [id^='vernacularName-removeLink']").attr("id", "vernacularName-removeLink-" + index + "-" + subIndex);
-                $("#vernacularName-removeLink-" + index + "-" + subIndex).click(function (event) {
-                    removeVernacularNameItem(event);
-                });
+                $("#vernacularName-item-" + index + "-" + subIndex + " [id^='vernacularName-removeLink']")
+                    .attr("id", "vernacularName-removeLink-" + index + "-" + subIndex);
+                $("#vernacularName-removeLink-" + index + "-" + subIndex)
+                    .click(function (event) {
+                        removeVernacularNameItem(event);
+                    });
 
-                $("#vernacularName-item-" + index + "-" + subIndex + " [id$='vernacularNames-key']").attr("id", "vernacularNames-key-" + index + "-" + subIndex).attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#vernacularName-item-" + index + "-" + subIndex + " [id$='vernacularNames-value']").attr("id", "metadata.taxonomic[" + index + "].vernacularNames[" + subIndex + "].value");
+                $("#taxon-item-" + index + " [id^='plus-vernacularName']")
+                    .attr("id", "plus-vernacularName-" + index);
+
+                var inputVernacularNameKey = $("#vernacularName-item-" + index + "-" + subIndex + " [id^='vernacularNames-key']");
+
+                inputVernacularNameKey
+                    .attr("id", "vernacularNames-key-" + index + "-" + subIndex)
+                    .attr("name", function () {return $(this).attr("id");});
+
+                var inputVernacularNameValue = $("#vernacularName-item-" + index + "-" + subIndex + " [id$='value']");
+
+                inputVernacularNameValue.attr("id", "metadata.taxonomic[" + index + "].vernacularNames[" + subIndex + "].value");
+
+                if (inputVernacularNameKey.val()) {
+                    inputVernacularNameValue
+                        .attr("name", "metadata.taxonomic[" + index + "].vernacularNames['" +  inputVernacularNameKey.val().replaceAll("'", "\'") + "']");
+                }
 
                 $("#vernacularNames-key-" + index + "-" + subIndex).change(function() {
                     var newValue = $(this).val();
-                    $("#metadata\\.taxonomic\\[" + index + "\\]\\.vernacularNames\\[" + subIndex + "\\]\\.value").attr("name", "metadata.taxonomic[" + index + "].vernacularNames['" + newValue + "']");
+                    $("#metadata\\.taxonomic\\[" + index + "\\]\\.vernacularNames\\[" + subIndex + "\\]\\.value")
+                        .attr("name", "metadata.taxonomic[" + index + "].vernacularNames['" + newValue.replaceAll("'", "\'") + "']");
                 });
             }
 
@@ -155,18 +180,14 @@
                 removeVernacularNameItem(event);
             });
 
-            $("[id^='vernacularNames-key-']").each(function () {
+            $("[id^='vernacularNames-key-']").change(function () {
                 var value = $(this).val();
                 var itemId = $(this).attr("id");
                 var splitItemId = itemId.split("-");
                 var itemIndex = splitItemId[2];
                 var itemSubIndex = splitItemId[3];
-                $('#metadata\\.taxonomic\\[' + itemIndex + '\\]\\.vernacularNames\\[' + itemSubIndex + '\\]\\.value').attr('name', 'metadata.taxonomic[' + itemIndex + '].vernacularNames[\'' + value + '\']');
 
-                $("#vernacularNames-key-" + itemIndex + "-" + itemSubIndex).change(function() {
-                    var newValue = $(this).val();
-                    $("#metadata\\.taxonomic\\[" + itemIndex + "\\]\\.vernacularNames\\[" + itemSubIndex + "\\]\\.value").attr("name", "metadata.taxonomic[" + itemIndex + "].vernacularNames['" + newValue + "']");
-                });
+                $("#metadata\\.taxonomic\\[" + itemIndex + "\\]\\.vernacularNames\\[" + itemSubIndex + "\\]\\.value").attr("name", "metadata.taxonomic[" + itemIndex + "].vernacularNames['" + value.replaceAll("'", "\'") + "']");
             });
 
             // scroll to the error if present
@@ -287,8 +308,9 @@
                                                         <@s.text name="datapackagemetadata.taxonomic.vernacularNames"/>
                                                     </span>
                                                 </div>
-                                                <#if metadata.taxonomic[item_index].vernacularNames?has_content>
-                                                    <div id="vernacularName-items-${item_index}" class="col-12">
+
+                                                <div id="vernacularName-items-${item_index}" class="col-12 mt-0 vernacularName-items-wrapper">
+                                                    <#if metadata.taxonomic[item_index].vernacularNames?has_content>
                                                         <#list metadata.taxonomic[item_index].vernacularNames?keys as vernacularNameKey>
                                                             <div id="vernacularName-item-${item_index}-${vernacularNameKey_index}" class="row g-3 <#if vernacularNameKey_index != 0>mt-1</#if> item">
                                                                 <div class="columnLinks mt-2 d-flex justify-content-end">
@@ -302,15 +324,15 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-0" name="vernacularNames-key-${item_index}-0" value="${vernacularNameKey}">
+                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[0].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
+                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
                                                                 </div>
                                                             </div>
                                                         </#list>
-                                                    </div>
-                                                </#if>
+                                                    </#if>
+                                                </div>
 
                                                 <div class="addNew col-12 mt-2">
                                                     <a id="plus-vernacularName-${item_index}" class="metadata-action-link" href="">
