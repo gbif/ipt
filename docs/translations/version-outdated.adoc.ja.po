@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 16:09+0000\n"
-"PO-Revision-Date: 2022-11-04 16:29\n"
+"PO-Revision-Date: 2023-03-13 07:11\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:11
 #: en/modules/ROOT/partials/version-outdated.adoc:8
 msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
-msgstr ""
+msgstr "なお、すべてのマニュアルが日本語で提供されているわけではありません。"
 
 #. type: Block title
 #: en/modules/ROOT/partials/version-outdated.adoc:2
