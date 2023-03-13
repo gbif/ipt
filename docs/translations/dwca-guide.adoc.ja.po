@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 01:27\n"
+"PO-Revision-Date: 2023-03-13 06:07\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -163,19 +163,19 @@ msgstr "http://rs.tdwg.org/dwc/terms/[ダーウィンコア用語]の標準セ�
 #: en/modules/ROOT/pages/dwca-guide.adoc:46
 #, no-wrap
 msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}[Occurrence (Core) Extension].\n"
-msgstr "*オカレンスデータ* - 自然界での発生やコレクション、データセット（標本、観察記録など）の証拠に関連する情報のカテゴリです。このタイプのコアファイルは、標本や観察記録など、分類群の特定のインスタンスに関する情報を共有するために使用されます。必要なコアIDは*dwc:occurrenceID*で表されます。オカレンス用語の決定的なリストは、{latest-dwc-occurrence}[オカレンス(コア)拡張機能]で見ることができます。\n"
+msgstr "*オカレンスデータ* - 自然界での発生やコレクション、データセット（標本、観察記録など）の証拠に関連する情報のカテゴリです。このタイプのコアファイルは、標本や観察記録など、分類群の特定のインスタンスに関する情報を共有するために使用されます。必要なコアIDは*dwc:occurrenceID*で表されます。オカレンス用語の決定的なリストは、link:{latest-dwc-occurrence}[オカレンス(コア)拡張機能]で見ることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:47
 #, no-wrap
 msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}[Taxon (Core) Extension].\n"
-msgstr "*チェックリストデータ* - 分類群または種などの分類群概念に関連する情報のカテゴリです。このタイプのコアファイルは、注釈付き種チェックリスト、分類学的なカタログ、および分類群に関するその他の情報を共有するために使用されます。必要なコアIDは*dwc:taxonID*で表されます。コア・タクソン用語の決定的なリストは、{latest-dwc-taxon}[タクソン（コア）の拡張]で見ることができます。\n"
+msgstr "*チェックリストデータ* - 分類群または種などの分類群概念に関連する情報のカテゴリです。このタイプのコアファイルは、注釈付き種チェックリスト、分類学的なカタログ、および分類群に関するその他の情報を共有するために使用されます。必要なコアIDは*dwc:taxonID*で表されます。コア・タクソン用語の決定的なリストは、link:{latest-dwc-taxon}[タクソン（コア）の拡張]で見ることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:48
 #, no-wrap
 msgid "*Sampling-event data* — The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one-off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by *dwc:eventID*. The definitive list of core Event terms can be found in the {latest-dwc-event}[Event (Core) Extension].\n"
-msgstr "*サンプリングイベントデータ* - サンプリングイベントに関連する情報のカテゴリです。このタイプのコアファイルは、生態学的調査に関する情報を共有するために使用されます。この調査は、単発の調査や、個体群の変化や傾向を検出するための、ふつう定量的で校正される、特定のプロトコルに従ったモニタリングプログラムとなります。必要なコアIDは*dwc:eventID*で表されます。コアイベントの用語の決定的なリストは、{latest-dwc-event}[イベント（コア）拡張]で見つけることができます。\n"
+msgstr "*サンプリングイベントデータ* - サンプリングイベントに関連する情報のカテゴリです。このタイプのコアファイルは、生態学的調査に関する情報を共有するために使用されます。この調査は、単発の調査や、個体群の変化や傾向を検出するための、ふつう定量的で校正される、特定のプロトコルに従ったモニタリングプログラムとなります。必要なコアIDは*dwc:eventID*で表されます。コアイベントの用語の決定的なリストは、link:{latest-dwc-event}[イベント（コア）拡張]で見つけることができます。\n"
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:49
@@ -232,7 +232,7 @@ msgstr "figures/meta_file.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:65
 msgid "Datasets require documentation. This is achieved in a DwC-A by including a *resource metadata document* that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the {eml-location}/index.html[Ecological Metadata Language] but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the http://rs.gbif.org/schema/eml-gbif-profile/[GBIF Schema Repository]"
-msgstr "データセットには文書化が必要です。DwC-Aでは、データセットの説明（要旨）、著者、出版、文書化の責任者、書誌・引用情報、収集方法など、データセット自体に関する情報を提供する*リソースメタデータ文書*を含めることによって、これを実現することができます。GBIFは現在、{eml-location}/index.html[生態学的メタデータ言語]に基づくメタデータプロファイルをサポートしていますが、他のメタデータ規格も存在し、サポートされる可能性があります。GBIFメタデータプロファイルのXMLスキーマの記述は、link:http://rs.gbif.org/schema/eml-gbif-profile/[GBIFスキーマリポジトリ]で見ることができます。"
+msgstr "データセットには文書化が必要です。DwC-Aでは、データセットの説明（要旨）、著者、出版、文書化の責任者、書誌・引用情報、収集方法など、データセット自体に関する情報を提供する*リソースメタデータ文書*を含めることによって、これを実現することができます。GBIFは現在、link:{eml-location}/index.html[生態学的メタデータ言語]に基づくメタデータプロファイルをサポートしていますが、他のメタデータ規格も存在し、サポートされる可能性があります。GBIFメタデータプロファイルのXMLスキーマの記述は、link:http://rs.gbif.org/schema/eml-gbif-profile/[GBIFスキーマリポジトリ]で見ることができます。"
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:67
