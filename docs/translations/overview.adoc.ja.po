@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-09 01:51\n"
+"PO-Revision-Date: 2023-03-13 04:54\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -216,7 +216,7 @@ msgstr "すべてのページに表示されるコントロール"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:69
 msgid "This section describes several features that are accessible in the header and footer of most of the pages of the IPT."
-msgstr ""
+msgstr "このセクションでは、IPTのほとんどのページのヘッダーとフッターからアクセスできる機能について説明します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/overview.adoc:70
@@ -227,7 +227,7 @@ msgstr "ヘッダー"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:72
 msgid "The header section of the IPT appears in the upper right of most pages and allows basic control over the IPT, including who is using it, and in what language. Following are two screen images showing the two possible states in which the header may be found - logged in, and not logged in."
-msgstr ""
+msgstr "IPTのヘッダーセクションはほとんどのページの右上に表示され、誰がどの言語でIPTを使用しているかなど、IPTの基本的な制御を行うことができます。以下は、ヘッダーが表示する2状態（ログイン中/未ログイン）を示す画面です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:74
@@ -255,7 +255,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:82
 #, no-wrap
 msgid "**Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the login form, and then click on the \"Login\" button. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the \"User accounts\" heading in the \"Administration Menu\" section. The process of initializing the IPT creates the first user having the Admin role.\n"
-msgstr ""
+msgstr "**ログイン** - このIPTインスタンスで既に作成されているユーザーは、ページ右上のボタンを押して電子メールアドレスとパスワードを入力し、「ログイン」をクリックすることでログインすることができます。新しいユーザーを作成できるのは、管理責任者権限を持つ既存ユーザーのみです。新しいユーザーを作成する手順は、「管理メニュー」の「ユーザーアカウントの設定」で説明しています。IPTの初期化処理では、管理責任者権限を持つ最初のユーザーが作成されます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:83
