@@ -99,9 +99,8 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("individualAnimals")
-  // TODO: 08/11/2022 not implemented
-//  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
-  private Boolean individualAnimals;
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
+  private Boolean individualAnimals = false;
 
   /**
    * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.

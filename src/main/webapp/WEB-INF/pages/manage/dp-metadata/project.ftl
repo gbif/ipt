@@ -114,10 +114,16 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="col-lg-6">
                                     <@input name="metadata.project.eventInterval" help="i18n" i18nkey="datapackagemetadata.project.eventInterval" requiredField=true />
+                                </div>
+
+                                <div class="col-12">
+                                    <#if metadata.project.individualAnimals??>
+                                        <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" value="${metadata.project.individualAnimals?c}" help="i18n"/>
+                                    <#else>
+                                        <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" value="false" help="i18n"/>
+                                    </#if>
                                 </div>
                             </div>
                         </div>
