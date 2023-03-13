@@ -8,7 +8,7 @@
             var taxonItems = calcNumberOfItems("taxon");
 
             function calcNumberOfItems(name) {
-                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
+                var lastItem = $("#" + name + "-items > .item:last-child").attr("id");
                 if (lastItem !== undefined)
                     return parseInt(lastItem.split("-")[2]);
                 else
@@ -130,6 +130,15 @@
                 // Reset vernacular names indexes
                 var vernacularNamesBlock = $("#taxon-item-" + index + " .vernacularName-items-wrapper")
                 vernacularNamesBlock.attr("id", "vernacularName-items-" + index);
+
+                // Set "add new" id and initialize functionality
+                $("#taxon-item-" + index + " #plus-vernacularName")
+                    .attr("id", "plus-vernacularName-" + index);
+
+                $("#plus-vernacularName-" + index).click(function (event) {
+                    event.preventDefault();
+                    addNewVernacularNameItem(index, true);
+                });
 
                 $("#vernacularName-items-" + index + " .item").each(function (subIndex) {
                     setVernacularNameItemIndex($(this), index, subIndex)
@@ -389,6 +398,28 @@
         </div>
         <div class="col-lg-6">
             <@select name="metadata.taxonomic.taxonRank" help="i18n" includeEmpty=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
+        </div>
+
+        <div class="col-12">
+            <span class="form-label">
+                <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='datapackagemetadata.taxonomic.vernacularNames.help'/>" data-bs-original-title="" title="">
+                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                </a>
+                <@s.text name="datapackagemetadata.taxonomic.vernacularNames"/>
+            </span>
+        </div>
+
+        <div id="vernacularName-items" class="col-12 mt-0 vernacularName-items-wrapper"></div>
+
+        <div class="addNew col-12 mt-2">
+            <a id="plus-vernacularName" class="metadata-action-link" href="">
+                <span>
+                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                    </svg>
+                </span>
+                <span>${addVernacularNameLink?lower_case?cap_first}</span>
+            </a>
         </div>
     </div>
 
