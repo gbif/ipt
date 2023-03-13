@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-03-06 06:19\n"
+"PO-Revision-Date: 2023-03-13 06:07\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -469,17 +469,17 @@ msgstr "リソースのタイプは、そのコアマッピングから導き出
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:183
 msgid "If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to \"occurrence\"."
-msgstr "コアマッピングが{latest-dwc-occurrence}[オカレンス拡張]の場合、タイプは「オカレンス」と同じです。"
+msgstr "コアマッピングがlink:{latest-dwc-occurrence}[オカレンス拡張]の場合、タイプは「オカレンス」と同じです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:184
 msgid "If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to \"checklist\"."
-msgstr "コアマッピングが{latest-dwc-taxon}[タクソン拡張]である場合，タイプは「チェックリスト」と同じです。"
+msgstr "コアマッピングがlink:{latest-dwc-taxon}[タクソン拡張]である場合，タイプは「チェックリスト」と同じです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:185
 msgid "If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to \"sampling-event\"."
-msgstr "コアマッピングが{latest-dwc-event}[イベント拡張]の場合、タイプは「サンプリングイベント」と同じになります。"
+msgstr "コアマッピングがlink:{latest-dwc-event}[イベント拡張]の場合、タイプは「サンプリングイベント」と同じになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:186
