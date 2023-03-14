@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-14 03:20\n"
+"PO-Revision-Date: 2023-03-14 04:20\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -253,7 +253,7 @@ msgstr "Q. 不在データはどのように公開するのですか？"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:68
 #, no-wrap
 msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
-msgstr "*A.* *ステップ1*：サンプリングで派生する種のオカレンスがなかったとしても、サンプリングイベントの記録を含めます。これにより、種の不在を推論することができます。このノルウェーのサンプリングイベントデータセットの例では、これがどのように見えるかを示しています。\n"
+msgstr "*A.* *ステップ1*：サンプリングの時間や場所で観察できたはずなのに観察されなかった種について、以下のフィールドを設定して種オカレンス記録を追加することで、種の不在を明示します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:70
@@ -283,21 +283,21 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and h
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:79
 msgid "Alternatively, include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks."
-msgstr ""
+msgstr "あるいは、サンプリングで派生する種のオカレンスがなかったとしても、サンプリングイベントの記録を含めます。これにより、種の不在を推論することができます。このlink:https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[ノルウェーのサンプリングイベントデータセット]の例では、これがどのように見えるかを示しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:81
 #, no-wrap
 msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
-msgstr ""
+msgstr "*ステップ2*：データセットに含まれるすべてのサンプリングイベントの分類学的範囲を定義します。サンプリングイベントのデータセットとともにタイムスタンプ付きのチェックリストを公表することを推奨します。これは、サンプリングプロトコル（及び調査の分類学的範囲と識別を行う担当者の専門性）を考慮し、サンプリングの時間と場所で観察できる種組成を表すものです。これにより、正確な存在／不在データを記録することができます。通常の（予想される）種の構成に加え、チェックリストには侵入種（予想外の）種を含めることができます。しかし、分類学的、生物地理学・生態学的な理由から、このチェックリストはサンプリングイベントのデータセットのコンテキスト内にのみ存在することになります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:83
 msgid "Instructions how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
-msgstr ""
+msgstr "チェックリストの作成方法は、xref:checklist-data.adoc[こちら]をご覧ください。チェックリストには、a）同定を行った人とその分類学的専門知識、b）サンプリングの時間と場所でこれらの種が検出・同定可能であると判断した方法を記述した詳細なメタデータを添付する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:84
 msgid "To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section."
-msgstr ""
+msgstr "チェックリストをサンプリングイベントのデータセットにリンクさせるには、xref:manage-resources.adoc#external-links[外部リンク]セクションでデータセットのメタデータにチェックリストを追加します。"
 
