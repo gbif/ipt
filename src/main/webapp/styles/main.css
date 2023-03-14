@@ -1993,6 +1993,7 @@ a.doi:hover span:first-of-type {
     margin: 0;
     background-color: rgba(175, 184, 193, 0.2);
     border-radius: 6px;
+    line-height: 0.75cm;
 }
 
 code {
