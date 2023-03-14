@@ -67,7 +67,7 @@
         </div>
 
         <div class="my-3 p-3">
-            <h5 class="text-gbif-header pb-2 mt-2 fw-400">
+            <h5 class="text-gbif-header-2 pb-2 mt-2 fw-400">
                 [@s.text name="admin.config.setup2.mode.title"/]
             </h5>
 

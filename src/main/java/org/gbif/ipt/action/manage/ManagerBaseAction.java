@@ -17,6 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -58,7 +59,11 @@ public class ManagerBaseAction extends POSTAction {
   }
 
   protected void saveResource() {
-    resourceManager.save(resource);
+    try {
+      resourceManager.save(resource);
+    } catch (InvalidConfigException e) {
+      addActionError(e.getMessage());
+    }
   }
 
 
