@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2023-03-14 02:16\n"
+"PO-Revision-Date: 2023-03-14 03:20\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -97,21 +97,21 @@ msgstr "IPTメーリングリスト"
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:23
 msgid "All *IPT Administrators* should sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] to be notified of new releases and best practices for maintaining their IPT. Have a question about how to maintain the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manual]? Then send your question to the list to get it answered!"
-msgstr ""
+msgstr "すべての *IPT管理者*はlink:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]にサインアップして、新しいリリースとIPTを維持するためのベストプラクティスの通知を受け取ってください。IPTのメンテナンスについて、xref:faq.adoc[FAQ] または xref:index.adoc[ユーザーマニュアル] でも解決しない疑問がありますか？質問をメーリングリストに送って、回答を得ましょう！"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:25
 msgid "The https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] can also be used by *IPT users* to support each other. Have a question about how to use the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manual]? Then send your question to the list to get it answered!"
-msgstr ""
+msgstr "link:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]は、*IPTユーザー*がお互いをサポートするために使用することもできます。IPTのメンテナンスについて、xref:faq.adoc[FAQ] または xref:index.adoc[ユーザーマニュアル] でも解決しない疑問がありますか？質問をメーリングリストに送って、回答を得ましょう！"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:26
 #, no-wrap
 msgid "IPT test installation"
-msgstr ""
+msgstr "IPT テストインストール"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:27
 msgid "GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at https://ipt.gbif.org/."
-msgstr ""
+msgstr "GBIFは、評価およびテスト目的でIPTの機能的なインストールを提供しています。最新リリースのテストインストールは https://ipt.gbif.org/ でご覧いただけます。"
 
