@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:48+0000\n"
-"PO-Revision-Date: 2023-03-14 04:20\n"
+"PO-Revision-Date: 2023-03-14 05:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -203,17 +203,17 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:73
 msgid "More complicated are links to a specific section within another page.  These must use the link target, which is generated automatically on each heading: spaces in the heading text are replaced with hyphens (`-`) and the result is converted to lower case.  In a web browser, they are shown in the URL bar following a `#`, in the \"Contents\" menu, or with the \"§\" symbol next to a heading."
-msgstr ""
+msgstr "より複雑なのは、別のページ内の特定のセクションへのリンクです。これらは、各見出しで自動的に生成されるリンクターゲットを使用する必要があります。見出しテキストのスペースはハイフン（`-`）に置き換えられ、結果は小文字に変換されます。Webブラウザでは、URLバーの`#`の後に表示されるか、コンテンツメニューに表示されるか、見出しの横に[§]記号が表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:75
 msgid "The crossreference is then written as `\\xref:filename.adoc#link-target[display text]`, for example `\\xref:manage-resources.adoc#resource-managers[read about resource managers]` shows as xref:manage-resources.adoc#resource-managers[read about resource managers]."
-msgstr ""
+msgstr "次に、相互参照は `xref:filename.adoc#link-target[表示テキスト]`として記述されます。たとえば、`\\xref:manage-resources.adoc#resource-managers[リソース管理者について読む]` は \\xref:manage-resources.adoc#resource-managers[リソース管理者について読む] のように表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:77
 msgid "An English heading `Source Data` has the link target `source-data`.  The Spanish translation of the heading, `Conjunto de datos`, has the target `conjunto-de-datos`."
-msgstr ""
+msgstr "英語の見出し`Source Data`には、リンクターゲット`source-data`があります。見出しのスペイン語訳である`Conjunto de datos`には、ターゲット`conjunto-de-datos`があります。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:81
@@ -231,46 +231,48 @@ msgstr ""
 #: en/modules/ROOT/pages/translations.adoc:85
 #, no-wrap
 msgid "Images and downloads"
-msgstr ""
+msgstr "画像とダウンロード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:88
 msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target language."
-msgstr ""
+msgstr "一部のスクリーンショット画像は翻訳でき、その他（英語のテキストなし）はすべての言語で同じにすることができます。デフォルトでは、すべての言語で同じ画像が使用されます。別の画像をlink:https://github.com/gbif/ipt[GitHub]にアップロードする必要があります。`en`をターゲット言語に変更した場合を除いて、同じファイル名とパスでイメージを作成します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:90
 msgid "For example, the default (English) image shown on the xref:home.adoc[home menu page] is stored in GitHub at https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`], and its Spanish translation is at https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]."
-msgstr ""
+msgstr "たとえば、ホームメニューページに表示されるデフォルト（英語）の画像は、GitHubの\n"
+"link:https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]に保存され、スペイン語の翻訳は\n"
+"https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]にあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:92
 msgid "The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`, does not require translation."
-msgstr ""
+msgstr "この画像をマニュアルに含めるための構文である `image::ipt2/home/IPTHome.png[]` は、翻訳を必要としません。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:93
 #, no-wrap
 msgid "Languages"
-msgstr ""
+msgstr "言語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:96
 msgid "Spanish (partial)"
-msgstr ""
+msgstr "スペイン語（一部）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:97
 msgid "Japanese (started)"
-msgstr ""
+msgstr "日本語（開始済み）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:98
 msgid "Traditional Chinese (started)"
-msgstr ""
+msgstr "中国語（繫体字）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:99
 msgid "If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English."
-msgstr ""
+msgstr "ユーザーマニュアルを別の言語に翻訳したい場合は、helpdesk@gbif.orgにメールしてください。また、翻訳されていないセクションは英語で表示されるため、マニュアのル全体を翻訳する必要はありません。。"
 
