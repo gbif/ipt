@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-14 05:19\n"
+"PO-Revision-Date: 2023-03-14 06:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -40,51 +40,51 @@ msgstr "IPTのスタイリング方法"
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:4
 msgid "For simple customization in versions 2.6 or higher please use xref:administration.adoc[UI Management]."
-msgstr ""
+msgstr "バージョン2.6以降で簡単なカスタマイズを行う場合は、xref:administration.adoc[UI管理]をご利用ください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:8
 msgid "Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue]."
-msgstr ""
+msgstr "`custom.css`を使用したカスタマイズはバージョン2.5.0では動作しませんので、link:https://github.com/gbif/ipt/issues/1634[こちら]を参照してください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:10
 msgid "Basic customizations can be made by editing `$tomcat/webapps/ipt/styles/main.css`."
-msgstr ""
+msgstr "基本的なカスタマイズは、`$tomcat/webapps/ipt/styles/main.css`を編集することで行うことができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:13
 msgid "Styling an IPT requires deployment using a servlet container like Tomcat.  A deployment from Linux packages or Docker could only be styled by overriding the `custom.css` file in a forward proxy."
-msgstr ""
+msgstr "IPTのスタイリングには、Tomcatのようなサーブレットコンテナを使用したデプロイが必要です。LinuxパッケージやDockerからのデプロイでは、フォワードプロキシで`custom.css`ファイルをオーバーライドすることでしか、スタイルを変更することができません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:17
 msgid "The following guide explains how to customize the IPT, and preserve your customization when upgrading your IPT's version."
-msgstr ""
+msgstr "IPTのカスタマイズ方法と、IPTのバージョンアップ時にカスタマイズを保持する方法を説明します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:19
 msgid "In short, customization can be achieved by applying CSS overrides."
-msgstr ""
+msgstr "簡単に言えば、CSSオーバーライドを適用することでカスタマイズが可能になります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:21
 msgid "Apply your desired CSS overrides in `custom.css` (choose a different colour scheme for example). You can find this file inside the deployed WAR folder, e.g. `$tomcat/webapps/ipt/styles`. The original https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/custom.css[custom.css] comes pre-populated with a set of example CSS overrides to change the colours used in buttons, links, etc."
-msgstr ""
+msgstr "`custom.css`で希望のCSS オーバーライドを適用（例えば異なるカラースキームを選択）します。このファイルは、デプロイされたWARフォルダ（例：`$tomcat/webapps/ipt/styles`）の中にあります。オリジナルのlink:https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/custom.css[custom.css]には、ボタンやリンクなどで使用する色を変更するためのCSSオーバーライドの例があらかじめ用意されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:22
 msgid "Upon completion, backup the `custom.css` file somewhere safe so that it can be added once again after each IPT upgrade, which unfortunately will overwrite the `custom.css` file each time."
-msgstr ""
+msgstr "完了後、`custom.css`ファイルを安全な場所にバックアップしてください。`custom.css`ファイルはIPTのアップグレードのたびに上書きされてしまうので、再度追加することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:24
 msgid "Take a look at the screenshot to see the effect of changing the default CSS."
-msgstr ""
+msgstr "デフォルトのCSSを変更した場合の効果を、スクリーンショットでご覧ください。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/customization.adoc:25
 #, no-wrap
 msgid "ipt2/customization/IPTCustomizedStyle.png"
-msgstr ""
+msgstr "ipt2/customization/IPTCustomizedStyle.png"
 
