@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2023-03-14 01:14\n"
+"PO-Revision-Date: 2023-03-14 02:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -87,21 +87,21 @@ msgstr "Java バージョン"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
 msgid "The current version of the IPT is tested to run on Java 8 or 9. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
-msgstr ""
+msgstr "現在のIPTのバージョンは、Java8または9上で動作するようにテストされています。お使いのJavaバージョンがいつまでサポートされるかについては、link:https://adoptopenjdk.net/support.html#roadmap[OpenJDK リリース ロードマップ]、link:https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html[Oracle Java バージョン ロードマップ]、またはお使いのLinuxディストリビューションのドキュメントを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "See the installation instructions for notes on operating system and servlet container versions."
-msgstr ""
+msgstr "OSやサーブレットコンテナのバージョンに関する注意点は、インストール手順を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:24
 #, no-wrap
 msgid "Technical support"
-msgstr ""
+msgstr "テクニカルサポート"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:25
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
-msgstr ""
+msgstr "IPTの運用はコミットメントです。データは定期的にバックアップし、（OSやIPTの）セキュリティアップデートは、利用できるようになったらすぐに適用しなければなりません。"
 
