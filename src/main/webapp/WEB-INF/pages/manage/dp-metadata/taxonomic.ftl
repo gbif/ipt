@@ -127,6 +127,36 @@
                 });
                 $("#taxon-item-" + index + " [for$='taxonRank']").attr("for", "metadata.taxonomic[" + index + "].taxonRank");
 
+                $("#taxon-item-" + index + " [id$='kingdom']").attr("id", "metadata.taxonomic[" + index + "].kingdom").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='kingdom']").attr("for", "metadata.taxonomic[" + index + "].kingdom");
+
+                $("#taxon-item-" + index + " [id$='phylum']").attr("id", "metadata.taxonomic[" + index + "].phylum").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='phylum']").attr("for", "metadata.taxonomic[" + index + "].phylum");
+
+                $("#taxon-item-" + index + " [id$='class']").attr("id", "metadata.taxonomic[" + index + "].class").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='class']").attr("for", "metadata.taxonomic[" + index + "].class");
+
+                $("#taxon-item-" + index + " [id$='order']").attr("id", "metadata.taxonomic[" + index + "].order").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='order']").attr("for", "metadata.taxonomic[" + index + "].order");
+
+                $("#taxon-item-" + index + " [id$='family']").attr("id", "metadata.taxonomic[" + index + "].family").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='family']").attr("for", "metadata.taxonomic[" + index + "].family");
+
+                $("#taxon-item-" + index + " [id$='genus']").attr("id", "metadata.taxonomic[" + index + "].genus").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#taxon-item-" + index + " [for$='genus']").attr("for", "metadata.taxonomic[" + index + "].genus");
+
                 // Reset vernacular names indexes
                 var vernacularNamesBlock = $("#taxon-item-" + index + " .vernacularName-items-wrapper")
                 vernacularNamesBlock.attr("id", "vernacularName-items-" + index);
@@ -309,6 +339,25 @@
                                                     </#if>
                                                 </div>
 
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].kingdom" help="i18n" i18nkey="datapackagemetadata.taxonomic.kingdom" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].phylum" help="i18n" i18nkey="datapackagemetadata.taxonomic.phylum" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].class" help="i18n" i18nkey="datapackagemetadata.taxonomic.class" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].order" help="i18n" i18nkey="datapackagemetadata.taxonomic.order" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].family" help="i18n" i18nkey="datapackagemetadata.taxonomic.family" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <@input name="metadata.taxonomic[${item_index}].genus" help="i18n" i18nkey="datapackagemetadata.taxonomic.genus" />
+                                                </div>
+
                                                 <div class="col-12">
                                                     <span class="form-label">
                                                         <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='datapackagemetadata.taxonomic.vernacularNames.help'/>" data-bs-original-title="" title="">
@@ -398,6 +447,25 @@
         </div>
         <div class="col-lg-6">
             <@select name="metadata.taxonomic.taxonRank" help="i18n" includeEmpty=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
+        </div>
+
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.kingdom" help="i18n" i18nkey="datapackagemetadata.taxonomic.kingdom" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.phylum" help="i18n" i18nkey="datapackagemetadata.taxonomic.phylum" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.class" help="i18n" i18nkey="datapackagemetadata.taxonomic.class" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.order" help="i18n" i18nkey="datapackagemetadata.taxonomic.order" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.family" help="i18n" i18nkey="datapackagemetadata.taxonomic.family" />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.taxonomic.genus" help="i18n" i18nkey="datapackagemetadata.taxonomic.genus" />
         </div>
 
         <div class="col-12">

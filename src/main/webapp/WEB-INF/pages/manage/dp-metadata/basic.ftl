@@ -440,9 +440,9 @@
                                             <div class="col-lg-6">
                                                 <@input name="metadata.licenses[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.license.title" />
                                             </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />
-                                            </div>
+<#--                                            <div class="col-lg-6">-->
+<#--                                                <@input name="metadata.licenses[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />-->
+<#--                                            </div>-->
                                             <div class="col-lg-6">
                                                 <@input name="metadata.licenses[${item_index}].name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
                                             </div>
@@ -541,9 +541,9 @@
         <div class="col-lg-6">
             <@input name="metadata.licenses.title" help="i18n" i18nkey="datapackagemetadata.license.title" />
         </div>
-        <div class="col-lg-6">
-            <@input name="metadata.licenses.path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />
-        </div>
+<#--        <div class="col-lg-6">-->
+<#--            <@input name="metadata.licenses.path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />-->
+<#--        </div>-->
         <div class="col-lg-6">
             <@input name="metadata.licenses.name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
         </div>

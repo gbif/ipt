@@ -19,6 +19,7 @@ import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Resource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
 import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.GbifCompatibleLicense;
 import org.gbif.ipt.validation.GeographicScopeMetadata;
 import org.gbif.ipt.validation.InternalField;
 import org.gbif.ipt.validation.ProjectMetadata;
@@ -376,6 +377,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
   @Element(CamtrapLicense.class)
   @Size(min = 2, message = "validation.camtrap.metadata.licenses.size", groups = BasicMetadata.class)
+  @GbifCompatibleLicense(message = "validation.camtrap.metadata.licenses.gbifCompatible.required", groups = BasicMetadata.class)
   public List<License> getLicenses() {
     return super.getLicenses();
   }

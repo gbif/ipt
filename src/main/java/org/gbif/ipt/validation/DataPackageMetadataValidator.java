@@ -122,7 +122,7 @@ public class DataPackageMetadataValidator {
             = validator.validate(metadata, BasicMetadata.class);
 
         for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
-          if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "contributors", "sources")) {
+          if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
             action.addActionError(action.getText(violation.getMessage()));
           } else {
             if (violation.getMessage().equals("validation.datapackage.metadata.license.nameOrPath.required")) {
