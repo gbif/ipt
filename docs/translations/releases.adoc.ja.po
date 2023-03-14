@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-02 13:26+0000\n"
-"PO-Revision-Date: 2023-03-13 07:11\n"
+"PO-Revision-Date: 2023-03-14 00:06\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -742,18 +742,18 @@ msgstr "https://gbif.blogspot.com/2014/04/ipt-v21.html[リリース案内]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:280
 msgid "Addressed https://github.com/gbif/ipt/milestone/16?closed=1[85 issues]: 38 Defects, 11 Enhancements, 18 Won’t fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/milestone/16?closed=1[85問題]・38不具合に対処、機能強化11件、18件の修正保留、重複6件・無効11件・その他1件"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:281
 msgid "Translated into 6 languages (Japanese translation added)"
-msgstr ""
+msgstr "6言語に翻訳（日本語訳を追加）"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:282
 #, no-wrap
 msgid "*2.0.5* – May 2013"
-msgstr ""
+msgstr "*2.0.5* – 2013年5月"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:285
