@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-03-16 02:08\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
 #, no-wrap
 msgid "Prerequisites"
-msgstr ""
+msgstr "前提"
 
 #. type: Title =
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:1
