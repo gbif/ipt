@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2023-03-16 00:54\n"
+"PO-Revision-Date: 2023-03-16 02:08\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -26,43 +26,43 @@ msgstr "開発者向けガイドライン"
 #: en/modules/ROOT/pages/developer-guide.adoc:3
 #, no-wrap
 msgid "Contributions"
-msgstr ""
+msgstr "協力"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:6
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the https://github.com/gbif/ipt[IPT Git repository]."
-msgstr ""
+msgstr "IPTの中心の開発はGBIFが指揮しますが、コーディングはコミュニティの活動であり、誰でも参加することができます。JavaやHTML/jQueryの開発者は、コードのパッチを提供することを歓迎します。パッチは、link:https://github.com/gbif/ipt[IPT Gitリポジトリ]のブランチまたはフォークを使用してlink:https://help.github.com/articles/creating-a-pull-request/[プルリクエスト]を作成することで提出することができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:7
 #, no-wrap
 msgid "Source Code Frameworks"
-msgstr ""
+msgstr "ソースコードフレームワーク"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:10
 msgid "The IPT uses the following core frameworks:"
-msgstr ""
+msgstr "IPTでは、以下のようなコアフレームワークを使用しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:12
 msgid "https://struts.apache.org/[Struts2]"
-msgstr ""
+msgstr "https://struts.apache.org/[Struts2]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:13
 msgid "https://github.com/google/guice[Google Guice]"
-msgstr ""
+msgstr "https://github.com/google/guice[Google Guice]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:14
 msgid "https://freemarker.sourceforge.net/docs/[Freemarker] templating"
-msgstr ""
+msgstr "https://freemarker.sourceforge.net/docs/[Freemarker]：テンプレートの作成"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:15
 msgid "https://jquery.com/[jQuery] for JavaScript and AJAX"
-msgstr ""
+msgstr "https://jquery.com/[jQuery]：JavaScript・AJAX用"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:16
@@ -70,216 +70,217 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
 #, no-wrap
 msgid "Prerequisites"
-msgstr ""
+msgstr "前提"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:19
 msgid "The IPT uses Maven to manage dependencies and the build process. Refer to http://maven.apache.org/install.html[Maven's own installation instructions] for help."
-msgstr ""
+msgstr "IPTでは、依存関係やビルドプロセスを管理するためにMavenを使用しています。Mavenのインストール方法については、link:http://maven.apache.org/install.html[Mavenのインストールガイド]を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:20
 #, no-wrap
 msgid "Running the application in Jetty"
-msgstr ""
+msgstr "Jettyでアプリケーションを実行する"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/developer-guide.adoc:26
 #, no-wrap
 msgid "$ cd ipt\n"
 "$ mvn -DskipTests\n"
-msgstr ""
+msgstr "$ cd ipt\n"
+"$ mvn -DskipTests\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:29
 msgid "This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser."
-msgstr ""
+msgstr "このコマンドは、ポート8080でJettyプラグインを経由してIPTを起動します。Webブラウザで http://localhost:8080 を開くと、IPTが動作していることが確認できるはずです。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:30
 #, no-wrap
 msgid "Git"
-msgstr ""
+msgstr "Git"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:32
 msgid "Please don't check in unused files."
-msgstr ""
+msgstr "未使用のファイルにはチェックを入れないでください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:34
 msgid "Code in the master branch should always compile and allow the startup of Jetty using Maven!"
-msgstr ""
+msgstr "masterブランチのコードは常にコンパイルされ、Mavenを使ってJettyを起動できるようにする必要があります！"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:35
 #, no-wrap
 msgid "Guice"
-msgstr ""
+msgstr "Guice"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:38
 msgid "`IptModule` contains wiring, but interfaces are annotated directly with `@ImplementedBy(ConfigManagerImpl.class)`"
-msgstr ""
+msgstr "`IptModule`は配線を含むが、インターフェースは`@ImplementedBy(ConfigManagerImpl.class)`で直接アノテートされます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:39
 #, no-wrap
 msgid "Configuration"
-msgstr ""
+msgstr "設定"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:42
 msgid "Inside WEB-INF of a running IPT is a single file `datadir.location`.  It points to the currently used data directory where all configuration and data is stored. If this file is deleted the setup interceptor will ask the user to assign a new (potentially existing) data directory."
-msgstr ""
+msgstr "実行中のIPTのWEB-INFの中には、`datadir.location`というファイルが1つあります。これは、すべての構成とデータが保存される、現在使用されているデータディレクトリを指しています。このファイルが削除されると、セットアップインターセプターは新しい（既存の）データディレクトリを割り当てるようにユーザに要求します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:44
 msgid "The hidden file `.gbifreg` indicates whether the data directory is linked to the production or test registry. Once set, this cannot be changed from the UI!"
-msgstr ""
+msgstr "隠しファイル`.gbifreg`は、データディレクトリがプロダクションレジストリまたはテストレジストリにリンクされているかどうかを示します。一度設定すると、UIから変更することはできません！"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:46
 msgid "`AppConfig.java` contains all IPT wide configuration, in particular the `baseURL` (referred to in the UI and documentation as the \"Public URL\") for the application."
-msgstr ""
+msgstr "`AppConfig.java`には、IPT全体の設定、特にアプリケーションの`baseURL`（UIやドキュメントでは「Public URL」と呼ばれます）が含まれています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:47
 #, no-wrap
 msgid "Struts2"
-msgstr ""
+msgstr "Struts2"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:50
 msgid "`BaseAction.java` supplies the `AppConfig`, implements session aware and gives access to current user, implements a simpler `TextProvider` which is faster than the native Struts 2 one."
-msgstr ""
+msgstr "`BaseAction.java`は`AppConfig`を提供し、セッションを意識した実装を行い、現在のユーザーにアクセスできるようにし、Struts 2のネイティブのものよりもシンプルで高速な`TextProvider`を実装しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:52
 msgid "`SetupAndCancelInterceptor.java` checks if the data directory is configured and an admin user exists - otherwise redirects to the respective setup page."
-msgstr ""
+msgstr "`SetupAndCancelInterceptor.java`は、データディレクトリが設定されているか、管理責任者（Admin）ユーザが存在するかをチェックし、不備があればそれぞれの設定ページにリダイレクトします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:54
 msgid "For each package (`root`, `portal`, `manage`, `admin`) its own interceptor stack exists."
-msgstr ""
+msgstr "各パッケージ（`root`、`portal`、`manage`、`admin`）には、独自のインターセプタスタックが存在します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:56
 msgid "The \"input\" result name is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate."
-msgstr ""
+msgstr "「input」のリザルト名は、フォームを表示するために使用されます。したがって、データが検証されないときに入力結果を使用する標準的なバリデーションインターセプターを使用することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:58
 msgid "The \"success\" result name is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action."
-msgstr ""
+msgstr "\"success\"のリザルト名は、フォームの送信に成功したときに呼び出されます。多くの場合、これは単に別のアクション（対応するリストなど）へのリダイレクトとなるはずです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:60
 msgid "The action implements preparable, request aware and the execute method."
-msgstr ""
+msgstr "アクションは、prepareable、request aware、executeメソッドを実装しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:62
 msgid "execute: `FormAction` determines if a `POST` or `GET` is used and calls save (`POST`), delete (`POST + delete=true`) or nothing (`GET`)."
-msgstr ""
+msgstr "execute：`FormAction`は`POST`か`GET`かを判断し、保存（`POST`）、削除（`POST + delete=true`）、何もしない（`GET`）のいずれかを呼び出します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:64
 msgid "If any other action values need to be set you can override `prepare()` - but remember to call `super.execute()`."
-msgstr ""
+msgstr "他のアクションの値を設定する必要がある場合は、`prepare()`をオーバーライドすることができます。ただし、`super.execute()`を呼び出すことを忘れないでください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:66
 msgid "prepare: the `id` parameter of the request object is stored in the action."
-msgstr ""
+msgstr "prepare：リクエストオブジェクトの`id`パラメータがアクションに格納されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:69
 msgid "`POSTAction.java` simplifies working with forms. For modifying instance data always use `POST`, never `GET`.  Most full actions for modifying entities should override the following methods:"
-msgstr ""
+msgstr "`POSTAction.java`は、フォームの操作を簡略化します。インスタンスデータの変更には常に`POST`を使用し、`GET` は使用しないでください。エンティティを変更するための完全なアクションのほとんどは、以下のメソッドをオーバーライドする必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:71
 msgid "`prepare()`: load existing values based on \"id\" parameter and request object."
-msgstr ""
+msgstr "`prepare()`：\"id \"パラメータとリクエスト・オブジェクトに基づいて、既存の値をロードする。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:72
 msgid "`save()`: persist data AFTER the parameters interceptor did its job."
-msgstr ""
+msgstr "`save()`：パラメータインターセプターが仕事をした後、データを保持します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:73
 msgid "`delete()`: this method is called when a `POST` with a `delete=anything_but_null` parameter is received."
-msgstr ""
+msgstr "`delete()`：`delete=anything_but_null`パラメータを持つ`POST`を受信したときに呼び出されるメソッドです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:75
 msgid "If the `id` given does not exist you can set the `notFound` property to true in any of the above methods. The action will then return a 404 result name."
-msgstr ""
+msgstr "指定された`id`が存在しない場合、上記のいずれかのメソッドで`notFound`プロパティをtrueに設定することができます。そうすると、このアクションは404のリザルト名を返します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:77
 msgid "To do validation, implement the `validate()` method of an action (instead of using XML validation definitions). See `SetupAction.java` as an example. Validation requires an `input` result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html"
-msgstr ""
+msgstr "検証を行うには、（XMLの検証定義を使用するのではなく）アクションの`validate()`メソッドを実装します。例として、`SetupAction.java`を参照してください。バリデーションには、フォームが有効でなかったときに表示される`input`リザルト名が必要です。シンプルなテーマを使って、バリデーションのフィードバックをレンダリングする場所も宣言する必要があります：http://struts.apache.org/docs/fielderror.html"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:78
 #, no-wrap
 msgid "HTML Design"
-msgstr ""
+msgstr "HTMLデザイン"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!"
-msgstr ""
+msgstr "リンクは常に`+++${baseURL}/my/ipt/link.do+++`を使うので、StrutsやJSPのURLタグは使わないで下さい！"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:83
 msgid "Forms use the `forms.ftl` macros instead of Struts 2 tags, such as the internationalization `@select` drop downs."
-msgstr ""
+msgstr "フォームでは、国際化の`@select`ドロップダウンなど、Struts 2のタグの代わりに`forms.ftl`マクロを使用するようにしました。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:85
 msgid "Buttons use proper buttons or `input@type=submit` (forms) for add, delete, edit, create actions."
-msgstr ""
+msgstr "ボタンは、追加、削除、編集、作成の各アクションに適切なボタンまたは`input@type=submit`（フォーム）を使用します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:87
 msgid "General best practice guides:"
-msgstr ""
+msgstr "一般的なベストプラクティスガイド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:89
 msgid "http://htmldog.com/articles/formlayout/"
-msgstr ""
+msgstr "http://htmldog.com/articles/formlayout/"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:90
 msgid "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
-msgstr ""
+msgstr "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:91
 #, no-wrap
 msgid "JavaScript"
-msgstr ""
+msgstr "JavaScript"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:94
 msgid "Only use jQuery (https://jquery.com/) for custom code."
-msgstr ""
+msgstr "カスタムコードにはjQuery（https://jquery.com/）のみを使用します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:96
 msgid "Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes."
-msgstr ""
+msgstr "削除などの確認を求める場合は、jConfirmationプラグイン（https://github.com/hdytsgt/jConfirmAction）を使用します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:98
 msgid "Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML tables with pagination, searching, etc."
-msgstr ""
+msgstr "jQuery dataTables（https://www.datatables.net/）プラグインを使用すると、ページネーションや検索など、HTMLのテーブルを拡張することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:99
