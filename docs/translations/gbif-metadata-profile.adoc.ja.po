@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-16 05:25\n"
+"PO-Revision-Date: 2023-03-16 06:35\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -548,12 +548,23 @@ msgid "| Term name | Description\n\n"
 "| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields.\n\n"
 "| {eml-location}/eml-resource.html#url[url] | The URL of the resource that is available online.\n\n"
 "| {eml-location}/eml-resource.html#abstract[abstract] | A brief overview of the resource that is being documented.\n"
-msgstr ""
+msgstr "| 用語名 | 説明\n\n"
+"| {eml-location}/eml-resource.html#alternateIdentifier[alternateIdentifier] | これはEML文書のUUID（Universally Unique Identifier）であり、データセットのUUIDではありません。この用語はオプションです。異なる識別子のリストを供給することができます。例：619a4b95-1a82-4006-be6a-7dbe3c9b33c5\n\n"
+"| {eml-location}/eml-resource.html#title[title] | リソースを他の似たリソースと区別するのに十分なテキストでの説明。特にタイトルを複数の言語で表現しようとする場合、複数のタイトルを提供することができます（English/enでない場合、言語を示すために「xml:lang」属性を使用します）。例： Vernal pool amphibian density data, Isla Vista, 1990-1996.\n\n"
+"| {eml-location}/eml-resource.html#creator[creator] | リソース作成者は、リソース自体の作成に責任を持つ個人または組織です。詳しくは「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#metadataProvider[metadataProvider] | metadataProviderは、リソースのドキュメントを提供する責任を負う人または組織です。詳細は「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#associatedParty[associatedParty] | associatedPartyは、リソースに関連する他の個人または組織です。これらの関係者は、リソースの作成または維持において様々な役割を担うことがあり、これらの役割は「role」要素で示す必要があります。詳細は「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#contact[contact] | 連絡先フィールドには、このデータセットの連絡先情報が含まれています。これは、データセットの使用や解釈について質問がある場合に連絡する個人または機関です。詳しくは「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#pubDate[pubDate] | リソースが公開された日付です。CCYY（4桁の年）、またはCCYY-MM-DD（完全な年、月、日）の形式で表現する必要があります。月と日はオプションであることに注意してください。フォーマットはISO 8601に準拠する必要があります。例：2010-09-20\n\n"
+"| {eml-location}/eml-resource.html#language[language] | リソース（メタデータではない）の記述に用いられている言語。これはよく知られた言語名でもよいし、より正確にISO言語コードを用いて記述しても構いません。GBIFはISO言語コード（https://api.gbif.org/v1/enumeration/language）を使用することを推奨しています。例：English\n\n"
+"| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | リソース管理者がデータセットに含めることを希望する、省略・指示・その他の注意事項に関する情報。基本的には、他のリソースメタデータのフィールドで特徴付けられないあらゆる情報です。\n\n"
+"| {eml-location}/eml-resource.html#url[url] | オンラインで公開されているリソースのURLです。\n\n"
+"| {eml-location}/eml-resource.html#abstract[abstract] | ドキュメント化されているリソースの簡単な概要。オンラインで利用可能なリソースのURLです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:179
 msgid "The project field contains information on the project in which this dataset was collected. It includes information such as project personnel, funding, study area, project design and related projects."
-msgstr ""
+msgstr "プロジェクトフィールドは、このデータセットが収集されたプロジェクトに関する情報を含みます。プロジェクト担当者、資金、調査地域、プロジェクト設計、関連プロジェクトなどの情報が含まれます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:192
@@ -564,12 +575,17 @@ msgid "| Term | Definition\n\n"
 "| {eml-location}/eml-project.html#funding[funding] | The funding field is used to provide information about funding sources for the project such as: grant and contract numbers; names and addresses of funding sources.\n\n"
 "| {eml-location}/eml-project.html#studyAreaDescription[studyAreaDescription] | The studyAreaDescription field documents the physical area associated with the research project. It can include descriptions of the geographic, temporal, and taxonomic coverage of the research location and descriptions of domains (themes) of interest such as climate, geology, soils or disturbances.\n\n"
 "| {eml-location}/eml-project.html#designDescription[designDescription] | The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.\n"
-msgstr ""
+msgstr "| Term | Definition\n\n"
+"| {eml-location}/eml-project.html#title[title]  | 研究プロジェクトの説明的なタイトル。例：Species diversity in Tennessee riparian habitats\n\n"
+"| {eml-location}/eml-project.html#personnel[personnel] | 人事欄は、連絡先やプロジェクトでの役割など、研究プロジェクトに関わる人々を記録するために使用されます。\n\n"
+"| {eml-location}/eml-project.html#funding[funding] | 資金提供欄は、プロジェクトの資金源に関する情報を提供するために使用されます。例えば、助成金および契約番号、資金提供者の名前と住所など。\n\n"
+"| {eml-location}/eml-project.html#studyAreaDescription[studyAreaDescription] | studyAreaDescription フィールドは、研究プロジェクトに関連する物理的な領域を記録します。調査地の地理的、時間的、分類学的な範囲や、気候、地質、土壌、撹乱など関心のある領域（テーマ）についての記述を含めることができます。\n\n"
+"| {eml-location}/eml-project.html#designDescription[designDescription] | designDescriptionフィールドには、研究デザインに関する一般的なテキスト記述が含まれます。目標、動機、理論、仮説、戦略、統計設計、実際の作業に関する詳細な説明を含むことができます。また、文献の引用も研究デザインの記述に使用されることがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:197
 msgid "There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization."
-msgstr ""
+msgstr "人または組織のいずれかを表すことができるいくつかのフィールドがあります。以下は、人または組織を表すために使用されるさまざまなフィールドのリストです。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:225
@@ -588,18 +604,31 @@ msgid "| Term | Definition\n\n"
 "| {eml-location}/eml-party.html#administrativeArea[administrativeArea] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The administrative area field is the equivalent of a 'state' in the U.S., or Province in Canada. This field is intended to accommodate the many types of international administrative areas. E.g. Colorado\n\n"
 "| {eml-location}/eml-party.html#country[country] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The country field is used for the name of the contact's country. The country name is most often derived from the ISO 3166 country code list. E.g., Japan.\n\n"
 "| {eml-location}/eml-party.html#onlineUrl[onlineUrl] | A link to associated online information, usually a web site. When the party represents an organization, this is the URL to a website or other online information about the organization. If the party is an individual, it might be their personal web site or other related online information about the party. E.g., https://www.example.edu/botany.\n"
-msgstr ""
+msgstr "| 用語 | 定義\n\n"
+"| {eml-location}/eml-party.html#givenName[givenName] | individualNameフィールドのサブフィールド。givenNameフィールドは、リソースに関連する個人のファーストネームで、（必要に応じて）アルファベット表記を意図していない、その他の名前に使用することができます。例：Jonny\n\n"
+"| {eml-location}/eml-party.html#surName[surName] | individualNameフィールドのサブフィールド。surnameフィールドは、リソースに関連する個人の姓に使用されます。これはふつう個人の姓で、例えば、文献の引用時に言及される名前です。例：Carson\n\n"
+"| {eml-location}/eml-party.html#organizationName[organizationName] | リソースに関連する組織のフルネーム。このフィールドは、記述されるリソースに関連する機関または組織全体を記述することを意図しています。例：National Center for Ecological Analysis and Synthesis\n\n"
+"| {eml-location}/eml-party.html#positionName[positionName]| このフィールドは、特定の人物や完全な組織名の代わりに使用されることを意図しています。その役割を担う人物が頻繁に変わるのであれば、一貫性を保つために役職名を使用するのがよいでしょう。このフィールドは、'organizationName'および'individualName'と共に使用され、1つの論理的なオリジネーターを構成することに注意してください。このため、individualNameが「Joe Smith」だけのオリジネーターは、nameが「Joe Smith」でorganizationNameが「NSF」のオリジネーターと同じではありません。また、positionNameは、その地位の個人のみがデータパッケージのオリジネーターとみなされる場合を除き、individualNameと組み合わせて使用されるべきではありません。positionNameがorganizationNameと共に使用される場合、organizationNameにおいて、そのpositionNameに就いているすべての人がデータパッケージのオリジネーターであることを意味します。例：HAST herbarium data manager\n\n"
+"| {eml-location}/eml-party.html#electronicMailAddress[electronicMailAddress] | Eメールアドレスは、その団体のEメールアドレスである。インターネットSMTPメールアドレスを想定しており、ユーザー名の後に@記号、その後にメールサーバーのドメイン名アドレスで構成される必要があります。例：jcuadra@gbif.org\n\n"
+"| {eml-location}/eml-party.html#deliveryPoint[deliveryPoint] | addressフィールドのサブフィールドで、リソースの責任者の実際の住所または電子アドレスを記述します。配送先フィールドは、郵便通信のための物理的な住所に使用されます。例：GBIF Secretariat, Universitetsparken 15\n\n"
+"| {eml-location}/eml-party.html#role[role] | このフィールドで、当事者がリソースに関して果たした役割を記述します。例：技術者、査読者、研究責任者等\n\n"
+"| {eml-location}/eml-party.html#phone[phone] | 電話番号欄には、責任者の電話番号（音声電話、FAX）についての情報を記述します。例：+4530102040\n\n"
+"| {eml-location}/eml-party.html#postalCode[postalCode] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。郵便番号は米国のZIPコードに相当し、国際的な住所へのルーティングに使用される番号です。 例：52000.\n\n"
+"| {eml-location}/eml-party.html#city[city] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。cityフィールドは、特定のリソースに関連する連絡先の都市名として使用される。例：San Diego\n\n"
+"| {eml-location}/eml-party.html#administrativeArea[administrativeArea] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。行政区域フィールドは、米国では「state」、カナダでは「Province」に相当します。このフィールドは、多くの種類の国際的な行政区域に対応することを意図しています。例：Colorado\n\n"
+"| {eml-location}/eml-party.html#country[country] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。国名フィールドは、連絡先の国名に使用されます。国名は、ほとんどの場合、ISO 3166の国名コードリストに由来しています。例：Japan\n\n"
+"| {eml-location}/eml-party.html#onlineUrl[onlineUrl] | 関連するオンライン情報（通常はWebサイト）へのリンクです。当事者が組織を代表している場合、これはウェブサイトまたはその組織に関する他のオンライン情報のURLです。当事者が個人の場合は、個人のウェブサイトや、当事者に関するその他の関連するオンライン情報である場合があります。例：https://www.example.edu/botany\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:227
 #, no-wrap
 msgid "KeywordSet (General Keywords)"
-msgstr ""
+msgstr "KeywordSet（一般的なキーワード）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:230
 msgid "The keywordSet field is a wrapper for the keyword and keywordThesaurus elements, both of which are required together."
-msgstr ""
+msgstr "keywordSetフィールドはkeywordとkeywordThesaurus要素のラッパーであり、両方とも同時に必要です。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:237
@@ -607,17 +636,19 @@ msgstr ""
 msgid "| Term         | Definition\n\n"
 "| {eml-location}/eml-resource.html#keyword[keyword] | A keyword or key phrase that concisely describes the resource or is related to the resource. Each keyword field should contain one and only one keyword (i.e., keywords should not be separated by commas or other delimiters). E.g., biodiversity.\n\n"
 "| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| The name of the official keyword thesaurus from which keyword was derived. If an official thesaurus name does not exist, please keep a placeholder value such as “N/A” instead of removing this element as it is required together with the keyword element to constitute a keywordSet. E.g., IRIS keyword thesaurus.\n"
-msgstr ""
+msgstr "| 用語         | 定義\n\n"
+"| {eml-location}/eml-resource.html#keyword[keyword] | リソースを簡潔に説明する、またはリソースに関連するキーワード・キーフレーズ。各キーワードフィールドは、1つのキーワードのみを含むべきです（つまり、キーワードは、カンマや他の区切り文字で分離してはなりません）。例：biodiversity\n\n"
+"| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| キーワードの元となった公式キーワードシソーラスの名前。これはkeyword要素とともにkeywordSetを構成するために必要なので、公式シソーラス名が存在しない場合はこの要素を削除せずに、\"N/A\"などのプレースホルダ値を保持しておいてください。例：IRIS keyword thesaurus\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
 msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
-msgstr ""
+msgstr "リソースのカバー範囲を、*空間的*な範囲、*時間的*な範囲、*分類学的*な範囲の観点から記述しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
 msgid "A container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. Please note the taxonomic classifications should not be nested, just listed one after the other."
-msgstr ""
+msgstr "リソースに関する分類学的情報のためのコンテナ。1つまたは複数の分類体系の種名（または上位のランク）のリストが含まれます。分類は入れ子にせず、1つずつ順番に並べることに注意してください。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:259
