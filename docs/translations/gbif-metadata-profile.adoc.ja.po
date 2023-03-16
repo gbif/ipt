@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-16 06:35\n"
+"PO-Revision-Date: 2023-03-16 07:37\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -659,12 +659,17 @@ msgid "| Term                 | Definition\n\n"
 "| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| The name of the taxonomic rank for which the Taxon rank value is provided. E.g., phylum, class, genus, species.\n\n"
 "| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | The name representing the taxonomic rank of the taxon being described. E.g. Acer would be an example of a genus rank value, and rubrum would be an example of a species rank value, together indicating the common name of red maple. It is recommended to start with Kingdom and include ranks down to the most detailed level possible.\n\n"
 "| {eml-location}/eml-coverage.html#commonName[commonName]              | Applicable common names; these common names may be general descriptions of a group of organisms if appropriate. E.g., invertebrates, waterfowl.\n"
-msgstr ""
+msgstr "| 用語                 | 定義\n\n"
+"| {eml-location}/eml-coverage.html#generalTaxonomicCoverage[generalTaxonomicCoverage] | 分類学的範囲は、リソースに関する分類学的情報のためのコンテナです。これには、1つまたは複数の分類体系からの種名（または上位のランク）のリストが含まれます。データセットまたはコレクションで扱われる分類群の範囲についての説明。コンマで区切られた単純な分類群のリストを使用します。例：「すべての維管束植物は科または種まで同定され、コケと地衣類はコケまたは地衣類として同定された。」\n\n"
+"| {eml-location}/eml-coverage.html#taxonomicClassification[taxonomicClassification] | データセットまたはコレクションで扱われる分類群の範囲に関する情報。\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| Taxon rank値が提供される分類階級の名前。例：phylum、class、genus、species\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | 記載される分類群の分類階級を表す名称。例：Acerは属のランク値、rubrumは種のランク値の例で、合わせて赤カエデの通称を示します。Kingdomから始めて、可能な限り詳細なレベルまでランクを含めることが推奨されます。\n\n"
+"| {eml-location}/eml-coverage.html#commonName[commonName]              | 該当する一般名；これらの一般名は、適切であれば生物群の一般的な説明でも構いません。例：無脊椎動物、水鳥\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
 msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
-msgstr ""
+msgstr "リソースに関する空間情報を格納するコンテナで、全体のカバー範囲を示す境界ボックス（緯度経度）を設定できるほか、任意のポリゴンを除外して記述することも可能です。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
@@ -680,7 +685,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:282
 msgid "This container allows coverage to be a single point in time, multiple points in time, or a range of dates."
-msgstr ""
+msgstr "このコンテナでは、範囲を単一時点、複数時点、または日付の範囲にすることができます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:291
@@ -694,7 +699,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
 msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
-msgstr ""
+msgstr "このフィールドは、リソースの収集に使用された科学的方法を記録します。ツール、機器の校正、ソフトウェアなどの項目に関する情報も含まれます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
@@ -710,7 +715,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
 msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
-msgstr ""
+msgstr "リソースの権利管理に関する声明文、またはそのような情報を提供するサービスへのリファレンスが含まれています。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
@@ -724,12 +729,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
 #, no-wrap
 msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
-msgstr ""
+msgstr "追加メタデータ + 関連するlink:http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
 msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
-msgstr ""
+msgstr "追加メタデータ + 関連ナチュラルコレクション記述データ（NCD）追加メタデータフィールドは、記述されるリソースに関連する他のあらゆるメタデータを格納するコンテナです。このフィールドにより、EMLはXMLベースのあらゆるメタデータをこの要素に含めることができ、拡張性があります。GMPでは、ISO 19139に準拠するために必要な要素と、NCD（ナチュラルコレクション記述）要素のサブセット を提供します。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
