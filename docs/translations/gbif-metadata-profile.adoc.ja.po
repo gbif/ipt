@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-14 06:19\n"
+"PO-Revision-Date: 2023-03-16 03:06\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -61,18 +61,18 @@ msgstr "文書管理"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
 #, no-wrap
 msgid "GBIF Metadata Profile – How-to Guide"
-msgstr ""
+msgstr "GBIFメタデータプロファイル - ハウツーガイド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
 msgid "Version 2.1."
-msgstr ""
+msgstr "バージョン 2.1."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
 #, no-wrap
 msgid "figures/cover_art_adiatum.png"
-msgstr ""
+msgstr "figures/cover_art_adiatum.png"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:15
@@ -81,70 +81,73 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| バージョン | 説明                  | リリース日 | 作成者\n\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | 関連文書の整合性チェック、製品サイトへのリンクの更新、現在の機能を反映したテキストと画像の更新 | 2011年3月1日     | KB, BK, MR\n"
+"| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | wikiに移行、大幅な編集  | 2017年6月19日      | Kyle Braak\n"
+"| xref:gbif-metadata-profile.adoc[2.1]     | AsciiDoctorドキュメントに移行 | 2021年5月25日      | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr ""
+msgstr "_カバーアート：John Giez, Maidenhair fern sporophyte, Adiatum sp._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:27
 msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
-msgstr ""
+msgstr "GBIFネットワークを通じてデータを公開するためには、データセットの出所と範囲を文書化することが必要です。データセットの文書化は「リソースメタデータ」と呼ばれ、利用者がデータセットの利用適性を評価できるようにします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:29
 msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
-msgstr ""
+msgstr "GBIFメタデータプロファイル（GMP）に準拠したメタデータ文書を作成するには、さまざまな方法があります。このハウツーガイドでは、GBIF Integrated Publishing Toolkit（IPT）のメタデータエディタ、GBIFリソースメタデータテンプレート（保留）の使用、またはメタデータドキュメントの手動生成など、最も一般的な方法を説明します。また、本ガイドは、GBIFメタデータプロファイル自体のリファレンスガイドとしても機能します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:31
 msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
-msgstr ""
+msgstr "データセットを説明するメタデータもダーウィンコア・アーカイブ（DwC-A）を使って公開されている場合、メタデータファイルは、それが説明するデータ（ダーウィンコア用語に基づく）と一緒に束ねられたDwC-Aファイルに含まれることになります。完全なDwC-Aを作成するためのヘルプは、xref:dwca-guide.adoc[ダーウィンコア・アーカイブ - ハウツーガイドを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:33
 msgid "Once the metadata document has been written and validated, it is ready to be published."
-msgstr ""
+msgstr "メタデータ文書が作成され、検証されると、公開の準備が整います。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:35
 msgid "Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable."
-msgstr ""
+msgstr "記述されたデータリソースが完全に文書化され、GBIFレジストリに登録されることが、メタデータを公開する最終的な目的です。そうすることで、データリソースはグローバルに発見できるようになります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:36
 #, no-wrap
 msgid "Metadata Publishing Solutions"
-msgstr ""
+msgstr "メタデータ・パブリッシング・ソリューション"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
 msgid "If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies."
-msgstr ""
+msgstr "IPTを使用してサンプリングイベントデータ、オカレンスデータ、チェックリストデータを公開する場合、メタデータ作成機能が組み込まれており、これを使用してGMPに準拠したメタデータドキュメントを添付して作成することが可能です。特に複数のメタデータ文書を作成・管理する必要がある場合は、データを公開していなくてもこのツールでメタデータを作成すると便利です。一方、数個のメタデータ文書しか必要としない場合は、サンプル文書を修正するなどして手動で生成するのが最も簡単かもしれません。それぞれの方法について以下で説明します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:40
 #, no-wrap
 msgid "Publishing metadata using the IPT"
-msgstr ""
+msgstr "IPTによるメタデータの公開"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:43
 msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation."
-msgstr ""
+msgstr "IPTにはメタデータエディターが内蔵されており、リソースのメタデータを簡単に記入し、検証し、常に有効なXMLであるEMLファイルを生成することができます。ユーザーは、独自のインストールと保守を行う代わりに、xref:data-hosting-centres.adoc[IPTデータホスティングセンター]を再利用することをお勧めします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:45
 msgid "In total, the IPT has 12 different metadata forms that logically organize metadata entry:"
-msgstr ""
+msgstr "IPTには計12種類のメタデータフォームがあり、メタデータの入力を論理的に整理しています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
@@ -183,7 +186,7 @@ msgstr "時間的範囲"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
 msgid "Other Keywords"
-msgstr ""
+msgstr "その他のキーワード"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
@@ -223,7 +226,7 @@ msgstr "コレクションデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
 msgid "Physical Data"
-msgstr ""
+msgstr "物理データ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
@@ -235,105 +238,105 @@ msgstr "追加のメタデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:60
 msgid "The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
-msgstr ""
+msgstr "xref:manage-resources.adoc#metadata[IPTユーザーマニュアル]では、各フォームとそのフィールドについて詳しく説明しています。フォームには、ユーザーが要素の意味を理解するためのヘルプダイアログが用意されています（図1）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:61
 #, no-wrap
 msgid "Screenshot of a help dialog for the term “Personnel Identifier"
-msgstr ""
+msgstr "\"Personnel Identifier\"という用語のヘルプダイアログのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:62
 #, no-wrap
 msgid "figures/ipt_help_dialog.png"
-msgstr ""
+msgstr "figures/ipt_help_dialog.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
 msgid "To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2)."
-msgstr ""
+msgstr "適切なデータが入力されていることを確認するため、フィールドは検証され、記入を補助する情報メッセージがユーザーに返されます（図2）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
 #, no-wrap
 msgid "Screenshot of the field validation message displayed when an email field is submitted with an irregular email address."
-msgstr ""
+msgstr "Eメールフィールドに正しくないEメールアドレスが記入された場合に表示されるフィールド検証メッセージのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
 #, no-wrap
 msgid "figures/ipt_field_validation.png"
-msgstr ""
+msgstr "figures/ipt_field_validation.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
 msgid "For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example."
-msgstr ""
+msgstr "参考までに、GBIFメタデータプロファイルの各要素の説明と、その例を以下に示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:72
 msgid "The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation."
-msgstr ""
+msgstr "IPTはメタデータ文書を公開し、GBIFメタデータプロファイルに照らして検証されるようにするので、ユーザーは検証を気にする必要はありません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
 msgid "If at any time the metadata are modified, the user only has to update the document and click “Publish” on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr ""
+msgstr "メタデータが変更されたら、ユーザーはドキュメントを更新し、リソース管理ページの「公開」ボタンをクリックするだけで、新しいバージョンのドキュメント（リソース）を公開することができます（図3）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
 #, no-wrap
 msgid "Screenshot of the Published Versions section of the Manage Resource page of the IPT."
-msgstr ""
+msgstr "IPTのリソース管理ページの「公開済みバージョン」セクションのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
 #, no-wrap
 msgid "figures/ipt_published_versions.png"
-msgstr ""
+msgstr "figures/ipt_published_versions.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79
 msgid "At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable."
-msgstr ""
+msgstr "リソース管理者は、いつでもインターネット上でリソースを公開し、その後GBIFに登録することで、グローバルに発見できるようにすることを選択することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:80
 #, no-wrap
 msgid "Publishing metadata using the GBIF Metadata Template"
-msgstr ""
+msgstr "GBIFメタデータテンプレートを用いたメタデータの公開"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
 msgid "The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template → 2. IPT metadata editor) can be used to generate a valid resource metadata document."
-msgstr ""
+msgstr "GBIFメタデータテンプレートは、原稿のテンプレートと同様に、リソースのメタデータを簡単に記入するためのものです。メタデータ作成者は、テンプレートにデータを入力した後、メタデータエディタを介してIPTにデータを入力する必要があります。必須項目はすべてはっきり表示されます。IPTのメタデータエディタは、すべての必須フィールドが入力されていること、および国名フィールドなど統制語彙を使用するフィールドが正しく入力されていることを確認します。また、IPTは生成されたメタデータドキュメントが有効なXMLであることを確認し、GBIFメタデータプロファイルに照らして検証を行います。最終的には、この2段階のプロセス（1. メタデータテンプレート → 2. IPTメタデータエディタ）を用いて、有効なリソースメタデータ・ドキュメントを生成することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:85
 msgid "Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example."
-msgstr ""
+msgstr "フィールドの意味について疑問がある場合は、このガイドを参照して、対応する要素の説明とその例を調べてみてください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:86
 #, no-wrap
 msgid "Publishing metadata manually"
-msgstr ""
+msgstr "メタデータを手動で公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
 msgid "Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: *1.1*.  Refer to the following list to ensure it is completed properly:"
-msgstr ""
+msgstr "GBIFメタデータプロファイルの最新バージョン（*1.1*）に準拠した独自のEML XMLファイルを作成したい非IPTユーザー向けの簡単な手順です。以下のリストを参照し、正しく完成させてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:93
 msgid "Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>`."
-msgstr ""
+msgstr "`<eml:eml>`ルート要素には、GBIFメタデータプロファイル バージョン1.1向けのスキーマロケーションを使用します。<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:94
 msgid "Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1st version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2nd version, and so on."
-msgstr ""
+msgstr "`<eml:eml>`ルート要素内に`packageId`属性を設定します。`packageId`は、そのドキュメントで固定されているグローバルにユニークなIDである必要があります。文書が変更されるたびに、新しい`packageId`が割り当てられなければなりません。例えば、最初のバージョンのドキュメントには`packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'、2番目には`packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'のように指定します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
