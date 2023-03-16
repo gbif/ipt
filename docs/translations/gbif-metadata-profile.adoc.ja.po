@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-16 03:06\n"
+"PO-Revision-Date: 2023-03-16 04:04\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -341,18 +341,18 @@ msgstr "`<eml:eml>`ルート要素内に`packageId`属性を設定します。`p
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
 msgid "Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version."
-msgstr ""
+msgstr "スキーマで指定されたすべての必須メタデータ要素と、必要な追加メタデータ要素を記入します。GBIFメタデータプロファイルの旧バージョンを使用している既存のEMLファイルを更新する場合、本バージョンの新機能のリストについては、以下のセクションを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:96
 msgid "Ensure the EML file is valid XML. For assistance, refer to <<Validation of metadata,this section>>."
-msgstr ""
+msgstr "EMLファイルが有効な XMLであることを確認します。<<Validation of metadata,このセクション>>を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:97
 #, no-wrap
 msgid "Validation of metadata"
-msgstr ""
+msgstr "メタデータのバリデーション"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:100
