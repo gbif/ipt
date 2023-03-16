@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2023-03-16 02:08\n"
+"PO-Revision-Date: 2023-03-16 03:06\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -89,21 +89,21 @@ msgstr "既存のDOIをデータセットに割り当てるには、公開者は
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:28
 msgid "_If the existing DOI was only reserved, it will be deleted if you try to delete it. If the existing DOI was registered, it will not be deleted if you try to delete it._"
-msgstr ""
+msgstr "_既存のDOIを削除しようとすると、既存のDOIが予約のみであった場合は削除されますが、登録されていた場合、削除されません。_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:30
 msgid "The DOI will get updated the next time the resource is published, provided the resource is publicly available. This results in a major version change."
-msgstr ""
+msgstr "DOIは、リソースが一般に公開されている場合、次回公開時に更新されます。このときメジャーバージョンが変更されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:32
 msgid "A graphical representation of this workflow is below:"
-msgstr ""
+msgstr "このワークフローを図にすると、以下のようになります。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:33
 #, no-wrap
 msgid "ipt2/v22/AssignExistingDOI.png"
-msgstr ""
+msgstr "ipt2/v22/AssignExistingDOI.png"
 
