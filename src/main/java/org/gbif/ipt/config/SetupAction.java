@@ -58,6 +58,7 @@ public class SetupAction extends BaseAction {
   private static final long serialVersionUID = 4726973323043063968L;
 
   private final ConfigManager configManager;
+  private final AppConfig cfg;
   private final UserAccountManager userManager;
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
@@ -75,7 +76,8 @@ public class SetupAction extends BaseAction {
   protected String proxy;
   // can't pass a literal boolean to ftl, using int instead...
   protected Integer ignoreUserValidation = 0;
-  private boolean setup2 = false;
+  private boolean setupDefaultAdministrator = false;
+  private boolean setupPublicUrl = false;
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
@@ -86,6 +88,7 @@ public class SetupAction extends BaseAction {
                      ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
                      ExtensionManager extensionManager, HttpClient client) {
     super(textProvider, cfg, regManager);
+    this.cfg = cfg;
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
@@ -178,23 +181,35 @@ public class SetupAction extends BaseAction {
     this.proxy = proxy;
   }
 
-  public void setSetup2(boolean setup2) {
-    this.setup2 = setup2;
+  public void setSetupDefaultAdministrator(boolean setupDefaultAdministrator) {
+    this.setupDefaultAdministrator = setupDefaultAdministrator;
   }
 
-  /**
-   * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be
-   * careful not to require an admin!
-   */
-  public String setup() {
-    if (isHttpPost() && dataDirPath != null) {
+  public void setSetupPublicUrl(boolean setupPublicUrl) {
+    this.setupPublicUrl = setupPublicUrl;
+  }
+
+  public String setupDisclaimer() {
+    if (dataDir.isConfigured()) {
+      // the data dir is already/now configured, skip the first setup step
+      LOG.info("Skipping setup disclaimer step");
+      return SUCCESS;
+    }
+
+    if (isHttpPost()) {
       // since IPT v2.2, user must check that they have read and understood disclaimer
       if (!readDisclaimer) {
         addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
         return INPUT;
+      } else {
+        return SUCCESS;
       }
     }
 
+    return INPUT;
+  }
+
+  public String setupDataDirectory() {
     if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty()))
         || (isHttpPost() && dataDirPath != null)) {
 
@@ -202,7 +217,10 @@ public class SetupAction extends BaseAction {
 
       File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
-        if (dd.isAbsolute()) {
+        if (StringUtils.isEmpty(dataDirPath)) {
+          addFieldError("dataDirPath",
+              getText("validation.required", new String[] {getText("admin.config.setup.datadir")}));
+        } else if (dd.isAbsolute()) {
           boolean created = configManager.setDataDir(dd);
           if (created) {
             addActionMessage(getText("admin.config.setup.datadir.created"));
@@ -210,7 +228,7 @@ public class SetupAction extends BaseAction {
             addActionMessage(getText("admin.config.setup.datadir.reused"));
           }
         } else {
-          addActionError(getText("admin.config.setup.datadir.absolute", new String[] {dataDirPath}));
+          addFieldError("dataDirPath", getText("admin.config.setup.datadir.absolute"));
         }
       } catch (InvalidConfigException e) {
         LOG.warn("Failed to setup datadir: " + e.getMessage(), e);
@@ -221,71 +239,130 @@ public class SetupAction extends BaseAction {
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
         addActionError(msg);
       }
     }
 
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
-      LOG.info("Skipping setup step 1");
+      LOG.info("Skipping setup data directory step");
       return SUCCESS;
     }
+
     return INPUT;
   }
 
-  /**
-   * Method called when setting up the IPT for the very first time. The admin user, mode, base URL, and proxy are set.
-   *
-   * @return Struts Action String
-   */
-  public String setup2() {
-    // first check if a data directory exists.
+  public String setupDefaultAdministrator() {
+    // check if everything is already configured
+    if (configManager.setupComplete() && configManager.isBaseURLValid()) {
+      addActionMessage(getText("admin.config.setup2.existingFound"));
+      return SUCCESS;
+    }
+
+    // check if a data directory exists
     if (!dataDir.isConfigured()) {
       addActionWarning(getText("admin.config.setup2.datadir.notExist"));
       return ERROR;
     }
-    // second check if the selected datadir contains an admin user already
-    if (configManager.setupComplete()) {
-      if (configManager.isBaseURLValid()) {
-        addActionMessage(getText("admin.config.setup2.existingFound"));
-        return SUCCESS;
-      } else if (!isHttpPost()) {
-        // the only way here is if this is a new deploy over an old data dir and the old base URL is bad
-        baseURL = cfg.getBaseUrl();
-        proxy = cfg.getProxy();
-        List<User> admins = userManager.list(User.Role.Admin);
-        if (admins != null && !admins.isEmpty()) {
-          user = admins.get(0);
+
+    // check if the selected datadir contains an admin user already
+    List<User> admins = userManager.list(Role.Admin);
+    if (!isHttpPost() && admins != null && !admins.isEmpty()) {
+      return SUCCESS;
+    }
+
+    // if validation passed - redirect to next step
+    if (isHttpPost()) {
+      user.setRole(Role.Admin);
+
+      try {
+        // now create the user
+        if (ignoreUserValidation == 0) {
+          // confirm password
+          userManager.create(user);
+          user.setLastLoginToNow();
+          userManager.save();
+
+          userManager.setSetupUser(user);
+
+          // login as new admin
+          session.put(Constants.SESSION_USER, user);
+
+          return SUCCESS;
         }
-        ignoreUserValidation = 1;
-        addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible"));
+      } catch (IOException e) {
+        LOG.error(e);
+        addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
+      } catch (AlreadyExistingException e) {
+        addFieldError("user.email", getText("admin.config.setup2.nonadmin"));
       }
     }
+
+    return INPUT;
+  }
+
+  public String setupMode() {
+    // check if everything is already configured
+    if (configManager.setupComplete() && configManager.isBaseURLValid()) {
+      addActionMessage(getText("admin.config.setup2.existingFound"));
+      return SUCCESS;
+    }
+
+    // check if the selected datadir contains an admin user already
+    List<User> admins = userManager.list(Role.Admin);
+    if (!isHttpPost() && admins.isEmpty()) {
+      return ERROR;
+    } else if (isHttpPost()) {
+      if (getModeSelected() == null) {
+        addFieldError("modeSelected", getText("admin.config.setup2.nomode"));
+        return INPUT;
+      } else {
+        // set IPT type: registry URL
+        if (getModeSelected().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
+          cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
+          LOG.info("Production mode has been selected");
+        } else {
+          cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
+          LOG.info("Test mode has been selected");
+        }
+
+        return SUCCESS;
+      }
+    }
+
+    return INPUT;
+  }
+
+  public String setupPublicUrl() {
+    // check if everything but public URL is already configured (it must be for this step)
+    if (configManager.setupComplete()) {
+      if (configManager.isBaseURLValid()) {
+        return SUCCESS;
+      }
+    } else {
+      return ERROR;
+    }
+
+    // check if mode was set
+    REGISTRY_TYPE registryType = cfg.getRegistryType();
+    if (registryType == null) {
+      return ERROR;
+    }
+
+    // form has been submitted
     if (isHttpPost()) {
-      // we have submitted the form
       try {
-        boolean gotValidUser = false;
         URL burl = null;
         if (ignoreUserValidation == 0) {
-          user.setRole(Role.Admin);
-
-          // do user validation, but don't create user yet
-          gotValidUser = userValidation.validate(this, user);
-
           try {
             burl = new URL(baseURL);
           } catch (MalformedURLException e) {
             // checked in validate() already
           }
 
-          if (getModeSelected() == null) {
-            addFieldError("modeSelected", getText("admin.config.setup2.nomode"));
-            return INPUT;
-          }
-
           // set IPT type: registry URL
-          if (getModeSelected().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
+          if (registryType.name().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
             if (URLUtils.isLocalhost(burl)) {
               addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
               // get the correct baseURL from context
@@ -296,11 +373,6 @@ public class SetupAction extends BaseAction {
               LOG.info("Machine name used in base URL");
               addActionWarning(getText("admin.config.baseUrl.sameHostName"));
             }
-            cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
-            LOG.info("Production mode has been selected");
-          } else {
-            cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
-            LOG.info("Test mode has been selected");
           }
         }
 
@@ -319,50 +391,41 @@ public class SetupAction extends BaseAction {
         // save config
         configManager.saveConfig();
 
-        // everything else is valid, now create the user
-        if (ignoreUserValidation == 0 && gotValidUser) {
-          // confirm password
-          userManager.create(user);
-          user.setLastLoginToNow();
-          userManager.save();
-          // login as new admin
-          session.put(Constants.SESSION_USER, user);
-        }
-
         addActionMessage(getText("admin.config.setup2.success"));
         addActionMessage(getText("admin.config.setup2.next"));
-        userManager.setSetupUser(user);
+
         return SUCCESS;
-      } catch (IOException e) {
-        LOG.error(e);
-        addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
-      } catch (AlreadyExistingException e) {
-        addFieldError("user.email", getText("admin.config.setup2.nonadmin"));
       } catch (InvalidConfigException e) {
         if (e.getType() == TYPE.INACCESSIBLE_BASE_URL) {
           addFieldError("baseURL", getText("admin.config.baseUrl.inaccessible") + " " + baseURL);
         } else {
           LOG.error(e);
           addActionError(
-            getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
+              getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
         addActionError(msg);
       }
     }
+
     return INPUT;
   }
 
-  public String setup3() {
-    // install or update latest version of all default vocabularies
+  public String setupInstallationComplete() {
+    // check if everything is already configured (it must be for this step)
+    if (!configManager.setupComplete() || !configManager.isBaseURLValid()) {
+      return ERROR;
+    }
+
+    // install or update the latest version of all default vocabularies
     // (Done in loadDataDirConfig method).
     try {
       configManager.loadDataDirConfig();
       session.put(Constants.SESSION_USER, userManager.getSetupUser());
     } catch (InvalidConfigException e) {
-      String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[] {e.getMessage()});
+      String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
       LOG.error(msg, e);
       addActionWarning(msg, e);
     } catch (RegistryException e) {
@@ -390,7 +453,7 @@ public class SetupAction extends BaseAction {
         registrationManager.save();
       } catch (Exception e) {
         LOG.error(e);
-        addActionWarning(getText("admin.error.invalidConfiguration", new String[] {e.getMessage()}), e);
+        addActionWarning(getText("admin.error.invalidConfiguration", new String[]{e.getMessage()}), e);
       }
     }
     return INPUT;
@@ -402,14 +465,14 @@ public class SetupAction extends BaseAction {
 
   @Override
   public void validate() {
-    if (setup2) {
+    if (setupDefaultAdministrator) {
       if (ignoreUserValidation == 0 && user != null) {
         userValidation.validate(this, user);
         if (StringUtils.trimToNull(user.getPassword()) != null && !user.getPassword().equals(password2)) {
           addFieldError("password2", getText("validation.password2.wrong"));
         }
       }
-
+    } else if (setupPublicUrl) {
       if (StringUtils.trimToNull(baseURL) == null) {
         addFieldError("baseURL", getText("validation.baseURL.required"));
       } else if (!URLUtils.isURLValid(baseURL)) {
