@@ -218,7 +218,7 @@ public class EmlValidatorTest {
     eml.setUpdateFrequency(null);
     resource.setUpdateFrequency(null);
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
+    assertEquals("unknown", eml.getUpdateFrequency().getIdentifier());
 
     // valid, because will reuse auto-publishing interval as update frequency
     eml.setUpdateFrequency(null);
@@ -242,7 +242,7 @@ public class EmlValidatorTest {
     // defaults correct?
     assertEquals("eng", resource.getEml().getLanguage());
     assertEquals("eng", resource.getEml().getMetadataLanguage());
-    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
+    assertEquals("unknown", eml.getUpdateFrequency().getIdentifier());
   }
 
   /**
