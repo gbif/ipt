@@ -69,7 +69,7 @@ public class EmlValidator extends BaseValidator {
 
   /**
    * Returns a formatted URL string, prefixing it with a default scheme component if its not an absolute URL.
-   * 
+   *
    * @return the URL always having a scheme component, or null if incoming URL string was null or empty
    */
   public static String formatURL(String url) {
@@ -92,7 +92,7 @@ public class EmlValidator extends BaseValidator {
 
   /**
    * Checks if the incoming string representing a URL, is in fact a well-formed URI.
-   * 
+   *
    * @return true if the string is a well-formed URI
    */
   public static boolean isWellFormedURI(String url) {
@@ -130,7 +130,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Validate if all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
-   * 
+   *
    * @param action Action
    * @param resource resource
    * @return whether all sections validated or not
@@ -152,7 +152,7 @@ public class EmlValidator extends BaseValidator {
    * Validate an EML document, optionally only a part of it.
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
-   * 
+   *
    * @param action BaseAction
    * @param resource resource
    * @param section EML document section name
@@ -241,7 +241,7 @@ public class EmlValidator extends BaseValidator {
               action.addActionWarning(action.getText("eml.updateFrequency.default.interval", new String[] {resource.getUpdateFrequency().getIdentifier()}));
             } else {
               action.addActionWarning(action.getText("eml.updateFrequency.default"));
-              eml.setUpdateFrequency(MaintenanceUpdateFrequency.UNKOWN.getIdentifier());
+              eml.setUpdateFrequency(MaintenanceUpdateFrequency.UNKNOWN.getIdentifier());
             }
           }
 
@@ -934,7 +934,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Project page is empty. In other words, the user hasn't entered any information for a single field
    * yet. There is a total of 7 fields on this page.
-   * 
+   *
    * @param eml EML
    * @return whether the Project page is empty or not.
    */
@@ -962,7 +962,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Methods page is empty. In other words, the user hasn't entered any information for a single field
    * yet. There is a total of 4 fields on this page. The step description can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Methods page is empty or not.
    */
@@ -987,7 +987,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Citations page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 4 fields on this page. The bibliographic citation can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Citations page is empty or not.
    */
@@ -1011,7 +1011,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a Citation is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 2 fields.
-   * 
+   *
    * @param citation citation
    * @return whether the Citation is empty or not.
    */
@@ -1029,7 +1029,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Collections page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The curatorial section and collection section can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Collections page is empty or not.
    */
@@ -1063,7 +1063,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a JGTICuratorialUnit is empty. In other words, the user hasn't entered any information for a
    * single field yet.
-   * 
+   *
    * @param unit JGTICuratorialUnit
    * @return whether the JGTICuratorialUnit page is empty or not.
    */
@@ -1106,7 +1106,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Physical page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 6 fields on this page. The link section can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Physical page is empty or not.
    */
@@ -1128,7 +1128,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a PhysicalData is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   * 
+   *
    * @param data PhysicalData
    * @return whether the PhysicalData is empty or not.
    */
@@ -1151,7 +1151,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Keywords page is empty. In other words, the user hasn't entered any information for a single
    * field yet. There is a total of 2 fields on this page. The 2 fields together can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Keywords page is empty or not.
    */
@@ -1167,7 +1167,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Additional page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The alternate identifier can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Additional page is empty or not.
    */
@@ -1195,7 +1195,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Temporal page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The temporal coverages can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Temporal page is empty or not.
    */
@@ -1217,7 +1217,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a single TemporalCoverage is empty. In other words, the user hasn't entered any information for a
    * single field yet.
-   * 
+   *
    * @param cov TemporalCoverage
    * @return whether the TemporalCoverage is empty or not.
    */
@@ -1239,7 +1239,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Taxonomic page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The taxonomic coverages can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Taxonomic page is empty or not.
    */
@@ -1257,7 +1257,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a TaxonomicCoverage is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   * 
+   *
    * @param cov TaxonomicCoverage
    * @return whether the TaxonomicCoverage is empty or not.
    */
@@ -1280,7 +1280,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if a TaxonKeyword is empty. In other words, the user hasn't entered any information for a single
    * field yet.
-   * 
+   *
    * @param word TaxonKeyword
    * @return whether the TaxonKeyword is empty or not.
    */
@@ -1297,7 +1297,7 @@ public class EmlValidator extends BaseValidator {
   /**
    * Determine if the Geo page is empty. In other words, the user hasn't entered any information for a single
    * field yet. The geo coverages can be multiple.
-   * 
+   *
    * @param eml EML
    * @return whether the Geo page is empty or not.
    */

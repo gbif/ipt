@@ -307,7 +307,7 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unkown'}" requiredField=true />
+                                <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unknown'}" requiredField=true />
                             </div>
 
                             <!-- Intellectual Rights -->
