@@ -232,4 +232,20 @@ public class Vocabulary implements Comparable, Serializable {
   public void setIssuedDateAsString(String dateString) throws ParseException {
     issued = DateUtils.calendarDate(dateString);
   }
+
+  @Override
+  public String toString() {
+    return "Vocabulary{" +
+      "uriString='" + uriString + '\'' +
+      ", uriResolvable=" + uriResolvable +
+      ", title='" + title + '\'' +
+      ", description='" + description + '\'' +
+      ", subject='" + subject + '\'' +
+      ", isLatest=" + isLatest +
+      ", issued=" + issued +
+      ", link=" + link +
+      ", concepts=" + concepts +
+      ", modified=" + modified +
+      '}';
+  }
 }

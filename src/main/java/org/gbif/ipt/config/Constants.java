@@ -65,7 +65,7 @@ public final class Constants {
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
   public static final String VOCAB_URI_RANKS = "http://rs.gbif.org/vocabulary/gbif/rank";
   public static final String VOCAB_URI_ROLES = "http://rs.gbif.org/vocabulary/gbif/agentRole";
-  public static final String VOCAB_URI_UPDATE_FREQUENCIES = "http://rs.gbif.org/sandbox/vocabulary/eml/update_frequency_2_2.xml";
+  public static final String VOCAB_URI_UPDATE_FREQUENCIES = "http://rs.gbif.org/vocabulary/eml/updateFrequency";
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String VOCAB_URI_BASIS_OF_RECORDS = "http://rs.tdwg.org/dwc/dwctype/";
