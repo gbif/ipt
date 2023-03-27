@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2023-03-16 02:08\n"
+"PO-Revision-Date: 2023-03-27 02:37\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -28,32 +28,32 @@ msgstr "前提"
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:1
 #, no-wrap
 msgid "Install Tomcat 8 on Windows"
-msgstr ""
+msgstr "Tomcat 8をWindowsにインストールする"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
 msgid "This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations."
-msgstr ""
+msgstr "このチュートリアルでは、Windows 8.1 ProにApache Tomcat Java Servlet 8をインストールする方法について説明します。このドキュメントは、他のバージョンのTomcatでの動作は確認されていません。詳細については、それぞれのソフトウェアのインストールにフォーカスした説明を参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 msgid "Please make sure the following conditions (software and version) are met before you continue."
-msgstr ""
+msgstr "以下の条件（ソフトウェア、バージョン）を満たしていることをご確認の上、お進みください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:9
 msgid "The client version of Windows 8.1 Pro. This tutorial is written based on the 64-bit version of Windows 8.1 Professional."
-msgstr ""
+msgstr "Windows 8.1 Proのクライアント版。このチュートリアルは、64ビット版のWindows 8.1 Professionalをベースに書かれています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:10
 msgid "The latest security upgrades."
-msgstr ""
+msgstr "最新のセキュリティアップグレード。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:11
 msgid "Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\\Java\\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder)."
-msgstr ""
+msgstr "Java 8 Frameworkがインストールされていること。このチュートリアルは、バージョン jre1.8.0_60 (Java Version 8 Update 60) に基づいて書かれています。JREのインストールは、http://java.com/en/download/ を参照してください。このページは、通常、あなたのOSを検出し、ダウンロードする正しいバージョンのヒントを与えます。JavaがC:\\Program Files (x86)\\Java\\jre8 にインストールされていると仮定します。（Windows 8.1のテスターからの注記：C:\\Program FilesディレクトリにJavaをインストールするとうまく動作せず、(x86)フォルダーに入れる必要がありました。）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:12
