@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-27 03:59\n"
+"PO-Revision-Date: 2023-03-27 05:29\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -770,18 +770,34 @@ msgid "| Term                   | Definition\n\n"
 "| specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde.\n\n"
 "| jgtiCuratorialUnit\n"
 "a| A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by\n\n"
-msgstr ""
+msgstr "| 用語                 | 定義\n\n"
+"| dateStamp | メタデータ文書が作成または変更された日付と時刻。例：2002-10-23T18:13:51.235+01:00\n\n"
+"| metadataLanguage | メタデータ文書（メタデータで記述されるリソースとは異なる）が記述されている言語。ISO 639-2/Tの3文字の言語コードとISO 3166-1の3文字の国コードで構成される。例：en_GB\n\n"
+"| hierarchyLevel | メタデータが適用されるデータセットレベル。デフォルトは\"dataset\"になっています。例：dataset\n\n"
+"| {eml-location}/eml-literature.html#citation[citation] |作品自体の引用です。See {eml-location}/eml-literature.html#citation[eml]\n\n"
+"| bibliography | データセットに関連した、または使用された文献のリスト（下記参照）。\n\n"
+"| physical |  データオブジェクトの内部・外部の特性や分布を記述させるすべての要素のコンテナ要素（例：dataObject、dataFormat、distribution）。繰り返すことができます。\n\n"
+"| resourceLogoUrl | リソースに関連するロゴのURL。例：http://www.gbif.org/logo.jpg\n\n"
+"| parentCollectionIdentifier | コレクションフィールドのサブフィールドです（オプション）。このサブコレクションの親コレクションに与えられる識別子で、コレクションとサブコレクションの階層を構築することができます。\n\n"
+"| collectionName | コレクションフィールドのサブフィールドです（オプション）。ローカル言語でのコレクションの正式名称です。\n\n"
+"| collectionIdentifier | コレクションフィールドのサブフィールドです（オプション）。コレクションのURI（LSIDまたはURL）です。RDFでは、コレクションリソースのURIとして使用されます。\n\n"
+"| formationPeriod | コレクションが収集された期間についてのテキスト記述。例：\"Victorian\", or \"1922 - 1932\", or \"c. 1750\".\n\n"
+"| livingTimePeriod | 生物試料が生きていた期間（古生物学的コレクションの場合）。\n\n"
+"| specimenPreservationMethod | 非生物コレクションの物理的な劣化を防ぐために使用されたプロセスまたは技法を示すピックリストキーワード。Specimen Preservation Method Type Term語彙からのインスタンスが含まれることが期待されます。例：formaldehyde\n\n"
+"| jgtiCuratorialUnit\n"
+"a| 定量的な記述子（検体数、サンプル数、バッチ数）。実際の定量化は、以下の方法でカバーできます。\n\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:360
 #, no-wrap
 msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
-msgstr ""
+msgstr "実際の定量化は、コレクション内の「JGI-units」の正確な数と不確かさの尺度（±x）でカバーできます； \n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:363
 #, no-wrap
 msgid "a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n\n"
 "The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
-msgstr ""
+msgstr "数値の範囲（x～x）で、最大値が省略された場合、最小値が正確な数を表します。\n\n"
+"議論の結果、定量化は、まだデジタル化されていない標本だけでなく、すべての標本を包含する必要があるとの結論に達しました。これは、あまり頻繁に数を更新する必要がないようにするためです。非公開データ（デジタル化されていない、またはアクセスできない）の数は、JGTI-dataとは対照的に、GBIFの数から計算することができます。\n"
 
