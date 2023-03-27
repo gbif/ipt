@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-27 02:37\n"
+"PO-Revision-Date: 2023-03-27 03:59\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -699,7 +699,10 @@ msgid "| Term       | Definition\n\n"
 "| {eml-location}/eml-coverage.html#beginDate[beginDate] | Subfield of rangeOfDates field: It may be used multiple times with a endDate field to document multiple date ranges.   A single time stamp signifying the beginning of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date.  E.g. 2010-09-20\n\n"
 "| {eml-location}/eml-coverage.html#endDate[endDate]| Subfield of rangeOfDates field: It may be used multiple times with a beginDate field to document multiple date ranges.  A single time stamp signifying the end of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date. E.g. 2010-09-20.\n\n"
 "| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | The SingleDateTime field is intended to describe a single date and time for an event.\n"
-msgstr ""
+msgstr "| 用語       | 定義\n\n"
+"| {eml-location}/eml-coverage.html#beginDate[beginDate] | rangeOfDatesフィールドのサブフィールドです。これは、複数の日付範囲を記録するためにendDateフィールドと複数回使用することができる、ある期間の開始を意味する単一のタイムスタンプです。カレンダー日付フィールドは、年、月、日を与え、日付を表現するために使用されます。書式はISO 8601に準拠したものでなければなりません。EMLで推奨される書式はYYYY-MM-DDで、Yは4桁の年、Mは2桁の月コード（01〜12、1月＝01）、Dは2桁の月日（01〜31）です。このフィールドは、日付の年の部分のみを入力する場合にも使用できます。例：2010-09-20\n\n"
+"| {eml-location}/eml-coverage.html#endDate[endDate]| rangeOfDatesフィールドのサブフィールドです。これは、複数の日付範囲を記録するためにbeginDateフィールドと複数回使用することができる、ある期間の終了を意味する単一のタイムスタンプです。カレンダー日付フィールドは、年、月、日を与え、日付を表現するために使用されます。書式は、国際標準化機構の規格8601に準拠したものでなければなりません。EMLで推奨される書式はYYYY-MM-DDで、Yは4桁の年、Mは2桁の月コード（01〜12、1月は01）、Dは2桁の月日（01〜31）です。このフィールドは、日付の年の部分のみを入力する場合にも使用できます。例：2010-09-20\n\n"
+"| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | SingleDateTimeフィールドは、イベントの単一の日時を記述するためのものです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
@@ -715,7 +718,12 @@ msgid "| Term            | Definition\n\n"
 "| {eml-location}/eml-methods.html#sampling[sampling]  | Description of sampling procedures including the geographic, temporal and taxonomic coverage of the study.\n\n"
 "| {eml-location}/eml-methods.html#studyExtent[studyExtent] | Subfield of the sampling field. The coverage field allows for a textual description of the specific sampling area, the sampling frequency (temporal boundaries, frequency of occurrence), and groups of living organisms sampled (taxonomic coverage). The field studyExtent represents both a specific sampling area and the sampling frequency (temporal boundaries, frequency of occurrence). The geographic studyExtent is usually a surrogate (representative area of) for the larger area documented in the \"studyAreaDescription\".\n\n"
 "| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | Subfield of the sampling field. The samplingDescription field allows for a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
-msgstr ""
+msgstr "| 用語            | 定義\n\n"
+"| {eml-location}/eml-methods.html#methodStep[methodStep] | methodStepフィールドは、データオブジェクトを生成するために行われた一連の手順を記録する要素のセットを繰り返し使用できます。これには、手順のテキスト記述、関連文献、ソフトウェア、計測器、ソースデータ、および実施された品質管理措置が含まれます。\n"
+"| {eml-location}/eml-methods.html#qualityControl[qualityControl] | qualityControlフィールドには、関連するメソッドステップから得られるデータの品質を管理、または評価するために取られた措置を記述することができます。\n\n"
+"| {eml-location}/eml-methods.html#sampling[sampling]  | 調査の地理的、時間的、分類学的範囲を含むサンプリング手順の説明です。\n\n"
+"| {eml-location}/eml-methods.html#studyExtent[studyExtent] | サンプリングフィールドのサブフィールドです。coverageフィールドは、特定のサンプリングエリア、サンプリング頻度（時間的境界、出現頻度）、およびサンプリングされた生物群（分類学的範囲）をテキストで記述することができます。フィールドstudyExtentは、特定のサンプリングエリアとサンプリング頻度（時間的境界、出現頻度）の両方を表します。geographic studyExtentは通常、\"studyAreaDescription\"に記載されたより広い範囲の代用（代表的な地域）である。\n\n"
+"| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | サンプリングフィールドのサブフィールドです。samplingDescriptionフィールドは、研究プロジェクトで使用されたサンプリング手順について、テキストベース・人間可読な説明を記入できます。この要素の内容は、ジャーナル論文のメソッドセクションに見られるサンプリング手順の記述と同様です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
@@ -728,7 +736,9 @@ msgstr "リソースの権利管理に関する声明文、またはそのよう
 msgid "| Term           | Definition\n\n"
 "| {eml-location}/eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n\n"
 "| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
-msgstr ""
+msgstr "| 用語          | 定義\n\n"
+"| {eml-location}/eml-dataset.html#purpose[purpose] | このデータセットの目的についての説明。\n\n"
+"| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | リソースの権利管理に関する記述、またはその情報を提供するサービスのリファレンス。権利情報には、知的財産権（IPR）、著作権、各種財産権などが含まれます。データセットの場合、この権利には使用に関する要件、帰属に関する要件、または所有者が課したいその他の要件が含まれる場合があります。例：© 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
