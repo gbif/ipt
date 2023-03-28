@@ -319,8 +319,12 @@ public class MetadataAction extends ManagerBaseAction {
 
         // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
         frequencies = new LinkedHashMap<>();
-        frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
-
+        // temporary fix: remove "unkown" from vocabulary
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false)
+          .entrySet()
+          .stream()
+          .filter(p -> !"unkown".equals(p.getKey()))
+          .forEach(p -> frequencies.put(p.getKey(), p.getValue()));
 
         // sanitize intellectualRights - pre-v2.2 text was manually entered and may have characters that break js
         if (getEml().getIntellectualRights() != null) {
@@ -627,7 +631,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
-   * vocabulary {@link -linkoffline http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
+   * vocabulary <a href="http://rs.gbif.org/vocabulary/eml/update_frequency.xml">http://rs.gbif.org/vocabulary/eml/update_frequency.xml</a>.
    *
    * @return update frequencies map
    */
