@@ -402,10 +402,10 @@
                               <div class="col-lg-6">
                                   <#if (mediaLicenseItemIndex > -1)>
                                     <input type="hidden" name="metadata.licenses[${mediaLicenseItemIndex}].scope" value="MEDIA" required>
-                                      <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" />
+                                      <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" requiredField=true />
                                   <#else>
                                     <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA" required>
-                                      <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" />
+                                      <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
                                   </#if>
                               </div>
                             </div>
