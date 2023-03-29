@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class GbifCompatibleLicenseValidator implements ConstraintValidator<GbifCompatibleLicense, List<License>> {
 
-  private static final String[] GBIF_COMPATIBLE_LICENSES = {"CC0", "CC-BY", "CC-BY-NC"};
+  private static final String[] GBIF_COMPATIBLE_LICENSES = {"CC0-1.0", "CC-BY-4.0", "CC-BY-NC-4.0"};
 
   @Override
   public boolean isValid(List<License> value, ConstraintValidatorContext context) {

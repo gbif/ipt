@@ -53,6 +53,14 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private DataPackageMetadataSection next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
 
+  public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
+
+  static {
+    CAMTRAP_SUPPORTED_LICENSES_VOCABULARY.put("CC0-1.0", "CC0-1.0");
+    CAMTRAP_SUPPORTED_LICENSES_VOCABULARY.put("CC-BY-4.0", "CC-BY-4.0");
+    CAMTRAP_SUPPORTED_LICENSES_VOCABULARY.put("CC-BY-NC-4.0", "CC-BY-NC-4.0");
+  }
+
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
                                    ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator) {
@@ -239,7 +247,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * @return list of organisations associated to IPT that can publish resources
+   * @return map of organisations associated to IPT that can publish resources
    */
   public Map<String, String> getOrganisations() {
     return organisations;
@@ -247,6 +255,10 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenseScopes() {
     return CamtrapLicense.Scope.VOCABULARY;
+  }
+
+  public Map<String, String> getLicenseNames() {
+    return CAMTRAP_SUPPORTED_LICENSES_VOCABULARY;
   }
 
   public Map<String, String> getContributorRoles() {

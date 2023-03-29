@@ -369,6 +369,50 @@
                             </div>
                         </div>
 
+                      <div class="my-md-3 p-3">
+                          <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                          <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
+
+                          <#assign dataLicenseItemIndex = -1 />
+                          <#assign mediaLicenseItemIndex = -1 />
+
+                        <#list metadata.licenses! as item>
+                            <#if (item.scope)?has_content && item.scope == "data">
+                                <#assign dataLicenseItemIndex = item_index />
+                            <#elseif (item.scope)?has_content && item.scope == "media">
+                                <#assign mediaLicenseItemIndex = item_index />
+                            </#if>
+                        </#list>
+
+                        <!-- List of Licenses -->
+                        <div>
+                            <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
+                          <div id="license-items">
+                            <div class="row g-3 mt-1">
+                              <div class="col-lg-6">
+                                  <#if (dataLicenseItemIndex > -1)>
+                                    <input type="hidden" name="metadata.licenses[${dataLicenseItemIndex}].scope" value="DATA" required>
+                                      <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="${metadata.licenses[dataLicenseItemIndex].name}" requiredField=true/>
+                                  <#else>
+                                    <input type="hidden" name="metadata.licenses[0].scope" value="DATA" required>
+                                      <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
+                                  </#if>
+                              </div>
+
+                              <div class="col-lg-6">
+                                  <#if (mediaLicenseItemIndex > -1)>
+                                    <input type="hidden" name="metadata.licenses[${mediaLicenseItemIndex}].scope" value="MEDIA" required>
+                                      <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" />
+                                  <#else>
+                                    <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA" required>
+                                      <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" />
+                                  </#if>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                         <div class="my-md-3 p-3">
                             <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
                             <#assign addSourceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.source'/></#assign>
@@ -412,58 +456,6 @@
                                             </svg>
                                         </span>
                                         <span>${addSourceLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="my-md-3 p-3">
-                            <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
-                            <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
-
-                            <!-- List of Licenses -->
-                            <div>
-                                <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
-                                <div id="license-items">
-                                    <#list metadata.licenses as item>
-                                        <div id="license-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="license-removeLink-${item_index}" href="" class="metadata-action-link removeLicenseLink">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeLicenseLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.license.title" />
-                                            </div>
-<#--                                            <div class="col-lg-6">-->
-<#--                                                <@input name="metadata.licenses[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />-->
-<#--                                            </div>-->
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <#if (metadata.licenses[item_index].scope)??>
-                                                    <@select name="metadata.licenses[${item_index}].scope" help="i18n" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="${metadata.licenses[item_index].scope!}" requiredField=true/>
-                                                <#else>
-                                                    <@select name="metadata.licenses[${item_index}].scope" help="i18n" includeEmpty=true compareValues=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
-                                                </#if>
-                                            </div>
-                                        </div>
-                                    </#list>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-license" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addLicenseLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -538,12 +530,6 @@
                 <span>${removeLicenseLink?lower_case?cap_first}</span>
             </a>
         </div>
-        <div class="col-lg-6">
-            <@input name="metadata.licenses.title" help="i18n" i18nkey="datapackagemetadata.license.title" />
-        </div>
-<#--        <div class="col-lg-6">-->
-<#--            <@input name="metadata.licenses.path" help="i18n" i18nkey="datapackagemetadata.license.path" requiredField=true />-->
-<#--        </div>-->
         <div class="col-lg-6">
             <@input name="metadata.licenses.name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
         </div>
