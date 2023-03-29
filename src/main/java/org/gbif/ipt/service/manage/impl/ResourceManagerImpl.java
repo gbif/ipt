@@ -195,6 +195,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
