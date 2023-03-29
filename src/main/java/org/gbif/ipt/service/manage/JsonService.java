@@ -11,19 +11,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage;
+package org.gbif.ipt.service.manage;
 
-public enum DataPackageType {
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
 
-  CAMTRAP_DP("camtrap-dp");
+import java.io.File;
+import java.io.IOException;
 
-  private final String value;
+public interface JsonService {
 
-  DataPackageType(String value) {
-    this.value = value;
-  }
+  /**
+   * Read JSON from file.
+   */
+  <T> T readValue(File src, Class<T> valueType) throws IOException;
 
-  public String getValue() {
-    return value;
-  }
+  /**
+   * Write JSON to file.
+   */
+  void writeValue(File resultFile, Object value) throws IOException;
 }

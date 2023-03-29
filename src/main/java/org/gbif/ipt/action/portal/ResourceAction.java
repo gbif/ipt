@@ -28,6 +28,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -66,20 +67,20 @@ import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class ResourceAction extends PortalBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(ResourceAction.class);
 
-  private ObjectMapper jsonMapper;
+  private JsonService jsonService;
   private VocabulariesManager vocabManager;
   private ExtensionManager extensionManager;
   private List<Resource> resources;
@@ -111,13 +112,13 @@ public class ResourceAction extends PortalBaseAction {
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir,
-    ExtensionManager extensionManager) {
+                        ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir,
+                        ExtensionManager extensionManager, JsonService jsonService) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
-    this.jsonMapper = new ObjectMapper();
+    this.jsonService = jsonService;
   }
 
   @Override
@@ -176,10 +177,10 @@ public class ResourceAction extends PortalBaseAction {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, version);
     DataPackageMetadata result;
 
-    if (type != null && "camtrap-dp".equals(type)) {
-      result = jsonMapper.readValue(metadataFile, CamtrapMetadata.class);
+    if (CAMTRAP_DP.equals(type)) {
+      result = jsonService.readValue(metadataFile, CamtrapMetadata.class);
     } else {
-      result = jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
+      result = jsonService.readValue(metadataFile, DataPackageMetadata.class);
     }
 
     LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
@@ -486,10 +487,10 @@ public class ResourceAction extends PortalBaseAction {
       File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname);
       LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
 
-      if ("camtrap-dp".equals(type)) {
-        dpMetadata = jsonMapper.readValue(metadataFile, CamtrapMetadata.class);
+      if (CAMTRAP_DP.equals(type)) {
+        dpMetadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
       } else {
-        dpMetadata = jsonMapper.readValue(metadataFile, DataPackageMetadata.class);
+        dpMetadata = jsonService.readValue(metadataFile, DataPackageMetadata.class);
       }
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #" + getStringVersion() + " for resource " + shortname + " not found");

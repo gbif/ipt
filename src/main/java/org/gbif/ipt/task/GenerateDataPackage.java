@@ -23,6 +23,7 @@ import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
 
@@ -32,6 +33,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +54,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -71,6 +72,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private final Resource resource;
   private final SourceManager sourceManager;
+  private JsonService jsonService;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
   private Exception exception;
@@ -83,11 +85,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   @Inject
   public GenerateDataPackage(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
-                      SourceManager sourceManager, AppConfig cfg) throws IOException {
+                      SourceManager sourceManager, AppConfig cfg, JsonService jsonService) throws IOException {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;
     this.cfg = cfg;
+    this.jsonService = jsonService;
   }
 
   @Override
@@ -673,12 +676,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     setState(GenerateDataPackage.STATE.METADATA);
     try {
       File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
-      // TODO: 21/10/2022 bean?
-      ObjectMapper objectMapper = new ObjectMapper();
-      CamtrapMetadata camtrapMetadata = objectMapper.readValue(metadataFile, CamtrapMetadata.class);
+      CamtrapMetadata camtrapMetadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
 
       // Basic metadata
-      setDataPackageProperty("created", camtrapMetadata.getCreated());
+      setDataPackageProperty("created",
+        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(camtrapMetadata.getCreated()));
       setDataPackageProperty("version", camtrapMetadata.getVersion());
       setDataPackageStringProperty("title", camtrapMetadata.getTitle());
       setDataPackageCollectionProperty("contributors", camtrapMetadata.getContributors());

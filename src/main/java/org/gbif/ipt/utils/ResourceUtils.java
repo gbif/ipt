@@ -42,6 +42,8 @@ public class ResourceUtils {
 
   protected static final Logger LOG = LogManager.getLogger(ResourceUtils.class);
 
+  private static final ObjectMapper jsonMapper = new ObjectMapper();
+
   /*
    * Empty constructor.
    */
@@ -93,8 +95,6 @@ public class ResourceUtils {
 
     if (versionMetadataFile.exists()) {
       if (isDataPackageResource) {
-        // TODO: 22/10/2022 ObjectMapper creation every time
-        ObjectMapper jsonMapper = new ObjectMapper();
         DataPackageMetadata metadata;
         try {
           metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(schemaIdentifier));
