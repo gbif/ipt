@@ -22,6 +22,7 @@
     <!-- Avoid the terrible:
          "Developer Notification (set struts.devMode to false to disable this message):"
     -->
+    <Logger name="org.hibernate.validator.internal" level="ERROR"/>
     <Logger name="com.opensymphony.xwork2.interceptor.ParametersInterceptor" level="FATAL"/>
     <Logger name="freemarker" level="WARN"/>
 

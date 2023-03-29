@@ -14,6 +14,8 @@
     <!-- This logger is referred to in LoggingConfiguration.java, don't remove it. -->
     <Logger name="org.gbif"/>
 
+    <Logger name="org.hibernate.validator.internal" level="ERROR"/>
+
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
     <Logger name="com.networknt.schema" level="ERROR" />
