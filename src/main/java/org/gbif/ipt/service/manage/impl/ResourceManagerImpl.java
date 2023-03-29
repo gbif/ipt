@@ -75,6 +75,7 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.datapackage.DataPackageType;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
@@ -713,6 +714,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setShortname(shortname.toLowerCase());
     res.setCreated(new Date());
     res.setCreator(creator);
+
+    // make sure correct metadata class is set
+    if (DataPackageType.CAMTRAP_DP.getValue().equals(type)) {
+      res.setDataPackageMetadata(new CamtrapMetadata());
+    }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
     if (schemaIdentifier != null) {
@@ -1807,7 +1813,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           }
         }
 
-        // shortname persists as folder name, so xstream doesnt handle this:
+        // shortname persists as folder name, so xstream doesn't handle this:
         resource.setShortname(shortname);
 
         // infer coreType if null
