@@ -29,6 +29,7 @@ import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -82,7 +83,8 @@ public class AutoPublishedTest {
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),
       mock(SimpleTextProvider.class),
-      mock(RegistrationManager.class));
+      mock(RegistrationManager.class),
+      mock(JsonService.class));
   }
 
   public Resource getResource() {

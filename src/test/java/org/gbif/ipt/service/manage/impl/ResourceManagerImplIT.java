@@ -43,6 +43,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -173,7 +174,8 @@ public class ResourceManagerImplIT {
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManagerDataCite);
+        mockRegistrationManagerDataCite,
+        mock(JsonService.class));
 
     return Stream.of(
         Arguments.of(managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite)
