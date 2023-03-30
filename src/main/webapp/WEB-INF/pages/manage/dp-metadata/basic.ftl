@@ -392,7 +392,7 @@
                               <div class="col-lg-6">
                                   <#if (dataLicenseItemIndex > -1)>
                                     <input type="hidden" name="metadata.licenses[${dataLicenseItemIndex}].scope" value="DATA" required>
-                                      <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="${metadata.licenses[dataLicenseItemIndex].name}" requiredField=true/>
+                                      <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="${(metadata.licenses[dataLicenseItemIndex].name)!''}" requiredField=true/>
                                   <#else>
                                     <input type="hidden" name="metadata.licenses[0].scope" value="DATA" required>
                                       <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
