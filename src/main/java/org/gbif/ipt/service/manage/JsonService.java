@@ -13,13 +13,14 @@
  */
 package org.gbif.ipt.service.manage;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
+import org.gbif.ipt.service.manage.impl.JsonServiceImpl;
 
 import java.io.File;
 import java.io.IOException;
 
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(JsonServiceImpl.class)
 public interface JsonService {
 
   /**
