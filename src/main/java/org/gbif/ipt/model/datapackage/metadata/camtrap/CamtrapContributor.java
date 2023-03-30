@@ -18,6 +18,7 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageContributor;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -82,7 +83,7 @@ public class CamtrapContributor extends DataPackageContributor {
 
     private final String value;
     public final static Map<String, Role> CONSTANTS = new HashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (Role r : values()) {

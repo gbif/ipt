@@ -46,8 +46,6 @@ public class CamtrapMetadata extends DataPackageMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
 
-  public static final String CAMTRAP_PROFILE = "https://raw.githubusercontent.com/tdwg/camtrap-dp/0.6/camtrap-dp-profile.json";
-
   /**
    * Bibliographic/recommended citation for the package.
    */

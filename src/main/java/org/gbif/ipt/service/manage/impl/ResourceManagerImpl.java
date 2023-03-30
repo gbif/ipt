@@ -196,6 +196,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
@@ -209,7 +210,6 @@ import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
 import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
-import static org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata.CAMTRAP_PROFILE;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {

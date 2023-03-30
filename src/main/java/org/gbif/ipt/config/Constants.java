@@ -107,6 +107,7 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
 
   public static final String CAMTRAP_DP = "camtrap-dp";
+  public static final String CAMTRAP_PROFILE = "https://raw.githubusercontent.com/tdwg/camtrap-dp/0.6/camtrap-dp-profile.json";
 
   // Set of GBIF supported licenses
   public static final Set<String> GBIF_SUPPORTED_LICENSES;

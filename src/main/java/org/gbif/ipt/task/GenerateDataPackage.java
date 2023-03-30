@@ -62,6 +62,9 @@ import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.schema.Schema;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
+
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
   private enum STATE {
@@ -446,7 +449,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // add resource to package
     if (dataPackage == null) {
       dataPackage = new Package(Collections.singleton(packageResource));
-      dataPackage.setProperty("profile", schemaName);
+      if (CAMTRAP_DP.equals(schemaName)) {
+        dataPackage.setProperty("profile", CAMTRAP_PROFILE);
+      } else {
+        dataPackage.setProperty("profile", schemaName);
+      }
     } else {
       dataPackage.addResource(packageResource);
     }

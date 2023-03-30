@@ -18,6 +18,7 @@ import org.gbif.ipt.validation.ProjectMetadata;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -292,7 +293,7 @@ public class Project implements Serializable {
     OPPORTUNISTIC("opportunistic");
     private final String value;
     public final static Map<String, Project.SamplingDesign> CONSTANTS = new HashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (Project.SamplingDesign c : values()) {

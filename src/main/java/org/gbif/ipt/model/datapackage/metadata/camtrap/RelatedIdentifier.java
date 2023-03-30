@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.validation.OtherMetadata;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.gbif.ipt.validation.OtherMetadata;
 
 /**
  * Related identifier.
@@ -181,7 +182,7 @@ public class RelatedIdentifier implements Serializable {
     private final String value;
 
     private final static Map<String, RelatedIdentifier.RelatedIdentifierType> CONSTANTS = new LinkedHashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (RelatedIdentifier.RelatedIdentifierType c : values()) {
@@ -259,7 +260,7 @@ public class RelatedIdentifier implements Serializable {
     private final String value;
 
     private final static Map<String, RelatedIdentifier.RelationType> CONSTANTS = new LinkedHashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (RelatedIdentifier.RelationType c : values()) {
@@ -331,7 +332,7 @@ public class RelatedIdentifier implements Serializable {
     private final String value;
 
     private final static Map<String, RelatedIdentifier.ResourceTypeGeneral> CONSTANTS = new LinkedHashMap<>();
-    public final static Map<String, String> VOCABULARY = new HashMap<>();
+    public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
     static {
       for (RelatedIdentifier.ResourceTypeGeneral c : values()) {
