@@ -382,10 +382,16 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
+                                                                  <label for="metadata.taxonomic" class="form-label">
+                                                                    Language code
+                                                                  </label>
+                                                                  <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
+                                                                  <label for="metadata.taxonomic" class="form-label">
+                                                                    Vernacular name
+                                                                  </label>
+                                                                  <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
                                                                 </div>
                                                             </div>
                                                         </#list>
@@ -503,10 +509,16 @@
             </a>
         </div>
         <div class="col-lg-6">
-            <input class="form-control" type="text" id="vernacularNames-key" name="vernacularNames-key" value="">
+          <label for="metadata.taxonomic" class="form-label">
+            Language code
+          </label>
+          <input class="form-control" type="text" id="vernacularNames-key" name="vernacularNames-key" value="">
         </div>
         <div class="col-lg-6">
-            <input class="form-control" type="text" id="vernacularNames-value" name="vernacularNames-value" value="">
+          <label for="metadata.taxonomic" class="form-label">
+            Vernacular name
+          </label>
+          <input class="form-control" type="text" id="vernacularNames-value" name="vernacularNames-value" value="">
         </div>
     </div>
 
