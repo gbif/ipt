@@ -54,27 +54,8 @@ public class Geojson implements Serializable {
   @NotNull(message = "validation.camtrap.metadata.spatial.type.required", groups = GeographicScopeMetadata.class)
   private Geojson.Type type = Geojson.Type.POLYGON;
 
-  /**
-   * Coordinate Reference System (CRS)
-   * <p>
-   * The coordinate reference system (CRS) of a GeoJSON object is determined by its `crs` member (referred to as the CRS object below). If an object has no crs member, then its parent or grandparent object's crs member may be acquired. If no crs member can be so acquired, the default CRS shall apply to the GeoJSON object.
-   * <p>
-   * * The default CRS is a geographic coordinate reference system, using the WGS84 datum, and with longitude and latitude units of decimal degrees.
-   * <p>
-   * * The value of a member named `crs` must be a JSON object (referred to as the CRS object below) or JSON null. If the value of CRS is null, no CRS can be assumed.
-   * <p>
-   * * The crs member should be on the top-level GeoJSON object in a hierarchy (in feature collection, feature, geometry order) and should not be repeated or overridden on children or grandchildren of the object.
-   * <p>
-   * * A non-null CRS object has two mandatory members: `type` and `properties`.
-   * <p>
-   * * The value of the type member must be a string, indicating the type of CRS object.
-   * <p>
-   * * The value of the properties member must be an object.
-   * <p>
-   * * CRS shall not change coordinate ordering.
-   */
-  @JsonProperty("crs")
-  private Object crs;
+  @JsonProperty("coordinates")
+  private List<List<List<Double>>> coordinates = new ArrayList<>();
 
   /**
    * Bounding Box
@@ -114,52 +95,14 @@ public class Geojson implements Serializable {
     this.type = type;
   }
 
-  /**
-   * Coordinate Reference System (CRS)
-   * <p>
-   * The coordinate reference system (CRS) of a GeoJSON object is determined by its `crs` member (referred to as the CRS object below). If an object has no crs member, then its parent or grandparent object's crs member may be acquired. If no crs member can be so acquired, the default CRS shall apply to the GeoJSON object.
-   * <p>
-   * * The default CRS is a geographic coordinate reference system, using the WGS84 datum, and with longitude and latitude units of decimal degrees.
-   * <p>
-   * * The value of a member named `crs` must be a JSON object (referred to as the CRS object below) or JSON null. If the value of CRS is null, no CRS can be assumed.
-   * <p>
-   * * The crs member should be on the top-level GeoJSON object in a hierarchy (in feature collection, feature, geometry order) and should not be repeated or overridden on children or grandchildren of the object.
-   * <p>
-   * * A non-null CRS object has two mandatory members: `type` and `properties`.
-   * <p>
-   * * The value of the type member must be a string, indicating the type of CRS object.
-   * <p>
-   * * The value of the properties member must be an object.
-   * <p>
-   * * CRS shall not change coordinate ordering.
-   */
-  @JsonProperty("crs")
-  public Object getCrs() {
-    return crs;
+  @JsonProperty("coordinates")
+  public List<List<List<Double>>> getCoordinates() {
+    return coordinates;
   }
 
-  /**
-   * Coordinate Reference System (CRS)
-   * <p>
-   * The coordinate reference system (CRS) of a GeoJSON object is determined by its `crs` member (referred to as the CRS object below). If an object has no crs member, then its parent or grandparent object's crs member may be acquired. If no crs member can be so acquired, the default CRS shall apply to the GeoJSON object.
-   * <p>
-   * * The default CRS is a geographic coordinate reference system, using the WGS84 datum, and with longitude and latitude units of decimal degrees.
-   * <p>
-   * * The value of a member named `crs` must be a JSON object (referred to as the CRS object below) or JSON null. If the value of CRS is null, no CRS can be assumed.
-   * <p>
-   * * The crs member should be on the top-level GeoJSON object in a hierarchy (in feature collection, feature, geometry order) and should not be repeated or overridden on children or grandchildren of the object.
-   * <p>
-   * * A non-null CRS object has two mandatory members: `type` and `properties`.
-   * <p>
-   * * The value of the type member must be a string, indicating the type of CRS object.
-   * <p>
-   * * The value of the properties member must be an object.
-   * <p>
-   * * CRS shall not change coordinate ordering.
-   */
-  @JsonProperty("crs")
-  public void setCrs(Object crs) {
-    this.crs = crs;
+  @JsonProperty("coordinates")
+  public void setCoordinates(List<List<List<Double>>> coordinates) {
+    this.coordinates = coordinates;
   }
 
   /**
@@ -191,7 +134,6 @@ public class Geojson implements Serializable {
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
-
 
   /**
    * Type
@@ -248,7 +190,7 @@ public class Geojson implements Serializable {
   public String toString() {
     return new StringJoiner(", ", Geojson.class.getSimpleName() + "[", "]")
         .add("type=" + type)
-        .add("crs=" + crs)
+        .add("coordinates=" + coordinates)
         .add("bbox=" + bbox)
         .add("additionalProperties=" + additionalProperties)
         .toString();

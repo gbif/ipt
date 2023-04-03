@@ -31,6 +31,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -162,6 +163,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
     if (metadataValidator.isSectionValid(this, resource, section)) {
+      // set coordinates object (if camtrap)
+      setCoordinates(resource);
       // Save metadata information (datapackage.json)
       resourceManager.saveDatapackageMetadata(resource);
       // save date metadata was last modified
@@ -203,6 +206,43 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     }
 
     return SUCCESS;
+  }
+
+  /**
+   * Populate coordinates object for the spatial field. It's produced from bbox field.
+   */
+  private void setCoordinates(Resource resource) {
+    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+      List<Double> bbox = camtrapMetadata.getSpatial().getBbox();
+      camtrapMetadata.getSpatial().getCoordinates().clear();
+
+      List<List<Double>> coordinates = new ArrayList<>();
+      List<Double> coordinate0 = new ArrayList<>();
+      List<Double> coordinate1 = new ArrayList<>();
+      List<Double> coordinate2 = new ArrayList<>();
+      List<Double> coordinate3 = new ArrayList<>();
+      List<Double> coordinate4 = new ArrayList<>();
+
+      coordinate0.add(bbox.get(0));
+      coordinate0.add(bbox.get(1));
+      coordinate1.add(bbox.get(2));
+      coordinate1.add(bbox.get(1));
+      coordinate2.add(bbox.get(2));
+      coordinate2.add(bbox.get(3));
+      coordinate3.add(bbox.get(0));
+      coordinate3.add(bbox.get(3));
+      coordinate4.add(bbox.get(0));
+      coordinate4.add(bbox.get(1));
+
+      coordinates.add(coordinate0);
+      coordinates.add(coordinate1);
+      coordinates.add(coordinate2);
+      coordinates.add(coordinate3);
+      coordinates.add(coordinate4);
+
+      camtrapMetadata.getSpatial().getCoordinates().add(coordinates);
+    }
   }
 
   /**
