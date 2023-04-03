@@ -138,7 +138,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
 
   // TODO: 13/10/2022 parent profile is String, camtrap is URI. Keep it String, but validate it is a valid URL?
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
   @Override
@@ -148,7 +148,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0/camtrap-dp-profile.json`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
   @Override
