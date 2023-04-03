@@ -432,12 +432,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
     packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
 
-    // set schema
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(resource.getSchemaIdentifier() + "_" + currSubschema, ".json");
-    File schemaFile = dataDir.configFile(".dataSchemas" + "/" + currSchema + "/" + filename);
-
     try {
-      Schema schema = Schema.fromJson(schemaFile, true);
+      Schema schema = Schema.fromJson(subschema.getUrl(), true);
       packageResource.setSchema(schema);
     } catch (Exception e) {
       log.error("Fatal Package Generator Error encountered while adding schema data", e);
