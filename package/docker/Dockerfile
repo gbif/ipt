@@ -15,7 +15,7 @@ RUN perl -pi -e 's(\${buildNumber})('${GIT_REVISION}')' src/main/resources/appli
     rm target/*.war && mv target/ipt-* target/ipt
 
 FROM tomcat:8.5-jdk8
-LABEL MAINTAINERS="Matthew Blissett <mblissett@gbif.org>"
+LABEL maintainers="Matthew Blissett <mblissett@gbif.org>"
 
 ARG IPT_NAME=ROOT
 
