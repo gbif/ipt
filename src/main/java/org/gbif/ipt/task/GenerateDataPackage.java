@@ -57,6 +57,7 @@ import org.apache.logging.log4j.Level;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
@@ -114,11 +115,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // copy metadata file (datapackage.json)
       addMetadata();
 
-      // TODO: 06/04/2022 validation. Data is validated internally by frictionless data package,
-      //  but validation quality is questionable. Validation messages are too broad, and does not provide valuable information
-      // perform some validation, e.g. ensure all core record identifiers are present and unique
-//      validate();
-
+      // validation is a part of frictionless datapackage generation
       // zip archive and copy to resource folder
       bundleArchive();
 
@@ -431,6 +428,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             dataPackageFolder);
     packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
     packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
+    if (subschema.getUrl() != null) {
+      ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, subschema.getUrl().toString());
+    }
 
     try {
       Schema schema = Schema.fromJson(subschema.getUrl(), true);
