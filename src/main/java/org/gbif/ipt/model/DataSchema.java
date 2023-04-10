@@ -15,10 +15,8 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -36,7 +34,7 @@ public class DataSchema implements Serializable {
   private String version;
   private URL url;
   private Set<DataSubschema> subSchemas = new LinkedHashSet<>();
-  private List<SubSchemaRequirement> subSchemaRequirements = new ArrayList<>();
+  private SubSchemaRequirement subSchemaRequirements = new SubSchemaRequirement();
   private String description;
   private boolean isLatest;
   private Date issued;
@@ -95,11 +93,11 @@ public class DataSchema implements Serializable {
     this.subSchemas = subSchemas;
   }
 
-  public List<SubSchemaRequirement> getSubSchemaRequirements() {
+  public SubSchemaRequirement getSubSchemaRequirements() {
     return subSchemaRequirements;
   }
 
-  public void setSubSchemaRequirements(List<SubSchemaRequirement> subSchemaRequirements) {
+  public void setSubSchemaRequirements(SubSchemaRequirement subSchemaRequirements) {
     this.subSchemaRequirements = subSchemaRequirements;
   }
 
@@ -162,7 +160,7 @@ public class DataSchema implements Serializable {
         .add("version='" + version + "'")
         .add("url=" + url)
         .add("subSchemas=" + subSchemas)
-        .add("subSchemaRequirements=" + subSchemaRequirements)
+        .add("subSchemaRequirement=" + subSchemaRequirements)
         .add("description='" + description + "'")
         .add("isLatest=" + isLatest)
         .add("issued=" + issued)

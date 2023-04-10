@@ -1,0 +1,20 @@
+{
+  "allOf": [
+    {
+      "description": "At least one required schema present: name, taxon, reference, name-usage",
+      "requiredAny": ["name", "taxon", "reference", "name-usage"]
+    },
+    {
+      "description": "If 'name', 'taxon' or 'synonym' present, then 'name-usage' must not be present",
+      "applicableIfPresentAny": ["name", "taxon", "synonym"],
+      "requiredAny": ["name", "taxon", "synonym"],
+      "prohibited": ["name-usage"]
+    },
+    {
+      "description": "If 'name-usage' present, then 'name', 'taxon' and 'synonym' must not be present",
+      "applicableIfPresentAny": ["name-usage"],
+      "required": ["name-usage"],
+      "prohibited": ["name", "taxon", "synonym"]
+    }
+  ]
+}

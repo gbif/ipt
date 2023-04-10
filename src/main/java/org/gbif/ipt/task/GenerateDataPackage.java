@@ -338,27 +338,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param dataSchema data schema
    */
   private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataSchema dataSchema)
-      throws GeneratorException{
-    List<SubSchemaRequirement> requirements = dataSchema.getSubSchemaRequirements();
+      throws GeneratorException {
+    SubSchemaRequirement requirements = dataSchema.getSubSchemaRequirements();
+    SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
 
-    for (SubSchemaRequirement requirement : requirements) {
-      // check required entities
-      List<String> requiredRequirement = requirement.getRequired();
-      if (requiredRequirement != null && !CollectionUtils.containsAll(mappedSubSchemas, requiredRequirement)) {
-        throw new GeneratorException("Required entities must be mapped: " + requiredRequirement);
-      }
-
-      // check anyOf entities
-      List<String> anyOfRequirements = requirement.getAnyOf();
-      if (anyOfRequirements != null && !CollectionUtils.containsAny(anyOfRequirements, mappedSubSchemas)) {
-        throw new GeneratorException("One of the entities must be mapped: " + anyOfRequirements);
-      }
-
-      // check oneOf entities
-      List<String> oneOfRequirement = requirement.getOneOf();
-      if (oneOfRequirement != null && CollectionUtils.intersection(oneOfRequirement, mappedSubSchemas).size() != 1) {
-        throw new GeneratorException("Only one of the entities must be mapped: " + oneOfRequirement);
-      }
+    if (!validationResult.isValid()) {
+      throw new GeneratorException(validationResult.getReason());
     }
   }
 

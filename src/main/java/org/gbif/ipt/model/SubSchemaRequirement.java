@@ -13,19 +13,69 @@
  */
 package org.gbif.ipt.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents what {@link DataSubschema} are required in the data package.
  */
 public class SubSchemaRequirement {
 
-  private List<String> required;
-  private List<String> optional;
-  private List<String> anyOf;
-  private List<String> oneOf;
+  private String description;
+  private List<String> applicableIfPresentAny = new ArrayList<>();
+  private List<SubSchemaRequirement> allOf = new ArrayList<>();
+  private List<SubSchemaRequirement> anyOf = new ArrayList<>();
+  private List<SubSchemaRequirement> oneOf = new ArrayList<>();
+  private List<String> required = new ArrayList<>();
+  private List<String> requiredAny = new ArrayList<>();
+  private List<String> prohibited = new ArrayList<>();
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public List<String> getApplicableIfPresentAny() {
+    return applicableIfPresentAny;
+  }
+
+  public void setApplicableIfPresentAny(List<String> applicableIfPresentAny) {
+    this.applicableIfPresentAny = applicableIfPresentAny;
+  }
+
+  public List<SubSchemaRequirement> getAllOf() {
+    return allOf;
+  }
+
+  public void setAllOf(List<SubSchemaRequirement> required) {
+    this.allOf = required;
+  }
+
+  public List<SubSchemaRequirement> getAnyOf() {
+    return anyOf;
+  }
+
+  public void setAnyOf(List<SubSchemaRequirement> anyOf) {
+    this.anyOf = anyOf;
+  }
+
+  public List<SubSchemaRequirement> getOneOf() {
+    return oneOf;
+  }
+
+  public void setOneOf(List<SubSchemaRequirement> oneOf) {
+    this.oneOf = oneOf;
+  }
 
   public List<String> getRequired() {
     return required;
@@ -35,28 +85,133 @@ public class SubSchemaRequirement {
     this.required = required;
   }
 
-  public List<String> getOptional() {
-    return optional;
+  public List<String> getRequiredAny() {
+    return requiredAny;
   }
 
-  public void setOptional(List<String> optional) {
-    this.optional = optional;
+  public void setRequiredAny(List<String> requiredAny) {
+    this.requiredAny = requiredAny;
   }
 
-  public List<String> getAnyOf() {
-    return anyOf;
+  public List<String> getProhibited() {
+    return prohibited;
   }
 
-  public void setAnyOf(List<String> anyOf) {
-    this.anyOf = anyOf;
+  public void setProhibited(List<String> prohibited) {
+    this.prohibited = prohibited;
   }
 
-  public List<String> getOneOf() {
-    return oneOf;
+  public ValidationResult validate(Set<String> schemas) {
+    ValidationResult result = new ValidationResult();
+
+    // all conditions are empty, skip validation?
+    if (allOf.isEmpty() && anyOf.isEmpty() && oneOf.isEmpty() && required.isEmpty() && requiredAny.isEmpty() && prohibited.isEmpty()) {
+      result.setValid(true);
+      return result;
+    }
+
+    // check validation applicable
+    Collection<String> applicableSchemas = CollectionUtils.intersection(schemas, applicableIfPresentAny);
+    if (!applicableIfPresentAny.isEmpty() && applicableSchemas.isEmpty()) {
+      return result;
+    }
+
+    // check simple conditions first
+    // if prohibited present - then validation fails
+    if (!prohibited.isEmpty()) {
+      Collection<String> intersection = CollectionUtils.intersection(schemas, prohibited);
+      if (!intersection.isEmpty()) {
+        result.setValid(false);
+        result.setReason(String.format("Prohibited schemas found: %s. The following schemas are prohibited: %s", intersection, prohibited));
+        return result;
+      }
+    }
+
+    if (!required.isEmpty()) {
+      boolean allRequiredSchemasPresent = CollectionUtils.containsAll(schemas, required);
+      if (!allRequiredSchemasPresent) {
+        result.setValid(false);
+        result.setReason(String.format("All required schemas must be present: %s", required));
+        return result;
+      }
+    }
+
+    if (!requiredAny.isEmpty()) {
+      Collection<String> intersection = CollectionUtils.intersection(schemas, requiredAny);
+      if (intersection.size() == 0) {
+        result.setValid(false);
+        result.setReason(String.format("At least one of required schemas must be present: %s", requiredAny));
+        return result;
+      }
+    }
+
+    // check complex conditions
+    if (!allOf.isEmpty()) {
+      for (SubSchemaRequirement subRequirement : allOf) {
+        ValidationResult subResult = subRequirement.validate(schemas);
+        if (!subResult.isValid()) {
+          result.setValid(false);
+          result.setReason(subResult.getReason());
+        }
+      }
+    } else if (!anyOf.isEmpty()) {
+      result.setValid(false);
+      result.setReason(String.format("At least one valid required, none found: %s", anyOf));
+      for (SubSchemaRequirement subRequirement : anyOf) {
+        ValidationResult subResult = subRequirement.validate(schemas);
+        if (subResult.isValid()) {
+          result.setValid(true);
+          result.setReason("");
+          break;
+        }
+      }
+    } else if (!oneOf.isEmpty()) {
+      int numberOfValid = 0;
+      for (SubSchemaRequirement subRequirement : oneOf) {
+        ValidationResult subResult = subRequirement.validate(schemas);
+        if (subResult.isValid()) {
+          numberOfValid = numberOfValid + 1;
+          System.out.println("valid: " + subRequirement.description);
+        }
+      }
+
+      if (numberOfValid != 1) {
+        result.setValid(false);
+        result.setReason(String.format("Only one required: %s", oneOf));
+      }
+    }
+
+    return result;
   }
 
-  public void setOneOf(List<String> oneOf) {
-    this.oneOf = oneOf;
+  public static class ValidationResult {
+
+    private boolean valid = true;
+    private String reason = "";
+
+    public boolean isValid() {
+      return valid;
+    }
+
+    public void setValid(boolean valid) {
+      this.valid = valid;
+    }
+
+    public String getReason() {
+      return reason;
+    }
+
+    public void setReason(String reason) {
+      this.reason = reason;
+    }
+
+    @Override
+    public String toString() {
+      return new StringJoiner(", ", ValidationResult.class.getSimpleName() + "[", "]")
+        .add("valid=" + valid)
+        .add("reason=" + reason)
+        .toString();
+    }
   }
 
   @Override
@@ -64,24 +219,52 @@ public class SubSchemaRequirement {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SubSchemaRequirement that = (SubSchemaRequirement) o;
-    return Objects.equals(required, that.required)
-        && Objects.equals(optional, that.optional)
+    return Objects.equals(description, that.description)
+        && Objects.equals(allOf, that.allOf)
         && Objects.equals(anyOf, that.anyOf)
-        && Objects.equals(oneOf, that.oneOf);
+        && Objects.equals(oneOf, that.oneOf)
+        && Objects.equals(required, that.required)
+        && Objects.equals(requiredAny, that.requiredAny)
+        && Objects.equals(prohibited, that.prohibited);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(required, optional, anyOf, oneOf);
+    return Objects.hash(description, allOf, anyOf, oneOf, required, requiredAny, prohibited);
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", SubSchemaRequirement.class.getSimpleName() + "[", "]")
-        .add("required=" + required)
-        .add("optional=" + optional)
-        .add("anyOf=" + anyOf)
-        .add("oneOf=" + oneOf)
-        .toString();
+    StringJoiner sj = new StringJoiner(", ");
+
+    if (StringUtils.isNotEmpty(description)) {
+      sj.add("\"" + description + "\"");
+    } else {
+      if (!allOf.isEmpty()) {
+        sj.add("allOf=" + allOf);
+      }
+
+      if (!anyOf.isEmpty()) {
+        sj.add("anyOf=" + anyOf);
+      }
+
+      if (!oneOf.isEmpty()) {
+        sj.add("oneOf=" + oneOf);
+      }
+
+      if (!required.isEmpty()) {
+        sj.add("required=" + required);
+      }
+
+      if (!requiredAny.isEmpty()) {
+        sj.add("requiredAny=" + requiredAny);
+      }
+
+      if (!prohibited.isEmpty()) {
+        sj.add("prohibited=" + prohibited);
+      }
+    }
+
+    return sj.toString();
   }
 }
