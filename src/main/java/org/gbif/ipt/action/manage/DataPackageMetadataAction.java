@@ -22,6 +22,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CaptureMethod;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
@@ -214,34 +215,37 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private void setCoordinates(Resource resource) {
     if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
       CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-      List<Double> bbox = camtrapMetadata.getSpatial().getBbox();
-      camtrapMetadata.getSpatial().getCoordinates().clear();
+      Geojson spatial = camtrapMetadata.getSpatial();
+      if (spatial != null) {
+        List<Double> bbox = spatial.getBbox();
+        camtrapMetadata.getSpatial().getCoordinates().clear();
 
-      List<List<Double>> coordinates = new ArrayList<>();
-      List<Double> coordinate0 = new ArrayList<>();
-      List<Double> coordinate1 = new ArrayList<>();
-      List<Double> coordinate2 = new ArrayList<>();
-      List<Double> coordinate3 = new ArrayList<>();
-      List<Double> coordinate4 = new ArrayList<>();
+        List<List<Double>> coordinates = new ArrayList<>();
+        List<Double> coordinate0 = new ArrayList<>();
+        List<Double> coordinate1 = new ArrayList<>();
+        List<Double> coordinate2 = new ArrayList<>();
+        List<Double> coordinate3 = new ArrayList<>();
+        List<Double> coordinate4 = new ArrayList<>();
 
-      coordinate0.add(bbox.get(0));
-      coordinate0.add(bbox.get(1));
-      coordinate1.add(bbox.get(2));
-      coordinate1.add(bbox.get(1));
-      coordinate2.add(bbox.get(2));
-      coordinate2.add(bbox.get(3));
-      coordinate3.add(bbox.get(0));
-      coordinate3.add(bbox.get(3));
-      coordinate4.add(bbox.get(0));
-      coordinate4.add(bbox.get(1));
+        coordinate0.add(bbox.get(0));
+        coordinate0.add(bbox.get(1));
+        coordinate1.add(bbox.get(2));
+        coordinate1.add(bbox.get(1));
+        coordinate2.add(bbox.get(2));
+        coordinate2.add(bbox.get(3));
+        coordinate3.add(bbox.get(0));
+        coordinate3.add(bbox.get(3));
+        coordinate4.add(bbox.get(0));
+        coordinate4.add(bbox.get(1));
 
-      coordinates.add(coordinate0);
-      coordinates.add(coordinate1);
-      coordinates.add(coordinate2);
-      coordinates.add(coordinate3);
-      coordinates.add(coordinate4);
+        coordinates.add(coordinate0);
+        coordinates.add(coordinate1);
+        coordinates.add(coordinate2);
+        coordinates.add(coordinate3);
+        coordinates.add(coordinate4);
 
-      camtrapMetadata.getSpatial().getCoordinates().add(coordinates);
+        camtrapMetadata.getSpatial().getCoordinates().add(coordinates);
+      }
     }
   }
 
