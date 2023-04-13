@@ -36,6 +36,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Singleton;
 
+import static org.gbif.ipt.config.Constants.COL_DP;
+
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
  * path for that directory and make it available to the entire application.
@@ -51,6 +53,7 @@ public class DataDir {
   public static final String INFERRED_METADATA_FILENAME = "inferredMetadata.xml";
   public static final String EML_XML_FILENAME = "eml.xml";
   public static final String DATAPACKAGE_METADATA_JSON_FILENAME = "datapackage.json";
+  public static final String DATAPACKAGE_METADATA_YAML_FILENAME = "datapackage.yaml";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
@@ -280,7 +283,11 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
-  public File resourceDatapackageMetadataFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type, @NotNull BigDecimal version) {
+    if (COL_DP.equals(type)) {
+      String fn = "datapackage-" + version.toPlainString() + ".yaml";
+      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+    }
     String fn = "datapackage-" + version.toPlainString() + ".json";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
@@ -296,7 +303,10 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + EML_XML_FILENAME);
   }
 
-  public File resourceDatapackageMetadataFile(@NotNull String resourceName) {
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type) {
+    if (COL_DP.equals(type)) {
+      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATAPACKAGE_METADATA_YAML_FILENAME);
+    }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATAPACKAGE_METADATA_JSON_FILENAME);
   }
 
