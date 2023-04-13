@@ -445,7 +445,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getDataPackageType() {
-    return CAMTRAP_DP;
+    return coreType;
   }
 
   public Date getCreated() {
