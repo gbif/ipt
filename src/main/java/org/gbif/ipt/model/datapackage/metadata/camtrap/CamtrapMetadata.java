@@ -242,6 +242,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
   @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
   @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
   public List<Contributor> getContributors() {
     return super.getContributors();
   }

@@ -122,7 +122,6 @@ public class DataPackageMetadata implements Serializable {
    */
   @JsonProperty("contributors")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
   @Valid
   private List<Contributor> contributors = new ArrayList<>();
 
@@ -151,7 +150,6 @@ public class DataPackageMetadata implements Serializable {
    */
   @JsonProperty("licenses")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  @Size(min = 1, message = "validation.datapackage.metadata.licenses.size", groups = BasicMetadata.class)
   @Valid
   private List<License> licenses = new ArrayList<>();
 
