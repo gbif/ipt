@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-03-07 02:29\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: en/modules/ROOT/pages/home.adoc:1
 #, no-wrap
 msgid "Home Menu"
-msgstr ""
+msgstr "ホームメニュー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:4
 msgid "This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list."
-msgstr ""
+msgstr "このページでは、公開されているリソースがある場合はその一覧を表示し、リスト上の任意のリソースの詳細なメタデータを見ることができます。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:5
@@ -37,109 +37,109 @@ msgstr ""
 #: en/modules/ROOT/pages/home.adoc:7
 #, no-wrap
 msgid "Public Resources Table"
-msgstr ""
+msgstr "公開リソーステーブル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:9
 msgid "If there are any public resources, they will appear in a table having the following columns:"
-msgstr ""
+msgstr "公開されているリソースがある場合、以下のカラムを持つテーブルに表示されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:11
 #, no-wrap
 msgid "**Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)\n"
-msgstr ""
+msgstr "**ロゴ** - リソースのロゴ（リソースメタデータの追加メタデータページで設定可能）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:12
 #, no-wrap
 msgid "**Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).\n"
-msgstr ""
+msgstr "**名前** - リソースメタデータのタイトルエントリで指定されたリソースのタイトル。この名前はリンクとして表示され、リソースのホームページを開きます（下記参照）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:13
 #, no-wrap
 msgid "**Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be \"No organization\". Review the information under the \"Organizations\" heading in the \"Administration Menu\" section for more information about registering organizations and registering a resource under an organization.\n"
-msgstr ""
+msgstr "**機関** - リソースが登録されている場合、リソースを公開した機関。リソースが登録されていない場合、「機関」列の値は「未登録」になります。機関の登録および機関の下でのリソースの登録については、「管理メニュー」の「機関」の項を参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:14
 #, no-wrap
 msgid "**Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr ""
+msgstr "**タイプ** - リソースメタデータのxref:manage-resources.adoc#basic-metadata[基本のメタデータ]ページにあるタイプドロップダウンで指定されたリソースのタイプ。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:15
 #, no-wrap
 msgid "**Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr ""
+msgstr "**サブタイプ** - リソースメタデータのxref:manage-resources.adoc#basic-metadata[基本のメタデータ]ページのサブタイプドロップダウンで指定されたリソースのサブタイプ。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:16
 #, no-wrap
 msgid "**Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.\n"
-msgstr ""
+msgstr "**レコード** - そのリソースの最後に公開されたダーウィンコア・アーカイブのコアデータファイルのデータ行数です。1つ以上の拡張ファイルにデータを持つリソースの場合、この数字はリソースのホームページのデータレコードのページにリンクし、拡張ファイルごとのレコード数の内訳を表示します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:17
 #, no-wrap
 msgid "**Last modified** - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.\n"
-msgstr ""
+msgstr "**最終更新日** - リソースの作成日、またはデータやメタデータの最終更新日のうち、新しいほう。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:18
 #, no-wrap
 msgid "**Last publication** - the date the resource was last published.\n"
-msgstr ""
+msgstr "**最終公開日** - リソースが最後に公開された日付。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:19
 #, no-wrap
 msgid "**Next publication** - the date the resource will be published next.\n"
-msgstr ""
+msgstr "**次回公開日** - リソースが次に発行される日付です。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:20
 #, no-wrap
 msgid "RSS feed"
-msgstr ""
+msgstr "RSSフィード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:22
 msgid "The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client."
-msgstr ""
+msgstr "IPTは、新しいリソースのバージョンがいつ公開されるか、またリソースが時間とともにどのように変化するかを確認する人のために、RSSによるシンジケーションをサポートしています。新しいリソースのバージョンが配信されるたびに、前回のバージョンからの変更内容の要約が加えられます（これは公開者が変更点の要約を入力した場合で、それ以外はリソースの説明がデフォルトで表示されます）。RSSフィードは、パブリックホストリソースリストの下にあるリンクをクリックすることでアクセスできます。RSSフィードは、標準的なRSSクライアントで読むことができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:23
 #, no-wrap
 msgid "Registered resource inventory"
-msgstr ""
+msgstr "登録リソースインベントリ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:25
 msgid "The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append `/inventory/dataset` to the IPT public URL, e.g. https://ipt.gbif.org/inventory/dataset. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts."
-msgstr ""
+msgstr "IPTは、登録されたすべてのリソースの簡単なJSONインベントリを提供します。この機能はユーザーインターフェースには表示されません。必要であれば、IPTの公開URLに`/inventory/dataset`を追加（例：https://ipt.gbif.org/inventory/dataset）して表示してください。GBIFはこのインベントリを利用してターゲットとインデックスされたレコード数を比較することで、リソースを適切にインデックスできているかモニターしています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:26
 #, no-wrap
 msgid "Resource homepage"
-msgstr ""
+msgstr "リソースホームページ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:28
 msgid "The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history."
-msgstr ""
+msgstr "リソースホームページは、リソースの外部利用者を対象としたものです。このホームページでは、選択されたバージョンのリソースに関するすべてのメタデータを一覧表示して、そのバージョンのデータやメタデータをダウンロードするためのリンクを提供し、リソースのバージョン履歴を表示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:30
 msgid "To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage."
-msgstr ""
+msgstr "ユーザーはホームページのリソースリストで名前のリンクをクリックして、リソースのホームページを表示することができます。リソースのホームページを表示するには、リソースのDOIを使用する方法もあります。IPTを通じてリソースにDOIが割り当てられると、常にそのリソースのホームページに解決されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:32
 msgid "Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the \"Edit an existing resource\" heading in the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "リソースのメタデータを編集できるのは、管理責任者（Admin）ロールまたは管理者（Manager）ロールを持つユーザーだけであることに注意してください。詳しくは、「リソースの管理」の「既存のリソースを編集する」を参照してください。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:33
@@ -151,12 +151,12 @@ msgstr ""
 #: en/modules/ROOT/pages/home.adoc:35
 #, no-wrap
 msgid "Version history"
-msgstr ""
+msgstr "バージョン履歴"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:37
 msgid "The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DwC-A to be stored (see the xref:administration.adoc#configure-ipt-settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below."
-msgstr ""
+msgstr "バージョン履歴テーブルは、リソースのすべての公開バージョンを一覧表示し、ユーザーはリソースの経時的な変更を追跡し、以前のバージョンのデータ/メタデータをダウンロードすることが可能です。DwC-Aの古いバージョンを保存するためには、IPTのアーカイブモードをオンにする必要があります（xref:administration.adoc#configure-ipt-settings[IPT設定の構成]セクションを参照）。管理責任者とリソース管理者はすべてのバージョンを見ることができますが、外部ユーザーは一般にアクセス可能なバージョンのみを見ることができます。表のカラムの説明については、以下の情報を参照してください。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:38
@@ -167,57 +167,57 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:41
 msgid "Following are explanations of the table columns:"
-msgstr ""
+msgstr "以下は、表のカラムの説明です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:43
 #, no-wrap
 msgid "**Version** - the published version's version number, which uses the major_version.minor_version format. The version of the resource homepage currently being viewed is clearly indicated. To open a specific version's homepage, click on the version number. **Note**: A major version change compared to the last published version indicates that a scientifically significant change has taken place.\n"
-msgstr ""
+msgstr "**バージョン** - 公開されているバージョンのバージョン番号で、major_version.minor_versionの形式を使用して、現在閲覧しているリソースホームページのバージョンが表示されています。特定のバージョンのホームページを開くには、そのバージョン番号をクリックします。注：前回公開されたバージョンと比較してメジャーバージョンが変更されている場合は、科学的に重要な変更が行われたことを意味します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:44
 #, no-wrap
 msgid "**Published on** - the date the published version was released.\n"
-msgstr ""
+msgstr "**公開日** - 公開されたバージョンがリリースされた日付です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:45
 #, no-wrap
 msgid "**Records** - the number of records the published version contains.\n"
-msgstr ""
+msgstr "**レコード** - 公開されたバージョンに含まれるレコードの数です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:46
 #, no-wrap
 msgid "**Change summary** - a summary of what has changed since the last published version.\n"
-msgstr ""
+msgstr "**変更の概要** - 前回公開されたバージョンから変更された点の概要です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:47
 #, no-wrap
 msgid "**DOI handle** - the DOI handle assigned to the published version. **Note**: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.\n"
-msgstr ""
+msgstr "**DOIハンドル** - 公開されたバージョンに割り当てられたDOIハンドルです。注：DOIが前回公開されたバージョンのDOIと異なる場合、これはリソースに科学的に重要な変更が行われたことを示します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:48
 #, no-wrap
 msgid "**Last modified by** - the IPT user that last modified the published version.\n"
-msgstr ""
+msgstr "**最終更新者** - 公開されたバージョンを最後に更新したIPTユーザーです。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/home.adoc:49
 #, no-wrap
 msgid "Deletion of a version"
-msgstr ""
+msgstr "バージョンの削除"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:52
 msgid "Resource managers and administrators can delete old published versions of a dataset."
-msgstr ""
+msgstr "管理責任者やリソース管理者は、データセットの過去の公開バージョンを削除することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:53
 msgid "First use the version history table to find and open the version to be deleted, then click *Delete version* at the top of the page. The latest published version of a resource cannot be deleted."
-msgstr ""
+msgstr "まず、バージョン履歴表で削除したいバージョンを探して開き、ページ上部の*Delete version*をクリックします。リソースの最新の公開バージョンは削除することができません。"
 

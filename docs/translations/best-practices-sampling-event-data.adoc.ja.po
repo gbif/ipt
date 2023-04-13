@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-13 06:13\n"
+"PO-Revision-Date: 2023-03-13 06:07\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -236,7 +236,7 @@ msgstr "*sampleSizeUnit* : サンプリングイベントでのサンプルの�
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr "*sampleSizeValue*の値は数値であり、対応するサンプルサイズ単位が必要です。サンプルサイズ単位の値は、SI単位/派生単位、または測定単位系に従ってSI内での使用が許可されているその他の非SI単位（分、時間、日、リットルなど）のみを使用するように制限する必要があります。以下の表1に例を示します。"
+msgstr "*sampleSizeValue*の値は数値であり、対応するsampleSizeUnitが必要です。sampleSizeUnitの値は、SI単位/派生単位、またはlink:{latest-unit-of-measurement}[測定単位系]に従ってSI内での使用が許可されているその他の非SI単位（分、時間、日、リットルなど）のみを使用するように制限する必要があります。以下の表1に例を示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75

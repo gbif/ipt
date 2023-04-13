@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-11-04 16:09+0000\n"
-"PO-Revision-Date: 2022-11-04 16:29\n"
+"PO-Revision-Date: 2023-03-14 05:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,16 +20,16 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:11
 #: en/modules/ROOT/partials/version-outdated.adoc:8
 msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
-msgstr ""
+msgstr "なお、すべてのマニュアルが日本語で提供されているわけではありません。"
 
 #. type: Block title
 #: en/modules/ROOT/partials/version-outdated.adoc:2
 #, no-wrap
 msgid "Obsolete version"
-msgstr ""
+msgstr "旧バージョン"
 
 #. type: delimited block =
 #: en/modules/ROOT/partials/version-outdated.adoc:5
 msgid "You are reading the manual for version {page-version}, which is out of date.  You may wish to read the manual for xref:{latest-manual-version}@releases.adoc[version {latest-manual-version}].  You can choose other versions of the manual with the selectors at the top right or bottom left of the page."
-msgstr ""
+msgstr "あなたが読んでいるのはバージョンlink:{page-version}のマニュアルで、最新ではありません。 xref:{latest-manual-version}@releases.adoc[version {latest-manual-version}] のマニュアルを読むことをお勧めします。 ページの右上または左下のセレクタで、他のバージョンのマニュアルを選択することができます。"
 
