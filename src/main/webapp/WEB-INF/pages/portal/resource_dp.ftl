@@ -245,10 +245,18 @@
                                 <#if resource.versionHistory??>
                                     <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                                 </#if>
-                                <li><a href="#anchor-keywords" class="sidebar-navigation-link"><@s.text name='portal.resource.keywords'/></a></li>
-                                <li><a href="#anchor-contributors" class="sidebar-navigation-link"><@s.text name='portal.resource.contributors'/></a></li>
-                                <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='portal.resource.sources'/></a></li>
-                                <li><a href="#anchor-licenses" class="sidebar-navigation-link"><@s.text name='portal.resource.licenses'/></a></li>
+                                <#if (dpMetadata.keywords)?has_content>
+                                  <li><a href="#anchor-keywords" class="sidebar-navigation-link"><@s.text name='portal.resource.keywords'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.contributors)?has_content>
+                                  <li><a href="#anchor-contributors" class="sidebar-navigation-link"><@s.text name='portal.resource.contributors'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.sources)?has_content>
+                                  <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='portal.resource.sources'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.licenses)?has_content>
+                                  <li><a href="#anchor-licenses" class="sidebar-navigation-link"><@s.text name='portal.resource.licenses'/></a></li>
+                                </#if>
                                 <#if (dpMetadata.spatial)?has_content>
                                     <li><a href="#anchor-geographic" class="sidebar-navigation-link"><@s.text name='portal.resource.geographic'/></a></li>
                                 </#if>
@@ -303,108 +311,116 @@
                     </#if>
 
                     <!-- Keywords section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
-                    <div id="keywords" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.keywords'/>
-                        </h4>
+                    <#if (dpMetadata.keywords)?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
+                        <div id="keywords" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.keywords'/>
+                            </h4>
 
-                        <p>
-                            <#list dpMetadata.keywords as keyword>
-                                ${keyword}<#sep>;</#sep>
-                            </#list>
-                        </p>
-                    </div>
+                            <p>
+                                <#list dpMetadata.keywords as keyword>
+                                    ${keyword}<#sep>;</#sep>
+                                </#list>
+                            </p>
+                        </div>
+                    </#if>
 
                     <!-- Contributors section -->
-                    <span class="anchor anchor-resource-page" id="anchor-contributors"></span>
-                    <div id="contributors" class="mt-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.contributors'/>
-                        </h4>
+                    <#if (dpMetadata.contributors)?has_content>
+                        <span class="anchor anchor-resource-page" id="anchor-contributors"></span>
+                        <div id="contributors" class="mt-5 section">
+                            <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.contributors'/>
+                            </h4>
 
-                        <div class="row g-3 border">
-                            <#if (dpMetadata.contributors?size>0)>
-                                <#list dpMetadata.contributors as c>
-                                    <div class="col-lg-4 mt-0">
-                                        <@contributor contributor=c />
-                                    </div>
-                                </#list>
-                            </#if>
+                            <div class="row g-3 border">
+                                <#if (dpMetadata.contributors?size>0)>
+                                    <#list dpMetadata.contributors as c>
+                                        <div class="col-lg-4 mt-0">
+                                            <@contributor contributor=c />
+                                        </div>
+                                    </#list>
+                                </#if>
+                            </div>
                         </div>
-                    </div>
+                    </#if>
 
                     <!-- Sources section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
-                    <div id="sources" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.sources'/>
-                        </h4>
+                    <#if (dpMetadata.sources)?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
+                        <div id="sources" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.sources'/>
+                            </h4>
 
-                        <#list dpMetadata.sources as source>
-                            <div class="table-responsive">
-                                <table class="text-smaller table table-sm table-borderless">
-                                    <tr>
-                                        <th class="col-4">Title</th>
-                                        <td>${source.title!}</td>
-                                    </tr>
-                                    <#if source.path??>
-                                        <tr>
-                                            <th class="col-4">Path</th>
-                                            <td><a href="${source.path}">${source.path}</a></td>
-                                        </tr>
-                                    </#if>
-                                    <#if source.email??>
-                                        <tr>
-                                            <th class="col-4">Email</th>
-                                            <td><a href="mailto:${source.email}">${source.email}</a> </td>
-                                        </tr>
-                                    </#if>
-                                    <tr>
-                                        <th class="col-4">Version</th>
-                                        <td>${source.version!source.additionalProperties['version']!"-"}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </#list>
-                    </div>
-
-                    <!-- Licenses section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-licenses"></span>
-                    <div id="licenses" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.licenses'/>
-                        </h4>
-
-                        <#list dpMetadata.licenses as license>
-                            <div class="table-responsive">
-                                <table class="text-smaller table table-sm table-borderless">
-                                    <#if license.name??>
-                                        <tr>
-                                            <th class="col-4">Name</th>
-                                            <td>${license.name}</td>
-                                        </tr>
-                                    </#if>
-                                    <#if license.title??>
+                            <#list dpMetadata.sources as source>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
                                         <tr>
                                             <th class="col-4">Title</th>
-                                            <td>${license.title}</td>
+                                            <td>${source.title!}</td>
                                         </tr>
-                                    </#if>
-                                    <#if license.path??>
+                                        <#if source.path??>
+                                            <tr>
+                                                <th class="col-4">Path</th>
+                                                <td><a href="${source.path}">${source.path}</a></td>
+                                            </tr>
+                                        </#if>
+                                        <#if source.email??>
+                                            <tr>
+                                                <th class="col-4">Email</th>
+                                                <td><a href="mailto:${source.email}">${source.email}</a> </td>
+                                            </tr>
+                                        </#if>
                                         <tr>
-                                            <th class="col-4">Path</th>
-                                            <td>${license.path}</td>
+                                            <th class="col-4">Version</th>
+                                            <td>${source.version!source.additionalProperties['version']!"-"}</td>
                                         </tr>
-                                    </#if>
-                                    <tr>
-                                        <th class="col-4">Scope</th>
-                                        <td>${license.scope!}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </#list>
-                    </div>
+                                    </table>
+                                </div>
+                            </#list>
+                        </div>
+                    </#if>
+
+                    <!-- Licenses section -->
+                    <#if (dpMetadata.licenses)?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-licenses"></span>
+                        <div id="licenses" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.licenses'/>
+                            </h4>
+
+                            <#list dpMetadata.licenses as license>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#if license.name??>
+                                            <tr>
+                                                <th class="col-4">Name</th>
+                                                <td>${license.name}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if license.title??>
+                                            <tr>
+                                                <th class="col-4">Title</th>
+                                                <td>${license.title}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if license.path??>
+                                            <tr>
+                                                <th class="col-4">Path</th>
+                                                <td>${license.path}</td>
+                                            </tr>
+                                        </#if>
+                                        <tr>
+                                            <th class="col-4">Scope</th>
+                                            <td>${license.scope!}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </#list>
+                        </div>
+                    </#if>
 
                     <!-- Geographic scope section -->
                     <#if (dpMetadata.spatial)??>
