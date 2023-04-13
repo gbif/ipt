@@ -77,6 +77,7 @@ import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -96,7 +97,7 @@ import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.JsonService;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -198,6 +199,7 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.CLASS;
+import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
 import static org.gbif.ipt.config.Constants.ORDER;
@@ -210,6 +212,7 @@ import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
 import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
+import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -235,7 +238,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
   private RegistrationManager registrationManager;
-  private final JsonService jsonService;
+  private final MetadataReader metadataReader;
 
   private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
   private static final Comparator<Date> nullSafeDateComparator = Comparator.nullsFirst(Date::compareTo);
@@ -251,7 +254,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                              GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager,
-                             JsonService jsonService) {
+                             MetadataReader metadataReader) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -266,7 +269,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
-    this.jsonService = jsonService;
+    this.metadataReader = metadataReader;
   }
 
   private void addResource(Resource res) {
@@ -294,7 +297,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     String shortname = resource.getShortname();
 
     File versionMetadataFile = resource.isDataPackage()
-        ? cfg.getDataDir().resourceDatapackageMetadataFile(shortname, v)
+        ? cfg.getDataDir().resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v)
         : cfg.getDataDir().resourceEmlFile(shortname, v);
 
     Resource publishedPublicVersion = ResourceUtils
@@ -449,9 +452,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       emlValidator.validate(emlString);
   }
 
-  private void validateDatapackageMetadataFile(BaseAction action, File metadataFile) throws IOException, org.gbif.ipt.service.InvalidMetadataException {
+  private void validateDatapackageMetadataFile(BaseAction action, File metadataFile, Class<? extends DataPackageMetadata> metadataClass) throws IOException, org.gbif.ipt.service.InvalidMetadataException {
     DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
-    DataPackageMetadata metadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
+    DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
     validator.validate(action, metadata);
   }
 
@@ -492,7 +495,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType) throws ImportException {
-    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname);
+    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, datapackageType);
     try {
       FileUtils.copyFile(metadataFile, dataDirMetadataFile);
     } catch (IOException e) {
@@ -501,11 +504,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     DataPackageMetadata metadata;
     try {
-      if (CAMTRAP_DP.equals(datapackageType)) {
-        metadata = jsonService.readValue(dataDirMetadataFile, CamtrapMetadata.class);
-      } else {
-        metadata = jsonService.readValue(dataDirMetadataFile, DataPackageMetadata.class);
-      }
+      metadata = metadataReader.readValue(dataDirMetadataFile, metadataClassForType(datapackageType));
     } catch (Exception e) {
       deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Invalid metadata document", e);
@@ -721,6 +720,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // make sure correct metadata class is set
     if (CAMTRAP_DP.equals(type)) {
       res.setDataPackageMetadata(new CamtrapMetadata());
+    } else if (COL_DP.equals(type)) {
+      res.setDataPackageMetadata(new ColMetadata());
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
@@ -868,7 +869,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, org.gbif.ipt.service.InvalidMetadataException {
     if (validate) {
-      validateDatapackageMetadataFile(action, metadataFile);
+      validateDatapackageMetadataFile(action, metadataFile, metadataClassForType(resource.getCoreType()));
     }
     // copy metadata file to data directory (with name datapackage.json) and populate Eml instance
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
@@ -1709,10 +1710,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private void loadDatapackageMetadata(Resource resource) {
     DataPackageMetadata metadata = new CamtrapMetadata();
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     if (metadataFile.exists() && !metadataFile.isDirectory()) {
       try {
-        metadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
+        metadata = metadataReader.readValue(metadataFile, metadataClassForType(resource.getCoreType()));
       } catch (IOException e) {
         LOG.error("Failed to read resource metadata {}", resource.getShortname());
         LOG.error(e);
@@ -1720,6 +1721,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       metadata.setName(resource.getShortname());
+    }
+
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
       metadata.setProfile(CAMTRAP_PROFILE);
     }
 
@@ -1727,7 +1731,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void loadMetadata(Resource resource) {
-    if (resource.getSchemaIdentifier() != null) {
+    if (resource.isDataPackage()) {
       loadDatapackageMetadata(resource);
     } else {
       loadEml(resource);
@@ -2628,8 +2632,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     saveDatapackageMetadata(resource);
 
     // create versioned metadata file
-    File trunkFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
-    File versionedFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), version);
+    File trunkFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    File versionedFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
     try {
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
@@ -3447,9 +3451,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set modified date
     resource.setModified(new Date());
     // save into data dir
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     try {
-      jsonService.writeValue(metadataFile, resource.getDataPackageMetadata());
+      metadataReader.writeValue(metadataFile, resource.getDataPackageMetadata());
     } catch (IOException e) {
       LOG.error("Failed to save datapackage metadata!", e);
       throw new RuntimeException(e);

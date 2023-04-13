@@ -176,7 +176,7 @@
                                 </#if>
                             </dl>
                             <dl class="inline mb-0">
-                                <#if (dpMetadata.created)??>
+                                <#if (dpMetadata.created)?? && resource.organisation?has_content>
                                     <div>
                                         <dt><@s.text name='portal.resource.publishedBy'/>:</dt>
                                         <dd>

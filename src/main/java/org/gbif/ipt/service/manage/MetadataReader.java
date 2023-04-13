@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.service.manage;
 
-import org.gbif.ipt.service.manage.impl.JsonServiceImpl;
+import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,21 +21,21 @@ import java.io.Writer;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(JsonServiceImpl.class)
-public interface JsonService {
+@ImplementedBy(MetadataReaderImpl.class)
+public interface MetadataReader {
 
   /**
-   * Read JSON from file.
+   * Read data from file (JSON or YAML).
    */
   <T> T readValue(File src, Class<T> valueType) throws IOException;
 
   /**
-   * Write JSON to file.
+   * Write data to file (JSON or YAML).
    */
   void writeValue(File resultFile, Object value) throws IOException;
 
   /**
-   * Write JSON to writer.
+   * Write data to file (JSON or YAML).
    */
   void writeValue(Writer writer, Object value) throws IOException;
 }

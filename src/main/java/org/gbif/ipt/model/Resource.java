@@ -477,9 +477,14 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   @NotNull
   public BigDecimal getDataPackageMetadataVersion() {
-    return (dataPackageMetadataVersion == null)
+    try {
+      return (dataPackageMetadataVersion == null)
         ? new BigDecimal(dataPackageMetadata.getVersion().toString())
         : dataPackageMetadataVersion;
+    } catch (NumberFormatException e) {
+      LOG.error("Failed to parse version: {}", dataPackageMetadata.getVersion());
+      return new BigDecimal("1.0");
+    }
   }
 
   @NotNull
@@ -501,7 +506,16 @@ public class Resource implements Serializable, Comparable<Resource> {
       String versionAsString = getDataPackageMetadata().getVersion().toString();
       // first publication retrieve existing version
       if (lastPublished == null) {
-        return new BigDecimal(versionAsString);
+        BigDecimal nextVersion;
+
+        try {
+          nextVersion = new BigDecimal(versionAsString);
+        } catch (NumberFormatException e) {
+          LOG.error("Invalid version number: {}. Setting version to 1.0", versionAsString);
+          nextVersion = new BigDecimal("1.0");
+        }
+
+        return nextVersion;
       }
       int majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
       return new BigDecimal(majorVersion + 1 + ".0");

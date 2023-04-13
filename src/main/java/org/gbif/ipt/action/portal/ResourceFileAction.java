@@ -131,7 +131,7 @@ public class ResourceFileAction extends PortalBaseAction {
 
     // serve file
     if (isDataPackageResource) {
-      data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), version);
+      data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
       mimeType = "application/json";
       sb.append("datapackage-").append(resource.getShortname());
       if (version != null) {

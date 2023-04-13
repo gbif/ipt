@@ -41,7 +41,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.service.manage.JsonService;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
@@ -313,7 +313,7 @@ public class GenerateDCATTest {
           mockVocabulariesManager,
           mockSimpleTextProvider,
           mockRegistrationManager,
-          mock(JsonService.class));
+          mock(MetadataReader.class));
 
     // creator
     User creator = new User();

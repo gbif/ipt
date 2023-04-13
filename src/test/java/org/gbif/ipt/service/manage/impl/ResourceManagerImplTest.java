@@ -61,7 +61,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.service.manage.JsonService;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -266,7 +266,7 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(JsonService.class));
+        mock(MetadataReader.class));
   }
 
   /**
@@ -1032,7 +1032,7 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(JsonService.class));
+        mock(MetadataReader.class));
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);

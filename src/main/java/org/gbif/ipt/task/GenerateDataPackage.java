@@ -23,7 +23,8 @@ import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
-import org.gbif.ipt.service.manage.JsonService;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
 
@@ -33,6 +34,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,6 +70,7 @@ import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
+import static org.gbif.ipt.config.Constants.COL_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -76,7 +82,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private final Resource resource;
   private final SourceManager sourceManager;
-  private JsonService jsonService;
+  private MetadataReader metadataReader;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
   private Exception exception;
@@ -89,12 +95,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   @Inject
   public GenerateDataPackage(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
-                      SourceManager sourceManager, AppConfig cfg, JsonService jsonService) throws IOException {
+                      SourceManager sourceManager, AppConfig cfg, MetadataReader metadataReader) throws IOException {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;
     this.cfg = cfg;
-    this.jsonService = jsonService;
+    this.metadataReader = metadataReader;
   }
 
   @Override
@@ -214,7 +220,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     try {
       // create zip
       zip = dataDir.tmpFile("data_package", ".zip");
-      dataPackage.write(zip, true);
+      if (COL_DP.equals(resource.getCoreType())) {
+        dataPackage.write(zip, this::writeCustomMetadata, true);
+      } else {
+        dataPackage.write(zip, true);
+      }
 
       if (zip.exists()) {
         // move to data dir with versioned name
@@ -237,6 +247,16 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
     // final reporting
     addMessage(Level.INFO, "Archive has been compressed");
+  }
+
+  private void writeCustomMetadata(Path outputDir) {
+    Path target = outputDir.getFileSystem().getPath("metadata.yaml");
+    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+      metadataReader.writeValue(writer, resource.getDataPackageMetadata());
+    } catch (IOException e) {
+      log.error("Failed to write metadata.yaml", e);
+      addMessage(Level.ERROR, "Failed to write metadata.yaml");
+    }
   }
 
   /**
@@ -663,45 +683,78 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     checkForInterruption();
     setState(GenerateDataPackage.STATE.METADATA);
     try {
-      File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname());
-      CamtrapMetadata camtrapMetadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
+      String type = resource.getCoreType();
 
-      // Basic metadata
-      setDataPackageProperty("created",
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(camtrapMetadata.getCreated()));
-      setDataPackageProperty("version", camtrapMetadata.getVersion());
-      setDataPackageStringProperty("title", camtrapMetadata.getTitle());
-      setDataPackageCollectionProperty("contributors", camtrapMetadata.getContributors());
-      setDataPackageStringProperty("description", camtrapMetadata.getDescription());
-      setDataPackageCollectionProperty("keywords", camtrapMetadata.getKeywords());
-      setDataPackageStringProperty("image", camtrapMetadata.getImage());
-      setDataPackageProperty("homepage", camtrapMetadata.getHomepage());
-      setDataPackageCollectionProperty("sources", camtrapMetadata.getSources());
-      setDataPackageCollectionProperty("licenses", camtrapMetadata.getLicenses());
-
-      // Geographic scope
-      setDataPackageProperty("spatial", camtrapMetadata.getSpatial());
-      setDataPackageProperty("coordinatePrecision", camtrapMetadata.getCoordinatePrecision());
-
-      // Taxonomic scope
-      setDataPackageCollectionProperty("taxonomic", camtrapMetadata.getTaxonomic());
-
-      // Temporal scope
-      setDataPackageProperty("temporal", camtrapMetadata.getTemporal());
-
-      // Project
-      setDataPackageProperty("project", camtrapMetadata.getProject());
-
-      // Other metadata
-      setDataPackageStringProperty("bibliographicCitation", camtrapMetadata.getBibliographicCitation());
-      setDataPackageCollectionProperty("references", camtrapMetadata.getReferences());
-      setDataPackageCollectionProperty("relatedIdentifiers", camtrapMetadata.getRelatedIdentifiers());
+      if (CAMTRAP_DP.equals(type)) {
+        addCamtrapMetadata();
+      } else if (COL_DP.equals(type)) {
+        addColMetadata();
+      } else {
+        addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
+      }
 
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
     }
     // final reporting
     addMessage(Level.INFO, "Metadata added");
+  }
+
+  private void addColMetadata() throws IOException {
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
+
+    // Basic metadata
+    setDataPackageProperty("created",
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(colMetadata.getCreated()));
+    setDataPackageProperty("version", colMetadata.getVersion());
+    setDataPackageStringProperty("title", colMetadata.getTitle());
+    setDataPackageCollectionProperty("contributors", colMetadata.getContributors());
+    setDataPackageStringProperty("description", colMetadata.getDescription());
+    setDataPackageCollectionProperty("keywords", colMetadata.getKeywords());
+    setDataPackageStringProperty("image", colMetadata.getImage());
+    setDataPackageProperty("homepage", colMetadata.getHomepage());
+    setDataPackageCollectionProperty("sources", colMetadata.getSources());
+    setDataPackageCollectionProperty("licenses", colMetadata.getLicenses());
+
+    // additional properties
+    colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
+  }
+
+  private void addCamtrapMetadata() throws IOException {
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    CamtrapMetadata camtrapMetadata = metadataReader.readValue(metadataFile, CamtrapMetadata.class);
+
+    // Basic metadata
+    setDataPackageProperty("created",
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(camtrapMetadata.getCreated()));
+    setDataPackageProperty("version", camtrapMetadata.getVersion());
+    setDataPackageStringProperty("title", camtrapMetadata.getTitle());
+    setDataPackageCollectionProperty("contributors", camtrapMetadata.getContributors());
+    setDataPackageStringProperty("description", camtrapMetadata.getDescription());
+    setDataPackageCollectionProperty("keywords", camtrapMetadata.getKeywords());
+    setDataPackageStringProperty("image", camtrapMetadata.getImage());
+    setDataPackageProperty("homepage", camtrapMetadata.getHomepage());
+    setDataPackageCollectionProperty("sources", camtrapMetadata.getSources());
+    setDataPackageCollectionProperty("licenses", camtrapMetadata.getLicenses());
+
+    // Geographic scope
+    setDataPackageProperty("spatial", camtrapMetadata.getSpatial());
+    setDataPackageProperty("coordinatePrecision", camtrapMetadata.getCoordinatePrecision());
+
+    // Taxonomic scope
+    setDataPackageCollectionProperty("taxonomic", camtrapMetadata.getTaxonomic());
+
+    // Temporal scope
+    setDataPackageProperty("temporal", camtrapMetadata.getTemporal());
+
+    // Project
+    setDataPackageProperty("project", camtrapMetadata.getProject());
+
+    // Other metadata
+    setDataPackageStringProperty("bibliographicCitation", camtrapMetadata.getBibliographicCitation());
+    setDataPackageCollectionProperty("references", camtrapMetadata.getReferences());
+    setDataPackageCollectionProperty("relatedIdentifiers", camtrapMetadata.getRelatedIdentifiers());
   }
 
   private void setDataPackageProperty(String name, Object property) {

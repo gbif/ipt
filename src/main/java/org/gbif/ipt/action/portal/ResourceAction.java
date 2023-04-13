@@ -28,7 +28,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.JsonService;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -75,12 +75,13 @@ import org.xml.sax.SAXException;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceAction extends PortalBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(ResourceAction.class);
 
-  private JsonService jsonService;
+  private MetadataReader metadataReader;
   private VocabulariesManager vocabManager;
   private ExtensionManager extensionManager;
   private List<Resource> resources;
@@ -113,12 +114,12 @@ public class ResourceAction extends PortalBaseAction {
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
                         ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir,
-                        ExtensionManager extensionManager, JsonService jsonService) {
+                        ExtensionManager extensionManager, MetadataReader metadataReader) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
-    this.jsonService = jsonService;
+    this.metadataReader = metadataReader;
   }
 
   @Override
@@ -174,14 +175,8 @@ public class ResourceAction extends PortalBaseAction {
   private DataPackageMetadata loadDataPackageMetadataFromFile(String shortname, String type, @NotNull BigDecimal version)
       throws IOException {
     Objects.requireNonNull(version);
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, version);
-    DataPackageMetadata result;
-
-    if (CAMTRAP_DP.equals(type)) {
-      result = jsonService.readValue(metadataFile, CamtrapMetadata.class);
-    } else {
-      result = jsonService.readValue(metadataFile, DataPackageMetadata.class);
-    }
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, type, version);
+    DataPackageMetadata result = metadataReader.readValue(metadataFile, metadataClassForType(type));
 
     LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
     return result;
@@ -484,14 +479,9 @@ public class ResourceAction extends PortalBaseAction {
     String shortname = resource.getShortname();
     String type = resource.getCoreType();
     try {
-      File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname);
+      File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, type);
       LOG.debug("Loading metadata from file: " + metadataFile.getAbsolutePath());
-
-      if (CAMTRAP_DP.equals(type)) {
-        dpMetadata = jsonService.readValue(metadataFile, CamtrapMetadata.class);
-      } else {
-        dpMetadata = jsonService.readValue(metadataFile, DataPackageMetadata.class);
-      }
+      dpMetadata = metadataReader.readValue(metadataFile, metadataClassForType(type));
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #" + getStringVersion() + " for resource " + shortname + " not found");
       return NOT_FOUND;

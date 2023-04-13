@@ -64,6 +64,6 @@ public class DataPackageMappingValidator {
   }
 
   private boolean isRequiredSchemaField(DataSchemaField field) {
-    return field.getConstraints().getRequired() != null && field.getConstraints().getRequired();
+    return field.getConstraints() != null && field.getConstraints().getRequired() != null && field.getConstraints().getRequired();
   }
 }
