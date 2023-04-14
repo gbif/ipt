@@ -78,6 +78,7 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -456,6 +457,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
     DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
     validator.validate(action, metadata);
+
+    // additional Col-DP metadata validation
+    if (DataPackageColMetadata.class.equals(metadataClass)) {
+      ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
+      validator.validateColMetadata(action, colMetadata);
+    }
   }
 
   /**
@@ -721,7 +728,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (CAMTRAP_DP.equals(type)) {
       res.setDataPackageMetadata(new CamtrapMetadata());
     } else if (COL_DP.equals(type)) {
-      res.setDataPackageMetadata(new ColMetadata());
+      res.setDataPackageMetadata(new DataPackageColMetadata());
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);

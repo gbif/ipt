@@ -23,7 +23,7 @@ import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
-import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -702,7 +702,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private void addColMetadata() throws IOException {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
+    DataPackageColMetadata colMetadata = metadataReader.readValue(metadataFile, DataPackageColMetadata.class);
 
     // Basic metadata
     setDataPackageProperty("created",

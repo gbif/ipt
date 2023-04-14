@@ -15,7 +15,7 @@ package org.gbif.ipt.utils;
 
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
-import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -29,7 +29,7 @@ public final class MetadataUtils {
     if (CAMTRAP_DP.equals(type)) {
       return CamtrapMetadata.class;
     } else if (COL_DP.equals(type)) {
-      return ColMetadata.class;
+      return DataPackageColMetadata.class;
     } else {
       return DataPackageMetadata.class;
     }

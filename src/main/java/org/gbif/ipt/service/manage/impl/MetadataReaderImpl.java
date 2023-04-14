@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
 import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.YamlService;
@@ -39,7 +40,7 @@ public class MetadataReaderImpl implements MetadataReader {
 
   @Override
   public <T> T readValue(File src, Class<T> valueType) throws IOException {
-    if (valueType == ColMetadata.class) {
+    if (valueType == ColMetadata.class || valueType == DataPackageColMetadata.class) {
       return yamlService.readValue(src, valueType);
     }
     return jsonService.readValue(src, valueType);
@@ -47,7 +48,7 @@ public class MetadataReaderImpl implements MetadataReader {
 
   @Override
   public void writeValue(File resultFile, Object value) throws IOException {
-    if (value instanceof ColMetadata) {
+    if (value instanceof ColMetadata || value instanceof DataPackageColMetadata) {
       yamlService.writeValue(resultFile, value);
     } else {
       jsonService.writeValue(resultFile, value);
@@ -56,7 +57,7 @@ public class MetadataReaderImpl implements MetadataReader {
 
   @Override
   public void writeValue(Writer writer, Object value) throws IOException {
-    if (value instanceof ColMetadata) {
+    if (value instanceof ColMetadata || value instanceof DataPackageColMetadata) {
       yamlService.writeValue(writer, value);
     } else {
       jsonService.writeValue(writer, value);

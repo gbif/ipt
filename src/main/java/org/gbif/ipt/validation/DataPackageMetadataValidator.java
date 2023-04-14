@@ -16,10 +16,12 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.service.InvalidMetadataException;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -34,7 +36,7 @@ import com.google.inject.Inject;
 
 public class DataPackageMetadataValidator {
 
-  private Validator validator;
+  private final Validator validator;
 
   @Inject
   public DataPackageMetadataValidator() {
@@ -53,7 +55,7 @@ public class DataPackageMetadataValidator {
   }
 
   /**
-   * Validate if all metadata sections are valid. For the first section encountered that doesn't validate, an
+   * Validate that all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
    *
    * @param action Action
@@ -232,6 +234,18 @@ public class DataPackageMetadataValidator {
 
         break;
     }
+  }
+
+  /**
+   * Validate ColMetadata.
+   *
+   * @param action BaseAction
+   * @param metadata col metadata
+   */
+  public void validateColMetadata(BaseAction action, ColMetadata metadata) {
+    Set<ConstraintViolation<ColMetadata>> violations = validator.validate(metadata);
+    String violationsSquashed = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n", "-", ""));
+    action.addActionError("Validation failed:\n" + violationsSquashed);
   }
 
   private boolean isValidationProperty(String message) {
