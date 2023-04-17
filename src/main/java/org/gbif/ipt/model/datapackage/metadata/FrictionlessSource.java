@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * A source file.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataPackageSource implements Source, Serializable {
+public class FrictionlessSource implements Source, Serializable {
 
   private final static long serialVersionUID = -3013088705460436883L;
 
@@ -152,13 +152,13 @@ public class DataPackageSource implements Source, Serializable {
     @Override
     public Source deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
-      return jsonParser.getCodec().treeToValue(node, DataPackageSource.class);
+      return jsonParser.getCodec().treeToValue(node, FrictionlessSource.class);
     }
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", DataPackageSource.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", FrictionlessSource.class.getSimpleName() + "[", "]")
         .add("title='" + title + "'")
         .add("path='" + path + "'")
         .add("email='" + email + "'")

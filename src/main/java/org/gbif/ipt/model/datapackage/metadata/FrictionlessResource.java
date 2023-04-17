@@ -43,7 +43,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Data Resource.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataPackageResource implements Resource, Serializable {
+public class FrictionlessResource implements Resource, Serializable {
 
   private final static long serialVersionUID = -7790507710447205789L;
 
@@ -493,13 +493,13 @@ public class DataPackageResource implements Resource, Serializable {
     @Override
     public Resource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
-      return jsonParser.getCodec().treeToValue(node, DataPackageResource.class);
+      return jsonParser.getCodec().treeToValue(node, FrictionlessResource.class);
     }
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", DataPackageResource.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", FrictionlessResource.class.getSimpleName() + "[", "]")
         .add("profile='" + profile + "'")
         .add("name=" + name)
         .add("path=" + path)

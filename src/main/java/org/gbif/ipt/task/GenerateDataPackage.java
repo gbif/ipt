@@ -23,7 +23,7 @@ import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
-import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -221,7 +222,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create zip
       zip = dataDir.tmpFile("data_package", ".zip");
       if (COL_DP.equals(resource.getCoreType())) {
-        dataPackage.write(zip, this::writeCustomMetadata, true);
+        dataPackage.write(zip, this::writeCustomColDPMetadata, true);
       } else {
         dataPackage.write(zip, true);
       }
@@ -249,7 +250,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     addMessage(Level.INFO, "Archive has been compressed");
   }
 
-  private void writeCustomMetadata(Path outputDir) {
+  /**
+   * Apart from standard frictionless metadata ColDP archive must contain specific metadata.yaml file.
+   */
+  private void writeCustomColDPMetadata(Path outputDir) {
     Path target = outputDir.getFileSystem().getPath("metadata.yaml");
     try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
       metadataReader.writeValue(writer, resource.getDataPackageMetadata());
@@ -702,20 +706,18 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private void addColMetadata() throws IOException {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    DataPackageColMetadata colMetadata = metadataReader.readValue(metadataFile, DataPackageColMetadata.class);
+    ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
 
     // Basic metadata
     setDataPackageProperty("created",
-      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(colMetadata.getCreated()));
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
     setDataPackageProperty("version", colMetadata.getVersion());
     setDataPackageStringProperty("title", colMetadata.getTitle());
-    setDataPackageCollectionProperty("contributors", colMetadata.getContributors());
+    setDataPackageCollectionProperty("contributors", colMetadata.getContributor());
     setDataPackageStringProperty("description", colMetadata.getDescription());
-    setDataPackageCollectionProperty("keywords", colMetadata.getKeywords());
-    setDataPackageStringProperty("image", colMetadata.getImage());
-    setDataPackageProperty("homepage", colMetadata.getHomepage());
-    setDataPackageCollectionProperty("sources", colMetadata.getSources());
-    setDataPackageCollectionProperty("licenses", colMetadata.getLicenses());
+    setDataPackageCollectionProperty("keywords", colMetadata.getKeyword());
+    setDataPackageProperty("homepage", colMetadata.getUrl());
+    setDataPackageCollectionProperty("licenses", Collections.singleton(colMetadata.getLicense()));
 
     // additional properties
     colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));

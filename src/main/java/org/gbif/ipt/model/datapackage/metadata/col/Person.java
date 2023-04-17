@@ -14,6 +14,8 @@
 package org.gbif.ipt.model.datapackage.metadata.col;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -126,4 +128,27 @@ public class Person {
     }
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Person person = (Person) o;
+    return Objects.equals(family, person.family)
+      && Objects.equals(given, person.given)
+      && Objects.equals(literal, person.literal);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(family, given, literal);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Person.class.getSimpleName() + "[", "]")
+      .add("family='" + family + "'")
+      .add("given='" + given + "'")
+      .add("literal='" + literal + "'")
+      .toString();
+  }
 }

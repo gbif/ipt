@@ -18,6 +18,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -77,7 +78,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private static final long serialVersionUID = 3832626162173352190L;
   private String shortname; // unique
   private Eml eml = new Eml();
-  private DataPackageMetadata dataPackageMetadata = new DataPackageMetadata();
+  private DataPackageMetadata dataPackageMetadata = new FrictionlessMetadata();
   private String coreType;
   private String subtype;
   // update frequency

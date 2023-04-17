@@ -13,8 +13,9 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datapackage.metadata.Contributor;
-import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Resource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
@@ -42,9 +43,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.opensymphony.xwork2.util.Element;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapMetadata extends DataPackageMetadata {
+public class CamtrapMetadata extends FrictionlessMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
+
+  private String profile = Constants.CAMTRAP_PROFILE;
 
   /**
    * Bibliographic/recommended citation for the package.
@@ -62,7 +65,9 @@ public class CamtrapMetadata extends DataPackageMetadata {
   private Project project;
 
   /**
-   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude` (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree). Especially relevant when coordinates have been rounded to protect sensitive species.
+   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude`
+   * (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree).
+   * Especially relevant when coordinates have been rounded to protect sensitive species.
    */
   @JsonProperty("coordinatePrecision")
   private Double coordinatePrecision;
@@ -113,7 +118,10 @@ public class CamtrapMetadata extends DataPackageMetadata {
   private List<String> references = new ArrayList<>();
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for the requirements for those resources.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>.
+   * Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">
+   *   Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for
+   *   the requirements for those resources.
    */
   @Override
   @JsonProperty("resources")
@@ -128,7 +136,10 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>. Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">Tabular Data Resource</a> with a specific `name` and `schema`. See [Data](../data) for the requirements for those resources.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>.
+   * Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">
+   *   Tabular Data Resource</a> with a specific `name` and `schema`. See [Data](../data) for the requirements
+   *   for those resources.
    */
   @Override
   @JsonProperty("resources")
@@ -138,23 +149,27 @@ public class CamtrapMetadata extends DataPackageMetadata {
 
   // TODO: 13/10/2022 parent profile is String, camtrap is URI. Keep it String, but validate it is a valid URL?
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>.
+   * Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version
+   * (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
   @Override
   @JsonProperty("profile")
   public String getProfile() {
-    return super.getProfile();
+    return profile;
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>. Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>.
+   * Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version
+   * (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
   @Override
   @JsonProperty("profile")
   public void setProfile(String profile) {
-    super.setProfile(profile);
+    this.profile = profile;
   }
 
   /**
@@ -194,7 +209,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>. Camtrap DP makes this a required property.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>.
+   * Camtrap DP makes this a required property.
    * (Required)
    */
   @Override
@@ -205,7 +221,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>. Camtrap DP makes this a required property.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#created">Data Package specification</a>.
+   * Camtrap DP makes this a required property.
    * (Required)
    */
   @Override
@@ -216,7 +233,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>. Not to be confused with the title of the project that originated the package (`package.project.title`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>.
+   * Not to be confused with the title of the project that originated the package (`package.project.title`).
    */
   @Override
   @JsonProperty("title")
@@ -225,7 +243,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>. Not to be confused with the title of the project that originated the package (`package.project.title`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#title">Data Package specification</a>.
+   * Not to be confused with the title of the project that originated the package (`package.project.title`).
    */
   @Override
   @JsonProperty("title")
@@ -234,7 +253,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>.
+   * Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
    * (Required)
    */
   @Override
@@ -248,7 +268,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>. Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#contributors">Data Package specification</a>.
+   * Camtrap DP makes this a required property and restricts `role` values. Can include people and organizations.
    * (Required)
    */
   @Override
@@ -258,7 +279,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>. Not to be confused with the description of the project that originated the package (`package.project.description`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>.
+   * Not to be confused with the description of the project that originated the package (`package.project.description`).
    */
   @Override
   @JsonProperty("description")
@@ -267,7 +289,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>. Not to be confused with the description of the project that originated the package (`package.project.description`).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#description">Data Package specification</a>.
+   * Not to be confused with the description of the project that originated the package (`package.project.description`).
    */
   @Override
   @JsonProperty("description")
@@ -280,7 +303,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("version")
-  public Object getVersion() {
+  public String getVersion() {
     return super.getVersion();
   }
 
@@ -289,7 +312,7 @@ public class CamtrapMetadata extends DataPackageMetadata {
    */
   @Override
   @JsonProperty("version")
-  public void setVersion(Object version) {
+  public void setVersion(String version) {
     super.setVersion(version);
   }
 
@@ -348,7 +371,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>. Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>.
+   * Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
    */
   @Override
   @JsonProperty("sources")
@@ -360,7 +384,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>. Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
+   * See <a href="https://specs.frictionlessdata.io/data-package/#sources">Data Package specification</a>.
+   * Can include the data management platform from which the package was derived (e.g. Agouti, Trapper, Wildlife Insights).
    */
   @Override
   @JsonProperty("sources")
@@ -369,7 +394,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>. If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>.
+   * If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
    */
   @Override
   @JsonProperty("licenses")
@@ -382,7 +408,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>. If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
+   * See <a href="https://specs.frictionlessdata.io/data-package/#licenses">Data Package specification</a>.
+   * If provided, Camtrap DP further requires at least a license for the content of the package and one for the media files.
    */
   @Override
   @JsonProperty("licenses")
@@ -425,7 +452,9 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude` (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree). Especially relevant when coordinates have been rounded to protect sensitive species.
+   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude`
+   * (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree).
+   * Especially relevant when coordinates have been rounded to protect sensitive species.
    */
   @JsonProperty("coordinatePrecision")
   public Double getCoordinatePrecision() {
@@ -433,7 +462,9 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude` (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree). Especially relevant when coordinates have been rounded to protect sensitive species.
+   * Least precise coordinate precision of the `deployments.latitude` and `deployments.longitude`
+   * (least precise in case of mixed precision, e.g. `0.01` for coordinates of precision of 0.01 and 0.001 degree).
+   * Especially relevant when coordinates have been rounded to protect sensitive species.
    */
   @JsonProperty("coordinatePrecision")
   public void setCoordinatePrecision(Double coordinatePrecision) {
@@ -515,7 +546,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
+   * List of references related to the package (e.g. references cited in `package.project.description`).
+   * References ideally include a DOI.
    */
   @JsonProperty("references")
   public List<String> getReferences() {
@@ -523,7 +555,8 @@ public class CamtrapMetadata extends DataPackageMetadata {
   }
 
   /**
-   * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
+   * List of references related to the package (e.g. references cited in `package.project.description`).
+   * References ideally include a DOI.
    */
   @JsonProperty("references")
   public void setReferences(List<String> references) {

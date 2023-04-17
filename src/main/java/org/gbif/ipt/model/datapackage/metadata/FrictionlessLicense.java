@@ -14,13 +14,14 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.NotNullIfAnotherFieldNull;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -28,26 +29,34 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
- * Contributor
+ * License
  * <p>
- * A contributor to this descriptor.
+ * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataPackageContributor implements Contributor, Serializable {
+@NotNullIfAnotherFieldNull(
+    fieldName = "name",
+    dependFieldName = "path",
+    message = "validation.datapackage.metadata.license.nameOrPath.required",
+    groups = BasicMetadata.class)
+public class FrictionlessLicense implements License, Serializable {
 
-  private final static long serialVersionUID = -288140518286006582L;
+  private final static long serialVersionUID = 5529108333342991396L;
 
   /**
-   * Title
+   * Open Definition license identifier
    * <p>
-   * A human-readable title.
-   * (Required)
+   * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
-  @JsonProperty("title")
-  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
-  private String title;
+  @JsonProperty("name")
+  @Pattern(regexp = "^([-a-zA-Z0-9._])+$", groups = BasicMetadata.class)
+  private String name;
 
   /**
    * Path
@@ -59,23 +68,12 @@ public class DataPackageContributor implements Contributor, Serializable {
   private String path;
 
   /**
-   * Email
+   * Title
    * <p>
-   * An email address.
+   * A human-readable title.
    */
-  @JsonProperty("email")
-  private String email;
-
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  private String organization;
-
-  @JsonProperty("role")
-  private String role = "contributor";
+  @JsonProperty("title")
+  private String title;
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -83,25 +81,23 @@ public class DataPackageContributor implements Contributor, Serializable {
   private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
-   * Title
+   * Open Definition license identifier
    * <p>
-   * A human-readable title.
-   * (Required)
+   * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
-  @JsonProperty("title")
-  public String getTitle() {
-    return title;
+  @JsonProperty("name")
+  public String getName() {
+    return name;
   }
 
   /**
-   * Title
+   * Open Definition license identifier
    * <p>
-   * A human-readable title.
-   * (Required)
+   * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
-  @JsonProperty("title")
-  public void setTitle(String title) {
-    this.title = title;
+  @JsonProperty("name")
+  public void setName(String name) {
+    this.name = name;
   }
 
   /**
@@ -125,53 +121,23 @@ public class DataPackageContributor implements Contributor, Serializable {
   }
 
   /**
-   * Email
+   * Title
    * <p>
-   * An email address.
+   * A human-readable title.
    */
-  @JsonProperty("email")
-  public String getEmail() {
-    return email;
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
   }
 
   /**
-   * Email
+   * Title
    * <p>
-   * An email address.
+   * A human-readable title.
    */
-  @JsonProperty("email")
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  public String getOrganization() {
-    return organization;
-  }
-
-  /**
-   * Organization
-   * <p>
-   * An organizational affiliation for this contributor.
-   */
-  @JsonProperty("organization")
-  public void setOrganization(String organization) {
-    this.organization = organization;
-  }
-
-  @JsonProperty("role")
-  public String getRole() {
-    return role;
-  }
-
-  @JsonProperty("role")
-  public void setRole(String role) {
-    this.role = role;
+  @JsonProperty("title")
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   @JsonAnyGetter
@@ -184,14 +150,20 @@ public class DataPackageContributor implements Contributor, Serializable {
     this.additionalProperties.put(name, value);
   }
 
+  public static class DataPackageLicenseDeserializer extends JsonDeserializer<License> {
+    @Override
+    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, FrictionlessLicense.class);
+    }
+  }
+
   @Override
   public String toString() {
-    return new StringJoiner(", ", DataPackageContributor.class.getSimpleName() + "[", "]")
-        .add("title='" + title + "'")
+    return new StringJoiner(", ", License.class.getSimpleName() + "[", "]")
+        .add("name='" + name + "'")
         .add("path='" + path + "'")
-        .add("email='" + email + "'")
-        .add("organization='" + organization + "'")
-        .add("role='" + role + "'")
+        .add("title='" + title + "'")
         .add("additionalProperties=" + additionalProperties)
         .toString();
   }

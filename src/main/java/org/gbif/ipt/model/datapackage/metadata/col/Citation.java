@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -498,4 +500,71 @@ public class Citation {
 
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Citation citation = (Citation) o;
+    return Objects.equals(id, citation.id)
+      && type == citation.type
+      && Objects.equals(title, citation.title)
+      && Objects.equals(version, citation.version)
+      && Objects.equals(author, citation.author)
+      && Objects.equals(editor, citation.editor)
+      && Objects.equals(publisher, citation.publisher)
+      && Objects.equals(publisherPlace, citation.publisherPlace)
+      && Objects.equals(issued, citation.issued)
+      && Objects.equals(containerTitle, citation.containerTitle)
+      && Objects.equals(containerAuthor, citation.containerAuthor)
+      && Objects.equals(volume, citation.volume)
+      && Objects.equals(issue, citation.issue)
+      && Objects.equals(edition, citation.edition)
+      && Objects.equals(page, citation.page)
+      && Objects.equals(collectionTitle, citation.collectionTitle)
+      && Objects.equals(collectionEditor, citation.collectionEditor)
+      && Objects.equals(doi, citation.doi)
+      && Objects.equals(isbn, citation.isbn)
+      && Objects.equals(issn, citation.issn)
+      && Objects.equals(url, citation.url)
+      && Objects.equals(accessed, citation.accessed)
+      && Objects.equals(note, citation.note)
+      && Objects.equals(additionalProperties, citation.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, type, title, version, author, editor, publisher, publisherPlace, issued, containerTitle,
+      containerAuthor, volume, issue, edition, page, collectionTitle, collectionEditor, doi, isbn, issn, url, accessed,
+      note, additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Citation.class.getSimpleName() + "[", "]")
+      .add("id='" + id + "'")
+      .add("type=" + type)
+      .add("title='" + title + "'")
+      .add("version='" + version + "'")
+      .add("author=" + author)
+      .add("editor=" + editor)
+      .add("publisher='" + publisher + "'")
+      .add("publisherPlace='" + publisherPlace + "'")
+      .add("issued=" + issued)
+      .add("containerTitle='" + containerTitle + "'")
+      .add("containerAuthor=" + containerAuthor)
+      .add("volume='" + volume + "'")
+      .add("issue='" + issue + "'")
+      .add("edition='" + edition + "'")
+      .add("page='" + page + "'")
+      .add("collectionTitle='" + collectionTitle + "'")
+      .add("collectionEditor=" + collectionEditor)
+      .add("doi=" + doi)
+      .add("isbn='" + isbn + "'")
+      .add("issn='" + issn + "'")
+      .add("url=" + url)
+      .add("accessed=" + accessed)
+      .add("note='" + note + "'")
+      .add("additionalProperties=" + additionalProperties)
+      .toString();
+  }
 }

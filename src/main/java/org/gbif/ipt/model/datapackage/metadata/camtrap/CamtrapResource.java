@@ -14,7 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.Resource;
-import org.gbif.ipt.model.datapackage.metadata.DataPackageResource;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessResource;
 import org.gbif.ipt.validation.InternalField;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Data Resource
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapResource extends DataPackageResource {
+public class CamtrapResource extends FrictionlessResource {
 
   private final static long serialVersionUID = -5654049327007100865L;
 

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 
 /**
  * Main class for COL Data Package (ColDP) metadata.
@@ -61,7 +64,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   "source",
   "notes"
 })
-public class ColMetadata {
+public class ColMetadata implements DataPackageMetadata {
 
   /**
    * single, primary DOI for the dataset
@@ -265,11 +268,13 @@ public class ColMetadata {
     this.identifier = identifier;
   }
 
+  @Override
   @JsonProperty("title")
   public String getTitle() {
     return title;
   }
 
+  @Override
   @JsonProperty("title")
   public void setTitle(String title) {
     this.title = title;
@@ -285,11 +290,13 @@ public class ColMetadata {
     this.alias = alias;
   }
 
+  @Override
   @JsonProperty("version")
   public String getVersion() {
     return version;
   }
 
+  @Override
   @JsonProperty("version")
   public void setVersion(String version) {
     this.version = version;
@@ -355,11 +362,13 @@ public class ColMetadata {
     this.contributor = contributor;
   }
 
+  @Override
   @JsonProperty("description")
   public String getDescription() {
     return description;
   }
 
+  @Override
   @JsonProperty("description")
   public void setDescription(String description) {
     this.description = description;
@@ -505,4 +514,75 @@ public class ColMetadata {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ColMetadata that = (ColMetadata) o;
+    return Objects.equals(doi, that.doi)
+      && Objects.equals(identifier, that.identifier)
+      && Objects.equals(title, that.title)
+      && Objects.equals(alias, that.alias)
+      && Objects.equals(version, that.version)
+      && Objects.equals(issued, that.issued)
+      && Objects.equals(creator, that.creator)
+      && Objects.equals(editor, that.editor)
+      && Objects.equals(publisher, that.publisher)
+      && Objects.equals(contact, that.contact)
+      && Objects.equals(contributor, that.contributor)
+      && Objects.equals(description, that.description)
+      && Objects.equals(keyword, that.keyword)
+      && Objects.equals(taxonomicScope, that.taxonomicScope)
+      && Objects.equals(taxonomicScopeInEnglish, that.taxonomicScopeInEnglish)
+      && Objects.equals(temporalScope, that.temporalScope)
+      && Objects.equals(geographicScope, that.geographicScope)
+      && Objects.equals(completeness, that.completeness)
+      && Objects.equals(confidence, that.confidence)
+      && Objects.equals(url, that.url)
+      && Objects.equals(issn, that.issn)
+      && Objects.equals(license, that.license)
+      && Objects.equals(logo, that.logo)
+      && Objects.equals(source, that.source)
+      && Objects.equals(notes, that.notes)
+      && Objects.equals(additionalProperties, that.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(doi, identifier, title, alias, version, issued, creator, editor, publisher, contact,
+      contributor, description, keyword, taxonomicScope, taxonomicScopeInEnglish, temporalScope, geographicScope,
+      completeness, confidence, url, issn, license, logo, source, notes, additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ColMetadata.class.getSimpleName() + "[", "]")
+      .add("doi=" + doi)
+      .add("identifier=" + identifier)
+      .add("title='" + title + "'")
+      .add("alias='" + alias + "'")
+      .add("version='" + version + "'")
+      .add("issued=" + issued)
+      .add("creator=" + creator)
+      .add("editor=" + editor)
+      .add("publisher=" + publisher)
+      .add("contact=" + contact)
+      .add("contributor=" + contributor)
+      .add("description='" + description + "'")
+      .add("keyword=" + keyword)
+      .add("taxonomicScope='" + taxonomicScope + "'")
+      .add("taxonomicScopeInEnglish='" + taxonomicScopeInEnglish + "'")
+      .add("temporalScope='" + temporalScope + "'")
+      .add("geographicScope='" + geographicScope + "'")
+      .add("completeness=" + completeness)
+      .add("confidence=" + confidence)
+      .add("url=" + url)
+      .add("issn='" + issn + "'")
+      .add("license='" + license + "'")
+      .add("logo=" + logo)
+      .add("source=" + source)
+      .add("notes='" + notes + "'")
+      .add("additionalProperties=" + additionalProperties)
+      .toString();
+  }
 }

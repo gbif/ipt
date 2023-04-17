@@ -52,8 +52,8 @@ public class DataDir {
   public static final String PERSISTENCE_FILENAME = "resource.xml";
   public static final String INFERRED_METADATA_FILENAME = "inferredMetadata.xml";
   public static final String EML_XML_FILENAME = "eml.xml";
-  public static final String DATAPACKAGE_METADATA_JSON_FILENAME = "datapackage.json";
-  public static final String DATAPACKAGE_METADATA_YAML_FILENAME = "datapackage.yaml";
+  public static final String FRICTIONLESS_METADATA_FILENAME = "datapackage.json";
+  public static final String COL_DP_METADATA_FILENAME = "metadata.yaml";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
@@ -305,9 +305,9 @@ public class DataDir {
 
   public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type) {
     if (COL_DP.equals(type)) {
-      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATAPACKAGE_METADATA_YAML_FILENAME);
+      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + COL_DP_METADATA_FILENAME);
     }
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATAPACKAGE_METADATA_JSON_FILENAME);
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + FRICTIONLESS_METADATA_FILENAME);
   }
 
   public File resourceFile(Resource resource, String path) {

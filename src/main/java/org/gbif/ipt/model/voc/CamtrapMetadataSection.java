@@ -16,10 +16,10 @@ package org.gbif.ipt.model.voc;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * This enumeration represents the set of datapackage metadata sections in the IPT. Each entry represents a section, and the
+ * This enumeration represents the set of camtrap metadata sections in the IPT. Each entry represents a section, and the
  * name of the section is the name used in URL.
  */
-public enum DataPackageMetadataSection {
+public enum CamtrapMetadataSection {
 
   BASIC_SECTION("basic"),
   GEOGRAPHIC_SECTION ("geographic"),
@@ -41,8 +41,8 @@ public enum DataPackageMetadataSection {
    *
    * @return DataPackageMetadataSection or null if not found from the section name
    */
-  public static DataPackageMetadataSection fromName(String section) {
-    for (DataPackageMetadataSection s : DataPackageMetadataSection.values()) {
+  public static CamtrapMetadataSection fromName(String section) {
+    for (CamtrapMetadataSection s : CamtrapMetadataSection.values()) {
       if (s.name.equalsIgnoreCase(StringUtils.trimToEmpty(section))) {
         return s;
       }
@@ -50,7 +50,7 @@ public enum DataPackageMetadataSection {
     return null;
   }
 
-  DataPackageMetadataSection(String name) {
+  CamtrapMetadataSection(String name) {
     this.name = name;
   }
 

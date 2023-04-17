@@ -16,8 +16,9 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
-import org.gbif.ipt.model.voc.DataPackageMetadataSection;
+import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.service.InvalidMetadataException;
 
 import java.util.Set;
@@ -63,7 +64,7 @@ public class DataPackageMetadataValidator {
    */
   public void validate(BaseAction action, DataPackageMetadata metadata) throws InvalidMetadataException {
     boolean problemsEncountered = false;
-    for (DataPackageMetadataSection section : DataPackageMetadataSection.values()) {
+    for (CamtrapMetadataSection section : CamtrapMetadataSection.values()) {
       validate(action, metadata, section);
       // only highlight first section has errors
       if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
@@ -76,7 +77,7 @@ public class DataPackageMetadataValidator {
     }
   }
 
-  public boolean isSectionValid(BaseAction action, Resource resource, DataPackageMetadataSection section) {
+  public boolean isSectionValid(BaseAction action, Resource resource, CamtrapMetadataSection section) {
     boolean problemsEncountered = false;
     validate(action, resource, section);
     if ((action.hasActionErrors() || action.hasFieldErrors())) {
@@ -95,9 +96,9 @@ public class DataPackageMetadataValidator {
    * @param resource resource
    * @param section EML document section name
    */
-  public void validate(BaseAction action, Resource resource, @Nullable DataPackageMetadataSection section) {
+  public void validate(BaseAction action, Resource resource, @Nullable CamtrapMetadataSection section) {
     if (resource != null) {
-      DataPackageMetadata metadata = (resource.getDataPackageMetadata() == null) ? new DataPackageMetadata() : resource.getDataPackageMetadata();
+      DataPackageMetadata metadata = (resource.getDataPackageMetadata() == null) ? new FrictionlessMetadata() : resource.getDataPackageMetadata();
 
       validate(action, metadata, section);
     }
@@ -112,10 +113,10 @@ public class DataPackageMetadataValidator {
    * @param metadata data package metadata
    * @param section EML document section name
    */
-  public void validate(BaseAction action, DataPackageMetadata metadata, @Nullable DataPackageMetadataSection section) {
+  public void validate(BaseAction action, DataPackageMetadata metadata, @Nullable CamtrapMetadataSection section) {
     // set default
     if (section == null) {
-      section = DataPackageMetadataSection.BASIC_SECTION;
+      section = CamtrapMetadataSection.BASIC_SECTION;
     }
 
     switch (section) {

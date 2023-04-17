@@ -26,7 +26,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
-import org.gbif.ipt.model.voc.DataPackageMetadataSection;
+import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -44,6 +44,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+
 public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(DataPackageMetadataAction.class);
@@ -51,8 +53,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private static final long serialVersionUID = -1669636958170716515L;
 
   private final DataPackageMetadataValidator metadataValidator;
-  private DataPackageMetadataSection section = DataPackageMetadataSection.BASIC_SECTION;
-  private DataPackageMetadataSection next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
+  private CamtrapMetadataSection section = CamtrapMetadataSection.BASIC_SECTION;
+  private CamtrapMetadataSection next = CamtrapMetadataSection.GEOGRAPHIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
 
   public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
@@ -82,8 +84,19 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       return;
     }
 
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      prepareCamtrap();
+    }
+  }
+
+  private void prepareCamtrap() {
     // take the section parameter from the requested url
-    section = DataPackageMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "datapackage-metadata-", "."));
+    section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "datapackage-metadata-", "."));
+    CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+    if (section == null) {
+      return;
+    }
 
     switch (section) {
       case BASIC_SECTION:
@@ -97,9 +110,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         }
 
         if (isHttpPost()) {
-          resource.getDataPackageMetadata().getContributors().clear();
-          resource.getDataPackageMetadata().getLicenses().clear();
-          resource.getDataPackageMetadata().getSources().clear();
+          metadata.getContributors().clear();
+          metadata.getLicenses().clear();
+          metadata.getSources().clear();
 
           // publishing organisation, if provided must match organisation
           String id = getId();
@@ -118,9 +131,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
       case TAXONOMIC_SECTION:
         if (isHttpPost()) {
-          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-            ((CamtrapMetadata) resource.getDataPackageMetadata()).getTaxonomic().clear();
-          }
+          metadata.getTaxonomic().clear();
         }
         break;
 
@@ -129,28 +140,22 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
       case KEYWORDS_SECTION:
         if (isHttpPost()) {
-          resource.getDataPackageMetadata().getKeywords().clear();
+          metadata.getKeywords().clear();
         }
         break;
 
       case PROJECT_SECTION:
         if (isHttpPost()) {
-          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-            CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-            if (camtrapMetadata.getProject() != null) {
-              camtrapMetadata.getProject().getCaptureMethod().clear();
-            }
+          if (metadata.getProject() != null) {
+            metadata.getProject().getCaptureMethod().clear();
           }
         }
         break;
 
       case OTHER_SECTION:
         if (isHttpPost()) {
-          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-            CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-            camtrapMetadata.getReferences().clear();
-            camtrapMetadata.getRelatedIdentifiers().clear();
-          }
+          metadata.getReferences().clear();
+          metadata.getRelatedIdentifiers().clear();
         }
         break;
 
@@ -178,25 +183,25 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // progress to next section, since save succeeded
       switch (section) {
         case BASIC_SECTION:
-          next = DataPackageMetadataSection.GEOGRAPHIC_SECTION;
+          next = CamtrapMetadataSection.GEOGRAPHIC_SECTION;
           break;
         case GEOGRAPHIC_SECTION:
-          next = DataPackageMetadataSection.TAXONOMIC_SECTION;
+          next = CamtrapMetadataSection.TAXONOMIC_SECTION;
           break;
         case TAXONOMIC_SECTION:
-          next = DataPackageMetadataSection.TEMPORAL_SECTION;
+          next = CamtrapMetadataSection.TEMPORAL_SECTION;
           break;
         case TEMPORAL_SECTION:
-          next = DataPackageMetadataSection.KEYWORDS_SECTION;
+          next = CamtrapMetadataSection.KEYWORDS_SECTION;
           break;
         case KEYWORDS_SECTION:
-          next = DataPackageMetadataSection.PROJECT_SECTION;
+          next = CamtrapMetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:
-          next = DataPackageMetadataSection.OTHER_SECTION;
+          next = CamtrapMetadataSection.OTHER_SECTION;
           break;
         case OTHER_SECTION:
-          next = DataPackageMetadataSection.BASIC_SECTION;
+          next = CamtrapMetadataSection.BASIC_SECTION;
           break;
         default:
           break;

@@ -14,7 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.Contributor;
-import org.gbif.ipt.model.datapackage.metadata.DataPackageContributor;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapContributor extends DataPackageContributor {
+public class CamtrapContributor extends FrictionlessContributor {
 
   private static final long serialVersionUID = -8059939413339566278L;
 

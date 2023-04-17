@@ -76,9 +76,10 @@ import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
-import org.gbif.ipt.model.datapackage.metadata.col.DataPackageColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -459,7 +460,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     validator.validate(action, metadata);
 
     // additional Col-DP metadata validation
-    if (DataPackageColMetadata.class.equals(metadataClass)) {
+    if (FrictionlessColMetadata.class.equals(metadataClass)) {
       ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
       validator.validateColMetadata(action, colMetadata);
     }
@@ -728,7 +729,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (CAMTRAP_DP.equals(type)) {
       res.setDataPackageMetadata(new CamtrapMetadata());
     } else if (COL_DP.equals(type)) {
-      res.setDataPackageMetadata(new DataPackageColMetadata());
+      res.setDataPackageMetadata(new FrictionlessColMetadata());
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
@@ -878,12 +879,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (validate) {
       validateDatapackageMetadataFile(action, metadataFile, metadataClassForType(resource.getCoreType()));
     }
-    // copy metadata file to data directory (with name datapackage.json) and populate Eml instance
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
-    // set name, erase some internal fields
-    metadata.setName(resource.getShortname());
-    metadata.setCreated(null);
-    metadata.setResources(new ArrayList<>());
+
+    if (metadata instanceof FrictionlessMetadata) {
+      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+      // set name, erase some internal fields
+      frictionlessMetadata.setName(resource.getShortname());
+      frictionlessMetadata.setCreated(null);
+      frictionlessMetadata.setResources(new ArrayList<>());
+    }
+
+    if (COL_DP.equals(resource.getCoreType())) {
+      // TODO: 16/04/2023 for col-dp we don't have datapackage.json, only metadata.yaml
+    }
 
     resource.setDataPackageMetadata(metadata);
     resource.setMetadataModified(new Date());
@@ -1710,13 +1718,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Loads a resource's metadata from its datapackage.json file located inside its resource directory.
-   * If no datapackage.json file was found, the resource is loaded with an empty DataPackageMetadata instance.
+   * Loads a resource's metadata from its datapackage.json (for frictionless) or metadata.yaml (for ColDP) file located
+   * inside its resource directory.
+   * If no file was found, the resource is loaded with an empty metadata class instance.
    *
    * @param resource resource
    */
   private void loadDatapackageMetadata(Resource resource) {
-    DataPackageMetadata metadata = new CamtrapMetadata();
+    DataPackageMetadata metadata;
+
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      metadata = new CamtrapMetadata();
+    } else if (COL_DP.equals(resource.getCoreType())) {
+      metadata = new ColMetadata();
+    } else {
+      metadata = new FrictionlessMetadata();
+    }
+
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     if (metadataFile.exists() && !metadataFile.isDirectory()) {
       try {
@@ -1727,11 +1745,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         throw new RuntimeException(e);
       }
     } else {
-      metadata.setName(resource.getShortname());
-    }
-
-    if (CAMTRAP_DP.equals(resource.getCoreType())) {
-      metadata.setProfile(CAMTRAP_PROFILE);
+      if (metadata instanceof FrictionlessMetadata) {
+        ((FrictionlessMetadata) metadata).setName(resource.getShortname());
+      }
     }
 
     resource.setDataPackageMetadata(metadata);
@@ -2631,7 +2647,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // update metadata version
     resource.setMetadataVersion(version);
-    resource.getDataPackageMetadata().setCreated(new Date());
+    if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata) {
+      ((FrictionlessMetadata) resource.getDataPackageMetadata()).setCreated(new Date());
+    }
+
     // update metadata created (represents date when the resource was last published)
     resource.getDataPackageMetadata().setVersion(version.toPlainString());
 

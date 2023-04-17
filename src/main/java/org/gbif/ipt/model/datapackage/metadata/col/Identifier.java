@@ -15,6 +15,8 @@ package org.gbif.ipt.model.datapackage.metadata.col;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -42,4 +44,23 @@ public class Identifier {
     this.additionalProperties.put(name, value);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Identifier that = (Identifier) o;
+    return Objects.equals(additionalProperties, that.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Identifier.class.getSimpleName() + "[", "]")
+      .add("additionalProperties=" + additionalProperties)
+      .toString();
+  }
 }
