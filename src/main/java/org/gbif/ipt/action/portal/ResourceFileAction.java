@@ -131,13 +131,23 @@ public class ResourceFileAction extends PortalBaseAction {
 
     // serve file
     if (isDataPackageResource) {
-      data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
-      mimeType = "application/json";
-      sb.append("datapackage-").append(resource.getShortname());
-      if (version != null) {
-        sb.append("-v").append(version.toPlainString());
+      if (Constants.COL_DP.equals(resource.getCoreType())) {
+        data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+        mimeType = "text/yaml";
+        sb.append("metadata-").append(resource.getShortname());
+        if (version != null) {
+          sb.append("-v").append(version.toPlainString());
+        }
+        sb.append(".yaml");
+      } else {
+        data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+        mimeType = "application/json";
+        sb.append("datapackage-").append(resource.getShortname());
+        if (version != null) {
+          sb.append("-v").append(version.toPlainString());
+        }
+        sb.append(".json");
       }
-      sb.append(".json");
     } else {
       data = dataDir.resourceEmlFile(resource.getShortname(), version);
       mimeType = "text/xml";

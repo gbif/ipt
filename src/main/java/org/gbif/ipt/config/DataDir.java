@@ -285,7 +285,7 @@ public class DataDir {
 
   public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type, @NotNull BigDecimal version) {
     if (COL_DP.equals(type)) {
-      String fn = "datapackage-" + version.toPlainString() + ".yaml";
+      String fn = "metadata-" + version.toPlainString() + ".yaml";
       return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
     }
     String fn = "datapackage-" + version.toPlainString() + ".json";
