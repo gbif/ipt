@@ -70,10 +70,14 @@
         </#if>
         var $registered = false;
 
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+        try {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+              return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        } catch (err) {
+            console.log("Failed to initialize tooltips")
+        }
 
         $(".source-item-link").click(function (e) {
             e.preventDefault();
@@ -478,7 +482,8 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-source-button").on('click', function () {
+        $("#add-source-button").on('click', function (e) {
+            e.preventDefault();
             showAddSourceModal();
         });
 
@@ -487,7 +492,8 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-mapping-button").on('click', function () {
+        $("#add-mapping-button").on('click', function (e) {
+            e.preventDefault();
             showAddMappingModal();
         });
 
@@ -496,7 +502,8 @@
             dialogWindow.modal('show');
         }
 
-        $("#upload-metadata-button").on('click', function () {
+        $("#upload-metadata-button").on('click', function (e) {
+            e.preventDefault();
             showMetadataModal();
         });
 
@@ -543,7 +550,8 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-network-button").on('click', function () {
+        $("#add-network-button").on('click', function (e) {
+            e.preventDefault();
             showAddNetworkModal();
         });
 
@@ -552,19 +560,40 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-manager-button").on('click', function () {
+        $("#add-manager-button").on('click', function (e) {
+            e.preventDefault();
             showAddManagerModal();
         });
 
         $("#reserve-doi").on("click", function (e) {
-            showReserveDoiModal(e);
+            e.preventDefault();
+            showReserveDoiModal();
         });
 
-        function showReserveDoiModal(e) {
-            e.preventDefault();
+        function showReserveDoiModal() {
             var dialogWindow = $("#reserve-doi-modal");
             dialogWindow.modal('show');
         }
+
+        $("#change-publishing-organization").on('click', function (e) {
+            e.preventDefault();
+            showChangePublishingOrganizationModal();
+        });
+
+        function showChangePublishingOrganizationModal() {
+          var dialogWindow = $("#change-publishing-organization-modal");
+          dialogWindow.modal('show');
+        }
+
+        // $("#publishingOrganizationKey").change(function (e) {
+        //     var organization = this.options[e.target.selectedIndex].value;
+        //
+        //     if (organization) {
+        //         $("#changePublishingOrganization-submit").show();
+        //     } else {
+        //         $("#changePublishingOrganization-submit").hide();
+        //     }
+        // });
     });
 </script>
 
@@ -821,6 +850,16 @@
                         </div>
 
                         <div class="mt-4">
+                            <div class="mb-2">
+                                <@s.text name="eml.publishingOrganisation"/>: <i>${(resource.organisation.name)!""}</i>
+                                <a id="change-publishing-organization" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.change"/>
+                                </a>
+                            </div>
+
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
                             </p>
@@ -1921,6 +1960,31 @@
                     <#if organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
                         <@nextDoiButtonTD/>
                     </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="change-publishing-organization-modal" class="modal fade" tabindex="-1" aria-labelledby="change-publishing-organization-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="change-publishing-organization-modal-title"><@s.text name="eml.publishingOrganisation"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action='resource-changePublishingOrganization.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
+<#--                        <@select name="id" i18nkey="eml.publishingOrganisation" options=organisations value="${(resource.organisation.key)!''}" />-->
+<#--                        <select name="id" class="form-select my-1" id="changePublishingOrganization-select" size="1">-->
+<#--                            <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>-->
+<#--                            <#list potentialManagers?sort_by("name") as u>-->
+<#--                                <option value="${u.email}">${u.name}</option>-->
+<#--                            </#list>-->
+<#--                        </select>-->
+                        <@s.submit id="changePublishingOrganization-submit" name="change" cssClass="btn btn-outline-gbif-primary my-3" key="button.change"/>
+                    </form>
                 </div>
             </div>
         </div>

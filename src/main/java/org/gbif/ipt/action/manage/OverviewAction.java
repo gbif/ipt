@@ -128,6 +128,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
   private Organisation doiAccount;
+  private String publishingOrganizationKey;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
   private boolean missingMetadata;
@@ -225,6 +226,26 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       saveResource();
       potentialManagers.remove(u);
     }
+    return execute();
+  }
+
+  /**
+   * Triggered by change publishing organization button on overview page
+   */
+  public String changePublishingOrganization() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    if (publishingOrganizationKey != null) {
+      for (Organisation org : organisations) {
+        if (org.getKey().toString().equals(publishingOrganizationKey)) {
+          resource.setOrganisation(org);
+          break;
+        }
+      }
+    }
+
     return execute();
   }
 
@@ -1814,5 +1835,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public boolean isDataPackageResource() {
     return resource.getSchemaIdentifier() != null;
+  }
+
+  public String getPublishingOrganizationKey() {
+    return publishingOrganizationKey;
+  }
+
+  public void setPublishingOrganizationKey(String publishingOrganizationKey) {
+    this.publishingOrganizationKey = publishingOrganizationKey;
   }
 }
