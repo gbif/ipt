@@ -116,23 +116,23 @@
 
           <#if resource.lastPublished?? && resource.organisation??>
             <div class="text-gbif-primary text-smaller">
-                        <span>
-                            <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                            <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
-                              <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                            <#else>
-                                <@s.text name='portal.resource.latest.version'/>
-                            </#if>
+              <span>
+                  <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                  <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                    <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                  <#else>
+                      <@s.text name='portal.resource.latest.version'/>
+                  </#if>
 
-                            <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                                ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created?date?string.long}</span>
-                              <br>
-                              <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
-                            <#else>
-                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.created?date?string.long_short}</span>
-                              <span style="display: none">${resource.organisation.name}</span>
-                            </#if>
-                        </span>
+                  <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                      ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created?date?string.long}</span>
+                    <br>
+                    <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
+                  <#else>
+                      <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.issued?date?string.long_short}</span>
+                    <span style="display: none">${resource.organisation.name}</span>
+                  </#if>
+              </span>
             </div>
           <#else>
             <div class="text-gbif-danger text-smaller">
@@ -168,15 +168,15 @@
           <div class="row">
             <div class="col-lg-4 text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
               <dl class="inline mb-0">
-                  <#if (dpMetadata.created)??>
+                  <#if (dpMetadata.issued)??>
                     <div>
                       <dt><@s.text name='portal.resource.publicationDate'/>:</dt>
-                      <dd>${dpMetadata.created?date?string.long}</dd>
+                      <dd>${dpMetadata.issued?date?string.long}</dd>
                     </div>
                   </#if>
               </dl>
               <dl class="inline mb-0">
-                  <#if (dpMetadata.created)?? && resource.organisation?has_content>
+                  <#if (dpMetadata.issued)?? && resource.organisation?has_content>
                     <div>
                       <dt><@s.text name='portal.resource.publishedBy'/>:</dt>
                       <dd>
