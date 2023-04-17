@@ -6,36 +6,66 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 
-<#-- Construct a Contributor -->
-    <#macro contributor contributor>
+<#-- Construct an Agent -->
+    <#macro agent entity>
       <div class="contact">
-
-          <#-- minimum info is the last name, organisation name, or position name -->
         <div class="contactName mb-1">
-            ${contributor.title!}
+            <#if entity.given?has_content || entity.family?has_content>
+                ${entity.given!} ${entity.family!}
+            <#else>
+                ${entity.organisation!}
+            </#if>
+
         </div>
 
-          <#-- we use this div to toggle the grouped information -->
         <div class="text-smaller text-discreet">
           <div class="contactType fst-italic">
-              ${contributor.role!}
+              ${entity.role!}
           </div>
 
-            <#if contributor.email?has_content>
+          <#if (entity.given?has_content || entity.family?has_content) && entity.organisation?has_content>
+            <div class="organisation">
+                ${entity.organisation!}
+            </div>
+          </#if>
+
+          <div class="address">
+              <#if entity.city?has_content>
+                <div class="city">
+                    ${entity.city}
+                </div>
+              </#if>
+
+              <#if entity.state?has_content>
+                <div class="state">${entity.state}</div>
+              </#if>
+
+              <#if entity.country?has_content>
+                <div class="country">${entity.country}</div>
+              </#if>
+          </div>
+
+            <#if entity.email?has_content>
               <div>
-                <a href="mailto:${contributor.email}">${contributor.email}</a>
+                <a href="mailto:${entity.email}">${entity.email}</a>
               </div>
             </#if>
 
-            <#if contributor.organization?has_content>
-              <div>
-                  ${contributor.organization}
-              </div>
-            </#if>
-
-            <#if contributor.path?has_content>
+            <#if entity.url?has_content>
               <div class="overflow-wrap">
-                <a href="${contributor.path}">${contributor.path}</a>
+                <a href="${entity.url}">${entity.url}</a>
+              </div>
+            </#if>
+
+            <#if entity.rorid?has_content>
+              <div class="overflow-wrap">
+                rorid: ${entity.rorid}
+              </div>
+            </#if>
+
+            <#if entity.orcid?has_content>
+              <div class="overflow-wrap">
+                orcid: ${entity.orcid}
               </div>
             </#if>
         </div>
@@ -245,28 +275,39 @@
                     <#if resource.versionHistory??>
                       <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                     </#if>
-                    <#if (dpMetadata.keywords)?has_content>
+                    <#if (dpMetadata.identifier)?has_content>
+                      <li><a href="#anchor-identifiers" class="sidebar-navigation-link"><@s.text name='portal.resource.identifiers'/></a></li>
+                    </#if>
+                    <#if (dpMetadata.keyword)?has_content>
                       <li><a href="#anchor-keywords" class="sidebar-navigation-link"><@s.text name='portal.resource.keywords'/></a></li>
                     </#if>
-                    <#if (dpMetadata.contributors)?has_content>
+                    <#if (dpMetadata.contact)?has_content>
+                      <li><a href="#anchor-contact" class="sidebar-navigation-link"><@s.text name='portal.resource.contact'/></a></li>
+                    </#if>
+                    <#if (dpMetadata.creator)?has_content>
+                      <li><a href="#anchor-creators" class="sidebar-navigation-link"><@s.text name='portal.resource.creators'/></a></li>
+                    </#if>
+                    <#if (dpMetadata.editor)?has_content>
+                      <li><a href="#anchor-editors" class="sidebar-navigation-link"><@s.text name='portal.resource.editors'/></a></li>
+                    </#if>
+                    <#if (dpMetadata.publisher)?has_content>
+                      <li><a href="#anchor-publisher" class="sidebar-navigation-link"><@s.text name='portal.resource.publisher'/></a></li>
+                    </#if>
+                    <#if (dpMetadata.contributor)?has_content>
                       <li><a href="#anchor-contributors" class="sidebar-navigation-link"><@s.text name='portal.resource.contributors'/></a></li>
                     </#if>
-                    <#if (dpMetadata.sources)?has_content>
-                      <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='portal.resource.sources'/></a></li>
-                    </#if>
-                    <#if (dpMetadata.licenses)?has_content>
-                      <li><a href="#anchor-licenses" class="sidebar-navigation-link"><@s.text name='portal.resource.licenses'/></a></li>
-                    </#if>
-                    <#if (dpMetadata.spatial)?has_content>
+                    <#if (dpMetadata.geographicScope)?has_content>
                       <li><a href="#anchor-geographic" class="sidebar-navigation-link"><@s.text name='portal.resource.geographic'/></a></li>
                     </#if>
-                    <#if (dpMetadata.taxonomic)?has_content>
+                    <#if (dpMetadata.taxonomicScope)?has_content>
                       <li><a href="#anchor-taxonomic" class="sidebar-navigation-link"><@s.text name='portal.resource.taxonomic'/></a></li>
                     </#if>
-                    <#if (dpMetadata.temporal)?has_content>
+                    <#if (dpMetadata.temporalScope)?has_content>
                       <li><a href="#anchor-temporal" class="sidebar-navigation-link"><@s.text name='portal.resource.temporal'/></a></li>
                     </#if>
-                  <li><a href="#anchor-other" class="sidebar-navigation-link"><@s.text name='portal.resource.other'/></a></li>
+                    <#if (dpMetadata.notes)?has_content>
+                      <li><a href="#anchor-notes" class="sidebar-navigation-link"><@s.text name='portal.resource.notes'/></a></li>
+                    </#if>
                 </#if>
             </ul>
           </nav>
@@ -310,8 +351,24 @@
                 </#if>
             </#if>
 
+          <!-- Identifiers section -->
+            <#if (dpMetadata.identifier.additionalProperties)?has_content>
+              <span class="anchor anchor-home-resource-page" id="anchor-identifiers"></span>
+              <div id="identifiers" class="mt-5 section">
+                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name='portal.resource.identifiers'/>
+                </h4>
+
+                <p>
+                    <#list dpMetadata.identifier.additionalProperties as key, value>
+                      ${key}: ${value}<br>
+                    </#list>
+                </p>
+              </div>
+            </#if>
+
           <!-- Keywords section -->
-            <#if (dpMetadata.keywords)?has_content>
+            <#if (dpMetadata.keyword)?has_content>
               <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
               <div id="keywords" class="mt-5 section">
                 <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
@@ -319,15 +376,87 @@
                 </h4>
 
                 <p>
-                    <#list dpMetadata.keywords as keyword>
+                    <#list dpMetadata.keyword as keyword>
                         ${keyword}<#sep>;</#sep>
                     </#list>
                 </p>
               </div>
             </#if>
 
+          <!-- Contact section -->
+            <#if (dpMetadata.contact)?has_content>
+              <span class="anchor anchor-resource-page" id="anchor-contact"></span>
+              <div id="contact" class="mt-5 section">
+                <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name='portal.resource.contact'/>
+                </h4>
+
+                <div class="row g-3 border">
+                  <div class="col-lg-4 mt-0">
+                      <@agent entity=dpMetadata.contact />
+                  </div>
+                </div>
+              </div>
+            </#if>
+
+          <!-- Creators section -->
+            <#if (dpMetadata.creator)?has_content>
+              <span class="anchor anchor-resource-page" id="anchor-creators"></span>
+              <div id="creators" class="mt-5 section">
+                <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name='portal.resource.creators'/>
+                </h4>
+
+                <div class="row g-3 border">
+                    <#if (dpMetadata.creator?size>0)>
+                        <#list dpMetadata.creator as c>
+                          <div class="col-lg-4 mt-0">
+                              <@agent entity=c />
+                          </div>
+                        </#list>
+                    </#if>
+                </div>
+              </div>
+            </#if>
+
+          <!-- Editors section -->
+            <#if (dpMetadata.editor)?has_content>
+              <span class="anchor anchor-resource-page" id="anchor-editors"></span>
+              <div id="editors" class="mt-5 section">
+                <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name='portal.resource.editors'/>
+                </h4>
+
+                <div class="row g-3 border">
+                    <#if (dpMetadata.editor?size>0)>
+                        <#list dpMetadata.editor as c>
+                          <div class="col-lg-4 mt-0">
+                              <@agent entity=c />
+                          </div>
+                        </#list>
+                    </#if>
+                </div>
+              </div>
+            </#if>
+
+          <!-- Publishers section -->
+            <#if (dpMetadata.publisher)?has_content>
+              <span class="anchor anchor-resource-page" id="anchor-publisher"></span>
+              <div id="publisher" class="mt-5 section">
+                <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name='portal.resource.publisher'/>
+                </h4>
+
+                <div class="row g-3 border">
+                    <div class="col-lg-4 mt-0">
+                        <@agent entity=dpMetadata.publisher />
+                    </div>
+                </div>
+              </div>
+            </#if>
+
           <!-- Contributors section -->
-            <#if (dpMetadata.contributors)?has_content>
+            <#if (dpMetadata.contributor)?has_content>
               <span class="anchor anchor-resource-page" id="anchor-contributors"></span>
               <div id="contributors" class="mt-5 section">
                 <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
@@ -335,10 +464,10 @@
                 </h4>
 
                 <div class="row g-3 border">
-                    <#if (dpMetadata.contributors?size>0)>
-                        <#list dpMetadata.contributors as c>
+                    <#if (dpMetadata.contributor?size>0)>
+                        <#list dpMetadata.contributor as c>
                           <div class="col-lg-4 mt-0">
-                              <@contributor contributor=c />
+                              <@agent entity=c />
                           </div>
                         </#list>
                     </#if>
@@ -423,90 +552,60 @@
             </#if>
 
           <!-- Geographic scope section -->
-            <#if (dpMetadata.spatial)??>
+            <#if (dpMetadata.geographicScope)??>
               <span class="anchor anchor-home-resource-page" id="anchor-geographic"></span>
               <div id="geographic" class="mt-5 section">
                 <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                     <@s.text name='portal.resource.geographic'/>
                 </h4>
 
-                <div class="table-responsive">
-                  <table class="text-smaller table table-sm table-borderless">
-                    <tr>
-                      <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
-                      <td>${dpMetadata.spatial.bbox}</td>
-                    </tr>
-                  </table>
-                </div>
+                <p>
+                  ${dpMetadata.geographicScope}
+                </p>
               </div>
             </#if>
 
           <!-- Taxonomic scope section -->
-            <#if (dpMetadata.taxonomic)??>
+            <#if (dpMetadata.taxonomicScope)??>
               <span class="anchor anchor-home-resource-page" id="anchor-taxonomic"></span>
               <div id="taxonomic" class="mt-5 section">
                 <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                     <@s.text name='portal.resource.taxonomic'/>
                 </h4>
 
-                  <#list dpMetadata.taxonomic as tx>
-                    <div class="table-responsive">
-                      <table class="text-smaller table table-sm table-borderless">
-                        <tr>
-                          <th class="col-4">Taxon id</th>
-                          <td>${tx.taxonID!}</td>
-                        </tr>
-                        <tr>
-                          <th class="col-4">Taxon id reference</th>
-                          <td>${tx.taxonIDReference!}</td>
-                        </tr>
-                        <tr>
-                          <th class="col-4">Scientific name</th>
-                          <td>${tx.scientificName!}</td>
-                        </tr>
-                        <tr>
-                          <th class="col-4">Taxon rank</th>
-                          <td>${tx.taxonRank!}</td>
-                        </tr>
-                        <tr>
-                          <th class="col-4">Vernacular names</th>
-                          <td><#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if></td>
-                        </tr>
-                      </table>
-                    </div>
-                  </#list>
+                <p>
+                    ${dpMetadata.taxonomicScope}
+                </p>
               </div>
             </#if>
 
           <!-- Temporal scope section -->
-            <#if (dpMetadata.temporal)??>
+            <#if (dpMetadata.temporalScope)??>
               <span class="anchor anchor-home-resource-page" id="anchor-temporal"></span>
               <div id="temporal" class="mt-5 section">
                 <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                     <@s.text name='portal.resource.temporal'/>
                 </h4>
 
-                <div class="table-responsive">
-                  <table class="text-smaller table table-sm table-borderless">
-                    <tr>
-                      <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                      <td property="dc:temporal">${dpMetadata.temporal.start?date} / ${dpMetadata.temporal.end?date}</td>
-                    </tr>
-                  </table>
-                </div>
+                <p>
+                    ${dpMetadata.temporalScope}
+                </p>
               </div>
             </#if>
 
-          <!-- Other metadata section -->
-          <span class="anchor anchor-home-resource-page" id="anchor-other"></span>
-          <div id="other" class="mt-5 section">
-            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                <@s.text name='portal.resource.other'/>
-            </h4>
-            <div class="mt-3 overflow-x-auto">
+          <!-- Notes section -->
+          <#if (dpMetadata.notes)??>
+            <span class="anchor anchor-home-resource-page" id="anchor-notes"></span>
+            <div id="notes" class="mt-5 section">
+              <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                  <@s.text name='portal.resource.notes'/>
+              </h4>
 
+              <p>
+                  ${dpMetadata.notes}
+              </p>
             </div>
-          </div>
+          </#if>
 
         </div>
       </main>
