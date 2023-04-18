@@ -199,13 +199,13 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
 import static org.gbif.ipt.config.Constants.ORDER;
 import static org.gbif.ipt.config.Constants.PHYLUM;
+import static org.gbif.ipt.config.Constants.SCHEMAS_DISPLAY_NAMES;
 import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
@@ -1310,7 +1310,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add data packages
     List<DataSchema> installedSchemas = schemaManager.list();
     for (DataSchema installedSchema : installedSchemas) {
-      datasetTypes.put(installedSchema.getName(), installedSchema.getName());
+      datasetTypes.put(
+        installedSchema.getName(),
+        SCHEMAS_DISPLAY_NAMES.getOrDefault(installedSchema.getName(), installedSchema.getName()));
     }
 
     Map<String, String> datasetSubtypes =
@@ -1634,7 +1636,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add data packages
     List<DataSchema> installedSchemas = schemaManager.list();
     for (DataSchema installedSchema : installedSchemas) {
-      datasetTypes.put(installedSchema.getName(), installedSchema.getName());
+      datasetTypes.put(
+        installedSchema.getName(),
+        SCHEMAS_DISPLAY_NAMES.getOrDefault(installedSchema.getName(), installedSchema.getName()));
     }
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(

@@ -52,6 +52,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.SCHEMAS_DISPLAY_NAMES;
+
 public class CreateResourceAction extends POSTAction {
 
   // logging
@@ -228,7 +230,9 @@ public class CreateResourceAction extends POSTAction {
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     List<DataSchema> installedSchemas = schemaManager.list();
     for (DataSchema installedSchema : installedSchemas) {
-      types.put(installedSchema.getName(), installedSchema.getName());
+      types.put(
+        installedSchema.getName(),
+        SCHEMAS_DISPLAY_NAMES.getOrDefault(installedSchema.getName(), installedSchema.getName()));
     }
     types = MapUtils.getMapWithLowercaseKeys(types);
 
