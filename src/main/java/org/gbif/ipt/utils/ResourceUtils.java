@@ -13,12 +13,16 @@
  */
 package org.gbif.ipt.utils;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
 import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
@@ -37,12 +41,14 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
 
 public class ResourceUtils {
 
   protected static final Logger LOG = LogManager.getLogger(ResourceUtils.class);
 
   private static final ObjectMapper jsonMapper = new ObjectMapper();
+  private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
 
   /*
    * Empty constructor.
@@ -95,15 +101,27 @@ public class ResourceUtils {
 
     if (versionMetadataFile.exists()) {
       if (isDataPackageResource) {
-        DataPackageMetadata metadata;
-        try {
-          metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(schemaIdentifier));
-        } catch (IOException e) {
-          LOG.error("Failed to produce metadata for the data package resource {}", shortname);
-          LOG.error(e);
-          throw new RuntimeException(e);
+        if (COL_DP.equals(coreTypeOrPackageType)) {
+          ColMetadata metadata;
+          try {
+            metadata = yamlMapper.readValue(versionMetadataFile, ColMetadata.class);
+            resource.setDataPackageMetadata(metadata);
+          } catch (IOException e) {
+            LOG.error("Failed to produce ColDP metadata for the resource {}", shortname);
+            LOG.error(e);
+            throw new RuntimeException(e);
+          }
+        } else {
+          DataPackageMetadata metadata;
+          try {
+            metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(schemaIdentifier));
+            resource.setDataPackageMetadata(metadata);
+          } catch (IOException e) {
+            LOG.error("Failed to produce metadata for the data package resource {}", shortname);
+            LOG.error(e);
+            throw new RuntimeException(e);
+          }
         }
-        resource.setDataPackageMetadata(metadata);
       } else {
         Eml eml = EmlUtils.loadWithLocale(versionMetadataFile, Locale.US);
         resource.setEml(eml);
