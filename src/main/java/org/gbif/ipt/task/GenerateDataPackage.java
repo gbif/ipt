@@ -45,7 +45,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -80,6 +79,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
+  private static final int ID_COLUMN_INDEX = 0;
 
   private final Resource resource;
   private final SourceManager sourceManager;
@@ -537,9 +537,21 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             linesWithWrongColumnNumber++;
           }
 
-          String newRow = commaRow(in, subschemaFieldMappings);
-          writer.write(newRow);
-          currRecords++;
+          // initialize translated values and add id column
+          String[] translated = new String[dataFileRowSize];
+          translated[ID_COLUMN_INDEX] = in[ID_COLUMN_INDEX];
+
+          // apply translations and default values
+          applyTranslations(subschemaFieldMappings, in, translated);
+
+          // concatenate values
+          String newRow = commaRow(translated);
+
+          // write a new row (skip if null)
+          if (newRow != null) {
+            writer.write(newRow);
+            currRecords++;
+          }
         }
       }
     } catch (InterruptedException e) {
@@ -593,6 +605,41 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
+   * Apply translations or default values to row, for all mapped properties.
+   * </br>
+   * The method starts by iterating through all mapped properties, checking each one if it has been translated or a
+   * default value provided. The original value in the row is then replaced with the translated or default value.
+   * A record array representing the values to be written to the data file is also updated.
+   *
+   * @param inCols values array, of columns in row that have been mapped
+   * @param in values array, of all columns in row
+   * @param translated translated values
+   */
+  private void applyTranslations(List<DataSchemaFieldMapping> inCols, String[] in, String[] translated) {
+    for (int i = 1; i < inCols.size(); i++) {
+      DataSchemaFieldMapping mapping = inCols.get(i);
+      String val = null;
+      if (mapping != null) {
+        if (mapping.getIndex() != null) {
+          val = in[mapping.getIndex()];
+          // translate value?
+          if (mapping.getTranslation() != null && mapping.getTranslation().containsKey(val)) {
+            val = mapping.getTranslation().get(val);
+            // update value in original record
+            in[mapping.getIndex()] = val;
+          }
+        }
+        // use default value for null values
+        if (val == null) {
+          val = mapping.getDefaultValue();
+        }
+      }
+      // add value to data file record
+      translated[i] = val;
+    }
+  }
+
+  /**
    * Generates a single comma delimited row from the list of values of the provided array.
    * </br>
    * Note all line breaking characters in the value get replaced with an empty string before its added to the row.
@@ -600,36 +647,30 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * The row ends in a newline character.
    *
    * @param columns the array of values from the source
-   * @param subschemaFieldMappings field mappings
    *
    * @return the comma delimited String, {@code null} if provided array only contained null values
    */
-  protected String commaRow(String[] columns, List<DataSchemaFieldMapping> subschemaFieldMappings) {
+  protected String commaRow(String[] columns) {
     Objects.requireNonNull(columns);
-    StringBuilder sb = new StringBuilder();
-    Iterator<DataSchemaFieldMapping> iter = subschemaFieldMappings.iterator();
+    boolean empty = true;
 
-    while (iter.hasNext()) {
-      DataSchemaFieldMapping fieldMapping = iter.next();
-
-      // append if value is mapped
-      if (fieldMapping.getIndex() != null) {
-        String data = columns[fieldMapping.getIndex()];
+    for (int i = 0; i < columns.length; i++) {
+      if (columns[i] != null) {
+        empty = false;
+        columns[i] = StringUtils.trimToNull(ESCAPE_CHARS.matcher(columns[i]).replaceAll(""));
 
         // commas break the whole line, wrap in double quotes
-        if (StringUtils.contains(data, ',')) {
-          data = StringUtils.wrap(data, '"');
+        if (StringUtils.contains(columns[i], ',')) {
+          columns[i] = StringUtils.wrap(columns[i], '"');
         }
-
-        sb.append(ESCAPE_CHARS.matcher(data).replaceAll(""));
-      }
-
-      if (iter.hasNext()) {
-        sb.append(",");
       }
     }
 
-    return sb.append("\n").toString();
+    if (empty) {
+      return null;
+    }
+
+    return StringUtils.join(columns, ',') + "\n";
   }
 
   /**

@@ -14,6 +14,7 @@
 package org.gbif.ipt.model;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -24,6 +25,7 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   private Integer index;
   private String defaultValue;
   private DataSchemaField field;
+  private Map<String, String> translation;
 
   public Integer getIndex() {
     return index;
@@ -49,6 +51,14 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
     this.field = field;
   }
 
+  public Map<String, String> getTranslation() {
+    return translation;
+  }
+
+  public void setTranslation(Map<String, String> translation) {
+    this.translation = translation;
+  }
+
   /**
    * Compares two DataSchemaFieldMapping lexicographically based on their names,
    *
@@ -66,12 +76,15 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
     if (this == o) return true;
     if (!(o instanceof DataSchemaFieldMapping)) return false;
     DataSchemaFieldMapping that = (DataSchemaFieldMapping) o;
-    return Objects.equals(index, that.index) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(field, that.field);
+    return Objects.equals(index, that.index)
+      && Objects.equals(defaultValue, that.defaultValue)
+      && Objects.equals(field, that.field)
+      && Objects.equals(translation, that.translation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, defaultValue, field);
+    return Objects.hash(index, defaultValue, field, translation);
   }
 
   @Override
@@ -80,6 +93,7 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
         .add("index=" + index)
         .add("defaultValue='" + defaultValue + "'")
         .add("field='" + field + "'")
+        .add("translation='" + field + "'")
         .toString();
   }
 }
