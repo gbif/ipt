@@ -918,7 +918,7 @@
                                                                     <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(license.name)!}</span><br>
                                                                 </#if>
                                                             </#list>
-                                                        <#elseif resource.coreType?? && resource.coreType == "col-dp">
+                                                        <#elseif resource.coreType?? && resource.coreType == "coldp">
                                                             <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                         </#if>
                                                     </#if>
@@ -1038,7 +1038,7 @@
                                                                 <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(license.name)!}</span><br>
                                                             </#if>
                                                         </#list>
-                                                    <#elseif resource.coreType?? && resource.coreType == "col-dp">
+                                                    <#elseif resource.coreType?? && resource.coreType == "coldp">
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                     </#if>
                                                 </#if>

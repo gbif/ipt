@@ -1039,7 +1039,7 @@ div.dataTables_processing>div:last-child>div {
     color: #5EA642 !important;
 }
 
-.type-occurrence, .type-camtrap-dp, .type-col-dp {
+.type-occurrence, .type-camtrap-dp, .type-coldp {
     background: #5EA642 !important;
     color: white;
 }

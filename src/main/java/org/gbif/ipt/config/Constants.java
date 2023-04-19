@@ -109,7 +109,7 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
 
   public static final String CAMTRAP_DP = "camtrap-dp";
-  public static final String COL_DP = "col-dp";
+  public static final String COL_DP = "coldp";
   public static final Map<String, String> SCHEMAS_DISPLAY_NAMES;
   public static final String CAMTRAP_PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/0.6/profile/camtrap-dp-profile.json";
 

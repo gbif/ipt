@@ -69,7 +69,6 @@ import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.schema.Schema;
 
-import static org.apache.commons.csv.Constants.CRLF;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.COL_DP;

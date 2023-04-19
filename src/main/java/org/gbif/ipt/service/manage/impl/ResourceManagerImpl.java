@@ -459,7 +459,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
     validator.validate(action, metadata);
 
-    // additional Col-DP metadata validation
+    // additional ColDP metadata validation
     if (FrictionlessColMetadata.class.equals(metadataClass)) {
       ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
       validator.validateColMetadata(action, colMetadata);
@@ -890,7 +890,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     if (COL_DP.equals(resource.getCoreType())) {
-      // TODO: 16/04/2023 for col-dp we don't have datapackage.json, only metadata.yaml
+      // TODO: 16/04/2023 for coldp we don't have datapackage.json, only metadata.yaml
     }
 
     resource.setDataPackageMetadata(metadata);
