@@ -115,6 +115,8 @@
                 <#assign fieldPopoverInfo>
                     <#if field.field.description?has_content>
                         <@processDescription field.field.description />
+                    <#else>
+                        <@s.text name="basic.no.description"/>
                     </#if>
                     <#if field.field.constraints?? && (field.field.constraints.unique?? || field.field.constraints.maximum?? || field.field.constraints.minimum?? || field.field.constraints.pattern??)>
                         <br/><br/>
@@ -153,8 +155,6 @@
                                 <code>${field.field.example}</code>
                             </#if>
                         </#if>
-                    <#else>
-                        <@s.text name="basic.no.description"/>
                     </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
