@@ -69,6 +69,7 @@ import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.schema.Schema;
 
+import static org.apache.commons.csv.Constants.CRLF;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -612,9 +613,16 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     while (iter.hasNext()) {
       DataSchemaFieldMapping fieldMapping = iter.next();
 
-      // append iv value is mapped
+      // append if value is mapped
       if (fieldMapping.getIndex() != null) {
-        sb.append(ESCAPE_CHARS.matcher(columns[fieldMapping.getIndex()]).replaceAll(""));
+        String data = columns[fieldMapping.getIndex()];
+
+        // commas break the whole line, wrap in double quotes
+        if (StringUtils.contains(data, ',')) {
+          data = StringUtils.wrap(data, '"');
+        }
+
+        sb.append(ESCAPE_CHARS.matcher(data).replaceAll(""));
       }
 
       if (iter.hasNext()) {
