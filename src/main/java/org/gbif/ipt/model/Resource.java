@@ -479,8 +479,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public BigDecimal getDataPackageMetadataVersion() {
     try {
-      return (dataPackageMetadataVersion == null)
-        ? new BigDecimal(dataPackageMetadata.getVersion().toString())
+      return (dataPackageMetadataVersion == null || dataPackageMetadata.getVersion() != null)
+        ? new BigDecimal(dataPackageMetadata.getVersion())
         : dataPackageMetadataVersion;
     } catch (NumberFormatException e) {
       LOG.error("Failed to parse version: {}", dataPackageMetadata.getVersion());
