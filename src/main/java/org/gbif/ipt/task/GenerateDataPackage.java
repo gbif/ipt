@@ -20,6 +20,7 @@ import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -486,6 +487,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void dumpData(Writer writer, DataSchemaMapping schemaMapping,
                         List<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
+    RecordFilter filter = schemaMapping.getFilter();
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
@@ -539,10 +541,34 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
           // initialize translated values and add id column
           String[] translated = new String[dataFileRowSize];
+
+          // filter this record?
+          boolean alreadyTranslated = false;
+          if (filter != null && filter.getColumn() != null && filter.getComparator() != null
+            && filter.getParam() != null) {
+            boolean matchesFilter;
+            if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
+              // need to apply translations first
+              applyTranslations(subschemaFieldMappings, in, translated);
+              matchesFilter = filter.matches(in);
+              alreadyTranslated = true;
+            } else {
+              matchesFilter = filter.matches(in);
+            }
+            if (!matchesFilter) {
+              writePublicationLogMessage("Line did not match the filter criteria and was skipped. SourceBase:"
+                + schemaMapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
+              recordsFiltered++;
+              continue;
+            }
+          }
+
           translated[ID_COLUMN_INDEX] = in[ID_COLUMN_INDEX];
 
           // apply translations and default values
-          applyTranslations(subschemaFieldMappings, in, translated);
+          if (!alreadyTranslated) {
+            applyTranslations(subschemaFieldMappings, in, translated);
+          }
 
           // concatenate values
           String newRow = commaRow(translated);
@@ -601,6 +627,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       addMessage(Level.WARN, linesWithWrongColumnNumber + " line(s) with fewer columns than mapped" + mp);
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped" + mp);
+    }
+
+    // add filter message
+    if (recordsFiltered > 0) {
+      addMessage(Level.INFO, recordsFiltered
+        + " line(s) did not match the filter criteria and got skipped " + mp);
+    } else {
+      writePublicationLogMessage("All lines match the filter criteria" + mp);
     }
   }
 

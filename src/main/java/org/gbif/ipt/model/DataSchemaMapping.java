@@ -27,6 +27,7 @@ public class DataSchemaMapping implements Serializable {
   private String dataSchemaFile;
   private List<DataSchemaFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;
+  private RecordFilter filter;
   private Date lastModified;
 
   /**
@@ -108,6 +109,14 @@ public class DataSchemaMapping implements Serializable {
 
   public void setFieldsMapped(int fieldsMapped) {
     this.fieldsMapped = fieldsMapped;
+  }
+
+  public RecordFilter getFilter() {
+    return filter;
+  }
+
+  public void setFilter(RecordFilter filter) {
+    this.filter = filter;
   }
 
   public Date getLastModified() {

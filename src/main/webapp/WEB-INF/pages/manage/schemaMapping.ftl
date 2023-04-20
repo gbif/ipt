@@ -6,6 +6,42 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
+            function showHideFilter(){
+                var filterSelectedOption = $('#filterComp option:selected');
+                var filterParam = $('#filterParam');
+
+                if (filterSelectedOption.val() === "Equals" || filterSelectedOption.val() === "NotEquals") {
+                    filterParam.show();
+                } else {
+                    filterParam.hide();
+                    filterParam.val("");
+                }
+            }
+
+            function showHideFilterName() {
+                var filterSelectedName = $("#filterName option:selected");
+                var filterComp = $("#filterComp");
+
+                if (filterSelectedName.val() === "") {
+                    filterComp.hide();
+                    filterComp.val("");
+                    showHideFilter();
+                } else {
+                    filterComp.show();
+                }
+            }
+
+            showHideFilter();
+            showHideFilterName();
+
+            $("#filterComp").change(function() {
+                showHideFilter();
+            });
+
+            $("#filterName").change(function() {
+                showHideFilterName();
+            });
+
             function activateDeactivateAllStaticInputs() {
                 $('.fidx').each(function() {
                     activateDeactivateStaticInput($(this));
@@ -272,6 +308,50 @@
                             <input type="hidden" name="r" value="${resource.shortname}" />
                             <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
                             <input type="hidden" name="mid" value="${mid!}" />
+                        </div>
+
+                        <#-- Filter and required mapping -->
+                        <div class="border-bottom mb-2 text-smaller">
+                            <div id="filterSection" class="mappingRow">
+
+                                <div class="row py-3 g-2 mappingFiler">
+                                    <div class="col-lg-1 pt-1" id="filter">
+                                        <@popoverPropertyInfo "manage.mapping.info" />
+                                        <strong><@s.text name='manage.mapping.filter'/></strong>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select form-select-sm">
+                                            <#list mapping.filter.filterTimes?keys as filterTime>
+                                              <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
+                                            </#list>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm">
+                                            <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
+                                            <#list columns as c>
+                                                <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
+                                            </#list>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                        <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm">
+                                            <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
+                                            <#list comparators as c>
+                                                <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
+                                            </#list>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                        <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" />
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
                         <div id="sections" class="mt-4">

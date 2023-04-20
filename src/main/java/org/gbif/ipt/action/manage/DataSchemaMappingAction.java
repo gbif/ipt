@@ -19,6 +19,7 @@ import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.DataSchemaManager;
@@ -185,6 +186,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
           defaultResult = "source";
           return;
         }
+      }
+
+      // set empty filter if not existing
+      if (mapping.getFilter() == null) {
+        mapping.setFilter(new RecordFilter());
       }
 
       fields = new ArrayList<>();
@@ -364,5 +370,9 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   public List<String[]> getPeek() {
     return peek;
+  }
+
+  public RecordFilter.Comparator[] getComparators() {
+    return RecordFilter.Comparator.values();
   }
 }
