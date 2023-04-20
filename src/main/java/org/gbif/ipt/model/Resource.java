@@ -504,7 +504,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public BigDecimal getNextVersion() {
     if (schemaIdentifier != null) {
-      String versionAsString = getDataPackageMetadata().getVersion().toString();
+      String versionAsString = getDataPackageMetadata().getVersion();
       // first publication retrieve existing version
       if (lastPublished == null) {
         BigDecimal nextVersion;
