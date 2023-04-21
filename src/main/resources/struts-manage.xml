@@ -234,6 +234,7 @@
 
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/translation.ftl</result>
       <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
     </action>
 
@@ -243,6 +244,20 @@
 
     <action name="translationAutomap" class="org.gbif.ipt.action.manage.TranslationAction" method="automap">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
+    </action>
+
+    <action name="dataPackageFieldTranslation" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction">
+      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/translation_dp.ftl</result>
+      <result name="none" type="redirect">${baseURL}/manage/schemaMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+    </action>
+
+    <action name="dataPackageFieldTranslationReload" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="reload">
+      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
+    </action>
+
+    <action name="dataPackageFieldTranslationAutomap" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="automap">
+      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
     </action>
 
     <!-- ajaxy status report about background processes kicked off by the current user -->

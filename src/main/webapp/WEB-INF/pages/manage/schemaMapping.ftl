@@ -230,6 +230,19 @@
 
             <#if field.index??>
                 <small><@sourceSample field.index subschema.name fieldsIndex/></small>
+
+                <div id="fTIdx${fieldsIndex}" class="sample mappingText">
+                    <small class="mx-lg-3"><@s.text name='manage.mapping.translation' />:</small>
+                    <small>
+                        <a href="dataPackageFieldTranslation.do?r=${resource.shortname}&mid=${mid}&field=${field.field.name}">
+                            <#if (((field.translation?size)!0)>0)>
+                                ${(field.translation?size)!0} terms
+                            <#else>
+                                <@s.text name="button.add"/>
+                            </#if>
+                        </a>
+                    </small>
+                </div>
             </#if>
         </div>
     </#macro>
