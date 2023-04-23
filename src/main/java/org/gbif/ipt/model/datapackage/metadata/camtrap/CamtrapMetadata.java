@@ -17,12 +17,10 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
-import org.gbif.ipt.model.datapackage.metadata.Resource;
 import org.gbif.ipt.model.datapackage.metadata.Source;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.GbifCompatibleLicense;
 import org.gbif.ipt.validation.GeographicScopeMetadata;
-import org.gbif.ipt.validation.InternalField;
 import org.gbif.ipt.validation.ProjectMetadata;
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 import org.gbif.ipt.validation.TemporalScopeMetadata;
@@ -116,36 +114,6 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @NotNull(message = "validation.input.required")
   @Valid
   private List<String> references = new ArrayList<>();
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>.
-   * Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">
-   *   Tabular Data Resource</a> with a specific `name` and `schema`. See <a href="../data">Data</a> for
-   *   the requirements for those resources.
-   */
-  @Override
-  @JsonProperty("resources")
-  @JsonDeserialize(contentUsing = CamtrapResource.CamtrapResourceDeserializer.class)
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  @Element(CamtrapResource.class)
-  @NotNull(message = "validation.input.required", groups = InternalField.class)
-  @Size(min = 3, max = 3, groups = InternalField.class)
-  @Valid
-  public List<Resource> getResources() {
-    return super.getResources();
-  }
-
-  /**
-   * See <a href="https://specs.frictionlessdata.io/data-package/#resource-information">Data Package specification</a>.
-   * Camtrap DP further requires each object to be a <a href="https://specs.frictionlessdata.io/tabular-data-resource/">
-   *   Tabular Data Resource</a> with a specific `name` and `schema`. See [Data](../data) for the requirements
-   *   for those resources.
-   */
-  @Override
-  @JsonProperty("resources")
-  public void setResources(List<Resource> resources) {
-    super.setResources(resources);
-  }
 
   // TODO: 13/10/2022 parent profile is String, camtrap is URI. Keep it String, but validate it is a valid URL?
   /**

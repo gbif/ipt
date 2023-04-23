@@ -14,7 +14,6 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
-import org.gbif.ipt.validation.InternalField;
 import org.gbif.ipt.validation.KeywordsMetadata;
 
 import java.io.Serializable;
@@ -29,7 +28,6 @@ import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -153,18 +151,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
   private List<License> licenses = new ArrayList<>();
-
-  /**
-   * Data Resources
-   * <p>
-   * An `array` of Data Resource objects, each compliant with the [Data Resource](/data-resource/) specification.
-   * (Required)
-   */
-  @JsonProperty("resources")
-  @NotNull(message = "validation.input.required", groups = InternalField.class)
-  @Size(min = 1, message = "validation.datapackage.metadata.resources.size", groups = InternalField.class)
-  @Valid
-  private List<Resource> resources = new ArrayList<>();
 
   /**
    * Sources
@@ -432,30 +418,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   }
 
   /**
-   * Data Resources
-   * <p>
-   * An `array` of Data Resource objects, each compliant with the [Data Resource](/data-resource/) specification.
-   * (Required)
-   */
-  @JsonProperty("resources")
-  @JsonDeserialize(contentUsing = FrictionlessSource.DataPackageSourceDeserializer.class)
-  @Element(FrictionlessResource.class)
-  public List<Resource> getResources() {
-    return resources;
-  }
-
-  /**
-   * Data Resources
-   * <p>
-   * An `array` of Data Resource objects, each compliant with the [Data Resource](/data-resource/) specification.
-   * (Required)
-   */
-  @JsonProperty("resources")
-  public void setResources(List<Resource> resources) {
-    this.resources = resources;
-  }
-
-  /**
    * Sources
    * <p>
    * The raw sources for this resource.
@@ -504,7 +466,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
       && Objects.equals(keywords, that.keywords)
       && Objects.equals(image, that.image)
       && Objects.equals(licenses, that.licenses)
-      && Objects.equals(resources, that.resources)
       && Objects.equals(sources, that.sources)
       && Objects.equals(additionalProperties, that.additionalProperties);
   }
@@ -512,7 +473,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(title, version, profile, name, id, description, homepage, created, contributors, keywords,
-      image, licenses, resources, sources, additionalProperties);
+      image, licenses, sources, additionalProperties);
   }
 
   @Override
@@ -530,7 +491,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
       .add("keywords=" + keywords)
       .add("image='" + image + "'")
       .add("licenses=" + licenses)
-      .add("resources=" + resources)
       .add("sources=" + sources)
       .add("additionalProperties=" + additionalProperties)
       .toString();
