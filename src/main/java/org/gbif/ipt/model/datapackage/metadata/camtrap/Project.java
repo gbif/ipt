@@ -70,11 +70,12 @@ public class Project implements Serializable {
   @JsonProperty("description")
   private String description;
 
+  // TODO: 21/04/2023 validate it's URL
   /**
    * Project website.
    */
   @JsonProperty("path")
-  private URI path;
+  private String path;
 
   /**
    * Type of a sampling design/layout. The values are based on <a href="https://doi.org/10.13140/RG.2.2.23409.17767">Wearn & Glover-Kapfer (2017)</a>, pages 80-82: `simpleRandom`: random distribution of sampling locations; `systematicRandom`: random distribution of sampling locations, but arranged in a regular pattern; `clusteredRandom`: random distribution of sampling locations, but clustered in arrays; `experimental`: non-random distribution aimed to study an effect, including the before-after control-impact (BACI) design; `targeted`: non-random distribution optimized for capturing specific target species (often using various bait types); `opportunistic`: opportunistic camera trapping (usually with a small number of cameras).
@@ -186,7 +187,7 @@ public class Project implements Serializable {
    * Project website.
    */
   @JsonProperty("path")
-  public URI getPath() {
+  public String getPath() {
     return path;
   }
 
@@ -194,7 +195,7 @@ public class Project implements Serializable {
    * Project website.
    */
   @JsonProperty("path")
-  public void setPath(URI path) {
+  public void setPath(String path) {
     this.path = path;
   }
 

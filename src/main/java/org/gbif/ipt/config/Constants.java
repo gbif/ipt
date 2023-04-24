@@ -126,7 +126,7 @@ public final class Constants {
     GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
 
     Map<String, String> schemasDisplayNames = new HashMap<>();
-    schemasDisplayNames.put(CAMTRAP_DP, "CamtrapDP");
+    schemasDisplayNames.put(CAMTRAP_DP, "Camtrap DP");
     schemasDisplayNames.put(COL_DP, "ColDP");
     SCHEMAS_DISPLAY_NAMES = Collections.unmodifiableMap(schemasDisplayNames);
   }

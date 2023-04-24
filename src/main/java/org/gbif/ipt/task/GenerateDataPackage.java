@@ -23,7 +23,6 @@ import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -70,7 +69,6 @@ import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.COL_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
@@ -117,11 +115,18 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create a temp dir to copy all dwca files to
       dataPackageFolder = dataDir.tmpDir();
 
-      // create data files
-      createDataFiles();
-
-      // copy metadata file (datapackage.json)
-      addMetadata();
+      // different order - for Camtrap first create metadata and then add resources
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        // copy datapackage descriptor file (datapackage.json)
+        addMetadata();
+        // create data files
+        createDataFiles();
+      } else if (COL_DP.equals(resource.getCoreType())) {
+        // create data files
+        createDataFiles();
+        // create datapackage descriptor file (metadata.yml)
+        addMetadata();
+      }
 
       // validation is a part of frictionless datapackage generation
       // zip archive and copy to resource folder
@@ -455,11 +460,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // add resource to package
     if (dataPackage == null) {
       dataPackage = new Package(Collections.singleton(packageResource));
-      if (CAMTRAP_DP.equals(schemaName)) {
-        dataPackage.setProperty("profile", CAMTRAP_PROFILE);
-      } else {
-        dataPackage.setProperty("profile", schemaName);
-      }
     } else {
       dataPackage.addResource(packageResource);
     }
@@ -779,7 +779,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
       }
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
     }
     // final reporting
@@ -805,40 +805,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
   }
 
-  private void addCamtrapMetadata() throws IOException {
+  private void addCamtrapMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    CamtrapMetadata camtrapMetadata = metadataReader.readValue(metadataFile, CamtrapMetadata.class);
 
-    // Basic metadata
-    setDataPackageProperty("created",
-      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(camtrapMetadata.getCreated()));
-    setDataPackageProperty("version", camtrapMetadata.getVersion());
-    setDataPackageStringProperty("title", camtrapMetadata.getTitle());
-    setDataPackageCollectionProperty("contributors", camtrapMetadata.getContributors());
-    setDataPackageStringProperty("description", camtrapMetadata.getDescription());
-    setDataPackageCollectionProperty("keywords", camtrapMetadata.getKeywords());
-    setDataPackageStringProperty("image", camtrapMetadata.getImage());
-    setDataPackageProperty("homepage", camtrapMetadata.getHomepage());
-    setDataPackageCollectionProperty("sources", camtrapMetadata.getSources());
-    setDataPackageCollectionProperty("licenses", camtrapMetadata.getLicenses());
-
-    // Geographic scope
-    setDataPackageProperty("spatial", camtrapMetadata.getSpatial());
-    setDataPackageProperty("coordinatePrecision", camtrapMetadata.getCoordinatePrecision());
-
-    // Taxonomic scope
-    setDataPackageCollectionProperty("taxonomic", camtrapMetadata.getTaxonomic());
-
-    // Temporal scope
-    setDataPackageProperty("temporal", camtrapMetadata.getTemporal());
-
-    // Project
-    setDataPackageProperty("project", camtrapMetadata.getProject());
-
-    // Other metadata
-    setDataPackageStringProperty("bibliographicCitation", camtrapMetadata.getBibliographicCitation());
-    setDataPackageCollectionProperty("references", camtrapMetadata.getReferences());
-    setDataPackageCollectionProperty("relatedIdentifiers", camtrapMetadata.getRelatedIdentifiers());
+    dataPackage = new Package(metadataFile.toPath(), false);
+    setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
   }
 
   private void setDataPackageProperty(String name, Object property) {
