@@ -1798,7 +1798,7 @@ button.close {
     border-left: 2px solid rgb(var(--link-color));
 }
 
-#additional, #managers, div#other.section {
+#additional, #managers, .section:last-of-type {
     min-height: 85vh;
 }
 

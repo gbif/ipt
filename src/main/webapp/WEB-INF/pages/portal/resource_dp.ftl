@@ -266,7 +266,18 @@
                                 <#if (dpMetadata.temporal)?has_content>
                                     <li><a href="#anchor-temporal" class="sidebar-navigation-link"><@s.text name='portal.resource.temporal'/></a></li>
                                 </#if>
-                                <li><a href="#anchor-other" class="sidebar-navigation-link"><@s.text name='portal.resource.other'/></a></li>
+                                <#if (dpMetadata.project)?has_content>
+                                    <li><a href="#anchor-project" class="sidebar-navigation-link"><@s.text name='portal.resource.project'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.bibliographicCitaion)?has_content>
+                                    <li><a href="#anchor-bibliographic" class="sidebar-navigation-link"><@s.text name='portal.resource.bibliographic'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.references)?has_content>
+                                  <li><a href="#anchor-references" class="sidebar-navigation-link"><@s.text name='portal.resource.references'/></a></li>
+                                </#if>
+                                <#if (dpMetadata.relatedIdentifiers)?has_content>
+                                  <li><a href="#anchor-related-identifiers" class="sidebar-navigation-link"><@s.text name='portal.resource.relatedIdentifiers'/></a></li>
+                                </#if>
                             </#if>
                         </ul>
                     </nav>
@@ -433,8 +444,12 @@
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <tr>
-                                        <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
+                                        <th class="col-4"><@s.text name='portal.resource.spatial.boundingCoordinates'/></th>
                                         <td>${dpMetadata.spatial.bbox}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.spatial.coordinatePrecision'/></th>
+                                        <td>${dpMetadata.coordinatePrecision!"-"}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -453,23 +468,23 @@
                                 <div class="table-responsive">
                                     <table class="text-smaller table table-sm table-borderless">
                                         <tr>
-                                            <th class="col-4">Taxon id</th>
+                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
                                             <td>${tx.taxonID!}</td>
                                         </tr>
                                         <tr>
-                                            <th class="col-4">Taxon id reference</th>
+                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonIdReference"/></th>
                                             <td>${tx.taxonIDReference!}</td>
                                         </tr>
                                         <tr>
-                                            <th class="col-4">Scientific name</th>
+                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.scientificName"/></th>
                                             <td>${tx.scientificName!}</td>
                                         </tr>
                                         <tr>
-                                            <th class="col-4">Taxon rank</th>
+                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonRank"/></th>
                                             <td>${tx.taxonRank!}</td>
                                         </tr>
                                         <tr>
-                                            <th class="col-4">Vernacular names</th>
+                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.vernacularNames"/></th>
                                             <td><#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if></td>
                                         </tr>
                                     </table>
@@ -497,17 +512,118 @@
                         </div>
                     </#if>
 
-                    <!-- Other metadata section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-other"></span>
-                    <div id="other" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.other'/>
-                        </h4>
-                        <div class="mt-3 overflow-x-auto">
+                    <!-- Project section -->
+                    <#if (dpMetadata.project)??>
+                        <span class="anchor anchor-home-resource-page" id="anchor-project"></span>
+                        <div id="project" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.project'/>
+                            </h4>
 
+                            <div class="table-responsive">
+                                <table class="text-smaller table table-sm table-borderless">
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.title'/></th>
+                                        <td>${dpMetadata.project.title!}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.description'/></th>
+                                        <td>${dpMetadata.project.description!}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.path'/></th>
+                                        <td>${dpMetadata.project.path!"-"}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.samplingDesign'/></th>
+                                        <td>${dpMetadata.project.samplingDesign!}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.captureMethod'/></th>
+                                        <td>${dpMetadata.project.captureMethod!}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.individualAnimals'/></th>
+                                        <td>${dpMetadata.project.individualAnimals!?c}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.eventInterval'/></th>
+                                        <td>${dpMetadata.project.eventInterval!}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    </#if>
 
+                    <#if dpMetadata.bibliographicCitation?has_content>
+                        <!-- Bibliographic citation section -->
+                        <span class="anchor anchor-home-resource-page" id="anchor-bibliographic"></span>
+                        <div id="other" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.bibliographic'/>
+                            </h4>
+
+                            <div class="mt-3 overflow-x-auto">
+                                <p>${dpMetadata.bibliographicCitation!}</p>
+                            </div>
+                        </div>
+                    </#if>
+
+                    <#if dpMetadata.references?has_content>
+                        <!-- References section -->
+                        <span class="anchor anchor-home-resource-page" id="anchor-references"></span>
+                        <div id="related-references" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.references'/>
+                            </h4>
+
+                            <div class="mt-3 overflow-x-auto">
+                                <#list dpMetadata.references as ref>
+                                    ${ref}<#sep>,</#sep>
+                                </#list>
+                            </div>
+                        </div>
+                    </#if>
+
+                    <#if dpMetadata.relatedIdentifiers?has_content>
+                        <!-- Related identifiers section -->
+                        <span class="anchor anchor-home-resource-page" id="anchor-related-identifiers"></span>
+                        <div id="related-identifiers" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.relatedIdentifiers'/>
+                            </h4>
+
+                            <div class="mt-3 overflow-x-auto">
+                                <#list dpMetadata.relatedIdentifiers as ri>
+                                    <div class="table-responsive">
+                                        <table class="text-smaller table table-sm table-borderless">
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.relatedIdentifier.relatedIdentifier"/></th>
+                                                <td>${ri.relatedIdentifier!}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.relatedIdentifier.relationType"/></th>
+                                                <td>${ri.relationType!}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.relatedIdentifier.resourceTypeGeneral"/></th>
+                                                <td>${ri.resourceTypeGeneral!}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.relatedIdentifier.relatedIdentifierType"/></th>
+                                                <td>${ri.relatedIdentifierType!}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </#list>
+                            </div>
+                        </div>
+                    </#if>
                 </div>
             </main>
         </div>

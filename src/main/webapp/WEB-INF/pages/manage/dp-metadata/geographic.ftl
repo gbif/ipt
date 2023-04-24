@@ -94,11 +94,11 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[1]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.longitude" requiredField=true />
+                                    <@input name="metadata.spatial.bbox[2]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.longitude" requiredField=true />
                                 </div>
 
                                 <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[2]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.latitude" requiredField=true />
+                                    <@input name="metadata.spatial.bbox[1]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.latitude" requiredField=true />
                                 </div>
 
                                 <div class="col-6">
