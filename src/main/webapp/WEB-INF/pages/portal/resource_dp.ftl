@@ -276,7 +276,7 @@
                                   <li><a href="#anchor-references" class="sidebar-navigation-link"><@s.text name='portal.resource.references'/></a></li>
                                 </#if>
                                 <#if (dpMetadata.relatedIdentifiers)?has_content>
-                                  <li><a href="#anchor-related-identifiers" class="sidebar-navigation-link"><@s.text name='portal.resource.relatedIdentifiers'/></a></li>
+                                  <li><a href="#anchor-relatedidentifiers" class="sidebar-navigation-link"><@s.text name='portal.resource.relatedIdentifiers'/></a></li>
                                 </#if>
                             </#if>
                         </ul>
@@ -563,7 +563,7 @@
                     <#if dpMetadata.bibliographicCitation?has_content>
                         <!-- Bibliographic citation section -->
                         <span class="anchor anchor-home-resource-page" id="anchor-bibliographic"></span>
-                        <div id="other" class="mt-5 section">
+                        <div id="bibliographic" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.bibliographic'/>
                             </h4>
@@ -577,7 +577,7 @@
                     <#if dpMetadata.references?has_content>
                         <!-- References section -->
                         <span class="anchor anchor-home-resource-page" id="anchor-references"></span>
-                        <div id="related-references" class="mt-5 section">
+                        <div id="references" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.references'/>
                             </h4>
@@ -592,8 +592,8 @@
 
                     <#if dpMetadata.relatedIdentifiers?has_content>
                         <!-- Related identifiers section -->
-                        <span class="anchor anchor-home-resource-page" id="anchor-related-identifiers"></span>
-                        <div id="related-identifiers" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-relatedidentifiers"></span>
+                        <div id="relatedidentifiers" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.relatedIdentifiers'/>
                             </h4>
