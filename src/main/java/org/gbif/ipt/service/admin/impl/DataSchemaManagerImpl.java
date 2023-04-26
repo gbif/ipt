@@ -49,15 +49,18 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.StatusLine;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHEMA;
 import static org.gbif.utils.HttpUtil.success;
 
+@Singleton
 public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager  {
 
   private static final String CONFIG_FOLDER = ".dataSchemas";
@@ -174,6 +177,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private void uninstall(String identifier, String name) {
     if (dataSchemasByIdentifiers.containsKey(identifier)) {
       dataSchemasByIdentifiers.remove(identifier);
+      dataSchemas.removeIf(d -> StringUtils.equals(d.getIdentifier(), identifier));
 
       File f = getDataSchemaDirectory(name);
       if (f.exists()) {
@@ -207,14 +211,19 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       }
       finishInstallSchema(tmpFileSchema, dataSchema.getIdentifier(), dataSchema.getName());
 
+      Set<DataSubschema> dataSubschemas = new LinkedHashSet<>();
       for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
         File tmpFile = download(subSchema.getUrl());
         DataSubschema dataSubschema = loadSubschemaFromFile( tmpFile);
         finishInstallSubschema(tmpFile, dataSchema.getIdentifier(), dataSchema.getName(), dataSubschema);
+        dataSubschemas.add(dataSubschema);
       }
+
+      dataSchema.setSubSchemas(dataSubschemas);
 
       // keep data schemas in local lookup: allowed one installed data schema per identifier
       dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
+      dataSchemas.add(dataSchema);
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
@@ -244,6 +253,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
       try {
         if (dataSchemaNames != null) {
+          dataSchemasByIdentifiers.clear();
+          dataSchemas.clear();
           for (String dataSchemaDirectoryName : dataSchemaNames) {
             dataSubschemas = new LinkedHashSet<>();
             File dataSchemaDirectory = new File(dataSchemasDir, dataSchemaDirectoryName);

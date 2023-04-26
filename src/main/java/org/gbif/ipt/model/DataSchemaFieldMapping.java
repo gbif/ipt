@@ -27,6 +27,14 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   private DataSchemaField field;
   private Map<String, String> translation;
 
+  public DataSchemaFieldMapping() {
+  }
+
+  public DataSchemaFieldMapping(Integer index, DataSchemaField field) {
+    this.index = index;
+    this.field = field;
+  }
+
   public Integer getIndex() {
     return index;
   }

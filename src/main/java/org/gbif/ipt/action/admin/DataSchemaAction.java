@@ -152,8 +152,6 @@ public class DataSchemaAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    // ensure data schemas are always loaded
-    schemaManager.load();
 
     // load the latest data schema versions from Registry
     loadLatestDataSchemasVersions();
