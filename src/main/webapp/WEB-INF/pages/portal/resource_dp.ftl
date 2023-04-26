@@ -125,11 +125,11 @@
                             </#if>
 
                             <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                                ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created?date?string.long}</span>
+                                ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created!?date?string.long}</span>
                                 <br>
                                 <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                             <#else>
-                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.created?date?string.long_short}</span>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.created!?date?string.long_short}</span>
                                 <span style="display: none">${resource.organisation.name}</span>
                             </#if>
                         </span>
@@ -269,7 +269,7 @@
                                 <#if (dpMetadata.project)?has_content>
                                     <li><a href="#anchor-project" class="sidebar-navigation-link"><@s.text name='portal.resource.project'/></a></li>
                                 </#if>
-                                <#if (dpMetadata.bibliographicCitaion)?has_content>
+                                <#if (dpMetadata.bibliographicCitation)?has_content>
                                     <li><a href="#anchor-bibliographic" class="sidebar-navigation-link"><@s.text name='portal.resource.bibliographic'/></a></li>
                                 </#if>
                                 <#if (dpMetadata.references)?has_content>
