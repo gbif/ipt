@@ -61,11 +61,11 @@
 
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-md-6">
-                    <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" size=40/>
+                    <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" requiredField=true size=40/>
                 </div>
 
                 <div class="col-md-6">
-                    <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" />
+                    <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" requiredField=true />
                 </div>
 
                 <div class="col-12">

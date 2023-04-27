@@ -200,7 +200,7 @@ public class CreateResourceAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      validator.validateShortname(this, shortname);
+      validator.validateCreateNew(this, shortname, resourceType);
     }
   }
 
