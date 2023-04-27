@@ -53,6 +53,21 @@
             </div>
         </#if>
 
+      <div class="row pb-2 text-smaller">
+        <div class="col-lg-3">
+          <strong><@s.text name="basic.latest"/></strong>
+        </div>
+        <div class="col-lg-9">
+            <#if vocabulary.latest>
+              <i class="bi bi-circle-fill text-gbif-primary"></i>
+              <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
+            <#else>
+              <i class="bi bi-circle-fill text-gbif-danger"></i>
+              <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
+            </#if>
+        </div>
+      </div>
+
         <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="vocabulary.concepts"/></strong>

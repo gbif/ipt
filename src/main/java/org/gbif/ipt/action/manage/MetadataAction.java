@@ -89,6 +89,7 @@ public class MetadataAction extends ManagerBaseAction {
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
   private List<String> occurrenceSubtypeKeys;
+  private List<String> samplingEventSubtypeKeys;
 
   private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
@@ -224,7 +225,7 @@ public class MetadataAction extends ManagerBaseAction {
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return getOccurrenceSubtypesMap();
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.SAMPLINGEVENT.toString())) {
-        return getEmptySubtypeMap(); // because there are currently no dataset subtypes for sampling event datasets
+        return getSamplingEventSubtypesMap();
       } else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
         return getEmptySubtypeMap();
       }
@@ -552,6 +553,15 @@ public class MetadataAction extends ManagerBaseAction {
     return datasetSubtypesCopy;
   }
 
+  public Map<String, String> getSamplingEventSubtypesMap() {
+    // exclude subtypes known to relate to Checklist type
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
+    for (String key : checklistSubtypeKeys) {
+      datasetSubtypesCopy.remove(key);
+    }
+    return datasetSubtypesCopy;
+  }
+
   /**
    * Exclude all known Occurrence subtypes from the complete Map of Checklist dataset subtypes, and return it. To
    * exclude a newly added Occurrence subtype, just extend the static list above. Called from Struts, so must be
@@ -601,6 +611,12 @@ public class MetadataAction extends ManagerBaseAction {
       checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
     checklistSubtypeKeys = Collections.unmodifiableList(checklistKeys);
+
+    List<String> samplingEventKeys = new ArrayList<>();
+    for (DatasetSubtype type : DatasetSubtype.SAMPLING_EVENT_DATASET_SUBTYPES) {
+      samplingEventKeys.add(type.name().replaceAll("_", "").toLowerCase());
+    }
+    samplingEventSubtypeKeys = Collections.unmodifiableList(samplingEventKeys);
   }
 
   void setDatasetSubtypes(Map<String, String> datasetSubtypes) {
@@ -613,6 +629,10 @@ public class MetadataAction extends ManagerBaseAction {
 
   List<String> getOccurrenceSubtypeKeys() {
     return occurrenceSubtypeKeys;
+  }
+
+  List<String> getSamplingEventSubtypeKeys() {
+    return samplingEventSubtypeKeys;
   }
 
   /**

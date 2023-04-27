@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
@@ -69,7 +70,10 @@
                         break;
                     case 'samplingevent':
                         $('#resource\\.subtype >option').remove();
-                        $('#resource\\.subtype').append('<option value="">No subtype</option>');
+                        var list=getList("${samplingEventSubtypesMap}");
+                        $.each(list, function(key, value) {
+                          $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
+                        });
                         break;
                     case 'other':
                         $('#resource\\.subtype >option').remove();

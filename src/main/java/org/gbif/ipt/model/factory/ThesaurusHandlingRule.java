@@ -55,7 +55,7 @@ public class ThesaurusHandlingRule extends Rule {
           // install vocabulary if it's new
           if (tv == null) {
             LOG.warn("Installing new vocabulary with URL (" + attributes.getValue(i) + ")...");
-            tv = vocabManager.install(url);
+            tv = vocabManager.installIfAbsentOrOutdated(url);
           }
         } catch (MalformedURLException e) {
           LOG.error("Thesaurus URL (" + attributes.getValue(i) + ") is malformed: " + e.getMessage(), e);

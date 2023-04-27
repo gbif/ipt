@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 12:53+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-03-07 06:39\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,33 +20,33 @@ msgstr ""
 #: en/modules/ROOT/pages/introduction.adoc:1
 #, no-wrap
 msgid "How to Use this Manual"
-msgstr ""
+msgstr "このマニュアルの使いかた"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:4
 msgid "This manual has three main components: an introduction with background information, a number of step-by-step tutorials and a complete reference guide including a \"getting started\" section and sections describing in detail the different elements of the tool."
-msgstr ""
+msgstr "このマニュアルは、IPTの背景を含む導入、一歩ずつのチュートリアル「はじめに」セクション、ツールのさまざまな要素を詳細に説明するセクションを含む完全なリファレンスガイドの3つの主要コンポーネントで構成されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:6
 msgid "All users are encouraged to review this introductory part and then refer to the different specific sections depending on their role(s) regarding the IPT installation. The IPT (and this manual) differentiates three type of users:"
-msgstr ""
+msgstr "すべてのユーザーはこの入門編を確認し、IPTインストールに関する役割に応じて、特定のセクションを参照することが推奨されます。IPT（およびこのマニュアル）は3タイプのユーザーを区別しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:8
 #, no-wrap
 msgid "*Administrators*: in charge of installing and configuring the IPT. They can make changes to all aspects of an instance of the IPT. Administrators should refer to the xref:getting-started.adoc[Getting Started] and xref:administration.adoc[Administration Menu] sections of the reference guide.\n"
-msgstr ""
+msgstr "*管理責任者（Administrators）*：IPTのインストールと設定を担当します。IPT のインスタンスのすべての側面を変更することができます。管理責任者は、リファレンスガイドのxref:getting-started.adoc[はじめに]とxref:administration.adoc[管理メニュー]のセクションを参照してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:9
 #, no-wrap
 msgid "*Resource Managers*: they are able to create, edit, remove and manage resources (data sets and metadata). Depending on the settings they may or may not have registration rights to publish resources through the GBIF Network. Resource managers should refer to the different xref:how-to-publish.adoc[tutorials] depending on the type of data that they need to deal with (xref:resource-metadata.adoc[metadata], xref:occurrence-data.adoc[occurrences], special data types through extensions, etc.). The xref:manage-resources.adoc[Manage Resources Menu] section will also be very helpful for resource managers.\n"
-msgstr ""
+msgstr "*リソース管理者（Resource Managers）*：リソース（データセットとメタデータ）を作成・編集・削除・管理することができます。設定により、GBIFネットワークを通じてリソースを公開するための登録権を持つ場合と持たない場合があります。リソース管理者は、扱うデータの種類（xref:resource-metadata.adoc[メタデータ]、xref:occurrence-data.adoc[オカレンス]、拡張機能による特殊なデータタイプなど）に応じて、xref:how-to-publish.adoc[チュートリアル]を参照する必要があります。xref:manage-resources.adoc[リソース管理メニュー]も非常に役に立つでしょう。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:9
 #, no-wrap
 msgid "*Basic users*: They can only browse the resources published in an IPT installation. For basic users the IPT works as a simple web application so no further explanation is included in this manual.\n"
-msgstr ""
+msgstr "*基本的なユーザー（Basic users）*：IPTインストールで公開されたリソースのみを閲覧することが可能です。基本的なユーザーにとって、IPTは単純なウェブアプリケーションとして機能するので、このマニュアルに踏み込んだ説明は含まれていません。\n"
 

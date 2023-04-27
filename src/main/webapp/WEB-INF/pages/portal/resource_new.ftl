@@ -26,7 +26,7 @@
             <div class="contactType fst-italic">
                 <#if viewType == "standard">
                     <#if con.role?? && con.role?has_content && roles[con.role]??>
-                        ${roles[con.role]?cap_first!}
+                        ${roles[con.role]!?cap_first}
                     <#elseif type?has_content>
                         ${type}
                     </#if>
@@ -386,7 +386,7 @@
                                             <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                             <@s.text name='portal.resource.download'/>
                                         </a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]!?cap_first}</@s.param></@s.text></#if> (${emlSizeForVersion})
                                     </td>
                                 </tr>
 
@@ -397,7 +397,7 @@
                                             <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                             <@s.text name='portal.resource.download'/>
                                         </a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]!?cap_first}</@s.param></@s.text></#if> (${rtfSizeForVersion})
                                     </td>
                                 </tr>
                             </table>
@@ -759,7 +759,7 @@
                                                     <#if k.rank?lower_case == "class">
                                                         <th class="col-4">Class</th>
                                                     <#else>
-                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                        <th class="col-4">${ranks[k.rank?html]!?cap_first}</th>
                                                     </#if>
                                                     <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                     <td>
@@ -973,7 +973,7 @@
                                                 <th class="col-4"><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                                 <td>
                                                     <#list eml.specimenPreservationMethods as item>
-                                                        ${preservationMethods[item]?cap_first!}<#if item_has_next>,&nbsp;</#if>
+                                                        ${(preservationMethods[item])!?cap_first}<#if item_has_next>,&nbsp;</#if>
                                                     </#list>
                                                 </td>
                                             </tr>

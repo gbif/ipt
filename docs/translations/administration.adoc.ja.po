@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-08 06:45\n"
+"PO-Revision-Date: 2023-03-13 06:07\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -591,7 +591,7 @@ msgstr "このページでは、管理責任者ロールを持つユーザーは
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:152
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "語彙には、コアタイプや拡張機能の特定の用語が取りうる有効な値のリストが含まれています。例えば、{latest-basis-of-record}[ダーウィンコアタイプの語彙]には、ダーウィンコアの用語link:http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]で許可されるすべての標準的な値が含まれています。"
+msgstr "語彙には、コアタイプや拡張機能の特定の用語が取りうる有効な値のリストが含まれています。例えば、link:{latest-basis-of-record}[ダーウィンコアタイプの語彙]には、ダーウィンコアの用語link:http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]で許可されるすべての標準的な値が含まれています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:154

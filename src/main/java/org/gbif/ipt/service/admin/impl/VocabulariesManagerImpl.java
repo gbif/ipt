@@ -213,6 +213,35 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     }
   }
 
+  @Override
+  public synchronized Vocabulary installIfAbsentOrOutdated(URL url) throws InvalidConfigException {
+    Objects.requireNonNull(url);
+
+    try {
+      File tmpFile = download(url);
+      Vocabulary vocabulary = loadFromFile(tmpFile);
+      vocabulary.setUriResolvable(url.toURI());
+
+      Vocabulary alreadyInstalled = get(vocabulary.getUriString());
+
+      if (alreadyInstalled == null || (!alreadyInstalled.isLatest() && vocabulary.isLatest())) {
+        finishInstall(tmpFile, vocabulary);
+      } else {
+        LOG.info("Vocabulary {} already installed (id {}), skipping", url, vocabulary.getUriString());
+        FileUtils.deleteQuietly(tmpFile);
+        vocabulary = alreadyInstalled;
+      }
+
+      return vocabulary;
+    } catch (InvalidConfigException e) {
+      throw e;
+    } catch (Exception e) {
+      String msg = baseAction.getText("admin.vocabulary.install.error", new String[] {url.toString()});
+      LOG.error(msg, e);
+      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_EXTENSION, msg, e);
+    }
+  }
+
   /**
    * Move and rename temporary file to final version. Update vocabulary loaded into local lookup.
    *

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-02-13 08:55\n"
+"PO-Revision-Date: 2023-03-13 06:07\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -30,101 +30,101 @@ msgstr "手順"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr ""
+msgstr "データ品質チェックリスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
 msgid "Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets."
-msgstr ""
+msgstr "このチェックリストは、生物多様性データセットのレビューに利用することができます。特に、オカレンスやサンプリングイベントのデータセットをチェックするのに適していることに注意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
 msgid "The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:"
-msgstr ""
+msgstr "このチェックリストは、データが完全であること、つまり5つのWに対する有効な答えが含まれていることを確認するのに役立ちます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
 msgid "<<What event happened?>>"
-msgstr ""
+msgstr "<<_何が行われたか？,何が行われたか？>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:9
 msgid "<<Who acted in the event?>>"
-msgstr ""
+msgstr "<<_誰がおこなったか？,誰がおこなったか？>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:10
 msgid "<<When did the event take place?>>"
-msgstr ""
+msgstr "<<_いつ行われたか？,いつ行われたか？>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:11
 msgid "<<Where did the event take place?>>"
-msgstr ""
+msgstr "<<_どこで行われたか？,どこで行われたか？>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:12
 msgid "<<Why did the event happen?>>"
-msgstr ""
+msgstr "<<_なぜ行われたか,なぜ行われたか>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:14
 msgid "Examples of events include a species observation, a physical specimen being collected, or a biological sampling event."
-msgstr ""
+msgstr "イベントの例としては、種の観察、物理的な標本の採取、生物的なサンプリングイベントなどがあります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:16
 msgid "Additionally, the checklist ensures that the <<Dataset Metadata>> also contains answers to the five Ws in order to facilitate reuse of the data."
-msgstr ""
+msgstr "さらにチェックリストでは、データの再利用を促進するために、<<_データセットのメタデータ,データセットのメタデータ>>にも5つのWに対する回答が含まれていることを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:20
 msgid "If the dataset has been registered with GBIF, give yourself a running start by reviewing the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset:"
-msgstr ""
+msgstr "GBIFに登録されているデータセットの場合は、まずそのデータセットの「統計」ページを見てください。ここには、GBIFがそのデータセットを解釈する際に発見した一連の問題が掲載されています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:21
 #, no-wrap
 msgid "ipt2/InterpretationIssues2.png"
-msgstr ""
+msgstr "ipt2/InterpretationIssues2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:24
 msgid "Next, read the dataset metadata to get a better understanding about the data."
-msgstr ""
+msgstr "次に、データセットのメタデータを読み、データについての理解を深めます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:26
 msgid "Next, load the data into https://openrefine.org/[OpenRefine]. This will allow https://docs.openrefine.org/manual/facets[faceted browsing] to get the big picture of the data."
-msgstr ""
+msgstr "そして、OpenRefineにデータを読み込みます。これにより、ファセット化されたブラウジングで、データの全体像を把握することができるようになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:28
 msgid "There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset."
-msgstr ""
+msgstr "5つのWには、それぞれさまざまな答えがあります。それぞれの「チェック」は、1つ以上のダーウィンコアフィールドに関連します。したがって、データセットに存在するダーウィンコアフィールドに基づいて、できるだけ多くのチェックを実行するようにしてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:30
 msgid "Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feedback a less time consuming and verbose process."
-msgstr ""
+msgstr "失敗したすべてのチェックのリストを作成し、各チェックを 'Check-ID' で参照しながら、データ公開者に報告します。これにより、フィードバックにかかる時間や冗長性が軽減されます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:31
 #, no-wrap
 msgid "Quality checks"
-msgstr ""
+msgstr "品質チェック"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:33
 #, no-wrap
 msgid "What event happened?"
-msgstr ""
+msgstr "何が行われたか？"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:35
 #, no-wrap
 msgid "What type of event was it?"
-msgstr ""
+msgstr "どのようなイベントだったか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:44
@@ -134,26 +134,31 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 2* | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | The specimen preservation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `PreservedSpecimen`, `FossilSpecimen` or `LivingSpecimen` indicating its specific type. Ideally a specimen is deposited in a collection and therefore can be assigned both a `catalogNumber` and `collectionCode`.  If this specimen was derived from a sampling event, it must have the `eventID` of the sampling event filled in.\n"
 "| *what 3* | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | The physical result of a sampling event uniquely identified by both `occurrenceID` and having `basisOfRecord` equal to `MaterialSample`. If the sample was preserved (vs destructively processed) as a specimen and deposited in a collection it will ideally be assigned both a `catalogNumber` and `collectionCode`. The `eventID` of the sampling event must be filled in.\n"
 "| *what 4* | `eventID`, `fieldNumber`, `parentEventID`   | The actual sampling event uniquely identified by `eventID`. The `eventID` should be a GUID, otherwise it should reuse the `fieldNumber`. The `parentEventID` indicates the event is a sub-sampling event. To be valid, all `parentEventIDs` must reference `eventIDs` of records defined in the same dataset. Otherwise, the `parentEventID` must be a globally unique identifier (e.g. DOI, HTTP, URI, etc) that resolves to an event record described elsewhere. Ideally all sub-sampling events share the same data and location as the parent event.\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *what 1* | `occurrenceID`, `basisOfRecord`, `eventID`  | 発生源は `occurrenceID` で、`basisOfRecord` は `HumanObservation` または `MachineObservation` で、その観測が機械によって行われたか、1人または複数の人によって行われたかを示します。この観測がサンプリングイベントから派生したものである場合、サンプリングイベントの `eventID` が記入されていなければなりません。\n"
+"| *what 2* | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | 標本保存のイベントは `occurrenceID` で一意に識別され、`basisOfRecord` が `PreservedSpecimen`、`FossilSpecimen` または `LivingSpecimen` で、その特定の種類を表しています。理想的には標本はコレクションに寄託されているので、`catalogNumber`と`collectionCode`の両方を割り当てることができます。 もしこの標本がサンプリングイベントから得られたものであれば、そのサンプリングイベントの`eventID`が記入されていなければなりません。\n"
+"| *what 3* | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | サンプリングイベントの物理的な結果で、`occurrenceID`と`basisOfRecord`が`MaterialSample`に等しいことで一意に識別されます。もしサンプルが標本として保存され（破壊処理され）、コレクションに保管されている場合は、理想的には `catalogNumber` と `collectionCode` の両方が割り当てられます。サンプリングイベントの`eventID`は必ず記入してください。\n"
+"| *what 4* | `eventID`, `fieldNumber`, `parentEventID`   | 実際のサンプリングイベントは `eventID` で一意に識別されます。eventID` はGUIDであるべきで、そうでなければ `fieldNumber` を再利用する必要があります。parentEventID` は、そのイベントがサブサンプリングイベントであることを示します。有効であるためには、すべての `parentEventID` が、同じデータセットで定義されたレコードの `eventID` を参照していなければなりません。そうでない場合、`parentEventID` は他の場所で記述されたイベントレコードに解決するグローバルにユニークな識別子（DOI、HTTP、URIなど）でなければなりません。すべてのサブサンプリングイベントは、親イベントと同じデータと場所を共有しているのが理想です。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:46
 #, no-wrap
 msgid "If it was a species occurrence related event - how many species were there?"
-msgstr ""
+msgstr "種のオカレンスに関するものだった場合 - 何種確認されたか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:52
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}[GBIF Occurrence Status Vocabulary].\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | 種の存在量は `individualCount` と `organismQuantity` & `organismQuantityType` のペアを使用して記入する必要があります。相対的な存在量には `organismQuantity` & `organismQuantityType` のペアを使用し、 `organismQuantityType` の値はlink:{latest-quantity-type}[GBIF数量タイプ語彙]から取得します。存在量がゼロ（その種が存在しない）の場合は、link:{latest-occurrence-status}[GBIFオカレンスステータス語彙]に従って `occurrenceStatus` を \"absence\" に設定して結合しなければなりません。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:54
 #, no-wrap
 msgid "If it was a species occurrence related event - what species was it?"
-msgstr ""
+msgstr "種のオカレンスに関するものだった場合 - どの種だったか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:61
@@ -161,13 +166,15 @@ msgstr ""
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | 完全な学名と、分かっていれば著者名と日付の情報を `scientificName` に入力する必要があります。曖昧さを防ぐために、学名の `taxonRank` はlink:{latest-rank}[GBIF階級語彙] と同じように記入してください。また、曖昧さを防ぐために、できるだけ上位の分類を記入してください。kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | サブジェクトに割り当てられたTaxonの識別子です。タクソンがよく知られているソースに従って定義されている場合、`nameAccordingTo`にソースの名前を、`nameAccordingToID`にソースに従って割り当てられたタクソンの識別子（`taxonID`と同じ）を記入することが推奨されます。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:63
 #, no-wrap
 msgid "Case 1: Species observation from a camera trap"
-msgstr ""
+msgstr "ケース1：カメラトラップからの生物観察"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:85
@@ -190,13 +197,30 @@ msgid "| Field | Value | Constraint\n\n"
 "| `taxonID` | http://www.gbif.org/species/5219219 | Must be a GUID or an identifier related to the source\n"
 "| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Must be reference including date\n"
 "| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Must be a GUID or an identifier for the source\n"
-msgstr ""
+msgstr "| フィールド | 値 | 条件\n\n"
+"| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | GUIDまたはグローバルにほとんど一意な識別子である必要があります。整数の識別子は使用できません。\n"
+"| `basisOfRecord` | \"MachineObservation\" | link:{latest-basis-of-record}[ダーウィンコアタイプ語彙]に対応していなければなりません。\n"
+"| `individualCount` | 1 | 0以上の整数でなければなりません。\n"
+"| `organismQuantity` | 1 | `organismQuantityType`と対になっていなければなりません。\n"
+"| `organismQuantityType` | \"individuals\" | link:{latest-quantity-type}[GBIF数量タイプ語彙]に対応していなければなりません。\n"
+"| `occurrenceStatus` | \"present\" | link:{latest-occurrence-status}[GBIFオカレンスステータス語彙]に対応していなければなりません。\n"
+"| `scientificName` | \"Canis aureus Linnaeus, 1758\" | 完全な学名（既知の場合は著者名と日付の情報も含む）でなければなりません。\n"
+"| `taxonRank` | \"species\" | link:{latest-rank}[GBIF階級語彙]に対応していなければなりません。\n"
+"| `kingdom` | \"Animalia\" | 界の完全な学名でなければなりません。\n"
+"| `phylum` | \"Chordata\" | 門の完全な学名でなければなりません。\n"
+"| `class` | \"Mammalia\" | 綱の完全な学名でなければなりません。\n"
+"| `order` | \"Carnivora\" | 目の完全な学名でなければなりません。\n"
+"| `family` | \"Canidae\" | 科の完全な学名でなければなりません。\n"
+"| `genus` | \"Canis Linnaeus, 1758\" | 属の完全な学名でなければなりません。\n"
+"| `taxonID` | http://www.gbif.org/species/5219219 | またはソースに関連する識別子である必要があります。\n"
+"| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | 日付を含む引用である必要があります。\n"
+"| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | GUIDまたはソースに関連する識別子である必要があります。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:87
 #, no-wrap
 msgid "Who acted in the event?"
-msgstr ""
+msgstr "誰がおこなったか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:95
@@ -205,13 +229,16 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *who 1* | `recordedBy` | The full names of each person acting in the event (e.g. collecting, observing, etc) should be entered in `recordedBy` using the vertical bar as a separator. Note there is a separate field for capturing the person(s) making the identification (see below).\n"
 "| *who 2* | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen.\n"
 "| *who 3* | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n"
+"| *who 1* | `recordedBy` | イベントで活動した各人物のフルネーム（例：収集、観察など）を、縦棒を区切りとして `recordedBy` に入力してください。同定を行った人物を記録するための別のフィールドがあることに注意してください（下記参照）。\n"
+"| *who 2* | `institutionCode`, `ownerInstitutionCode` | イベントで活動する機関の名前または頭文字を`institutionCode`と`ownerInstitutionCode`に入力することができます。これらは異なる場合があるので、`institutionCode`は検体の物理的な保管を、`ownerInstitutionCode`は検体の法的な所有権を持つことが可能です。\n"
+"| *who 3* | `identifiedBy` | 生物の同定に責任がある各個人、グループ、機関のフルネームを縦棒を区切りとして入力する必要があります。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:97
 #, no-wrap
 msgid "Case 1: Two different people collecting and identifying a specimen"
-msgstr ""
+msgstr "ケース2：異なる2人が標本を収集し、同定している"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:106
@@ -221,13 +248,17 @@ msgid "| Field | Value | Constraint\n\n"
 "| `institutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `ownerInstitutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `identifiedBy` | \"Jan Pedersen\" | Must be names of one or more persons, groups or organizations\n"
-msgstr ""
+msgstr "| フィールド | 値 | 条件\n\n"
+"| `recordedBy` | \"Ole Karsholt\" | 1人または複数の個人名である必要があります。\n"
+"| `institutionCode` | \"ZMUC\" | 頭文字または機関名である必要があります。\n"
+"| `ownerInstitutionCode` | \"ZMUC\" | 頭文字または機関名である必要があります。\n"
+"| `identifiedBy` | \"Jan Pedersen\" | 1人または複数の個人、グループ、または機関の名前である必要があります。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:108
 #, no-wrap
 msgid "When did the event take place?"
-msgstr ""
+msgstr "いつ行われたか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:118
@@ -238,13 +269,18 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. If the start date resolution is specific to the day fill in `startDayOfYear`.\n"
 "| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `eventTime`, `year`, `month`, `day`, `startDayOfYear` and `endDayOfYear` for date ranges as completely as possible. If there is a date range spanning days, `day` is left blank. If there is a date range spanning months, `month` is left blank. If there is a date range spanning years, `year` is left blank. If the start date resolution is specific to the day fill in `startDayOfYear`. If the end date resolution is specific to the day fill in `endDayOfYear`.\n"
 "| *when 5* | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *when 1* | `eventDate` | `eventDate` には、イベントが発生した日付、日付時間、日付範囲、または日付時間範囲をlink:https://ja.wikipedia.org/wiki/ISO_8601[ISO 8601] フォーマットで入力する必要があります。「2007-03」のように、少なくとも年と月を含んでいれば、部分的に日付を指定することができます。\n"
+"| *when 2* | `verbatimEventDate` | 元の値をlink:https://ja.wikipedia.org/wiki/ISO_8601[ISO 8601]に変換する必要がある場合は、`verbatimEventDate` に元の値を記入する必要があります。\n"
+"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | 一見冗長に見えますが、単一の日付/時刻の場合は `year`、`month`、`day`、`eventTime` および `startDayOfYear` を埋めるようにすることを推奨します。もし、開始日が特定の日付であれば、 `startDayOfYear` を記入してください。\n"
+"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | 一見冗長に見えますが、日付範囲の `eventTime`、`year`、`month`、`day`、`startDayOfYear`、`endDayOfYear` はできるだけ完全に埋めるとよいでしょう。もし、日付の範囲が日単位であれば、 `day` は空白のままです。月にわたる日付範囲がある場合、`month` は空白のままです。日付の範囲が年にまたがる場合、`year` は空白のまます。開始日を指定する場合は、 `startDayOfYear` を記入し、終了日を指定するのであれば、 `endDayOfYear` を記入してください。\n"
+"| *when 5* | `eventRemarks` | もし `eventDate` が記入できない場合は、`eventRemarks` に説明を記述する必要があります。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:120
 #, no-wrap
 msgid "Case 1: Single date"
-msgstr ""
+msgstr "ケース1：単一の日付"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:131
@@ -256,13 +292,19 @@ msgid "| Field | Value | Constraint\n\n"
 "| `day` | 20 | Must be between 1-31\n"
 "| `startDayOfYear` | 79 | Must be between 1-366\n"
 "| `verbatimEventDate` | \"Mar 20, 07\" | Original date or date description\n"
-msgstr ""
+msgstr "| Field | Value | Constraint\n\n"
+"| `eventDate` | 2007-03-20 | link:https://ja.wikipedia.org/wiki/ISO_8601[ISO 8601]フォーマットに従っていなければならない\n"
+"| `year` | 2007 | 4桁の西暦でなければならない\n"
+"| `month` | 3 | 1~12の数値で指定されなければならない\n"
+"| `day` | 20 | 1~31の数値で指定されなければならない\n"
+"| `startDayOfYear` | 79 | 1~366の数値で指定されなければならない\n"
+"| `verbatimEventDate` | \"Mar 20, 07\" | 日付のオリジナル表記またはその詳細\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:133
 #, no-wrap
 msgid "Case 2: Date-time range spanning days"
-msgstr ""
+msgstr "ケース2：日付・時間の範囲が数日にわたる"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:146
@@ -276,13 +318,21 @@ msgid "| Field | Value\n\n"
 "| `startDayOfYear` | 79\n"
 "| `endDayOfYear` | 86\n"
 "| `verbatimEventDate` | \"The third week in March 07, for 6 hours starting at midnight.\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `eventDate` | 2007-03-20T00:00:00Z/2007-03-27T06:00:00Z\n"
+"| `eventTime` | 00:00:00Z/06:00:00Z\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `startDayOfYear` | 79\n"
+"| `endDayOfYear` | 86\n"
+"| `verbatimEventDate` | \"The third week in March 07, for 6 hours starting at midnight.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:148
 #, no-wrap
 msgid "Case 3: Partial date"
-msgstr ""
+msgstr "ケース3：一日の一部分"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:158
@@ -293,26 +343,32 @@ msgid "| Field | Value\n\n"
 "| `month` | 3\n"
 "| `day` |\n"
 "| `eventRemarks` | \"Exact collection day was never recorded\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `eventDate` | 2007-03\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `eventRemarks` | \"Exact collection day was never recorded\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:160
 #, no-wrap
 msgid "Case 4: Missing date"
-msgstr ""
+msgstr "ケース4：日付の欠損"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:166
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `eventRemarks` | \"Event date was not found in legacy data\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `eventRemarks` | \"Event date was not found in legacy data\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:168
 #, no-wrap
 msgid "Where did the event take place?"
-msgstr ""
+msgstr "どこで行われたか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:181
@@ -326,13 +382,21 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *where 6* |`informationWitheld` | If the point location should exist, but has not been entered, an explanation should be provided in `informationWitheld`.\n"
 "| *where 7* | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the cent er of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`.\n"
 "| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *where 1* | `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | `decimalLatitude` と `decimalLongitude` には地点の位置座標を10進数で入力する必要があります。座標の基となる空間参照系は`geodeticDatum` に入力する必要があり、EPSGコードがわかっていれば \"EPSG:4326\" などで入力します。そうでない場合は、`geodeticDatum`の名前またはコードがわかっていれば、統制語彙を使用します（例：\"WGS84\"）。もし、これらのどれにも当てはまらない場合は、\"unknown\"という値を使います。\n"
+"| *where 2* |`footprintWKT`, `footprintSRS` | 特定の形状の位置を提供するために、`footprintWKT`にその形状のWKT（Well-Known Text）表現を入力してください。その形状が基づいている対応する空間参照系は、EPSGコード（例：\"EPSG:4326\"）を使用して`footprintSRS`に入力する必要があります。\n"
+"| *where 3* |`coordinateUncertaintyInMeters`, `dataGeneralizations` | `coordinateUncertaintyInMeters` はGPSの読み取りの精度をメートル単位で表現する必要があります。低い精度(1000メートル以上)の場合、例えばセンシティブな種を保護するために場所が意図的に一般化されているかどうかを確認するために `dataGeneralizations` をチェックします。\n"
+"| *where 4* |`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | 元の地点の座標を、度分秒などの別の座標系から変換しなければならなかった場合 `verbatimCoordinates`, 元の点の座標が、「度分秒」のような別の座標系から変換されていた場合、 `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` には、オリジナル表記の座標が格納されるべきです。\n"
+"| *where 5* | `dataGeneralizations` | ポイントの位置が元の形よりも特定されないように処置された場合や、座標`UncertaintyInMeters`が非常に高い場合は、`dataGeneralizations`で説明を提供する必要があります。\n"
+"| *where 6* |`informationWitheld` | ポイントの位置が存在するはずなのに入力されていない場合、`informationWitheld`で説明を付す必要があります。\n"
+"| *where 7* | `georeferenceRemarks` | もしポイントの位置が存在しないか、または（GPSの読みからではなく）ポイントの位置がグリッドセルの中心から計算されている場合、`georeferenceRemarks`に説明を加える必要があります。\n"
+"| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | また、場所に関するできるだけ多くの補足情報を加える必要があります。もし `country` と `countryCode` が提供できない場合は、その理由を `locationRemarks` に記入する必要があります。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:183
 #, no-wrap
 msgid "Case 1: Point location converted from degrees minutes seconds to decimal degrees"
-msgstr ""
+msgstr "ケース1：地点の座標が度分秒から10進数に変換された"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:202
@@ -352,13 +416,27 @@ msgid "| Field | Value | Constraint\n\n"
 "| `stateProvince` | \"New York\" |\n"
 "| `county` | \"Tomkins County\" |\n"
 "| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Must be a specific description of the place\n"
-msgstr ""
+msgstr "| フィールド | 値 | 条件\n\n"
+"| `decimalLatitude` | 42.4566 | -90~90でなければなりません。\n"
+"| `decimalLongitude` | -76.45442 | -180~180でなければならない。\n"
+"| `geodeticDatum` | \"EPSG:4326\" | 理想的にはlink:http://spatialreference.org/ref/epsg/wgs-84/[EPSGコード] または統制語彙からのもので、そうでない場合は \"unknown\" となる。\n"
+"| `coordinateUncertaintyInMeters` | 500 | ゼロは有効な値ではありません。\n"
+"| `verbatimCoordinates` | 42° 27' 23.76\", -76° 27' 15.91\" | \n"
+"| `verbatimLatitude` | 42° 27' 23.76\" |\n"
+"| `verbatimLongitude` | -76° 27' 15.91\" |\n"
+"| `verbatimCoordinateSystem` | \"degrees minutes seconds\" |\n"
+"| `continent` | \"North America\" | link:http://www.getty.edu/research/tools/vocabularies/tgn/[Getty 地名シソーラス]に従った適切な英語名でなければなりません。\n"
+"| `country` | \"United States\" | link:http://www.getty.edu/research/tools/vocabularies/tgn/[Getty 地名シソーラス]に従った適切な英語名でなければなりません。\n"
+"| `countryCode` | \"US\" | link:https://ja.wikipedia.org/wiki/ISO_3166-1_alpha-2[ISO 3166-1-alpha-2 国名コード]に従う必要があります。\n"
+"| `stateProvince` | \"New York\" |\n"
+"| `county` | \"Tomkins County\" |\n"
+"| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | その場所の具体的な説明である必要があります。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:204
 #, no-wrap
 msgid "Case 2: Point location that was generalized"
-msgstr ""
+msgstr "ケース2：一般化されたポイントの位置"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:214
@@ -369,52 +447,60 @@ msgid "| Field | Value\n\n"
 "| `geodeticDatum` | \"EPSG:4326\"\n"
 "| `coordinateUncertaintyInMeters` | 5000\n"
 "| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `decimalLatitude` | 42.44\n"
+"| `decimalLongitude` | -76.33\n"
+"| `geodeticDatum` | \"EPSG:4326\"\n"
+"| `coordinateUncertaintyInMeters` | 5000\n"
+"| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:216
 #, no-wrap
 msgid "Case 3: Point location exists but not provided"
-msgstr ""
+msgstr "ケース3：ポイントの地点は存在するが提供されていない"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:222
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:224
 #, no-wrap
 msgid "Case 4: Point location does not exist"
-msgstr ""
+msgstr "ケース4：ポイントの地点が存在しない"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:230
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
-msgstr ""
+msgstr "| フィールド | 値\n\n"
+"| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:232
 #, no-wrap
 msgid "Why did the event happen?"
-msgstr ""
+msgstr "なぜ行われたか？"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:238
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
-msgstr ""
+msgstr "| Check-ID | フィールド | 条件\n\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | `samplingProtocol` にはイベントを生成するために使用したメソッド名やサンプリングプロトコル名を入力します。長いメソッドの説明よりも、その説明を参照するURLが良いです。サンプリングプロトコルは `sampleSizeValue` と `sampleSizeUnit` のペアを使用して、link:{latest-unit-of-measurement}[測定単位語彙]に定義される `sampleSizeUnit` の値を用いて面積や時間などを定義しなければなりません。samplingEffort` には、サンプリングにかかる時間や労力など、より一般的な情報を入力することができます。面積や期間に関する情報がない場合、`eventRemarks`にその理由を記述しなければなりません。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:240
 #, no-wrap
 msgid "Case 1: Because of a butterfly monitoring scheme"
-msgstr ""
+msgstr "ケース1：バタフライ・モニタリング・スキームのため"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:250
@@ -425,18 +511,23 @@ msgid "| Field | Value | Constraint\n\n"
 "| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
 "| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
 "| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
-msgstr ""
+msgstr "| フィールド | 値 | 条件\n\n"
+"| `samplingProtocol` | \"Pollard walks\" | メソッドまたはサンプリングプロトコルを参照する短い名前またはURLでなければなりません。\n"
+"| `sampleSizeValue` | 250 | `sampleSizeUnit` と対になっていなければなりません。\n"
+"| `sampleSizeUnit` | \"square_metre\" | link:{latest-unit-of-measurement}[測定単位に関する語彙]にマッチする必要があります。\n"
+"| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | 自由形式で記述することができます。\n"
+"| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | 自由形式で記述することができます。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:252
 #, no-wrap
 msgid "Dataset Metadata"
-msgstr ""
+msgstr "データセットのメタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:255
 msgid "The dataset metadata should contain enough information to facilitate reuse of the data while preventing misinterpretation. Publishers should also provide evidence of the rigour that went into producing the data while acknowledging its various contributors and funders. Ultimately this may lead to new sources of collaboration and funding."
-msgstr ""
+msgstr "データセットのメタデータは、データの再利用を容易にすると同時に、誤った解釈を防ぐのに十分な情報を含んでいなければなりません。また、公開者はデータ作成に費やした厳密さの証明を提供し、さまざまな貢献者や資金提供者を認識する必要があります。最終的には、これが新たな協力関係や資金源につながるかもしれません。"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:269
@@ -452,5 +543,15 @@ msgid "| Field | Requirements | Examples\n\n"
 "| `Project Identifier` | is a GUID or other identifier that is near globally unique. _Note this is required for BID projects._ | _\"BID-AF2015-0134-REG\"_\n"
 "| `Sampling Methods` | information about the sampling methodology used in creating the dataset, similar to the methods section of a journal article. _Note this is required for sampling event datasets._ | _See https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
 "| `Citation` | how the dataset should be cited. Use of the xref:citation.adoc[IPT Citation Format] (based on DataCite's preferred citation format and that satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]) is highly recommended. | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
-msgstr ""
+msgstr "| フィールド | 条件 | 例\n\n"
+"| `Title` | データセットの内容を説明し、他と区別するための簡潔な名前です。 | _\"Reef Life Survey: Global reef fish dataset\"_, _\"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen\"_\n"
+"| `Description` | データセットの内容を説明する短い文章（要旨）。 | _\"This dataset contains records of bony fishes and elasmobranchs collected by Reef Life Survey (RLS) divers along 50 m transects on shallow rocky and coral reefs, worldwide. Abundance information is available for all records found within quantitative survey limits (50 x 5 m swathes during a single swim either side of the transect line, each distinguished as a Block), and out-of-survey records are identified as presence-only (Method 0).\"_\n"
+"| `Publishing Organization` | このリソースを公開（制作、リリース、保有）する責任を負う組織です。 | _\"Reef Life Survey\"_\n"
+"| `License` | 3つの機械可読オプション（CC0 1.0、CC-BY 4.0、CC-BY-NC 4.0）のいずれかでなければならず、データセットの適切な利用を定義するための標準的な方法を提供するものです。 | _\"This work is licensed under a http://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License].\"_\n"
+"| `Creator(s)` | データセットを作成した人および機関（優先順位付き）。ORCIDやResearcherIDのような人物の識別子を使用することが強く推奨されます。 | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Metadata Provider(s)` | データセットのメタデータを作成した人および機関。ORCIDやResearcherIDのような人物の識別子を使用することが強く推奨されます。 | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Contact(s)` | リソースに関する詳細な情報を得るため、あるいはデータセットに関する問題を解決するために連絡を取るべき人々や機関。ORCIDやResearcherIDのような人物の識別子を使用することが強く推奨されます。 | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Project Identifier` | GUIDまたはグローバルに一意に近いその他の識別子です。_BIDプロジェクトでは必須ですので注意してください。_ | _\"BID-AF2015-0134-REG\"_\n"
+"| `Sampling Methods` | データセットを作成する際に使用したサンプリング方法に関する情報（雑誌論文の方法セクションと同様）です。_サンプリングイベントのデータセットでは必須です。_ | _https://cloud.gbif.org/griis/resource?r=global#methods[こちら]を参照_\n"
+"| `Citation` | データセットの引用方法。xref:citation.adoc[IPT引用形式]（DataCiteの推奨する引用形式に基づいており、link:https://force11.org/presentation/joint-declaration-of-data-citation-principles-slides/[データ引用の原則の共同宣言]を満たしている）の使用を強く推奨します。 | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
 

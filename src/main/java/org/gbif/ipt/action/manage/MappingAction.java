@@ -424,11 +424,9 @@ public class MappingAction extends ManagerBaseAction {
           fields.add(pm);
 
           // also store PropertyMapping by group/class
-          String group = ep.getGroup();
-          if (group != null) {
-            fieldsByGroup.computeIfAbsent(group, k -> new ArrayList<>());
-            fieldsByGroup.get(group).add(pm);
-          }
+          String group = StringUtils.trimToEmpty(ep.getGroup());
+          fieldsByGroup.computeIfAbsent(group, k -> new ArrayList<>());
+          fieldsByGroup.get(group).add(pm);
 
           // for easy retrieval of PropertyMapping index by qualifiedName...
           fieldsTermIndices.put(ep.getQualname(), fields.lastIndexOf(pm));

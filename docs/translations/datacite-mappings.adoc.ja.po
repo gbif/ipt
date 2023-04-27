@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-03-16 00:54\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,47 +20,47 @@ msgstr ""
 #: en/modules/ROOT/pages/datacite-mappings.adoc:1
 #, no-wrap
 msgid "DataCite to EML mappings"
-msgstr ""
+msgstr "DataCiteからEMLへのマッピング"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:4
 msgid "To understand how the IPT produces the DataCite metadata from the EML and IPT resource properties you can refer to the mappings below."
-msgstr ""
+msgstr "IPTがEMLとIPTのリソースプロパティからどのようにDataCiteメタデータを生成するかを理解するために、以下のマッピングを参照することができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/datacite-mappings.adoc:5
 #, no-wrap
 msgid "Mappings"
-msgstr ""
+msgstr "マッピング"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:8
 msgid "Legend:"
-msgstr ""
+msgstr "凡例："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:10
 #, no-wrap
 msgid "*DataCite property*: lists the name of the DataCite metadata property\n"
-msgstr ""
+msgstr "*DataCiteプロパティ*：DataCiteメタデータプロパティの名前をリストアップします。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:11
 #, no-wrap
 msgid "*Obl.*: Obligation, the property is (M) mandatory, \\(R) recommended, and (O) optional\n"
-msgstr ""
+msgstr "*Obl.*：Obligation（義務）。プロパティは(M)：必須（mandatory）、(R)：推奨（recommended）、(O)：オプション（optional）を表します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:12
 #, no-wrap
 msgid "*Occ*: Occurrence/cardinality, the property is (1-n) required and repeatable, (1) required but not repeatable, (0-n) optional and repeatable, (0-1) optional but not repeatable\n"
-msgstr ""
+msgstr "*Occ*：Occurrence/cardinality。プロパティは(1-n)：必須で再現性がある、(1)：必須だが再現性がない、(0-n)：オプションで再現性がある、(0-1)：オプションであるが再現性がない、となります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:13
 #, no-wrap
 msgid "*IPT/EML property*: IPT resource property, or EML property the DataCite property maps to\n"
-msgstr ""
+msgstr "*IPT/EMLプロパティ*：IPTリソースプロパティ、またはDataCiteプロパティがマッピングするEMLプロパティです。\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/datacite-mappings.adoc:60
@@ -108,5 +108,47 @@ msgid "| DataCite property | Obl. | Occ. | IPT/EML property\n\n"
 "|descriptionType        |R         |1         |“Abstract” - controlled value (mandatory if Description is used). Additional descriptions can be described for methods, with descriptionType “Methods”\n"
 "|geoLocationBox         |R         |0-1       |resource bounding box (first pair is SW point, second pair is NE point, e.g. 41.090 -71.032 42.893 -68.211)\n"
 "|geoLocationPlace       |R         |0-1       |resource geographic description, free text.\n"
-msgstr ""
+msgstr "| DataCiteプロパティ | Obl. | Occ. | IPT/EMLプロパティ\n\n"
+"|identifier             |M         |1         |リソースDOI\n"
+"|identifierType         |M         |1         |“DOI” - 制御された値\n"
+"|creator                |M         |1-n       |リソース作成者（さらにロール作成者の関係者）\n"
+"|creatorName            |M         |1         |リソース作成者の名前\n"
+"|nameIdentifier         |R         |0-1       |リソース作成者のORCID\n"
+"|nameIdentifierScheme   |M         |1         |ORCID（nameIdentifierを使用する場合は必須）\n"
+"|schemeURI              |O         |0-1       |http://www.orcid.org\n"
+"|contributor            |R         |0-n       |resource contact、metadataProvider、および様々な役割を持つassociatedParties\n"
+"|contributorName        |R         |1         |リソースコンタクト名（contributorを使用する場合は必須）\n"
+"|contributorType        |R         |1         |“ContactPerson” - 制御値（contributor が使用されている場合は必須）。 その他のロールから制御値へのマッピング： author→\"Other\", contentProvider → “DataCollector”, custodianSteward → “DataManager”, distributor → “Distributor”, editor → “Editor”, metadataProvider → “DataCurator”, owner → “RightsHolder”, principalInvestigator → “ProjectLeader”, processor → “Producer”, publisher → “Producer”, user → “Other”, programmer → “Producer”, curator → “DataCurator”\n"
+"|nameIdentifier         |R         |0-1       |リソースコンタクトORCID\n"
+"|nameIdentifierScheme   |R         |1         |ORCID（nameIdentifierを使用する場合は必須）\n"
+"|schemeURI              |R         |0-1       |http://www.orcid.org\n"
+"|title                  |M         |1-n       |リソースタイトル、およびxml:lang属性を使用した他の言語でのタイトル\n"
+"|titleType              |O         |0-1       |“translatedTitle”\n"
+"|publisher              |M         |1         |リソースの公開機関。公開機関の選択は、データセットが最終的に登録される機関と一致していなければなりません。\n"
+"|publicationYear        |M         |1         |リソース公開年\n"
+"|subject                |R         |0-n       |リソースのキーワード（複数可）\n"
+"|subjectScheme          |R         |0-1       |Thesaurus/Vocabulary if not URI\n"
+"|schemeURI              |R         |0-1       |Thesaurus/Vocabulary if URI\n"
+"|date                   |M         |0-n       |リソース公開日（一時的な日付範囲でも可）\n"
+"|dateType               |M         |1         |初回発行の場合は\"created\"、それ以降の発行の場合は\"updated\"（日付を使用する場合は必須）。時間的範囲の日付タイプから制御値へのマッピングは Single date → “Valid”, Date range → “Valid” となります。\n"
+"|language               |O         |0-1       |リソースの言語（ISO-639-1、例： “en”）\n"
+"|resourceType           |R         |0-1       |リソースのdatasetType/datasetSubtype\n"
+"|resourceTypeGeneral    |R         |1         | “Dataset” - 制御値（resourceType を使用する場合は必須）\n"
+"|alternateIdentifier    |O         |0-n       |GBIFポータルデータセットページURLとIPT公開リソースページURL\n"
+"|alternateIdentifierType|O         |1         |“URL” - 制御値（alternateIdentifier を使用する場合は必須）\n"
+"|RelatedIdentifier      |R         |0-n       |以前のリソースDOI\n"
+"|relatedIdentifierType  |R         |1         |“DOI” - 制御値（RelatedIdentifierを使用する場合は必須）\n"
+"|relationType           |R         |1         |“IsNewVersionOf” - 制御値（RelatedIdentifierを使用する場合は必須）。その他、記述可能な「relationTypes」は「cites」関係による書誌引用、「isVariantFormOf」関係による外部データとの関係、「HasMetadata」関係による eml.xml との関係。\n"
+"|relatedMetadataScheme  |O         |0-1       |GBIFメタデータプロファイル（HasMetadataFor関係で使用）\n"
+"|schemeURI              |O         |0-1       |http://rs.gbif.org/schema/eml-gbif-profile/1.0.2/eml-gbif-profile.xsd（HasMetadataFor関係で使用）\n"
+"|schemeType             |O         |0-1       |XSD（HasMetadataFor関係で使用）\n"
+"|Format                 |O         |0-n       |“DwC-A” - フリーテキスト値\n"
+"|Size                   |O         |0-n       |リソースのレコード数、またはDwC-Aのサイズ（MB）。\n"
+"|Version                |O         |0-1       |major\\_version.minor\\_version（RelatedIdentifierと組み合わせて、リソースの情報更新を示すために使用）\n"
+"|rights                 |O         |0-n       |リソースのIPR（完全なタイトル。例：Creative Commons Attribution 3.0）\n"
+"|rightsURI              |O         |0-1       |リソースのIPRのURI（例： http://creativecommons.org/lincenses/by/3.0）\n"
+"|Description            |R         |0-n       |xml:lang属性で指定した複数言語での記述を含めたリソースの説明\n"
+"|descriptionType        |R         |1         |“Abstract” - 制御値（Descriptionを使用する場合は必須）。方法については、descriptionType \"Methods \"で追加の記述をすることができます。\n"
+"|geoLocationBox         |R         |0-1       |リソース境界ボックス（1組目はSW地点、2組目はNE地点を指定します。例：41.090 -71.032 42.893 -68.211）\n"
+"|geoLocationPlace       |R         |0-1       |リソースの地理的説明（フリーテキスト）\n"
 
