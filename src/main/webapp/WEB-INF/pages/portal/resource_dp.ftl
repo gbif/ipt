@@ -124,12 +124,21 @@
                                 <@s.text name='portal.resource.latest.version'/>
                             </#if>
 
+                            <#if dpMetadata.created?has_content>
+                                <#assign createdLongDate>
+                                    ${dpMetadata.created?date?string.long}
+                                </#assign>
+                                <#assign createdLongShortDate>
+                                    ${dpMetadata.created?date?string.long_short}
+                                </#assign>
+                            </#if>
+
                             <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                                ${publishedOnText?lower_case}&nbsp;<span>${dpMetadata.created!?date?string.long}</span>
+                                ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
                                 <br>
                                 <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                             <#else>
-                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${dpMetadata.created!?date?string.long_short}</span>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${createdLongShortDate!}</span>
                                 <span style="display: none">${resource.organisation.name}</span>
                             </#if>
                         </span>
