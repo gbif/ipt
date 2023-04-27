@@ -301,15 +301,11 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <#if resource.organisation??>
-                                        <@select name="id" help="i18n" i18nkey="eml.publishingOrganisation" options=organisations value="${resource.organisation.key!''}" requiredField=true />
-                                    <#else>
-                                        <@select name="id" help="i18n" i18nkey="eml.publishingOrganisation" options=organisations requiredField=true />
-                                    </#if>
+                                    <@input name="metadata.homepage" help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.homepage" help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
+                                    <@input name="metadata.image" help="i18n" i18nkey="datapackagemetadata.image" type="url" />
                                 </div>
                             </div>
                         </div>
