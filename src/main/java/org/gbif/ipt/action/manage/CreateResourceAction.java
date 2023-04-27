@@ -116,7 +116,7 @@ public class CreateResourceAction extends POSTAction {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     } catch (ImportException e) {
-      LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
+      LOG.error("Error importing the archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
       // remove resource and its resource folder from data directory
       cleanupResourceFolder(shortname, startTimeInMs);

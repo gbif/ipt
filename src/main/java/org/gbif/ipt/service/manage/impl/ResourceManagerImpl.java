@@ -138,10 +138,12 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -186,6 +188,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
@@ -215,6 +218,10 @@ import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
 import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
+import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
+import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
+import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
+import static org.gbif.ipt.utils.FileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 @Singleton
@@ -542,7 +549,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
+  public Resource create(String shortname, String type, File archiveOrSingleFile, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
@@ -553,9 +560,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Resource resource;
     // decompress archive
     List<File> decompressed = null;
-    File dwcaDir = dataDir.tmpDir();
+    File archiveDir = dataDir.tmpDir();
     try {
-      decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
+      decompressed = CompressionUtil.decompressFile(archiveDir, archiveOrSingleFile, true);
     } catch (UnsupportedCompressionType e) {
       LOG.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
     } catch (Exception e) {
@@ -565,21 +572,60 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (CollectionUtils.isEmpty(decompressed)) {
       // try again as single gzip file
       try {
-        decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
+        decompressed = CompressionUtil.ungzipFile(archiveDir, archiveOrSingleFile, false);
       } catch (Exception e2) {
         LOG.debug("2nd attempt to decompress file failed: " + e2.getMessage(), e2);
       }
     }
 
     // create resource:
-    // if decompression failed, create resource from single eml file
+    // if decompression failed, create resource from single file: eml.xml, datapackage.json or metadata.yml
     if (CollectionUtils.isEmpty(decompressed)) {
-      resource = createFromEml(shortname, dwca, creator, alog);
+      String fileExtension = getFileExtension(archiveOrSingleFile);
+
+      switch (fileExtension) {
+        case "xml":
+          resource = createFromEml(shortname, archiveOrSingleFile, creator, alog);
+          break;
+        case "json":
+          resource = createFromPackageDescriptor(shortname, archiveOrSingleFile, creator, alog);
+          break;
+        case "yml":
+          resource = createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
+          break;
+        default:
+          throw new ImportException("Invalid file extension: " + fileExtension);
+      }
     }
-    // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
+    // if decompression succeeded and archive is 'IPT Resource Folder'
+    else if (isIPTResourceFolder(archiveDir)) {
+      resource = createFromIPTResourceFolder(shortname, archiveDir, creator, alog);
+    }
+    // if decompression succeeded, create resource depending on whether file was  a 'DwC-A',
+    // a frictionless package (Camtrap DP) or a ColDP
     else {
-      resource = isIPTResourceFolder(dwcaDir) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
-        : createFromArchive(shortname, dwcaDir, creator, alog);
+      boolean isFrictionless = decompressed.stream()
+        .map(File::getName)
+        .anyMatch(FRICTIONLESS_METADATA_FILENAME::equals);
+      boolean isColdp = decompressed.stream()
+        .map(File::getName)
+        .anyMatch(COL_DP_METADATA_FILENAME::equals);
+
+      String packageType = null;
+
+      if (StringUtils.isNotEmpty(type)) {
+        packageType = type;
+      } else if (isColdp) {
+        packageType = COL_DP;
+      } else if (isFrictionless) {
+        packageType = CAMTRAP_DP;
+      }
+
+      if (isFrictionless) {
+        resource = createFromFrictionlessDataPackage(shortname, packageType, decompressed, creator, alog);
+      } else {
+        resource = createFromDwcArchive(shortname, archiveDir, creator, alog);
+      }
     }
 
     // set resource type, if it hasn't been set already
@@ -667,10 +713,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setSourcesModified(lastModifiedDate);
         res.getSources().forEach(s -> s.setLastModified(lastModifiedDate));
         res.getMappings().forEach(m -> m.setLastModified(lastModifiedDate));
+        res.getDataSchemaMappings().forEach(m -> m.setLastModified(lastModifiedDate));
 
-        // reset first and last published dates
-        res.getEml().setDateStamp((Date) null);
-        res.getEml().setPubDate(null);
+        if (!res.isDataPackage()) {
+          // reset first and last published dates
+          res.getEml().setDateStamp((Date) null);
+          res.getEml().setPubDate(null);
+        }
+
         // add resource to IPT
         save(res);
       }
@@ -688,7 +738,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
-   * at least a resource.xml and eml.xml file.
+   * resource.xml file and one of the metadata files: eml.xml/datapackage.json/metadata.yml
    *
    * @param dir directory where compressed file was decompressed
    *
@@ -697,8 +747,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private boolean isIPTResourceFolder(File dir) {
     if (dir.exists() && dir.isDirectory()) {
       File persistenceFile = new File(dir, DataDir.PERSISTENCE_FILENAME);
-      File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
-      return persistenceFile.isFile() && emlFile.isFile();
+      File emlFile = new File(dir, EML_XML_FILENAME);
+      File datapackageDescriptorFile = new File(dir, FRICTIONLESS_METADATA_FILENAME);
+      File colDpMetadataFile = new File(dir, COL_DP_METADATA_FILENAME);
+
+      return persistenceFile.isFile() &&
+        (emlFile.isFile() || datapackageDescriptorFile.isFile() || colDpMetadataFile.isFile());
     }
     return false;
   }
@@ -753,7 +807,76 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return res;
   }
 
-  private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
+  private Resource createFromFrictionlessDataPackage(String shortname, String packageType, List<File> packageFiles, User creator,
+                                                     ActionLogger alog)
+    throws AlreadyExistingException, ImportException, InvalidFilenameException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    Resource resource;
+    try {
+      // keep track of source files as a package might refer to the same source file multiple times
+      Map<String, TextFileSource> sources = new HashMap<>();
+
+      // create new resource
+      resource = create(shortname, packageType, creator);
+      Date lastModifiedDate = new Date();
+
+      File metadataFile = null;
+
+      for (File packageFile : packageFiles) {
+        if ("csv".equals(getFileExtension(packageFile))) {
+          TextFileSource s = importSource(resource, packageFile);
+          String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
+          sources.put(filenameWithoutExtension, s);
+
+          DataSchemaMapping map = importDataPackageMappings(alog, packageType, packageFile, s);
+          map.setLastModified(lastModifiedDate);
+          resource.addDataSchemaMapping(map);
+        } else if (packageFile.getName().equals(FRICTIONLESS_METADATA_FILENAME) && metadataFile == null) {
+          metadataFile = packageFile;
+        } else if (packageFile.getName().equals(COL_DP_METADATA_FILENAME)) {
+          metadataFile = packageFile;
+        }
+      }
+
+      resource.setSourcesModified(lastModifiedDate);
+      resource.setMappingsModified(lastModifiedDate);
+
+      // try to read metadata
+      if (metadataFile != null) {
+        DataPackageMetadata metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
+
+        if (metadata instanceof FrictionlessMetadata) {
+          FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+          // set name, erase some internal fields
+          frictionlessMetadata.setName(resource.getShortname());
+          frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
+          frictionlessMetadata.setId(null);
+          frictionlessMetadata.setCreated(null);
+          frictionlessMetadata.getAdditionalProperties().clear();
+        }
+
+        resource.setDataPackageMetadata(metadata);
+        resource.setMetadataModified(lastModifiedDate);
+      }
+
+      // finally persist the whole thing
+      save(resource);
+      saveDatapackageMetadata(resource);
+
+      alog.info("manage.resource.camtrap.create.success",
+        new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataSchemaMappings().size())});
+    } catch (UnsupportedArchiveException | InvalidConfigException e) {
+      alog.warn(e.getMessage(), e);
+      throw new ImportException(e);
+    }
+
+    return resource;
+  }
+  private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
@@ -889,7 +1012,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
       frictionlessMetadata.setId(null);
       frictionlessMetadata.setCreated(null);
-      frictionlessMetadata.getAdditionalProperties().remove("resources");
+      frictionlessMetadata.getAdditionalProperties().clear();
     }
 
     resource.setDataPackageMetadata(metadata);
@@ -955,6 +1078,62 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Resource resource = create(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
     resource.setMetadataModified(new Date());
     resource.setEml(eml);
+    return resource;
+  }
+
+  private Resource createFromPackageDescriptor(String shortname, File metadataFile, User creator, ActionLogger alog)
+    throws AlreadyExistingException, ImportException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    DataPackageMetadata metadata;
+
+    try {
+      // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
+      metadata = copyDatapackageMetadata(shortname, metadataFile, CAMTRAP_DP);
+
+      if (metadata instanceof FrictionlessMetadata) {
+        FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+        // set name, erase some internal fields
+        frictionlessMetadata.setName(shortname);
+        frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
+        frictionlessMetadata.setId(null);
+        frictionlessMetadata.setCreated(null);
+        frictionlessMetadata.getAdditionalProperties().clear();
+      }
+    } catch (ImportException e) {
+      alog.error("manage.resource.create.failed");
+      throw e;
+    }
+    // create resource of Frictionless (Camtrap) type, with metadata instance
+    Resource resource = create(shortname, CAMTRAP_DP, creator);
+    resource.setMetadataModified(new Date());
+    resource.setDataPackageMetadata(metadata);
+    return resource;
+  }
+
+  private Resource createFromColDpMetadata(String shortname, File metadataFile, User creator, ActionLogger alog)
+    throws AlreadyExistingException, ImportException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    DataPackageMetadata metadata;
+
+    try {
+      // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
+      metadata = copyDatapackageMetadata(shortname, metadataFile, COL_DP);
+    } catch (ImportException e) {
+      alog.error("manage.resource.create.failed");
+      throw e;
+    }
+    // create resource of ColDP type, with metadata instance
+    Resource resource = create(shortname, COL_DP, creator);
+    resource.setMetadataModified(new Date());
+    resource.setDataPackageMetadata(metadata);
     return resource;
   }
 
@@ -1127,6 +1306,70 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
+  private DataSchemaMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
+    DataSchemaMapping map = new DataSchemaMapping();
+    DataSchema dataSchema = schemaManager.get(packageType);
+    String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
+
+    if (dataSchema == null) {
+      // cleanup source file immediately
+      if (source.isFileSource()) {
+        boolean deleted = FileUtils.deleteQuietly(file);
+        // to bypass "Unable to delete file" error on Windows, run garbage collector to clean up file i/o mapping
+        if (!deleted) {
+          System.gc();
+          FileUtils.deleteQuietly(file);
+        }
+      }
+      alog.warn("manage.resource.create.schema.null", new String[] {SCHEMAS_DISPLAY_NAMES.get(packageType)});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
+    }
+
+    DataSubschema subschema = dataSchema.getSubSchemas().stream()
+      .filter(s -> s.getName().equals(filenameWithoutExtension))
+      .findAny()
+      .orElse(null);
+
+    if (subschema == null) {
+      alog.warn("manage.resource.create.subschema.null", new String[] {filenameWithoutExtension});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+    }
+
+    map.setDataSchema(dataSchema);
+    map.setDataSchemaFile(subschema.getName());
+    map.setSource(source);
+
+    // extract column names from file's first row
+    String[] columnNames;
+    try (BufferedReader brTest = new BufferedReader(new FileReader(file))) {
+      String fileHeaderRow = brTest.readLine();
+      columnNames = StringUtils.split(fileHeaderRow, ",");
+    } catch (IOException e) {
+      alog.warn("manage.resource.create.subschema.null", new String[] {filenameWithoutExtension});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+    }
+
+    List<DataSchemaFieldMapping> fields = new ArrayList<>();
+    Map<String, DataSchemaField> schemaFieldsMap = subschema.getFields().stream()
+      .collect(Collectors.toMap(DataSchemaField::getName, p -> p));
+
+    // iterate over each field to make sure its part of the extension we know
+    for (int i = 0; i < columnNames.length; i++) {
+      DataSchemaField dataSchemaField = schemaFieldsMap.get(columnNames[i]);
+      if (dataSchemaField != null) {
+        fields.add(new DataSchemaFieldMapping(i, dataSchemaField));
+      } else {
+        alog.warn("manage.resource.create.mapping.field.skip",
+          new String[] {columnNames[i], dataSchema.getName() + "/" + subschema.getName()});
+      }
+    }
+
+    map.setFieldsMapped(columnNames.length);
+    map.setLastModified(new Date());
+    map.setFields(fields);
+
+    return map;
+  }
   private TextFileSource importSource(Resource config, ArchiveFile af)
     throws ImportException, InvalidFilenameException {
     File extFile = af.getLocationFiles().get(0);
@@ -1138,6 +1381,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (s.getIgnoreHeaderLines() != 1) {
       LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
                + " since header count is declared as " + s.getIgnoreHeaderLines());
+    }
+    s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
+
+    return s;
+  }
+
+  private TextFileSource importSource(Resource config, File file)
+    throws ImportException, InvalidFilenameException {
+    TextFileSource s = (TextFileSource) sourceManager.add(config, file, FilenameUtils.removeExtension(file.getName()));
+    SourceManagerImpl.copyArchiveFileProperties(file, s);
+
+    // the number of rows was calculated using the standard file importer
+    // make an adjustment now that the exact number of header rows are known
+    if (s.getIgnoreHeaderLines() != 1) {
+      LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
+        + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -3146,7 +3405,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (emlFile == null || !emlFile.exists()) {
         // some archives dont indicate the name of the eml metadata file
         // so we also try with the default eml.xml name
-        emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
+        emlFile = new File(archive.getLocation(), EML_XML_FILENAME);
       }
       if (emlFile.exists()) {
         // read metadata and populate Eml instance
@@ -3175,6 +3434,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.warn("Cant read basic archive metadata: " + e.getMessage());
     }
+    alog.warn("manage.resource.read.problem");
+    return null;
+  }
+
+  private DataPackageMetadata readDataPackageMetadata(String shortname, String dataPackageType, File file, ActionLogger alog) {
+    DataPackageMetadata metadata;
+
+    try {
+      metadata = copyDatapackageMetadata(shortname, file, dataPackageType);
+      alog.info("manage.resource.read.datapackage.metadata");
+      return metadata;
+    } catch (ImportException e) {
+      String msg = "Cant read data package metadata: " + e.getMessage();
+      LOG.warn(msg);
+      alog.warn(msg);
+      return null;
+    } catch (Exception e) {
+      LOG.warn("Cant read data package metadata", e);
+    }
+
     alog.warn("manage.resource.read.problem");
     return null;
   }
@@ -3476,7 +3755,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public synchronized void saveDatapackageMetadata(Resource resource) {
-    // TODO: 12/10/2022 erase some internally set fields?
     // set modified date
     resource.setModified(new Date());
     // save into data dir

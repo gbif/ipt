@@ -60,11 +60,11 @@
             </script>
 
             <div class="row g-3 mt-0 mb-2">
-                <div class="col-sm-6">
+                <div class="col-md-6">
                     <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" size=40/>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-md-6">
                     <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" />
                 </div>
 
@@ -72,7 +72,7 @@
                     <@checkbox name="importDwca" help="i18n" i18nkey="manage.resource.create.archive"/>
                 </div>
 
-                <div id="import-dwca-section" class="col-12">
+                <div id="import-dwca-section" class="col-md-6">
                     <@s.fielderror cssClass="fielderror" fieldName="file"/>
                     <label for="file" class="form-label"><@s.text name="manage.resource.create.file"/>: </label>
                     <@s.file name="file" cssClass="form-control" key="manage.resource.create.file" />

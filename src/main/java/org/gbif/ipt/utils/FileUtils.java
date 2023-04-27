@@ -160,4 +160,19 @@ public class FileUtils {
             + (TEMP_DIR_ATTEMPTS - 1)
             + ')');
   }
+
+  /**
+   * Returns file extension.
+   *
+   * @param file file
+   * @return extension of the file
+   */
+  public static String getFileExtension(File file) {
+    String fileName = file.getName();
+    int lastIndexOfDot = fileName.lastIndexOf(".");
+    if (lastIndexOfDot == -1) {
+      return "";
+    }
+    return fileName.substring(lastIndexOfDot + 1);
+  }
 }

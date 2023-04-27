@@ -308,6 +308,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     super(cfg, dataDir);
   }
 
+  // TODO: 24/04/2023 implement
+  public static void copyArchiveFileProperties(File from, TextFileSource to) {
+    to.setEncoding("UTF-8");
+    to.setFieldsEnclosedBy(null);
+    to.setFieldsTerminatedBy(",");
+    to.setIgnoreHeaderLines(1);
+    to.setDateFormat("YYYY-MM-DD");
+  }
   public static void copyArchiveFileProperties(ArchiveFile from, TextFileSource to) {
     to.setEncoding(from.getEncoding());
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
