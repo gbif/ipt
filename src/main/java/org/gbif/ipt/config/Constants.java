@@ -112,7 +112,6 @@ public final class Constants {
 
   public static final String CAMTRAP_DP = "camtrap-dp";
   public static final String COL_DP = "coldp";
-  public static final Map<String, String> SCHEMAS_DISPLAY_NAMES;
   public static final String CAMTRAP_PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/0.6/profile/camtrap-dp-profile.json";
 
   // Set of GBIF supported licenses
@@ -126,11 +125,6 @@ public final class Constants {
     licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
     licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
     GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
-
-    Map<String, String> schemasDisplayNames = new HashMap<>();
-    schemasDisplayNames.put(CAMTRAP_DP, "Camtrap DP");
-    schemasDisplayNames.put(COL_DP, "ColDP");
-    SCHEMAS_DISPLAY_NAMES = Collections.unmodifiableMap(schemasDisplayNames);
   }
 
   private Constants() {

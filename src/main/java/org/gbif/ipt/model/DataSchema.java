@@ -28,15 +28,44 @@ public class DataSchema implements Serializable {
 
   private static final long serialVersionUID = -3130006092545816514L;
 
+  /**
+   * Schema unique identifier
+   */
   private String identifier;
+
+  /**
+   * Schema full title
+   */
   private String title;
+
+  /**
+   * Schema shortened title
+   */
+  private String shortTitle;
+
+  /**
+   * Schema name for internal usage
+   */
   private String name;
+
+  /**
+   * Schema version
+   */
   private String version;
+
+  /**
+   * Schema URL
+   */
   private URL url;
+
   private Set<DataSubschema> subSchemas = new LinkedHashSet<>();
+
   private SubSchemaRequirement subSchemaRequirements = new SubSchemaRequirement();
+
   private String description;
+
   private boolean isLatest;
+
   private Date issued;
 
   public DataSubschema subschemaByName(String subSchemaName) {
@@ -59,6 +88,14 @@ public class DataSchema implements Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getShortTitle() {
+    return shortTitle;
+  }
+
+  public void setShortTitle(String shortTitle) {
+    this.shortTitle = shortTitle;
   }
 
   public String getName() {
@@ -137,6 +174,7 @@ public class DataSchema implements Serializable {
     return isLatest == that.isLatest
         && Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)
+        && Objects.equals(shortTitle, that.shortTitle)
         && Objects.equals(name, that.name)
         && Objects.equals(version, that.version)
         && Objects.equals(url, that.url)
@@ -148,7 +186,7 @@ public class DataSchema implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, name, version, url, subSchemas, subSchemaRequirements, description, isLatest, issued);
+    return Objects.hash(identifier, title, shortTitle, name, version, url, subSchemas, subSchemaRequirements, description, isLatest, issued);
   }
 
   @Override
@@ -156,6 +194,7 @@ public class DataSchema implements Serializable {
     return new StringJoiner(", ", DataSchema.class.getSimpleName() + "[", "]")
         .add("identifier='" + identifier + "'")
         .add("title='" + title + "'")
+        .add("title='" + shortTitle + "'")
         .add("name='" + name + "'")
         .add("version='" + version + "'")
         .add("url=" + url)

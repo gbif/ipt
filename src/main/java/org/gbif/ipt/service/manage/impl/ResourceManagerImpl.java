@@ -172,6 +172,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -209,7 +210,6 @@ import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
 import static org.gbif.ipt.config.Constants.ORDER;
 import static org.gbif.ipt.config.Constants.PHYLUM;
-import static org.gbif.ipt.config.Constants.SCHEMAS_DISPLAY_NAMES;
 import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
@@ -1321,7 +1321,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           FileUtils.deleteQuietly(file);
         }
       }
-      alog.warn("manage.resource.create.schema.null", new String[] {SCHEMAS_DISPLAY_NAMES.get(packageType)});
+      alog.warn("manage.resource.create.schema.null", new String[] {packageType});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
@@ -1570,7 +1570,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     for (DataSchema installedSchema : installedSchemas) {
       datasetTypes.put(
         installedSchema.getName(),
-        SCHEMAS_DISPLAY_NAMES.getOrDefault(installedSchema.getName(), installedSchema.getName()));
+        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
     }
 
     Map<String, String> datasetSubtypes =
@@ -1896,7 +1896,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     for (DataSchema installedSchema : installedSchemas) {
       datasetTypes.put(
         installedSchema.getName(),
-        SCHEMAS_DISPLAY_NAMES.getOrDefault(installedSchema.getName(), installedSchema.getName()));
+        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
     }
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
