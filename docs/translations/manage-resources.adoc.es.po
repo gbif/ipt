@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"PO-Revision-Date: 2023-05-02 17:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -317,7 +317,7 @@ msgstr "Archivo como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the {threedots} menu at \"Source Data\" and select \"Add\". Then select \"File\" from the dropdown box in the modal window and click on the button labelled \"Browse…\" or \"Choose file\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados (CSV, archivos separados por tabuladores y que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip, también admite archivos de Excel. Seleccione la opción \"Archivo\" del menú desplegable y haga clic en el botón \"Examinar\" para seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -437,7 +437,7 @@ msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos ba
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* - click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*Vista previa* - de clic en este botón para visualisar una interpretación de los datos dentro del archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -486,7 +486,7 @@ msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de s
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file. To reopen the Source Data File detail page just click on the appropriate item."
-msgstr ""
+msgstr "Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón \"Guardar\" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página \"Vista general del recurso\", con información resumida acerca del archivo. Para abrir nuevamente el \"Conjunto de datos\", haga clil en el botón apropiado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:112
@@ -507,7 +507,7 @@ msgstr "Base de datos como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos desde tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles. Para configurar una base de datos como fuente de datos, de clic en el {threedots} menú y selecciones \"Añadir\". LUego escoja \"BAse de datos\" de la lista de fuentes de datos en el menú desplegable , luego de clic en el botón \"Conectar\". Esto abrirá un página de Fuente de Base de Datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
