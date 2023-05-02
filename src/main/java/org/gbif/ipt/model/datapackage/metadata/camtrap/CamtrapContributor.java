@@ -21,12 +21,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -65,10 +62,10 @@ public class CamtrapContributor extends FrictionlessContributor {
         return role;
       }
 
-      throw new JsonParseException(jsonParser, "Invalid role: " + role);
+      // de-serialize unknown values as NULLs
+      return null;
     }
   }
-
 
   /**
    * Role of the contributor.
@@ -101,12 +98,10 @@ public class CamtrapContributor extends FrictionlessContributor {
       return this.value;
     }
 
-    @JsonValue
     public String value() {
       return this.value;
     }
 
-    @JsonCreator
     public static Role fromValue(String value) {
       Role constant = CONSTANTS.get(value);
       if (constant == null) {

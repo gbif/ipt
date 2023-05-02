@@ -25,6 +25,7 @@ import org.gbif.ipt.validation.ProjectMetadata;
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 import org.gbif.ipt.validation.TemporalScopeMetadata;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,12 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.opensymphony.xwork2.util.Element;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -115,13 +121,13 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Valid
   private List<String> references = new ArrayList<>();
 
-  // TODO: 13/10/2022 parent profile is String, camtrap is URI. Keep it String, but validate it is a valid URL?
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>.
    * Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version
    * (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
+  @SuppressWarnings("JavadocLinkAsPlainText")
   @Override
   @JsonProperty("profile")
   public String getProfile() {
@@ -134,6 +140,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * (e.g. `https://rs.gbif.org/camtrap-dp/1.0/profile/camtrap-dp-profile.json`).
    * (Required)
    */
+  @SuppressWarnings("JavadocLinkAsPlainText")
   @Override
   @JsonProperty("profile")
   public void setProfile(String profile) {
@@ -230,6 +237,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
   @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @Valid
   @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
   public List<Contributor> getContributors() {
     return super.getContributors();
@@ -251,6 +259,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * Not to be confused with the description of the project that originated the package (`package.project.description`).
    */
   @Override
+  @JsonDeserialize(using = DescriptionDeserializer.class)
   @JsonProperty("description")
   public String getDescription() {
     return super.getDescription();
@@ -529,6 +538,26 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonProperty("references")
   public void setReferences(List<String> references) {
     this.references = references;
+  }
+
+  // Accepts both arrays and plain strings
+  public static class DescriptionDeserializer extends JsonDeserializer<String> {
+
+    @Override
+    public String deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException {
+      JsonNode node = parser.getCodec().readTree(parser);
+
+      if (node.isArray()) {
+        ArrayNode arrayNode = (ArrayNode) node;
+        List<String> values = new ArrayList<>();
+        for (JsonNode element : arrayNode) {
+          values.add(element.asText());
+        }
+        return String.join("\n", values);
+      }
+
+      return node.asText();
+    }
   }
 
   @Override

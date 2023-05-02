@@ -16,7 +16,6 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import org.gbif.ipt.validation.ProjectMetadata;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -70,7 +69,6 @@ public class Project implements Serializable {
   @JsonProperty("description")
   private String description;
 
-  // TODO: 21/04/2023 validate it's URL
   /**
    * Project website.
    */
@@ -90,7 +88,7 @@ public class Project implements Serializable {
    * (Required)
    */
   @JsonProperty("captureMethod")
-  @JsonDeserialize(as = LinkedHashSet.class)
+  @JsonDeserialize(using = CaptureMethod.CaptureMethodSetDeserializer.class)
   @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   @Size(min = 1, message = "validation.camtrap.metadata.project.captureMethod.size", groups = ProjectMetadata.class)
   @Valid
@@ -319,12 +317,7 @@ public class Project implements Serializable {
 
     @JsonCreator
     public static Project.SamplingDesign fromValue(String value) {
-      Project.SamplingDesign constant = CONSTANTS.get(value);
-      if (constant == null) {
-        throw new IllegalArgumentException(value);
-      } else {
-        return constant;
-      }
+      return CONSTANTS.get(value);
     }
 
   }

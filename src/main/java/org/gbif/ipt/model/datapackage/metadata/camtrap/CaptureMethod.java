@@ -13,11 +13,17 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 
 public enum CaptureMethod {
 
@@ -50,13 +56,25 @@ public enum CaptureMethod {
 
   @JsonCreator
   public static CaptureMethod fromValue(String value) {
-    CaptureMethod constant = CONSTANTS.get(value);
-    if (constant == null) {
-      throw new IllegalArgumentException(value);
-    } else {
-      return constant;
-    }
+    return CONSTANTS.get(value);
   }
 
+  public static class CaptureMethodSetDeserializer extends JsonDeserializer<Set<CaptureMethod>> {
+    @SuppressWarnings("unchecked")
+    @Override
+    public Set<CaptureMethod> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+      Set<String> values = parser.readValueAs(Set.class);
+      Set<CaptureMethod> methods = new LinkedHashSet<>();
+      for (String value : values) {
+        CaptureMethod method = CaptureMethod.fromValue(value);
+        if (method != null) {
+          methods.add(method);
+        }
+      }
+
+      // if some of the values were invalid return empty set
+      return values.size() == methods.size() ? methods : new LinkedHashSet<>();
+    }
+  }
 }
 
