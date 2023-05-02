@@ -1355,7 +1355,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // iterate over each field to make sure its part of the extension we know
     for (int i = 0; i < columnNames.length; i++) {
-      DataSchemaField dataSchemaField = schemaFieldsMap.get(columnNames[i]);
+      String unwrappedColumnName = StringUtils.unwrap(columnNames[i], '"');
+      DataSchemaField dataSchemaField = schemaFieldsMap.get(unwrappedColumnName);
       if (dataSchemaField != null) {
         fields.add(new DataSchemaFieldMapping(i, dataSchemaField));
       } else {

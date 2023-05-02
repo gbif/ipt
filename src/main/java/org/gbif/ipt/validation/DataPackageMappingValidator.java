@@ -53,7 +53,7 @@ public class DataPackageMappingValidator {
         if (resourceName.equals(subSchema.getName())) {
           for (DataSchemaField field : subSchema.getFields()) {
             // required, but not mapped (index is NULL)
-            if (isRequiredSchemaField(field) && mapping.getField(field.getName()).getIndex() == null) {
+            if (isRequiredSchemaField(field) && (mapping.getField(field.getName()) == null || mapping.getField(field.getName()).getIndex() == null)) {
               v.addMissingRequiredField(field);
             }
           }
