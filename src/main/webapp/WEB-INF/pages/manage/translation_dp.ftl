@@ -196,12 +196,6 @@
       </h5>
 
       <span class="fst-italic">${field.description!}</span>
-
-        <#if (field.constraints.vocabulary)?has_content>
-          <div class="callout callout-info text-smaller">
-            <strong><@s.text name="manage.translation.vocabulary.required"/></strong>
-          </div>
-        </#if>
     </div>
 
     <div class="my-3 p-3">
