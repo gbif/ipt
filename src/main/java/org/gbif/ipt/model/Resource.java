@@ -509,6 +509,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       if (lastPublished == null) {
         BigDecimal nextVersion;
 
+        // TODO: 03/05/2023 remove it? version must be valid!
         try {
           nextVersion = new BigDecimal(versionAsString);
         } catch (NumberFormatException e) {

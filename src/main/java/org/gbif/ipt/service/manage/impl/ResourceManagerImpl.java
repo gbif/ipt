@@ -1015,6 +1015,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       frictionlessMetadata.getAdditionalProperties().clear();
     }
 
+    if (metadata.getVersion() != null) {
+      try {
+        new BigDecimal(metadata.getVersion());
+      } catch (NumberFormatException e) {
+        LOG.error("Invalid version number: {}. Setting version to 1.0", metadata.getVersion());
+        metadata.setVersion("1.0");
+      }
+    }
+
     resource.setDataPackageMetadata(metadata);
     resource.setMetadataModified(new Date());
     save(resource);
