@@ -867,7 +867,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
       saveDatapackageMetadata(resource);
 
-      alog.info("manage.resource.camtrap.create.success",
+      alog.info("manage.resource.dp.create.success",
         new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataSchemaMappings().size())});
     } catch (UnsupportedArchiveException | InvalidConfigException e) {
       alog.warn(e.getMessage(), e);
