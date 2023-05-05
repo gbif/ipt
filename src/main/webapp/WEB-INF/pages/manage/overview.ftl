@@ -1008,8 +1008,7 @@
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                             <div class="ps-2 next-version-item-link">
-<#--                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span>-->
-                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ?</strong></span>
+                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.nextVersionPlainString}</strong></span>
                                                 <span class="fs-smaller-2 status-${nextVersionStatus}">
                                                     <#if nextVersionStatus == "registered">
                                                         <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
