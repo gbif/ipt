@@ -223,6 +223,17 @@
                             </#list>
                         </select>
                     </div>
+                <#elseif field.field.type?? && field.field.type == "boolean" >
+                  <div class="input-group input-group-sm">
+                    <label class="input-group-text" for="fVal_${subschema.name}_${index}">
+                      <i class="bi bi-book"></i>
+                    </label>
+                    <select id="fVal_${subschema.name}_${index}" class="fval form-select form-select-sm" name="fields[${index}].defaultValue">
+                      <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
+                      <option value="false" <#if (field.defaultValue!"")=='false'> selected="selected"</#if>>false</option>
+                      <option value="true" <#if (field.defaultValue!"")=='true'> selected="selected"</#if>>true</option>
+                    </select>
+                  </div>
                 <#else>
                     <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
                 </#if>

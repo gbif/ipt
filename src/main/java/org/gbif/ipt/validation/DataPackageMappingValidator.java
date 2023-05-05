@@ -22,6 +22,8 @@ import org.gbif.ipt.model.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class DataPackageMappingValidator {
 
   public static class ValidationStatus {
@@ -52,8 +54,11 @@ public class DataPackageMappingValidator {
       for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
         if (resourceName.equals(subSchema.getName())) {
           for (DataSchemaField field : subSchema.getFields()) {
-            // required, but not mapped (index is NULL)
-            if (isRequiredSchemaField(field) && (mapping.getField(field.getName()) == null || mapping.getField(field.getName()).getIndex() == null)) {
+            String fieldName = field.getName();
+            // required, but not mapped (index is NULL) or no default value
+            if (isRequiredSchemaField(field)
+              && (mapping.getField(fieldName) == null
+              || (mapping.getField(fieldName).getIndex() == null && StringUtils.isEmpty(mapping.getField(fieldName).getDefaultValue())))) {
               v.addMissingRequiredField(field);
             }
           }
