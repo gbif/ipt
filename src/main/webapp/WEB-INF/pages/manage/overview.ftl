@@ -911,7 +911,7 @@
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <#else>
                                                         <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSets"/></span><br>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                         <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
                                                             <#list resource.dataPackageMetadata.licenses as license>
                                                                 <#if license.scope?? && license.scope == "data">
