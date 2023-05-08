@@ -16,18 +16,12 @@ package org.gbif.ipt.model.voc;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * This enumeration represents the set of camtrap metadata sections in the IPT. Each entry represents a section, and the
- * name of the section is the name used in URL.
+ * This enumeration represents the set of general frictionless metadata sections in the IPT.
+ * Each entry represents a section, and the name of the section is the name used in URL.
  */
-public enum CamtrapMetadataSection implements DataPackageMetadataSection {
+public enum FrictionlessMetadataSection implements DataPackageMetadataSection {
 
-  BASIC_SECTION("basic"),
-  GEOGRAPHIC_SECTION ("geographic"),
-  TAXONOMIC_SECTION ("taxonomic"),
-  TEMPORAL_SECTION ("temporal"),
-  KEYWORDS_SECTION ("keywords"),
-  PROJECT_SECTION ("project"),
-  OTHER_SECTION ("other");
+  BASIC_SECTION("basic");
 
   /**
    * Section name. Used for example in URL.
@@ -35,14 +29,14 @@ public enum CamtrapMetadataSection implements DataPackageMetadataSection {
   private final String name;
 
   /**
-   * Returns a CamtrapMetadataSection from the section name.
+   * Returns a FrictionlessMetadataSection from the section name.
    *
    * @param section the section name
    *
-   * @return CamtrapMetadataSection or null if not found from the section name
+   * @return FrictionlessMetadataSection or null if not found from the section name
    */
-  public static CamtrapMetadataSection fromName(String section) {
-    for (CamtrapMetadataSection s : CamtrapMetadataSection.values()) {
+  public static FrictionlessMetadataSection fromName(String section) {
+    for (FrictionlessMetadataSection s : FrictionlessMetadataSection.values()) {
       if (s.name.equalsIgnoreCase(StringUtils.trimToEmpty(section))) {
         return s;
       }
@@ -50,7 +44,7 @@ public enum CamtrapMetadataSection implements DataPackageMetadataSection {
     return null;
   }
 
-  CamtrapMetadataSection(String name) {
+  FrictionlessMetadataSection(String name) {
     this.name = name;
   }
 
