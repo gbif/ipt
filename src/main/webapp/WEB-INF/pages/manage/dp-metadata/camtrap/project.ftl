@@ -16,7 +16,7 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-    <form class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">

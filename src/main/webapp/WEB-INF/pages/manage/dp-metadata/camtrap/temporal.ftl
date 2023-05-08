@@ -1,4 +1,3 @@
-<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
@@ -17,11 +16,11 @@
         });
     </script>
     <#assign currentMenu="manage"/>
-    <#assign currentMetadataPage = "geographic"/>
+    <#assign currentMetadataPage = "temporal"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <form class="needs-validation" action="datapackage-metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -42,7 +41,7 @@
 
                 <div class="text-center">
                     <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                        <@s.text name='manage.datapackagemetadata.geographic.title'/>
+                        <@s.text name='manage.datapackagemetadata.temporal.title'/>
                     </h1>
                 </div>
 
@@ -75,34 +74,15 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
-                            <p class="mb-5"><@s.text name="datapackagemetadata.geographic.intro"/></p>
+                            <p class="mb-5"><@s.text name="datapackagemetadata.temporal.intro"/></p>
 
                             <div class="row g-3">
-                                <div class="col-6">
-                                    <@input name="metadata.coordinatePrecision" help="i18n" i18nkey="datapackagemetadata.coordinatePrecision" />
-                                </div>
-                                <input name="metadata.spatial.type" type="hidden" value="Polygon"/>
-                            </div>
-                        </div>
-
-                        <div class="my-md-3 p-3">
-                            <@textinline name="datapackagemetadata.geographic.boundingCoordinates"/>
-
-                            <div class="row g-3 mt-2">
-                                <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[0]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.longitude" requiredField=true />
+                                <div class="col-lg-6">
+                                    <@input name="metadata.temporal.start" help="i18n" i18nkey="datapackagemetadata.temporal.start" type="date" requiredField=true />
                                 </div>
 
-                                <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[2]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.longitude" requiredField=true />
-                                </div>
-
-                                <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[1]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.min.latitude" requiredField=true />
-                                </div>
-
-                                <div class="col-6">
-                                    <@input name="metadata.spatial.bbox[3]" i18nkey="datapackagemetadata.geographic.boundingCoordinates.max.latitude" requiredField=true />
+                                <div class="col-lg-6">
+                                    <@input name="metadata.temporal.end" help="i18n" i18nkey="datapackagemetadata.temporal.end" type="date" requiredField=true />
                                 </div>
                             </div>
                         </div>
