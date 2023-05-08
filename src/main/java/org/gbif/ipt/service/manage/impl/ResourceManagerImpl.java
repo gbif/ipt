@@ -118,6 +118,7 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
@@ -601,28 +602,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     else if (isIPTResourceFolder(archiveDir)) {
       resource = createFromIPTResourceFolder(shortname, archiveDir, creator, alog);
     }
-    // if decompression succeeded, create resource depending on whether file was  a 'DwC-A',
+    // if decompression succeeded, create resource depending on whether file was a 'DwC-A',
     // a frictionless package (Camtrap DP) or a ColDP
     else {
-      boolean isFrictionless = decompressed.stream()
-        .map(File::getName)
-        .anyMatch(FRICTIONLESS_METADATA_FILENAME::equals);
-      boolean isColdp = decompressed.stream()
-        .map(File::getName)
-        .anyMatch(COL_DP_METADATA_FILENAME::equals);
-
-      String packageType = null;
-
-      if (StringUtils.isNotEmpty(type)) {
-        packageType = type;
-      } else if (isColdp) {
-        packageType = COL_DP;
-      } else if (isFrictionless) {
-        packageType = CAMTRAP_DP;
-      }
-
-      if (isFrictionless) {
-        resource = createFromFrictionlessDataPackage(shortname, packageType, decompressed, creator, alog);
+      if (MetadataUtils.isDataPackageType(type)) {
+        resource = createFromFrictionlessDataPackage(shortname, type, decompressed, creator, alog);
       } else {
         resource = createFromDwcArchive(shortname, archiveDir, creator, alog);
       }
