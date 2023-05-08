@@ -1039,7 +1039,7 @@ div.dataTables_processing>div:last-child>div {
     color: #5EA642 !important;
 }
 
-.type-occurrence, .type-camtrap-dp, .type-coldp {
+.type-occurrence, .type-camtrap-dp, .type-coldp, .type-material-dp {
     background: #5EA642 !important;
     color: white;
 }
@@ -1059,54 +1059,24 @@ div.dataTables_processing>div:last-child>div {
     color: white;
 }
 
+.type-materialentity {
+  background: #40BFFF !important;;
+  color: white !important;
+}
+
 .type-other {
     background: #7B7979 !important;
     color: white !important;
 }
 
-.type-taxonomicauthority {
+.type-taxonomicauthority, .type-nomenclatorauthority, .type-inventorythematic, .type-inventoryregional,
+.type-globalspeciesdataset, .type-derivedfromoccurrence {
     border: 1px solid;
     background: white !important;
     color: #947AB2 !important;
 }
 
-.type-nomenclatorauthority {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-inventorythematic {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-inventoryregional {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-globalspeciesdataset {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-derivedfromoccurrence {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-specimen {
-    border: 1px solid;
-    background: white !important;
-    color: #5EA642 !important;
-}
-
-.type-observation {
+.type-specimen, .type-observation {
     border: 1px solid;
     background: white !important;
     color: #5EA642 !important;
