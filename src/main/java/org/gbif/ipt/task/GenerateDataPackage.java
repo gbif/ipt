@@ -70,6 +70,7 @@ import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.MATERIAL_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -112,11 +113,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // initial reporting
       addMessage(Level.INFO, "Data package generation started for version #" + resource.getDataPackageMetadataVersion());
 
-      // create a temp dir to copy all dwca files to
+      // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
-      // different order - for Camtrap first create metadata and then add resources
-      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      // different order - for Camtrap/Material first create metadata and then add resources
+      if (StringUtils.equalsAny(resource.getCoreType(), CAMTRAP_DP, MATERIAL_DP)) {
         // copy datapackage descriptor file (datapackage.json)
         addMetadata();
         // create data files
@@ -277,7 +278,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void checkForInterruption() throws InterruptedException {
     if (Thread.interrupted()) {
       StatusReport report = report();
-      String msg = "Interrupting dwca generator. Last status: " + report.getState();
+      String msg = "Interrupting data package generator. Last status: " + report.getState();
       log.info(msg);
       throw new InterruptedException(msg);
     }

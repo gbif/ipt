@@ -27,6 +27,8 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
+import org.gbif.ipt.model.voc.DataPackageMetadataSection;
+import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -53,8 +55,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private static final long serialVersionUID = -1669636958170716515L;
 
   private final DataPackageMetadataValidator metadataValidator;
-  private CamtrapMetadataSection section = CamtrapMetadataSection.BASIC_SECTION;
-  private CamtrapMetadataSection next = CamtrapMetadataSection.GEOGRAPHIC_SECTION;
+  private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
+  private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
 
   public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
@@ -91,24 +93,16 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private void prepareCamtrap() {
     // take the section parameter from the requested url
-    section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "datapackage-metadata-", "."));
+    section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "camtrap-metadata-", "."));
+    CamtrapMetadataSection camtrapMetadataSection = (CamtrapMetadataSection) section;
     CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
 
-    if (section == null) {
+    if (camtrapMetadataSection == null) {
       return;
     }
 
-    switch (section) {
+    switch (camtrapMetadataSection) {
       case BASIC_SECTION:
-        // load organisations map
-        loadOrganisations();
-
-        // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
-        if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
-          resource.setOrganisation(getDefaultOrganisation());
-          addActionWarning(getText("manage.overview.visibility.missing.organisation"));
-        }
-
         if (isHttpPost()) {
           metadata.getContributors().clear();
           metadata.getLicenses().clear();
@@ -180,38 +174,46 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
-      // progress to next section, since save succeeded
-      switch (section) {
-        case BASIC_SECTION:
-          next = CamtrapMetadataSection.GEOGRAPHIC_SECTION;
-          break;
-        case GEOGRAPHIC_SECTION:
-          next = CamtrapMetadataSection.TAXONOMIC_SECTION;
-          break;
-        case TAXONOMIC_SECTION:
-          next = CamtrapMetadataSection.TEMPORAL_SECTION;
-          break;
-        case TEMPORAL_SECTION:
-          next = CamtrapMetadataSection.KEYWORDS_SECTION;
-          break;
-        case KEYWORDS_SECTION:
-          next = CamtrapMetadataSection.PROJECT_SECTION;
-          break;
-        case PROJECT_SECTION:
-          next = CamtrapMetadataSection.OTHER_SECTION;
-          break;
-        case OTHER_SECTION:
-          next = CamtrapMetadataSection.BASIC_SECTION;
-          break;
-        default:
-          break;
+      if (section instanceof CamtrapMetadataSection) {
+        nextSectionCamtrap();
       }
+
     } else {
       // stay on the same section, since save failed
       next = section;
     }
 
     return SUCCESS;
+  }
+
+  private void nextSectionCamtrap() {
+    CamtrapMetadataSection camtrapMetadataSection = (CamtrapMetadataSection) section;
+    // progress to next section, since save succeeded
+    switch (camtrapMetadataSection) {
+      case BASIC_SECTION:
+        next = CamtrapMetadataSection.GEOGRAPHIC_SECTION;
+        break;
+      case GEOGRAPHIC_SECTION:
+        next = CamtrapMetadataSection.TAXONOMIC_SECTION;
+        break;
+      case TAXONOMIC_SECTION:
+        next = CamtrapMetadataSection.TEMPORAL_SECTION;
+        break;
+      case TEMPORAL_SECTION:
+        next = CamtrapMetadataSection.KEYWORDS_SECTION;
+        break;
+      case KEYWORDS_SECTION:
+        next = CamtrapMetadataSection.PROJECT_SECTION;
+        break;
+      case PROJECT_SECTION:
+        next = CamtrapMetadataSection.OTHER_SECTION;
+        break;
+      case OTHER_SECTION:
+        next = CamtrapMetadataSection.BASIC_SECTION;
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -250,35 +252,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         coordinates.add(coordinate4);
 
         camtrapMetadata.getSpatial().getCoordinates().add(coordinates);
-      }
-    }
-  }
-
-  /**
-   * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
-   * host resources. There must be more than the default organisation "No organisation" in order to include the
-   * placeholder option.
-   */
-  private void loadOrganisations() {
-    List<Organisation> associatedOrganisations = registrationManager.list();
-    if (!associatedOrganisations.isEmpty()) {
-
-      // add placeholder if there is more than the default organisation "No organisation"
-      if (associatedOrganisations.size() > 1) {
-        organisations.put("", getText("admin.organisation.name.select"));
-      }
-
-      // add default organisation "No organisation" as first option
-      Organisation noOrganisation = getDefaultOrganisation();
-      if (noOrganisation != null) {
-        organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
-      }
-
-      // then add remaining organisations in the order they have been sorted, excluding the default organisation
-      for (Organisation o : associatedOrganisations) {
-        if (!Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
-          organisations.put(o.getKey().toString(), o.getName());
-        }
       }
     }
   }

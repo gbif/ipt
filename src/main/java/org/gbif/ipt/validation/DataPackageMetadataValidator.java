@@ -17,8 +17,11 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
+import org.gbif.ipt.model.voc.DataPackageMetadataSection;
+import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.InvalidMetadataException;
 
 import java.util.Set;
@@ -34,6 +37,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.HibernateValidator;
 
 import com.google.inject.Inject;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class DataPackageMetadataValidator {
 
@@ -64,8 +69,17 @@ public class DataPackageMetadataValidator {
    */
   public void validate(BaseAction action, DataPackageMetadata metadata) throws InvalidMetadataException {
     boolean problemsEncountered = false;
-    for (CamtrapMetadataSection section : CamtrapMetadataSection.values()) {
-      validate(action, metadata, section);
+
+    if (metadata instanceof CamtrapMetadata) {
+      for (CamtrapMetadataSection section : CamtrapMetadataSection.values()) {
+        validateCamtrap(action, metadata, section);
+        // only highlight first section has errors
+        if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
+          problemsEncountered = true;
+        }
+      }
+    } else {
+      validateFrictionless(action, metadata, null);
       // only highlight first section has errors
       if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
         problemsEncountered = true;
@@ -77,7 +91,7 @@ public class DataPackageMetadataValidator {
     }
   }
 
-  public boolean isSectionValid(BaseAction action, Resource resource, CamtrapMetadataSection section) {
+  public boolean isSectionValid(BaseAction action, Resource resource, DataPackageMetadataSection section) {
     boolean problemsEncountered = false;
     validate(action, resource, section);
     if ((action.hasActionErrors() || action.hasFieldErrors())) {
@@ -88,7 +102,7 @@ public class DataPackageMetadataValidator {
   }
 
   /**
-   * Validate an EML document, optionally only a part of it.
+   * Validate Data Package metadata, optionally only a part of it.
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
@@ -96,16 +110,20 @@ public class DataPackageMetadataValidator {
    * @param resource resource
    * @param section EML document section name
    */
-  public void validate(BaseAction action, Resource resource, @Nullable CamtrapMetadataSection section) {
+  public void validate(BaseAction action, Resource resource, @Nullable DataPackageMetadataSection section) {
     if (resource != null) {
       DataPackageMetadata metadata = (resource.getDataPackageMetadata() == null) ? new FrictionlessMetadata() : resource.getDataPackageMetadata();
 
-      validate(action, metadata, section);
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        validateCamtrap(action, metadata, ((CamtrapMetadataSection) section));
+      } else {
+        validateFrictionless(action, metadata, ((FrictionlessMetadataSection) section));
+      }
     }
   }
 
   /**
-   * Validate an EML document, optionally only a part of it.
+   * Validate Camtrap metadata, optionally only a part of it.
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
@@ -113,7 +131,7 @@ public class DataPackageMetadataValidator {
    * @param metadata data package metadata
    * @param section EML document section name
    */
-  public void validate(BaseAction action, DataPackageMetadata metadata, @Nullable CamtrapMetadataSection section) {
+  public void validateCamtrap(BaseAction action, DataPackageMetadata metadata, @Nullable CamtrapMetadataSection section) {
     // set default
     if (section == null) {
       section = CamtrapMetadataSection.BASIC_SECTION;
@@ -234,6 +252,48 @@ public class DataPackageMetadataValidator {
         }
 
         break;
+    }
+  }
+
+  /**
+   * Validate Frictionless metadata, optionally only a part of it.
+   * </br>
+   * For each section, validation only proceeds if at least one field in the section's form has been entered.
+   *
+   * @param action BaseAction
+   * @param metadata data package metadata
+   * @param section EML document section name
+   */
+  public void validateFrictionless(BaseAction action, DataPackageMetadata metadata, @Nullable FrictionlessMetadataSection section) {
+    // set default
+    if (section == null) {
+      section = FrictionlessMetadataSection.BASIC_SECTION;
+    }
+
+    if (section == FrictionlessMetadataSection.BASIC_SECTION) {
+      Set<ConstraintViolation<DataPackageMetadata>> basicSectionViolations
+        = validator.validate(metadata, BasicMetadata.class);
+
+      for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
+        if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
+          action.addActionError(action.getText(violation.getMessage()));
+        } else {
+          if (violation.getMessage().equals("validation.datapackage.metadata.license.nameOrPath.required")) {
+            // remove all characters, we need the index
+            String index = RegExUtils.removeAll(violation.getPropertyPath().toString(), "[a-zA-z.\\[\\]]*");
+            action.addFieldError(
+              "metadata.licenses[" + index + "].name",
+              action.getText(action.getText(violation.getMessage()))
+            );
+            action.addFieldError(
+              "metadata.licenses[" + index + "].path",
+              action.getText(action.getText(violation.getMessage()))
+            );
+          } else {
+            addDefaultFieldError(action, violation);
+          }
+        }
+      }
     }
   }
 
