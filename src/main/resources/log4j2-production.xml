@@ -15,6 +15,7 @@
     <Logger name="org.gbif"/>
 
     <Logger name="org.hibernate.validator.internal" level="ERROR"/>
+    <Logger name="org.hibernate.validator.messageinterpolation" level="ERROR"/>
 
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
