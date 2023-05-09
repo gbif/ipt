@@ -380,6 +380,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * <p>
    * An image to represent this package.
    */
+  @Override
   @JsonProperty("image")
   public String getImage() {
     return image;

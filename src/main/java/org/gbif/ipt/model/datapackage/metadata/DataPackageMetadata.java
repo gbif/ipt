@@ -29,4 +29,6 @@ public interface DataPackageMetadata {
   String getDescription();
 
   void setDescription(String description);
+
+  String getImage();
 }

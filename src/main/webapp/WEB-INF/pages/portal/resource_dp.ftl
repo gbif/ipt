@@ -169,13 +169,15 @@
         </div>
     </div>
 
+    <#assign isLogoPresent=dpMetadata.image?has_content/>
+
     <div class="container-fluid bg-light border-bottom">
         <div class="container">
             <div class="my-4 px-4 py-4 bg-body border rounded shadow-sm">
                 <span class="anchor anchor-home-resource-page-2 mb-3" id="anchor-downloads"></span>
                 <div class="mx-md-4 mx-2">
                     <div class="row">
-                        <div class="col-lg-4 text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
+                        <div class="<#if isLogoPresent>col-lg-3-5 col-md-10 col-sm-9 col-8<#else>col-lg-4</#if> text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
                             <dl class="inline mb-0">
                                 <#if (dpMetadata.created)??>
                                     <div>
@@ -196,7 +198,15 @@
                             </dl>
                         </div>
 
-                        <div class="col-lg-8 text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
+                        <#if isLogoPresent>
+                            <div class="col-lg-1-5 col-md-2 col-sm-3 col-4 text-smaller px-0 pb-lg-max-3 order-lg-3">
+                                <div class="logoImg text-end">
+                                    <img src="${dpMetadata.image}"/>
+                                </div>
+                            </div>
+                        </#if>
+
+                        <div class="<#if isLogoPresent>col-lg-7<#else>col-lg-8</#if> text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
                             <p class="mb-1"><@s.text name='portal.resource.downloads.datapackage.verbose'/></p>
 
                             <div class="table-responsive">

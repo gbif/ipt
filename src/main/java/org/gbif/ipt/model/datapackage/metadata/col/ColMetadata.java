@@ -484,6 +484,11 @@ public class ColMetadata implements DataPackageMetadata {
     this.logo = logo;
   }
 
+  @Override
+  public String getImage() {
+    return logo != null ? logo.toString() : null;
+  }
+
   @JsonProperty("source")
   public List<Citation> getSource() {
     return source;

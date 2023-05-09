@@ -924,9 +924,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getLogoUrl() {
-    if (eml != null) {
+    if (isDataPackage() && dataPackageMetadata != null) {
+      return dataPackageMetadata.getImage();
+    } else if (eml != null) {
       return eml.getLogoUrl();
     }
+
     return null;
   }
 
