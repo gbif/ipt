@@ -230,8 +230,8 @@
                     </label>
                     <select id="fVal_${subschema.name}_${index}" class="fval form-select form-select-sm" name="fields[${index}].defaultValue">
                       <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
-                      <option value="false" <#if (field.defaultValue!"")=='false'> selected="selected"</#if>>false</option>
                       <option value="true" <#if (field.defaultValue!"")=='true'> selected="selected"</#if>>true</option>
+                      <option value="false" <#if (field.defaultValue!"")=='false'> selected="selected"</#if>>false</option>
                     </select>
                   </div>
                 <#else>
