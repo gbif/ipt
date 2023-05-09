@@ -65,7 +65,30 @@
                 </div>
 
                 <div class="col-md-6">
-                    <@select name="resourceType" i18nkey="manage.resource.create.coreType" help="i18n" options=types value="" requiredField=true />
+                    <div>
+                        <div class="d-flex text-smaller">
+                            <@popoverPropertyInfo "manage.resource.create.coreType.help" />
+                            <label for="resourceType" class="form-label px-1">
+                                <@s.text name='resource.coreType'/> <span class="text-gbif-danger">*</span>
+                            </label>
+                        </div>
+                        <select name="resourceType" id="resourceType" size="1" class="form-select" required>
+                            <option value="" selected="selected"><@s.text name="manage.resource.create.coreType.selection"/></option>
+                            <optgroup label="<@s.text name='manage.resource.create.coreType.dwca'/>">
+                                <#list types! as typeValue, typeDisplayValue>
+                                    <option value="${typeValue}">${typeDisplayValue}</option>
+                                </#list>
+                            </optgroup>
+                            <#if dataPackageTypes?has_content>
+                                <optgroup label="<@s.text name='manage.resource.create.coreType.dp'/>">
+                                    <#list dataPackageTypes! as typeValue, typeDisplayValue>
+                                        <option value="${typeValue}">${typeDisplayValue}</option>
+                                    </#list>
+                                </optgroup>
+                            </#if>
+                        </select>
+                        <@s.fielderror id="field-error-resourceType" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="resourceType"/>
+                    </div>
                 </div>
 
                 <div class="col-12">

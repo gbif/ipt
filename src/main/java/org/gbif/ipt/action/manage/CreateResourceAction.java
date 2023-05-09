@@ -65,6 +65,7 @@ public class CreateResourceAction extends POSTAction {
   private String shortname;
   private String resourceType;
   private Map<String, String> types;
+  private Map<String, String> dataPackageTypes;
   private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
   private final DataSchemaManager schemaManager;
@@ -224,15 +225,21 @@ public class CreateResourceAction extends POSTAction {
    */
   public Map<String, String> getTypes() {
     types = new LinkedHashMap<>();
-    types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
-      types.put(installedSchema.getName(), installedSchema.getTitle());
-    }
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     return types;
+  }
+
+  public Map<String, String> getDataPackageTypes() {
+    dataPackageTypes = new LinkedHashMap<>();
+    List<DataSchema> installedSchemas = schemaManager.list();
+    for (DataSchema installedSchema : installedSchemas) {
+      dataPackageTypes.put(installedSchema.getName(), installedSchema.getTitle());
+    }
+    dataPackageTypes = MapUtils.getMapWithLowercaseKeys(dataPackageTypes);
+
+    return dataPackageTypes;
   }
 
   /**
