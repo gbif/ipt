@@ -103,7 +103,7 @@
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 ${subSchema.title}
                             </h4>
-                            <div class="mt-3 overflow-x-auto">
+                            <div class="mt-3">
                                 <#if subSchema.description?has_content>
                                     <p class="mb-4">
                                         <@processDescription subSchema.description />
@@ -114,7 +114,7 @@
                                     <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                         <div class="col-lg-3 mt-1">
                                             <div class="title">
-                                                <div class="head overflow-x-auto text-smaller">
+                                                <div class="head text-smaller text-truncate">
                                                     <span class="fst-italic">
                                                         <b>
                                                             ${field.name}
