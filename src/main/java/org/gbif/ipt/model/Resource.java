@@ -68,7 +68,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 public class Resource implements Serializable, Comparable<Resource> {
 
   public enum CoreRowType {
-    OCCURRENCE, CHECKLIST, SAMPLINGEVENT, METADATA, OTHER
+    OCCURRENCE, CHECKLIST, SAMPLINGEVENT, MATERIALENTITY, METADATA, OTHER
   }
 
   private static final Logger LOG = LogManager.getLogger(Resource.class);
@@ -430,6 +430,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
         coreType = StringUtils.capitalize(CoreRowType.SAMPLINGEVENT.toString());
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
+        coreType = StringUtils.capitalize(CoreRowType.MATERIALENTITY.toString());
       } else {
         coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
       }
