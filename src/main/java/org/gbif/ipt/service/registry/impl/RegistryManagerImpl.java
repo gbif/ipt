@@ -16,6 +16,7 @@ package org.gbif.ipt.service.registry.impl;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Network;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
@@ -92,6 +93,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
+  private static final String SERVICE_TYPE_MATERIAL_ENTITY = "DWC-ARCHIVE-MATERIAL-ENTITY";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_SAMPLING_EVENT = "DWC-ARCHIVE-SAMPLING-EVENT";
   private static final String SERVICE_TYPE_RSS = "RSS";
@@ -219,21 +221,27 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
 
     // check are there any other services: DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, or DWC-ARCHIVE-SAMPLING-EVENT
-    if (resource.hasPublishedData() && resource.getCoreTypeTerm() != null) {
-      if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
+    Term resourceCoreTypeTerm = resource.getCoreTypeTerm();
+    String resourceShortname = resource.getShortname();
+    if (resource.hasPublishedData() && resourceCoreTypeTerm != null) {
+      if (DwcTerm.Occurrence == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Occurrence Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
-      } else if (DwcTerm.Taxon == resource.getCoreTypeTerm()) {
+      } else if (DwcTerm.MaterialEntity == resourceCoreTypeTerm) {
+        LOG.debug("Registering EML & DwC-A Material Entity Service");
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
+        rs.serviceTypes += "|" + SERVICE_TYPE_MATERIAL_ENTITY;
+      } else if (DwcTerm.Taxon == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Checklist Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
-      } else if (DwcTerm.Event == resource.getCoreTypeTerm()) {
+      } else if (DwcTerm.Event == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Sampling Event Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_SAMPLING_EVENT;
       } else {
-        LOG.warn("Unknown core resource type " + resource.getCoreTypeTerm());
+        LOG.warn("Unknown core resource type " + resourceCoreTypeTerm);
         LOG.debug("Registering EML service only");
       }
     } else {
@@ -798,7 +806,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     ExtendedResponse resp;
     String url = getIptResourceUri();
     try {
-      resp = http.post(url, null, orgCredentials(org),
+      resp = http.post("localhost:8080", null, orgCredentials(org),
         new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Register resource failed: request URI invalid", e);
