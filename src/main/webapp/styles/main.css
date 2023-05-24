@@ -1531,6 +1531,12 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     }
 }
 
+@media (max-width: 992px) {
+    .d-lg-max-none {
+      display: none;
+    }
+}
+
 
 /* Modal windows START */
 .modal-confirm .modal-content {
