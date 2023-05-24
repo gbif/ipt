@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
@@ -530,7 +531,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
         return search(EVENT_KEYWORD, true, false);
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
-        return search(MATERIAL_ENTITY_KEYWORD, true, false);
+        Set<Extension> suitableExtensionsSet = new HashSet<>(search(MATERIAL_ENTITY_KEYWORD, true, false));
+        suitableExtensionsSet.addAll(search(OCCURRENCE_KEYWORD, true, false));
+        return new ArrayList<>(suitableExtensionsSet);
       } else {
         return search(coreRowType, true, false);
       }
