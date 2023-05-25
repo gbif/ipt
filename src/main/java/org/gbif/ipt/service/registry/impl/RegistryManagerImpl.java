@@ -806,7 +806,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     ExtendedResponse resp;
     String url = getIptResourceUri();
     try {
-      resp = http.post("localhost:8080", null, orgCredentials(org),
+      resp = http.post(url, null, orgCredentials(org),
         new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Register resource failed: request URI invalid", e);
