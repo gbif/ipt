@@ -336,6 +336,14 @@ table {
     vertical-align: middle;
 }
 
+.gbif-logo-icon {
+    height: 16px;
+}
+
+.gbif-logo-icon .ipt-icon-piece {
+    fill: rgb(var(--color-gbif-primary)) !important;
+}
+
 header, .dropdown-menu {
     font-size: 0.875rem !important;
 }
@@ -469,6 +477,16 @@ header, .dropdown-menu {
 .source-item:hover, .mapping-item:hover, .network-item:hover, .version-item:hover, .registration-item:hover {
     background-color: rgba(0, 0, 0, 0.04);
     cursor: pointer;
+}
+
+@media (max-width: 576px) {
+    .mapping-item-link, .source-item-link {
+        max-width: 80% !important;
+    }
+}
+
+.mapping-item-link, .source-item-link {
+    max-width: 70%;
 }
 
 /* Material UI icons */

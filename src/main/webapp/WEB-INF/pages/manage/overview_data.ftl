@@ -55,26 +55,18 @@
                     <div class="row g-2">
                         <#list resource.sources as src>
                             <div class="col-xl-6">
-                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 source-item">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 source-item">
                                     <#if src.isFileSource()>
-                                        <div class="fs-smaller-2 source-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2 my-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-file-text me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.file'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
                                                 <i class="bi bi-file-text me-1 text-gbif-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.file'/><br><span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br>"></i>
                                             </#if>
-                                            <span class="fs-smaller fw-bold overflow-wrap">${src.name!}</span><br>
-                                            <small>
-                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
-                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
-                                            </small>
-                                            <small>
-                                                ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
-                                            </small>
                                         </div>
 
                                     <#elseif src.isExcelSource()>
-                                        <div class="fs-smaller-2 source-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-file-excel me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.excel'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
@@ -91,7 +83,7 @@
                                         </div>
 
                                     <#elseif src.isUrlSource()>
-                                        <div class="fs-smaller-2 source-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-link me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.url'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
@@ -108,7 +100,7 @@
                                         </div>
 
                                     <#else>
-                                        <div class="fs-smaller-2 source-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-database me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.sql'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
@@ -126,6 +118,17 @@
                                         </div>
 
                                     </#if>
+
+                                    <div class="fs-smaller-2 source-item-link text-truncate ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <span class="fs-smaller fw-bold">${src.name!}</span><br>
+                                        <small>
+                                            ${src.fileSizeFormatted} <span class="fw-bold">|</span>
+                                            ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                        </small>
+                                        <small>
+                                            ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
+                                        </small>
+                                    </div>
                                     <div class="d-flex justify-content-end my-auto source-item-actions">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2 d-sm-max-none" type="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -247,15 +250,18 @@
                     <div class="row g-2">
                         <#list resource.getDataSchemaMappings() as m>
                             <div class="col-xl-6">
-                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
-                                    <div class="fs-smaller-2 schema-mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
+                                    <div class="d-flex my-auto mapping-item-icon ps-2">
+                                        <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                    </div>
+                                    <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataSchema.identifier?url}" data-ipt-mapping="${m_index}">
                                         <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
                                         <i class="bi bi-arrow-right"></i>
                                         <strong class="fs-smaller">${(m.dataSchemaFile)!"?"}</strong>
                                         <br>
                                         <small>${(m.fields)!?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>
-                                    <div class="my-auto d-flex justify-content-end pt-0">
+                                    <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
@@ -339,15 +345,18 @@
                     <div class="row g-2">
                         <#list resource.getMappings(resource.coreRowType) as m>
                             <div class="col-xl-6">
-                                <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
-                                    <div class="fs-smaller-2 mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.extension.rowType?url}" data-ipt-mapping="${m_index}">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
+                                    <div class="d-flex my-auto mapping-item-icon ps-2">
+                                        <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                    </div>
+                                    <div class="fs-smaller-2 text-truncate mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.extension.rowType?url}" data-ipt-mapping="${m_index}">
                                         <strong class="fs-smaller">${(m.source.name)!}</strong>
                                         <i class="bi bi-arrow-right"></i>
                                         <strong class="fs-smaller">${m.extension.title}</strong>
                                         <br>
                                         <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>
-                                    <div class="my-auto d-flex justify-content-end pt-0">
+                                    <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
@@ -402,15 +411,18 @@
                                 <#if ext.rowType != resource.coreRowType>
                                     <#list resource.getMappings(ext.rowType) as m>
                                         <div class="col-xl-6">
-                                            <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 mapping-item text-smaller">
-                                                <div class="fs-smaller-2 mapping-item-link ps-2" data-ipt-resource="${resource.shortname}" data-ipt-extension="${ext.rowType?url}" data-ipt-mapping="${m_index}">
+                                            <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
+                                                <div class="d-flex my-auto mapping-item-icon ps-2">
+                                                    <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                                </div>
+                                                <div class="fs-smaller-2 text-truncate mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${ext.rowType?url}" data-ipt-mapping="${m_index}">
                                                     <strong class="fs-smaller">${(m.source.name)!}</strong>
                                                     <i class="bi bi-arrow-right"></i>
                                                     <strong class="fs-smaller">${ext.title}</strong>
                                                     <br>
                                                     <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                                 </div>
-                                                <div class="my-auto d-flex justify-content-end mapping-item-actions">
+                                                <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                                     <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
