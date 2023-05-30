@@ -736,6 +736,14 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #666666;
 }
 
+.text-visibility-registered, .text-visibility-public {
+  color: rgb(var(--color-gbif-primary));
+}
+
+.text-visibility-private {
+  color: rgb(var(--color-gbif-danger));
+}
+
 .bg-gbif-primary {
     background-color: rgb(var(--color-gbif-primary));
 }
