@@ -79,7 +79,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
-  private static final int ID_COLUMN_INDEX = 0;
 
   private final Resource resource;
   private final SourceManager sourceManager;
@@ -564,8 +563,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             }
           }
 
-          translated[ID_COLUMN_INDEX] = in[ID_COLUMN_INDEX];
-
           // apply translations and default values
           if (!alreadyTranslated) {
             applyTranslations(subschemaFieldMappings, in, translated);
@@ -651,7 +648,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param translated translated values
    */
   private void applyTranslations(List<DataSchemaFieldMapping> inCols, String[] in, String[] translated) {
-    for (int i = 1; i < inCols.size(); i++) {
+    for (int i = 0; i < inCols.size(); i++) {
       DataSchemaFieldMapping mapping = inCols.get(i);
       String val = null;
       if (mapping != null) {
