@@ -9,31 +9,33 @@
     <script>
         $(document).ready(function(){
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)
-            var resourceType="${resource.coreType!}";
-            if(resourceType != "") {
-                if(resourceType.toLowerCase() == "occurrence") {
+            var resourceType = "${resource.coreType!}";
+            if (resourceType !== "") {
+                if (resourceType.toLowerCase() === "occurrence") {
                     $("#resource\\.coreType").val('occurrence');
-                } else if (resourceType.toLowerCase() == "checklist") {
+                } else if (resourceType.toLowerCase() === "checklist") {
                     $("#resource\\.coreType").val('checklist');
-                } else if (resourceType.toLowerCase() == "samplingevent") {
+                } else if (resourceType.toLowerCase() === "samplingevent") {
                     $("#resource\\.coreType").val('samplingevent');
-                } else if (resourceType.toLowerCase() == "other") {
-                    $("#resource\\.coreType").val('other');
+                } else if (resourceType.toLowerCase() === "materialentity") {
+                    $("#resource\\.coreType").val('materialentity');
+                } else if (resourceType.toLowerCase() === "other") {
+                  $("#resource\\.coreType").val('other');
                 }
             }
 
             // core type selection is only disabled, if resource has core
             var hasCore="${resourceHasCore!}";
-            if (hasCore == "true") {
+            if (hasCore === "true") {
                 $("#resource\\.coreType").attr('disabled','disabled');
             }
 
             // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
             var isRegisteredWithGBIF="${resource.key!}";
             var isAssignedDOI="${resource.doi!}";
-            if (isRegisteredWithGBIF != "") {
+            if (isRegisteredWithGBIF !== "") {
                 $("#id").attr('disabled','disabled');
-            } else if (isAssignedDOI != "") {
+            } else if (isAssignedDOI !== "") {
                 $("#id").attr('disabled','disabled');
             }
 
