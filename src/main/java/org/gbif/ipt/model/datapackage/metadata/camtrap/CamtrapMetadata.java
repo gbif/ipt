@@ -109,6 +109,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * Identifiers of resources related to the package (e.g. papers, project pages, derived datasets, APIs, etc.).
    */
   @JsonProperty("relatedIdentifiers")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @NotNull(message = "validation.input.required")
   @Valid
   private List<RelatedIdentifier> relatedIdentifiers = new ArrayList<>();
@@ -117,6 +118,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * List of references related to the package (e.g. references cited in `package.project.description`). References ideally include a DOI.
    */
   @JsonProperty("references")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @NotNull(message = "validation.input.required")
   @Valid
   private List<String> references = new ArrayList<>();

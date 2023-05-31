@@ -130,6 +130,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * A list of keywords that describe this package.
    */
   @JsonProperty("keywords")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @NotNull(message = "validation.input.notNull", groups = KeywordsMetadata.class)
   @Valid
   private List<String> keywords = new ArrayList<>();
