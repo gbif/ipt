@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-05-31 07:10+0000\n"
-"PO-Revision-Date: 2023-05-31 07:21\n"
+"PO-Revision-Date: 2023-05-31 10:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -591,7 +591,7 @@ msgstr "Si ha olvidado la contraseña del administrador, el administrador del se
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:234
 msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
-msgstr ""
+msgstr "Utiliza un editor de texto para abrir el archivo `config/users.xml` que se encuentra en el directorio de datos del IPT.  Busca el usuario admin (con `role=\"Admin\"`) y sustituye la contraseña cifrada por `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Reinicia el IPT.  A continuación, puede iniciar sesión como usuario administrador con la contraseña `Ga_1bxiedrvNHSyK` — por supuesto, esta contraseña debe ser cambiada."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:235
