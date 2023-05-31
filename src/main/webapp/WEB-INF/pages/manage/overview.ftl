@@ -1469,7 +1469,7 @@
                                             <div class="my-auto ps-2 d-flex">
                                                 <i class="bi bi-person me-1 text-gbif-primary"></i>
                                             </div>
-                                            <div class="my-auto ps-2 fs-smaller-2">
+                                            <div class="my-auto text-truncate ps-2 fs-smaller-2">
                                                 <strong class="fs-smaller">${resource.creator.name!}</strong><br>
                                                 <small><@s.text name="manage.overview.resource.managers.creator"/>
                                                     | ${resource.creator.email}</small>
