@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-05-31 07:10+0000\n"
+"POT-Creation-Date: 2023-05-31 11:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -985,20 +985,27 @@ msgid ""
 "department for advice.  These problems are generally not related to the IPT."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:285
+msgid ""
+"A useful resource for configuring many web servers is the https://ssl-config."
+"mozilla.org[Mozilla SSL Configuration Generator]."
+msgstr ""
+
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:284
+#: en/modules/ROOT/pages/faq.adoc:286
 #, no-wrap
 msgid "Indexing by others"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:286
+#: en/modules/ROOT/pages/faq.adoc:288
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:289
+#: en/modules/ROOT/pages/faq.adoc:291
 msgid ""
 "Some organizations need to index their own IPT, often to include records of "
 "each resource in a public open data system or similar.  The IPT supports "
@@ -1007,7 +1014,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:290
+#: en/modules/ROOT/pages/faq.adoc:292
 msgid ""
 "An alternative is the https://www.gbif.org/developer/"
 "registry#installations[GBIF Registry Installations API], though this will "
