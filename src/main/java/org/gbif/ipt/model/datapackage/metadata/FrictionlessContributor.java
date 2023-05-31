@@ -64,6 +64,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    * An email address.
    */
   @JsonProperty("email")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String email;
 
   /**
@@ -72,6 +73,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    * An organizational affiliation for this contributor.
    */
   @JsonProperty("organization")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String organization;
 
   @JsonProperty("role")
@@ -140,6 +142,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    * An email address.
    */
   @JsonProperty("email")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public void setEmail(String email) {
     this.email = email;
   }
@@ -150,6 +153,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    * An organizational affiliation for this contributor.
    */
   @JsonProperty("organization")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getOrganization() {
     return organization;
   }

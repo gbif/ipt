@@ -71,36 +71,42 @@ public class Taxonomic implements Serializable {
    * Kingdom in which the taxon is classified.
    */
   @JsonProperty("kingdom")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String kingdom;
 
   /**
    * Phylum or division in which the taxon is classified
    */
   @JsonProperty("phylum")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String phylum;
 
   /**
    * Class in which the taxon is classified.
    */
   @JsonProperty("class")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String _class;
 
   /**
    * Order in which the taxon is classified.
    */
   @JsonProperty("order")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String order;
 
   /**
    * Family in which the taxon is classified.
    */
   @JsonProperty("family")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String family;
 
   /**
    * Genus in which the taxon is classified.
    */
   @JsonProperty("genus")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String genus;
 
   // TODO: 12/10/2022 validate keys ^[a-z]{2}$
@@ -190,6 +196,7 @@ public class Taxonomic implements Serializable {
    * Kingdom in which the taxon is classified.
    */
   @JsonProperty("kingdom")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getKingdom() {
     return kingdom;
   }
@@ -206,6 +213,7 @@ public class Taxonomic implements Serializable {
    * Phylum or division in which the taxon is classified
    */
   @JsonProperty("phylum")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getPhylum() {
     return phylum;
   }
@@ -222,6 +230,7 @@ public class Taxonomic implements Serializable {
    * Class in which the taxon is classified.
    */
   @JsonProperty("class")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getClass_() {
     return _class;
   }
@@ -238,6 +247,7 @@ public class Taxonomic implements Serializable {
    * Order in which the taxon is classified.
    */
   @JsonProperty("order")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getOrder() {
     return order;
   }
@@ -254,6 +264,7 @@ public class Taxonomic implements Serializable {
    * Family in which the taxon is classified.
    */
   @JsonProperty("family")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getFamily() {
     return family;
   }
@@ -270,6 +281,7 @@ public class Taxonomic implements Serializable {
    * Genus in which the taxon is classified.
    */
   @JsonProperty("genus")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getGenus() {
     return genus;
   }

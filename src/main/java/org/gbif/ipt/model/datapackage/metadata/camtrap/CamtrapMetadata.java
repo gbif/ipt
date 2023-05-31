@@ -57,6 +57,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * Bibliographic/recommended citation for the package.
    */
   @JsonProperty("bibliographicCitation")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String bibliographicCitation;
 
   /**
@@ -336,6 +337,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("homepage")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public URI getHomepage() {
     return super.getHomepage();
   }
@@ -400,6 +402,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    * Bibliographic/recommended citation for the package.
    */
   @JsonProperty("bibliographicCitation")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getBibliographicCitation() {
     return bibliographicCitation;
   }

@@ -73,6 +73,7 @@ public class Project implements Serializable {
    * Project website.
    */
   @JsonProperty("path")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String path;
 
   /**
@@ -185,6 +186,7 @@ public class Project implements Serializable {
    * Project website.
    */
   @JsonProperty("path")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getPath() {
     return path;
   }
