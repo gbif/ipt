@@ -229,6 +229,15 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     } catch (Exception e) {
       String msg = baseAction.getText("admin.schemas.install.error", new String[] {dataSchema.getUrl().toString()});
       LOG.error(msg, e);
+
+      // clean directory if installation failed
+      try {
+        File schemaConfigFolder = dataDir.configFile(CONFIG_FOLDER + "/" + dataSchema.getName());
+        FileUtils.cleanDirectory(schemaConfigFolder);
+      } catch (IOException ioe) {
+        LOG.error("Failed to clean directory for schema " + dataSchema.getName(), e);
+      }
+
       throw new InvalidConfigException(INVALID_DATA_SCHEMA, msg, e);
     }
   }
