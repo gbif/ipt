@@ -1254,7 +1254,7 @@
                                                     </svg>
                                                 </div>
 
-                                                <div class="my-auto ps-2 registration-item-link fs-smaller-2 me-auto">
+                                                <div class="my-auto ps-2 text-truncate registration-item-link fs-smaller-2 me-auto">
                                                     <strong class="overview-registered-title fs-smaller">${resource.title!resource.shortname}</strong>
                                                     <br>
                                                     <small>${resource.key}</small>
@@ -1379,7 +1379,7 @@
                                                         <i class="bi bi-globe2 me-1 text-gbif-primary"></i>
                                                     </div>
 
-                                                    <div class="my-auto ps-2 network-item-link fs-smaller-2 me-auto">
+                                                    <div class="my-auto ps-2 text-truncate network-item-link fs-smaller-2 me-auto">
                                                         <strong class="fs-smaller">${n.title!""}</strong><br>
                                                         <small>${(n.key)!}</small>
                                                     </div>
@@ -1485,7 +1485,7 @@
                                                     <div class="my-auto ps-2 d-flex">
                                                         <i class="bi bi-person me-1 text-gbif-primary"></i>
                                                     </div>
-                                                    <div class="my-auto ps-2 fs-smaller-2 me-auto">
+                                                    <div class="my-auto text-truncate ps-2 fs-smaller-2 me-auto">
                                                         <strong class="fs-smaller">${u.name}</strong><br>
                                                         <small><@s.text name="manage.overview.resource.managers.manager"/>
                                                             | ${u.email}</small>
