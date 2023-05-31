@@ -8,19 +8,9 @@
             <div class="col-lg-3 mt-3">
                 <div class="d-flex justify-content-between">
                     <div class="title">
-                      <div class="head">
-                        <a class="fw-bold" href="schema.do?id=${ds.identifier}">${ds.title}</a>
-                          <#if !ds.isLatest()>
-                            <a tabindex="0" role="button"
-                               class="popover-link"
-                               data-bs-toggle="popover"
-                               data-bs-trigger="focus"
-                               data-bs-html="true"
-                               data-bs-content="<@s.text name="admin.schemas.version.warning" escapeHtml=true/>">
-                              <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                            </a>
-                          </#if>
-                      </div>
+                        <div class="head">
+                            <a class="fw-bold" href="schema.do?id=${ds.identifier}">${ds.title}</a>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-end d-lg-none">
@@ -58,6 +48,12 @@
                             <p class="overflow-x-auto">
                                 ${ds.description!}
                             </p>
+
+                            <#if !ds.isLatest()>
+                                <p class="fst-italic text-gbif-danger">
+                                    <@s.text name="admin.schemas.version.warning" escapeHtml=true/>
+                                </p>
+                            </#if>
                         </div>
                         <div class="details table-responsive">
                             <table class="table table-sm table-borderless">
