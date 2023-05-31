@@ -66,65 +66,47 @@
                                         </div>
 
                                     <#elseif src.isExcelSource()>
-                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2 my-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-file-excel me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.excel'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
                                                 <i class="bi bi-file-excel me-1 text-gbif-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.excel'/><br><span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br>"></i>
                                             </#if>
-                                            <span class="fs-smaller fw-bold overflow-wrap">${src.name}</span><br>
-                                            <small>
-                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
-                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
-                                            </small>
-                                            <small>
-                                                ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
-                                            </small>
                                         </div>
 
                                     <#elseif src.isUrlSource()>
-                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2 my-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-link me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.url'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
                                                 <i class="bi bi-link me-1 text-gbif-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.url'/><br><span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br>"></i>
                                             </#if>
-                                            <span class="fs-smaller fw-bold overflow-wrap">${src.name}</span><br>
-                                            <small>
-                                                ${src.fileSizeFormatted} <span class="fw-bold">|</span>
-                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
-                                            </small>
-                                            <small>
-                                                ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
-                                            </small>
                                         </div>
 
                                     <#else>
-                                        <div class="d-flex source-item-icon ps-2" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
+                                        <div class="d-flex source-item-icon ps-2 my-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                             <#if src.readable>
                                                 <i class="bi bi-database me-1 text-gbif-primary"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.sql'/><br><span class='text-gbif-primary'><@s.text name='manage.source.readable'/><span><br>"></i>
                                             <#else>
                                                 <i class="bi bi-database me-1 text-gbif-danger"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<@s.text name='manage.overview.source.sql'/><br><span class='text-gbif-danger'><@s.text name='manage.source.notReadable'/><span><br>"></i>
                                             </#if>
-                                            <span class="fs-smaller fw-bold overflow-wrap">
-                                                ${src.name}
-                                            </span><br>
-                                            <small>
-                                                ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
-                                            </small>
-                                            <small>
-                                                ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
-                                            </small>
                                         </div>
 
                                     </#if>
 
                                     <div class="fs-smaller-2 source-item-link text-truncate ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-source="${src.name}">
                                         <span class="fs-smaller fw-bold">${src.name!}</span><br>
-                                        <small>
-                                            ${src.fileSizeFormatted} <span class="fw-bold">|</span>
-                                            ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
-                                        </small>
+                                        <#if src.isSqlSource()>
+                                            <small>
+                                                ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                            </small>
+                                        <#else>
+                                            <small>
+                                                ${src.fileSizeFormatted!} <span class="fw-bold">|</span>
+                                                ${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>/${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/> <span class="fw-bold">|</span>
+                                            </small>
+                                        </#if>
+
                                         <small>
                                             ${(src.lastModified?datetime?string.medium)!lastModifiedNotSet}
                                         </small>
