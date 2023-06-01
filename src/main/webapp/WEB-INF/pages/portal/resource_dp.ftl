@@ -566,13 +566,13 @@
                                     </tr>
 
                                     <tr>
-                                        <th class="col-4"><@s.text name='portal.resource.project.individualAnimals'/></th>
-                                        <td>${dpMetadata.project.individualAnimals!?c}</td>
+                                        <th class="col-4"><@s.text name='portal.resource.project.observationLevel'/></th>
+                                        <td>${dpMetadata.project.observationLevel!}</td>
                                     </tr>
 
                                     <tr>
-                                        <th class="col-4"><@s.text name='portal.resource.project.eventInterval'/></th>
-                                        <td>${dpMetadata.project.eventInterval!}</td>
+                                        <th class="col-4"><@s.text name='portal.resource.project.individualAnimals'/></th>
+                                        <td>${dpMetadata.project.individualAnimals!?c}</td>
                                     </tr>
                                 </table>
                             </div>

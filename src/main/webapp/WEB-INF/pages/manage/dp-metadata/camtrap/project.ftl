@@ -9,6 +9,10 @@
         $(document).ready(function(){
             $('select#metadata\\.project\\.captureMethod').select2({placeholder: '', width:"100%", allowClear: true, multiple: true, theme: 'bootstrap4'});
         });
+
+        $(document).ready(function(){
+          $('select#metadata\\.project\\.observationLevel').select2({placeholder: '', width:"100%", allowClear: true, multiple: true, theme: 'bootstrap4'});
+        });
     </script>
     <#assign currentMenu="manage"/>
     <#assign currentMetadataPage = "project"/>
@@ -115,7 +119,20 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.eventInterval" help="i18n" i18nkey="datapackagemetadata.project.eventInterval" requiredField=true />
+                                    <div class="form-group">
+                                        <@popoverPropertyInfo "datapackagemetadata.project.observationLevel.help"/>
+                                        <label for="metadata.project.observationLevel" class="form-label" style="margin-bottom: 6px !important;">
+                                            <@s.text name="datapackagemetadata.project.observationLevel"/> <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                        <select name="metadata.project.observationLevel" id="metadata.project.observationLevel" class="form-select" required multiple>
+                                            <#if observationLevels?has_content>
+                                                <#list observationLevels as key, value>
+                                                    <option value="${key}" <#if (metadata.project.observationLevel)?has_content && metadata.project.observationLevel?contains(value)>selected</#if> >${value}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                        <@s.fielderror id="field-error-metadata.project.observationLevel" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="metadata.project.observationLevel"/>
+                                    </div>
                                 </div>
 
                                 <div class="col-12">

@@ -96,20 +96,23 @@ public class Project implements Serializable {
   private Set<CaptureMethod> captureMethod = new LinkedHashSet<>();
 
   /**
+   * Level at which observations are provided. See also `observations.observationLevel`.
+   * (Required)
+   */
+  @JsonProperty("observationLevel")
+  @JsonDeserialize(using = ObservationLevel.ObservationLevelSetDeserializer.class)
+  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
+  @Size(min = 1, message = "validation.camtrap.metadata.project.observationLevel.size", groups = ProjectMetadata.class)
+  @Valid
+  private Set<ObservationLevel> observationLevel = new LinkedHashSet<>();
+
+  /**
    * `true` if the project includes marked or recognizable individuals. See also `observations.individualID`.
    * (Required)
    */
   @JsonProperty("individualAnimals")
   @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
   private Boolean individualAnimals = false;
-
-  /**
-   * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
-   * (Required)
-   */
-  @JsonProperty("eventInterval")
-  @NotNull(message = "validation.input.required", groups = ProjectMetadata.class)
-  private Integer eventInterval;
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -236,6 +239,24 @@ public class Project implements Serializable {
   }
 
   /**
+   * Level at which observations are provided. See also `observations.observationLevel`.
+   * (Required)
+   */
+  @JsonProperty("observationLevel")
+  public Set<ObservationLevel> getObservationLevel() {
+    return observationLevel;
+  }
+
+  /**
+   * Level at which observations are provided. See also `observations.observationLevel`.
+   * (Required)
+   */
+  @JsonProperty("observationLevel")
+  public void setObservationLevel(Set<ObservationLevel> observationLevel) {
+    this.observationLevel = observationLevel;
+  }
+
+  /**
    * `true` if the project includes marked or recognizable individuals. See also `observations.individualID`.
    * (Required)
    */
@@ -251,24 +272,6 @@ public class Project implements Serializable {
   @JsonProperty("individualAnimals")
   public void setIndividualAnimals(Boolean individualAnimals) {
     this.individualAnimals = individualAnimals;
-  }
-
-  /**
-   * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
-   * (Required)
-   */
-  @JsonProperty("eventInterval")
-  public Integer getEventInterval() {
-    return eventInterval;
-  }
-
-  /**
-   * Maximum number of seconds between timestamps of successive media files to be considered part of a single sequence and be assigned the same `media.sequenceID`.
-   * (Required)
-   */
-  @JsonProperty("eventInterval")
-  public void setEventInterval(Integer eventInterval) {
-    this.eventInterval = eventInterval;
   }
 
   @JsonAnyGetter
@@ -334,8 +337,8 @@ public class Project implements Serializable {
         .add("path=" + path)
         .add("samplingDesign=" + samplingDesign)
         .add("captureMethod=" + captureMethod)
+        .add("observationLevel=" + observationLevel)
         .add("individualAnimals=" + individualAnimals)
-        .add("eventInterval=" + eventInterval)
         .add("additionalProperties=" + additionalProperties)
         .toString();
   }
