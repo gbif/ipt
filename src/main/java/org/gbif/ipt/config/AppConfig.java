@@ -322,6 +322,21 @@ public class AppConfig {
   }
 
   /**
+   * @return String URI to resource's last published Data Package Metadata file (no version number)
+   */
+  @NotNull
+  public String getResourceDataPackageMetadataUrl(@NotNull String shortname) {
+    String baseUrl = getBaseUrl();
+    if (StringUtils.isEmpty(baseUrl)) {
+      LOG.error("IPT's base URL must not be null or empty");
+      throw new RuntimeException("IPT's base URL must not be null or empty");
+    }
+
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_METADATA)
+      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+  }
+
+  /**
    * @return String URI to resource's logo (no version number)
    */
   @NotNull
