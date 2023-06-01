@@ -367,6 +367,8 @@
                                                     </span>
                                                 </div>
 
+<#--                                                ${fieldErrors}-->
+
                                                 <div id="vernacularName-items-${item_index}" class="col-12 mt-0 vernacularName-items-wrapper">
                                                     <#if metadata.taxonomic[item_index].vernacularNames?has_content>
                                                         <#list metadata.taxonomic[item_index].vernacularNames?keys as vernacularNameKey>
@@ -382,16 +384,17 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                  <label for="metadata.taxonomic" class="form-label">
-                                                                    Language code
-                                                                  </label>
-                                                                  <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
+                                                                    <label for="metadata.taxonomic" class="form-label">
+                                                                      Language code
+                                                                    </label>
+                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
+                                                                    <@s.fielderror id="field-error-vernacularNames-key-${item_index}-${vernacularNameKey_index}" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="vernacularNames-key-${item_index}-${vernacularNameKey_index}"/>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                  <label for="metadata.taxonomic" class="form-label">
-                                                                    Vernacular name
-                                                                  </label>
-                                                                  <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
+                                                                    <label for="metadata.taxonomic" class="form-label">
+                                                                      Vernacular name
+                                                                    </label>
+                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
                                                                 </div>
                                                             </div>
                                                         </#list>

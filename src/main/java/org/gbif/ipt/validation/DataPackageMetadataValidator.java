@@ -18,13 +18,18 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.InvalidMetadataException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.ConstraintViolation;
@@ -43,6 +48,8 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 public class DataPackageMetadataValidator {
 
   private final Validator validator;
+
+  private static final Pattern VERNACULAR_NAME_KEY_PATTERN = Pattern.compile("^[a-z]{3}$");
 
   @Inject
   public DataPackageMetadataValidator() {
@@ -211,6 +218,8 @@ public class DataPackageMetadataValidator {
           addDefaultFieldError(action, violation);
         }
 
+        validateVernacularNames(action, metadata);
+
         break;
 
       case TEMPORAL_SECTION:
@@ -322,6 +331,31 @@ public class DataPackageMetadataValidator {
       action.addFieldError(
           "metadata." + violation.getPropertyPath(),
           violation.getMessage());
+    }
+  }
+
+  private void validateVernacularNames(BaseAction action, DataPackageMetadata metadata) {
+    if (metadata instanceof CamtrapMetadata) {
+      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
+
+      List<Taxonomic> taxonomics = camtrapMetadata.getTaxonomic();
+
+      for (int taxonomicIndex = 0; taxonomicIndex < taxonomics.size(); taxonomicIndex++) {
+        Taxonomic taxonomic = taxonomics.get(taxonomicIndex);
+        Map<String, String> vernacularNames = taxonomic.getVernacularNames();
+
+        Set<String> vernacularNamesKeys = vernacularNames.keySet();
+
+        List<String> listKeys = new ArrayList<>(vernacularNamesKeys);
+
+        for (int vernacularNameIndex = 0; vernacularNameIndex < listKeys.size(); vernacularNameIndex++) {
+          if (!VERNACULAR_NAME_KEY_PATTERN.matcher(listKeys.get(vernacularNameIndex)).matches()) {
+            action.addFieldError(
+              "vernacularNames-key-" + taxonomicIndex + "-" + vernacularNameIndex,
+              action.getText("validation.camtrap.metadata.taxonomic.vernacularNames"));
+          }
+        }
+      }
     }
   }
 }

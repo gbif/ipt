@@ -109,9 +109,8 @@ public class Taxonomic implements Serializable {
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String genus;
 
-  // TODO: 12/10/2022 validate keys ^[a-z]{2}$
   /**
-   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 639-1 (e.g. `en` for English).
+   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
   @Valid
@@ -295,7 +294,7 @@ public class Taxonomic implements Serializable {
   }
 
   /**
-   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 639-1 (e.g. `en` for English).
+   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
   public Map<String, String> getVernacularNames() {
@@ -303,7 +302,7 @@ public class Taxonomic implements Serializable {
   }
 
   /**
-   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 639-1 (e.g. `en` for English).
+   * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
   public void setVernacularNames(Map<String, String> vernacularNames) {
