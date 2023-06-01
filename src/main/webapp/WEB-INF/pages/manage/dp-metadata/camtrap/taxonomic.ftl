@@ -358,7 +358,7 @@
                                                     <@input name="metadata.taxonomic[${item_index}].genus" help="i18n" i18nkey="datapackagemetadata.taxonomic.genus" />
                                                 </div>
 
-                                                <div class="col-12">
+                                                <div class="col-12 mb-2">
                                                     <span class="form-label">
                                                         <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='datapackagemetadata.taxonomic.vernacularNames.help'/>" data-bs-original-title="" title="">
                                                             <i class="bi bi-info-circle text-gbif-primary px-1"></i>
