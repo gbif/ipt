@@ -204,7 +204,6 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.CAMTRAP_PROFILE;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.FAMILY;
@@ -837,7 +836,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
           // set name, erase some internal fields
           frictionlessMetadata.setName(resource.getShortname());
-          frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
+          frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
           frictionlessMetadata.setId(null);
           frictionlessMetadata.setCreated(null);
           frictionlessMetadata.getAdditionalProperties().clear();
@@ -993,7 +992,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
       // set name, erase some internal fields
       frictionlessMetadata.setName(resource.getShortname());
-      frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
+      frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
       frictionlessMetadata.setId(null);
       frictionlessMetadata.setCreated(null);
       frictionlessMetadata.getAdditionalProperties().clear();
@@ -1091,7 +1090,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
         // set name, erase some internal fields
         frictionlessMetadata.setName(shortname);
-        frictionlessMetadata.setProfile(CAMTRAP_PROFILE);
+        frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
         frictionlessMetadata.setId(null);
         frictionlessMetadata.setCreated(null);
         frictionlessMetadata.getAdditionalProperties().clear();

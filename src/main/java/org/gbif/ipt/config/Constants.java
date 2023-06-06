@@ -114,7 +114,6 @@ public final class Constants {
   public static final String CAMTRAP_DP = "camtrap-dp";
   public static final String MATERIAL_DP = "material-dp";
   public static final String COL_DP = "coldp";
-  public static final String CAMTRAP_PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/0.6/profile/camtrap-dp-profile.json";
   public static final String DWC_ARCHIVE_NAME = "dwca";
   public static final String DWC_ARCHIVE_EXTENSION = ".zip";
   public static final String DATA_PACKAGE_NAME = "datapackage";
