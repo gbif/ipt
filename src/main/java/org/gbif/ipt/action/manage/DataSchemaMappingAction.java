@@ -203,10 +203,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       DataSubschema dataSubschema = mapping.getDataSchema().subschemaByName(mapping.getDataSchemaFile());
       fieldsIndices = new HashMap<>();
       int index = 0;
-      for (DataSchemaField field : dataSubschema.getFields()) {
-        DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
-        fields.add(pm);
-        fieldsIndices.put(field.getName(), index++);
+      if (dataSubschema != null) {
+        for (DataSchemaField field : dataSubschema.getFields()) {
+          DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
+          fields.add(pm);
+          fieldsIndices.put(field.getName(), index++);
+        }
       }
 
       // do automapping if no fields are found
