@@ -141,6 +141,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * An image to represent this package.
    */
   @JsonProperty("image")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String image;
 
   /**
@@ -383,6 +384,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    */
   @Override
   @JsonProperty("image")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getImage() {
     return image;
   }
@@ -393,6 +395,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * An image to represent this package.
    */
   @JsonProperty("image")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public void setImage(String image) {
     this.image = image;
   }

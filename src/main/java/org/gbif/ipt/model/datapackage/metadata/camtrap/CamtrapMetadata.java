@@ -321,6 +321,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("image")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public String getImage() {
     return super.getImage();
   }
@@ -330,6 +331,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("image")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public void setImage(String image) {
     super.setImage(image);
   }
