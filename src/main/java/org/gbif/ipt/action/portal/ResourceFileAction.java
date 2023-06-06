@@ -88,10 +88,10 @@ public class ResourceFileAction extends PortalBaseAction {
     // serve file
     if (isDataPackageResource) {
       data = dataDir.resourceDataPackageFile(resource.getShortname(), version);
-      sb.append("data_package-").append(resource.getShortname());
+      sb.append(Constants.DATA_PACKAGE_NAME + "-").append(resource.getShortname());
     } else {
       data = dataDir.resourceDwcaFile(resource.getShortname(), version);
-      sb.append("dwca-").append(resource.getShortname());
+      sb.append(Constants.DWC_ARCHIVE_NAME + "-").append(resource.getShortname());
     }
 
     if (version != null) {

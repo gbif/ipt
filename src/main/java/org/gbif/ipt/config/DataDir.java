@@ -37,6 +37,10 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Singleton;
 
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
+import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_EXTENSION;
+import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_NAME;
 
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
@@ -242,7 +246,7 @@ public class DataDir {
    * @return DwC-A file having specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
-    String fn = "dwca-" + version.toPlainString() + ".zip";
+    String fn = DWC_ARCHIVE_NAME + "-" + version.toPlainString() + DWC_ARCHIVE_EXTENSION;
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
@@ -255,7 +259,7 @@ public class DataDir {
    * @return data package file having specific version
    */
   public File resourceDataPackageFile(@NotNull String resourceName, @NotNull BigDecimal version) {
-    String fn = "data_package-" + version.toPlainString() + ".zip";
+    String fn = DATA_PACKAGE_NAME + "-" + version.toPlainString() + DATA_PACKAGE_EXTENSION;
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 

@@ -70,6 +70,8 @@ import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
 import static org.gbif.ipt.config.Constants.MATERIAL_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
@@ -226,7 +228,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
       // create zip
-      zip = dataDir.tmpFile("data_package", ".zip");
+      zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
       if (COL_DP.equals(resource.getCoreType())) {
         dataPackage.write(zip, this::writeCustomColDPMetadata, true);
       } else {

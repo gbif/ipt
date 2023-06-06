@@ -263,7 +263,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Write the header column line to file.
-   * 
+   *
    * @param propertyList ordered list of all ExtensionProperty that have been mapped across all mappings for a single
    *        Extension
    * @param totalColumns total number of columns in header
@@ -290,7 +290,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Adds EML file to DwC-A folder.
-   * 
+   *
    * @throws GeneratorException if EML file could not be copied to DwC-A folder
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -313,7 +313,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * </br>
    * Since all default values ​​will be written in the data file, they won't be expressed in the archive file (meta.xml).
    * That's why the default value is always set to null.
-   * 
+   *
    * @param term ConceptTerm
    * @param delimitedBy multi-value delimiter
    *
@@ -335,7 +335,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   /**
    * Zips the DwC-A folder. A temp version is created first, and when successful, it it moved into the resource's
    * data directory.
-   * 
+   *
    * @throws GeneratorException if DwC-A could not be zipped or moved
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -346,7 +346,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     BigDecimal version = resource.getEmlVersion();
     try {
       // create zip
-      zip = dataDir.tmpFile("dwca", ".zip");
+      zip = dataDir.tmpFile(Constants.DWC_ARCHIVE_NAME, Constants.DWC_ARCHIVE_EXTENSION);
       CompressionUtil.zipDir(dwcaFolder, zip);
       if (zip.exists()) {
         // move to data dir with versioned name
@@ -375,7 +375,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * Validate the DwC-A:
    * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) it is present on all
    * rows, and is unique
-   * 
+   *
    * @throws GeneratorException if DwC-A could not be validated
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -407,7 +407,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sort the data file of a Darwin Core Archive by a column. Sorting is case sensitive.
-   * 
+   *
    * @param file unsorted file
    * @param column column to sort by file by
    *
@@ -957,7 +957,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Method responsible for all stages of DwC-A file generation.
-   * 
+   *
    * @return number of records published in core file
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
@@ -1031,7 +1031,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   * 
+   *
    * @throws InterruptedException if the thread was found to be interrupted
    */
   private void checkForInterruption() throws InterruptedException {
@@ -1045,7 +1045,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   * 
+   *
    * @param line number of lines currently processed at the time of the check
    * @throws InterruptedException if the thread was found to be interrupted
    */
@@ -1065,7 +1065,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Create data files.
-   * 
+   *
    * @throws GeneratorException if the resource had no core file that was mapped
    * @throws InterruptedException if the thread was interrupted
    */
@@ -1091,7 +1091,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Create meta.xml file.
-   * 
+   *
    * @throws GeneratorException if meta.xml file creation failed
    * @throws InterruptedException if the thread was interrupted
    */
@@ -1319,7 +1319,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sets an exception and state of the worker to FAILED. The final StatusReport is generated at the end.
-   * 
+   *
    * @param e exception
    */
   private void setState(Exception e) {
@@ -1330,7 +1330,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sets only the state of the worker. The final StatusReport is generated at the end.
-   * 
+   *
    * @param s STATE of worker
    */
   private void setState(STATE s) {
@@ -1408,7 +1408,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Print a line representation of a string array used for logging.
-   * 
+   *
    * @param in String array
    * @return line
    */
@@ -1427,7 +1427,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Write message from exception to publication log file as a new line but suffocate any exception thrown.
-   * 
+   *
    * @param e exception to write message from
    */
   private void writeFailureToPublicationLog(Throwable e) {
@@ -1447,7 +1447,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * First we need to find the union of all terms mapped (in all files) for a single Extension. Then make each mapped
    * term a field in the final archive. Static/default mappings are not stored for a field, since they are not
    * expressed in meta.xml but instead get written to the data file.
-   * 
+   *
    * @param mappings list of ExtensionMapping
    * @param af ArchiveFile
    *
@@ -1508,7 +1508,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * Iterate through ordered list of those ExtensionProperty that have been mapped, and reassign the ArchiveFile
    * ArchiveField indexes, based on the order of their appearance in the ordered list be careful to reserve index 0 for
    * the ID column
-   * 
+   *
    * @param propertyList ordered list of those ExtensionProperty that have been mapped
    * @param af ArchiveFile
    */
@@ -1533,7 +1533,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Retrieve the ordered list of all Extension's mapped ExtensionProperty. Ordering is done according to Extension.
-   * 
+   *
    * @param ext Extension
    * @param mappedConceptTerms set of all mapped ConceptTerm
    * @return ordered list of mapped ExtensionProperty
