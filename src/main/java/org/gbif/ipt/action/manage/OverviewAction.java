@@ -1841,6 +1841,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return resource.getSchemaIdentifier() != null;
   }
 
+  public boolean isDataPackageMappingsMissing() {
+    return resource.getDataSchemaMappings().size() == 0;
+  }
+
   public String getPublishingOrganizationKey() {
     return publishingOrganizationKey;
   }

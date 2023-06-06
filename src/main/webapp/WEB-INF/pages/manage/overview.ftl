@@ -1754,6 +1754,7 @@
                     <h5 class="modal-title w-100" id="publication-modal-title"><@s.text name="manage.overview.published"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <!-- resources cannot be published if it's deleted -->
                     <#if resource.status == "DELETED">
@@ -1765,6 +1766,12 @@
                     <#elseif missingMetadata>
                         <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.published.missing.metadata"/>
+                        </div>
+
+                      <!-- resources cannot be published if mappings are missing (for DPs) -->
+                    <#elseif dataPackageResource && dataPackageMappingsMissing>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.published.missing.mappings"/>
                         </div>
 
                         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
