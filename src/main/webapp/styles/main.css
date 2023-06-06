@@ -2155,3 +2155,111 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     opacity: .5; /* in FireFox */
     filter: alpha(opacity=50); /* in IE */
 }
+
+/* Setup sidebar */
+ .setup-stepper-vertical {
+     display: -webkit-box;
+     display: -webkit-flex;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-flex-direction: column;
+     -ms-flex-direction: column;
+     flex-direction: column;
+ }
+
+.setup-step-connector-vertical {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    margin-left: 8px;
+}
+
+.setup-step-connector-line-vertical {
+    display: block;
+    border-color: #bdbdbd;
+    border-left-style: solid;
+    border-left-width: 1px;
+    min-height: 16px;
+}
+
+.setup-step-label-vertical {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: left;
+    padding: 8px 0;
+}
+
+.setup-step-label-icon-container {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-right: 8px;
+}
+
+.setup-step-label-label-container {
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.step-svg-icon-root.completed {
+    color: rgb(var(--color-gbif-primary));
+}
+
+.step-svg-icon-root {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 0.75em;
+    height: 0.75em;
+    display: inline-block;
+    fill: currentColor;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-size: 1.75rem;
+    display: block;
+    -webkit-transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgba(0, 0, 0, 0.38);
+}
+
+.step-svg-icon-root.active {
+    color: rgb(var(--color-gbif-primary));
+}
+
+.step-icon-text {
+    fill: #fff;
+    font-size: 0.875rem;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.setup-step-label-label.completed {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+}
+
+.setup-step-label-label.active {
+    color: #575757;
+    font-weight: 500;
+}
+
+.setup-step-label-label {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    display: block;
+    -webkit-transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
