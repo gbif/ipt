@@ -54,6 +54,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * A human-readable title.
    */
   @JsonProperty("title")
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   private String title;
 
   /**
@@ -95,6 +96,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * A text description. Markdown is encouraged.
    */
   @JsonProperty("description")
+  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   private String description;
 
   /**

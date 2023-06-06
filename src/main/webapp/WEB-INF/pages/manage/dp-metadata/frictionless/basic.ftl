@@ -293,11 +293,11 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.title" help="i18n" i18nkey="datapackagemetadata.title" />
+                                    <@input name="metadata.title" help="i18n" i18nkey="datapackagemetadata.title" requiredField=true/>
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.description" help="i18n" i18nkey="datapackagemetadata.description" />
+                                    <@text name="metadata.description" help="i18n" i18nkey="datapackagemetadata.description" requiredField=true />
                                 </div>
 
                                 <div class="col-lg-6">
