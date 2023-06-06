@@ -305,7 +305,6 @@ public class SetupAction extends BaseAction {
   public String setupMode() {
     // check if everything is already configured
     if (configManager.setupComplete() && configManager.isBaseURLValid()) {
-      addActionMessage(getText("admin.config.setup2.existingFound"));
       return SUCCESS;
     }
 
