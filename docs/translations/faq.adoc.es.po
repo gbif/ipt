@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-06-07 11:42+0000\n"
-"PO-Revision-Date: 2023-06-07 12:36\n"
+"PO-Revision-Date: 2023-06-07 13:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -739,7 +739,7 @@ msgstr "Para solucionarlos, consulte la documentación de su servidor web o pida
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:285
 msgid "A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the most common issue is available at https://whatsmychaincert.com/[What’s My Chain Cert]."
-msgstr ""
+msgstr "Un recurso útil para configurar muchos servidores web es https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], y en https://whatsmychaincert.com/[What's My Chain Cert] encontrará una prueba rápida para el problema más común."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:286
