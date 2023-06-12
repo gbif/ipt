@@ -97,13 +97,28 @@
                     <div class="mt-2">
                         <#if source??>
                             <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="analyze" key="button.analyze"/>
-                            <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary top-button">
-                                <@s.text name="button.preview"/>
-                            </a>
-                            <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
-                            </#if>
+
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <@s.text name="button.options"/>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete" style="">
+                                  <li>
+                                      <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
+                                  </li>
+                                  <li>
+                                    <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                        <@s.text name="button.preview"/>
+                                    </a>
+                                  </li>
+                                    <#if id?has_content>
+                                  <li>
+                                      <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                  </li>
+                                    </#if>
+                                </ul>
+                            </div>
+
                             <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
                         <#else>
                             <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
