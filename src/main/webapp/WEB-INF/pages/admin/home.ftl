@@ -58,7 +58,7 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+							<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-building admin-icon"></i>
 								</div>
@@ -68,7 +68,7 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-collection-fill admin-icon"></i>
 								</div>
@@ -78,7 +78,7 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/schemas.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+							<a href="${baseURL}/admin/schemas.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-columns-gap admin-icon"></i>
 								</div>
@@ -88,7 +88,7 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/uiManagement.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+							<a href="${baseURL}/admin/uiManagement.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-tv admin-icon"></i>
 								</div>
@@ -98,7 +98,7 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-journal-text admin-icon"></i>
 								</div>
