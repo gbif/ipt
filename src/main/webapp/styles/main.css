@@ -818,18 +818,18 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 /* GBIF gray colored outline button START */
 .btn-outline-secondary {
     color: rgb(var(--color-gbif-secondary)) !important;
-    border-color: rgba(var(--color-gbif-secondary), 0.5) !important;
+    border-color: #dee2e6 !important;
 }
 .btn-outline-secondary:hover, .btn-outline-secondary:active {
     color: rgb(var(--color-gbif-secondary)) !important;
-    background-color: rgba(var(--color-gbif-secondary), 0.04) !important;
-    border-color: rgb(var(--color-gbif-secondary)) !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border-color: #dee2e6 !important;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
     box-shadow: none !important;
     color: rgb(var(--color-gbif-secondary)) !important;
-    background-color: rgba(var(--color-gbif-secondary), 0.04) !important;
-    border-color: rgb(var(--color-gbif-secondary)) !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border-color: #dee2e6 !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -1486,9 +1486,8 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 /* Button font styles */
 .btn {
-    text-transform: uppercase !important;
-    font-weight: 500 !important;
-    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    font-size: 0.875rem !important;
     padding: 0.375rem 0.75rem;
 }
 
@@ -1499,6 +1498,16 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .btn:focus {
     box-shadow: none;
+}
+
+.dropdown-button {
+  border: none;
+  min-width: unset !important;
+  color: #575757;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  padding-left: 15px;
 }
 
 #accountDropdownLink {
@@ -1596,7 +1605,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 .modal-confirm .btn {
-    min-width: 120px;
+    min-width: 100px;
 }
 
 .modal-confirm .icon-box {
@@ -1997,6 +2006,9 @@ a.doi:hover span:first-of-type {
     margin-top: 4px;
     padding-top: 6px !important;
     padding-bottom: 6px !important;
+    letter-spacing: 0.02857em;
+    line-height: 1.75;
+    font-size: 0.875rem !important;
 }
 
 @keyframes ripple {
