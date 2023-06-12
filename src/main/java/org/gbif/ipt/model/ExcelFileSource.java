@@ -30,25 +30,23 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.github.pjfanning.xlsx.SharedStringsImplementationType;
+import com.github.pjfanning.xlsx.StreamingReader;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
  * A single file can have multiple sheets which each act as a separate source.
  * The same file can therefore be used for multiple ExcelFileSource instances.
- * POI usage example, see http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/ss/examples/ToCSV.java
+ * <p>
+ * To avoid extensive memory usage we use stream reading approach with the library excel-streaming-reader.
+ *
  */
 public class ExcelFileSource extends SourceBase implements FileSource {
 
@@ -98,13 +96,15 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.sheetIdx = sheetIdx;
   }
 
-  private Workbook openBook() throws IOException {
+  private Workbook openBook() {
     LOG.info("Opening excel workbook [" + file.getName() + "]");
-    try {
-      return WorkbookFactory.create(file);
-    } catch (POIXMLException e) {
-      throw new IOException(e);
-    }
+
+    return StreamingReader.builder()
+      .rowCacheSize(100)
+      .bufferSize(4096)
+      .setSharedStringsImplementationType(SharedStringsImplementationType.TEMP_FILE_BACKED)
+      .setEncryptSstTempFile(true)
+      .open(file);
   }
 
   private Sheet getSheet(Workbook book) {
@@ -118,7 +118,6 @@ public class ExcelFileSource extends SourceBase implements FileSource {
 
   private class RowIterator implements ClosableReportingIterator<String[]> {
 
-    private final Sheet sheet;  // 0 based
     private final Iterator<Row> iter;
     private final int rowSize;
     // DataFormatter displays data exactly as it appears in Excel
@@ -126,15 +125,10 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     private boolean rowError;
     private String errorMessage;
     private Exception exception;
-    // FormulaEvaluator evaluate any formula in Excel cell and returns result
-    private FormulaEvaluator formulaEvaluator;
 
     RowIterator(ExcelFileSource source) throws IOException {
       try (Workbook book = openBook()) {
-        sheet = getSheet(book);
-        // instantiate the appropriate FormulaEvaluator, depending on whether workbook is .xls or .xlsx
-        formulaEvaluator = (book instanceof XSSFWorkbook) ? new XSSFFormulaEvaluator((XSSFWorkbook) book)
-            : new HSSFFormulaEvaluator((HSSFWorkbook) book);
+        Sheet sheet = getSheet(book);
         iter = sheet.rowIterator();
         rowSize = source.getColumns();
       }
@@ -168,8 +162,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
           Row row = iter.next();
           for (int i = 0; i < rowSize; i++) {
             Cell c = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-            formulaEvaluator.evaluate(c);
-            val[i] = dataFormatter.formatCellValue(c, formulaEvaluator);
+            val[i] = dataFormatter.formatCellValue(c);
           }
         } catch (Exception e) {
           LOG.debug("Exception caught: " + e.getMessage(), e);
@@ -293,16 +286,24 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     // find row size
     try (Workbook book = openBook()) {
       Sheet sheet = getSheet(book);
-      setRows(sheet.getPhysicalNumberOfRows());
+      int physicalNumberOfRows = 0;
 
       Iterator<Row> iter = sheet.rowIterator();
       if (iter.hasNext()) {
+        physicalNumberOfRows++;
         setColumns(iter.next().getLastCellNum());
         setReadable(true);
       } else {
         setColumns(0);
         setReadable(false);
       }
+
+      while (iter.hasNext()) {
+        physicalNumberOfRows++;
+        iter.next();
+      }
+
+      setRows(physicalNumberOfRows);
     }
 
     //TODO: report empty or irregular rows

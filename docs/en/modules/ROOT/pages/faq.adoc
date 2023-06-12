@@ -281,7 +281,7 @@ Any errors like "unable to get local issuer certificate" or "certificate chain i
 
 To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT.
 
-A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator].
+A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the most common issue is available at https://whatsmychaincert.com/[What’s My Chain Cert].
 
 == Indexing by others
 

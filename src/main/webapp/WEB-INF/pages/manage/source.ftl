@@ -83,8 +83,11 @@
                     </div>
 
                     <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
-                        <@popoverPropertyInfo "manage.source.intro"/>
-                        <@s.text name='manage.source.title'/>
+                        <#if source.name?has_content>
+                            ${source.name}
+                        <#else>
+                            <@s.text name='manage.source.title'/>
+                        </#if>
                     </h5>
 
                     <div class="text-smaller">
@@ -94,13 +97,28 @@
                     <div class="mt-2">
                         <#if source??>
                             <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="analyze" key="button.analyze"/>
-                            <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary top-button">
-                                <@s.text name="button.preview"/>
-                            </a>
-                            <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
-                            </#if>
+
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <@s.text name="button.options"/>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete" style="">
+                                  <li>
+                                      <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
+                                  </li>
+                                  <li>
+                                    <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                        <@s.text name="button.preview"/>
+                                    </a>
+                                  </li>
+                                    <#if id?has_content>
+                                  <li>
+                                      <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                  </li>
+                                    </#if>
+                                </ul>
+                            </div>
+
                             <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
                         <#else>
                             <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
@@ -118,9 +136,24 @@
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
-                            <div class="col-12">
+                            <div class="col-12 border rounded px-5 py-4 mb-3">
                                 <div class="table-responsive">
-                                    <table id="source-properties" class="table table-sm table-borderless text-smaller">
+                                    <table id="source-properties" class="table table-sm text-smaller">
+                                        <tr>
+                                            <th class="col-lg-2 col-md-3"><@s.text name="manage.overview.source.sourceType"/></th>
+                                            <td>
+                                                <#if source.sourceType == 'EXCEL_FILE'>
+                                                    <@s.text name="manage.overview.source.excel"/>
+                                                <#elseif source.sourceType == 'TEXT_FILE'>
+                                                    <@s.text name="manage.overview.source.file"/>
+                                                <#elseif source.sourceType == 'URL'>
+                                                    <@s.text name="manage.overview.source.url"/>
+                                                <#elseif source.sourceType == 'SQL'>
+                                                    <@s.text name="manage.overview.source.sql"/>
+                                                </#if>
+                                          </td>
+                                        </tr>
+
                                         <tr>
                                             <th class="col-lg-2 col-md-3"><@s.text name='manage.source.readable'/></th>
                                             <td>
@@ -167,7 +200,7 @@
                                                     <td>${(source.lastModified?datetime?string.long_medium)!}</td>
                                                 </tr>
                                             </#if>
-                                        <#elseif source.sourceType == 'TEXT_FILE'>
+                                        <#elseif source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE'>
                                             <tr>
                                                 <th><@s.text name='manage.source.file'/></th>
                                                 <td>${(source.file.getAbsolutePath())!}</td>
@@ -207,9 +240,11 @@
                                 <#if problem??><div class="callout callout-danger my-0">${problem!}</div></#if>
                             </div>
 
-                            <div class="col-lg-6">
-                                <@input name="source.name" help="i18n" disabled=id?has_content/>
-                            </div>
+                            <#if !id?has_content>
+                                <div class="col-lg-6">
+                                    <@input name="source.name" help="i18n"/>
+                                </div>
+                            </#if>
 
                             <#-- inputs used by multiple source types -->
                             <#macro multivalue>
@@ -265,7 +300,6 @@
 
                             <#-- excel source -->
                             <#elseif source.isExcelSource()>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
@@ -278,7 +312,6 @@
 
                             <#-- file source -->
                             <#elseif source.isFileSource()>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
