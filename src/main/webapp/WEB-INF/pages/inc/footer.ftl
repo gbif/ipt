@@ -1,5 +1,5 @@
 <#ftl output_format="HTML">
-<footer class="footer bg-light border-top mt-auto text-muted text-center text-smaller py-3">
+<footer class="footer bg-light border-top mt-auto text-center text-smaller py-3">
     <div class="container">
         <div class="mb-1">
             <img title="IPT ${(cfg.version)!}" class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
@@ -7,16 +7,16 @@
         </div>
         <ul class="list-inline mb-0">
             <li class="list-inline-item ipt-footer-item">
-                <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
+                <a class="footer-link" href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
-                <a href="https://ipt.gbif.org/manual/" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
+                <a class="footer-link" href="https://ipt.gbif.org/manual/" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
-                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>
+                <a class="footer-link" href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>
             </li>
             <li class="list-inline-item">
-                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.featureRequest"/></small></a>
+                <a class="footer-link" href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.featureRequest"/></small></a>
             </li>
         </ul>
     </div>
