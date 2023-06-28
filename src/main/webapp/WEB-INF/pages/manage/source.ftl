@@ -331,7 +331,6 @@
                                     <@dateFormat/>
                                 </div>
                             <#else>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
