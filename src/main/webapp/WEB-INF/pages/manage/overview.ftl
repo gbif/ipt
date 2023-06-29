@@ -223,36 +223,68 @@
             $("#eml-validate").hide();
         });
 
-        $("#sourceType").change(function (e) {
-            var sourceType = this.options[e.target.selectedIndex].value;
+        $(".tab-root").click(function (event) {
+            var selectedTab = $(this);
+            var selectedTabId = selectedTab[0].id;
 
-            if (sourceType === 'source-file') {
+            // remove "selected" from all tabs
+            $(".tab-root").removeClass("tab-selected");
+            // hide all indicators
+            $(".tabs-indicator").hide();
+            // add "selected" to clicked tab
+            selectedTab.addClass("tab-selected");
+            // show indicator for this tab
+            $("#" + selectedTabId + " .tabs-indicator").show();
+
+            if (selectedTabId === 'tab-source-file') {
+                $("#sourceType").attr("value", "source-file");
                 $("#url").hide();
                 $("#sourceName").hide();
                 $("#url").prop("value", "");
-                $("#file").show();
-                $("#clear").show();
+                $("#chooseFilesButton").show();
+                $("#sendButton").hide();
+                $(".progress-bar-container").show();
+                $("#clear").hide();
                 $("#add").attr("value", '<@s.text name="button.add"/>');
                 $("#add").hide();
-            } else if (sourceType === 'source-url') {
+            } else if (selectedTabId === 'tab-source-url') {
+                $("#sourceType").attr("value", "source-url");
                 $("#url").show();
                 $("#sourceName").show();
-                $("#file").hide();
-                $("#file").prop("value", "");
+                $("#chooseFilesButton").hide();
+                $("#sendButton").hide();
+                $(".progress-bar-container").hide();
+                $("#fileInput").prop("value", "");
                 $("#clear").show();
                 $("#add").attr("value", '<@s.text name="button.add"/>');
                 $("#add").show();
+                var fileItems = document.querySelectorAll('.fileItem');
+                fileItems.forEach(function(item) {
+                    item.remove();
+                });
+                selectedFiles = [];
             } else {
-                $("#file").hide();
+                $("#sourceType").attr("value", "source-sql");
+                $("#chooseFilesButton").hide();
+                $(".progress-bar-container").hide();
                 $("#sourceName").hide();
-                $("#file").prop("value", "");
+                $("#chooseFilesButton").hide();
+                $("#sendButton").hide();
+                $("#fileInput").prop("value", "");
                 $("#url").hide();
                 $("#url").prop("value", "");
                 $("#clear").hide();
                 $("#add").attr("value", '<@s.text name="button.connect"/>');
                 $("#add").show();
+                var fileItems = document.querySelectorAll('.fileItem');
+                fileItems.forEach(function(item) {
+                    item.remove();
+                });
+                selectedFiles = [];
             }
-        })
+        });
+
+        var sendButton = $("#sendButton");
 
         $("#manager").change(function (e) {
             var manager = this.options[e.target.selectedIndex].value;
@@ -300,6 +332,20 @@
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
+
+            var progressBars = document.getElementsByClassName("progress-bar");
+            var progressStatuses = document.getElementsByClassName("progress-bar-status");
+
+            for (var i = 0; i < progressBars.length; i++) {
+              var progressBar = progressBars[i];
+              progressBar.style.width = "0%";
+            }
+
+            for (var j = 0; j < progressStatuses.length; j++) {
+              var progressStatus = progressStatuses[j];
+              progressStatus.innerText = "";
+            }
+
             $("#file").removeClass("is-invalid");
             $("#url").prop("value", "");
             if ($("#file").is(":visible")) {
@@ -434,12 +480,11 @@
             $(this).submit();
         });
 
-        // show spinner file upload
+        // show spinner source creation
         $("#add").on("click", function () {
             $('#source-data-modal').modal('hide');
             displayProcessing();
         });
-
 
         // Action modals
         function showAddSourceModal() {
@@ -533,6 +578,271 @@
             e.preventDefault();
             var dialogWindow = $("#reserve-doi-modal");
             dialogWindow.modal('show');
+        }
+
+        var sourceNames = [
+            <#list resource.sources as source>
+            "${source.name}"<#if source_has_next>,</#if>
+            </#list>
+        ];
+
+        var selectedFiles = [];
+
+        document.getElementById("chooseFilesButton").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+
+        document.getElementById("fileInput").addEventListener("change", function () {
+            var newlySelectedFiles = Array.from(document.getElementById("fileInput").files);
+            selectedFiles = selectedFiles.concat(newlySelectedFiles);
+            refreshFileList();
+
+            if (selectedFiles.length > 0) {
+                sendButton.show();
+            } else {
+                sendButton.hide();
+            }
+        });
+
+        document.getElementById("sendButton").addEventListener("click", async function () {
+            var fileItems = document.querySelectorAll(".fileItem");
+            var promises = [];
+
+            // hide remove buttons - already submitted
+            var removeButtons = document.querySelectorAll(".removeButton");
+            removeButtons.forEach(function(button) {
+                button.style.display = "none";
+            });
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+                var file = selectedFiles[i];
+                var fileItem = fileItems[i];
+                var progressBar = fileItem.querySelector(".progressBar-value");
+                var fileStatus = fileItem.querySelector(".fileStatus");
+
+                promises.push(uploadFile(file, i, progressBar, fileStatus));
+            }
+
+            try {
+                await Promise.all(promises);
+                closeModal();
+                window.location.reload();
+            } catch (error) {
+                console.log(error)
+            }
+        });
+
+
+        function refreshFileList() {
+            var fileListContainer = document.getElementById("fileList");
+            fileListContainer.innerHTML = "";
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+                var file = selectedFiles[i];
+                addFileItem(file, i);
+            }
+        }
+
+        function addFileItem(file, index) {
+            // create file item div with index attribute
+            var fileItem = document.createElement("div");
+            fileItem.className = "fileItem";
+            fileItem.setAttribute("data-file-index", index)
+
+            // create file inner div
+            var fileItemInner = document.createElement("div");
+            fileItemInner.className = "fileItem-inner"
+            fileItem.appendChild(fileItemInner);
+
+            // create additional divs: info, meta, name
+            var fileInfo = document.createElement("div");
+            fileInfo.className = "fileInfo";
+            var fileMeta = document.createElement("div");
+            fileMeta.className = "fileMeta";
+            var fileName = document.createElement("div");
+            fileName.className = "fileName";
+
+            // extract file name without extension - check source already exist
+            var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.'));
+
+            // file error div
+            var fileError = document.createElement("div");
+            fileError.className = "fileError";
+
+            // file status div
+            var fileStatus = document.createElement("div");
+            fileStatus.className = "fileStatus";
+
+            // set file name and file size
+            fileName.innerText = file.name;
+            fileStatus.innerText = formatFileSize(file.size);
+
+            // make sure source with the name does not exist (case-insensitive check)
+            var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutExtension.toLowerCase());
+            if (isSourceAlreadyExist) {
+                fileError.innerText = "Source with this name already exists!";
+            }
+
+            // create "done" icon
+            var fileDoneIcon = document.createElement("div");
+            fileDoneIcon.className = "fileDoneIcon";
+            fileDoneIcon.innerHTML = '<i class="bi bi-check2 text-gbif-primary"></i>';
+
+            // create "error/warning" icon
+            var fileWarningIcon = document.createElement("div");
+            fileWarningIcon.className = "fileWarningIcon";
+            fileWarningIcon.innerHTML = '<i class="bi bi-exclamation-circle text-gbif-danger"></i>';
+
+            // link divs
+            fileMeta.appendChild(fileName);
+            fileMeta.appendChild(fileStatus);
+            if (isSourceAlreadyExist) {
+                fileMeta.appendChild(fileError);
+                fileDoneIcon.style.visibility = "hidden";
+                fileDoneIcon.style.display = "none";
+                fileWarningIcon.style.visibility = "visible";
+                fileWarningIcon.style.display = "block";
+            }
+            fileInfo.appendChild(fileDoneIcon);
+            fileInfo.appendChild(fileWarningIcon);
+            fileInfo.appendChild(fileMeta);
+
+            // create progress bar divs
+            var progressBar = document.createElement("div");
+            progressBar.className = "progressBar";
+            var progressBarValue = document.createElement("div");
+            progressBarValue.className = "progressBar-value";
+            progressBar.appendChild(progressBarValue);
+
+            // create remove button and its icon
+            var removeButton = document.createElement("button");
+            removeButton.className = "removeButton";
+
+            removeButton.addEventListener("click", function () {
+                var index = selectedFiles.indexOf(file);
+                if (index > -1) {
+                    selectedFiles.splice(index, 1);
+                    refreshFileList();
+                }
+            });
+
+            // icon for the remove button
+            var xIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            var xIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            xIcon.setAttribute("class", "icon-button-svg");
+            xIcon.setAttribute("focusable", "false");
+            xIcon.setAttribute("aria-hidden", "true");
+            xIcon.setAttribute("viewBox", "0 0 24 24");
+            xIconPath.setAttribute("d", "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
+            xIcon.appendChild(xIconPath);
+
+            removeButton.appendChild(xIcon);
+
+            removeButton.addEventListener("click", function () {
+                fileItem.remove();
+            });
+
+            var fileCommands = document.createElement("div");
+            fileCommands.className = "fileCommands";
+            fileCommands.appendChild(removeButton);
+
+            fileItemInner.appendChild(fileInfo);
+            fileItem.appendChild(progressBar);
+            fileItemInner.appendChild(fileCommands);
+
+            document.getElementById("fileList").appendChild(fileItem);
+        }
+
+        async function uploadFile(file, fileIndex, progressBar, fileStatus) {
+            return new Promise(function (resolve, reject) {
+                var formData = new FormData();
+                formData.append("r", "${resource.shortname}");
+                formData.append("sourceType", "source-file");
+                formData.append("validate", false);
+                formData.append("add", "Add");
+                formData.append("file", file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "addsource.do", true);
+
+                xhr.onload = function () {
+                    var redirectUrl = xhr.getResponseHeader("Location");
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    }
+                    resolve();
+                };
+
+                xhr.onerror = function() {
+                    console.error('An error occurred during the request:', xhr.status, xhr.statusText);
+                    reject(new Error('An error occurred during the request:' + xhr.status + "" + xhr.statusText));
+                };
+
+                xhr.upload.onprogress = function (event) {
+                    if (event.lengthComputable) {
+                        var percent = Math.round((event.loaded / event.total) * 100);
+                        progressBar.style.width = percent + "%";
+                        fileStatus.innerText =
+                            percent +
+                            "% uploaded (" +
+                            formatFileSize(event.loaded) +
+                            " / " +
+                            formatFileSize(event.total) +
+                            ")";
+
+                        if (percent === 100) {
+                            fileStatus.innerText = "Upload complete. Processing"
+                            progressBar.classList.add("progressBar-loader");
+                        } else {
+                            progressBar.classList.remove("progressBar-loader");
+                        }
+                    }
+                };
+
+                xhr.onloadend = function () {
+                    progressBar.style.width = "100%"; // Set progress to 100%
+
+                    // hide progress bar
+                    var fileProgressBarWrapper = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .progressBar');
+                    fileProgressBarWrapper.classList.add("d-none")
+
+                    // and display done icon
+                    var fileDoneIcon = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .fileDoneIcon');
+                    fileDoneIcon.style.visibility = "visible";
+
+                    // "Upload Complete", set to empty
+                    fileStatus.innerText = "";
+
+                    resolve(); // Resolve the promise once the request has completed
+                };
+
+                xhr.send(formData);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return "0 Bytes";
+            var k = 1000;
+            var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+            var i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+        }
+
+        function closeModal() {
+            // Get the modal element
+            var modal = document.getElementById("source-data-modal");
+
+            // Add the "hide" class to hide the modal
+            modal.classList.add("hide");
+
+            // Remove the "show" class to ensure the modal is no longer displayed
+            modal.classList.remove("show");
+
+            // Reset the inline style to hide the modal
+            modal.style.display = "none";
+
+            // Remove the modal from the DOM to clean up
+            modal.parentNode.removeChild(modal);
         }
     });
 </script>
@@ -1483,30 +1793,51 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <form action='addsource.do' method='post' enctype="multipart/form-data">
+                        <form id="fileUploadForm" action='addsource.do' method='post' enctype="multipart/form-data">
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <input name="validate" type="hidden" value="false"/>
 
                             <div class="row">
                                 <div class="col-12">
-                                    <select id="sourceType" name="sourceType" class="form-select my-1">
-                                        <option value="" disabled selected><@s.text name='manage.source.select.type'/></option>
-                                        <option value="source-sql"><@s.text name='manage.source.database'/></option>
-                                        <option value="source-file"><@s.text name='manage.source.file'/></option>
-                                        <option value="source-url"><@s.text name='manage.source.url'/></option>
-                                    </select>
+                                    <div class="tabs-root">
+                                        <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
+                                            <div class="tabs-flexContainer tabs-centered" role="tablist">
+                                                <button id="tab-source-file" class="tab-root tab-selected" type="button" role="tab">
+                                                    File
+                                                    <span id="tab-indicator-source-file" class="tabs-indicator"></span>
+                                                </button>
+                                                <button id="tab-source-url" class="tab-root" type="button" role="tab">
+                                                    URL
+                                                    <span id="tab-indicator-source-url" class="tabs-indicator" style="display: none;"></span>
+                                                </button>
+                                                <button id="tab-source-sql" class="tab-root" type="button" role="tab">
+                                                    SQL
+                                                    <span id="tab-indicator-source-sql" class="tabs-indicator" style="display: none;"></span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    <@s.file name="file" cssClass="form-control my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
+
+
+                                    <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3">Choose Files</a>
+                                    <input id="fileInput" type="file" multiple style="display: none;" />
+                                    <div id="fileList"></div>
+                                    <a id="sendButton" href="#" class="btn btn-outline-gbif-primary" style="display: none;">Upload</a>
+
                                     <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
                                         <li>
                                             <span><@s.text name="manage.overview.source.file.too.big"/></span>
                                         </li>
                                     </ul>
+
                                     <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
                                     <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+                                    <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>
                                 </div>
-                                <div class="col-12 mt-3">
+                                <div class="col-12">
                                     <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-1" cssStyle="display: none" key="button.connect"/>
                                     <@s.submit name="clear" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
                                 </div>
