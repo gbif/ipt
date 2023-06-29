@@ -589,28 +589,6 @@ public class SourceAction extends ManagerBaseAction {
     this.source = source;
   }
 
-  public String uploadLogo() {
-    if (file != null) {
-      // remove any previous logo file
-      for (String suffix : Constants.IMAGE_TYPES) {
-        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-      }
-      // inspect file type
-      String type = "jpeg";
-      if (fileContentType != null) {
-        type = StringUtils.substringAfterLast(fileContentType, "/");
-      }
-      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
-      try {
-        FileUtils.copyFile(file, logoFile);
-      } catch (IOException e) {
-        LOG.warn(e.getMessage());
-      }
-      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
-    }
-    return INPUT;
-  }
-
   @Override
   public void validateHttpPostOnly() {
     if (source != null) {
