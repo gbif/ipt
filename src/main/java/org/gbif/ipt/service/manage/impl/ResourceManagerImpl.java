@@ -246,13 +246,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
     // add only public/registered resources with at least one published version
-    if (!res.getVersionHistory().isEmpty()) {
-      VersionHistory latestVersion = res.getVersionHistory().get(0);
-      if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-          !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
-          latestVersion.getReleased() != null) {
-        publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+    try {
+      if (!res.getVersionHistory().isEmpty()) {
+        VersionHistory latestVersion = res.getVersionHistory().get(0);
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+                !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+                latestVersion.getReleased() != null) {
+          publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+        }
       }
+    } catch (Exception e) {
+      LOG.error("Failed to reconstruct resource's last published version", e);
     }
   }
 
