@@ -2757,12 +2757,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 parsedEventDateTA = ((YearMonth) parsedEventDateTA).atEndOfMonth();
               }
 
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof ChronoLocalDate
+                      && startDateTA instanceof ChronoLocalDate
+                      && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
                 startDateTA = parsedEventDateTA;
                 startDateStr = rawEventDateValue;
               }
 
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof ChronoLocalDate
+                      && endDateTA instanceof ChronoLocalDate
+                      && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
                 endDateTA = parsedEventDateTA;
                 endDateStr = rawEventDateValue;
               }
