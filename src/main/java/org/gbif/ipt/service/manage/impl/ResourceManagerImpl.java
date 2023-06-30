@@ -2773,6 +2773,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
           }
+        // Catch ParseException, occurs for Excel files. Find out why
+        } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+          LOG.error("Error while trying to infer metadata: {}", e.getMessage());
         } catch (Exception e) {
           LOG.error("Error while trying to infer metadata from source data", e);
           serverError = true;
