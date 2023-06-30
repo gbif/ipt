@@ -103,6 +103,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       .rowCacheSize(100)
       .bufferSize(4096)
       .setSharedStringsImplementationType(SharedStringsImplementationType.TEMP_FILE_BACKED)
+      .setReadSharedFormulas(true)
       .setEncryptSstTempFile(true)
       .open(file);
   }
@@ -131,6 +132,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
         Sheet sheet = getSheet(book);
         iter = sheet.rowIterator();
         rowSize = source.getColumns();
+        dataFormatter.setUseCachedValuesForFormulaCells(true);
       }
     }
 
