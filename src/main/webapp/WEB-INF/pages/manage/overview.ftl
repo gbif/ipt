@@ -218,13 +218,36 @@
             $("#eml-validate").hide();
         });
 
+        var sourceNames = [
+            <#list resource.sources as source>
+            "${source.name}"<#if source_has_next>,</#if>
+            </#list>
+        ];
+
         // add new source tabs
-        $(".tab-root").click(function (event) {
+        $(".sources-tab-root").click(function (event) {
             var selectedTab = $(this);
             var selectedTabId = selectedTab[0].id;
 
+            var fileItems = document.querySelectorAll('.fileItem');
+
+            // inputs
+            var sourceNameInput = $("#sourceName");
+            var sourceTypeInput = $("#sourceType");
+            var urlInput = $("#url");
+            var fileInput = $("#fileInput");
+
+            // buttons
+            var addButton = $("#add");
+            var clearButton = $("#clear");
+            var sendButton = $("#sendButton");
+            var chooseFilesButton = $("#chooseFilesButton");
+
+            // values
+            var sourceNameValue = sourceNameInput.val();
+
             // remove "selected" from all tabs
-            $(".tab-root").removeClass("tab-selected");
+            $(".sources-tab-root").removeClass("tab-selected");
             // hide all indicators
             $(".tabs-indicator").hide();
             // add "selected" to clicked tab
@@ -233,56 +256,87 @@
             $("#" + selectedTabId + " .tabs-indicator").show();
 
             if (selectedTabId === 'tab-source-file') {
-                $("#sourceType").attr("value", "source-file");
-                $("#url").hide();
-                $("#sourceName").hide();
-                $("#url").prop("value", "");
-                $("#chooseFilesButton").show();
-                $("#sendButton").hide();
+                sourceTypeInput.attr("value", "source-file");
+                urlInput.hide();
+                sourceNameInput.hide();
+                urlInput.prop("value", "");
+                chooseFilesButton.show();
+                sendButton.hide();
                 $(".progress-bar-container").show();
-                $("#clear").hide();
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-                $("#add").hide();
-                $("#sourceName").removeClass("is-invalid");
-                $("#url").removeClass("is-invalid");
+                clearButton.hide();
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.hide();
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+                $("#callout-source-exists").hide();
             } else if (selectedTabId === 'tab-source-url') {
-                $("#sourceType").attr("value", "source-url");
-                $("#url").show();
-                $("#sourceName").show();
-                $("#chooseFilesButton").hide();
-                $("#sendButton").hide();
+                sourceTypeInput.attr("value", "source-url");
+                urlInput.show();
+                sourceNameInput.show();
+                chooseFilesButton.hide();
+                sendButton.hide();
                 $(".progress-bar-container").hide();
-                $("#fileInput").prop("value", "");
-                $("#clear").show();
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-                $("#add").show();
-                var fileItems = document.querySelectorAll('.fileItem');
+                fileInput.prop("value", "");
+                clearButton.show();
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.show();
+
                 fileItems.forEach(function(item) {
                     item.remove();
                 });
                 selectedFiles = [];
-                $("#sourceName").removeClass("is-invalid");
-                $("#url").removeClass("is-invalid");
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+
+                if (sourceNames.includes(sourceNameValue)) {
+                    $("#callout-source-exists").show();
+                    addButton.hide();
+                } else {
+                    $("#callout-source-exists").hide();
+                }
             } else {
-                $("#sourceType").attr("value", "source-sql");
-                $("#chooseFilesButton").hide();
+                sourceTypeInput.attr("value", "source-sql");
+                chooseFilesButton.hide();
                 $(".progress-bar-container").hide();
-                $("#sourceName").show();
-                $("#chooseFilesButton").hide();
-                $("#sendButton").hide();
-                $("#fileInput").prop("value", "");
-                $("#url").hide();
-                $("#url").prop("value", "");
-                $("#clear").hide();
-                $("#add").attr("value", '<@s.text name="button.connect"/>');
-                $("#add").show();
-                var fileItems = document.querySelectorAll('.fileItem');
+                sourceNameInput.show();
+                sendButton.hide();
+                fileInput.prop("value", "");
+                urlInput.hide();
+                urlInput.prop("value", "");
+                clearButton.hide();
+                addButton.attr("value", '<@s.text name="button.connect"/>');
+                addButton.show();
+
                 fileItems.forEach(function(item) {
                     item.remove();
                 });
                 selectedFiles = [];
-                $("#sourceName").removeClass("is-invalid");
-                $("#url").removeClass("is-invalid");
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+
+                if (sourceNames.includes(sourceNameValue)) {
+                    $("#callout-source-exists").show();
+                    addButton.hide();
+                } else {
+                    $("#callout-source-exists").hide();
+                }
+            }
+        });
+
+        $("#btn-confirm-source-overwrite").on("click", function (e) {
+            e.preventDefault();
+            $("#callout-source-exists").hide();
+            $("#add").show();
+        });
+
+        $("#sourceName").on("input", function() {
+            var sourceNameValue = $(this).val();
+
+            if (sourceNames.includes(sourceNameValue)) {
+                $("#callout-source-exists").show();
+                $("#add").hide();
+            } else {
+                $("#callout-source-exists").hide();
             }
         });
 
@@ -568,12 +622,6 @@
             dialogWindow.modal('show');
         }
 
-        var sourceNames = [
-            <#list resource.sources as source>
-            "${source.name}"<#if source_has_next>,</#if>
-            </#list>
-        ];
-
         var selectedFiles = [];
 
         document.getElementById("chooseFilesButton").addEventListener("click", function () {
@@ -593,6 +641,9 @@
         });
 
         document.getElementById("sendButton").addEventListener("click", async function () {
+            var btn = document.getElementById("sendButton");
+            btn.parentNode.removeChild(btn);
+
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
 
@@ -619,7 +670,6 @@
                 console.log(error)
             }
         });
-
 
         function refreshFileList() {
             var fileListContainer = document.getElementById("fileList");
@@ -656,6 +706,7 @@
             // file error div
             var fileError = document.createElement("div");
             fileError.className = "fileError";
+            fileError.setAttribute('data-index', index)
 
             // file status div
             var fileStatus = document.createElement("div");
@@ -668,7 +719,15 @@
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutExtension.toLowerCase());
             if (isSourceAlreadyExist) {
-                fileError.innerText = "Source with this name already exists!";
+                fileError.innerText = "<@s.text name='manage.resource.addSource.sameName.confirm'/>";
+
+                var confirmOverwriteLink = document.createElement("a");
+                confirmOverwriteLink.id = 'confirmOverwriteSourceFileLink-' + index;
+                confirmOverwriteLink.className = 'confirmOverwriteSourceFileLink custom-link';
+                confirmOverwriteLink.href = '#';
+                confirmOverwriteLink.textContent = 'Confirm';
+                confirmOverwriteLink.setAttribute('data-index', index)
+                fileError.appendChild(confirmOverwriteLink);
             }
 
             // create "done" icon
@@ -772,14 +831,14 @@
                         progressBar.style.width = percent + "%";
                         fileStatus.innerText =
                             percent +
-                            "% uploaded (" +
+                            "% (" +
                             formatFileSize(event.loaded) +
                             " / " +
                             formatFileSize(event.total) +
                             ")";
 
                         if (percent === 100) {
-                            fileStatus.innerText = "Upload complete. Processing"
+                            fileStatus.innerText = "<@s.text name='manage.resource.addSource.processingFile'/>"
                             progressBar.classList.add("progressBar-loader");
                         } else {
                             progressBar.classList.remove("progressBar-loader");
@@ -832,6 +891,44 @@
             // Remove the modal from the DOM to clean up
             modal.parentNode.removeChild(modal);
         }
+
+        // Spy confirm overwrite warnings and enable/disable submit button
+        const fileListDiv = document.getElementById('fileList');
+
+        const observer = new MutationObserver(function() {
+            var fileErrors = $(".confirmOverwriteSourceFileLink");
+
+            if (fileErrors.length > 0) {
+                sendButton.hide();
+            } else {
+                sendButton.show();
+            }
+        });
+
+        const config = { attributes: true, childList: true, subtree: true };
+
+        observer.observe(fileListDiv, config);
+
+        // remove error classes/icons if confirmed
+        $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function() {
+            var fileIndex = $(this).data('index');
+
+            var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
+            fileItemElement.find('.fileError').remove();
+
+            var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
+            var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
+
+            fileWarningIconElement.css({
+                'display': 'none',
+                'visibility': 'hidden'
+            });
+
+            fileDoneIconElement.css({'display': 'block'});
+
+            // Prevent the default link behavior
+            return false;
+        });
     });
 </script>
 
@@ -1790,15 +1887,15 @@
                                     <div class="tabs-root">
                                         <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
                                             <div class="tabs-flexContainer tabs-centered" role="tablist">
-                                                <button id="tab-source-file" class="tab-root tab-selected" type="button" role="tab">
+                                                <button id="tab-source-file" class="sources-tab-root tab-selected" type="button" role="tab">
                                                     <@s.text name="manage.source.file"/>
                                                     <span id="tab-indicator-source-file" class="tabs-indicator"></span>
                                                 </button>
-                                                <button id="tab-source-url" class="tab-root" type="button" role="tab">
+                                                <button id="tab-source-url" class="sources-tab-root" type="button" role="tab">
                                                     URL
                                                     <span id="tab-indicator-source-url" class="tabs-indicator" style="display: none;"></span>
                                                 </button>
-                                                <button id="tab-source-sql" class="tab-root" type="button" role="tab">
+                                                <button id="tab-source-sql" class="sources-tab-root" type="button" role="tab">
                                                     SQL
                                                     <span id="tab-indicator-source-sql" class="tabs-indicator" style="display: none;"></span>
                                                 </button>
@@ -1808,9 +1905,14 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-
-
                                     <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
+
+                                    <div id="callout-source-exists" class="callout callout-danger text-smaller" style="display: none;">
+                                        <@s.text name="manage.resource.addSource.sameName.confirm"/>
+                                        <br>
+                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3">Confirm</button>
+                                    </div>
+
                                     <input id="fileInput" type="file" multiple style="display: none;" />
                                     <div id="fileList"></div>
                                     <a id="sendButton" href="#" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.upload"/></a>

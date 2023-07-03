@@ -627,13 +627,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .resource-table-link, .footer-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .resource-table-link, .footer-link, .custom-link) {
     color: rgb(var(--link-color)) !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):hover {
     color: rgb(var(--link-color)) !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
@@ -2336,7 +2336,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .fileInfo {
     flex-grow: 1;
     margin-right: 10px;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     overflow: hidden;
     text-overflow: ellipsis;
     display: flex;
@@ -2372,6 +2372,20 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .fileError {
     color: rgb(var(--color-gbif-danger));
     font-size: 0.875rem;
+}
+
+.confirmOverwriteSourceFileLink {
+    color: rgb(var(--color-gbif-danger)) !important;
+    margin-left: 8px;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+
+.confirmOverwriteSourceFileLink:hover {
+    color: rgb(var(--color-gbif-danger)) !important;
+    filter: brightness(0.85);
+    font-weight: 500;
+    text-decoration: underline !important;
 }
 
 .progressBar {
@@ -2470,7 +2484,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: rgb(var(--color-gbif-primary));
 }
 
-.tab-root {
+.sources-tab-root {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -2523,7 +2537,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-.tab-root.tab-selected {
+.sources-tab-root.tab-selected {
   color: rgb(var(--color-gbif-primary));
 }
 

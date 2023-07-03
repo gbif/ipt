@@ -195,7 +195,7 @@ public class SourceAction extends ManagerBaseAction {
     ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
 
     try {
-      resource.addSource(source, false);
+      resource.addSource(source, true);
     } catch (AlreadyExistingException e) {
       addActionError(getText("manage.source.existing"));
       return ERROR;
