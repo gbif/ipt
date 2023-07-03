@@ -65,11 +65,6 @@
 
 <script>
     $(document).ready(function(){
-        <#if confirmOverwrite>
-        showConfirmOverwrite();
-        </#if>
-        var $registered = false;
-
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
@@ -223,6 +218,7 @@
             $("#eml-validate").hide();
         });
 
+        // add new source tabs
         $(".tab-root").click(function (event) {
             var selectedTab = $(this);
             var selectedTabId = selectedTab[0].id;
@@ -247,6 +243,8 @@
                 $("#clear").hide();
                 $("#add").attr("value", '<@s.text name="button.add"/>');
                 $("#add").hide();
+                $("#sourceName").removeClass("is-invalid");
+                $("#url").removeClass("is-invalid");
             } else if (selectedTabId === 'tab-source-url') {
                 $("#sourceType").attr("value", "source-url");
                 $("#url").show();
@@ -263,11 +261,13 @@
                     item.remove();
                 });
                 selectedFiles = [];
+                $("#sourceName").removeClass("is-invalid");
+                $("#url").removeClass("is-invalid");
             } else {
                 $("#sourceType").attr("value", "source-sql");
                 $("#chooseFilesButton").hide();
                 $(".progress-bar-container").hide();
-                $("#sourceName").hide();
+                $("#sourceName").show();
                 $("#chooseFilesButton").hide();
                 $("#sendButton").hide();
                 $("#fileInput").prop("value", "");
@@ -281,6 +281,8 @@
                     item.remove();
                 });
                 selectedFiles = [];
+                $("#sourceName").removeClass("is-invalid");
+                $("#url").removeClass("is-invalid");
             }
         });
 
@@ -357,54 +359,6 @@
             $('.icon-validate').tooltip({track: true});
         });
 
-        function showConfirmOverwrite() {
-            var dialogWindow = $("#dialog");
-            var titleQuestion = '<@s.text name="basic.confirm"/>';
-
-            var question = <#if overwriteMessage?has_content>"${overwriteMessage}"<#else>"<@s.text name="manage.resource.addSource.sameName.confirm"/>"</#if>
-
-            var yesButtonText = '<@s.text name="basic.yes"/>';
-            var cancelButtonText = '<@s.text name="basic.no"/>';
-
-            // prepare html content for modal window
-            var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
-            content += '<div class="modal-content">';
-
-            // header
-            content += '<div class="modal-header flex-column">';
-            content += '<div class="icon-box"><i class="confirm-danger-icon">!</i></div>'
-            content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + titleQuestion + '</h5>';
-            content += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>'
-            content += '</div>';
-
-            // body
-            content += '<div class="modal-body">';
-            content += '<p>' + question + '</p>';
-            content += '</div>'
-
-            // footer
-            content += '<div class="modal-footer justify-content-center">'
-            content += '<button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + cancelButtonText + '</button>';
-            content += '<button id="yes-button" type="button" class="btn btn-outline-gbif-primary">' + yesButtonText + '</button>';
-            content += '</div>';
-
-            content += '</div>';
-            content += '</div>';
-
-            // add content to window
-            dialogWindow.html(content);
-
-            $("#yes-button").on("click", function () {
-                $("#add").click()
-            });
-
-            $("#cancel-button").on("click", function () {
-                $("#canceloverwrite").click();
-            });
-
-            dialogWindow.modal('show');
-        }
-
         // load a preview of the mapping in the modal window
         $(".peekBtn").click(function(e) {
             e.preventDefault();
@@ -480,10 +434,44 @@
             $(this).submit();
         });
 
-        // show spinner source creation
-        $("#add").on("click", function () {
-            $('#source-data-modal').modal('hide');
-            displayProcessing();
+        // validate add source form (for URL and SQL) and submit data
+        $("#add").on("click", function (e) {
+            e.preventDefault();
+
+            var sourceType = $("#sourceType").val();
+            var sourceNameInput = $("#sourceName");
+            var urlInput = $("#url");
+            var sourceNameValue = sourceNameInput.val();
+            var form = $("#addSourceForm")[0];
+
+            if (sourceType === 'source-sql') {
+                if (!sourceNameValue) {
+                    sourceNameInput.addClass("is-invalid");
+                } else {
+                    $('#source-data-modal').modal('hide');
+                    displayProcessing();
+                    form.submit();
+                }
+            } else if (sourceType === 'source-url') {
+                var urlValue = urlInput.val();
+                var invalid = false;
+
+                if (!sourceNameValue) {
+                    sourceNameInput.addClass("is-invalid");
+                    invalid = true;
+                }
+
+                if (!urlValue) {
+                    urlInput.addClass("is-invalid");
+                    invalid = true;
+                }
+
+                if (!invalid) {
+                    $('#source-data-modal').modal('hide');
+                    displayProcessing();
+                    form.submit();
+                }
+            }
         });
 
         // Action modals
@@ -1793,7 +1781,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <form id="fileUploadForm" action='addsource.do' method='post' enctype="multipart/form-data">
+                        <form id="addSourceForm" action='addsource.do' method='post' enctype="multipart/form-data">
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <input name="validate" type="hidden" value="false"/>
 
@@ -1803,7 +1791,7 @@
                                         <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
                                             <div class="tabs-flexContainer tabs-centered" role="tablist">
                                                 <button id="tab-source-file" class="tab-root tab-selected" type="button" role="tab">
-                                                    File
+                                                    <@s.text name="manage.source.file"/>
                                                     <span id="tab-indicator-source-file" class="tabs-indicator"></span>
                                                 </button>
                                                 <button id="tab-source-url" class="tab-root" type="button" role="tab">
@@ -1822,19 +1810,35 @@
                                 <div class="col-12">
 
 
-                                    <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3">Choose Files</a>
+                                    <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
                                     <input id="fileInput" type="file" multiple style="display: none;" />
                                     <div id="fileList"></div>
-                                    <a id="sendButton" href="#" class="btn btn-outline-gbif-primary" style="display: none;">Upload</a>
+                                    <a id="sendButton" href="#" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.upload"/></a>
 
                                     <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
-                                        <li>
+                                        <li class="text-start">
                                             <span><@s.text name="manage.overview.source.file.too.big"/></span>
                                         </li>
                                     </ul>
 
-                                    <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
-                                    <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+                                    <div>
+                                        <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
+                                        <ul id="field-error-sourceName" class="invalid-feedback list-unstyled field-error my-1">
+                                            <li class="text-start">
+                                                <span><@s.text name="manage.source.name.empty"/></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+                                        <ul id="field-error-url" class="invalid-feedback list-unstyled field-error my-1">
+                                            <li class="text-start">
+                                                <@s.text name="validation.required"><@s.param><@s.text name="manage.source.url"/></@s.param></@s.text>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                     <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>
                                 </div>
                                 <div class="col-12">
