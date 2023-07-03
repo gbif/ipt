@@ -329,8 +329,21 @@
             $("#add").show();
         });
 
+        $("#url").on("input", function() {
+            var urlValue = $(this).val();
+
+            if (urlValue) {
+                $(this).removeClass("is-invalid");
+            }
+        });
+
+
         $("#sourceName").on("input", function() {
             var sourceNameValue = $(this).val();
+
+            if (sourceNameValue) {
+                $(this).removeClass("is-invalid");
+            }
 
             if (sourceNames.includes(sourceNameValue)) {
                 $("#callout-source-exists").show();
