@@ -223,6 +223,7 @@
             "${source.name}"<#if source_has_next>,</#if>
             </#list>
         ];
+        var confirmedFiles = [];
 
         // add new source tabs
         $(".sources-tab-root").click(function (event) {
@@ -285,6 +286,7 @@
                     item.remove();
                 });
                 selectedFiles = [];
+                confirmedFiles = []
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
 
@@ -293,7 +295,13 @@
                     addButton.hide();
                 } else {
                     $("#callout-source-exists").hide();
+                    addButton.show();
                 }
+
+                // set timeout - otherwise the callout remains. find out why
+                setTimeout(function () {
+                    $("#callout-not-enough-space").hide();
+                }, 100);
             } else {
                 sourceTypeInput.attr("value", "source-sql");
                 chooseFilesButton.hide();
@@ -311,6 +319,7 @@
                     item.remove();
                 });
                 selectedFiles = [];
+                confirmedFiles = [];
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
 
@@ -319,7 +328,12 @@
                     addButton.hide();
                 } else {
                     $("#callout-source-exists").hide();
+                    addButton.show();
                 }
+                // set timeout - otherwise the callout remains. find out why
+                setTimeout(function () {
+                    $("#callout-not-enough-space").hide();
+                }, 100);
             }
         });
 
@@ -350,6 +364,7 @@
                 $("#add").hide();
             } else {
                 $("#callout-source-exists").hide();
+                $("#add").show();
             }
         });
 
@@ -400,7 +415,6 @@
 
         $("#clear").click(function(event) {
             event.preventDefault();
-            $("#file").prop("value", "");
 
             var progressBars = document.getElementsByClassName("progress-bar");
             var progressStatuses = document.getElementsByClassName("progress-bar-status");
@@ -415,11 +429,10 @@
               progressStatus.innerText = "";
             }
 
-            $("#file").removeClass("is-invalid");
             $("#url").prop("value", "");
-            if ($("#file").is(":visible")) {
-                $("#add").hide();
-            }
+            $("#sourceName").prop("value", "");
+            $("#callout-source-exists").hide();
+            $("#add").show();
         });
 
         $(function() {
@@ -654,9 +667,6 @@
         });
 
         document.getElementById("sendButton").addEventListener("click", async function () {
-            var btn = document.getElementById("sendButton");
-            btn.parentNode.removeChild(btn);
-
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
 
@@ -688,11 +698,17 @@
             var fileListContainer = document.getElementById("fileList");
             fileListContainer.innerHTML = "";
 
+            totalFilesSize = 0;
+
             for (var i = 0; i < selectedFiles.length; i++) {
                 var file = selectedFiles[i];
+                totalFilesSize += file.size;
                 addFileItem(file, i);
             }
         }
+
+        var totalFreeSpace = ${usableSpace?c};
+        var totalFilesSize = 0;
 
         function addFileItem(file, index) {
             // create file item div with index attribute
@@ -729,9 +745,11 @@
             fileName.innerText = file.name;
             fileStatus.innerText = formatFileSize(file.size);
 
+            totalFilesSize = totalFilesSize + file.size;
+
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutExtension.toLowerCase());
-            if (isSourceAlreadyExist) {
+            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
                 fileError.innerText = "<@s.text name='manage.resource.addSource.sameName.confirm'/>";
 
                 var confirmOverwriteLink = document.createElement("a");
@@ -756,7 +774,7 @@
             // link divs
             fileMeta.appendChild(fileName);
             fileMeta.appendChild(fileStatus);
-            if (isSourceAlreadyExist) {
+            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
                 fileMeta.appendChild(fileError);
                 fileDoneIcon.style.visibility = "hidden";
                 fileDoneIcon.style.display = "none";
@@ -782,6 +800,13 @@
                 var index = selectedFiles.indexOf(file);
                 if (index > -1) {
                     selectedFiles.splice(index, 1);
+
+                    var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.'));
+                    var fileNameIndex = confirmedFiles.indexOf(fileNameWithoutExtension);
+                    if (fileNameIndex > -1) {
+                        confirmedFiles.splice(fileNameIndex, 1);
+                    }
+
                     refreshFileList();
                 }
             });
@@ -910,11 +935,25 @@
 
         const observer = new MutationObserver(function() {
             var fileErrors = $(".confirmOverwriteSourceFileLink");
+            var fileOutOfSpaceCallout = $("#callout-not-enough-space");
+            var fileItems = $(".fileItem");
 
-            if (fileErrors.length > 0) {
+            if (totalFreeSpace - totalFilesSize < 0) {
+                fileOutOfSpaceCallout.show();
+            } else {
+                fileOutOfSpaceCallout.hide();
+            }
+
+            var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
+
+            if (fileErrors.length > 0 || outOfSpaceDisplayed) {
                 sendButton.hide();
             } else {
                 sendButton.show();
+            }
+
+            if (fileItems.length === 0) {
+                sendButton.hide();
             }
         });
 
@@ -928,6 +967,11 @@
 
             var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
             fileItemElement.find('.fileError').remove();
+
+            var fileNameWithExtension = fileItemElement.find('.fileName').text();
+            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'));
+
+            confirmedFiles.push(fileNameWithoutExtension);
 
             var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
             var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
@@ -1923,7 +1967,11 @@
                                     <div id="callout-source-exists" class="callout callout-danger text-smaller" style="display: none;">
                                         <@s.text name="manage.resource.addSource.sameName.confirm"/>
                                         <br>
-                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3">Confirm</button>
+                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3"><@s.text name="button.confirm"/></button>
+                                    </div>
+
+                                    <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
+                                        <@s.text name="manage.resource.addSource.notEnoughSpace"><@s.param>${freeDiscSpaceReadable}</@s.param></@s.text>
                                     </div>
 
                                     <input id="fileInput" type="file" multiple style="display: none;" />

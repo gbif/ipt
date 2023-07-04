@@ -143,6 +143,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean validateEml = false;
   private String summary;
   private String makePublicDateTime;
+  private long usableSpace;
+  private String freeDiscSpaceReadable;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -1187,6 +1189,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
       MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
       autoPublishFrequencies.putAll(filteredFrequencies);
+
+      usableSpace = cfg.getDataDir().getDataDirUsableSpace();
+      freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
     }
   }
 
@@ -1735,5 +1740,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public void setMakePublicDateTime(String makePublicDateTime) {
     this.makePublicDateTime = makePublicDateTime;
+  }
+
+  public long getUsableSpace() {
+    return usableSpace;
+  }
+
+  public String getFreeDiscSpaceReadable() {
+    return freeDiscSpaceReadable;
   }
 }
