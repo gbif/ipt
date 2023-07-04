@@ -64,7 +64,7 @@
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
@@ -133,7 +133,7 @@
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="success" type="redirect">

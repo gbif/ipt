@@ -396,23 +396,6 @@
             }
         });
 
-        $("#file").change(function() {
-            var usedFileName = $("#file").prop("value");
-            var currentFileSize = this.files[0].size;
-
-            // validate size
-            if (currentFileSize > 209715200) {
-                $("#file").addClass("is-invalid");
-                return;
-            }
-
-            if (usedFileName !== "") {
-                var addButton = $('#add');
-                addButton.attr("value", '<@s.text name="button.add"/>');
-                addButton.show();
-            }
-        });
-
         $("#clear").click(function(event) {
             event.preventDefault();
 
@@ -670,6 +653,10 @@
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
 
+            setTimeout(function () {
+                $("#sendButton").hide();
+            }, 100);
+
             // hide remove buttons - already submitted
             var removeButtons = document.querySelectorAll(".removeButton");
             removeButtons.forEach(function(button) {
@@ -749,8 +736,11 @@
 
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutExtension.toLowerCase());
-            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
-                fileError.innerText = "<@s.text name='manage.resource.addSource.sameName.confirm'/>";
+
+            if (file.size > 10000000000) {
+                fileError.innerText = `<@s.text name='manage.overview.source.file.too.big'/>`;
+            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
+                fileError.innerText = `<@s.text name='manage.resource.addSource.sameName.confirm'/>`;
 
                 var confirmOverwriteLink = document.createElement("a");
                 confirmOverwriteLink.id = 'confirmOverwriteSourceFileLink-' + index;
@@ -876,7 +866,7 @@
                             ")";
 
                         if (percent === 100) {
-                            fileStatus.innerText = "<@s.text name='manage.resource.addSource.processingFile'/>"
+                            fileStatus.innerText = `<@s.text name='manage.resource.addSource.processingFile'/>`;
                             progressBar.classList.add("progressBar-loader");
                         } else {
                             progressBar.classList.remove("progressBar-loader");
@@ -934,7 +924,7 @@
         const fileListDiv = document.getElementById('fileList');
 
         const observer = new MutationObserver(function() {
-            var fileErrors = $(".confirmOverwriteSourceFileLink");
+            var fileErrors = $(".fileError");
             var fileOutOfSpaceCallout = $("#callout-not-enough-space");
             var fileItems = $(".fileItem");
 
