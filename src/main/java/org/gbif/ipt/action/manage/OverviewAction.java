@@ -1337,10 +1337,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return ERROR;
   }
 
-  public String registerResource() throws Exception {
+  public synchronized String registerResource() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // prevent registration if resource already registered
+    if (resource.isRegistered()) {
+      String msg = getText("manage.overview.failed.resource.registration.alreadyRegistered");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
+
     // prevent registration if last published version was not public (at the time of publishing)
     if (!resource.isLastPublishedVersionPublic()) {
       String msg = getText("manage.overview.failed.resource.registration.notPublic");
@@ -1348,6 +1357,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
     if (resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
@@ -1356,6 +1366,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
