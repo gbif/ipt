@@ -650,12 +650,12 @@
         });
 
         document.getElementById("sendButton").addEventListener("click", async function () {
+            var uploadButton = $("#sendButton");
+            uploadButton.addClass("clicked")
+            uploadButton.hide();
+
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
-
-            setTimeout(function () {
-                $("#sendButton").hide();
-            }, 100);
 
             // hide remove buttons - already submitted
             var removeButtons = document.querySelectorAll(".removeButton");
@@ -718,6 +718,7 @@
 
             // extract file name without extension - check source already exist
             var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.'));
+            var fileNameWithoutSpaces = fileNameWithoutExtension.replace(/\s/g, "");
 
             // file error div
             var fileError = document.createElement("div");
@@ -735,11 +736,11 @@
             totalFilesSize = totalFilesSize + file.size;
 
             // make sure source with the name does not exist (case-insensitive check)
-            var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutExtension.toLowerCase());
+            var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutSpaces.toLowerCase());
 
             if (file.size > 10000000000) {
                 fileError.innerText = `<@s.text name='manage.overview.source.file.too.big'/>`;
-            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
+            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
                 fileError.innerText = `<@s.text name='manage.resource.addSource.sameName.confirm'/>`;
 
                 var confirmOverwriteLink = document.createElement("a");
@@ -764,7 +765,7 @@
             // link divs
             fileMeta.appendChild(fileName);
             fileMeta.appendChild(fileStatus);
-            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutExtension)) {
+            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
                 fileMeta.appendChild(fileError);
                 fileDoneIcon.style.visibility = "hidden";
                 fileDoneIcon.style.display = "none";
@@ -791,8 +792,8 @@
                 if (index > -1) {
                     selectedFiles.splice(index, 1);
 
-                    var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.'));
-                    var fileNameIndex = confirmedFiles.indexOf(fileNameWithoutExtension);
+                    var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.')).replace(/\s/g, "");
+                    var fileNameIndex = confirmedFiles.indexOf(fileNameWithoutExtension.toLowerCase());
                     if (fileNameIndex > -1) {
                         confirmedFiles.splice(fileNameIndex, 1);
                     }
@@ -938,7 +939,7 @@
 
             if (fileErrors.length > 0 || outOfSpaceDisplayed) {
                 sendButton.hide();
-            } else {
+            } else if (!sendButton.hasClass("clicked")) {
                 sendButton.show();
             }
 
