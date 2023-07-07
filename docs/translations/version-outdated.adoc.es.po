@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-04 16:09+0000\n"
-"PO-Revision-Date: 2022-11-04 17:31\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"PO-Revision-Date: 2023-07-07 17:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -16,12 +16,6 @@ msgstr ""
 "X-Crowdin-File: /[gbif.ipt] master/docs/translations/version-outdated.adoc.pot\n"
 "X-Crowdin-File-ID: 213\n"
 
-#. type: delimited block =
-#: en/modules/ROOT/pages/releases.adoc:11
-#: en/modules/ROOT/partials/version-outdated.adoc:8
-msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
-msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles en español."
-
 #. type: Block title
 #: en/modules/ROOT/partials/version-outdated.adoc:2
 #, no-wrap
@@ -32,4 +26,9 @@ msgstr "Versión obsoleta"
 #: en/modules/ROOT/partials/version-outdated.adoc:5
 msgid "You are reading the manual for version {page-version}, which is out of date.  You may wish to read the manual for xref:{latest-manual-version}@releases.adoc[version {latest-manual-version}].  You can choose other versions of the manual with the selectors at the top right or bottom left of the page."
 msgstr "Está leyendo el manual de la versión {page-version}, que está desactualizado. Quizás quiera leer el manual xref:{latest-manual-version}@releases.adoc[versión {latest-manual-version}]. Puede elegir otras versiones del manual con los selectores de la parte superior derecha o inferior izquierda de la página."
+
+#. type: delimited block =
+#: en/modules/ROOT/partials/version-outdated.adoc:8
+msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
+msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles en español."
 
