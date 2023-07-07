@@ -66,10 +66,6 @@
                     <@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
                 </div>
 
-                <div class="col-lg-6">
-                    <@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
-                </div>
-
                 <div class="col-12">
                     <@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" value="${analyticsGbif?c}" help="i18n"/>
                 </div>
