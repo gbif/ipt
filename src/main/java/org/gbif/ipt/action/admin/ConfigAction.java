@@ -55,6 +55,7 @@ public class ConfigAction extends POSTAction {
   protected String proxy;
   protected Boolean debug;
   protected Boolean analyticsGbif;
+  protected String analyticsKey;
   protected String adminEmail;
   protected Double latitude;
   protected Double longitude;
@@ -71,6 +72,10 @@ public class ConfigAction extends POSTAction {
 
   public Boolean getAnalyticsGbif() {
     return cfg.isGbifAnalytics();
+  }
+
+  public String getAnalyticsKey() {
+    return cfg.getAnalyticsKey();
   }
 
   public String getAdminEmail() {
@@ -229,6 +234,16 @@ public class ConfigAction extends POSTAction {
       }
     }
 
+    // google analyticsKey
+    if (analyticsKey != null) {
+      try {
+        configManager.setAnalyticsKey(analyticsKey);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.analyticsKey.error"));
+        return INPUT;
+      }
+    }
+
     // IPT lat/lon
     try {
       configManager.setIptLocation(latitude, longitude);
@@ -253,6 +268,10 @@ public class ConfigAction extends POSTAction {
 
   public void setAnalyticsGbif(Boolean analyticsGbif) {
     this.analyticsGbif = analyticsGbif;
+  }
+
+  public void setAnalyticsKey(String analyticsKey) {
+    this.analyticsKey = analyticsKey;
   }
 
   // Getters / Setters follow
