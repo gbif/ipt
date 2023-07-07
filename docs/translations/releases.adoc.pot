@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-03-01 13:09+0000\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,18 +34,11 @@ msgid "The current, stable release is version <<2-7-3-march-2023,2.7.3>>."
 msgstr ""
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/releases.adoc:9
+#: en/modules/ROOT/pages/releases.adoc:11
 msgid ""
 "You are reading the latest version of the manual.  You can read older "
 "versions of the manual using the selectors at the top-right or bottom-left "
-"of the screen."
-msgstr ""
-
-#. type: delimited block =
-#: en/modules/ROOT/pages/releases.adoc:11
-#: en/modules/ROOT/partials/version-outdated.adoc:8
-msgid ""
-"Note that the not all manual versions are available in "
+"of the screen.  Note that the not all manual versions are available in "
 "TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
 msgstr ""
 
@@ -554,8 +547,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:184
 msgid ""
-"This version addresses 81 issues, including the famous \"double log in bug"
-"\", and brings in a fresher-looking user interface.  This user manual has "
+"This version addresses 81 issues, including the famous \"double log in "
+"bug\", and brings in a fresher-looking user interface.  This user manual has "
 "also been refreshed, enabling a complete translation into Spanish."
 msgstr ""
 
