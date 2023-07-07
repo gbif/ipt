@@ -75,7 +75,6 @@ public class AppConfig {
   public static final String ARCHIVAL_MODE = "archivalMode";
   public static final String ARCHIVAL_LIMIT = "archivalLimit";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
-  public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
@@ -172,10 +171,6 @@ public class AppConfig {
 
   public boolean devMode() {
     return !"false".equalsIgnoreCase(properties.getProperty("dev.devmode"));
-  }
-
-  public String getAnalyticsKey() {
-    return properties.getProperty(ANALYTICS_KEY);
   }
 
   public String getBaseUrl() {

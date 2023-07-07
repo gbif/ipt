@@ -29,7 +29,6 @@
     <devModeNegated>true</devModeNegated>
     <jetty.port>7001</jetty.port>
 
-    <analytics.key />
     <ipt.frontPageImageURL />
     <google.maps.key />
     <ipt.baseURL />
