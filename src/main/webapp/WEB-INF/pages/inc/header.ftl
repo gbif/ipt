@@ -50,7 +50,7 @@
 
 
     [#-- GOOGLE ANALYTICS - asynchroneous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
-    [#if cfg.gbifAnalytics]
+    [#if (cfg.analyticsKey!"")?length>1]
         <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
