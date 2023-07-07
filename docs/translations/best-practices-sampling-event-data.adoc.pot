@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"POT-Creation-Date: 2023-07-07 16:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,9 +78,9 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:70
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
 msgid ""
-"Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `"
-"\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `"
-"\\r` to escape the line break if the intention is to preserve them. Another "
+"Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or "
+"`\\r\\n` with either simple spaces or use 2 characters like `$$` to replace "
+"`\\r` to escape the line break if the intention is to preserve them. Another "
 "option is to replace line breaks with the HTML `<br>` tag."
 msgstr ""
 
@@ -88,8 +88,8 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid ""
-"Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `"
-"\\N` or `\\NULL`, but no other text sequence!"
+"Encode nulls as empty strings, i.e. no characters between 2 delimiters, or "
+"`\\N` or `\\NULL`, but no other text sequence!"
 msgstr ""
 
 #. type: Title =
@@ -140,7 +140,7 @@ msgstr ""
 
 #.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:26
 msgid ""
 "The DwC-A format and the specific profile described here represent an "
 "internationally recognized and ratified data exchange format for sharing "
@@ -157,8 +157,12 @@ msgid ""
 "ecologists and data managers familiar with basic structured text files. With "
 "this international standard, GBIF hopes to facilitate sampling-event data "
 "sharing and promote common approaches to cite and recognize the work of the "
-"community creating and handling sampling-event data.  A standard format also "
-"increases relevance and utility."
+"community creating and handling sampling-event data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
+msgid "A standard format also increases relevance and utility."
 msgstr ""
 
 #. type: Title ==
