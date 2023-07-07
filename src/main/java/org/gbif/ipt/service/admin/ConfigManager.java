@@ -57,6 +57,12 @@ public interface ConfigManager {
   void saveConfig() throws InvalidConfigException;
 
   /**
+   * Simple wrapper around AppConfig to set the google analytics key for the IPT
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setAnalyticsKey(String key) throws InvalidConfigException;
+
+  /**
    * Sets the base URL for the IPT installation.
    * This affects all accessible resources
    * through the IPT. The baseURL cannot be determined programmatically as it is not possible

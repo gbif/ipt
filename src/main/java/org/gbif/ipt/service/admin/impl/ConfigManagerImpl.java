@@ -311,6 +311,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   @Override
+  public void setAnalyticsKey(String key) throws InvalidConfigException {
+    cfg.setProperty(AppConfig.ANALYTICS_KEY, StringUtils.trimToEmpty(key));
+  }
+
+  @Override
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     boolean validate = true;
 
