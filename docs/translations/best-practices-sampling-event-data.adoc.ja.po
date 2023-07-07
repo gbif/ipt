@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"PO-Revision-Date: 2023-07-07 17:44\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -125,9 +125,14 @@ msgstr "このガイドでは、サンプリングイベント情報を標準的
 
 #.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 #. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:26
+msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data."
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
-msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data.  A standard format also increases relevance and utility."
-msgstr "DwC-Aフォーマットとここで説明する特定のプロファイルは、サンプリング・イベント・データを共有するための国際的に認められ批准されたデータ交換フォーマットです。すべてのデータ交換標準は、一方では技術的な範囲と能力、他方では社会的な受け入れと取り込みのバランスを取る必要があります。シンプルなソリューションでは、使いやすさを優先して、対象範囲と複雑さが犠牲になります。非常に複雑なフォーマットは、あらゆる種類のデータを表現するためのより完全なソリューションを提供しますが、単純さを犠牲にして、サポートするソフトウェアと専門知識を必要とします。ダーウィンコア・アーカイブフォーマットは、この両端の中間的な位置づけにあります。これはサンプリングイベントデータの主要な要素に焦点を当て、このコア構造にリンクさせることで、より充実したデータタイプのセットを可能にします。アーカイブに含まれるデータは、基本的な構造化テキストファイルに慣れている多くの生態学者やデータ管理者が容易に理解し、使用することができます。この国際標準によって、GBIFはサンプリングイベントデータの共有を促進し、サンプリングイベントデータを作成し扱うコミュニティの仕事を引用し認識するための共通のアプローチを促進することを期待しています。また、標準的なフォーマットは関連性と実用性を高めます。"
+msgid "A standard format also increases relevance and utility."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
