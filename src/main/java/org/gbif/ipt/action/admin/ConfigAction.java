@@ -69,6 +69,10 @@ public class ConfigAction extends POSTAction {
     this.resourceManager = resourceManager;
   }
 
+  public String getAnalyticsKey() {
+    return cfg.getAnalyticsKey();
+  }
+
   public String getAdminEmail() {
     return cfg.getAdminEmail();
   }
