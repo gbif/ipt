@@ -74,7 +74,6 @@ public class AppConfig {
   public static final String DEBUG = "debug";
   public static final String ARCHIVAL_MODE = "archivalMode";
   public static final String ARCHIVAL_LIMIT = "archivalLimit";
-  public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
@@ -434,10 +433,6 @@ public class AppConfig {
       LOG.warn("Archival limit was invalid: " +e.getMessage());
     }
     return null;
-  }
-
-  public boolean isGbifAnalytics() {
-    return "true".equalsIgnoreCase(properties.getProperty(ANALYTICS_GBIF));
   }
 
   /**
