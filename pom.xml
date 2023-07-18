@@ -193,6 +193,10 @@
               <name>servername</name>
               <value>http://localhost:${jetty.port}</value>
             </systemProperty>
+            <systemProperty>
+              <name>org.eclipse.jetty.server.Request.maxFormKeys</name>
+              <value>5000</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>
