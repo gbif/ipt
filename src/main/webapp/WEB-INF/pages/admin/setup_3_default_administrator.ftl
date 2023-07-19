@@ -38,7 +38,7 @@
             <div class="bd-content">
                 <div class="my-3 p-3">
                     <h5 class="pb-2 mb-2 mt-2 text-gbif-header-2 fw-400">
-                        [@s.text name="admin.config.setup2.title"/]
+                        [@s.text name="admin.config.setup2.administrator.title"/]
                     </h5>
 
                     <p>[@s.text name="admin.config.setup2.welcome"/]</p>
