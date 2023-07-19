@@ -217,7 +217,7 @@ public class SetupAction extends BaseAction {
 
       File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
-        if (StringUtils.isEmpty(dataDirPath)) {
+        if (StringUtils.isEmpty(dataDirPath) && dataDir.dataDir == null) {
           addFieldError("dataDirPath",
               getText("validation.required", new String[] {getText("admin.config.setup.datadir")}));
         } else if (dd.isAbsolute()) {
