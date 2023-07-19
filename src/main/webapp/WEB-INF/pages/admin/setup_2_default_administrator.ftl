@@ -1,9 +1,9 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 0]
+[#assign setupStepIndex = 1]
 
-<form action="setupDisclaimer.do" method="post" class="needs-validation" novalidate>
+<form action="setupDefaultAdministrator.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
@@ -37,15 +37,37 @@
 
             <div class="bd-content">
                 <div class="my-3 p-3">
-                    <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                        [@s.text name="admin.config.setup.title"/]
+                    <h5 class="pb-2 mb-2 mt-2 text-gbif-header-2 fw-400">
+                        [@s.text name="admin.config.setup2.administrator.title"/]
                     </h5>
 
-                    <p>[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
-                    <p>[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
+                    <p>[@s.text name="admin.config.setup2.welcome"/]</p>
 
-                    <div>
-                        [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read" requiredField=true /]
+                    <input type="hidden" name="setupDefaultAdministrator" value="true" />
+
+                    <p>
+                        [@s.text name="admin.config.setup2.administrator"/]. [@s.text name="admin.config.setup2.administrator.help"/]
+                    </p>
+                    <div class="row g-3 pb-3 mb-2">
+                        <div class="col-md-4">
+                            [@input name="user.firstname" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-4">
+                            [@input name="user.lastname" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-4">
+                            [@input name="user.email" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-6">
+                            [@input name="user.password" type="password" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-6">
+                            [@input name="password2" i18nkey="user.password2" type="password" requiredField=true /]
+                        </div>
                     </div>
                 </div>
             </div>

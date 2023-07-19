@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 1]
+[#assign setupStepIndex = 0]
 
 <form action="setupDataDirectory.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">

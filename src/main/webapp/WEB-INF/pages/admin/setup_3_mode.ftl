@@ -1,9 +1,9 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 4]
+[#assign setupStepIndex = 2]
 
-<form action="setupPublicUrl.do" method="post" class="needs-validation" novalidate>
+<form action="setupMode.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
@@ -37,40 +37,24 @@
 
             <div class="bd-content">
                 <div class="my-3 p-3">
-                    <h5 class="text-gbif-header-2 pb-2 pt-2 fw-400">
-                        [@s.text name="admin.config.setup2.publicURL.title"/]
+                    <h5 class="text-gbif-header-2 pb-2 mt-2 fw-400">
+                        [@s.text name="admin.config.setup2.mode.title"/]
                     </h5>
 
-                    <input type="hidden" name="setupPublicUrl" value="true" />
+                    <p>[@s.text name="admin.config.setup2.mode.help"/]</p>
+                    <p>[@s.text name="admin.config.setup2.mode.test"/]</p>
+                    <p>[@s.text name="admin.config.setup2.mode.production"/]</p>
+                    <p>[@s.text name="admin.config.setup2.mode"/] <span class="text-gbif-danger">&#42;</span></p>
 
-                    <p>
-                        [@s.text name="admin.config.setup2.publicURL.details"/]
-                    </p>
-
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            [@input name="baseURL" i18nkey="admin.config.baseUrl" requiredField=true /]
+                    [#list modes as mode]
+                        <div class="form-check form-check-inline pb-2">
+                            <input class="form-check-input" type="radio" name="modeSelected" id="mode${mode}" aria-describedby="field-error-mode" [#if mode??]value="${mode}"[/#if] [#if modeSelected?? && mode == modeSelected] checked [/#if]>
+                            <label class="form-check-label" for="mode${mode}">
+                                [@s.text name="admin.config.setup2.mode.${mode}.label"/]
+                            </label>
                         </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-3 p-3">
-                    <h5 class="text-gbif-header-2 pb-2 pt-2 fw-400">
-                        [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
-                    </h5>
-
-                    <input type="hidden" name="setupProxyUrl" value="true" />
-
-                    <p>
-                        [@s.text name="admin.config.setup2.forwardProxyURL.details"/]
-                    </p>
-
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            [@input name="proxy" i18nkey="admin.config.proxy" /]
-                        </div>
-                    </div>
+                    [/#list]
+                    [@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-modeSelected my-0" fieldName="modeSelected"/]
 
                 </div>
             </div>
