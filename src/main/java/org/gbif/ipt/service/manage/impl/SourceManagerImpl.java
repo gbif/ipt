@@ -864,6 +864,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source == null) {
       return null;
     }
+
     try {
       if (source instanceof SqlSource) {
         return new SqlRowIterator((SqlSource) source);
@@ -871,7 +872,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // Excel, file and URL sources
         return ((RowIterable) source).rowIterator();
       }
-
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);
       throw new SourceException("Can't build iterator for source " + source.getName() + " :" + e.getMessage());
