@@ -50,7 +50,7 @@
                         <div class="form-check form-check-inline pb-2">
                             <input class="form-check-input" type="radio" name="modeSelected" id="mode${mode}" aria-describedby="field-error-mode" [#if mode??]value="${mode}"[/#if] [#if modeSelected?? && mode == modeSelected] checked [/#if]>
                             <label class="form-check-label" for="mode${mode}">
-                                [@s.text name="admin.config.setup2.mode.${mode}.label"/]
+                                [@s.text name="admin.config.setup2.mode.${mode?lower_case}.label"/]
                             </label>
                         </div>
                     [/#list]
