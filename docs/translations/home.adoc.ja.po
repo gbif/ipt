@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-07 02:29\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -118,7 +118,7 @@ msgstr "登録リソースインベントリ"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:25
 msgid "The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append `/inventory/dataset` to the IPT public URL, e.g. https://ipt.gbif.org/inventory/dataset. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts."
-msgstr "IPTは、登録されたすべてのリソースの簡単なJSONインベントリを提供します。この機能はユーザーインターフェースには表示されません。必要であれば、IPTの公開URLに`/inventory/dataset`を追加（例：https://ipt.gbif.org/inventory/dataset）して表示してください。GBIFはこのインベントリを利用してターゲットとインデックスされたレコード数を比較することで、リソースを適切にインデックスできているかモニターしています。"
+msgstr "IPTは、登録されたすべてのリソースの簡単なJSONインベントリを提供します。この機能はユーザーインターフェースには表示されません。必要であれば、IPTの公開URLに``/inventory/dataset``を追加（例：https://ipt.gbif.org/inventory/dataset）して表示してください。GBIFはこのインベントリを利用してターゲットとインデックスされたレコード数を比較することで、リソースを適切にインデックスできているかモニターしています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:26
