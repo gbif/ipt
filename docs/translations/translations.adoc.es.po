@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-26 14:07+0000\n"
-"PO-Revision-Date: 2023-07-26 14:28\n"
+"PO-Revision-Date: 2023-07-26 16:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -268,7 +268,7 @@ msgstr "Los hipervínculos simples deben tener el prefijo `link:`. La forma abre
 #: en/modules/ROOT/pages/translations.adoc:102
 #, no-wrap
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
-msgstr ""
+msgstr "Asegúrese de inscribirse en https://lists.gbif.org/mailman/listinfo/ipt/[Lista de correo del IPT], que sirve como grupo de apoyo para los usuarios de IPT.\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:104
