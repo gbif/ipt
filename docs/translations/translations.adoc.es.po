@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-26 12:57+0000\n"
-"PO-Revision-Date: 2023-07-26 13:19\n"
+"POT-Creation-Date: 2023-07-26 14:07+0000\n"
+"PO-Revision-Date: 2023-07-26 14:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -252,22 +252,22 @@ msgstr "La sintaxis para incluir esta imagen en el manual, `image::ipt2/home/IPT
 #: en/modules/ROOT/pages/translations.adoc:93
 #, no-wrap
 msgid "Japanese, Chinese and Korean"
-msgstr ""
+msgstr "Japonés, Chino y Coreano."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:96
 msgid "These languages do not use spaces between words, so some abbreviated syntax used in the English text will not work."
-msgstr ""
+msgstr "Estos idiomas no utilizan espacios entre palabras, por lo que la sintaxis abreviada usada en inglés o español no funcionarán."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:98
 msgid "Plain hyperlinks must be prefixed with `link:`.  The short form without `link:` only works if there is a space before the `https:` or `http:`."
-msgstr ""
+msgstr "Los hipervínculos simples deben tener el prefijo `link:`. La forma abreviada sin `link:` solo funciona si hay un espacio antes de `https:` o `http:`"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:102
 #, no-wrap
-msgid "Be sure to sign up to the link:https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
+msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
 msgstr ""
 
 #. type: delimited block -
@@ -280,7 +280,7 @@ msgstr ""
 #: en/modules/ROOT/pages/translations.adoc:107
 #, no-wrap
 msgid "*Bold*, _italic_ and `monospace` text formatted with single `*`, `_` and `+++`+++` characters only works if there are spaces outside those characters.  Where there are no spaces, the characters must be doubled:\n"
-msgstr ""
+msgstr "El texto *Negrita*, _cursiva_ y `monoespaciado` formateado con caracteres `*`, `_` y `++++`+++` solo funciona si hay espacios por fuera de esos caracteres. Donde no haya espacios, los caracteres deben ser duplicados:\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:111
@@ -303,12 +303,12 @@ msgstr "Idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:118
 msgid "Spanish (complete)"
-msgstr ""
+msgstr "Español (completo)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:119
 msgid "Japanese (complete)"
-msgstr ""
+msgstr "Japonés (completo)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:120
