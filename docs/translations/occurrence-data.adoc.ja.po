@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -200,7 +200,7 @@ msgstr "Q. 種が存在しないことを示すにはどうすればいいです
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
 msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr "*A.* link:https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]に設定してください。さらに、https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]とhttps://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity]は0としてください。\n"
+msgstr "*A.* link:https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]に設定してください。さらに、link:https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]とlink:https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity]は0としてください。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
