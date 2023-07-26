@@ -98,7 +98,7 @@ These languages do not use spaces between words, so some abbreviated syntax used
 +
 [source,asciidoc]
 ----
-Be sure to sign up to the link:https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.
+Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.
 
 IPTユーザーのサポートグループであるlink:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]に必ずご登録ください。
 ----
