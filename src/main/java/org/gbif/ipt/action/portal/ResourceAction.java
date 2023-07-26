@@ -757,7 +757,7 @@ public class ResourceAction extends PortalBaseAction {
     }
 
     if (agent1.getEmail() != null && agent2.getEmail() != null) {
-      emailsMatch = agent1.getEmail().equals(agent2.getEmail());
+      emailsMatch = agent1.getEmail().equalsIgnoreCase(agent2.getEmail());
     } else {
       emailsMatch = true;
     }
