@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-26 12:57+0000\n"
-"PO-Revision-Date: 2023-07-26 13:19\n"
+"PO-Revision-Date: 2023-07-26 14:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -120,7 +120,7 @@ msgstr "*URL del proxy institucional*: si el servidor en el que está instalado 
 #: en/modules/ROOT/pages/administration.adoc:34
 #, no-wrap
 msgid "*Google Analytics key* - If you would like to track the use of your instance of the IPT with Google Analytics, you can enable it to do so by entering your Google Analytics key in this text box. For more information about Google Analytics, see https://www.google.com/intl/en/analytics/.\n"
-msgstr ""
+msgstr "*Clave de Google Analytics* - Si desea rastrear el uso de su IPT con Google Analytics, puede habilitarlo ingresando la clave de Google Analytics en este cuadro de texto. Para obtener más información sobre Google Analytics, consulte https://www.google.com/intl/es/analytics/.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:35
