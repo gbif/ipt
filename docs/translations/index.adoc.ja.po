@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-02-08 03:12\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -79,7 +79,7 @@ msgstr "IPTインスタンスおよびIPTで登録されたデータやメタデ
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。https://www.gbif.org/participation/participant-list[GBIFのさまざまな参加者]は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、link:https://www.gbif.org/[GBIF.org]をご覧ください。"
+msgstr "2001年に各国政府が出資して設立されたGBIF（The Global Biodiversity Information Facility）は、インターネットを通じて生物多様性データを自由に入手できるようにするための世界最大の多国間イニシアチブです。link:https://www.gbif.org/participation/participant-list[GBIFのさまざまな参加者]は、主に国や国際機関です。GBIFは、関連する国際条約機関とも正式なパートナーシップを結んでいます。GBIFの使命は、科学、保全、持続可能な開発を支えるために、インターネットを介した生物多様性データへの自由でオープンなアクセスを世界中に促進し、可能にすることです。GBIFの詳細については、link:https://www.gbif.org/[GBIF.org]をご覧ください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
