@@ -56,6 +56,7 @@
     <commons-collections4.version>4.4</commons-collections4.version>
     <commons-validator.version>1.7</commons-validator.version>
     <commons-text.version>1.10.0</commons-text.version>
+    <excel-streaming-reader.version>4.0.5</excel-streaming-reader.version>
     <freemarker.version>2.3.31</freemarker.version>
     <gson.version>2.9.0</gson.version>
     <guava.version>20.0</guava.version>
@@ -74,7 +75,7 @@
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <struts2.version>2.5.30</struts2.version>
+    <struts2.version>2.5.31</struts2.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
@@ -191,6 +192,10 @@
             <systemProperty>
               <name>servername</name>
               <value>http://localhost:${jetty.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>org.eclipse.jetty.server.Request.maxFormKeys</name>
+              <value>5000</value>
             </systemProperty>
           </systemProperties>
         </configuration>
@@ -519,6 +524,12 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>com.github.pjfanning</groupId>
+      <artifactId>excel-streaming-reader</artifactId>
+      <version>${excel-streaming-reader.version}</version>
+    </dependency>
+
 
     <!--
       Log4j used directly

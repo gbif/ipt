@@ -61,9 +61,19 @@ public class ResourceUtils {
     Objects.requireNonNull(version);
     Objects.requireNonNull(shortname);
 
-    if (organisation == null || versionHistory == null || versionEmlFile == null) {
+    if (organisation == null) {
       throw new IllegalArgumentException(
-        "Failed to reconstruct resource version because not all of organisation, version history, or version eml file were provided");
+              "Failed to reconstruct resource version: organisation is null");
+    }
+
+    if (versionHistory == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version history is null");
+    }
+
+    if (versionEmlFile == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version eml file is null");
     }
 
     // initiate new version, and set properties

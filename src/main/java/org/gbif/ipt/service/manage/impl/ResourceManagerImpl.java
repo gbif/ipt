@@ -246,13 +246,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
     // add only public/registered resources with at least one published version
-    if (!res.getVersionHistory().isEmpty()) {
-      VersionHistory latestVersion = res.getVersionHistory().get(0);
-      if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-          !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
-          latestVersion.getReleased() != null) {
-        publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+    try {
+      if (!res.getVersionHistory().isEmpty()) {
+        VersionHistory latestVersion = res.getVersionHistory().get(0);
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+                !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+                latestVersion.getReleased() != null) {
+          publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+        }
       }
+    } catch (Exception e) {
+      LOG.error("Failed to reconstruct resource's last published version", e);
     }
   }
 
@@ -2753,18 +2757,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 parsedEventDateTA = ((YearMonth) parsedEventDateTA).atEndOfMonth();
               }
 
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof ChronoLocalDate
+                      && startDateTA instanceof ChronoLocalDate
+                      && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
                 startDateTA = parsedEventDateTA;
                 startDateStr = rawEventDateValue;
               }
 
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
+              if (parsedEventDateTA instanceof ChronoLocalDate
+                      && endDateTA instanceof ChronoLocalDate
+                      && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
                 endDateTA = parsedEventDateTA;
                 endDateStr = rawEventDateValue;
               }
             }
 
           }
+        // Catch ParseException, occurs for Excel files. Find out why
+        } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+          LOG.error("Error while trying to infer metadata: {}", e.getMessage());
         } catch (Exception e) {
           LOG.error("Error while trying to infer metadata from source data", e);
           serverError = true;

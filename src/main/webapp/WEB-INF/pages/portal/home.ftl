@@ -3,7 +3,7 @@
 <title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
-<script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 
 <@resourcesTable resources=resources shownPublicly=true numResourcesShown=10 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />

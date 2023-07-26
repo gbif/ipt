@@ -230,7 +230,7 @@ Last, press the "update registration" button on the Edit GBIF Registration page.
 
 If you have forgotten the admin password, the server administrator will need to reset it.
 
-Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
+Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
 
 === How do I migrate a dataset from one IPT installation to another?
 This migration process must be done directly on the server following the next steps:
@@ -280,6 +280,8 @@ This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat 
 Any errors like "unable to get local issuer certificate" or "certificate chain incomplete" will usually prevent GBIF's systems from accessing your IPT.
 
 To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT.
+
+A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the most common issue is available at https://whatsmychaincert.com/[What’s My Chain Cert].
 
 == Indexing by others
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-07-07 16:27+0000\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -785,10 +785,10 @@ msgstr ""
 msgid ""
 "Using a text editor, open the file `config/users.xml` contained in the IPT "
 "data directory.  Find the admin user (with `role=\"Admin\"`), and replace "
-"the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/"
-"dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the "
-"admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password "
-"should then be changed."
+"the encrypted password with "
+"`$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Restart the "
+"IPT.  You can then log in as the admin user with the password "
+"`Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
 msgstr ""
 
 #. type: Title ===
@@ -985,20 +985,29 @@ msgid ""
 "department for advice.  These problems are generally not related to the IPT."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:285
+msgid ""
+"A useful resource for configuring many web servers is the https://ssl-config."
+"mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the "
+"most common issue is available at https://whatsmychaincert.com/[What’s My "
+"Chain Cert]."
+msgstr ""
+
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:284
+#: en/modules/ROOT/pages/faq.adoc:286
 #, no-wrap
 msgid "Indexing by others"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:286
+#: en/modules/ROOT/pages/faq.adoc:288
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:289
+#: en/modules/ROOT/pages/faq.adoc:291
 msgid ""
 "Some organizations need to index their own IPT, often to include records of "
 "each resource in a public open data system or similar.  The IPT supports "
@@ -1007,7 +1016,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:290
+#: en/modules/ROOT/pages/faq.adoc:292
 msgid ""
 "An alternative is the https://www.gbif.org/developer/"
 "registry#installations[GBIF Registry Installations API], though this will "

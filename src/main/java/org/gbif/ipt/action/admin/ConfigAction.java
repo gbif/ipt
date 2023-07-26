@@ -54,7 +54,6 @@ public class ConfigAction extends POSTAction {
   protected String baseUrl;
   protected String proxy;
   protected Boolean debug;
-  protected Boolean analyticsGbif;
   protected String analyticsKey;
   protected String adminEmail;
   protected Double latitude;
@@ -68,10 +67,6 @@ public class ConfigAction extends POSTAction {
     super(textProvider, cfg, registrationManager);
     this.configManager = configManager;
     this.resourceManager = resourceManager;
-  }
-
-  public Boolean getAnalyticsGbif() {
-    return cfg.isGbifAnalytics();
   }
 
   public String getAnalyticsKey() {
@@ -224,16 +219,6 @@ public class ConfigAction extends POSTAction {
       return INPUT;
     }
 
-    // allow gbif analytics
-    if (analyticsGbif != null) {
-      try {
-        configManager.setGbifAnalytics(analyticsGbif);
-      } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.analyticsGbif.error"));
-        return INPUT;
-      }
-    }
-
     // google analyticsKey
     if (analyticsKey != null) {
       try {
@@ -264,10 +249,6 @@ public class ConfigAction extends POSTAction {
     }
 
     return SUCCESS;
-  }
-
-  public void setAnalyticsGbif(Boolean analyticsGbif) {
-    this.analyticsGbif = analyticsGbif;
   }
 
   public void setAnalyticsKey(String analyticsKey) {
