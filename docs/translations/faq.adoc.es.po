@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-11-28 13:40+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"PO-Revision-Date: 2023-07-07 17:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -590,8 +590,8 @@ msgstr "Si ha olvidado la contraseña del administrador, el administrador del se
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:234
-msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
-msgstr "Usando un editor de texto, abra el archivo `config/users.xml` del directorio de datos del IPT. Busque el usuario administrador (con `role=\"Admin\"`) y reemplace la contraseña encriptada con `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`. Reinicie el IPT. A continuación puede iniciar como un usuario administrador con la contraseña `Ga_1bxiedrvNHSyK`, por supuesto, esta contraseña debe ser cambiada."
+msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
+msgstr "Utiliza un editor de texto para abrir el archivo `config/users.xml` que se encuentra en el directorio de datos del IPT.  Busca el usuario admin (con `role=\"Admin\"`) y sustituye la contraseña cifrada por `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Reinicia el IPT.  A continuación, puede iniciar sesión como usuario administrador con la contraseña `Ga_1bxiedrvNHSyK` — por supuesto, esta contraseña debe ser cambiada."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:235
@@ -736,25 +736,30 @@ msgstr "Cualquier error como \"unable to get local issuer certificate\" o \"cert
 msgid "To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT."
 msgstr "Para solucionarlos, consulte la documentación de su servidor web o pida consejo a su departamento informático.  Por lo general, estos problemas no están relacionados con el IPT."
 
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:285
+msgid "A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the most common issue is available at https://whatsmychaincert.com/[What’s My Chain Cert]."
+msgstr "Un recurso útil para configurar muchos servidores web es https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], y en https://whatsmychaincert.com/[What's My Chain Cert] encontrará una prueba rápida para el problema más común."
+
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:284
+#: en/modules/ROOT/pages/faq.adoc:286
 #, no-wrap
 msgid "Indexing by others"
 msgstr "Indexación por otros"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:286
+#: en/modules/ROOT/pages/faq.adoc:288
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr "¿Cómo puedo exportar una lista de recursos publicados en mi IPT?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:289
+#: en/modules/ROOT/pages/faq.adoc:291
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
 msgstr "Algunas organizaciones necesitan indexar su propio IPT, a menudo para incluir registros de cada recurso en un sistema público de datos abiertos o similar. El IPT es compatible con DCAT (Vocabulario de catálogo de datos) para permitir esto. La exportación al DCAT está disponible en `/dcat`, por ejemplo, https://ipt.gbif.org/dcat."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:290
+#: en/modules/ROOT/pages/faq.adoc:292
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
 msgstr "Una alternativa es https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], aunque esto solo incluirá conjuntos de datos publicados en GBIF."
 

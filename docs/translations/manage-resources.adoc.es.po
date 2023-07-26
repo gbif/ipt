@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"PO-Revision-Date: 2023-07-07 17:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -317,7 +317,7 @@ msgstr "Archivo como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the {threedots} menu at \"Source Data\" and select \"Add\". Then select \"File\" from the dropdown box in the modal window and click on the button labelled \"Browse…\" or \"Choose file\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados (CSV, archivos separados por tabuladores y que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip, también admite archivos de Excel. Seleccione la opción \"Archivo\" del menú desplegable y haga clic en el botón \"Examinar\" para seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -437,7 +437,7 @@ msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos ba
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* - click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*Vista previa* - de clic en este botón para visualisar una interpretación de los datos dentro del archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -486,7 +486,7 @@ msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) esta lista de s
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file. To reopen the Source Data File detail page just click on the appropriate item."
-msgstr ""
+msgstr "Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón \"Guardar\" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página \"Vista general del recurso\", con información resumida acerca del archivo. Para abrir nuevamente el \"Conjunto de datos\", haga clil en el botón apropiado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:112
@@ -507,7 +507,7 @@ msgstr "Base de datos como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos desde tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles. Para configurar una base de datos como fuente de datos, de clic en el {threedots} menú y selecciones \"Añadir\". LUego escoja \"BAse de datos\" de la lista de fuentes de datos en el menú desplegable , luego de clic en el botón \"Conectar\". Esto abrirá un página de Fuente de Base de Datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
@@ -547,7 +547,7 @@ msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos ba
 #: en/modules/ROOT/pages/manage-resources.adoc:128
 #, no-wrap
 msgid "*Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page.\n"
-msgstr ""
+msgstr "*Vista previa* - haga clic en este botón para ver una interpretación de los datos basada en la configuración de la conexión a la base de datos en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:129
@@ -605,7 +605,7 @@ msgstr "URL como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:142
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Click the {threedots} menu and select \"Add\". Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, tabulaciones y archivos que utilicen cualquier otro delimitador) directamente desde una URL. Haga clic en el menú {threedots} y seleccione \"Añadir\". A continuación, seleccione \"URL\" en la lista desplegable de tipo de datos de origen, indique el nombre de la fuente y escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:146
@@ -642,7 +642,7 @@ msgstr "Esta área de la página \"Vista general del recurso\", permite al usuar
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:157
 msgid "Once these conditions have been met, the dropdown will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the \"Configure Core Types and Extensions\" heading in the \"Administration Menu\" section for an explanation of how to install extensions."
-msgstr ""
+msgstr "Una vez cumplidas estas condiciones, el menú desplegable contendrá un cuadro de selección con una lista de tipos de core y extensiones que se han instalado. Seleccione un tipo de core y mapeelo antes de seleccionar una extensión a mapear. Seleccione la extensión apropiada que tenga campos que coincidan con los que se van a mapear en la fuente de datos. Si el tipo de core o la extensión apropiados no aparecen en el cuadro de selección, será necesario instalarlos primero. Consulte la información del apartado \"Configurar tipos de core y extensiones\" de la sección \"Menú Administración\" para obtener una explicación sobre cómo instalar extensiones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:158
@@ -1005,7 +1005,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:262
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select \"Edit\" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite and be assigned a DOI. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Incomplete\" in the Metadata area of the page."
-msgstr ""
+msgstr "Esta área de la página Vista General permite al usuario editar los metadatos del recurso. Para ello, haga clic en el menú {threedots} y seleccione \"Editar\" en el desplegable. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite y tener asignado un DOI. Si falta alguno de los metadatos requeridos, la página de Resumen de Recursos se abrirá con un distintivo \"Incompleto\" en el área de Metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:263
@@ -1016,7 +1016,7 @@ msgstr "ipt2/manage/IPTManageResourceMetadataMissing.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:266
 msgid "An existing resource file can be uploaded, replacing any existing metadata. To do this, click the {threedots} menu and select \"Upload\". Then click the \"Browse\" button and choose the EML file."
-msgstr ""
+msgstr "Se puede cargar un archivo de recursos existente, sustituyendo los metadatos existentes. Para ello, haga clic en el menú {threedots} y seleccione \"Cargar\". A continuación, haga clic en el botón \"Examinar\" y seleccione el archivo EML."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:268
@@ -1103,7 +1103,7 @@ msgstr "*Descripción*: una breve descripción del recurso que está siendo docu
 #: en/modules/ROOT/pages/manage-resources.adoc:288
 #, no-wrap
 msgid "*Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. The contacts in the list can be rearranged by simply dragging the elements and placing them in the right place.\n"
-msgstr ""
+msgstr "*Contactos del recurso*: la lista de personas y organizaciones con las que hay que ponerse en contacto para obtener más información sobre el recurso, que lo custodian o a las que hay que dirigir los posibles problemas con el recurso o sus datos. Los contactos de la lista pueden reordenarse simplemente arrastrando los elementos y colocándolos en el lugar adecuado.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:290
@@ -1115,7 +1115,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:293
 #, no-wrap
 msgid "*Copy from another* - click on this link to copy contact data from any resource. A modal window is displayed with options to choose the resource and the contact.\n"
-msgstr ""
+msgstr "*Copiar de otro* - haga clic en este enlace para copiar los datos de contacto de cualquier recurso. Aparecerá una ventana modal con opciones para elegir el recurso y el contacto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:294
@@ -2153,7 +2153,7 @@ msgstr "*Eliminar identificador alternativo*: al hacer clic sobre este enlace se
 #: en/modules/ROOT/pages/manage-resources.adoc:552
 #, no-wrap
 msgid "Publication"
-msgstr ""
+msgstr "Publicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:554
@@ -2568,7 +2568,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
-msgstr ""
+msgstr "*Registrado* - Un recurso que ha sido registrado en la red de GBIF es descubrible a través de la página web de GBIF y los datos del recurso pueden ser indexados y accedidos desde el portal de GBIF. Tenga en cuenta que GBIF puede tardar hasta una hora en indexar los datos después del registro. Un resumen de la información registrada en GBIF aparecerá en el área de <<Registration>> cuando el registro se haya completado.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:678
@@ -2601,7 +2601,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:690
 msgid "Registration is enabled when:"
-msgstr ""
+msgstr "El registro se habilita cuando:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:692
@@ -2611,7 +2611,7 @@ msgstr "los metadatos necesarios para el recurso están completos,"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:693
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
-msgstr ""
+msgstr "el recurso ha sido publicado (véase la explicación del área <<Publication>> de la página Vista General del recurso, más abajo), y"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:694
@@ -2648,7 +2648,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:705
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceRegistration2.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:707
