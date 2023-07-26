@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-07 16:26+0000\n"
-"PO-Revision-Date: 2023-07-07 17:45\n"
+"POT-Creation-Date: 2023-07-26 12:57+0000\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -253,26 +253,72 @@ msgstr "この画像をマニュアルに含めるための構文である `imag
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:93
 #, no-wrap
+msgid "Japanese, Chinese and Korean"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:96
+msgid "These languages do not use spaces between words, so some abbreviated syntax used in the English text will not work."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:98
+msgid "Plain hyperlinks must be prefixed with `link:`.  The short form without `link:` only works if there is a space before the `https:` or `http:`."
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/translations.adoc:102
+#, no-wrap
+msgid "Be sure to sign up to the link:https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/translations.adoc:104
+#, no-wrap
+msgid "IPTユーザーのサポートグループであるlink:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]に必ずご登録ください。\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:107
+#, no-wrap
+msgid "*Bold*, _italic_ and `monospace` text formatted with single `*`, `_` and `+++`+++` characters only works if there are spaces outside those characters.  Where there are no spaces, the characters must be doubled:\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/translations.adoc:111
+#, no-wrap
+msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port, Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you’ll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/translations.adoc:113
+#, no-wrap
+msgid "実行ファイルをダブルクリックすると、インストールウィザードが起動します。ロールを変更せずに、コネクタポート、**Tomcat管理者ログイン情報**を**入力**します。資格情報を記入し忘れた場合は、Tomcatの設定ディレクトリから``conf/tomcat-users.xml``ファイルを編集し、Tomcatを再起動して、権限をフラッシュする必要があります。(このシナリオをテストしたとき、デフォルトで提案された**コネクタ・ポート**設定が機能したことに注意してください）。\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/translations.adoc:115
+#, no-wrap
 msgid "Languages"
 msgstr "言語"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:96
-msgid "Spanish (partial)"
-msgstr "スペイン語（一部）"
+#: en/modules/ROOT/pages/translations.adoc:118
+msgid "Spanish (complete)"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:97
-msgid "Japanese (started)"
-msgstr "日本語（開始済み）"
+#: en/modules/ROOT/pages/translations.adoc:119
+msgid "Japanese (complete)"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:98
+#: en/modules/ROOT/pages/translations.adoc:120
 msgid "Traditional Chinese (started)"
 msgstr "中国語（繫体字）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:99
+#: en/modules/ROOT/pages/translations.adoc:121
 msgid "If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English."
 msgstr "ユーザーマニュアルを別の言語に翻訳したい場合は、helpdesk@gbif.orgにメールしてください。また、翻訳されていないセクションは英語で表示されるため、マニュアのル全体を翻訳する必要はありません。。"
 
