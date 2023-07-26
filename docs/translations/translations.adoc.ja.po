@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-26 12:57+0000\n"
-"PO-Revision-Date: 2023-07-26 13:19\n"
+"POT-Creation-Date: 2023-07-26 14:07+0000\n"
+"PO-Revision-Date: 2023-07-26 14:28\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -269,7 +269,7 @@ msgstr ""
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:102
 #, no-wrap
-msgid "Be sure to sign up to the link:https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
+msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.\n"
 msgstr ""
 
 #. type: delimited block -
