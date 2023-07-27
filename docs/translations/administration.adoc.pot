@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-07-26 12:57+0000\n"
+"POT-Creation-Date: 2023-07-27 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,7 @@ msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
-#: en/modules/ROOT/pages/initial-setup.adoc:69
+#: en/modules/ROOT/pages/initial-setup.adoc:75
 #, no-wrap
 msgid "ipt2/administration/IPTAdminBeforeRegistration.png"
 msgstr ""
