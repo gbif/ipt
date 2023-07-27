@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-07-26 13:19\n"
+"POT-Creation-Date: 2023-07-27 13:42+0000\n"
+"PO-Revision-Date: 2023-07-27 15:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
-#: en/modules/ROOT/pages/initial-setup.adoc:69
+#: en/modules/ROOT/pages/initial-setup.adoc:75
 #, no-wrap
 msgid "ipt2/administration/IPTAdminBeforeRegistration.png"
 msgstr ""
@@ -43,8 +43,8 @@ msgstr "このステップは、インストール時点でデータディレク
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:8
-msgid "The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labelled \"Save\" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the \"Save\" button."
-msgstr "最初にIPTを実行するときは、IPTを使用するための準備としていくつかの簡単なステップが表示されます。IPTのセットアップページ（下の画面キャプチャ参照）は、2つのセットアップページのうちの最初のページです。このページでは、公開者がデータライセンスに関する免責事項を読み、理解したことを確認するよう求めています。次に、IPTのインストールに必要なデータを保存する場所を指定します。このページで入力する場所の形式は、IPTがインストールされているOSのディレクトリへの絶対パスの標準に準拠している必要があります。例えば、Windows環境では`C:\\datadir`、UnixおよびMac OS X環境では`/srv/datadir`のようなパスを使用します。またIPTは、選択した場所への書き込み権限を持っている必要があります。IPTに書き込み権限がある場合は、テキストボックスにパスを入力し、「保存」ボタンをクリックすると、そのディレクトリが作成されます。適切な書き込み権限を持つデータディレクトリを最初に作成し、テキストボックスにディレクトリへの絶対パスを入力し、「保存」ボタンをクリックすることも可能です。"
+msgid "The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. First it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labelled \"Save\" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the \"Save\" button."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:10
@@ -69,141 +69,154 @@ msgstr "右上の言語名をクリックすると、希望の言語でIPTが利
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:17
 #, no-wrap
-msgid "ipt2/setup/IPTSetup1.png"
+msgid "ipt2/setup/IPTSetup-1-dataDirectory.png"
 msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:19
 #, no-wrap
-msgid "Administrator user and URLs"
-msgstr "管理責任者ユーザーとURL"
+msgid "Administrator user"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:21
-msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:"
-msgstr "最初のデータディレクトリの割り当て手順が正しく終了した場合、IPTは、IPTのデフォルトの管理責任者についての情報を入力する必要があり、IPTが実行されるべきモードについての情報、IPTがインターネットからアクセスされる方法とともに、2つ目の設定ページ（以下の画面キャプチャを参照）を表示します。以下は、2つ目の設定ページで表示されるフィールドの説明です。"
+#: en/modules/ROOT/pages/initial-setup.adoc:22
+msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:23
-msgid "Default administrator"
-msgstr "Defaultの管理責任者(Administrator)"
+#: en/modules/ROOT/pages/initial-setup.adoc:25
+msgid "The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one. Following are explanations of the fields encountered on the second setup page:"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:26
-msgid "The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one."
-msgstr "デフォルトの管理責任者は、個別のログインと、IPTインストールのすべての側面に変更を加える権限を持つことになります。デフォルトの管理責任者は、同じ権限を持つ他の管理責任者を含む、追加のユーザーアカウントを作成することができます。管理責任者の追加や削除は可能ですが、IPTは少なくとも常に1人は管理責任者がいなければなりません。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:28
+#: en/modules/ROOT/pages/initial-setup.adoc:27
 #, no-wrap
 msgid "*Email* - the full, active email address of the default administrator of the IPT installation.\n"
 msgstr "*Email* - IPTインストールのデフォルト管理責任者の完全かつ有効なEメールアドレス。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:29
+#: en/modules/ROOT/pages/initial-setup.adoc:28
 #, no-wrap
 msgid "*First name* - the first name of the default administrator.\n"
 msgstr "*名前* - デフォルトの管理責任者のファーストネーム。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:30
+#: en/modules/ROOT/pages/initial-setup.adoc:29
 #, no-wrap
 msgid "*Last name* - the last name of the default administrator.\n"
 msgstr "*名字* - デフォルトの管理責任者のラストネーム。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:31
+#: en/modules/ROOT/pages/initial-setup.adoc:30
 #, no-wrap
 msgid "*Password* - a password for the default administrator.\n"
 msgstr "*パスワード* - デフォルトの管理責任者のパスワード。\n"
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/initial-setup.adoc:35
+#: en/modules/ROOT/pages/initial-setup.adoc:34
 msgid "The password should be made secure and safe from loss, as it is not recoverable from the IPT application."
 msgstr "パスワードはIPTアプリケーションからは復元できないため、紛失しないよう安全な状態にする必要があります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:37
+#: en/modules/ROOT/pages/initial-setup.adoc:36
 #, no-wrap
 msgid "*Verify password* - an exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
 msgstr "*パスワードの確認* - パスワードのテキストボックスに入力されたパスワードと一致するかで、意図したとおりに入力されたか確認します。\n"
 
-#. type: Plain text
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:38
+#, no-wrap
+msgid "ipt2/setup/IPTSetup-2-administrator.png"
+msgstr ""
+
+#. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:40
+#, no-wrap
 msgid "IPT Mode"
 msgstr "IPTモード"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:43
+msgid "If the second step was successful, the IPT will present a third setup page (see screen image, below) on which the information about the IPT mode must be entered."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:46
 msgid "for a given installation, this selection is final and cannot be changed later on."
 msgstr "インストールを選択した場合、これは最終的なものであり、後から変更することはできません。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:45
-msgid "The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made."
-msgstr "IPTモードは、ホストされたリソースがGBIFによる一般的な検索アクセスのためにインデックスされるか否かを決定します。GBIFは、IPT管理者が登録プロセスを理解するためにまずテストモードを試し、その後正式なデータ公開のために本番モードで再インストールすることを推奨します。テストモードから本番モードへ、またはその逆へ切り替えるには、IPTを再インストールし、行ったすべての設定を繰り返す必要があります。"
+#: en/modules/ROOT/pages/initial-setup.adoc:48
+msgid "The IPT mode decides whether the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:47
+#: en/modules/ROOT/pages/initial-setup.adoc:50
 #, no-wrap
 msgid "*IPT mode*\n"
 msgstr "*IPTモード*\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:49
+#: en/modules/ROOT/pages/initial-setup.adoc:52
 msgid "Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible."
 msgstr "テストモードと本番モードのどちらかを選択します。テストモードは、IPTを評価するため、またはトレーニングシナリオで実行するためのもので、登録はテストレジストリに入り、リソースは決してインデックスされません。テストモードのリソースに対して作成されるすべてのDOIは、一時的であることを意味するテストプレフィックス（DataCiteに要求可能）を使用する必要があります。一方本番モードは、リソースを正式に公開するためのモードであり、リソースはGBIFレジストリに登録され、インデックスが作成されます。リソースに付与されたDOIは削除することができず、リソースが一般に公開され続けることが求められます。"
 
-#. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:52
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:54
+#, no-wrap
+msgid "ipt2/setup/IPTSetup-3-mode.png"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/initial-setup.adoc:56
+#, no-wrap
 msgid "Public URL"
 msgstr "公開 URL"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:54
+#: en/modules/ROOT/pages/initial-setup.adoc:59
+msgid "If the third step was successful, the IPT will present a fourth setup page (see screen image, below) on which the information about the IPT mode must be entered."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:61
 msgid "The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible."
 msgstr "このIPTインストールのルートを指す、インターネットにアクセス可能な公開URLです。可能であれば、URLは自動的に検出されます。本番システムでは、IPTが完全に機能するために、インターネット経由でアクセスできる必要があります。例えば、IPT公開URLをローカルホストに設定すると、IPTをGBIFに登録できず、IPTを機関と関連付けることや、リソースに一般にアクセスすることもできなくなります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:56
+#: en/modules/ROOT/pages/initial-setup.adoc:63
 msgid "Institutional proxy URL (optional)"
 msgstr "機関のプロキシURL（オプション）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:58
+#: en/modules/ROOT/pages/initial-setup.adoc:65
 msgid "If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\\http://proxy.example.org:8080`."
 msgstr "IPTがインストールされているサーバーがインターネットに直接HTTP/HTTPSアクセスできず、代わりに機関プロキシサーバーを介してHTTP/HTTPSリクエストのアウトバウンドをルーティングする必要がある場合、ここにホストアドレスとポート番号を入力します。 例えば、``http://proxy.example.org:8080``です。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/initial-setup.adoc:59
+#: en/modules/ROOT/pages/initial-setup.adoc:66
 #, no-wrap
-msgid "ipt2/setup/IPTSetup2.png"
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/initial-setup.adoc:61
-#, no-wrap
-msgid "ipt2/setup/IPTSetup2-1.png"
-msgstr "ipt2/setup/IPTSetup2-1.png"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:64
-msgid "When all of the information on the page is complete and correct, click on the button labelled \"Save\" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear."
-msgstr "ページ上のすべての情報が正しく入力されたら、「保存」と書かれたボタンをクリックして、IPTの設定作業を完了します。問題が発生した場合、ページの上部にエラーメッセージが表示され、問題を解決するための推奨事項が表示されます。問題が解決された場合、Webサーバーを再起動すると、問題は解消されます。セットアップに成功すると、それを確認するページが表示されます。"
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/initial-setup.adoc:65
-#, no-wrap
-msgid "ipt2/setup/IPTSetupFinished.png"
+msgid "ipt2/setup/IPTSetup-4-url.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:68
+#: en/modules/ROOT/pages/initial-setup.adoc:70
+msgid "When all the information on the page is complete and correct, click on the button labelled \"Save\" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:71
+#, no-wrap
+msgid "ipt2/setup/IPTSetup-5-complete.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:74
 msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization."
 msgstr "「続ける」をクリックすると、IPT管理ページ（下図参照）が表示され、IPTの詳細な設定を行うことができます。続行する前に、すべての管理機能の説明を確認してください。この画面に表示されるオプションの詳細については、xref:administration.adoc[管理メニュー]のセクションで説明しています。IPTにデータリソースを追加する前に、管理者は少なくともIPTの設定を確認し、GBIF登録オプションを設定して、IPTを機関と関連付ける必要があります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/initial-setup.adoc:71
+#: en/modules/ROOT/pages/initial-setup.adoc:77
 msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
 msgstr "このスタートアップ・ガイドのステップを完了すると、IPTはリソース（データセットとメタデータ）を追加する準備が整います。一般的なIPTタスクの実行方法を理解するために、チュートリアルを完了するとよいでしょう。さらに詳しいIPTの説明については、このユーザーマニュアルの次のセクションを参照してください。"
 
