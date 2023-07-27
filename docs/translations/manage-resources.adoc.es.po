@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-27 14:20+0000\n"
-"PO-Revision-Date: 2023-07-27 15:19\n"
+"PO-Revision-Date: 2023-07-27 17:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -301,7 +301,7 @@ msgstr "ipt2/manage/IPTManageResourceOverview.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:61
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceOverview-2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceOverview-2.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:63
