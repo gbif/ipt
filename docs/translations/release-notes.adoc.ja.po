@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-01-30 16:42+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -59,7 +59,7 @@ msgstr "*IPTバージョン: pass:[2.5.*, 2.6.*, 2.7.*]*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
 msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
-msgstr "アップグレードを行う前に、必ず*IPTのデータディレクトリをバックアップしてください*。xref:data-hosting-centres.adoc#data-hosting-centre-criteria[データホスティングセンター基準]に従って、IPTデータディレクトリの定期バックアップを実行することが一般に強く推奨されます。"
+msgstr "アップグレードを行う前に、必ず**IPTのデータディレクトリをバックアップしてください**。xref:data-hosting-centres.adoc#data-hosting-centre-criteria[データホスティングセンター基準]に従って、IPTデータディレクトリの定期バックアップを実行することが一般に強く推奨されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:10
@@ -192,7 +192,7 @@ msgstr "Dockerを使ったアップグレード"
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:64
 msgid "See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release."
-msgstr "xref:installation.adoc#installation-using-docker[Dockerを使用したインストール方法] をご覧ください。一般的に、`latest`タグは現在の安定したリリースを指します。"
+msgstr "xref:installation.adoc#installation-using-docker[Dockerを使用したインストール方法] をご覧ください。一般的に、``latest``タグは現在の安定したリリースを指します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:68

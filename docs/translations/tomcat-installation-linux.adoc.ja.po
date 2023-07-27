@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2023-03-27 02:37\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -30,12 +30,12 @@ msgstr "Tomcatは通常、ディストリビューションパッケージを使
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:6
 msgid "For example, on CentOS or Red Hat systems, `yum install tomcat`."
-msgstr "例えば、CentOSやRed Hatの場合、`yum install tomcat`です。"
+msgstr "例えば、CentOSやRed Hatの場合、``yum install tomcat``です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:8
 msgid "Or on Debian or Ubuntu systems, `apt install tomcat9`."
-msgstr "DebianやUbuntuの場合は、`apt install tomcat9`です。"
+msgstr "DebianやUbuntuの場合は、``apt install tomcat9``です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:10

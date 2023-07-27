@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-07 16:26+0000\n"
-"PO-Revision-Date: 2023-07-07 17:44\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -220,7 +220,7 @@ msgstr "手順は以下の通りです。"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:41
 msgid "Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the `$data-directory/resources` folder, and named using the resource short name. For example, if the resource had short name \"ants\", it would be found at `$data-directory/resources/ants`."
-msgstr "コピーしたいリソースに対応するリソース設定フォルダを探します。リソース設定フォルダは、`$data-directory/resources`フォルダ内に格納され、リソースの省略名が名前になっています。例えば、リソースの省略名が「ants」であれば、$data-directory/resources/antsに置かれています。"
+msgstr "コピーしたいリソースに対応するリソース設定フォルダを探します。リソース設定フォルダは、``$data-directory/resources``フォルダ内に格納され、リソースの省略名が名前になっています。例えば、リソースの省略名が「ants」であれば、``$data-directory/resources/ants``に置かれています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:42
@@ -605,7 +605,7 @@ msgstr "URLをデータソースとする"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:142
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Click the {threedots} menu and select \"Add\". Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr "IPTは、非圧縮の区切りテキストファイル（CSV、タブ、その他の区切り文字を使用したファイル）をURLから直接インポートすることができます。{threedots}メニューをクリックして「追加」を選んで「ソースデータ」のソースデータタイプドロップダウンリストから「URL」を選択し、フルURL（`http://`または`https://`を含む）を以下のボックスに入力またはコピーして貼り付けます。"
+msgstr "IPTは、非圧縮の区切りテキストファイル（CSV、タブ、その他の区切り文字を使用したファイル）をURLから直接インポートすることができます。{threedots}メニューをクリックして「追加」を選んで「ソースデータ」のソースデータタイプドロップダウンリストから「URL」を選択し、フルURL（``http://``または``https://``を含む）を以下のボックスに入力またはコピーして貼り付けます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:146
@@ -788,7 +788,7 @@ msgstr "*語彙詳細ボタン* - 統制語彙によって管理される拡張�
 #: en/modules/ROOT/pages/manage-resources.adoc:204
 #, no-wrap
 msgid "*Source Sample* - This area shows actual values from the first five records of the selected field of the source data, separated by spaces and the character `|`. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.\n"
-msgstr "*ソースサンプル* - この領域には、ソースデータの選択されたフィールドの最初の5つのレコードの実際の値が、スペースと記号`|`で区切られて表示されます。 これは、ソースデータフィールドの内容が、マップされている拡張フィールドに適切かどうかをユーザーが理解するのに役立ちます。\n"
+msgstr "*ソースサンプル* - この領域には、ソースデータの選択されたフィールドの最初の5つのレコードの実際の値が、スペースと記号``|``で区切られて表示されます。 これは、ソースデータフィールドの内容が、マップされている拡張フィールドに適切かどうかをユーザーが理解するのに役立ちます。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:205
@@ -2763,12 +2763,12 @@ msgstr "*既存の登録済みリソース*を*IPTリソース*に移行する�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:747
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
-msgstr "*IPTリソース*の公開状況が公開であり、登録されていないことを確認します。"
+msgstr "**IPTリソース**の公開状況が公開であり、登録されていないことを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
-msgstr "*既存の登録リソース*の所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[機関を追加]セクションを参照）"
+msgstr "**既存の登録リソース**の所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[機関を追加]セクションを参照）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:749
@@ -2778,12 +2778,12 @@ msgstr "「基本メタデータ」ページのドロップダウンリストか
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:750
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr "*既存の登録済みリソース*のGBIFデータセットページに移動します。IPTをテストモードで動作させているか、本番モードで動作させているかによって、それぞれ https://www.gbif-uat.org/dataset または https://www.gbif.org/dataset にアクセスすることになります。"
+msgstr "**既存の登録済みリソース**のGBIFデータセットページに移動します。IPTをテストモードで動作させているか、本番モードで動作させているかによって、それぞれ https://www.gbif-uat.org/dataset または https://www.gbif.org/dataset にアクセスすることになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:751
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
-msgstr "GBIFデータセットページに、*既存の登録済みリソース*の*所有機関*が正しく表示されていることを確認します。"
+msgstr "GBIFデータセットページに、**既存の登録済みリソース**の**所有機関**が正しく表示されていることを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
@@ -2825,7 +2825,7 @@ msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:764
 #, no-wrap
 msgid "*Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:\n"
-msgstr "*helpdesk@gbif.org にアップデートの通知メールを送ってください。*メールには以下を記入してください。\n"
+msgstr "**helpdesk@gbif.org にアップデートの通知メールを送ってください。**メールには以下を記入してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:765

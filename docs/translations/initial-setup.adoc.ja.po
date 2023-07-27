@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-07 05:27\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -172,7 +172,7 @@ msgstr "機関のプロキシURL（オプション）"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:58
 msgid "If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\\http://proxy.example.org:8080`."
-msgstr "IPTがインストールされているサーバーがインターネットに直接HTTP/HTTPSアクセスできず、代わりに機関プロキシサーバーを介してHTTP/HTTPSリクエストのアウトバウンドをルーティングする必要がある場合、ここにホストアドレスとポート番号を入力します。 例えば、`http://proxy.example.org:8080`です。"
+msgstr "IPTがインストールされているサーバーがインターネットに直接HTTP/HTTPSアクセスできず、代わりに機関プロキシサーバーを介してHTTP/HTTPSリクエストのアウトバウンドをルーティングする必要がある場合、ここにホストアドレスとポート番号を入力します。 例えば、``http://proxy.example.org:8080``です。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:59
