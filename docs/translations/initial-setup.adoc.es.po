@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-27 13:42+0000\n"
-"PO-Revision-Date: 2023-07-27 15:19\n"
+"PO-Revision-Date: 2023-07-27 20:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -44,7 +44,7 @@ msgstr "Este paso sólo se muestra si el directorio de datos no ha sido configur
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:8
 msgid "The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. First it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labelled \"Save\" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the \"Save\" button."
-msgstr ""
+msgstr "La primera vez que se ejecuta el IPT se le presentarán unos pasos simples para preparar el IPT para su uso. Primero se requiere una ubicación donde los datos para la instalación del IPT puedan ser almacenados. El formato de la ubicación introducida en la página debe cumplir con el estándar de una ruta absoluta a un directorio en el sistema operativo donde se instala el IPT, este formato no admite rutas relativas. Por ejemplo, utilice una ruta como `C:\\datadir` para entornos Windows o `/srv/datadir` para entornos Unix y Mac OS X. El IPT debe tener permiso de escritura en la ubicación seleccionada. Si lo tiene, puede introducir la ruta en el cuadro de texto proporcionado y a continuación, hacer clic en el botón \"Guardar\" - se creará el directorio en caso de que este no exista. Se puede crear primero el directorio de datos con los permisos de escritura apropiados, luego introducir la ruta absoluta al directorio en el cuadro de texto y hacer clic en el botón \"Guardar\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:10
@@ -76,17 +76,17 @@ msgstr ""
 #: en/modules/ROOT/pages/initial-setup.adoc:19
 #, no-wrap
 msgid "Administrator user"
-msgstr ""
+msgstr "Usuario administrador"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:22
 msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered."
-msgstr ""
+msgstr "Si el paso inicial de asignación del directorio fue exitoso, el IPT va a presentar una segunda página de configuración (vea la imagen de captura abajo) en la cuál la información acerca del administrador predeterminado debe ser ingresada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:25
 msgid "The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one. Following are explanations of the fields encountered on the second setup page:"
-msgstr ""
+msgstr "El Administrador predeterminado tendrá un nombre de usuario definido y la autoridad para realizar cambios en todos los aspectos de la instalación del IPT. El administrador predeterminado también puede crear cuentas de usuario adicionales, incluyendo otros administradores que tengan la misma autoridad para hacer cambios. Aunque los administradores pueden ser añadidos y eliminados, el IPT siempre deberá tener al menos un responsable asignado. Las siguientes son las explicaciones de los campos que se encuentran en la segunda página de configuración."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:27
@@ -138,7 +138,7 @@ msgstr "Modo del IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:43
 msgid "If the second step was successful, the IPT will present a third setup page (see screen image, below) on which the information about the IPT mode must be entered."
-msgstr ""
+msgstr "Si el segundo paso fue exitoso, el IPT va a presentar una tercera página de configuración (vea la imagen de captura abajo) en la cuál la información acerca del modo del IPT debe ser ingresada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:46
