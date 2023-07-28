@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-28 11:42+0000\n"
-"PO-Revision-Date: 2023-07-28 11:58\n"
+"PO-Revision-Date: 2023-07-28 13:40\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-7-4-july-2023,2.7.4>>."
-msgstr ""
+msgstr "La versión estable actual es la <<2-7-4-july-2023,2.7.4>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -43,7 +43,7 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:16
 #, no-wrap
 msgid "*2.7.4* – July 2023"
-msgstr ""
+msgstr "*2.7.4* – Julio 2023"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -54,7 +54,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "xref:2.5@release-notes.adoc[IPT v2.7.4 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión de IPT v2.7.4]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -81,7 +81,7 @@ msgstr "xref:2.5@index.adoc[Manual del usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "Addressed https://github.com/gbif/ipt/milestone/46?closed=1[21 issues]."
-msgstr ""
+msgstr "Abordado https://github.com/gbif/ipt/milestone/46?closed=1[21 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
@@ -120,7 +120,7 @@ msgstr "Los usuarios actuales deben actualizarse a esta versión siguiendo las i
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "This release brings new file uploader, new IPT setup, compressed URL sources and more."
-msgstr ""
+msgstr "Esta versión trae un nuevo cargador de archivos, una nueva configuración de IPT, fuentes de URL comprimidas y más."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
