@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-7-3-march-2023,2.7.3>>.
+The current, stable release is version <<2-7-4-july-2023,2.7.4>>.
 
 You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -13,6 +13,22 @@ endif::[]
 
 // Next release text kept for reuse, as it will be part of the Crowdin translation memory.
 
+== *2.7.4* – July 2023
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.3/ipt-2.7.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:2.5@release-notes.adoc[IPT v2.7.4 Release Notes]
+* xref:2.5@index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/46?closed=1[21 issues].
+* Translated into 7 languages
+
+Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+This release brings new file uploader, new IPT setup, compressed URL sources and more.
+
+No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
+
 == *2.7.3* – March 2023
 
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.3/ipt-2.7.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
@@ -21,13 +37,7 @@ endif::[]
 * Addressed https://github.com/gbif/ipt/milestone/45?closed=1[5 issues].
 * Translated into 7 languages
 
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
 This minor release brings UI improvements and minor fixes.
-
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *2.7.2* – February 2023
 
@@ -36,8 +46,6 @@ Minor issues and security issues will be addressed in patch releases.
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/44?closed=1[1 issue].
 * Translated into 7 languages
-
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This minor release addresses the bug with translations.
 
@@ -49,8 +57,6 @@ This minor release addresses the bug with translations.
 * Addressed https://github.com/gbif/ipt/milestone/43?closed=1[2 issues].
 * Translated into 7 languages
 
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
 This minor release brings bug fixes for issue with resource tables and with DOI management.
 
 == *2.7.0* – January 2023
@@ -60,8 +66,6 @@ This minor release brings bug fixes for issue with resource tables and with DOI 
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/42?closed=1[47 issues].
 * Translated into 7 languages
-
-Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This major release brings many new features, bug fixes, improvements. Most important ones: new resource tables with better performance for large amount of resources; performance improvements for registration/publication process; drag-n-drop for metadata components and many more.
 
