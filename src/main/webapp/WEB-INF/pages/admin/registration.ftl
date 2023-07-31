@@ -172,6 +172,8 @@
                     displayEditRegistrationView();
                 }
             });
+
+            $('select#networkKey').select2({placeholder: '<@s.text name="admin.ipt.network.selection"/>', width:"100%", theme: 'bootstrap4'});
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -281,7 +283,7 @@
 
                         <div class="row g-3">
                             <div class="col-lg-6">
-                                <@select name="networkKey" options=networks i18nkey="admin.ipt.network" />
+                                <@select name="networkKey" options=networks i18nkey="admin.ipt.network" value="${(network.key)!}" />
                             </div>
                         </div>
                     </form>

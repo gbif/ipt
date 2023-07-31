@@ -1296,6 +1296,11 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 .select2-container--bootstrap4 .select2-selection__clear:hover {
     background-color: white !important;
 }
+
+.select2-container--bootstrap4 .select2-selection:hover {
+    border-color: rgba(var(--color-gbif-primary));
+    background-color: white !important;
+}
 /* Style select2 component END */
 
 

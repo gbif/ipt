@@ -175,7 +175,6 @@ public class RegistrationAction extends POSTAction {
       }
     }
 
-    networks.put("", getText("admin.ipt.network.selection"));
     networks.putAll(registryManager.getNetworksBrief().stream()
             .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
   }
@@ -294,10 +293,10 @@ public class RegistrationAction extends POSTAction {
         return cancel();
       }
       if (StringUtils.isNotEmpty(networkKey)) {
-        getNetwork().setKey(networkKey);
+        String networkName = networks.get(networkKey);
+        registrationManager.associateWithNetwork(networkKey, networkName);
+        addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
       }
-      registrationManager.save();
-      addActionMessage(getText("admin.ipt.success.update"));
     } catch (Exception e) {
       addActionError(getText("admin.ipt.update.failed"));
       LOG.error("Exception caught", e);

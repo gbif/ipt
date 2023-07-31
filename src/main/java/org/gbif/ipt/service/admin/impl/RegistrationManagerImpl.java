@@ -534,6 +534,26 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
+  public void associateWithNetwork(String networkKey, String networkName) {
+    try {
+      Network network = registration.getNetwork();
+      if (network != null) {
+        network.setKey(networkKey);
+        network.setName(networkName);
+      } else {
+        Network n = new Network();
+        n.setName(networkName);
+        n.setKey(networkKey);
+        registration.setNetwork(n);
+      }
+
+      save();
+    } catch (IOException e) {
+      LOG.error("Failed to associate with the network");
+    }
+  }
+
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));

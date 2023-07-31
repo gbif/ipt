@@ -142,4 +142,9 @@ public interface RegistrationManager {
    * Migrate former registration (registration.xml) into new registration (registration2.xml) with passwords encrypted.
    */
   void encryptRegistration();
+
+  /**
+   * Associate IPT with the network.
+   */
+  void associateWithNetwork(String networkKey, String networkName);
 }
