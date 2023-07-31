@@ -12,18 +12,6 @@
     </script>
     <script>
         $(document).ready(function(){
-            $("#edit-registration-radio").change(function () {
-                if ($('#edit-registration-radio').is(':checked')) {
-                    displayEditRegistrationView();
-                }
-            });
-
-            $("#change-tokens-radio").change(function () {
-                if ($('#change-tokens-radio').is(':checked')) {
-                    displayChangeTokensView();
-                }
-            });
-
             function displayChangeTokensView() {
                 $('#tokens-block').show();
                 $('#registration-block').hide();
@@ -36,11 +24,6 @@
                 $('#registration-block').show();
                 $('#tokens').hide();
                 $('#update').show();
-            }
-
-            if (window.location.href.indexOf("changeTokens") > -1) {
-                displayChangeTokensView();
-                $('#change-tokens-radio').prop("checked", true);
             }
 
             $('#organisation\\.key').change(function() {
@@ -154,6 +137,26 @@
             });
 
             $("#update").on("click", displayProcessing);
+
+            $(".registration-tab-root").click(function (event) {
+                var selectedTab = $(this);
+                var selectedTabId = selectedTab[0].id;
+
+                // remove "selected" from all tabs
+                $(".registration-tab-root").removeClass("tab-selected");
+                // hide all indicators
+                $(".tabs-indicator").hide();
+                // add "selected" to clicked tab
+                selectedTab.addClass("tab-selected");
+                // show indicator for this tab
+                $("#" + selectedTabId + " .tabs-indicator").show();
+
+                if (selectedTabId === 'tab-tokens') {
+                    displayChangeTokensView();
+                } else {
+                    displayEditRegistrationView();
+                }
+            });
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -203,13 +206,20 @@
                 </p>
 
                 <div class="py-3">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="edit-registration-radio" value="edit-registration" checked>
-                        <label class="form-check-label" for="edit-profile-radio"><@s.text name="admin.ipt.registration"/></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="change-tokens-radio" value="change-tokens">
-                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens.title"/></label>
+                    <div class="tabs-root">
+                        <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
+                            <div class="tabs-flexContainer justify-content-start" role="tablist">
+                                <button id="tab-registration" class="registration-tab-root tab-selected" type="button" role="tab">
+                                    <@s.text name="admin.ipt.registration"/>
+                                    <span id="tab-indicator-registration" class="tabs-indicator"></span>
+                                </button>
+                                <button id="tab-tokens" class="registration-tab-root" type="button" role="tab">
+                                    <@s.text name="admin.ipt.tokens.title"/>
+                                    <span id="tab-indicator-tokens" class="tabs-indicator" style="display: none;"></span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -222,6 +232,9 @@
                         <div class="row g-3">
                             <div class="col-lg-6">
                                 <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
                             </div>
 
                             <div class="col-12">

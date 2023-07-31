@@ -2484,7 +2484,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: rgb(var(--color-gbif-primary));
 }
 
-.sources-tab-root {
+.sources-tab-root, .registration-tab-root {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -2537,7 +2537,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-.sources-tab-root.tab-selected {
+.sources-tab-root.tab-selected, .registration-tab-root.tab-selected {
   color: rgb(var(--color-gbif-primary));
 }
 
