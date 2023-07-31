@@ -17,6 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
@@ -92,6 +93,8 @@ public class RegistrationAction extends POSTAction {
   private String hostingOrganisationToken;
   protected boolean tokenChange = false;
 
+  private String networkKey;
+
   private boolean validatedBaseURL = false;
 
   private List<Organisation> organisations = new ArrayList<>();
@@ -112,6 +115,10 @@ public class RegistrationAction extends POSTAction {
 
   public Organisation getHostingOrganisation() {
     return registrationManager.getHostingOrganisation();
+  }
+
+  public Network getNetwork() {
+    return registrationManager.getNetwork();
   }
 
   /**
@@ -274,7 +281,25 @@ public class RegistrationAction extends POSTAction {
       registrationManager.save();
       addActionMessage(getText("admin.ipt.success.update"));
     } catch (Exception e) {
-      addActionError(e.getMessage());
+      addActionError(getText("admin.ipt.update.failed"));
+      LOG.error("Exception caught", e);
+      return INPUT;
+    }
+    return SUCCESS;
+  }
+
+  public String associateWithNetwork() {
+    try {
+      if (cancel) {
+        return cancel();
+      }
+      if (StringUtils.isNotEmpty(networkKey)) {
+        getNetwork().setKey(networkKey);
+      }
+      registrationManager.save();
+      addActionMessage(getText("admin.ipt.success.update"));
+    } catch (Exception e) {
+      addActionError(getText("admin.ipt.update.failed"));
       LOG.error("Exception caught", e);
       return INPUT;
     }
@@ -329,5 +354,13 @@ public class RegistrationAction extends POSTAction {
 
   public Map<String, String> getNetworks() {
     return networks;
+  }
+
+  public String getNetworkKey() {
+    return networkKey;
+  }
+
+  public void setNetworkKey(String networkKey) {
+    this.networkKey = networkKey;
   }
 }

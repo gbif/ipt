@@ -15,6 +15,7 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.doi.service.DoiService;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -87,6 +88,11 @@ public interface RegistrationManager {
    * Returns the hosting organisation of this IPT.
    */
   Organisation getHostingOrganisation();
+
+  /**
+   * Returns the default GBIF network of this IPT.
+   */
+  Network getNetwork();
 
   /**
    * Returns the IPT instance.

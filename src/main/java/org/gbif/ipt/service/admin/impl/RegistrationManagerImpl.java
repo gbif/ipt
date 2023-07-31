@@ -18,6 +18,7 @@ import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
 import org.gbif.ipt.model.Resource;
@@ -49,6 +50,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -292,6 +294,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   @Override
   public Organisation getHostingOrganisation() {
     return registration.getHostingOrganisation();
+  }
+
+  @Override
+  public Network getNetwork() {
+    return Optional.ofNullable(registration.getNetwork()).orElse(new Network());
   }
 
   @Override
