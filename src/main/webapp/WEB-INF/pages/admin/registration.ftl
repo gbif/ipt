@@ -235,6 +235,7 @@
                             </div>
 
                             <div class="col-lg-6">
+                                <@select name="registeredIpt.networkKey" options=networks i18nkey="admin.ipt.network" />
                             </div>
 
                             <div class="col-12">

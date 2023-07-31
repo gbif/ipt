@@ -16,6 +16,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
@@ -28,7 +29,10 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +48,8 @@ public class RegistrationAction extends POSTAction {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(RegistrationAction.class);
+
+  private Map<String, String> networks = new LinkedHashMap<>();
 
   @SessionScoped
   public static class RegisteredOrganisations {
@@ -161,6 +167,10 @@ public class RegistrationAction extends POSTAction {
         addActionError(msg);
       }
     }
+
+    networks.put("", getText("admin.ipt.network.selection"));
+    networks.putAll(registryManager.getNetworksBrief().stream()
+            .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
   }
 
   @Override
@@ -315,5 +325,9 @@ public class RegistrationAction extends POSTAction {
 
   public void setTokenChange(boolean tokenChange) {
     this.tokenChange = tokenChange;
+  }
+
+  public Map<String, String> getNetworks() {
+    return networks;
   }
 }
