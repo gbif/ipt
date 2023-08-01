@@ -147,4 +147,9 @@ public interface RegistrationManager {
    * Associate IPT with the network.
    */
   void associateWithNetwork(String networkKey, String networkName);
+
+  /**
+   * Remove association with the network.
+   */
+  void removeAssociationWithNetwork();
 }

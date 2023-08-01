@@ -15,6 +15,7 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.AgentBase;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Network;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -104,8 +106,8 @@ public class RegistrationAction extends POSTAction {
 
   @Inject
   public RegistrationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    RegistryManager registryManager, OrganisationSupport organisationValidation, IptValidator iptValidation,
-    RegisteredOrganisations orgSession) {
+    RegistryManager registryManager, OrganisationSupport organisationValidation,
+    IptValidator iptValidation, RegisteredOrganisations orgSession) {
     super(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
     this.organisationValidation = organisationValidation;
@@ -175,6 +177,7 @@ public class RegistrationAction extends POSTAction {
       }
     }
 
+    networks.put("", getText("admin.ipt.network.selection"));
     networks.putAll(registryManager.getNetworksBrief().stream()
             .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
   }
@@ -295,7 +298,14 @@ public class RegistrationAction extends POSTAction {
       if (StringUtils.isNotEmpty(networkKey)) {
         String networkName = networks.get(networkKey);
         registrationManager.associateWithNetwork(networkKey, networkName);
+
         addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
+      } else {
+        String name = Optional.ofNullable(getNetwork())
+                .map(AgentBase::getName)
+                .orElse("");
+        registrationManager.removeAssociationWithNetwork();
+        addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[] {name}));
       }
     } catch (Exception e) {
       addActionError(getText("admin.ipt.update.failed"));

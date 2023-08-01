@@ -554,6 +554,16 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
+  public void removeAssociationWithNetwork() {
+    try {
+      registration.setNetwork(null);
+      save();
+    } catch (IOException e) {
+      LOG.error("Failed to remove association with the network");
+    }
+  }
+
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));
