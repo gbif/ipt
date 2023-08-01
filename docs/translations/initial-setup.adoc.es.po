@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-27 13:42+0000\n"
-"PO-Revision-Date: 2023-07-27 20:11\n"
+"PO-Revision-Date: 2023-08-01 22:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -70,7 +70,7 @@ msgstr "Haga clic en el nombre del idioma que está en la esquina superior derec
 #: en/modules/ROOT/pages/initial-setup.adoc:17
 #, no-wrap
 msgid "ipt2/setup/IPTSetup-1-dataDirectory.png"
-msgstr ""
+msgstr "ipt2/setup/IPTSetup-1-dataDirectory.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:19
@@ -127,7 +127,7 @@ msgstr "*Verificar la contraseña*: una copia exacta de la contraseña tal como 
 #: en/modules/ROOT/pages/initial-setup.adoc:38
 #, no-wrap
 msgid "ipt2/setup/IPTSetup-2-administrator.png"
-msgstr ""
+msgstr "ipt2/setup/IPTSetup-2-administrator.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:40
@@ -148,7 +148,7 @@ msgstr "para una instalación dada, esta selección es definitiva y no puede ser
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:48
 msgid "The IPT mode decides whether the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made."
-msgstr ""
+msgstr "El modo del IPT determina si los recursos alojados serán o no indexados por GBIF, con el fin de facilitar el acceso público. GBIF recomienda a los administradores del IPT usar en un principio el modo Prueba para entender el proceso de registro, y, posteriormente, reinstalarlo en modo Producción para realizar publicaciones formales. Para cambiar el modo de test a producción o viceversa, se debe reinstalar el IPT y repetir el proceso de configuración hecho previamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:50
@@ -165,7 +165,7 @@ msgstr "Elija entre el modo Prueba y el modo Producción. El modo de prueba se u
 #: en/modules/ROOT/pages/initial-setup.adoc:54
 #, no-wrap
 msgid "ipt2/setup/IPTSetup-3-mode.png"
-msgstr ""
+msgstr "ipt2/setup/IPTSetup-3-mode.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/initial-setup.adoc:56
@@ -176,7 +176,7 @@ msgstr "URL pública"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:59
 msgid "If the third step was successful, the IPT will present a fourth setup page (see screen image, below) on which the information about the IPT mode must be entered."
-msgstr ""
+msgstr "Si el tercer paso fue exitoso, el IIPT va a presentar un cuarta página de configuración (vea lo captura de imagen abajo) en la cual debe ser ingresada la información acerca del modo del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:61
@@ -197,18 +197,18 @@ msgstr "Si el servidor en el que está instalado el IPT no tiene acceso HTTP/HTT
 #: en/modules/ROOT/pages/initial-setup.adoc:66
 #, no-wrap
 msgid "ipt2/setup/IPTSetup-4-url.png"
-msgstr ""
+msgstr "ipt2/setup/IPTSetup-4-url.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:70
 msgid "When all the information on the page is complete and correct, click on the button labelled \"Save\" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear."
-msgstr ""
+msgstr "Cuando toda la información en la página esté completa y correcta, haga clic en el botón \"Guardar\" para completar el proceso de instalación del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Siempre y cuando el problema haya sido resuelto, al reiniciar el servidor web este mensaje de error desaparecerá. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:71
 #, no-wrap
 msgid "ipt2/setup/IPTSetup-5-complete.png"
-msgstr ""
+msgstr "ipt2/setup/IPTSetup-5-complete.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:74
