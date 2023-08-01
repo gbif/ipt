@@ -50,7 +50,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -298,7 +297,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public Network getNetwork() {
-    return Optional.ofNullable(registration.getNetwork()).orElse(new Network());
+    return registration.getNetwork();
   }
 
   @Override

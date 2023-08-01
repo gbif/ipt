@@ -96,6 +96,7 @@ public class RegistrationAction extends POSTAction {
   protected boolean tokenChange = false;
 
   private String networkKey;
+  private boolean applyToExistingResources = false;
 
   private boolean validatedBaseURL = false;
 
@@ -301,11 +302,13 @@ public class RegistrationAction extends POSTAction {
 
         addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
       } else {
-        String name = Optional.ofNullable(getNetwork())
-                .map(AgentBase::getName)
-                .orElse("");
-        registrationManager.removeAssociationWithNetwork();
-        addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[] {name}));
+        Network network = getNetwork();
+
+        if (network != null) {
+          String name = Optional.ofNullable(network.getName()).orElse("");
+          registrationManager.removeAssociationWithNetwork();
+          addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{name}));
+        }
       }
     } catch (Exception e) {
       addActionError(getText("admin.ipt.update.failed"));
@@ -371,5 +374,13 @@ public class RegistrationAction extends POSTAction {
 
   public void setNetworkKey(String networkKey) {
     this.networkKey = networkKey;
+  }
+
+  public boolean isApplyToExistingResources() {
+    return applyToExistingResources;
+  }
+
+  public void setApplyToExistingResources(boolean applyToExistingResources) {
+    this.applyToExistingResources = applyToExistingResources;
   }
 }

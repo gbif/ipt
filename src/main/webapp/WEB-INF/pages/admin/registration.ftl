@@ -285,6 +285,10 @@
                             <div class="col-lg-6">
                                 <@select name="networkKey" options=networks i18nkey="admin.ipt.network" value="${(network.key)!}" />
                             </div>
+
+                            <div class="col-12">
+                                <@checkbox name="applyToExistingResources" i18nkey="admin.ipt.network.applyToExisting" value="false"/>
+                            </div>
                         </div>
                     </form>
                 </div>
