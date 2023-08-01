@@ -1114,9 +1114,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // get potential new networks
       allNetworks = registryManager.getNetworksBrief();
       potentialNetworks = new ArrayList<>(allNetworks);
-      for (Network net : getResourceNetworks()) {
-        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
-      }
+//      for (Network net : getResourceNetworks()) {
+//        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+//      }
 
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
