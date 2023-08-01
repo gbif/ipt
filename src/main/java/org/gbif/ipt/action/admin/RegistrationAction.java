@@ -15,15 +15,16 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.AgentBase;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.Type;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.IptValidator;
@@ -88,6 +89,7 @@ public class RegistrationAction extends POSTAction {
 
   private static final long serialVersionUID = -6522969037528106704L;
   private final RegistryManager registryManager;
+  private final ResourceManager resourceManager;
   private final OrganisationSupport organisationValidation;
   private final IptValidator iptValidation;
 
@@ -107,10 +109,11 @@ public class RegistrationAction extends POSTAction {
 
   @Inject
   public RegistrationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    RegistryManager registryManager, OrganisationSupport organisationValidation,
+    RegistryManager registryManager, ResourceManager resourceManager, OrganisationSupport organisationValidation,
     IptValidator iptValidation, RegisteredOrganisations orgSession) {
     super(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
+    this.resourceManager = resourceManager;
     this.organisationValidation = organisationValidation;
     this.iptValidation = iptValidation;
     this.orgSession = orgSession;
@@ -300,6 +303,15 @@ public class RegistrationAction extends POSTAction {
         String networkName = networks.get(networkKey);
         registrationManager.associateWithNetwork(networkKey, networkName);
 
+        if (applyToExistingResources) {
+          List<Resource> resources = resourceManager.list();
+          for (Resource resource : resources) {
+            if (resource.isRegistered()) {
+              registryManager.addResourceToNetwork(resource, networkKey);
+            }
+          }
+        }
+
         addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
       } else {
         Network network = getNetwork();
@@ -307,6 +319,16 @@ public class RegistrationAction extends POSTAction {
         if (network != null) {
           String name = Optional.ofNullable(network.getName()).orElse("");
           registrationManager.removeAssociationWithNetwork();
+
+          if (applyToExistingResources) {
+            List<Resource> resources = resourceManager.list();
+            for (Resource resource : resources) {
+              if (resource.isRegistered()) {
+                registryManager.removeResourceFromNetwork(resource, networkKey);
+              }
+            }
+          }
+
           addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{name}));
         }
       }
