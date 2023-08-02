@@ -1114,9 +1114,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // get potential new networks
       allNetworks = registryManager.getNetworksBrief();
       potentialNetworks = new ArrayList<>(allNetworks);
-//      for (Network net : getResourceNetworks()) {
-//        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
-//      }
+      for (Network net : getResourceNetworks()) {
+        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+      }
 
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
@@ -1390,6 +1390,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
             // perform registration
             resourceManager.register(resource, org, registrationManager.getIpt(), this);
+
+            // associate resource with the default IPT network
+            org.gbif.ipt.model.Network defaultIptNetwork = registrationManager.getNetwork();
+            if (defaultIptNetwork != null && defaultIptNetwork.getKey() != null) {
+              registryManager.addResourceToNetwork(resource, defaultIptNetwork.getKey().toString());
+            }
           } catch (InvalidConfigException e) {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
               String msg = getText("manage.resource.migrate.failed");
