@@ -36,6 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -317,7 +318,8 @@ public class RegistrationAction extends POSTAction {
         Network network = getNetwork();
 
         if (network != null) {
-          String name = Optional.ofNullable(network.getName()).orElse("");
+          String networkName = Optional.ofNullable(network.getName()).orElse("");
+          String networkKey = Optional.ofNullable(network.getKey()).map(UUID::toString).orElse("");
           registrationManager.removeAssociationWithNetwork();
 
           if (applyToExistingResources) {
@@ -329,7 +331,7 @@ public class RegistrationAction extends POSTAction {
             }
           }
 
-          addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{name}));
+          addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{networkName}));
         }
       }
     } catch (Exception e) {
