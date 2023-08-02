@@ -174,6 +174,8 @@
             });
 
             $('select#networkKey').select2({placeholder: '<@s.text name="admin.ipt.network.selection"/>', minimumResultsForSearch: 'Infinity', allowClear: true, width:"100%", theme: 'bootstrap4'});
+
+            $("#network").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
