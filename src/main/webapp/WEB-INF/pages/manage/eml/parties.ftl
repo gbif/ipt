@@ -1,6 +1,9 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <title><@s.text name='manage.metadata.parties.title'/></title>
     <script>
         $(document).ready(function () {
@@ -72,6 +75,12 @@
 
                 hideProcessing();
             }
+
+            $('#copy-agent-modal').on('shown.bs.modal', function () {
+                $('#resource').select2({placeholder: '<@s.text name="eml.metadataAgent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+                $('#agentType').select2({placeholder: '<@s.text name="eml.agentType.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+                $('#agent').select2({placeholder: '<@s.text name="eml.agent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+            });
         });
     </script>
     <style>

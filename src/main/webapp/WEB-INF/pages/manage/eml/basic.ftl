@@ -220,10 +220,9 @@
             }
 
             $('#copy-agent-modal').on('shown.bs.modal', function () {
-                // Initialize Select2 inside the modal
-                $('#resource').select2({placeholder: 'Select resource', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-                $('#agentType').select2({placeholder: 'Select agent type', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-                $('#agent').select2({placeholder: 'Select agent', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+                $('#resource').select2({placeholder: '<@s.text name="eml.metadataAgent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+                $('#agentType').select2({placeholder: '<@s.text name="eml.agentType.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+                $('#agent').select2({placeholder: '<@s.text name="eml.agent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
             });
 
         });
