@@ -237,8 +237,8 @@
                 var maxLat = $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude")
 
                 // get error messages
-                var textLng = '${action.getText("validation.longitude.value")}';
-                var textLat = '${action.getText("validation.latitude.value")}';
+                var textLng = '${action.getText("validation.longitude.value")?js_string}';
+                var textLat = '${action.getText("validation.latitude.value")?js_string}';
 
                 var submitForm = true;
 
