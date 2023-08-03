@@ -1275,11 +1275,6 @@ input[type="search"]:focus::-webkit-search-cancel-button {
     color: #4e565f !important;
 }
 
-.select2-container--bootstrap4 .select2-selection:hover {
-    border-color: rgba(33, 37, 41, 0.5);
-    background-color: rgba(0, 0, 0, .04) !important;
-}
-
 .select2-container--bootstrap4 .select2-selection__clear {
     -webkit-appearance: none;
     height: 1em;
@@ -1298,8 +1293,12 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 .select2-container--bootstrap4 .select2-selection:hover {
-    border-color: rgba(var(--color-gbif-primary));
+    border-color: rgba(33, 37, 41, 0.5);
     background-color: white !important;
+}
+
+.select2-dropdown {
+    z-index: 9999 !important;
 }
 /* Style select2 component END */
 
@@ -2489,7 +2488,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: rgb(var(--color-gbif-primary));
 }
 
-.sources-tab-root, .registration-tab-root {
+.sources-tab-root, .registration-tab-root, .default-button-tab-root {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -2542,7 +2541,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-.sources-tab-root.tab-selected, .registration-tab-root.tab-selected {
+.sources-tab-root.tab-selected, .registration-tab-root.tab-selected, .default-button-tab-root {
   color: rgb(var(--color-gbif-primary));
 }
 

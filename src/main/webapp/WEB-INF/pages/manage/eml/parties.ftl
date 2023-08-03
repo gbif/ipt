@@ -148,14 +148,20 @@
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                         <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${copyLink?lower_case?cap_first}</span>
-                                                </a>
+                                                <div class="btn-group">
+                                                    <a id="dropdown-associatedParty-copy-${item_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${copyLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-associatedParty-copy-${item_index}">
+                                                        <li><a id="associatedParty-from-contact-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                        <li><a id="associatedParty-copy-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="text-end">
                                                 <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
@@ -324,7 +330,7 @@
                     <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="text-align: left !important;">
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="resource" class="form-label">
@@ -355,7 +361,7 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div>
+                        <div class="text-center">
                             <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
                         </div>
                     </div>
