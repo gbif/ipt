@@ -213,14 +213,20 @@
                             <div id="baseItem-personnel" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="personnel-copy" href="" class="metadata-action-link">
+                                        <div class="btn-group">
+                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span>
                                                 <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                 </svg>
                                             </span>
-                                            <span>${copyLink?lower_case?cap_first}</span>
-                                        </a>
+                                                <span>${copyLink?lower_case?cap_first}</span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="personnel-creator-copy">
+                                                <li><a id="personnel-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                <li><a id="personnel-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="text-end">
                                         <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link" href="">

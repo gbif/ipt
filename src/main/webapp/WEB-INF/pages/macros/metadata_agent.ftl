@@ -309,10 +309,15 @@
             });
 
             $("#creator-item-" + index + " [id^='creator-copy']").attr("id", "creator-copy-" + index);
+            $("#creator-item-" + index + " [id^='creator-from-contact']").attr("id", "creator-from-contact-" + index);
             $("#creator-copy-" + index).click(function (event) {
                 event.preventDefault();
                 targetItemId = "creator-item-" + index;
                 showCopyAgentModal();
+            });
+            $("#creator-from-contact-" + index).click(function (event) {
+                event.preventDefault();
+                copyDetails(event, "creator-item-");
             });
 
             $("#creator-item-" + index + " [id$='firstName']").attr("id", "eml.creators[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
@@ -354,10 +359,15 @@
             });
 
             $("#metadataProvider-item-" + index + " [id^='metadataProvider-copy']").attr("id", "metadataProvider-copy-" + index);
+            $("#metadataProvider-item-" + index + " [id^='metadataProvider-from-contact']").attr("id", "metadataProvider-from-contact-" + index);
             $("#metadataProvider-copy-" + index).click(function (event) {
                 event.preventDefault();
                 targetItemId = "metadataProvider-item-" + index;
                 showCopyAgentModal();
+            });
+            $("#metadataProvider-from-contact-" + index).click(function (event) {
+                event.preventDefault();
+                copyDetails(event, "metadataProvider-item-");
             });
 
             $("#metadataProvider-item-" + index + " [id$='firstName']").attr("id", "eml.metadataProviders[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
@@ -399,10 +409,15 @@
             });
 
             $("#associatedParty-item-" + index + " [id^='associatedParty-copy']").attr("id", "associatedParty-copy-" + index);
+            $("#associatedParty-item-" + index + " [id^='associatedParty-from-contact']").attr("id", "associatedParty-from-contact-" + index);
             $("#associatedParty-copy-" + index).click(function (event) {
                 event.preventDefault();
                 targetItemId = "associatedParty-item-" + index;
                 showCopyAgentModal();
+            });
+            $("#associatedParty-from-contact-" + index).click(function (event) {
+                event.preventDefault();
+                copyPrimaryContactDetails(event, "associatedParty-item-");
             });
 
             $("#associatedParty-item-" + index + " [id$='firstName']").attr("id", "eml.associatedParties[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
@@ -446,10 +461,15 @@
             });
 
             $("#personnel-item-" + index + " [id^='personnel-copy']").attr("id", "personnel-copy-" + index);
+            $("#personnel-item-" + index + " [id^='personnel-from-contact']").attr("id", "personnel-from-contact-" + index);
             $("#personnel-copy-" + index).click(function (event) {
                 event.preventDefault();
                 targetItemId = "personnel-item-" + index;
                 showCopyAgentModal();
+            });
+            $("#personnel-from-contact-" + index).click(function (event) {
+                event.preventDefault();
+                copyPrimaryContactDetails(event, "personnel-item-");
             });
 
             $("#personnel-item-" + index + " [id$='firstName']").attr("id", "eml.project.personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});

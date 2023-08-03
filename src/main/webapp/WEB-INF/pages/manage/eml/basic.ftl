@@ -519,7 +519,7 @@
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                             </svg>
                                         </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
+                                        <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                                 <div class="text-end">
@@ -596,7 +596,7 @@
                                                     <span>${copyLink?lower_case?cap_first}</span>
                                                 </a>
 
-                                                <ul class="dropdown-menu" aria-labelledby="dropdwon-creator-copy-${creator_index}">
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy-${creator_index}">
                                                     <li><a id="creator-from-contact-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
                                                     <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                                 </ul>
@@ -681,14 +681,20 @@
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copy" href="" class="metadata-action-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
-                                    </a>
+                                    <div class="btn-group">
+                                        <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${copyLink?lower_case?cap_first}</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy">
+                                            <li><a id="creator-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                            <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="text-end">
                                     <a id="creator-removeLink" class="removeCreatorLink metadata-action-link" href="">
@@ -848,14 +854,20 @@
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copy" href="" class="metadata-action-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
-                                    </a>
+                                    <div class="btn-group">
+                                        <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${copyLink?lower_case?cap_first}</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="metadataProvider-creator-copy">
+                                            <li><a id="metadataProvider-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                            <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="text-end">
                                     <a id="metadataProvider-removeLink" class="removeMetadataProviderLink metadata-action-link" href="">
