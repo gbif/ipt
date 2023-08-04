@@ -1,5 +1,4 @@
 <#escape x as x?html>
-    <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
 <title xmlns="http://www.w3.org/1999/html"><@s.text name='manage.metadata.geocoverage.title'/></title>
     <#assign currentMetadataPage = "geocoverage"/>
@@ -10,6 +9,15 @@
     <script src="${baseURL}/js/leaflet/leaflet.js"></script>
     <script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
     <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
+
+    <#assign currentLocale = .vars["locale"]/>
+    <#if currentLocale == "es" || currentLocale == "fr" || currentLocale == "ru" || currentLocale == "pt" >
+        <#assign decimalDelimiter = ","/>
+        <#assign wrongDecimalDelimiter = "."/>
+    <#else>
+        <#assign decimalDelimiter = "."/>
+        <#assign wrongDecimalDelimiter = ","/>
+    </#if>
 
     <script>
         $(document).ready(function() {
@@ -171,10 +179,18 @@
                     var maxLatVal = locationFilter.getBounds()._northEast.lat
                     var maxLngVal = locationFilter.getBounds()._northEast.lng
 
-                    $("#" + minLatId).val(minLatVal);
-                    $("#" + minLngId).val(minLngVal);
-                    $("#" + maxLatId).val(maxLatVal);
-                    $("#" + maxLngId).val(maxLngVal);
+                    // only language
+                    var localeLanguageCode = "${currentLocale}".split("_")[0];
+
+                    var minLatValFormatted = minLatVal.toLocaleString(localeLanguageCode);
+                    var minLngValFormatted  = minLngVal.toLocaleString(localeLanguageCode);
+                    var maxLatValFormatted  = maxLatVal.toLocaleString(localeLanguageCode);
+                    var maxLngValFormatted = maxLngVal.toLocaleString(localeLanguageCode);
+
+                    $("#" + minLatId).val(minLatValFormatted);
+                    $("#" + minLngId).val(minLngValFormatted);
+                    $("#" + maxLatId).val(maxLatValFormatted);
+                    $("#" + maxLngId).val(maxLngValFormatted);
                 }
             });
 
@@ -239,6 +255,7 @@
                 // get error messages
                 var textLng = '${action.getText("validation.longitude.value")?js_string}';
                 var textLat = '${action.getText("validation.latitude.value")?js_string}';
+                var textWrongDecimalSeparator = '${action.getText("validation.coordinates.wrong.separator")?js_string}';
 
                 var submitForm = true;
 
@@ -250,6 +267,12 @@
                         minLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLng + "</span></li></ul>")
                         submitForm = false;
                     }
+
+                    if (minLngVal.includes("${wrongDecimalDelimiter}")) {
+                        minLng.addClass("is-invalid");
+                        minLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textWrongDecimalSeparator + "</span></li></ul>")
+                        submitForm = false;
+                    }
                 }
 
                 if (maxLng) {
@@ -257,6 +280,12 @@
                     if (maxLngVal > 180) {
                         maxLng.addClass("is-invalid");
                         maxLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLng + "</span></li></ul>")
+                        submitForm = false;
+                    }
+
+                    if (maxLngVal.includes("${wrongDecimalDelimiter}")) {
+                        maxLng.addClass("is-invalid");
+                        maxLng.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.longitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textWrongDecimalSeparator + "</span></li></ul>")
                         submitForm = false;
                     }
                 }
@@ -268,6 +297,12 @@
                         minLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLat + "</span></li></ul>")
                         submitForm = false;
                     }
+
+                    if (minLatVal.includes("${wrongDecimalDelimiter}")) {
+                        minLat.addClass("is-invalid");
+                        minLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.min.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textWrongDecimalSeparator + "</span></li></ul>")
+                        submitForm = false;
+                    }
                 }
 
                 if (maxLat) {
@@ -275,6 +310,12 @@
                     if (maxLatVal > 90) {
                         maxLat.addClass("is-invalid");
                         maxLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textLat + "</span></li></ul>")
+                        submitForm = false;
+                    }
+
+                    if (maxLatVal.includes("${wrongDecimalDelimiter}")) {
+                        maxLat.addClass("is-invalid");
+                        maxLat.after("<ul id=\"field-error-eml.geospatialCoverages[0].boundingCoordinates.max.latitude\" class=\"invalid-feedback list-unstyled field-error my-1\"><li><span>" + textWrongDecimalSeparator + "</span></li></ul>")
                         submitForm = false;
                     }
                 }
@@ -438,16 +479,36 @@
                                 </div>
                                 <div class="row g-3 mt-0">
                                     <div class="col-md-6">
-                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
+                                        <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.min.longitude">
+                                            <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
+                                            <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                        <input type="text" class="form-control" id="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!?string["0.###"]}" />
+                                        <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.min.longitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.min.longitude"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
+                                        <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.max.longitude">
+                                            <@s.text name="eml.geospatialCoverages.boundingCoordinates.max.longitude"/>
+                                            <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!?string["0.###"]}" />
+                                        <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.max.longitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.max.longitude"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
+                                        <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.min.latitude">
+                                            <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.latitude"/>
+                                            <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!?string["0.###"]}" />
+                                        <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.min.latitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.min.latitude"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
+                                        <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.max.latitude">
+                                            <@s.text name="eml.geospatialCoverages.boundingCoordinates.max.latitude"/>
+                                            <span class="text-gbif-danger">&#42;</span>
+                                        </label>
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!?string["0.###"]}" />
+                                        <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.max.latitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.max.latitude"/>
                                     </div>
                                 </div>
                             </div>
