@@ -54,7 +54,7 @@
                 </div>
             </#if>
             <div class="address">
-                <#if con.organisation?has_content>
+                <#if con.organisation?has_content && (con.firstName?has_content || con.lastName?has_content) >
                     <div>${con.organisation}</div>
                 </#if>
 
