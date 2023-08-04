@@ -727,11 +727,12 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   private boolean isValidAgent(Agent agent) {
-    boolean isEmpty = StringUtils.isEmpty(agent.getFullName());
-    if (isEmpty) {
-      LOG.error("Invalid contact: fullname not present. Check the metadata");
+    boolean isEmptyFullName = StringUtils.isEmpty(agent.getFullName());
+    boolean isEmptyOrganization = StringUtils.isEmpty(agent.getOrganisation());
+    if (isEmptyFullName && isEmptyOrganization) {
+      LOG.error("Invalid contact: fullname and/or organization not present. Check the metadata");
     }
-    return !isEmpty;
+    return !isEmptyFullName || !isEmptyOrganization;
   }
 
   /**
