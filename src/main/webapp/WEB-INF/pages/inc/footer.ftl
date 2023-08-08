@@ -1,7 +1,7 @@
 <#ftl output_format="HTML">
 <footer class="footer bg-light border-top mt-auto text-center text-smaller py-3">
     <div class="container">
-        <div class="mb-1">
+        <div class="mb-1 footer-text">
             <img title="IPT ${(cfg.version)!}" class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
             Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${(cfg.shortVersion)!}
         </div>

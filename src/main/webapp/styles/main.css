@@ -612,6 +612,10 @@ footer a {
     width: 55px;
 }
 
+.footer-text {
+    color: #6b747c;
+}
+
 .footer-link {
   color: #575757 !important;
   font-weight: 500;
@@ -1052,7 +1056,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .type-occurrence {
-    background: #5EA642 !important;
+    background: #3e8622 !important;
     color: white;
 }
 
@@ -1062,12 +1066,12 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .type-metadata {
-    background: #6885C0 !important;
+    background: #5976b1 !important;
     color: white !important;
 }
 
 .type-samplingevent {
-    background: #4BA0CA !important;
+    background: #297ea8 !important;
     color: white;
 }
 
@@ -1115,13 +1119,13 @@ div.dataTables_processing>div:last-child>div {
 .type-specimen {
     border: 1px solid;
     background: white !important;
-    color: #5EA642 !important;
+    color: #3e8622 !important;
 }
 
 .type-observation {
     border: 1px solid;
     background: white !important;
-    color: #5EA642 !important;
+    color: #3e8622 !important;
 }
 
 .user-admin, .user-manager, .user-publisher, .user-user {
