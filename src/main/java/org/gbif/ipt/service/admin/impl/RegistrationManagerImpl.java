@@ -103,6 +103,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
       LOG.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
+
+      resourceManager.updateOrganisationNameForResources(organisation.getKey(), organisation.getName(), organisation.getAlias());
     }
     return organisation;
   }
@@ -459,7 +461,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Update the metadata of each organization that has been added to the IPT with the latest version coming from the
    * Registry.
    */
-  private void updateAssociatedOrganisationsMetadata() {
+  public void updateAssociatedOrganisationsMetadata() {
     try {
       // 1. update associated organisations' metadata
       for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {

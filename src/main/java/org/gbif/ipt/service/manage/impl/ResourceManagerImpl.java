@@ -261,6 +261,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @Override
+  public void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias) {
+    resources.values().stream()
+            .filter(r -> r.getOrganisation() != null)
+            .filter(r -> r.getOrganisation().getKey() != null)
+            .filter(r -> r.getOrganisation().getKey().equals(organisationKey))
+            .forEach(r -> {
+              r.getOrganisation().setAlias(organisationAlias);
+              r.getOrganisation().setName(organisationName);
+            });
+    publishedPublicVersionsSimplified.values().stream()
+            .filter(r -> r.getOrganisationKey() != null)
+            .filter(r -> r.getOrganisationKey().equals(organisationKey))
+            .forEach(r -> {
+              r.setOrganisationName(organisationName);
+              r.setOrganisationAlias(organisationAlias);
+            });
+  }
+
   /**
    * Converts regular Resource to lightweight SimplifiedResource.
    * Reconstructs resource from last published EML to take data before it was changed.
@@ -284,6 +303,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLogoUrl(publishedPublicVersion.getLogoUrl());
     result.setSubject(publishedPublicVersion.getSubject());
     if (publishedPublicVersion.getOrganisation() != null) {
+      result.setOrganisationKey(publishedPublicVersion.getOrganisation().getKey());
       result.setOrganisationName(publishedPublicVersion.getOrganisationName());
       result.setOrganisationAlias(publishedPublicVersion.getOrganisationAlias());
     }
@@ -320,6 +340,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLogoUrl(resource.getLogoUrl());
     result.setSubject(resource.getSubject());
     if (resource.getOrganisation() != null) {
+      result.setOrganisationKey(resource.getOrganisation().getKey());
       result.setOrganisationName(resource.getOrganisationName());
       result.setOrganisationAlias(resource.getOrganisationAlias());
     }
@@ -1411,6 +1432,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiOrganization(SimplifiedResource resource) {
     String result = resource.getOrganizationAliasOrName();
+    UUID organisationKey = resource.getOrganisationKey();
     return result != null && !"No organization".equals(result) ? result : "--";
   }
 
