@@ -157,11 +157,9 @@
     <main class="container">
         <div class="my-3 p-3">
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
-                <div class="row g-3">
+                <div class="row g-3 mt-1">
                     <#if id?has_content>
-                        <div class="col-lg-4">
-                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true requiredField=true/>
-                        </div>
+                        <p>${organisation.description!}</p>
 
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
                         <@s.hidden name="id" id="id" required="true" />
@@ -190,7 +188,7 @@
                         <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
@@ -215,14 +213,18 @@
                         </div>
                     </#if>
 
-                    <div class="col-lg-4">
-                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
-                    </div>
-
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
                     </div>
+                </div>
 
+                <div class="row g-3 mt-1">
+                    <div class="col-lg-6">
+                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-1">
                     <div class="col-12">
                         <#if id?has_content>
                             <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="organisation.canHost" help="i18n"/>
