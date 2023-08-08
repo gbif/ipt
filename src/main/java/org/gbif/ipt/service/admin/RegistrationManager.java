@@ -144,6 +144,11 @@ public interface RegistrationManager {
   void encryptRegistration();
 
   /**
+   * Update (from the Registry) metadata for all associated organizations in the IPT.
+   */
+  void updateAssociatedOrganisationsMetadata() throws IOException;
+
+  /**
    * Associate IPT with the network.
    */
   void associateWithNetwork(String networkKey, String networkName);

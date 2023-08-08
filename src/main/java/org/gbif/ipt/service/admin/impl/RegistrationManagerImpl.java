@@ -364,7 +364,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
-    updateAssociatedOrganisationsMetadata();
+    try {
+      updateAssociatedOrganisationsMetadata();
+    } catch (IOException e) {
+      LOG.error("Failed to update associated organisations", e);
+    }
   }
 
   @Override
@@ -461,27 +465,24 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Update the metadata of each organization that has been added to the IPT with the latest version coming from the
    * Registry.
    */
-  public void updateAssociatedOrganisationsMetadata() {
-    try {
-      // 1. update associated organisations' metadata
-      for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
-        Organisation o = entry.getValue();
-        updateOrganisationMetadata(o);
-        // replace organisation in list of associated organisations now
-        registration.getAssociatedOrganisations().put(entry.getKey(), o);
-      }
-
-      // 2. update hosting organisation's metadata
-      Organisation hostingOrganisation = registration.getHostingOrganisation();
-      if (hostingOrganisation != null) {
-        updateOrganisationMetadata(hostingOrganisation);
-      }
-
-      // ensure changes are persisted to registration2.xml
-      save();
-    } catch (IOException e) {
-      LOG.error("A problem occurred saving ");
+  @Override
+  public void updateAssociatedOrganisationsMetadata() throws IOException {
+    // 1. update associated organisations' metadata
+    for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
+      Organisation o = entry.getValue();
+      updateOrganisationMetadata(o);
+      // replace organisation in list of associated organisations now
+      registration.getAssociatedOrganisations().put(entry.getKey(), o);
     }
+
+    // 2. update hosting organisation's metadata
+    Organisation hostingOrganisation = registration.getHostingOrganisation();
+    if (hostingOrganisation != null) {
+      updateOrganisationMetadata(hostingOrganisation);
+    }
+
+    // ensure changes are persisted to registration2.xml
+    save();
   }
 
   /**

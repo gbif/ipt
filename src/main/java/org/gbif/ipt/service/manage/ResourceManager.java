@@ -418,7 +418,6 @@ public interface ResourceManager {
    */
   InferredMetadata inferMetadata(Resource resource);
 
-
   /**
    * Update organisation name and alias for published resources.
    */
