@@ -1301,8 +1301,8 @@ input[type="search"]:focus::-webkit-search-cancel-button {
     background-color: white !important;
 }
 
-.select2-dropdown {
-    z-index: 9999 !important;
+.select2-search--dropdown .select2-search__field {
+    color: #4e565f;
 }
 
 .select2-container--bootstrap4 .select2-selection__clear {
