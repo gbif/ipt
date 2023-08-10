@@ -218,7 +218,7 @@
                 }
             });
 
-            $("#idColumn").select2({placeholder: '<@s.text name="manage.mapping.noid"/>', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("#idColumn").select2({placeholder: '${action.getText("manage.mapping.noid")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
             $("#mapping\\.filter\\.filterTime").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
             $("#filterName").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
             $("#filterComp").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
