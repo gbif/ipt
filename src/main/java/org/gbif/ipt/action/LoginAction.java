@@ -80,7 +80,7 @@ public class LoginAction extends POSTAction {
       // prevent login CSRF
       // Make sure the token from the login form is the same as in the cookie
         if (csrfToken.equals(csrfCookie.getValue())){
-          User authUser = userManager.authenticate(email, password);
+          User authUser = userManager.authenticate(email.trim(), password.trim());
           if (authUser == null) {
             addActionError(getText("admin.user.wrong.email.password.combination"));
             LOG.info("User " + email + " failed to log in");
