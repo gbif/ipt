@@ -3,6 +3,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.translation.title"/></title>
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -128,6 +131,8 @@
             dialogWindow.modal('show');
         }
 
+        $("#addNewTranslation").select2({placeholder: '${action.getText("manage.translation.select")?js_string}', dropdownParent: $('#dialog'), width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -165,21 +170,32 @@
                 <div>
                     <@s.submit form="translation" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
 
-                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button mt-1" name="delete" key="button.delete"/>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <@s.text name="button.options"/>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
+                            <li>
+                                <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}&rowtype=${property.extension.rowType?url}'>
+                                    <@s.text name="button.reload"/>
+                                </a>
+                            </li>
+                            <#if property.vocabulary?has_content>
+                                <li>
+                                    <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" role="button" href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&rowtype=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}'>
+                                        <@s.text name="button.automap"/>
+                                    </a>
+                                </li>
+                            </#if>
+                            <li>
+                                <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                            </li>
+                        </ul>
+                    </div>
 
                     <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType?url}&mid=${mid}">
                         <@s.text name='button.cancel'/>
                     </a>
-
-                    <a class="button btn btn-sm btn-outline-secondary top-button mt-1" href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}&rowtype=${property.extension.rowType?url}'>
-                        <@s.text name="button.reload"/>
-                    </a>
-
-                    <#if property.vocabulary?has_content>
-                        <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&rowtype=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}'>
-                            <@s.text name="button.automap"/>
-                        </a>
-                    </#if>
                 </div>
             </div>
         </div>
