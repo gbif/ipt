@@ -2,6 +2,10 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+
     <script>
         $(document).ready(function(){
             $('.userConfirmDeletion').jConfirmAction({
@@ -19,6 +23,8 @@
                 cancelAnswer: "<@s.text name="basic.no"/>",
                 buttonType: "danger"
             });
+
+            $("#user\\.role").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
         });
     </script>
     <#assign currentMenu = "admin"/>
