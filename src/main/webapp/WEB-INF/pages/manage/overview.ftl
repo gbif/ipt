@@ -982,6 +982,8 @@
         });
 
         $("#rowType").select2({placeholder: '', dropdownParent: $('#mapping-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#manager").select2({placeholder: '${action.getText("manage.overview.resource.managers.select")?js_string}', dropdownParent: $('#managers-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#network").select2({placeholder: '${action.getText("manage.overview.networks.select")?js_string}', dropdownParent: $('#networks-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
     });
 </script>
 
@@ -2178,7 +2180,11 @@
                         <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.networks.deleted"/>
                         </div>
-                    <#elseif resource.key?has_content && (potentialNetworks?size>0)>
+                    <#elseif (potentialNetworks?size==0)>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.networks.select.empty"/>
+                        </div>
+                    <#elseif resource.key?has_content>
                         <div>
                             <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
                                 <@s.text name="manage.overview.networks.obis.notification"/>
@@ -2286,6 +2292,10 @@
                                 </select>
                                 <@s.submit id="add-manager" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
+                        </div>
+                    <#else>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name="manage.overview.resource.managers.select.empty"/>
                         </div>
                     </#if>
                 </div>
