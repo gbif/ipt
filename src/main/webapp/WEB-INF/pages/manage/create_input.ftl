@@ -4,6 +4,15 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#resourceType").select2({placeholder: '${action.getText("manage.resource.create.coreType.selection")?js_string}', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+    });
+</script>
 
 <form id="create-form" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
     <div class="container-fluid bg-body border-bottom">
