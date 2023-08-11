@@ -460,7 +460,11 @@
                                         <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    <#if eml.temporalCoverages[temporalCoverage_index].startDate?has_content>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate!?date!?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    <#else>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    </#if>
                                                 </div>
 
                                             </div>
