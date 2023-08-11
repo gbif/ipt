@@ -288,6 +288,8 @@
             $("#contact-item-" + index + " [for$='province']").attr("for", "eml.contacts[" + index + "].address.province");
             $("#contact-item-" + index + " [id$='country']").attr("id", "eml.contacts[" + index + "].address.country").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='country']").attr("for", "eml.contacts[" + index + "].address.country");
+            $("#contact-item-" + index + " [id$='country']").select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+
             $("#contact-item-" + index + " [id$='phone']").attr("id", "eml.contacts[" + index + "].phone").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='phone']").attr("for", "eml.contacts[" + index + "].phone");
             $("#contact-item-" + index + " [id$='email']").attr("id", "eml.contacts[" + index + "].email").attr("name", function () {return $(this).attr("id");});
@@ -296,6 +298,8 @@
             $("#contact-item-" + index + " [for$='homepage']").attr("for", "eml.contacts[" + index + "].homepage");
             $("#contact-item-" + index + " [id$='directory']").attr("id", "eml.contacts[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='directory']").attr("for", "eml.contacts[" + index + "].userIds[0].directory");
+            $("#contact-item-" + index + " [id$='directory']").select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+
             $("#contact-item-" + index + " [id$='identifier']").attr("id", "eml.contacts[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='identifier']").attr("for", "eml.contacts[" + index + "].userIds[0].identifier");
         }
@@ -338,6 +342,8 @@
             $("#creator-item-" + index + " [for$='province']").attr("for", "eml.creators[" + index + "].address.province");
             $("#creator-item-" + index + " [id$='country']").attr("id", "eml.creators[" + index + "].address.country").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='country']").attr("for", "eml.creators[" + index + "].address.country");
+            $("#creator-item-" + index + " [id$='country']").select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+
             $("#creator-item-" + index + " [id$='phone']").attr("id", "eml.creators[" + index + "].phone").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='phone']").attr("for", "eml.creators[" + index + "].phone");
             $("#creator-item-" + index + " [id$='email']").attr("id", "eml.creators[" + index + "].email").attr("name", function () {return $(this).attr("id");});
@@ -346,6 +352,8 @@
             $("#creator-item-" + index + " [for$='homepage']").attr("for", "eml.creators[" + index + "].homepage");
             $("#creator-item-" + index + " [id$='directory']").attr("id", "eml.creators[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='directory']").attr("for", "eml.creators[" + index + "].userIds[0].directory");
+            $("#creator-item-" + index + " [id$='directory']").select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+
             $("#creator-item-" + index + " [id$='identifier']").attr("id", "eml.creators[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='identifier']").attr("for", "eml.creators[" + index + "].userIds[0].identifier");
         }
@@ -388,6 +396,8 @@
             $("#metadataProvider-item-" + index + " [for$='province']").attr("for", "eml.metadataProviders[" + index + "].address.province");
             $("#metadataProvider-item-" + index + " [id$='country']").attr("id", "eml.metadataProviders[" + index + "].address.country").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='country']").attr("for", "eml.metadataProviders[" + index + "].address.country");
+            $("#metadataProvider-item-" + index + " [id$='country']").select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+
             $("#metadataProvider-item-" + index + " [id$='phone']").attr("id", "eml.metadataProviders[" + index + "].phone").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='phone']").attr("for", "eml.metadataProviders[" + index + "].phone");
             $("#metadataProvider-item-" + index + " [id$='email']").attr("id", "eml.metadataProviders[" + index + "].email").attr("name", function () {return $(this).attr("id");});
@@ -396,6 +406,8 @@
             $("#metadataProvider-item-" + index + " [for$='homepage']").attr("for", "eml.metadataProviders[" + index + "].homepage");
             $("#metadataProvider-item-" + index + " [id$='directory']").attr("id", "eml.metadataProviders[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='directory']").attr("for", "eml.metadataProviders[" + index + "].userIds[0].directory");
+            $("#metadataProvider-item-" + index + " [id$='directory']").select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+
             $("#metadataProvider-item-" + index + " [id$='identifier']").attr("id", "eml.metadataProviders[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='identifier']").attr("for", "eml.metadataProviders[" + index + "].userIds[0].identifier");
         }

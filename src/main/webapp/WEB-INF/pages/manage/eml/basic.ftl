@@ -13,30 +13,30 @@
         $(document).ready(function(){
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)
             var resourceType="${resource.coreType!}";
-            if(resourceType != "") {
-                if(resourceType.toLowerCase() == "occurrence") {
+            if(resourceType !== "") {
+                if(resourceType.toLowerCase() === "occurrence") {
                     $("#resource\\.coreType").val('occurrence');
-                } else if (resourceType.toLowerCase() == "checklist") {
+                } else if (resourceType.toLowerCase() === "checklist") {
                     $("#resource\\.coreType").val('checklist');
-                } else if (resourceType.toLowerCase() == "samplingevent") {
+                } else if (resourceType.toLowerCase() === "samplingevent") {
                     $("#resource\\.coreType").val('samplingevent');
-                } else if (resourceType.toLowerCase() == "other") {
+                } else if (resourceType.toLowerCase() === "other") {
                     $("#resource\\.coreType").val('other');
                 }
             }
 
             // core type selection is only disabled, if resource has core
             var hasCore="${resourceHasCore!}";
-            if (hasCore == "true") {
+            if (hasCore === "true") {
                 $("#resource\\.coreType").attr('disabled','disabled');
             }
 
             // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
             var isRegisteredWithGBIF="${resource.key!}";
             var isAssignedDOI="${resource.doi!}";
-            if (isRegisteredWithGBIF != "") {
+            if (isRegisteredWithGBIF !== "") {
                 $("#id").attr('disabled','disabled');
-            } else if (isAssignedDOI != "") {
+            } else if (isAssignedDOI !== "") {
                 $("#id").attr('disabled','disabled');
             }
 
@@ -192,6 +192,21 @@
                     parentWindow.scrollBy(0, -(screenHeight / 30));
                 }
             }
+
+            $('select#eml\\.metadataLanguage').select2({placeholder: '', width:"100%", theme: 'bootstrap4'});
+            $('select#resource\\.coreType').select2({placeholder: '${action.getText("resource.coreType.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
+            $('select#id').select2({placeholder: '${action.getText("admin.organisation.name.select")?js_string}', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+            $('select#eml\\.language').select2({placeholder: '', width:"100%", theme: 'bootstrap4'});
+            $('select#resource\\.subtype').select2({placeholder: '${action.getText("resource.subtype.selection")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
+            $('select#eml\\.updateFrequency').select2({placeholder: '', width:"100%", minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
+            $('select#eml\\.intellectualRights\\.license').select2({placeholder: '${action.getText("eml.intellectualRights.nolicenses")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
+
+            $('[id^="eml.contacts"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.contacts"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.creators"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.creators"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.metadataProviders"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
 
             function changeAgentInputNamesAfterDragging(e) {
                 displayProcessing();
