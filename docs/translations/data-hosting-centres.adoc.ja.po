@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-06-06 13:23+0000\n"
-"PO-Revision-Date: 2023-07-27 15:18\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2023-08-14 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -360,13 +360,13 @@ msgstr "コロンビア"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:95
-msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
-msgstr "http://www.sibcolombia.net/[Colombian Biodiversity Information System（コロンビア生物多様性情報システム、SiB Colombia）]は、コロンビアの新しい公開機関へのヘルプデスクサポートと、link:http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]上のデータセットのホスティングサポートを提供します。SiB Colombia <sib@humboldt.org.co> にお問い合わせください。"
+msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on their https://biodiversidad.co/recursos/ipt/[IPTs]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:97
-msgid "The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr "http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]はlink:https://fairsharing.org/biodbcore-000856[FAIRSharing.org]のリポジトリとして認定されています。科学的な出版物の基礎となるデータが標準的な方法で寄託されることを保証するために、FAIRSharing.orgの適切なリポジトリを著者に紹介する学術誌が増えてきています。"
+msgid "The http://ipt.biodiversidad.co/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:98
