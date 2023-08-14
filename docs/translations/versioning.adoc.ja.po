@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2023-03-14 05:19\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2023-08-14 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -95,8 +95,8 @@ msgstr "旧メジャーバージョンのランディングページは、旧バ
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
-msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted."
-msgstr "削除されたデータセットには、そのデータセットが削除されたことを説明するIPTランディングページがあります。削除されたデータセットにDOIが割り当てられている場合、そのすべてのバージョンはアーカイブされ、そうでない場合は永久に削除されます。"
+msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI by the IPT, all its versions are archived otherwise its permanently deleted."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
