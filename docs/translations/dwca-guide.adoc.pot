@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,8 +52,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
-#: en/modules/ROOT/pages/faq.adoc:216
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:192
+#: en/modules/ROOT/pages/faq.adoc:202
 msgid "{blank}"
 msgstr ""
 
