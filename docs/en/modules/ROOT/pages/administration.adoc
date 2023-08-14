@@ -118,7 +118,11 @@ image::ipt2/administration/IPTAdminEditRegistration2.png[]
 == Configure Organizations
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used.
 
-An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
+****
+_Assigning DOIs within the IPT is unusual, very few publishers use this function.  See xref:doi-workflow.adoc[]._
+
+An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessarily have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
+****
 
 image::ipt2/administration/IPTAdminOrgs.png[]
 
@@ -133,10 +137,10 @@ Following are explanations of the specific information to select or enter:
 * *Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.
 * *Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.
 * *Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.
-* *DOI registration agency* - the type of account used to register DOIs for resources; can be either DataCite. *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). *Note*: confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.
+* *DOI registration agency* - the type of account used to xref:doi-workflow.adoc[register DOIs] for resources; only DataCite is supported. _Most publishers do not need this feature._ *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). Confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.
 * *Account username* - the username (symbol) of the DataCite account issued to the organization.
 * *Account password* - the password of the DataCite account issued to the organization.
-* *DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a test prefix (see https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) when running the IPT in test mode.
+* *DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/[test prefix] when running the IPT in test mode.
 * *Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.
 
 === Add organization

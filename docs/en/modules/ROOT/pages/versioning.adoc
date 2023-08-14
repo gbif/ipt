@@ -17,6 +17,6 @@ The versioning policy that the IPT uses is described below. It is important to n
 * Every major and minor version of a dataset has its own IPT landing page, making the archived version of the dataset (DwC-A, EML) freely available for download. Of course only landing pages of publicly available versions will be freely accessible on the Internet.
 * All IPT landing pages will comprise a comprehensive metadata record describing the datasets, and provide direct access to the data or information about how to access it.
 * The landing page of the old major version points (has a link) to the new version, with an explanation of the status of the old version.
-* Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted.
+* Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI by the IPT, all its versions are archived otherwise its permanently deleted.
 * The DOI metadata should be as rich as possible, including where possible (a) alternate identifiers for the dataset, (b) relationships to other versions, (c) relationships to articles the dataset cites, (d) ORCID where contacts are listed, etc.
 * The dataset citation, should always include the version number, replacing the need to use an Access Date and Time for citing time series datasets, for example.
