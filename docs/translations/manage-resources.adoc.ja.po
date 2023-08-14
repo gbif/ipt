@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-27 14:20+0000\n"
-"PO-Revision-Date: 2023-07-27 15:18\n"
+"POT-Creation-Date: 2023-08-14 14:15+0000\n"
+"PO-Revision-Date: 2023-08-14 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -1010,8 +1010,8 @@ msgstr "メタデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
-msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select \"Edit\" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite and be assigned a DOI. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Incomplete\" in the Metadata area of the page."
-msgstr "リソース概要ページのこのエリアでは、ユーザがリソースのメタデータを編集することができます。編集するには、{threedots}メニューをクリックし、ドロップダウンから「編集」を選択します。すべてのリソースは、i) GBIFネットワークで公開され、ii) DataCiteに登録され、DOIが割り当てられるために、最小限の記述的メタデータのセットを必要とします。必要なメタデータが不足している場合、リソース概要ページのメタデータエリアに「不完全」というバッジが表示されます。"
+msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select \"Edit\" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Incomplete\" in the Metadata area of the page."
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1825,8 +1825,8 @@ msgstr "*自動生成* - 自動生成をオンにすると、IPTがリソース�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
-msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
-msgstr "*引用識別子* - オンラインデータセットに割り当てられるDOI、URIまたはその他の永続的な識別子。 識別子を引用に含めることをお勧めします。 リソースに（IPTを使用して）DOIが割り当てられている場合、IPTはDOIを引用識別子として設定し、編集できなくなります。\n"
+msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
@@ -2134,8 +2134,8 @@ msgstr "*追加情報* - プロジェクトの歴史、現在のデータを使�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:549
 #, no-wrap
-msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr "*代替識別子* - このセクションには、リソースの追加識別子または代替識別子のリストが含まれます。リソースが公開されると、そのリソースに対するIPTのURLが識別子のリストに追加されます。リソースに新しいDOIが割り当てられた（IPTを使用した）とき、IPTはこのDOIが識別子のリストの最初に置かれるようにします。リソースがGBIFレジストリに登録された場合、レジストリ固有のリソースキーも識別子のリストに追加されます。リソースがGBIFレジストリの既存の登録リソースを表している場合、既存の登録リソースUUIDを識別子のリストに追加することができます。これにより、IPTリソースは全く新しいリソースを登録するのではなく、登録時に既存のリソースを更新することができるようになります。リソースを移行する方法の詳細については、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#migrate-a-resource[リソースの移行]を参照してください。\n"
+msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:550
@@ -2168,6 +2168,7 @@ msgstr "リソース概要ページのこの場所では、ユーザーがリソ
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:556
+#: en/modules/ROOT/pages/manage-resources.adoc:570
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublish.png"
 msgstr ""
@@ -2189,664 +2190,587 @@ msgstr "登録権の有無にかかわらず、ユーザーに管理者権限が
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:564
-msgid "When the resource is registered or the resource has been assigned a DOI, however, only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:"
-msgstr "ただし、リソースが登録されている場合、またはリソースにDOIが割り当てられている場合は、公開のたびにリソースの登録が更新されるため、「登録権限を持つマネージャー」ロールのユーザーのみが公開できます（「ユーザーアカウントの構成」下の「新規ユーザーを作成」セクションにあるロールの説明を参照のこと）。 「公開」ボタンを押すと、確認ダイアログが表示されます。 ダイアログは、保留中のバージョンがメジャーバージョンの変更であるかマイナーバージョンの変更であるかによって異なります。"
+msgid "Once the resource is registered only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear:"
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:565
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublishMajor.png"
-msgstr ""
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:567
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublishMinor.png"
+msgid "ipt2/manage/IPTManageResourcePublishConfirm.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:570
+#: en/modules/ROOT/pages/manage-resources.adoc:568
 msgid "The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing \"Publish\" is explained in the \"Publishing steps\" section below."
 msgstr "リソース管理者は、前回/最新版の公開以降にリソース（メタデータまたはデータ）にどのような変更があったかのサマリーを入力する必要があります。変更の概要はリソースのバージョン履歴の一部として保存され、リソース管理者はリソースのホームページから編集することができます。「公開 」を押した後の詳細は、以下の「公開方法」のセクションで説明されています。"
 
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:572
-msgid "On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below."
-msgstr "右側には、現在のバージョンと保留中のバージョンを比較する表があります。リソース管理者はこの表を利用して、リソースのバージョン管理、保留中のバージョンのプレビューと現在のバージョンのレビューおよび検証を行うことができます。表の各項目の説明については、以下を参照してください。"
-
 #. type: Block title
+#: en/modules/ROOT/pages/manage-resources.adoc:569
+#, no-wrap
+msgid "A pending publication:"
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:573
-#, no-wrap
-msgid "This demonstrates a major version change since the pending version has been reserved a new DOI:"
-msgstr "保留中のバージョンに新しいDOIが予約される、メジャーバージョン変更"
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:574
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublishTable.png"
+msgid "Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:"
 msgstr ""
 
-#. type: Block title
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:575
+#, no-wrap
+msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].\n"
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:576
-#, no-wrap
-msgid "This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:"
-msgstr "現在のバージョンと保留中のバージョンに割り当てられているDOIが同じ、マイナーバージョン変更"
-
-#. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:577
-#, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublishTable2.png"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:580
-#, no-wrap
-msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the {threedots} menu, click the \"View\" option to see the current version's homepage. In the pending version item, click the \"Preview\" option to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr "*バージョン* - 現在のバージョン/保留中のバージョンの `major_version.minor_version` を追跡するバージョン番号です。リソースが科学的に重要な変更を受けるたびに、リソース管理者は保留中のバージョンに新しいDOIを予約することによって、新しいメジャーバージョンを確保する必要があります。IPTのバージョニングポリシーの詳細な説明は、xref:versioning.adoc[データセットバージョン管理ポリシー]を参照してください。{threedots}メニューの \"見る\"をクリックすると、現在のバージョンのトップページが表示されます。保留中のバージョンの項目で、「プレビュー」オプションをクリックすると、保留中のバージョンのホームページのプレビューが表示されます。ホームページのプレビューはリソース管理者のみに公開され、リソースが公開できる状態にあることを確認することができます。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:581
 #, no-wrap
 msgid "*Current* - current already published version.\n"
 msgstr "*カレント* - 既に公開されている現在のバージョン。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:582
+#: en/modules/ROOT/pages/manage-resources.adoc:577
 #, no-wrap
 msgid "*Pending* - next version.\n"
 msgstr "*保留中* - 次のバージョン。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:583
+#: en/modules/ROOT/pages/manage-resources.adoc:578
 #, no-wrap
 msgid "*License* - resource license (e.g. CC0 1.0).\n"
 msgstr "*ライセンス* - リソースライセンス（例：CC0 1.0）\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:584
+#: en/modules/ROOT/pages/manage-resources.adoc:579
 #, no-wrap
-msgid "*DOI* - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.\n"
-msgstr "*DOI* - 現在のバージョン/保留中のバージョンの DOI。現在のバージョンのDOIは変更できませんが、保留中のバージョンのDOIは予約や削除が可能です。DOIの予約、削除、登録、無効化、有効化の方法については、以下のDOIの項を参照してください。\n"
+msgid "*DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.\n"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:585
+#: en/modules/ROOT/pages/manage-resources.adoc:580
 #, no-wrap
-msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.\n"
-msgstr "*公開状況* - 現在のバージョン、保留中のバージョンの公開範囲。GBIFにリソースを登録するには、リソース管理者は現在のバージョンが公開されていることを確認する必要があります。またリソースにDOIを付与するために、保留中のバージョンが公開されていることを確認する必要があります。\n"
+msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.\n"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:586
+#: en/modules/ROOT/pages/manage-resources.adoc:581
 #, no-wrap
 msgid "*Published on* - to date the current version was published on / the date the pending version will be published on.\n"
 msgstr "*公開日* - 現在のバージョンが公開された/保留中のバージョンが公開される日。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:587
+#: en/modules/ROOT/pages/manage-resources.adoc:582
 #, no-wrap
-msgid "*Publication log* - option in the {threedots} menu. Click that to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
-msgstr "*公開ログ* - メニュー内の{threedots}オプション。クリックすると、公開ログの現在のバージョンを表示します。リソース管理者は、公開に失敗した原因を診断するためなどに公開ログを利用するできます。内容のより詳細な説明は、以下のlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#publishing-status-page[出版状況]ページで説明します。これは保留中のバージョンでは利用されません。\n"
+msgid "*Publication log* - button. Click to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
+msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:588
+#: en/modules/ROOT/pages/manage-resources.adoc:583
 #, no-wrap
 msgid "Publishing steps"
 msgstr "公開までの流れ"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:591
+#: en/modules/ROOT/pages/manage-resources.adoc:586
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
 msgstr "公開アクションは、以下の流れで構成されます。これは0か100かで、新たなバージョンを公開するには、各ステップが正常に終了されなければなりません。いずれかの手順が失敗した場合、または公開がキャンセルされた場合、バージョンは最後に公開されたバージョンにロールバックされます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:593
+#: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved."
 msgstr "現在のメタデータは eml.xml というファイルに書き込まれます。eml-n.xmlという名前のインクリメンタルバージョン（nは出版物のバージョンを反映したインクリメンタルバージョン番号）が常に保存されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:594
+#: en/modules/ROOT/pages/manage-resources.adoc:589
 msgid "A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved."
 msgstr "RTF形式（リッチテキスト形式）のデータ公開文書が shortname.rtf というファイルに書き込まれます。shortname-n.rtf という名前のRTFファイルのインクリメンタルバージョンが常に保存されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:595
+#: en/modules/ROOT/pages/manage-resources.adoc:590
 msgid "The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see \"Data Validation\" section below)."
 msgstr "マッピングによって設定された現在の一次リソースデータは、dwca.zip という名前の ダーウィンコア・アーカイブファイルに書き込まれます。その後、ダーウィンコア・アーカイブのデータファイルは検証されます（下記「データ検証」セクションを参照）。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:596
+#: en/modules/ROOT/pages/manage-resources.adoc:591
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
 msgstr "IPTのアーカイブモードがオンになっている場合（ xref:administration.adoc#configure-ipt-settings[IPT設定の構成]セクションを参照）、 dwca-n.zip というダーウィンコア・アーカイブファイルのインクリメンタルバージョンも保存されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:597
+#: en/modules/ROOT/pages/manage-resources.adoc:592
 msgid "The information about the resource is updated in the GBIF Registry if the resource is registered."
 msgstr "リソースが登録されている場合は、GBIFレジストリに登録されているリソースの情報が更新されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:598
+#: en/modules/ROOT/pages/manage-resources.adoc:593
 msgid "The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT."
 msgstr "IPTを用いてリソースにDOIが付与された場合、リソースに関するDOIメタデータが更新され、DOIリゾルバに伝播されます。"
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:599
+#: en/modules/ROOT/pages/manage-resources.adoc:594
 #, no-wrap
 msgid "Data Validation"
 msgstr "データの検証"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:602
+#: en/modules/ROOT/pages/manage-resources.adoc:597
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
 msgstr "IPTは、DwC-A内のデータファイルを改行文字のないタブ区切りファイルで書き込みます（*注：元データにある改行文字は空の文字列に置き換えられます*）。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:604
+#: en/modules/ROOT/pages/manage-resources.adoc:599
 msgid "After writing, the IPT also validates their content in the following ways:"
 msgstr "また書き込まれた後、IPTは以下の方法で内容を検証します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:606
+#: en/modules/ROOT/pages/manage-resources.adoc:601
 msgid "If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique."
 msgstr "コアデータファイルにコアレコード識別子を表す列（例えば オカレンスID はオカレンスコアのコアレコード識別子）がある場合、IPT は各レコードについて、コアレコード識別子が存在し、一意であることを検証します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:607
+#: en/modules/ROOT/pages/manage-resources.adoc:602
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
 msgstr "ダーウィンコアの用語link:http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]は、オカレンス拡張の必須用語である。したがって、IPTは、各起床データファイルにbasisOfRecord列があることを検証します。さらに、IPTは、各オカレンスレコードにbasisOfRecordが存在し、その値がlink:{latest-basis-of-record}[ダーウィンコアタイプ・ボキャブラリー]と一致することを確認する。"
 
 #. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:608
-#, no-wrap
-msgid "Assigning DOIs to Resources"
-msgstr "リソースへのDOIの割り当て"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:611
-msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the \"Configure Organizations\" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki."
-msgstr "最も素晴らしいのは、リソースに科学的に重要な変更があるたびに、新しいDOIを割り当てることです。IPTがリソースにDOIを割り当てられるようにするには、まずIPT管理者がDataCiteアカウントでIPTに関連する機関を設定する必要があります。以下を参照してください。「機関の設定」のセクションで説明されています。そうしないと、Published VersionsセクションのDOIボタンが表示されなくなります。IPTでDataCiteアカウントを有効にすると、リソース管理者はこのアカウントを使ってリソースのDOIを予約、削除、登録、停止、再有効化することができます。これらの各DOI操作については、以下で詳しく説明します。IPTがどのようにデータセットにDOIを割り当てるかについては、IPT wikiのxref:doi-workflow.adoc[DOIワークフロー]のページを参照してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:613
-#, no-wrap
-msgid "*Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.\n"
-msgstr "*予約* - DOI をリソースに予約することができます。この操作は、リソースに既に DOI が割り当てられているか否かによって多少異なります。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:614
-#, no-wrap
-msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the \"Reserve\" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the \"Reserve\" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr "*DOI が割り当てられていないリソース* - 必須のメタデータを入力した後、リソースに DOI を予約することができます。DOI を予約するには、「公開されているバージョン」セクションにある \"受付\" ボタンを押します。既存のDOIを再利用する場合は、リソースのメタデータの引用識別子フィールドに入力し、「公開されているバージョン」セクションの「保存」ボタンを押す。リソースが公開されていてDOIを予約している場合、次の公開で新しいメジャーバージョンとなり、DOIが登録されます。非公開の資料でDOIを予約している場合、次回の公開では新しいマイナーバージョンとなり、DOIは登録されません。DOIが登録されるまでは、削除される可能性があることに注意してください。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:615
-#, no-wrap
-msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the \"Reserve new\" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr "*DOIを割り当てられたリソース* - リソースすでにDOIを割り当てられている公開リソースに対して、新しいDOIを予約することは可能です。DOIは次回リソースが公開されるときに登録され、新たに公開されたバージョンのリソースに対応することになります。以前使っていたDOIは前のバージョンのリソースに対応していますが、新しいバージョンに置き換えられているという警告が表示されます。リソースが公開されない限り、予約したDOIを削除することができることを覚えておいてください。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:616
-#, no-wrap
-msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the \"Delete\" button in the Published Versions section.\n"
-msgstr "*削除* - リソースに予約されているDOIは、一般に公開できなかったとき、削除することができます。DOIを削除するには、「公開されているバージョン」セクションにある「削除」ボタンを押してください。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:617
-#, no-wrap
-msgid "*Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.\n"
-msgstr "*登録* - リソースが一般公開されており、DOIを予約していた場合、次の公開で新しいメジャーバージョンとなり、DOIが登録されます。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:618
-#, no-wrap
-msgid "*Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr "*非アクティブ化* - 登録されたDOIは削除できず、リソースと対応し続けなければなりません。DOIを無効化する唯一の方法は、リソース自体を削除することです。リソースを削除すると、データがダウンロードできなくなり、DOIはリソースが撤回されたことを説明するページと対応します。DOIの更新が反映されるまで、最大24時間かかることがありますのでご注意してください。\n"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:619
-#, no-wrap
-msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr "*再アクティブ化* - 非アクティブ化されたDOIは、削除されたリソースに対応します。DOIを再活性化するためには、リソースの削除を取り消す必要があります。リソースの削除を取り消すとデータは再びダウンロード可能になり、DOIはこのリソースの最終発行版に対応します。DOIの更新が反映されるまで、最大24時間かかることがありますのでご注意ください。\n"
-
-#. type: Title ====
-#: en/modules/ROOT/pages/manage-resources.adoc:620
+#: en/modules/ROOT/pages/manage-resources.adoc:603
 #, no-wrap
 msgid "Publishing Status page"
 msgstr "公開ステータスページ"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:623
+#: en/modules/ROOT/pages/manage-resources.adoc:606
 msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
 msgstr "「公開ステータス」という名前のページには、各公開ステップの成功または失敗を示すステータスメッセージが強調表示されます。 新しいバージョンの公開は、すべてのステップが正常に終了する必要があります。そうでない場合、バージョンはロールバックされます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:625
+#: en/modules/ROOT/pages/manage-resources.adoc:608
 #, no-wrap
 msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
 msgstr "*リソース概要* - このリンクは、公開したばかりのリソースの「リソース管理」ページに移動します。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:626
+#: en/modules/ROOT/pages/manage-resources.adoc:609
 #, no-wrap
 msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
 msgstr "*パブリケーションログ* - ここをクリックすると、公開プロセスの詳細情報を含む「publication.log」というファイルのダウンロードが開始されます。 このファイルには、管理者が公開中に起きた問題を特定するのに有用な情報が含まれています。例えば\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:627
+#: en/modules/ROOT/pages/manage-resources.adoc:610
 #, no-wrap
 msgid "how many records couldn't be read and were not written to the DwC-A\n"
 msgstr "読み取りできず、DwC-Aに書き込まれなかったレコードの数\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:628
+#: en/modules/ROOT/pages/manage-resources.adoc:611
 #, no-wrap
 msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
 msgstr "識別子が欠落しているレコードの数、または識別子が重複しているレコードの数（コアレコード識別子フィールドがマップされている場合）\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:629
+#: en/modules/ROOT/pages/manage-resources.adoc:612
 #, no-wrap
 msgid "how many records contained fewer columns than the number that was mapped\n"
 msgstr "列数がマップされた数から不足しているレコードの数\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:630
+#: en/modules/ROOT/pages/manage-resources.adoc:613
 #, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
 msgstr "*ログメッセージ* - 公開ステータスページには、publication.logというファイルに送信された情報の概要が表示されます。この情報は、IPTのデータディレクトリ内のリソースのディレクトリに保存され、ログメッセージ概要のすぐ上にある「ログ公開」からアクセスできます。 \n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:631
+#: en/modules/ROOT/pages/manage-resources.adoc:614
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishingStatus.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:633
+#: en/modules/ROOT/pages/manage-resources.adoc:616
 #, no-wrap
 msgid "Auto-publishing"
 msgstr "自動公開"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:636
+#: en/modules/ROOT/pages/manage-resources.adoc:619
 msgid "To turn on automated publishing, in the Auto-publishing section click the {threedots} menu and select \"Edit\"."
 msgstr "自動公開をオンにするには、自動公開セクションで{threedots}メニューをクリックし、「編集」を選択します。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:637
+#: en/modules/ROOT/pages/manage-resources.adoc:620
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:640
+#: en/modules/ROOT/pages/manage-resources.adoc:623
 msgid "Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press \"Save\"."
 msgstr "5つの発行間隔（年・隔年・月・週・日）から1つ選び、時間を選んで「保存」を押します。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:641
+#: en/modules/ROOT/pages/manage-resources.adoc:624
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:644
+#: en/modules/ROOT/pages/manage-resources.adoc:627
 msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" option can be used to change or disable auto-publishing."
 msgstr "自動公開がオンの場合、公開間隔と次回公開日が自動公開セクションに表示されます。「編集」オプションで、自動公開の変更・無効化が可能です。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:646
+#: en/modules/ROOT/pages/manage-resources.adoc:629
 msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
 msgstr "失敗した場合、最大3回まで自動的に公開が再試行されます。これは無限に続く公開のループを防ぐための措置です。自動的に公開されるように設定されていたにも関わらず正常に終了しなかったリソースは、次回の公開日が過去になり、「公開」と「管理リソーステーブル」で強調表示されます。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:647
+#: en/modules/ROOT/pages/manage-resources.adoc:630
 #, no-wrap
 msgid "Visibility"
 msgstr "公開状況"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:649
-msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr "「リソースの管理」ページの「公開状況」では、リソースの管理者権限を持つユーザーがリソースの公開状況ステータスを変更することができます。リソースの「公開状況」では、誰がそのリソースを見ることができるか、リソースにDOIを割り当てることができるか、またはGBIFに登録することができるかを決定できます。各リソースは、デフォルトではそれを作成したユーザーと、リソースが作成されたIPTで管理責任者権限を持つユーザーのみに表示されます。各公開状況ステータスの説明については、以下を参照してください。"
+#: en/modules/ROOT/pages/manage-resources.adoc:632
+msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:651
+#: en/modules/ROOT/pages/manage-resources.adoc:634
 #, no-wrap
-msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.\n"
-msgstr "*プライベート* - プライベートリソースは、それを作成した人、IPT内で管理する権限を与えられた人、または管理責任者ロールを持つユーザーによってのみ表示されます。これは主に、完全かつ適切に設定されるまで、リソースを一般公開しないためです。プライベートなリソースにDOIを予約することは可能ですが、リソースが一般公開されるまでそのDOIを登録することはできないことに注意してください。\n"
+msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
+msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:653
+#: en/modules/ROOT/pages/manage-resources.adoc:636
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:656
+#: en/modules/ROOT/pages/manage-resources.adoc:639
 msgid "When the resource is ready for public visibility, click on the {threedots} menu and select the option labelled \"Change\". This will display a modal window with two options. You can make the resource public right away or at a set date"
 msgstr "リソースが公開できる状態になったら、{threedots}メニューをクリックし、「変更」を選択します。すると、2つのオプションがあるモーダルウィンドウが表示されます。リソースをすぐに公開するか、日付を指定して公開するかを選択できます。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:657
+#: en/modules/ROOT/pages/manage-resources.adoc:640
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:659
+#: en/modules/ROOT/pages/manage-resources.adoc:642
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:662
+#: en/modules/ROOT/pages/manage-resources.adoc:645
 msgid "After submitting the form a message will appear at the top of the page saying that the status has been changed to \"Public\"."
 msgstr "フォームを送信すると、ページの上部にステータスが「公開」に変更されたことを示すメッセージが表示されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:665
+#: en/modules/ROOT/pages/manage-resources.adoc:648
 #, no-wrap
-msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>). Be aware the visibility of a resource assigned a DOI cannot be changed to private.\n"
-msgstr "*パブリック* - パブリックリソースは、リソースがインストールされているIPTインスタンスを使用しているすべての人に表示されます（IPTホームページのパブリックリソースのテーブルにあります）。リソースに予約済みのDOIがある場合、そのDOIは、次にリソースが公開されたときに登録されます。リソースは、ホームページのURLまたはDOIを知っている人なら誰でも、インターネット経由で最終的にアクセスできます。 ただしリソースは、GBIFレジストリ（link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#registration[登録]を参照）に登録されるまで、GBIF Webサイトからグローバルに検出することはできません。DOIが割り当てられたリソースの公開状況をプライベートに変更できないことに注意してください。\n"
+msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
+msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:667
+#: en/modules/ROOT/pages/manage-resources.adoc:650
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:670
+#: en/modules/ROOT/pages/manage-resources.adoc:653
 msgid "One option appear in the {threedots} menu of the visibility area. Clicking on the option labelled \"Change\" will display a modal window"
 msgstr "公開状況エリアの{threedots}メニューに表示された「変更」をクリックすると、モーダルウィンドウが表示されます。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:671
+#: en/modules/ROOT/pages/manage-resources.adoc:654
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:674
+#: en/modules/ROOT/pages/manage-resources.adoc:657
 msgid "Clicking on button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
 msgstr "「はい」をクリックすると、リソースの公開が解除され、プライベートに戻ります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:677
+#: en/modules/ROOT/pages/manage-resources.adoc:660
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
 msgstr "*登録済み* - GBIFネットワークに登録されたリソースは、GBIFウェブサイトから発見することができ、リソースからのデータはGBIFポータルからインデックスされアクセスすることが可能です。登録後、GBIFにインデックスされるまでに1時間程度かかることがありますのでご注意ください。登録が完了すると、link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#registration[登録]の領域にGBIFに登録された情報の概要が表示されます。\n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:679
+#: en/modules/ROOT/pages/manage-resources.adoc:662
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:682
+#: en/modules/ROOT/pages/manage-resources.adoc:665
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
 msgstr "すでに登録されている場合は、「公開」ボタンをクリックするたびにGBIF Registry の登録情報も更新されます。登録済みのリソースの可視性を非公開に変更することはできません。GBIF Registry からリソースを削除する場合は、「リソース管理メニュー」の「リソース概要」下の「リソースを削除」に記載されている手順で行ってください。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:684
+#: en/modules/ROOT/pages/manage-resources.adoc:667
 #, no-wrap
 msgid "Registration"
 msgstr "登録"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:687
+#: en/modules/ROOT/pages/manage-resources.adoc:670
 msgid "The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry."
 msgstr "GBIFレジストリに登録されるまでは、GBIFのウェブサイトからグローバルに発見することができません。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:688
+#: en/modules/ROOT/pages/manage-resources.adoc:671
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
 msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:691
+#: en/modules/ROOT/pages/manage-resources.adoc:674
 msgid "Registration is enabled when:"
 msgstr "登録が可能なのは："
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:693
+#: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "the required metadata for the resource are complete,"
 msgstr "リソースに必要なメタデータが完成していて、"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:694
+#: en/modules/ROOT/pages/manage-resources.adoc:677
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
 msgstr "リソースが公開されており（以下「リソース概要」ページの「link:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#publication[公開]」の説明を参照）、"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:695
+#: en/modules/ROOT/pages/manage-resources.adoc:678
 msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
 msgstr "ユーザーに「登録権限を持つマネージャー」の役割があること（「管理メニュー」セクションの「ユーザーアカウントの構成」見出しの下にある「新しいユーザーの作成」セクションの役割の説明を参照してください）。管理責任者ロールを持つユーザーは、「登録権限を持つマネージャー」を任意のユーザーに付与できます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:697
+#: en/modules/ROOT/pages/manage-resources.adoc:680
 msgid "Click on the {threedots} menu and select the option labelled \"Register\" to register the resource with the GBIF Registry."
 msgstr "{threedots}メニューをクリックし、「登録」を選択すると、GBIFレジストリにリソースが登録されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:699
+#: en/modules/ROOT/pages/manage-resources.adoc:682
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
 msgstr "DiGIR、BioCASe、TAPIRに登録されているリソースを更新する場合は、以下のlink:https://ipt.gbif.org/manual/ja/ipt/latest/manage-resources#migrate-a-resource[リソースの移行]の項を参照してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:701
+#: en/modules/ROOT/pages/manage-resources.adoc:684
 msgid "Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
 msgstr "これをクリックするとダイアログボックスが開き、GBIFデータ共有契約書を読んで理解したかを確認するためのリンクが表示されます。チェックボックスをクリックして、これらの条件に同意することを表明してください。チェックボックスをクリックすると、ダイアログの下に「はい」というボタンが表示されます。「はい」をクリックするとリソースが登録され、「いいえ」をクリックすると決定が保留され、ダイアログが閉じられます。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:702
+#: en/modules/ROOT/pages/manage-resources.adoc:685
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:705
+#: en/modules/ROOT/pages/manage-resources.adoc:688
 msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\". Registration section when the resource is registered:"
 msgstr "登録が成功した場合、ページ上部にステータスが「登録済み」に変更された旨のメッセージが表示されます。リソースが登録されると、登録セクションは："
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:706
+#: en/modules/ROOT/pages/manage-resources.adoc:689
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration2.png"
 msgstr "ipt2/manage/IPTManageResourceRegistration2.png"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:708
+#: en/modules/ROOT/pages/manage-resources.adoc:691
 #, no-wrap
 msgid "Networks"
 msgstr "ネットワーク"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:711
+#: en/modules/ROOT/pages/manage-resources.adoc:694
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
 msgstr "このセクションでは、リソースが1つまたは複数のGBIFネットワーク（多くの出版社から提供される可能性のある、通常は1つのテーマに関するデータセットのコレクション）に含まれることを許可しています。GBIFで最大のネットワークは、link:https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)] です。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:712
+#: en/modules/ROOT/pages/manage-resources.adoc:695
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
 msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:715
+#: en/modules/ROOT/pages/manage-resources.adoc:698
 msgid "To add the resource to a network, click on the {threedots} menu and select the \"Add\" option. To remove it, click the {threedots} menu on the network item and select \"Delete\"."
 msgstr "リソースをネットワークに追加するには、{threedots}メニューをクリックして「追加」オプションを選択します。削除するには、ネットワーク項目の{threedots}メニューをクリックし、「削除」を選択します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:717
+#: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk."
 msgstr "リソースをネットワークに追加する際は、ネットワーク管理者またはGBIFヘルプデスクが承認した場合のみ行ってください。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:718
+#: en/modules/ROOT/pages/manage-resources.adoc:701
 #, no-wrap
 msgid "Resource Managers"
 msgstr "リソース管理者(Managers)"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:720
+#: en/modules/ROOT/pages/manage-resources.adoc:703
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:723
+#: en/modules/ROOT/pages/manage-resources.adoc:706
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the {threedots} menu and selecting option labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the respective {threedots} menu and selecting the option labelled \"Delete\"."
 msgstr "各リソースには、リソースの閲覧、変更、削除を許可された1人以上の管理者が明確に割り当てられます。リソースを作成したユーザーは、自動的にこれらの能力を持つことになります。リソースに関連付けられ、同じ機能を持つマネージャーを追加するには、リソース概要ページのこのエリアにあるセレクトボックスからマネージャー名を選択し、{threedots}メニューをクリックして、「追加」というラベルの付いたオプションを選択します。リソースに関連付けられ、「登録権を持つ管理者」のロールを持つ管理者は、リソースを登録し、GBIFレジストリで更新することもできます。Admin ロールを持つすべてのユーザーは、自動的に IPT インスタンス内のすべてのリソースの完全な管理ロールを持つことになります。この領域には、リソースの作成者の名前と電子メールアドレスが表示されます。管理者が追加されている場合、その名前と電子メールアドレスが作成者の下に表示されます。追加されたマネージャーは、各{threedots}メニューをクリックして「削除」オプションを選択することで、リソースのマネージャーロールを削除することができます。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:724
+#: en/modules/ROOT/pages/manage-resources.adoc:707
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:726
+#: en/modules/ROOT/pages/manage-resources.adoc:709
 #, no-wrap
 msgid "Delete a Resource"
 msgstr "リソースを削除する"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:729
+#: en/modules/ROOT/pages/manage-resources.adoc:712
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will show two options."
 msgstr "リソースの概要ページで「削除」と書かれたボタンをクリックすると、2つのオプションが表示されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:731
+#: en/modules/ROOT/pages/manage-resources.adoc:714
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
 msgstr "*IPTとGBIF.orgから削除する*\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:732
+#: en/modules/ROOT/pages/manage-resources.adoc:715
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
 msgstr "*IPTのみから削除(オーファン)*\n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:733
+#: en/modules/ROOT/pages/manage-resources.adoc:716
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
 msgstr "ipt2/manage/IPTManageResourceDelete.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:736
+#: en/modules/ROOT/pages/manage-resources.adoc:719
 msgid "Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org."
 msgstr "どちらのオプションを選んでもIPTからリソースが削除され、ファイルシステムから関連ドキュメントがすべて削除されます。前者は GBIF.org からもリソースを削除します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:738
+#: en/modules/ROOT/pages/manage-resources.adoc:721
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
 msgstr "リソースを削除する前に、後で復元したい場合に備えてデータのコピーを取っておくことができます。これを行うには、IPTのデータ・ディレクトリ内のサーバーで、「resources」ディレクトリを探します。そのディレクトリ（リソースのショートネーム付き）を、IPTのデータ・ディレクトリ外の安全な場所にコピーします。このようにして保存したリソースは、「リソース管理メニュー」セクションの「新規リソースを作成する」の下にある「既存のリソース構成フォルダーを統合する」セクションで説明した手順に従って、IPTに再統合したり、別のIPTインスタンスと統合することができます。"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/manage-resources.adoc:739
+#: en/modules/ROOT/pages/manage-resources.adoc:722
 #, no-wrap
 msgid "Migrate a Resource"
 msgstr "リソースの移行"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:742
+#: en/modules/ROOT/pages/manage-resources.adoc:725
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
 msgstr "既存の登録済みDiGIR、BioCASe、TAPIR、DwC-AリソースをIPTに移行する方法が追加されました。これにより、既存のリソースはGBIFレジストリのUUIDを保持したまま移行することができます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:744
+#: en/modules/ROOT/pages/manage-resources.adoc:727
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
 msgstr "この方法では、IPTリソースがGBIFレジストリで対応する既存の登録リソースを更新するように設定されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:746
+#: en/modules/ROOT/pages/manage-resources.adoc:729
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
 msgstr "*既存の登録済みリソース*を*IPTリソース*に移行するには、以下の手順に従ってください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:748
+#: en/modules/ROOT/pages/manage-resources.adoc:731
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
 msgstr "**IPTリソース**の公開状況が公開であり、登録されていないことを確認します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:749
+#: en/modules/ROOT/pages/manage-resources.adoc:732
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
 msgstr "**既存の登録リソース**の所有機関を決定し、それが機関としてIPTに追加され、それがデータセットを公開するように構成されていることを確認します。（xref:administration.adoc#add-organization[機関を追加]セクションを参照）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:750
+#: en/modules/ROOT/pages/manage-resources.adoc:733
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
 msgstr "「基本メタデータ」ページのドロップダウンリストから、所有する機関を選択します。「基本メタデータ」ページの保存を忘れないでください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:751
+#: en/modules/ROOT/pages/manage-resources.adoc:734
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
 msgstr "**既存の登録済みリソース**のGBIFデータセットページに移動します。IPTをテストモードで動作させているか、本番モードで動作させているかによって、それぞれ https://www.gbif-uat.org/dataset または https://www.gbif.org/dataset にアクセスすることになります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:752
+#: en/modules/ROOT/pages/manage-resources.adoc:735
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
 msgstr "GBIFデータセットページに、**既存の登録済みリソース**の**所有機関**が正しく表示されていることを確認します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:754
+#: en/modules/ROOT/pages/manage-resources.adoc:737
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
 msgstr "所有者が異なる場合は、GBIFレジストリの更新が必要です。更新が必要である旨、メールにて helpdesk@gbif.org まで連絡してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:756
+#: en/modules/ROOT/pages/manage-resources.adoc:739
 msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
 msgstr "GBIFデータセットページのURLからGBIFレジストリ UUIDをコピーします。（例：`5d637678-cb64-4863-a12b-78b4e1a56628`）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:757
+#: en/modules/ROOT/pages/manage-resources.adoc:740
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
 msgstr "このUUIDを、「追加のメタデータ」ページの*IPTリソース*の代替識別子のリストに追加します。「追加のメタデータ」ページを保存することを忘れないでください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:758
+#: en/modules/ROOT/pages/manage-resources.adoc:741
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
 msgstr "あなたのIPTの他の公開または登録されたリソースが、代替識別子のリストにこのUUIDを含んでいないことを確認してください。IPTに既に存在する登録済みリソースを置き換える場合、他のリソースを最初に削除する必要があります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:759
+#: en/modules/ROOT/pages/manage-resources.adoc:742
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
 msgstr "リソース概要ページで、「登録」をクリックします。他の登録と同様に、GBIFデータ共有契約を読み、理解したことを確認した上で、登録が実行されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:761
+#: en/modules/ROOT/pages/manage-resources.adoc:744
 msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
 msgstr "このような確認メッセージが表示され、GBIFの既存のデータセットが更新されたことがわかります。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:762
+#: en/modules/ROOT/pages/manage-resources.adoc:745
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:765
+#: en/modules/ROOT/pages/manage-resources.adoc:748
 #, no-wrap
 msgid "*Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:\n"
 msgstr "**helpdesk@gbif.org にアップデートの通知メールを送ってください。**メールには以下を記入してください。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:766
+#: en/modules/ROOT/pages/manage-resources.adoc:749
 #, no-wrap
 msgid "the name and URL (or GBIF Registry UUID) of your IPT\n"
 msgstr "IPTの名前とURL（またはGBIFレジストリUUID）\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:767
+#: en/modules/ROOT/pages/manage-resources.adoc:750
 #, no-wrap
 msgid "the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
 msgstr "更新したリソースの名前とGBIFレジストリ UUID（リソースの概要ページのリソースキーの行を参照のこと、例：リソースキー d990532f-6783-4871-b2d3-cae3d0cb872b）\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:767
+#: en/modules/ROOT/pages/manage-resources.adoc:750
 #, no-wrap
 msgid "(if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry\n"
 msgstr "（該当する場合）リソースを提供していたDiGIR/BioCASe/TAPIR/IPT技術インストールが非推奨になったか、またGBIFレジストリから削除可能かどうか\n"
