@@ -562,7 +562,7 @@ Click on the {threedots} menu and select the "Publish" option to trigger publish
 
 Once the resource is registered only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear:
 
-image::ipt2/manage/IPTManageResourcePublish.png[]
+image::ipt2/manage/IPTManageResourcePublishConfirm.png[]
 
 The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.
 
