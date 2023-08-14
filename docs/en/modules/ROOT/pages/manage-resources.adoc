@@ -566,13 +566,10 @@ image::ipt2/manage/IPTManageResourcePublishConfirm.png[]
 
 The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.
 
-.This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
-image::ipt2/manage/IPTManageResourcePublishTable2.png[]
-
-On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
-
 .A pending publication:
-image::ipt2/manage/IPTManageResourcePublishTable2.png[]
+image::ipt2/manage/IPTManageResourcePublish.png[]
+
+Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:
 
 * *Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].
 * *Current* - current already published version.
@@ -581,7 +578,7 @@ image::ipt2/manage/IPTManageResourcePublishTable2.png[]
 * *DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.
 * *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.
 * *Published on* - to date the current version was published on / the date the pending version will be published on.
-* *Publication log* - option in the {threedots} menu. Click that to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
+* *Publication log* - button. Click to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
 
 ==== Publishing steps
 
