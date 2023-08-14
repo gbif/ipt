@@ -483,7 +483,7 @@
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
                                             <span class="text-gbif-danger">&#42;</span>
                                         </label>
-                                        <input type="text" class="form-control" id="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!?string["0.###"]}" />
+                                        <input type="text" class="form-control" id="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" <#if (eml.geospatialCoverages[0].boundingCoordinates.min.longitude)?has_content>value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)?string["0.###"]}" <#else>value=""</#if> />
                                         <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.min.longitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.min.longitude"/>
                                     </div>
                                     <div class="col-md-6">
@@ -491,7 +491,7 @@
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.max.longitude"/>
                                             <span class="text-gbif-danger">&#42;</span>
                                         </label>
-                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!?string["0.###"]}" />
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" class="form-control" <#if (eml.geospatialCoverages[0].boundingCoordinates.max.longitude)?has_content> value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)?string["0.###"]}" <#else>value=""</#if> />
                                         <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.max.longitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.max.longitude"/>
                                     </div>
                                     <div class="col-md-6">
@@ -499,7 +499,7 @@
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.latitude"/>
                                             <span class="text-gbif-danger">&#42;</span>
                                         </label>
-                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!?string["0.###"]}" />
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" class="form-control" <#if (eml.geospatialCoverages[0].boundingCoordinates.min.latitude)?has_content> value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)?string["0.###"]}" <#else>value=""</#if> />
                                         <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.min.latitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.min.latitude"/>
                                     </div>
                                     <div class="col-md-6">
@@ -507,7 +507,7 @@
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.max.latitude"/>
                                             <span class="text-gbif-danger">&#42;</span>
                                         </label>
-                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" class="form-control" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!?string["0.###"]}" />
+                                        <input type="text" id="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" class="form-control" <#if (eml.geospatialCoverages[0].boundingCoordinates.max.latitude)?has_content>value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)?string["0.###"]}" <#else>value=""</#if> />
                                         <@s.fielderror id="field-error-eml.geospatialCoverages[0].boundingCoordinates.max.latitude" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="eml.geospatialCoverages[0].boundingCoordinates.max.latitude"/>
                                     </div>
                                 </div>
