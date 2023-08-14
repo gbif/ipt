@@ -71,6 +71,8 @@
             $("#preview-inferred-temporal").click(function(event) {
                 event.preventDefault();
 
+                $("#dateInferred").show();
+
                 <#if (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size gt 0>
                 $(".metadata-error-alert").show();
                 </#if>
@@ -407,7 +409,7 @@
                                         </a>
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
+                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
                                         <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
                                             <span>
                                                 <svg class="link-icon" viewBox="0 0 24 24">

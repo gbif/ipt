@@ -64,6 +64,8 @@ $(document).ready(function(){
     $("#preview-inferred-taxonomic").click(function(event) {
         event.preventDefault();
 
+        $("#dateInferred").show();
+
         <#if (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size gt 0>
         $(".metadata-error-alert").show();
         </#if>

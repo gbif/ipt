@@ -425,7 +425,7 @@
                                     </a>
                                 </div>
                                 <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                    ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
+                                    <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
                                     <a href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
                                         <span>
                                             <svg class="link-icon" viewBox="0 0 24 24">
@@ -478,6 +478,8 @@
                                     <@s.text name='manage.metadata.geocoverage.warning'/>
                                 </div>
                                 <div class="row g-3 mt-0">
+<#--                                    ${inferredMetadata}-->
+
                                     <div class="col-md-6">
                                         <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.min.longitude">
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>
