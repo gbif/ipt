@@ -259,7 +259,7 @@ This page shows a list of concepts within the vocabulary. In the context of mapp
 image::ipt2/manage/IPTManageResourceVocabularyDetail.png[]
 
 === Metadata
-This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite and be assigned a DOI. If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
 
 image::ipt2/manage/IPTManageResourceMetadataMissing.png[]
 
@@ -472,7 +472,7 @@ Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2
 Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f
 
 * *Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.
-* *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.
+* *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.
 * *Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.
 * *Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.
 ** *Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.
@@ -545,7 +545,7 @@ image::ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png[]
 * *Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.
 * *Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
 * *Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.
-* *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.
+* *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.
 ** *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.
 ** *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
 ** *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
@@ -560,30 +560,25 @@ Click on the {threedots} menu and select the "Publish" option to trigger publish
 . the required metadata for the resource are complete, and
 . the user has the role "Manager with/without registration rights".
 
-When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:
+Once the resource is registered only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear:
 
-image::ipt2/manage/IPTManageResourcePublishMajor.png[]
-
-image::ipt2/manage/IPTManageResourcePublishMinor.png[]
+image::ipt2/manage/IPTManageResourcePublishConfirm.png[]
 
 The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.
 
-On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
+.A pending publication:
+image::ipt2/manage/IPTManageResourcePublish.png[]
 
-.This demonstrates a major version change since the pending version has been reserved a new DOI:
-image::ipt2/manage/IPTManageResourcePublishTable.png[]
+Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:
 
-.This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
-image::ipt2/manage/IPTManageResourcePublishTable2.png[]
-
-* *Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the {threedots} menu, click the "View" option to see the current version's homepage. In the pending version item, click the "Preview" option to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
+* *Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].
 * *Current* - current already published version.
 * *Pending* - next version.
 * *License* - resource license (e.g. CC0 1.0).
-* *DOI* - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
-* *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.
+* *DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.
+* *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.
 * *Published on* - to date the current version was published on / the date the pending version will be published on.
-* *Publication log* - option in the {threedots} menu. Click that to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
+* *Publication log* - button. Click to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
 
 ==== Publishing steps
 
@@ -604,18 +599,6 @@ After writing, the IPT also validates their content in the following ways:
 
 * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
 * The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary].
-
-==== Assigning DOIs to Resources
-
-Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the "Configure Organizations" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki.
-
-* *Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.
-** *Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the "Reserve" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the "Reserve" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.
-** *Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the "Reserve new" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.
-* *Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the "Delete" button in the Published Versions section.
-* *Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.
-* *Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.
-* *Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.
 
 ==== Publishing Status page
 
@@ -645,9 +628,9 @@ When automated publishing is on, the publishing interval and next published date
 In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
 === Visibility
-The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
+The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
-* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.
+* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.
 +
 --
 image::ipt2/manage/IPTManageResourceVisibilityPrivate.png[]
@@ -661,7 +644,7 @@ image::ipt2/manage/IPTManageResourceVisibilityMakePublic2.png[]
 After submitting the form a message will appear at the top of the page saying that the status has been changed to "Public".
 --
 
-* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>). Be aware the visibility of a resource assigned a DOI cannot be changed to private.
+* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).
 +
 --
 image::ipt2/manage/IPTManageResourceVisibilityPublic.png[]

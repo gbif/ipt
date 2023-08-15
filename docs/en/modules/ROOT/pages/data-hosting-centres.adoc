@@ -91,9 +91,9 @@ The http://data.canadensys.net/ipt[Canadensys IPT] is recognized as a repository
 
 == Colombia
 
-The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance.
+The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on their https://biodiversidad.co/recursos/ipt/[IPTs]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance.
 
-The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
+The http://ipt.biodiversidad.co/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
 
 == Denmark
 
