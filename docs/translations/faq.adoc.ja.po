@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-07 16:26+0000\n"
-"PO-Revision-Date: 2023-07-07 17:44\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2023-08-14 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -27,8 +27,8 @@ msgstr "よくある質問"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:206
-#: en/modules/ROOT/pages/faq.adoc:216
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:192
+#: en/modules/ROOT/pages/faq.adoc:202
 msgid "{blank}"
 msgstr "{blank}"
 
@@ -265,286 +265,246 @@ msgstr "データセットにDOIを割り当てるには、IPTをどのように
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:107
-msgid "In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain."
-msgstr "データセットにDOIを割り当てるには、IPTにDataCiteアカウントを設定し、それ自体がIPTのドメインの下でDOIをミントするように設定されていることが必要です。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:109
-msgid "The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the xref:administration.adoc#add-organization[Add Organization] section of the User Manual."
-msgstr "アカウント保有機関は、すでに機関としてIPTに関連付けられている必要があります。IPTに機関を関連付ける方法については、ユーザーマニュアルの xref:administration.adoc#add-organization[機関の追加]を参照してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:111
-msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr "あとは、DataCiteのアカウント情報を機関に追加し（ユーザー名、パスワード、プレフィックスなど）、「Account activated」のチェックリストにチェックが入っていることを確認するだけです。機関の編集やフォームの各フィールドの説明については、ユーザーマニュアルのxref:administration.adoc#edit-organization[機関を編集]のセクションを参照してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:113
-msgid "If you work for a GBIF ‘country' Node, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time."
-msgstr "GBIFの「国別」ノードにお勤めの方は、mailto:helpdesk@gbif.org[GBIFヘルプデスク]にご連絡いただき、無料のDataCiteアカウントの取得についてお問い合わせください。GBIFはDataCiteに独自のアカウントを持っており、「国別」ノードに独自の無料アカウントを提供できる場合があります（状況に応じて決定されます）。GBIFはこれまで、スペインとコロンビアに対してこれを行いましたが、両国ともIPTをほぼ常時オンラインにしている強力な実績があります。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:115
-msgid "The following well-maintained IPTs have all been configured with a DataCite accounts, can assign DOIs to datasets, and are thus recognized as a repository in BioSharing.org, which is used by journals such as Nature to refer their authors to one or more repositories that are appropriate for the type of data they have."
-msgstr "以下のよく整備されたIPTはすべてDataCiteアカウントを設定し、データセットにDOIを割り当てることができるため、BioSharing.orgのリポジトリとして認識されます。このリポジトリは、Natureなどの雑誌が、著者にデータの種類に適した一つ以上のリポジトリに紹介するために使用されています。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:117
-msgid "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
-msgstr "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:118
-msgid "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
-msgstr "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:119
-msgid "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
-msgstr "http://ipt.biodiversidad.co/sib/[GBIFコロンビア IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:121
-msgid "Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85"
-msgstr "スペインの公開者はすでに標準化されたデータをGBIF Spain IPTに寄託しています。例えば、データセット http://doi.org/10.15470/qomfu6 はScientific Dataに掲載された以下のData Descriptorの土台となっています。"
+msgid "Refer to the xref:doi-workflow.adoc[]."
+msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:122
+#: en/modules/ROOT/pages/faq.adoc:108
 #, no-wrap
 msgid "Usage"
 msgstr "使用方法"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:124
+#: en/modules/ROOT/pages/faq.adoc:110
 #, no-wrap
 msgid "Why do published files contain broken lines?"
 msgstr "公開されたファイルに改行があるのはなぜですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:126
+#: en/modules/ROOT/pages/faq.adoc:112
 msgid "The IPT does not support source files that have multi-line fields (fields that include a newline character (`\\n`) or carriage return (`\\r`)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration."
 msgstr "IPTでは、ソースの設定でフィールドクォート（行内のすべてのフィールド/列を囲む1文字）を指定していても、複数行のフィールド（改行文字（`\\n`）や復帰文字（`\\r`）を含むフィールド）を持つソースファイルには対応していません。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:128
+#: en/modules/ROOT/pages/faq.adoc:114
 msgid "Unless these line breaking characters are removed, the IPT will publish files with broken lines (the columns will appear mixed up)."
 msgstr "これらの改行文字を削除しない限り、IPTは改行された（列が混在して見える）ファイルを公開することになります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:130
+#: en/modules/ROOT/pages/faq.adoc:116
 msgid "To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone."
 msgstr "これを解決するには、ソースファイルからこれらの改行文字を削除し、ソースファイルを新しいものに置き換えてから、リソースを再公開すれば問題ありません。ソースファイルをアップロードする際、両者が同じ名前であれば、IPTにファイルを新しく置き換えられることを忘れないでください。そうすれば、マッピングをやり直す必要はありません。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:131
+#: en/modules/ROOT/pages/faq.adoc:117
 #, no-wrap
 msgid "Why do published files not include all records?"
 msgstr "なぜ、公開されたファイルにはすべての記録が含まれていないのですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:133
+#: en/modules/ROOT/pages/faq.adoc:119
 msgid "Check the publication log for exceptions such as:"
 msgstr "次のような例外がないか、公開ログを確認してください。"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:136
+#: en/modules/ROOT/pages/faq.adoc:122
 #, no-wrap
 msgid "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
 msgstr "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:139
+#: en/modules/ROOT/pages/faq.adoc:125
 msgid "that means you have invalid date value in your data source, which, in this case, is `0000-00-00 00:00:00`."
 msgstr "これはデータソースに無効な日付値があることを意味します。この場合は`0000-00-00 00:00:00`です。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:142
+#: en/modules/ROOT/pages/faq.adoc:128
 msgid "To solve this, you can update the value with \"Null\" value, and update the resource.  Usually, you can rely on the log message to identify the column of interest, like in the example above, it says \"column 65,\" which is the 65th column in the data source."
 msgstr "この問題を解消するには、値を「Null」値で更新し、リソースを更新すればよいです。通常、ログメッセージを頼りに対象のカラムを特定することができます。上記の例では、「カラム65」と書かれていますが、これはデータソースの65番目のカラムを表しています。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:144
+#: en/modules/ROOT/pages/faq.adoc:130
 msgid "The `0000-00-00 00:00:00` value in your SQL table could be resulted when importing, while having defined the column with \"Not Null\" and default value as `0000-00-00 00:00:00`."
 msgstr "SQLテーブルの列を「Not Null」、デフォルト値を`0000-00-00 00:00:00`と定義しているにもかかわらず、インポート時に`0000-00-00 00:00:00`という値になってしまうことがあります。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:145
+#: en/modules/ROOT/pages/faq.adoc:131
 #, no-wrap
 msgid "What does the error \"No space left on device\" mean and how do I fix it?"
 msgstr "「デバイスに空き容量がない」というエラーの意味と修正方法を教えてください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:147
+#: en/modules/ROOT/pages/faq.adoc:133
 msgid "If you found an exception such as:"
 msgstr "次のような例外が見つかった場合："
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:150
+#: en/modules/ROOT/pages/faq.adoc:136
 #, no-wrap
 msgid "Caused by: java.io.IOException: No space left on device\n"
 msgstr "Caused by: java.io.IOException: No space left on device\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:153
+#: en/modules/ROOT/pages/faq.adoc:139
 msgid "in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory."
 msgstr "このパブリケーションログファイルは、IPTデータディレクトリを含むディスクパーティションに空きスペースが残っていないことを意味します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:155
+#: en/modules/ROOT/pages/faq.adoc:141
 msgid "To solve this, you can:"
 msgstr "これを解決するためには、このような対策をとることができます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:157
+#: en/modules/ROOT/pages/faq.adoc:143
 msgid "Allocate more space to this partition."
 msgstr "このパーティションにさらに空き容量を確保する。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:158
+#: en/modules/ROOT/pages/faq.adoc:144
 msgid "Move your IPT data directory to another partition where there is more space available. (Refer to the xref:installation.adoc[installation instructions] to change the location of the data directory)."
 msgstr "IPT データ・ディレクトリを、より多くの空き容量がある別のパーティションに移動します。(データ・ディレクトリの場所を変更するには、インストール手順を参照してください）。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:159
+#: en/modules/ROOT/pages/faq.adoc:145
 msgid "Free up disk space (e.g. deleting temporary files, remove unused applications, etc)"
 msgstr "ディスクの空き容量を確保する。（一時ファイルの削除、使用していないアプリケーションの削除など）"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:160
+#: en/modules/ROOT/pages/faq.adoc:146
 #, no-wrap
 msgid "How do I change the publishing organization of my resource? The drop down on the Basic Metadata page is disabled."
 msgstr "リソースの公開構成を変更するにはどうすればよいですか？Basic Metadataページのドロップダウンが無効になっています。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:163
+#: en/modules/ROOT/pages/faq.adoc:149
 msgid "Ideally, the publishing organization should not be changed after the resource has been either registered with GBIF or assigned a DOI."
 msgstr "理想的には、リソースがGBIFに登録されるか、DOIが割り当てられた後に、公開組織を変更しないことです。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:165
+#: en/modules/ROOT/pages/faq.adoc:151
 msgid "That being said, there are two ways to change the publishing organization."
 msgstr "とはいっても、公開機関を変更する方法は2つあります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:168
+#: en/modules/ROOT/pages/faq.adoc:154
 msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
 msgstr "最も簡単な方法は、リソースを再パブリッシュし、目的の公開組織を再設定することです。プロセスを簡素化するために、圧縮されたIPTリソースフォルダからデータセットを再作成することができます。その方法については、xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[こちら]を参照してください。xref:manage-resources.adoc#migrate-a-resource[以下の手順]に従って、リソースを古い公開組織から新しい公開組織に移行する場合、手順5では、GBIFヘルプデスクにGBIFレジストリの更新を依頼する必要がありますので、十分に注意してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:170
+#: en/modules/ROOT/pages/faq.adoc:156
 msgid "The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):"
 msgstr "もう一つの方法は、IPTディレクトリで直接作業する方法です。何かを始める前に、アーカイブのバックアップをとってください。次に、（IPTフォルダのサーバー上で）作業したいデータセットのresource.xmlファイルを編集します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:172
+#: en/modules/ROOT/pages/faq.adoc:158
 msgid "In `<organisation>`, replace the current UUID by the UUID of the organization you would like to be the new publishing organization,"
 msgstr "`<organisation>`で、現在のUUIDを、新しい発行組織にしたい組織のUUIDに置き換えます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:173
+#: en/modules/ROOT/pages/faq.adoc:159
 msgid "Restart the IPT (restart Tomcat, restart the IPT service, etc),"
 msgstr "IPTを再起動（Tomcatを再起動、IPTサービスを再起動など）します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:174
+#: en/modules/ROOT/pages/faq.adoc:160
 msgid "Check that no error message appears in your IPT when you click publish."
 msgstr "公開をクリックしても、IPTにエラーメッセージが表示されないことを確認します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:176
+#: en/modules/ROOT/pages/faq.adoc:162
 msgid "In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
 msgstr "さらに、*GBIFヘルプデスクに連絡し、GBIF Registryの組織を更新してもらうよう依頼してください*（この部分は非常に重要です）。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:178
+#: en/modules/ROOT/pages/faq.adoc:164
 #, no-wrap
 msgid "How do I change the type of an existing resource?"
 msgstr "既存のリソースの種類を変更するにはどうすればよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:181
+#: en/modules/ROOT/pages/faq.adoc:167
 msgid "The type of a resource is derived from its core mapping:"
 msgstr "リソースのタイプは、そのコアマッピングから導き出されます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:183
+#: en/modules/ROOT/pages/faq.adoc:169
 msgid "If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to \"occurrence\"."
 msgstr "コアマッピングがlink:{latest-dwc-occurrence}[オカレンス拡張]の場合、タイプは「オカレンス」と同じです。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:184
+#: en/modules/ROOT/pages/faq.adoc:170
 msgid "If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to \"checklist\"."
 msgstr "コアマッピングがlink:{latest-dwc-taxon}[タクソン拡張]である場合，タイプは「チェックリスト」と同じです。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:185
+#: en/modules/ROOT/pages/faq.adoc:171
 msgid "If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to \"sampling-event\"."
 msgstr "コアマッピングがlink:{latest-dwc-event}[イベント拡張]の場合、タイプは「サンプリングイベント」と同じになります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:186
+#: en/modules/ROOT/pages/faq.adoc:172
 msgid "If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to \"other\"."
 msgstr "コアマッピングがIPTのデフォルトコア（オカレンス、タクソン、イベント）のいずれとも等しくない場合、タイプは「その他」となります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:188
+#: en/modules/ROOT/pages/faq.adoc:174
 msgid "Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published."
 msgstr "したがって、リソースのタイプを変更するには、そのコアマッピングを変更する必要があります。例えば、オカレンスリソースをチェックリストに変更するには、オカレンス拡張に対するコアマッピングをすべて削除し、タクソン拡張に対する新しいコアマッピングを再作成するだけです。変更を確定するには、リソースの新バージョンを公開する必要があります。リソースがGBIFに登録されている場合、再公開後、そのタイプは自動的に更新されます。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:189
+#: en/modules/ROOT/pages/faq.adoc:175
 #, no-wrap
 msgid "What are some tricks to simplify the authoring and maintenance of metadata?"
 msgstr "メタデータの作成・保守を簡略化するための工夫はありますか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:191
+#: en/modules/ROOT/pages/faq.adoc:177
 msgid "Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:"
 msgstr "データセットは時間の経過とともに変化することがあります。データセットのメタデータを常に最新の状態に保つことは、時間の経過とともに不整合が生じ始めるため、負担となる場合があります。以下は、メタデータの作成を簡素化し、時間の経過に伴うメンテナンスを容易にするために活用できる工夫の例です。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:193
+#: en/modules/ROOT/pages/faq.adoc:179
 msgid "use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:manage-resources.adoc#basic-metadata[here]."
 msgstr "連絡先のORCIDを使用して、メールアドレスや他のフィールドを入力する代わりに、その人が転職した場合に変更される可能性のあるフィールドを入力する。ORCIDを提供する方法についての詳細は、xref:manage-resources.adoc#basic-metadata[こちら]をご覧ください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:194
+#: en/modules/ROOT/pages/faq.adoc:180
 msgid "for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts."
 msgstr "変化・成長し続けるデータセット（静的データセット）について、レコード数や分類群数など、文字による説明で正確な数を指定するのを避ける。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:195
+#: en/modules/ROOT/pages/faq.adoc:181
 msgid "use the IPT's citation xref:manage-resources.adoc#citations[Auto-generation feature] instead of supplying a manually created data citation."
 msgstr "手動で作成した引用を用いる代わりに、IPTのxref:manage-resources.adoc#citations[引用自動生成機能]を使用する。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:196
+#: en/modules/ROOT/pages/faq.adoc:182
 msgid "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon list feature] instead of supplying each taxon manually one at a time when entering the taxonomic coverage."
 msgstr "分類範囲を入力する際に、各分類群を一つずつ手入力せずに、IPTの分類群リストによるインポート機能を使用する。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:197
+#: en/modules/ROOT/pages/faq.adoc:183
 #, no-wrap
 msgid "How do I change the hosting organization of my IPT?"
 msgstr "IPTのホスト機関を変更するにはどうすればよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:200
+#: en/modules/ROOT/pages/faq.adoc:186
 msgid "the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence."
 msgstr "以下の説明は、IPTがすでに登録されており、技術的な能力を必要とする手動変更が伴うことを前提としています。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:202
+#: en/modules/ROOT/pages/faq.adoc:188
 msgid "First, ensure the desired hosting organization has been added to your IPT. You can do this through the user interface. For help adding a new organization to your IPT, refer to xref:administration.adoc#add-organization[this section] of the user manual."
 msgstr "まず、目的のホスティング機関がIPTに追加されていることを確認します。これは、ユーザーインターフェイスから行うことができます。IPT に新しい機関を追加するヘルプについては、ユーザーマニュアルのxref:administration.adoc#add-organization[このセクション]を参照してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:204
+#: en/modules/ROOT/pages/faq.adoc:190
 msgid "Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:"
 msgstr "次に、IPTデータディレクトリの /config フォルダにある registration2.xml ファイルを、以下の 2 つの方法で手動で変更します。"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:213
+#: en/modules/ROOT/pages/faq.adoc:199
 #, no-wrap
 msgid "<registration>\n"
 "  <registry>\n"
@@ -556,7 +516,7 @@ msgstr "<registration>\n"
 "      <key>UUID of desired hosting organization</key>\n"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:223
+#: en/modules/ROOT/pages/faq.adoc:209
 #, no-wrap
 msgid "<registration>\n"
 "  <registry>\n"
@@ -568,198 +528,198 @@ msgstr "<registration>\n"
 "      <organisationKey>UUID of desired hosting organization</key>\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:226
+#: en/modules/ROOT/pages/faq.adoc:212
 msgid "Restart Tomcat."
 msgstr "Tomcatを再起動します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:228
+#: en/modules/ROOT/pages/faq.adoc:214
 msgid "Last, press the \"update registration\" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#edit-gbif-registration[this section] of the user manual."
 msgstr "最後に、GBIF登録編集ページの「登録更新」ボタンを押してください。これにより、GBIFレジストリに変更が反映されます。このアップデートの内容については、ユーザーマニュアルのxref:administration.adoc#edit-gbif-registration[こちら]を参照してください。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:229
+#: en/modules/ROOT/pages/faq.adoc:215
 #, no-wrap
 msgid "How do I reset the admin password?"
 msgstr "管理者パスワードをリセットする方法を教えてください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:232
+#: en/modules/ROOT/pages/faq.adoc:218
 msgid "If you have forgotten the admin password, the server administrator will need to reset it."
 msgstr "管理者パスワードを忘れた場合は、サーバー管理者がパスワードを再設定する必要があります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:234
+#: en/modules/ROOT/pages/faq.adoc:220
 msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$FxYdvOAlQ4cP8q1qU77fZePpdwrXS5PC3zmSYgdZuWlU6XUUe6FRu`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:235
+#: en/modules/ROOT/pages/faq.adoc:221
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
 msgstr "あるIPTインストールから別のIPTインストールにデータセットを移行するにはどうすればよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:237
+#: en/modules/ROOT/pages/faq.adoc:223
 msgid "This migration process must be done directly on the server following the next steps:"
 msgstr "この移行作業は、次のステップに従って、サーバー上で直接行う必要があります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:239
+#: en/modules/ROOT/pages/faq.adoc:225
 msgid "Shut down the old IPT server; just to check no-one makes any changes."
 msgstr "古いIPTサーバーをシャットダウンします。誰も変更しないことを確認するためです。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:240
+#: en/modules/ROOT/pages/faq.adoc:226
 msgid "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy the whole dataset folder"
 msgstr "古いIPTの `/old-ipt-datadir/resources/[dataset_name]` に行き、データセットフォルダ全体をコピーします。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:241
+#: en/modules/ROOT/pages/faq.adoc:227
 msgid "In the new IPT go to `/new-ipt-datadir/resources/` and paste the dataset folder"
 msgstr "新しいIPTで `/new-ipt-datadir/resources/` に移動し、データセットフォルダを貼り付けます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:242
+#: en/modules/ROOT/pages/faq.adoc:228
 msgid "Restart the new IPT server"
 msgstr "新しいIPTサーバーを再起動します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:243
+#: en/modules/ROOT/pages/faq.adoc:229
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
 msgstr "新しいIPTでデータセットを公開します（エンドポイントを更新します）。"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:244
+#: en/modules/ROOT/pages/faq.adoc:230
 #, no-wrap
 msgid "Indexing by GBIF"
 msgstr "GBIFによるインデックス作成"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:246
+#: en/modules/ROOT/pages/faq.adoc:232
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
 msgstr "GBIFがデータセットの（再）インデックス作成を開始するまでには、どのくらいの時間がかかりますか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:249
+#: en/modules/ROOT/pages/faq.adoc:235
 msgid "The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on."
 msgstr "それは、GBIFのインデックス作成キューの長さ、データセットの大きさ、GBIFのインデックス作成サービスがオンになっているかどうかによって異なります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:251
+#: en/modules/ROOT/pages/faq.adoc:237
 msgid "Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor]."
 msgstr "通常、GBIFがデータセットのインデックス作成を開始するまでに5～60分かかります。大規模なデータセット（数百万レコード）のインデックス作成を開始すると、終了までに数時間かかることがありますので、しばらくお待ちください。link:https://www.gbif.org/health[GBIFヘルスページ]の下部にはインデックス作成キューの長さが表示され、link:https://registry.gbif.org/monitoring/running-crawls[クロールモニター]でキューの全体を確認することができます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:253
+#: en/modules/ROOT/pages/faq.adoc:239
 msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
 msgstr "GBIFがデータセットのインデックス作成に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、GBIFヘルプデスク<helpdesk@gbif.org>にメールを送って、何が起こったかを調査してください。GBIFがあなたのデータセットに（再）インデックスを付けなかった理由を知りたい場合は、以下をご覧ください。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:254
+#: en/modules/ROOT/pages/faq.adoc:240
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
 msgstr "なぜGBIFは私のデータセットをまだ（再）インデックス化していないのですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:257
+#: en/modules/ROOT/pages/faq.adoc:243
 msgid "Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected."
 msgstr "GBIFは、メンテナンスのためインデックス作成サービスを停止することがあります（前問のリンク参照）。データセットのインデックス作成が予想より遅れる原因の多くはこれによるものです。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:259
+#: en/modules/ROOT/pages/faq.adoc:245
 msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
 msgstr "GBIFがお客様のデータセットのインデックス化に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、直接GBIFヘルプデスク<helpdesk@gbif.org>にメールを送り、何が起こったかを調査してください。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:260
+#: en/modules/ROOT/pages/faq.adoc:246
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
 msgstr "GBIFはどのくらいの頻度でインデックスを更新しているのですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:263
+#: en/modules/ROOT/pages/faq.adoc:249
 msgid "GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT."
 msgstr "GBIFは、登録されたデータセットが更新されるたびに、自動的にインデックスを付け直そうとします。これは、データセットがIPT経由で再公開されるたびに行われます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:265
+#: en/modules/ROOT/pages/faq.adoc:251
 msgid "To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days."
 msgstr "またIPTで公開されていないデータセットに対応するため、GBIFは登録されたすべてのデータセットに対して、7日おきに自動的にインデックスを更新するよう試みます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:267
+#: en/modules/ROOT/pages/faq.adoc:253
 msgid "GBIF will only reindex a dataset if its last published date has changed since the last time it was indexed."
 msgstr "GBIFは、データセットの最終公開日が前回のインデックス作成時と異なる場合のみ、再インデックス作成を行います。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:268
+#: en/modules/ROOT/pages/faq.adoc:254
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
 msgstr "GBIFはどのようなデータセットに対応していますか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:271
+#: en/modules/ROOT/pages/faq.adoc:257
 msgid "GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GBIF currently only indexes species occurrence records, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible."
 msgstr "GBIFは4種類のデータセットに対応しています。GBIFは現在、種のオカレンス記録のみをインデックス化しており、これらはコアレコードまたは拡張レコードとして提供することができます。サンプリングイベント・データセットの場合、拡張レコードの種のオカレンスは、可能な限りそのコアイベント・レコードから得られる情報で補強されます。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:272
+#: en/modules/ROOT/pages/faq.adoc:258
 #, no-wrap
 msgid "Why is my dataset citation different on GBIF.org?"
 msgstr "GBIF.orgで、私のデータセットの引用が異なるのはなぜですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:275
+#: en/modules/ROOT/pages/faq.adoc:261
 msgid "The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ]."
 msgstr "IPTはフリーテキストでのデータセット引用をサポートしていますが、GBIF.orgのデータセットページで上書きされてしまいます。その理由は、link:https://www.gbif.org/faq?q=citation[GBIF.org FAQ]に記載されています。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:276
+#: en/modules/ROOT/pages/faq.adoc:262
 #, no-wrap
 msgid "Why is GBIF unable to access my IPT over HTTPS?"
 msgstr "GBIF が HTTPS で自分ののIPTにアクセスできないのはなぜですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:279
+#: en/modules/ROOT/pages/faq.adoc:265
 msgid "This is usually due to a misconfiguration in the webserver (Apache, IIS, Tomcat etc).  Ensure you can access your server through the command line (`curl https://ipt.example.org`), from computers outside your organization's network (e.g. from a personal phone) and run an https://www.ssllabs.com/ssltest/[SSL Server Test]."
 msgstr "これは通常、ウェブサーバ（Apache、IIS、Tomcatなど）の設定ミスが原因です。コマンドライン（`curl https://ipt.example.org`）を使って、組織のネットワーク外のコンピュータ（個人の電話など）からサーバーにアクセスできることを確認し、link:https://www.ssllabs.com/ssltest/[SSLサーバーテスト]を実行します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:281
+#: en/modules/ROOT/pages/faq.adoc:267
 msgid "Any errors like \"unable to get local issuer certificate\" or \"certificate chain incomplete\" will usually prevent GBIF's systems from accessing your IPT."
 msgstr "「unable to get local issuer certificate」や「certificate chain incomplete」などのエラーが発生すると、通常GBIFのシステムがIPTにアクセスできなくなります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:283
+#: en/modules/ROOT/pages/faq.adoc:269
 msgid "To fix them, see the documentation of your webserver, or ask your IT department for advice.  These problems are generally not related to the IPT."
 msgstr "これらのエラーを修正するには、Webサーバーのドキュメントを参照するか、IT部門にアドバイスを求めます。これらの問題は、一般にIPTとは関係ありません。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:285
+#: en/modules/ROOT/pages/faq.adoc:271
 msgid "A useful resource for configuring many web servers is the https://ssl-config.mozilla.org[Mozilla SSL Configuration Generator], and a quick test for the most common issue is available at https://whatsmychaincert.com/[What’s My Chain Cert]."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:286
+#: en/modules/ROOT/pages/faq.adoc:272
 #, no-wrap
 msgid "Indexing by others"
 msgstr "他の手段でのインデックス作成"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:288
+#: en/modules/ROOT/pages/faq.adoc:274
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr "自分のIPTで公開されているリソースのリストをエクスポートするにはどうすればよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:291
+#: en/modules/ROOT/pages/faq.adoc:277
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
 msgstr "機関によっては、自分自身のIPTにインデックスを付ける必要があり、多くの場合、公開オープンデータ・システムなどに各リソースの記録を含める必要があります。IPTは、これを可能にするためにデータ・カタログ語彙（DCAT）をサポートしています。DCATのエクスポートは、`/dcat`（例：https://ipt.gbif.org/dcat）で可能です。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:292
+#: en/modules/ROOT/pages/faq.adoc:278
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
 msgstr "別の方法として、link:https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API]がありますが、これはGBIFに公開されたデータセットしか含まれません。"
 
