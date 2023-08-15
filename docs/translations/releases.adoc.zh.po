@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-28 11:42+0000\n"
-"PO-Revision-Date: 2023-07-28 11:58\n"
+"POT-Creation-Date: 2023-08-15 07:39+0000\n"
+"PO-Revision-Date: 2023-08-15 08:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -47,8 +47,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
-#: en/modules/ROOT/pages/releases.adoc:35
-msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.3/ipt-2.7.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
+msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.4/ipt-2.7.4.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
 msgstr ""
 
 #. type: Plain text
@@ -136,6 +135,11 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:32
 #, no-wrap
 msgid "*2.7.3* – March 2023"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:35
+msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.3/ipt-2.7.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
 msgstr ""
 
 #. type: Plain text
