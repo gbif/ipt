@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2023-08-14 14:19\n"
+"PO-Revision-Date: 2023-08-15 11:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -475,12 +475,12 @@ msgstr "Esta página no está disponible hasta que la instancia de IPT haya sido
 #. type: delimited block *
 #: en/modules/ROOT/pages/administration.adoc:123
 msgid "_Assigning DOIs within the IPT is unusual, very few publishers use this function.  See xref:doi-workflow.adoc[]._"
-msgstr ""
+msgstr "_La asignación de DOI dentro del IPT es inusual, muy pocos editores utilizan esta función. Consulte xref:doi-workflow.adoc[]._"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/administration.adoc:125
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessarily have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr ""
+msgstr "Un IPT capaz de asignar DOI a los recursos también debe tener una organización configurada con una cuenta de DataCite. Para configurarse con una cuenta de DataCite, la organización no necesariamente tiene que poder publicar recursos (estar asociada con recursos). Solo se puede usar una cuenta de DataCite para registrar DOI a la vez, y el modo de archivo de IPT también debe estar activado (consulte la sección <<Configurar ajustes de IPT>> para obtener más información sobre el modo de archivo). La lista de organizaciones muestra qué organizaciones se configuraron con cuentas de DataCite y cuál se seleccionó para registrar DOI para todos los recursos en esta instancia de IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:127
