@@ -266,7 +266,7 @@
                                                 <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
-                                        <div id="subItems-${item_index}" class="mt-2">
+                                        <div id="subItems-${item_index}" class="mt-2 subItems">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
@@ -402,7 +402,7 @@
                                         <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
                                     </div>
                                 </div>
-                                <div id="subItems" class="my-2"></div>
+                                <div id="subItems" class="my-2 subItems"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
                                     <a id="plus-subItem" href="" class="metadata-action-link">
                                         <span>
