@@ -606,6 +606,7 @@
             $("#" + targetItemId + " input[id$='city']").val(selectedAgent['address']['city']);
             $("#" + targetItemId + " input[id$='province']").val(selectedAgent['address']['province']);
             $("#" + targetItemId + " select[id$='country']").val(selectedAgent['address']['country']);
+            $("#" + targetItemId + " select[id$='country']").trigger('change');
             $("#" + targetItemId + " input[id$='postalCode']").val(selectedAgent['address']['postalCode']);
 
             $("#" + targetItemId + " input[id$='phone']").val(selectedAgent['phone']);
@@ -616,6 +617,7 @@
 
             var directories={<#list userIdDirecotriesExtended! as directory, identifier>"${directory}" : "${identifier}"<#sep>,</#sep></#list>};
             $("#" + targetItemId + " select[id$='directory']").val(selectedAgenUserIds[0] ? directories[selectedAgenUserIds[0]['directory']] : null);
+            $("#" + targetItemId + " select[id$='directory']").trigger('change');
             $("#" + targetItemId + " input[id$='identifier']").val(selectedAgenUserIds[0] ? selectedAgenUserIds[0]['identifier'] : null);
 
             $("#" + targetItemId + " select[id$='role']").val(selectedAgent['role']);

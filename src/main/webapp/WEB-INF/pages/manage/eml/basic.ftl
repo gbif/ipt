@@ -223,11 +223,13 @@
                     $("div#" + elementId + " input[id$='city']").attr("name", "eml.contacts[" + index + "].address.city");
                     $("div#" + elementId + " input[id$='province']").attr("name", "eml.contacts[" + index + "].address.province");
                     $("div#" + elementId + " select[id$='country']").attr("name", "eml.contacts[" + index + "].address.country");
+                    $("div#" + elementId + " select[id$='country']").trigger("change");
                     $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.contacts[" + index + "].address.postalCode");
                     $("div#" + elementId + " input[id$='phone']").attr("name", "eml.contacts[" + index + "].phone");
                     $("div#" + elementId + " input[id$='email']").attr("name", "eml.contacts[" + index + "].email");
                     $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.contacts[" + index + "].homepage");
                     $("div#" + elementId + " select[id$='directory']").attr("name", "eml.contacts[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " select[id$='directory']").trigger("change");
                     $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.contacts[" + index + "].userIds[0].identifier");
                 });
 
