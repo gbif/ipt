@@ -40,10 +40,14 @@
             });
 
             // populate coordinate fields, using min max values as defaults if none exist
-            var minLngVal = isNaN(parseFloat($("#" + minLngId).val())) ? MIN_LNG_VAL_LIMIT : parseFloat($("#" + minLngId).val());
-            var maxLngVal = isNaN(parseFloat($("#" + maxLngId).val())) ? MAX_LNG_VAL_LIMIT : parseFloat($("#" + maxLngId).val());
-            var minLatVal = isNaN(parseFloat($("#" + minLatId).val())) ? MIN_LAT_VAL_LIMIT : parseFloat($("#" + minLatId).val());
-            var maxLatVal = isNaN(parseFloat($("#" + maxLatId).val())) ? MAX_LAT_VAL_LIMIT : parseFloat($("#" + maxLatId).val());
+            var minLngInputValue = $("#" + minLngId).val();
+            var maxLngInputValue = $("#" + maxLngId).val();
+            var minLatInputValue = $("#" + minLatId).val();
+            var maxLatInputValue = $("#" + maxLatId).val();
+            var minLngVal = isNaN(parseFloat(minLngInputValue)) ? MIN_LNG_VAL_LIMIT : parseFloat(minLngInputValue.replace(",", "."));
+            var maxLngVal = isNaN(parseFloat(maxLngInputValue)) ? MAX_LNG_VAL_LIMIT : parseFloat(maxLngInputValue.replace(",", "."));
+            var minLatVal = isNaN(parseFloat(minLatInputValue)) ? MIN_LAT_VAL_LIMIT : parseFloat(minLatInputValue.replace(",", "."));
+            var maxLatVal = isNaN(parseFloat(maxLatInputValue)) ? MAX_LAT_VAL_LIMIT : parseFloat(maxLatInputValue.replace(",", "."));
 
             // make the location filter: a draggable/resizable rectangle
             var locationFilter = new L.LocationFilter({
@@ -117,19 +121,33 @@
 
             function adjustMapWithInferredCoordinates(skipAdditionalAdjustment) {
                 locationFilter.enable();
-                var minLngVal = parseFloat(${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!\-180?c});
-                var maxLngVal = parseFloat(${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!180?c});
-                var minLatVal = parseFloat(${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!\-90?c});
-                var maxLatVal = parseFloat(${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!90?c});
+
+                // replace "," with "." (if needed) for correct work of locationFilter
+                var minLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!?replace(",", ".")}"
+                var minLngVal = parseFloat(minLngRaw);
+                if (isNaN(minLngVal)) minLngVal = -180;
+
+                var maxLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!?replace(",", ".")}";
+                var maxLngVal = parseFloat(maxLngRaw);
+                if (isNaN(maxLngVal)) maxLngVal = 180;
+
+                var minLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!?replace(",", ".")}";
+                var minLatVal = parseFloat(minLatRaw);
+                if (isNaN(minLatVal)) minLatVal = -90;
+
+                var maxLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!?replace(",", ".")}";
+                var maxLatVal = parseFloat(maxLatRaw);
+                if (isNaN(maxLatVal)) maxLatVal = 90;
+
                 locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)), skipAdditionalAdjustment);
             }
 
             function setInferredCoordinatesToInputs() {
                 <#if (inferredMetadata.inferredGeographicCoverage.data)??>
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude});
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude});
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude});
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val(${inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude});
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!}");
                 </#if>
             }
 
