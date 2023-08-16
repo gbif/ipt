@@ -211,6 +211,7 @@ $(document).ready(function(){
                 $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id^='trash']").attr("id", "trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).attr("name", function () {
                     return $(this).attr("id");
                 });
+                $("#eml\\.taxonomicCoverages\\[" + itemIndex + "\\]\\.taxonKeywords\\[" + subBaseIndex + "\\]\\.rank").select2({placeholder: '${action.getText("eml.rank.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
                 $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).click(function (event) {
                     removeSubItem(event);
                 });
