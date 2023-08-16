@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-06-06 13:23+0000\n"
-"PO-Revision-Date: 2023-06-06 14:20\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2023-08-14 14:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -360,12 +360,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:95
-msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
+msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on their https://biodiversidad.co/recursos/ipt/[IPTs]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:97
-msgid "The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
+msgid "The http://ipt.biodiversidad.co/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
 msgstr ""
 
 #. type: Title ==
