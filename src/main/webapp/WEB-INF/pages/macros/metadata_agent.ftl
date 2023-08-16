@@ -552,7 +552,6 @@
 
         $('#agent').on('change', function() {
             selectedAgent = agents[this.value];
-            console.log(selectedAgent)
 
             if (selectedAgent) {
                 $("#copy-agent-button").show();

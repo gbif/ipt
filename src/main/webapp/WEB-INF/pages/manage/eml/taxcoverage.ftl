@@ -89,8 +89,6 @@
                     var elementId = $(this)[0].id;
 
                     $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
-                    console.log("div#" + elementId + " input[id^='add-button']");
-                    console.log($("div#" + elementId + " input[id^='add-button']"));
                     $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
 
                     var scientificNames = $("#" + elementId + " input[id$='scientificName']");

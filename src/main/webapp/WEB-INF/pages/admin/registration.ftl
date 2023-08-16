@@ -96,8 +96,6 @@
                         var numberOfIptInstallations = 0;
 
                         for (var i in data.results) {
-                            console.log(data.results[i])
-                            console.log(data.results[i].type)
                             if (data.results[i].type === "IPT_INSTALLATION") {
                                 numberOfIptInstallations++;
                             }
