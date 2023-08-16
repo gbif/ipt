@@ -2,6 +2,9 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.collections.title'/></title>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#metadata-section').change(function () {
@@ -97,6 +100,21 @@
 
                 hideProcessing();
             }
+
+            $('[id^="eml.specimenPreservationMethods"]').select2({
+                placeholder: '${action.getText("eml.preservation.methods.selection")?js_string}',
+                width: "100%",
+                minimumResultsForSearch: 15,
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^=type-]').select2({
+                placeholder: '',
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: false,
+                theme: 'bootstrap4'
+            });
         });
     </script>
 
