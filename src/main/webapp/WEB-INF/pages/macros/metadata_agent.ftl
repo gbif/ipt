@@ -450,6 +450,7 @@
             $("#associatedParty-item-" + index + " [for$='province']").attr("for", "eml.associatedParties[" + index + "].address.province");
             $("#associatedParty-item-" + index + " [id$='country']").attr("id", "eml.associatedParties[" + index + "].address.country").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='country']").attr("for", "eml.associatedParties[" + index + "].address.country");
+            $("#associatedParty-item-" + index + " [id$='country']").select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
             $("#associatedParty-item-" + index + " [id$='phone']").attr("id", "eml.associatedParties[" + index + "].phone").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='phone']").attr("for", "eml.associatedParties[" + index + "].phone");
             $("#associatedParty-item-" + index + " [id$='email']").attr("id", "eml.associatedParties[" + index + "].email").attr("name", function () {return $(this).attr("id");});
@@ -458,8 +459,10 @@
             $("#associatedParty-item-" + index + " [for$='homepage']").attr("for", "eml.associatedParties[" + index + "].homepage");
             $("#associatedParty-item-" + index + " [id$='role']").attr("id", "eml.associatedParties[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='role']").attr("for", "eml.associatedParties[" + index + "].role");
+            $("#associatedParty-item-" + index + " [id$='role']").select2({placeholder: '${action.getText("eml.agent.role.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
             $("#associatedParty-item-" + index + " [id$='directory']").attr("id", "eml.associatedParties[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='directory']").attr("for", "eml.associatedParties[" + index + "].userIds[0].directory");
+            $("#associatedParty-item-" + index + " [id$='directory']").select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
             $("#associatedParty-item-" + index + " [id$='identifier']").attr("id", "eml.associatedParties[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='identifier']").attr("for", "eml.associatedParties[" + index + "].userIds[0].identifier");
         }
@@ -490,8 +493,10 @@
             $("#personnel-item-" + index + " [for$='lastName']").attr("for", "eml.project.personnel[" + index + "].lastName");
             $("#personnel-item-" + index + " [id$='role']").attr("id", "eml.project.personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='role']").attr("for", "eml.project.personnel[" + index + "].role");
+            $("#personnel-item-" + index + " [id$='role']").select2({placeholder: '${action.getText("eml.agent.role.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
             $("#personnel-item-" + index + " [id$='directory']").attr("id", "eml.project.personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='directory']").attr("for", "eml.project.personnel[" + index + "].userIds[0].directory");
+            $("#personnel-item-" + index + " [id$='directory']").select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
             $("#personnel-item-" + index + " [id$='identifier']").attr("id", "eml.project.personnel[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='identifier']").attr("for", "eml.project.personnel[" + index + "].userIds[0].identifier");
         }

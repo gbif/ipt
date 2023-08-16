@@ -70,8 +70,17 @@
                 $('#agentType').select2({placeholder: '<@s.text name="eml.agentType.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
                 $('#agent').select2({placeholder: '<@s.text name="eml.agent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
             });
+
+            $('[id^="eml.project.personnel"][id$=".role"]').select2({placeholder: '${action.getText("eml.agent.role.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.project.personnel"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
         });
     </script>
+    <style>
+        .popover {
+            width: 50%;
+            max-width: 600px;
+        }
+    </style>
     <#assign currentMetadataPage = "project"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
