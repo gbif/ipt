@@ -65,11 +65,10 @@
                 hideProcessing();
             }
 
-            $('#copy-agent-modal').on('shown.bs.modal', function () {
-                $('#resource').select2({placeholder: '<@s.text name="eml.metadataAgent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-                $('#agentType').select2({placeholder: '<@s.text name="eml.agentType.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-                $('#agent').select2({placeholder: '<@s.text name="eml.agent.copy.resource.select"/>', minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-            });
+            var copyAgentModal = $('#copy-agent-modal');
+            $('#resource').select2({placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+            $('#agentType').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+            $('#agent').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
 
             $('[id^="eml.project.personnel"][id$=".role"]').select2({placeholder: '${action.getText("eml.agent.role.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
             $('[id^="eml.project.personnel"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
