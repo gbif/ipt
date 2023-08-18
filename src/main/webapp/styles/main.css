@@ -2553,7 +2553,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-.sources-tab-root.tab-selected, .registration-tab-root.tab-selected, .default-button-tab-root {
+.sources-tab-root.tab-selected, .registration-tab-root.tab-selected, .default-button-tab-root.tab-selected {
   color: rgb(var(--color-gbif-primary));
 }
 
