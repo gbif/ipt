@@ -1417,11 +1417,13 @@
                                                     </a>
                                                 </#if>
 
-                                                <a title="${doiActionName}" id="reserve-doi" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
-                                                    <svg class="icon-button-svg" viewBox="0 0 24 24">
-                                                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
-                                                    </svg>
-                                                </a>
+                                                <#if organisationWithPrimaryDoiAccount??>
+                                                    <a title="${doiActionName}" id="reserve-doi" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
+                                                        <svg class="icon-button-svg" viewBox="0 0 24 24">
+                                                            <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
+                                                        </svg>
+                                                    </a>
+                                                </#if>
 
                                                 <div class="dropdown d-sm-none">
                                                     <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-pending" data-bs-toggle="dropdown" aria-expanded="false">
