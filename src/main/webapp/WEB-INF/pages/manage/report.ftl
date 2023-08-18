@@ -25,6 +25,9 @@
 
             <p>
                 <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
+                <#if resource.status=="REGISTERED" && resource.key??>
+                    <@s.text name="manage.report.gbif"><@s.param><a type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">GBIF.org</a></@s.param></@s.text>
+                </#if>
             </p>
             <p>
                 <@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
