@@ -15,6 +15,8 @@ package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Network;
+import org.gbif.api.util.VocabularyUtils;
+import org.gbif.api.vocabulary.DatasetSubtype;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -91,6 +93,16 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_SAMPLING_EVENT = "DWC-ARCHIVE-SAMPLING-EVENT";
+
+  private static final String SERVICE_SUBTYPE_SPECIMEN = "";
+  private static final String SERVICE_SUBTYPE_OBSERVATION = "";
+  private static final String SERVICE_SUBTYPE_TAXONOMIC_AUTHORITY = "";
+  private static final String SERVICE_SUBTYPE_NOMENCLATOR_AUTHORITY = "";
+  private static final String SERVICE_SUBTYPE_INVENTORY_THEMATIC = "";
+  private static final String SERVICE_SUBTYPE_INVENTORY_REGIONAL = "";
+  private static final String SERVICE_SUBTYPE_GLOBAL_SPECIES_DATASET = "";
+  private static final String SERVICE_SUBTYPE_DERIVED_FROM_OCCURRENCE = "";
+
   private static final String SERVICE_TYPE_RSS = "RSS";
   private static final String CONTACT_TYPE_TECHNICAL = "technical";
   private static final String CONTACT_TYPE_ADMINISTRATIVE = "administrative";
@@ -171,6 +183,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     RegistryServices services = buildServiceTypeParams(resource);
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+
+    if (resource.getSubtype() != null) {
+      data.add(new BasicNameValuePair("subtype", resource.getSubtype()));
+    }
 
     return data;
   }
