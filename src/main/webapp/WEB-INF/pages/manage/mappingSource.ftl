@@ -4,9 +4,14 @@
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script>
     $(document).ready(function(){
         $("#save").on("click", displayProcessing);
+
+        $("#source").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
     });
 </script>
 
@@ -50,14 +55,14 @@
         <input type="hidden" name="mid" value="${mid!}" />
         <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
-        <div class="my-3 p-3 text-center">
-            <p class="fst-italic">${mapping.extension.description}</p>
+        <div class="my-3 p-3">
+            <p class="fst-italic text-center">${mapping.extension.description}</p>
 
             <#if mapping.extension.link?has_content>
-                <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
+                <p class="text-center"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
             </#if>
 
-            <p><@s.text name='manage.mapping.source.help'/></p>
+            <p class="text-center"><@s.text name='manage.mapping.source.help'/></p>
 
             <div class="container" style="max-width: 600px;">
                 <div class="row">
