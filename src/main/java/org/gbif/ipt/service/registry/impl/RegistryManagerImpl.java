@@ -185,10 +185,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
     if (resource.getSubtype() != null) {
-      LOG.debug("Adding subtype parameter [{}]", resource.getSubtype());
       data.add(new BasicNameValuePair("subtype", resource.getSubtype()));
-    } else {
-      LOG.debug("There is no dataset subtype, nothing added");
     }
 
     return data;
