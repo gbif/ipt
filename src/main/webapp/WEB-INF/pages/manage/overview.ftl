@@ -1051,6 +1051,8 @@
                 </h1>
 
                 <div class="mt-2">
+                    <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+
                     <#if resource.status == "DELETED">
                         <div style="display: inline-block;">
                             <#if disableRegistrationRights == "false">
