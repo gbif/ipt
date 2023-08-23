@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-23 19:01+0000\n"
-"PO-Revision-Date: 2023-08-23 19:07\n"
+"PO-Revision-Date: 2023-08-23 20:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-7-5-august-2023,2.7.5>>."
-msgstr ""
+msgstr "La versión estable actual es la <<2-7-5-august-2023,2.7.5>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -43,17 +43,17 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:16
 #, no-wrap
 msgid "*2.7.5* – August 2023"
-msgstr ""
+msgstr "*2.7.5* – Agosto de 2023"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.5/ipt-2.7.5.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.5/ipt-2.7.5.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] or xref:installation.adoc#installation-from-docker[usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "xref:2.5@release-notes.adoc[IPT v2.7.5 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.7.5]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -81,7 +81,7 @@ msgstr "xref:2.5@index.adoc[Manual del usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "Addressed https://github.com/gbif/ipt/milestone/47?closed=1[18 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/47?closed=1[18 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
@@ -121,7 +121,7 @@ msgstr "Los usuarios actuales deben actualizarse a esta versión siguiendo las i
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "This minor release brings default network for IPT feature and bug fixes."
-msgstr ""
+msgstr "Esta versión menor trae la red predeterminada para la función IPT y correcciones de errores."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
