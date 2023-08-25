@@ -21,6 +21,8 @@ import org.gbif.utils.file.csv.CSVReaderFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -30,6 +32,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -156,8 +160,48 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     return null;
   }
 
+  public static InputStream decompressInputStream(InputStream inputStream) throws IOException {
+    PipedInputStream decompressedStream;
+
+    try (ZipInputStream zipStream = new ZipInputStream(inputStream)) {
+      ZipEntry firstEntry = zipStream.getNextEntry();
+
+      if (firstEntry == null) {
+        LOG.error("Exception while reading zipped URL source: no entries in the archive");
+        throw new IOException("Exception while reading zipped URL source: no entries in the archive");
+      }
+
+      String filename = firstEntry.getName();
+      LOG.debug("Reading file {} from archive", filename);
+
+      try (PipedOutputStream outputStream = new PipedOutputStream()) {
+        decompressedStream = new PipedInputStream(outputStream);
+
+        Thread streamingThread = new Thread(() -> {
+          try {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = zipStream.read(buffer)) != -1) {
+              outputStream.write(buffer, 0, bytesRead);
+            }
+          } catch (IOException e) {
+            LOG.error("Exception while reading zipped URL source", e);
+          }
+        });
+
+        streamingThread.start();
+      }
+    }
+    return decompressedStream;
+  }
+
   private CSVReader getReader() throws IOException {
-    InputStream input = url.toURL().openStream();
+    InputStream input;
+    if (url.toString().endsWith("zip")) {
+      input = decompressInputStream(url.toURL().openStream());
+    } else {
+      input = url.toURL().openStream();
+    }
     return CSVReaderFactory.build(input, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
   }
 
@@ -186,7 +230,11 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     Set<Integer> emptyLines = new HashSet<>();
 
     try (InputStream in = url.toURL().openStream()) {
-      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      if (url.toString().endsWith("zip")) {
+        Files.copy(decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      } else {
+        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      }
       setFile(file);
     } catch (IOException e) {
       LOG.error("URL not readable {}", url);

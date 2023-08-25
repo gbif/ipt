@@ -152,6 +152,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean validateDatapackageMetadata = false;
   private String summary;
   private String makePublicDateTime;
+  private long usableSpace;
+  private String freeDiscSpaceReadable;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -656,22 +658,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     return SUCCESS;
-  }
-
-  /**
-   * Validate whether to show a confirmation message to overwrite the file(s) recently uploaded.
-   *
-   * @return true if a file or a URL exist in the user session. False otherwise.
-   */
-  public boolean getConfirmOverwrite() {
-    return session.get(Constants.SESSION_FILE) != null || session.get(Constants.SESSION_URL) != null;
-  }
-
-  /**
-   * Get a message to display in a modal window.
-   */
-  public String getOverwriteMessage() {
-    return (String) session.get(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
   }
 
   /**
@@ -1242,6 +1228,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
       MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
       autoPublishFrequencies.putAll(filteredFrequencies);
+
+      usableSpace = cfg.getDataDir().getDataDirUsableSpace();
+      freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
     }
   }
 
@@ -1394,10 +1383,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return ERROR;
   }
 
-  public String registerResource() throws Exception {
+  public synchronized String registerResource() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // prevent registration if resource already registered
+    if (resource.isRegistered()) {
+      String msg = getText("manage.overview.failed.resource.registration.alreadyRegistered");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
+
     // prevent registration if last published version was not public (at the time of publishing)
     if (!resource.isLastPublishedVersionPublic()) {
       String msg = getText("manage.overview.failed.resource.registration.notPublic");
@@ -1405,6 +1403,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
     // not applicable for data packages
@@ -1414,6 +1413,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
@@ -1437,6 +1437,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
             // perform registration
             resourceManager.register(resource, org, registrationManager.getIpt(), this);
+
+            // associate resource with the default IPT network
+            org.gbif.ipt.model.Network defaultIptNetwork = registrationManager.getNetwork();
+            if (defaultIptNetwork != null && defaultIptNetwork.getKey() != null) {
+              registryManager.addResourceToNetwork(resource, defaultIptNetwork.getKey().toString());
+            }
           } catch (InvalidConfigException e) {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
               String msg = getText("manage.resource.migrate.failed");
@@ -1835,6 +1841,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public void setMakePublicDateTime(String makePublicDateTime) {
     this.makePublicDateTime = makePublicDateTime;
+  }
+
+  public long getUsableSpace() {
+    return usableSpace;
+  }
+
+  public String getFreeDiscSpaceReadable() {
+    return freeDiscSpaceReadable;
   }
 
   public boolean isDataPackageResource() {

@@ -16,11 +16,15 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.Type;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.IptValidator;
@@ -28,7 +32,12 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +53,8 @@ public class RegistrationAction extends POSTAction {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(RegistrationAction.class);
+
+  private Map<String, String> networks = new LinkedHashMap<>();
 
   @SessionScoped
   public static class RegisteredOrganisations {
@@ -79,12 +90,16 @@ public class RegistrationAction extends POSTAction {
 
   private static final long serialVersionUID = -6522969037528106704L;
   private final RegistryManager registryManager;
+  private final ResourceManager resourceManager;
   private final OrganisationSupport organisationValidation;
   private final IptValidator iptValidation;
 
   private String registeredIptPassword;
   private String hostingOrganisationToken;
   protected boolean tokenChange = false;
+
+  private String networkKey;
+  private boolean applyToExistingResources = false;
 
   private boolean validatedBaseURL = false;
 
@@ -95,10 +110,11 @@ public class RegistrationAction extends POSTAction {
 
   @Inject
   public RegistrationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    RegistryManager registryManager, OrganisationSupport organisationValidation, IptValidator iptValidation,
-    RegisteredOrganisations orgSession) {
+    RegistryManager registryManager, ResourceManager resourceManager, OrganisationSupport organisationValidation,
+    IptValidator iptValidation, RegisteredOrganisations orgSession) {
     super(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
+    this.resourceManager = resourceManager;
     this.organisationValidation = organisationValidation;
     this.iptValidation = iptValidation;
     this.orgSession = orgSession;
@@ -106,6 +122,10 @@ public class RegistrationAction extends POSTAction {
 
   public Organisation getHostingOrganisation() {
     return registrationManager.getHostingOrganisation();
+  }
+
+  public Network getNetwork() {
+    return registrationManager.getNetwork();
   }
 
   /**
@@ -161,6 +181,10 @@ public class RegistrationAction extends POSTAction {
         addActionError(msg);
       }
     }
+
+    networks.put("", getText("admin.ipt.network.selection"));
+    networks.putAll(registryManager.getNetworksBrief().stream()
+            .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
   }
 
   @Override
@@ -264,7 +288,54 @@ public class RegistrationAction extends POSTAction {
       registrationManager.save();
       addActionMessage(getText("admin.ipt.success.update"));
     } catch (Exception e) {
-      addActionError(e.getMessage());
+      addActionError(getText("admin.ipt.update.failed"));
+      LOG.error("Exception caught", e);
+      return INPUT;
+    }
+    return SUCCESS;
+  }
+
+  public String associateWithNetwork() {
+    try {
+      if (cancel) {
+        return cancel();
+      }
+      if (StringUtils.isNotEmpty(networkKey)) {
+        String networkName = networks.get(networkKey);
+        registrationManager.associateWithNetwork(networkKey, networkName);
+
+        if (applyToExistingResources) {
+          List<Resource> resources = resourceManager.list();
+          for (Resource resource : resources) {
+            if (resource.isRegistered()) {
+              registryManager.addResourceToNetwork(resource, networkKey);
+            }
+          }
+        }
+
+        addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
+      } else {
+        Network network = getNetwork();
+
+        if (network != null) {
+          String networkName = Optional.ofNullable(network.getName()).orElse("");
+          String networkKey = Optional.ofNullable(network.getKey()).map(UUID::toString).orElse("");
+          registrationManager.removeAssociationWithNetwork();
+
+          if (applyToExistingResources) {
+            List<Resource> resources = resourceManager.list();
+            for (Resource resource : resources) {
+              if (resource.isRegistered()) {
+                registryManager.removeResourceFromNetwork(resource, networkKey);
+              }
+            }
+          }
+
+          addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{networkName}));
+        }
+      }
+    } catch (Exception e) {
+      addActionError(getText("admin.ipt.update.failed"));
       LOG.error("Exception caught", e);
       return INPUT;
     }
@@ -315,5 +386,25 @@ public class RegistrationAction extends POSTAction {
 
   public void setTokenChange(boolean tokenChange) {
     this.tokenChange = tokenChange;
+  }
+
+  public Map<String, String> getNetworks() {
+    return networks;
+  }
+
+  public String getNetworkKey() {
+    return networkKey;
+  }
+
+  public void setNetworkKey(String networkKey) {
+    this.networkKey = networkKey;
+  }
+
+  public boolean isApplyToExistingResources() {
+    return applyToExistingResources;
+  }
+
+  public void setApplyToExistingResources(boolean applyToExistingResources) {
+    this.applyToExistingResources = applyToExistingResources;
   }
 }

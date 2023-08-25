@@ -64,7 +64,7 @@
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
@@ -154,10 +154,12 @@
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
-      <result name="success">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="success" type="redirect">
+        <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
+      </result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
@@ -192,7 +194,7 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
+    <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">2097152</param>
         <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
@@ -210,6 +212,7 @@
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
+      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>

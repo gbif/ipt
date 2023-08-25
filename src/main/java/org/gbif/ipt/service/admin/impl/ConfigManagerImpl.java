@@ -413,11 +413,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   @Override
-  public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException {
-    cfg.setProperty(AppConfig.ANALYTICS_GBIF, Boolean.toString(useGbifAnalytics));
-  }
-
-  @Override
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
     if (lat == null || lon == null) {
       cfg.setProperty(AppConfig.IPT_LATITUDE, "");

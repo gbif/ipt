@@ -6,21 +6,37 @@
 
 <script>
     $(document).ready(function(){
-        $("#edit-profile-radio").change(function () {
-            if($('#edit-profile-radio').is(':checked')) {
-                $('#change-password-block').hide();
-                $('#change_password').hide();
-                $('#edit-profile-block').show();
-                $('#save').show();
-            }
-        });
+        function displayProfileView() {
+            $('#change-password-block').hide();
+            $('#change_password').hide();
+            $('#edit-profile-block').show();
+            $('#save').show();
+        }
 
-        $("#change-password-radio").change(function () {
-            if($('#change-password-radio').is(':checked')) {
-                $('#edit-profile-block').hide();
-                $('#save').hide();
-                $('#change-password-block').show();
-                $('#change_password').show();
+        function displayPasswordView() {
+            $('#edit-profile-block').hide();
+            $('#save').hide();
+            $('#change-password-block').show();
+            $('#change_password').show();
+        }
+
+        $(".default-button-tab-root").click(function (event) {
+            var selectedTab = $(this);
+            var selectedTabId = selectedTab[0].id;
+
+            // remove "selected" from all tabs
+            $(".default-button-tab-root").removeClass("tab-selected");
+            // hide all indicators
+            $(".tabs-indicator").hide();
+            // add "selected" to clicked tab
+            selectedTab.addClass("tab-selected");
+            // show indicator for this tab
+            $("#" + selectedTabId + " .tabs-indicator").show();
+
+            if (selectedTabId === 'tab-profile') {
+                displayProfileView();
+            } else {
+                displayPasswordView();
             }
         });
 
@@ -71,13 +87,28 @@
     </div>
 
     <div class="p-3">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="metadata-radio" id="edit-profile-radio" value="edit" checked>
-            <label class="form-check-label" for="edit-profile-radio"><@s.text name="account.profile.title"/></label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="metadata-radio" id="change-password-radio" value="change-password">
-            <label class="form-check-label" for="change-password-radio"><@s.text name="account.passwordChange.title"/></label>
+<#--        <div class="form-check form-check-inline">-->
+<#--            <input class="form-check-input" type="radio" name="metadata-radio" id="edit-profile-radio" value="edit" checked>-->
+<#--            <label class="form-check-label" for="edit-profile-radio"><@s.text name="account.profile.title"/></label>-->
+<#--        </div>-->
+<#--        <div class="form-check form-check-inline">-->
+<#--            <input class="form-check-input" type="radio" name="metadata-radio" id="change-password-radio" value="change-password">-->
+<#--            <label class="form-check-label" for="change-password-radio"><@s.text name="account.passwordChange.title"/></label>-->
+<#--        </div>-->
+
+        <div class="tabs-root">
+            <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
+                <div class="tabs-flexContainer justify-content-start" role="tablist">
+                    <button id="tab-profile" class="default-button-tab-root tab-selected" type="button" role="tab">
+                        <@s.text name="account.profile.title"/>
+                        <span id="tab-indicator-profile" class="tabs-indicator"></span>
+                    </button>
+                    <button id="tab-password" class="default-button-tab-root" type="button" role="tab">
+                        <@s.text name="account.passwordChange.title"/>
+                        <span id="tab-indicator-password" class="tabs-indicator" style="display: none;"></span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -211,7 +211,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     File dataFile = new File(dwcaFolder, fn);
     // add source file location
 
-    // ready to go though each mapping and dump the data
+    // ready to go through each mapping and dump the data
     try (Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile)) {
       af.addLocation(dataFile.getName());
       addMessage(Level.INFO, "Start writing data file for " + currExtension);
@@ -617,7 +617,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       throw new GeneratorException(
         "Can't validate DwC-A for resource " + resource.getShortname() + ". Each line in extension must have an ID " + id.simpleName() + ", which is required in order to link the extension to the core ");
     } else {
-      addMessage(Level.INFO, "\u2713 Validated each line in extension has an ID " + id.simpleName());
+      addMessage(Level.INFO, "✓ Validated each line in extension has an ID " + id.simpleName());
       writePublicationLogMessage("No lines in extension are missing an ID " + id.simpleName());
     }
 
@@ -867,7 +867,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       writePublicationLogMessage("No lines are missing a basisOfRecord");
     }
 
-    // add non matching BoR user message
+    // add non-matching BoR user message
     if (recordsWithNonMatchingBasisOfRecord.get() > 0) {
       addMessage(Level.ERROR, recordsWithNonMatchingBasisOfRecord
                               + " line(s) have basisOfRecord that does not match the Darwin Core Type Vocabulary "
@@ -1566,9 +1566,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * If a competing file name exists, a numerical suffix is appended to the file name, to differentiate it from the
    * existing files' names. The numerical suffix is incrementing, and is equal to the number of existing files with
    * this name.
-   * </br>
    * E.g. the initial name has no suffix (taxon.txt), but subsequent names look like (taxon2.txt, taxon3.txt, etc).
-   *
+   * <p>
    * Before IPT v2.2 the DwC-A file name has been determined from the extension name. When two extensions had the same
    * name, this caused one file to be overwritten - see Issue 1087.
    *

@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
-<script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 
 <@resourcesTable resources=resources shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>

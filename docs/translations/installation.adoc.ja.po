@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-20 14:50+0000\n"
-"PO-Revision-Date: 2023-03-07 06:39\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -37,12 +37,12 @@ msgstr "IPTは設定、リソース、ユーザー、ログをデータディレ
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
 msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#file-permissions[FAQ entry] if you have problems."
-msgstr "Linux上では`/var/lib/ipt`（パッケージインストール時）または`/srv/ipt`（Tomcat内で運用時）が一般的な場所です。またWindowsでは、`C:\\ipt-data`が適切です。IPTは選択した場所への書き込み権限を持っている必要があります。問題がある場合は、xref:faq.adoc#file-permissions[FAQエントリ]を参照してください。"
+msgstr "Linux上では``/var/lib/ipt``（パッケージインストール時）または`/srv/ipt`（Tomcat内で運用時）が一般的な場所です。またWindowsでは、``C:\\ipt-data``が適切です。IPTは選択した場所への書き込み権限を持っている必要があります。問題がある場合は、xref:faq.adoc#file-permissions[FAQエントリ]を参照してください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:12
 msgid "Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart."
-msgstr "不注意による変更や削除の可能性があるデータディレクトリを選択しないでください。例えば、`/tmp`はシステムの再起動時に空になる可能性があるため、使用しないでください。"
+msgstr "不注意による変更や削除の可能性があるデータディレクトリを選択しないでください。例えば、``/tmp``はシステムの再起動時に空になる可能性があるため、使用しないでください。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:14
@@ -74,18 +74,18 @@ msgstr "IPTのインストールにはいくつか方法があります。"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:25
 msgid "Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated."
-msgstr "*Red Hat*、*CentOS*、*Debian*、*Ubuntu*などをお使いの方は、<<Installation from Linux packages,Linuxパッケージ>>から直接インストールすることができます。これは、1台のサーバーに1つのIPTをインストールする場合の最も簡単な方法であり、また更新も最も簡単です。"
+msgstr "**Red Hat**、**CentOS**、**Debian**、**Ubuntu**などをお使いの方は、<<Installation from Linux packages,Linuxパッケージ>>から直接インストールすることができます。これは、1台のサーバーに1つのIPTをインストールする場合の最も簡単な方法であり、また更新も最も簡単です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:26
 msgid "Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>."
-msgstr "その他の*Linux*ユーザーや全ての*MS Windows*ユーザー、また同じサーバー上で複数のIPTを実行したい方は、代わりにlink:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-within-a-servlet-container[サーブレットコンテナ内でのインストール]のセクションをご覧下さい。"
+msgstr "その他の*Linux*ユーザーや全ての**MS Windows**ユーザー、また同じサーバー上で複数のIPTを実行したい方は、代わりにlink:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-within-a-servlet-container[サーブレットコンテナ内でのインストール]のセクションをご覧下さい。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:27
 #, no-wrap
 msgid "*Docker* images are also available, see <<Installation using Docker>>.\n"
-msgstr "*Docker*イメージも利用可能です。link:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-using-docker[Dockerを使ったインストール]を参照してください。\n"
+msgstr "**Docker**イメージも利用可能です。link:https://ipt.gbif.org/manual/en/ipt/latest/installation#installation-using-docker[Dockerを使ったインストール]を参照してください。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:28
@@ -120,7 +120,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:44
 msgid "Optionally, edit `/etc/sysconfig/ipt` to change the default data directory and port.  Finally:"
-msgstr "オプションとして、`/etc/sysconfig/ipt`を編集して、デフォルトのデータディレクトリとポートを変更します。最後に"
+msgstr "オプションとして、``/etc/sysconfig/ipt``を編集して、デフォルトのデータディレクトリとポートを変更します。最後に"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:49
@@ -132,7 +132,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:52
 msgid "The IPT starts up on port 8080 (unless this was changed above).  Initial logs are visible with `journalctl -u ipt`, but are then logged in the data directory.  Make sure to *back up the IPT data directory*, which is `/var/lib/ipt` by default."
-msgstr "（上記で変更されていない場合）IPTはポート8080で起動します。初期ログは`journalctl -u ipt`で見ることができますが、その後データディレクトリにログが記録されます。IPTのデータディレクトリは、デフォルトで`/var/lib/ipt`になっているので、*必ずバックアップをとってください*。"
+msgstr "（上記で変更されていない場合）IPTはポート8080で起動します。初期ログは``journalctl -u ipt``で見ることができますが、その後データディレクトリにログが記録されます。IPTのデータディレクトリは、デフォルトで``/var/lib/ipt``になっているので、*必ずバックアップをとってください*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:54
@@ -214,7 +214,7 @@ msgstr "このステップはオプションですが、セキュリティの向
 #: en/modules/ROOT/pages/installation.adoc:85
 #, no-wrap
 msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
-msgstr "Tomcatの設定ディレクトリ（Linuxでは通常`/etc/tomcat`または`/etc/tomcat9`、Windowsでは`C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf`）を見つけて、`Catalina/localhost/ipt.xml`ファイルを作成します（Tomcatドキュメント 「link:https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[コンテクストを定義]」で説明されています）。例えば、典型的なCentOS Linuxインストールでは、ファイルは`/etc/tomcat/Catalina/localhost/ipt.xml`となります。このファイルは、Tomcatプロセスによって読み取り可能である必要があります。\n"
+msgstr "Tomcatの設定ディレクトリ（Linuxでは通常``/etc/tomcat``または``/etc/tomcat9``、Windowsでは``C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf``）を見つけて、``Catalina/localhost/ipt.xml``ファイルを作成します（Tomcatドキュメント 「link:https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[コンテクストを定義]」で説明されています）。例えば、典型的なCentOS Linuxインストールでは、ファイルは``/etc/tomcat/Catalina/localhost/ipt.xml``となります。このファイルは、Tomcatプロセスによって読み取り可能である必要があります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:87
@@ -252,7 +252,7 @@ msgstr "IPTのデプロイ"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:109
 msgid "Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running."
-msgstr "xref:releases.adoc[リリースページ] からIPTの最新のWARリリースをダウンロードし、`ipt.war`（または同様の名前、ステップ2の`ipt.xml`を使用している場合はそれと同じ）にリネームします。`ipt.war`ファイルをTomcatのwebappsのフォルダにコピーし、Tomcatがまだ起動していない場合は起動します。"
+msgstr "xref:releases.adoc[リリースページ] からIPTの最新のWARリリースをダウンロードし、`ipt.war`（または同様の名前、ステップ2の``ipt.xml``を使用している場合はそれと同じ）にリネームします。``ipt.war``ファイルをTomcatのwebappsのフォルダにコピーし、Tomcatがまだ起動していない場合は起動します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:112
@@ -272,7 +272,7 @@ msgstr "以下のスクリーンキャストは、Tomcatが既にインストー
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:125
 msgid "Multiple IPTs can be installed on the same server with a small variation to this process.  Rather than (or in addition to) using `ipt.xml` and `ipt.war`, use different names and change the files accordingly: on https://cloud.gbif.org/[cloud.gbif.org] we have `africa.xml` and `africa.war`, `bid.xml` and `bid.war` etc."
-msgstr "この作業を少し工夫することで、複数のIPTを同じサーバーにインストールすることができます。`ipt.xml` と `ipt.war`を使う代わりに（あるいはそれに加えて）、異なる名前を用い、それに応じてファイルを変更します。link:https://cloud.gbif.org/[cloud.gbif.org]では `africa.xml` と `africa.war`、`bid.xml` と `bid.war`などです。"
+msgstr "この作業を少し工夫することで、複数のIPTを同じサーバーにインストールすることができます。``ipt.xml`` と ``ipt.war``を使う代わりに（あるいはそれに加えて）、異なる名前を用い、それに応じてファイルを変更します。link:https://cloud.gbif.org/[cloud.gbif.org]では ``africa.xml`` と ``africa.war``、``bid.xml`` と ``bid.war``などです。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:127
@@ -337,12 +337,12 @@ msgstr "データディレクトリを上書きする必要がある場合は、
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:159
 msgid "If you need to find the IP address of your \"default\" Docker machine use `docker-machine ip default`."
-msgstr "デフォルトのDockerマシンのIPアドレスを知りたい場合は、`docker-machine ip default`を使用してください。"
+msgstr "デフォルトのDockerマシンのIPアドレスを知りたい場合は、``docker-machine ip default``を使用してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:161
 msgid "Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`."
-msgstr "`gbif/ipt`ではなく`gbif/ipt:version`を使って、link:https://hub.docker.com/r/gbif/ipt/tags[利用可能なバージョン]の中から特定のものを実行します。"
+msgstr "``gbif/ipt``ではなく``gbif/ipt:version``を使って、link:https://hub.docker.com/r/gbif/ipt/tags[利用可能なバージョン]の中から特定のものを実行します。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:162
@@ -358,7 +358,7 @@ msgstr "IPTをインターネット上で利用するためには、システム
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:167
 msgid "You will need a DNS name for the server (\"`ipt.example.org`\") and the firewall to allow access."
-msgstr "サーバーのDNS名（「`ipt.example.org`ipt.example.org」）とアクセスを許可するファイアウォールが必要です。"
+msgstr "サーバーのDNS名（「``ipt.example.org``」）とアクセスを許可するファイアウォールが必要です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:169
@@ -368,7 +368,7 @@ msgstr "主にHTTPSアクセスを提供したり、同じサーバで他のウ�
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:171
 msgid "The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (such as occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/."
-msgstr "`ipt.gbif.org`が使用している設定を例として示します。Apache HTTPD を使用し、`mod_proxy` モジュールがインストールされています。静的画像ファイル（オカレンス画像など）を同じサーバでホストできるように、link:https://ipt.gbif.org/media/[`/media`]とlink:https://ipt.gbif.org/icons/[`/icons`]のパスはIPTに渡されないようにします。http://ipt.gbif.org/ へのリクエストは、安全な https://ipt.gbif.org/ にリダイレクトされます。"
+msgstr "``ipt.gbif.org``が使用している設定を例として示します。Apache HTTPD を使用し、``mod_proxy`` モジュールがインストールされています。静的画像ファイル（オカレンス画像など）を同じサーバでホストできるように、link:https://ipt.gbif.org/media/[`/media`]とlink:https://ipt.gbif.org/icons/[`/icons`]のパスはIPTに渡されないようにします。http://ipt.gbif.org/ へのリクエストは、安全な https://ipt.gbif.org/ にリダイレクトされます。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:176

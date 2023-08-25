@@ -19,6 +19,8 @@
 
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
+    <Logger name="com.github.pjfanning.xlsx.impl.StreamingRowIterator" level="ERROR"/>
+
     <Logger name="com.networknt.schema" level="ERROR" />
 
     <Root level="DEBUG"/>

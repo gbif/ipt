@@ -3,6 +3,32 @@
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.mapping.title"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <style>
+        .select2-container--bootstrap4 .select2-selection--single {
+            height: calc(1.5em + 0.5rem + 2px) !important;
+        }
+
+        .select2-container--bootstrap4 .select2-results__option {
+            padding: 0.25rem 0.75rem;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
+            line-height: 1.5;
+            padding: 0.25rem 0.5rem !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection__clear {
+            margin-right: 0.875em;
+            margin-top: 0.275em;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
+             line-height: 1.5;
+        }
+    </style>
+    <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
     <script>
         $(document).ready(function(){
             function showHideIdSuffix(){
@@ -192,6 +218,13 @@
                 }
             });
 
+            $("#idColumn").select2({placeholder: '${action.getText("manage.mapping.noid")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("#mapping\\.filter\\.filterTime").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("#filterName").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("#filterComp").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("[id^=fIdx]").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $(".fval-select").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+
             // spy scroll and manage sidebar menu
             $(window).scroll(function () {
                 var scrollPosition = $(document).scrollTop();
@@ -282,6 +315,7 @@
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
+                    <#if p.vocabulary??><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">${p.vocabulary.title!}</a><br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
                     <#if p.examples?has_content>
@@ -317,12 +351,12 @@
                     <#assign vocab=vocabTerms[p.vocabulary.uriString] />
 
                     <div class="input-group input-group-sm">
-                        <label class="input-group-text" for="fVal${fieldsIndex}">
-                            <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">
-                                <i class="bi bi-book"></i>
-                            </a>
-                        </label>
-                        <select id="fVal${fieldsIndex}" class="fval form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
+<#--                        <label class="input-group-text" for="fVal${fieldsIndex}">-->
+<#--                            <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">-->
+<#--                                <i class="bi bi-book"></i>-->
+<#--                            </a>-->
+<#--                        </label>-->
+                        <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
                             <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                             <#list vocab?keys as code>
                                 <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>

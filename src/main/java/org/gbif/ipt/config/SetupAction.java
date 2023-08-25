@@ -72,7 +72,6 @@ public class SetupAction extends BaseAction {
 
   // action attributes to be set
   protected String dataDirPath;
-  protected boolean readDisclaimer;
   protected User user = new User();
   private String password2;
   protected String modeSelected;
@@ -194,26 +193,6 @@ public class SetupAction extends BaseAction {
     this.setupPublicUrl = setupPublicUrl;
   }
 
-  public String setupDisclaimer() {
-    if (dataDir.isConfigured()) {
-      // the data dir is already/now configured, skip the first setup step
-      LOG.info("Skipping setup disclaimer step");
-      return SUCCESS;
-    }
-
-    if (isHttpPost()) {
-      // since IPT v2.2, user must check that they have read and understood disclaimer
-      if (!readDisclaimer) {
-        addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
-        return INPUT;
-      } else {
-        return SUCCESS;
-      }
-    }
-
-    return INPUT;
-  }
-
   public String setupDataDirectory() {
     if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty()))
         || (isHttpPost() && dataDirPath != null)) {
@@ -222,7 +201,7 @@ public class SetupAction extends BaseAction {
 
       File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
-        if (StringUtils.isEmpty(dataDirPath)) {
+        if (StringUtils.isEmpty(dataDirPath) && dataDir.dataDir == null) {
           addFieldError("dataDirPath",
               getText("validation.required", new String[] {getText("admin.config.setup.datadir")}));
         } else if (dd.isAbsolute()) {
@@ -530,17 +509,6 @@ public class SetupAction extends BaseAction {
    */
   public void setModeSelected(String modeSelected) {
     this.modeSelected = modeSelected;
-  }
-
-  /**
-   * @return true if the user has checked that they have read and understood the disclaimer, false otherwise
-   */
-  public boolean isReadDisclaimer() {
-    return readDisclaimer;
-  }
-
-  public void setReadDisclaimer(boolean readDisclaimer) {
-    this.readDisclaimer = readDisclaimer;
   }
 
   /**

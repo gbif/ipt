@@ -3,6 +3,9 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#plus').click(function () {
@@ -89,8 +92,6 @@
                     var elementId = $(this)[0].id;
 
                     $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
-                    console.log("div#" + elementId + " input[id^='add-button']");
-                    console.log($("div#" + elementId + " input[id^='add-button']"));
                     $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
 
                     var scientificNames = $("#" + elementId + " input[id$='scientificName']");
@@ -111,6 +112,8 @@
 
                 hideProcessing();
             }
+
+            $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({placeholder: '${action.getText("eml.rank.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
@@ -208,13 +211,13 @@
                                         </a>
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
-                                        <a href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
-                                        <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
+                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                        <a href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                            <span>
+                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.reinfer"/></span>
                                         </a>
                                     </div>
@@ -266,7 +269,7 @@
                                                 <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
-                                        <div id="subItems-${item_index}" class="mt-2">
+                                        <div id="subItems-${item_index}" class="mt-2 subItems">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
@@ -402,7 +405,7 @@
                                         <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
                                     </div>
                                 </div>
-                                <div id="subItems" class="my-2"></div>
+                                <div id="subItems" class="my-2 subItems"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
                                     <a id="plus-subItem" href="" class="metadata-action-link">
                                         <span>

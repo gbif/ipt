@@ -2,6 +2,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.source.title'/></title>
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script>
     $(document).ready(function(){
         $('.confirm').jConfirmAction({
@@ -57,6 +60,8 @@
 
             $('#' + inputName).val(inputValue)
         });
+
+        $("#rdbms").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -331,7 +336,6 @@
                                     <@dateFormat/>
                                 </div>
                             <#else>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>

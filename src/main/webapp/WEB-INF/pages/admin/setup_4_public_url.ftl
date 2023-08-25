@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 4]
+[#assign setupStepIndex = 3]
 
 <form action="setupPublicUrl.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">

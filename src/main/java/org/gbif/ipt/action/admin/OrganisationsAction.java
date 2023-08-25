@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -98,6 +99,7 @@ public class OrganisationsAction extends POSTAction {
   private Organisation organisation;
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
+  private Boolean synchronise = false;
 
   private static final Map<String, DOIRegistrationAgency> DOI_REGISTRATION_AGENCIES = new HashMap<>();
 
@@ -250,6 +252,18 @@ public class OrganisationsAction extends POSTAction {
     }
   }
 
+  public String synchronize() {
+    try {
+      registrationManager.updateAssociatedOrganisationsMetadata();
+      addActionMessage(getText("admin.organisations.synchronized"));
+    } catch (IOException e) {
+      LOG.error("Failed to synchronize organizations with the registry", e);
+      addActionError(getText("admin.organisation.error.save"));
+    }
+
+    return SUCCESS;
+  }
+
   /**
    * @param linkedOrganisations the linkedOrganisations to set
    */
@@ -273,7 +287,7 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public void validate() {
-    if (isHttpPost() && !cancel && !delete) {
+    if (isHttpPost() && !cancel && !delete & !synchronise) {
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!
@@ -338,5 +352,9 @@ public class OrganisationsAction extends POSTAction {
 
   public String getPortalUrl() {
     return cfg.getPortalUrl();
+  }
+
+  public void setSynchronise(String synchronise) {
+    this.synchronise = StringUtils.trimToNull(synchronise) != null;
   }
 }

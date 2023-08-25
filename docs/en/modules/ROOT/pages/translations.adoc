@@ -90,10 +90,32 @@ For example, the default (English) image shown on the xref:home.adoc[home menu p
 
 The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`, does not require translation.
 
+=== Japanese, Chinese and Korean
+
+These languages do not use spaces between words, so some abbreviated syntax used in the English text will not work.
+
+* Plain hyperlinks must be prefixed with `link:`.  The short form without `link:` only works if there is a space before the `https:` or `http:`.
++
+[source,asciidoc]
+----
+Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users.
+
+IPTユーザーのサポートグループであるlink:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]に必ずご登録ください。
+----
+
+* *Bold*, _italic_ and `monospace` text formatted with single `*`, `_` and `+++`+++` characters only works if there are spaces outside those characters.  Where there are no spaces, the characters must be doubled:
++
+[source,asciidoc]
+----
+Double click the executable to start installation wizard. *Do* fill information to specify *the connector port, Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you’ll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).
+
+実行ファイルをダブルクリックすると、インストールウィザードが起動します。ロールを変更せずに、コネクタポート、**Tomcat管理者ログイン情報**を**入力**します。資格情報を記入し忘れた場合は、Tomcatの設定ディレクトリから``conf/tomcat-users.xml``ファイルを編集し、Tomcatを再起動して、権限をフラッシュする必要があります。(このシナリオをテストしたとき、デフォルトで提案された**コネクタ・ポート**設定が機能したことに注意してください）。
+----
+
 === Languages
 
-* Spanish (partial)
-* Japanese (started)
+* Spanish (complete)
+* Japanese (complete)
 * Traditional Chinese (started)
 
 If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.

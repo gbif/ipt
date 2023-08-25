@@ -847,11 +847,12 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   private boolean isValidAgent(Agent agent) {
-    boolean isEmpty = StringUtils.isEmpty(agent.getFullName());
-    if (isEmpty) {
-      LOG.error("Invalid contact: fullname not present. Check the metadata");
+    boolean isEmptyFullName = StringUtils.isEmpty(agent.getFullName());
+    boolean isEmptyOrganization = StringUtils.isEmpty(agent.getOrganisation());
+    if (isEmptyFullName && isEmptyOrganization) {
+      LOG.error("Invalid contact: fullname and/or organization not present. Check the metadata");
     }
-    return !isEmpty;
+    return !isEmptyFullName || !isEmptyOrganization;
   }
 
   /**
@@ -877,7 +878,7 @@ public class ResourceAction extends PortalBaseAction {
     }
 
     if (agent1.getEmail() != null && agent2.getEmail() != null) {
-      emailsMatch = agent1.getEmail().equals(agent2.getEmail());
+      emailsMatch = agent1.getEmail().equalsIgnoreCase(agent2.getEmail());
     } else {
       emailsMatch = true;
     }

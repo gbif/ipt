@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"POT-Creation-Date: 2023-07-07 16:26+0000\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -359,7 +359,7 @@ msgstr "参照する分類群の*dwc:taxonRank*。例：「種」"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:122
 msgid "A reference to the taxon identifier of the immediate parent taxon stored in the *dwc:parentNameUsageID*. In the example below, the parent of record 7, for “*Panthera tigris* (Linnaeus)” is record 6, the genus “*Panthera*.”"
-msgstr "*dwc:parentNameUsageID*に格納されている、直系の親タクソンのタクソン識別子への参照です。以下の例では、レコード7の「*Panthera tigris* (Linnaeus)」の親はレコード6の「*Panthera*」属です。"
+msgstr "**dwc:parentNameUsageID**に格納されている、直系の親タクソンのタクソン識別子への参照です。以下の例では、レコード7の「**Panthera tigris** (Linnaeus)」の親はレコード6の「**Panthera**」属です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:124

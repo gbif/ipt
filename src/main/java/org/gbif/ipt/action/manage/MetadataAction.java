@@ -20,6 +20,7 @@ import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
@@ -43,6 +44,7 @@ import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,16 +53,20 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.dispatcher.Parameter;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.opensymphony.xwork2.ActionContext;
 
 public class MetadataAction extends ManagerBaseAction {
 
@@ -106,13 +112,17 @@ public class MetadataAction extends ManagerBaseAction {
   private static Map<String, String> licenseTexts;
   private static Map<String, String> userIdDirectories;
 
+  private DataDir dataDir;
+  private File file;
+
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings configWarnings) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings configWarnings, DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.configWarnings = configWarnings;
+    this.dataDir = dataDir;
   }
 
   /**
@@ -288,7 +298,14 @@ public class MetadataAction extends ManagerBaseAction {
     }
 
     // take the section parameter from the requested url
+    String requestURI = req.getRequestURI();
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
+
+    // uploadlogo - redirect to additional metadata section
+    if (requestURI.contains("uploadlogo")) {
+      section = MetadataSection.ADDITIONAL_SECTION;
+    }
+
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
     // infer metadata if absent or re-infer if requested
@@ -965,6 +982,38 @@ public class MetadataAction extends ManagerBaseAction {
 
   public KeyNamePair getInferredTemporalCoverage() {
     return inferredTemporalCoverage;
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public String uploadLogo() {
+    if (file != null) {
+      // remove any previous logo file
+      for (String suffix : Constants.IMAGE_TYPES) {
+        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+      }
+      // inspect file type
+      String type = "jpeg";
+      String fileContentType = Optional.ofNullable(ActionContext.getContext())
+        .map(ActionContext::getParameters)
+        .map(p -> p.get("fileContentType"))
+        .map(Parameter::getValue)
+        .orElse(null);
+
+      if (fileContentType != null) {
+        type = StringUtils.substringAfterLast(fileContentType, "/");
+      }
+      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
+      try {
+        FileUtils.copyFile(file, logoFile);
+      } catch (IOException e) {
+        LOG.warn(e.getMessage());
+      }
+      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+    }
+    return INPUT;
   }
 
   /**

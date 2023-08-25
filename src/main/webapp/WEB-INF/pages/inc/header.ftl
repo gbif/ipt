@@ -44,28 +44,19 @@
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script src="${baseURL}/js/modernizr.js"></script>
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
 
-    [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
-    [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1]
+    [#-- GOOGLE ANALYTICS - asynchroneous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
+    [#if (cfg.analyticsKey!"")?length>1]
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${cfg.analyticsKey}"></script>
         <script>
-            var _gaq = _gaq || [];
-            [#if (cfg.analyticsKey!"")?length>1]
-            _gaq.push(['_setAccount', '${cfg.analyticsKey}']);
-            _gaq.push(['_trackPageview']);
-            [/#if]
-            [#if cfg.gbifAnalytics]
-            _gaq.push(['gbif._setAccount', '${cfg.getProperty("dev.analytics.gbif")}']);
-            _gaq.push(['gbif._trackPageview']);
-            [/#if]
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${cfg.analyticsKey}');
         </script>
     [/#if]
 

@@ -540,7 +540,7 @@ public class MappingAction extends ManagerBaseAction {
     validateAndReport();
     LOG.debug("mapping saved..");
 
-    return defaultResult;
+    return "save";
   }
 
   public String saveSetSource() {

@@ -13,8 +13,6 @@
  */
 package org.gbif.ipt.utils;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -38,6 +36,9 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -81,9 +82,19 @@ public class ResourceUtils {
 
     boolean isDataPackageResource = schemaIdentifier != null;
 
-    if ((organisation == null && !isDataPackageResource ) || versionHistory == null || versionMetadataFile == null) {
+    if (organisation == null && !isDataPackageResource) {
       throw new IllegalArgumentException(
-        "Failed to reconstruct resource version because not all of organisation, version history, or version eml file were provided");
+              "Failed to reconstruct resource version: organisation is null");
+    }
+
+    if (versionHistory == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version history is null");
+    }
+
+    if (versionMetadataFile == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version eml file is null");
     }
 
     // initiate new version, and set properties

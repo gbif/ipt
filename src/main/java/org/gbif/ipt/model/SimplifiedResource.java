@@ -18,6 +18,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 /**
  * Simplified IPT resource view for main and manage pages.
@@ -27,6 +28,7 @@ public class SimplifiedResource {
 
   private String logoUrl;
   private String title;
+  private UUID organisationKey;
   private String organisationName;
   private String coreType;
   private String subtype;
@@ -93,6 +95,14 @@ public class SimplifiedResource {
 
   public void setSubject(String subject) {
     this.subject = subject;
+  }
+
+  public UUID getOrganisationKey() {
+    return organisationKey;
+  }
+
+  public void setOrganisationKey(UUID organisationKey) {
+    this.organisationKey = organisationKey;
   }
 
   public String getOrganisationAlias() {
@@ -191,6 +201,7 @@ public class SimplifiedResource {
         && recordsPublished == that.recordsPublished
         && Objects.equals(logoUrl, that.logoUrl)
         && Objects.equals(subject, that.subject)
+        && Objects.equals(organisationKey, that.organisationKey)
         && Objects.equals(organisationAlias, that.organisationAlias)
         && Objects.equals(organisationName, that.organisationName)
         && Objects.equals(coreType, that.coreType)
@@ -204,8 +215,9 @@ public class SimplifiedResource {
 
   @Override
   public int hashCode() {
-    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationAlias,
-        organisationName, coreType, subtype, modified, published, lastPublished, nextPublished, creatorName, dataPackage);
+    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationKey,
+            organisationAlias, organisationName, coreType, subtype, modified, published, lastPublished, nextPublished,
+            creatorName, dataPackage);
   }
 
   @Override
@@ -224,6 +236,8 @@ public class SimplifiedResource {
         .add("creatorName='" + creatorName + "'")
         .add("shortname='" + shortname + "'")
         .add("subject='" + subject + "'")
+        .add("organisationKey='" + organisationKey + "'")
+        .add("organisationAlias='" + organisationAlias + "'")
         .add("organisationAlias='" + organisationAlias + "'")
         .add("published=" + published)
         .add("dataPackage=" + dataPackage)

@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 
 <div class="setup-stepper-root setup-stepper-vertical mt-3">
-    [#assign steps = ["Disclaimer", "IPT data directory", "IPT default administrator", "IPT mode", "Public URL", "Installation complete"] ]
+    [#assign steps = ["admin.config.server.data.dir", "admin.config.setup2.administrator.title", "admin.config.setup2.mode.title", "admin.config.setup2.publicURL.title", "admin.config.setup3.installationComplete"] ]
     [#list steps as step]
         [#if step_index < setupStepIndex]
             [#assign stepStatus = "completed"]
@@ -32,7 +32,7 @@
                     </svg>
                 </span>
                 <span class="setup-step-label-label-container">
-                    <span class="setup-step-label-label ${stepStatus}">${step}</span>
+                    <span class="setup-step-label-label ${stepStatus}">[@s.text name="${step}"/]</span>
                 </span>
             </span>
         </div>

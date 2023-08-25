@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 5]
+[#assign setupStepIndex = 4]
 
 <form action="setupComplete.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">

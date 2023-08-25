@@ -1,6 +1,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
@@ -12,35 +12,31 @@
     </script>
     <script>
         $(document).ready(function(){
-            $("#edit-registration-radio").change(function () {
-                if ($('#edit-registration-radio').is(':checked')) {
-                    displayEditRegistrationView();
-                }
-            });
-
-            $("#change-tokens-radio").change(function () {
-                if ($('#change-tokens-radio').is(':checked')) {
-                    displayChangeTokensView();
-                }
-            });
-
             function displayChangeTokensView() {
                 $('#tokens-block').show();
                 $('#registration-block').hide();
+                $('#network-block').hide();
                 $('#tokens').show();
                 $('#update').hide();
+                $('#network').hide();
             }
 
             function displayEditRegistrationView() {
                 $('#tokens-block').hide();
                 $('#registration-block').show();
+                $('#network-block').hide();
                 $('#tokens').hide();
                 $('#update').show();
+                $('#network').hide();
             }
 
-            if (window.location.href.indexOf("changeTokens") > -1) {
-                displayChangeTokensView();
-                $('#change-tokens-radio').prop("checked", true);
+            function displayNetworkView() {
+                $('#tokens-block').hide();
+                $('#registration-block').hide();
+                $('#network-block').show();
+                $('#tokens').hide();
+                $('#update').hide();
+                $('#network').show();
             }
 
             $('#organisation\\.key').change(function() {
@@ -100,8 +96,6 @@
                         var numberOfIptInstallations = 0;
 
                         for (var i in data.results) {
-                            console.log(data.results[i])
-                            console.log(data.results[i].type)
                             if (data.results[i].type === "IPT_INSTALLATION") {
                                 numberOfIptInstallations++;
                             }
@@ -154,6 +148,32 @@
             });
 
             $("#update").on("click", displayProcessing);
+
+            $(".registration-tab-root").click(function (event) {
+                var selectedTab = $(this);
+                var selectedTabId = selectedTab[0].id;
+
+                // remove "selected" from all tabs
+                $(".registration-tab-root").removeClass("tab-selected");
+                // hide all indicators
+                $(".tabs-indicator").hide();
+                // add "selected" to clicked tab
+                selectedTab.addClass("tab-selected");
+                // show indicator for this tab
+                $("#" + selectedTabId + " .tabs-indicator").show();
+
+                if (selectedTabId === 'tab-tokens') {
+                    displayChangeTokensView();
+                } else if (selectedTabId === "tab-network") {
+                    displayNetworkView();
+                } else {
+                    displayEditRegistrationView();
+                }
+            });
+
+            $('select#networkKey').select2({placeholder: '<@s.text name="admin.ipt.network.selection"/>', minimumResultsForSearch: 'Infinity', allowClear: true, width:"100%", theme: 'bootstrap4'});
+
+            $("#network").on("click", displayProcessing);
         });
     </script>
     <title><@s.text name="title"/></title>
@@ -180,6 +200,7 @@
                     <#if hostingOrganisation?has_content>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="registration" name="update" id="update" key="button.updateRegistration" />
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="changeTokens" name="tokens" id="tokens" key="button.updateTokens" cssStyle="display: none;"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="networkForm" name="network" id="network" key="button.save" cssStyle="display: none;"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="registration" name="cancel" key="button.cancel"/>
                     <#else>
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
@@ -203,20 +224,28 @@
                 </p>
 
                 <div class="py-3">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="edit-registration-radio" value="edit-registration" checked>
-                        <label class="form-check-label" for="edit-profile-radio"><@s.text name="admin.ipt.registration"/></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input registration-options-radio" type="radio" name="registration-options-radio" id="change-tokens-radio" value="change-tokens">
-                        <label class="form-check-label" for="change-password-radio"><@s.text name="admin.ipt.tokens.title"/></label>
+                    <div class="tabs-root">
+                        <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
+                            <div class="tabs-flexContainer justify-content-start" role="tablist">
+                                <button id="tab-registration" class="registration-tab-root tab-selected" type="button" role="tab">
+                                    <@s.text name="admin.ipt.registration"/>
+                                    <span id="tab-indicator-registration" class="tabs-indicator"></span>
+                                </button>
+                                <button id="tab-network" class="registration-tab-root" type="button" role="tab">
+                                    <@s.text name="admin.ipt.network"/>
+                                    <span id="tab-indicator-network" class="tabs-indicator" style="display: none;"></span>
+                                </button>
+                                <button id="tab-tokens" class="registration-tab-root" type="button" role="tab">
+                                    <@s.text name="admin.ipt.tokens.title"/>
+                                    <span id="tab-indicator-tokens" class="tabs-indicator" style="display: none;"></span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
                 <div id="registration-block" class="py-3">
-                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
-                        <@s.text name="admin.ipt.registration"/>
-                    </h4>
                     <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
                     <form id="registration" class="needs-validation" action="updateRegistration" method="post" novalidate>
                         <div class="row g-3">
@@ -244,11 +273,27 @@
                     </form>
                 </div>
 
-                <div id="tokens-block" style="display: none;" class="py-3">
-                    <h4 class="pb-2 mb-3 pt-2 text-gbif-header-2 fs-5 fw-400">
-                        <@s.text name="admin.ipt.tokens.title"/>
-                    </h4>
+                <div id="network-block" style="display: none;" class="py-3">
+                    <p class="mb-3 pb-3">
+                        <@s.text name="admin.ipt.network.intro"/>
+                    </p>
 
+                    <form id="networkForm" class="needs-validation" action="associateWithNetwork.do" method="post" novalidate>
+                        <@s.hidden id="associateNetwork" name="associateNetwork" value="true" />
+
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@select name="networkKey" options=networks i18nkey="admin.ipt.network" value="${(network.key)!}" />
+                            </div>
+
+                            <div class="col-12">
+                                <@checkbox name="applyToExistingResources" i18nkey="admin.ipt.network.applyToExisting" value="false"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tokens-block" style="display: none;" class="py-3">
                     <p class="mb-3 pb-3">
                         <@s.text name="admin.ipt.tokens.intro"/>
                     </p>

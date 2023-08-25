@@ -54,7 +54,7 @@
                 </div>
             </#if>
             <div class="address">
-                <#if con.organisation?has_content>
+                <#if con.organisation?has_content && (con.firstName?has_content || con.lastName?has_content) >
                     <div>${con.organisation}</div>
                 </#if>
 
@@ -148,7 +148,7 @@
     }
 </style>
 
-<script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
 <script>
     $(document).ready(function() {

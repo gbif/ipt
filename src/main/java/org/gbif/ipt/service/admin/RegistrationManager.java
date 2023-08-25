@@ -15,6 +15,7 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.doi.service.DoiService;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -89,6 +90,11 @@ public interface RegistrationManager {
   Organisation getHostingOrganisation();
 
   /**
+   * Returns the default GBIF network of this IPT.
+   */
+  Network getNetwork();
+
+  /**
    * Returns the IPT instance.
    *
    * @return ipt instance
@@ -136,4 +142,19 @@ public interface RegistrationManager {
    * Migrate former registration (registration.xml) into new registration (registration2.xml) with passwords encrypted.
    */
   void encryptRegistration();
+
+  /**
+   * Update (from the Registry) metadata for all associated organizations in the IPT.
+   */
+  void updateAssociatedOrganisationsMetadata() throws IOException;
+
+  /**
+   * Associate IPT with the network.
+   */
+  void associateWithNetwork(String networkKey, String networkName);
+
+  /**
+   * Remove association with the network.
+   */
+  void removeAssociationWithNetwork();
 }

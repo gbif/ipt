@@ -39,6 +39,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -434,4 +435,9 @@ public interface ResourceManager {
    * @return inferred metadata
    */
   InferredMetadata inferMetadata(Resource resource);
+
+  /**
+   * Update organisation name and alias for published resources.
+   */
+  void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias);
 }

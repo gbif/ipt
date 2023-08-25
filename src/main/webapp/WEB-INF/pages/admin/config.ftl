@@ -71,10 +71,6 @@
                 </div>
 
                 <div class="col-12">
-                    <@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" value="${analyticsGbif?c}" help="i18n"/>
-                </div>
-
-                <div class="col-12">
                     <@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
                 </div>
 

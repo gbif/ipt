@@ -1,9 +1,9 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
-[#assign setupStepIndex = 3]
+[#assign setupStepIndex = 1]
 
-<form action="setupMode.do" method="post" class="needs-validation" novalidate>
+<form action="setupDefaultAdministrator.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container my-3">
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
@@ -37,25 +37,38 @@
 
             <div class="bd-content">
                 <div class="my-3 p-3">
-                    <h5 class="text-gbif-header-2 pb-2 mt-2 fw-400">
-                        [@s.text name="admin.config.setup2.mode.title"/]
+                    <h5 class="pb-2 mb-2 mt-2 text-gbif-header-2 fw-400">
+                        [@s.text name="admin.config.setup2.administrator.title"/]
                     </h5>
 
-                    <p>[@s.text name="admin.config.setup2.mode.help"/]</p>
-                    <p>[@s.text name="admin.config.setup2.mode.test"/]</p>
-                    <p>[@s.text name="admin.config.setup2.mode.production"/]</p>
-                    <p>[@s.text name="admin.config.setup2.mode"/] <span class="text-gbif-danger">&#42;</span></p>
+                    <p>[@s.text name="admin.config.setup2.welcome"/]</p>
 
-                    [#list modes as mode]
-                        <div class="form-check form-check-inline pb-2">
-                            <input class="form-check-input" type="radio" name="modeSelected" id="mode${mode}" aria-describedby="field-error-mode" [#if mode??]value="${mode}"[/#if] [#if modeSelected?? && mode == modeSelected] checked [/#if]>
-                            <label class="form-check-label" for="mode${mode}">
-                                ${mode}
-                            </label>
+                    <input type="hidden" name="setupDefaultAdministrator" value="true" />
+
+                    <p>
+                        [@s.text name="admin.config.setup2.administrator"/]. [@s.text name="admin.config.setup2.administrator.help"/]
+                    </p>
+                    <div class="row g-3 pb-3 mb-2">
+                        <div class="col-md-4">
+                            [@input name="user.firstname" requiredField=true /]
                         </div>
-                    [/#list]
-                    [@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-modeSelected my-0" fieldName="modeSelected"/]
 
+                        <div class="col-md-4">
+                            [@input name="user.lastname" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-4">
+                            [@input name="user.email" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-6">
+                            [@input name="user.password" type="password" requiredField=true /]
+                        </div>
+
+                        <div class="col-md-6">
+                            [@input name="password2" i18nkey="user.password2" type="password" requiredField=true /]
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
