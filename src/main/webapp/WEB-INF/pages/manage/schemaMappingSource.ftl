@@ -4,6 +4,16 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.mapping.title'/></title>
     <#assign currentMenu = "manage"/>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#schemaFile").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+            $("#source").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        });
+    </script>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 

@@ -1024,6 +1024,7 @@
         $("#rowType").select2({placeholder: '', dropdownParent: $('#mapping-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
         $("#manager").select2({placeholder: '${action.getText("manage.overview.resource.managers.select")?js_string}', dropdownParent: $('#managers-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
         $("#network").select2({placeholder: '${action.getText("manage.overview.networks.select")?js_string}', dropdownParent: $('#networks-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#publishingOrganizationKey").select2({placeholder: '', dropdownParent: $('#change-publishing-organization-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
 
         $("#change-publishing-organization").on('click', function (e) {
             e.preventDefault();
@@ -2498,13 +2499,6 @@
                     <form action='resource-changePublishingOrganization.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
-<#--                        <@select name="id" i18nkey="eml.publishingOrganisation" options=organisations value="${(resource.organisation.key)!''}" />-->
-<#--                        <select name="id" class="form-select my-1" id="changePublishingOrganization-select" size="1">-->
-<#--                            <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>-->
-<#--                            <#list potentialManagers?sort_by("name") as u>-->
-<#--                                <option value="${u.email}">${u.name}</option>-->
-<#--                            </#list>-->
-<#--                        </select>-->
                         <@s.submit id="changePublishingOrganization-submit" name="change" cssClass="btn btn-outline-gbif-primary my-3" key="button.change"/>
                     </form>
                 </div>
