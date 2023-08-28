@@ -351,11 +351,6 @@
                     <#assign vocab=vocabTerms[p.vocabulary.uriString] />
 
                     <div class="input-group input-group-sm">
-<#--                        <label class="input-group-text" for="fVal${fieldsIndex}">-->
-<#--                            <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">-->
-<#--                                <i class="bi bi-book"></i>-->
-<#--                            </a>-->
-<#--                        </label>-->
                         <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
                             <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                             <#list vocab?keys as code>
