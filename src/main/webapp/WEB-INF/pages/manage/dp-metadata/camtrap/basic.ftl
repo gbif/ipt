@@ -28,11 +28,6 @@
                 addNewSourceItem(true);
             });
 
-            $("#plus-license").click(function (event) {
-                event.preventDefault();
-                addNewLicenseItem(true);
-            });
-
             function addNewContributorItem(effects) {
                 var newItem = $('#baseItem-contributor').clone();
                 if (effects) newItem.hide();
@@ -58,20 +53,6 @@
                 }
 
                 setSourceItemIndex(newItem, ++sourcesItems);
-
-                initInfoPopovers(newItem[0]);
-            }
-
-            function addNewLicenseItem(effects) {
-                var newItem = $('#baseItem-license').clone();
-                if (effects) newItem.hide();
-                newItem.appendTo('#license-items');
-
-                if (effects) {
-                    newItem.slideDown('slow');
-                }
-
-                setLicenseItemIndex(newItem, ++licensesItems);
 
                 initInfoPopovers(newItem[0]);
             }
@@ -103,21 +84,6 @@
                         setSourceItemIndex($(this), index);
                     });
                     calcNumberOfItems("source");
-                });
-            }
-
-            function removeLicenseItem(event) {
-                event.preventDefault();
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-                $('#license-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                    $(this).remove();
-                    $("#license-items .item").each(function (index) {
-                        setLicenseItemIndex($(this), index);
-                    });
-                    calcNumberOfItems("license");
                 });
             }
 
@@ -179,45 +145,12 @@
                 $("#source-item-" + index + " [for$='email']").attr("for", "metadata.sources[" + index + "].email");
             }
 
-            function setLicenseItemIndex(item, index) {
-                item.attr("id", "license-item-" + index);
-
-                $("#license-item-" + index + " [id^='license-removeLink']").attr("id", "license-removeLink-" + index);
-                $("#license-removeLink-" + index).click(function (event) {
-                    removeLicenseItem(event);
-                });
-
-                $("#license-item-" + index + " [id$='title']").attr("id", "metadata.licenses[" + index + "].title").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#license-item-" + index + " [for$='title']").attr("for", "metadata.licenses[" + index + "].title");
-
-                $("#license-item-" + index + " [id$='path']").attr("id", "metadata.licenses[" + index + "].path").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#license-item-" + index + " [for$='path']").attr("for", "metadata.licenses[" + index + "].path");
-
-                $("#license-item-" + index + " [id$='name']").attr("id", "metadata.licenses[" + index + "].name").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#license-item-" + index + " [for$='name']").attr("for", "metadata.licenses[" + index + "].name");
-
-                $("#license-item-" + index + " [id$='scope']").attr("id", "metadata.licenses[" + index + "].scope").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#license-item-" + index + " [for$='scope']").attr("for", "metadata.licenses[" + index + "].scope");
-            }
-
             $(".removeContributorLink").click(function (event) {
                 removeContributorItem(event);
             });
 
             $(".removeSourceLink").click(function (event) {
                 removeSourceItem(event);
-            });
-
-            $(".removeLicenseLink").click(function (event) {
-                removeLicenseItem(event);
             });
 
             // scroll to the error if present
