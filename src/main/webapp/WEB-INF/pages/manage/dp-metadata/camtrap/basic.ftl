@@ -3,6 +3,9 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
             var contributorItems = calcNumberOfItems("contributor");
@@ -114,6 +117,7 @@
                     return $(this).attr("id");
                 });
                 $("#contributor-item-" + index + " [for$='role']").attr("for", "metadata.contributors[" + index + "].role");
+                $("#contributor-item-" + index + " [id$='role']").select2({placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
 
                 $("#contributor-item-" + index + " [id$='organization']").attr("id", "metadata.contributors[" + index + "].organization").attr("name", function () {
                     return $(this).attr("id");
@@ -162,6 +166,10 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            $('#metadata\\.licenses\\[0\\]\\.name').select2({placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}', minimumResultsForSearch: 'Infinity', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('#metadata\\.licenses\\[1\\]\\.name').select2({placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}', minimumResultsForSearch: 'Infinity', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="metadata.contributors["][id$=".role"]').select2({placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
         });
     </script>
     <#assign currentMenu="manage"/>
