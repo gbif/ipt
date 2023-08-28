@@ -6,12 +6,9 @@
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width: "100%", allowClear: true, theme: 'bootstrap4'});
-        });
-    </script>
-    <script>
         $(document).ready(function(){
+            $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width: "100%", allowClear: true, theme: 'bootstrap4'});
+
             function displayChangeTokensView() {
                 $('#tokens-block').show();
                 $('#registration-block').hide();
