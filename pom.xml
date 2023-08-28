@@ -58,11 +58,13 @@
     <commons-text.version>1.10.0</commons-text.version>
     <excel-streaming-reader.version>4.0.5</excel-streaming-reader.version>
     <freemarker.version>2.3.31</freemarker.version>
+    <frictionless.datapackage-java.version>0.6.14-gbif-SNAPSHOT</frictionless.datapackage-java.version>
     <gson.version>2.9.0</gson.version>
     <guava.version>20.0</guava.version>
     <guice.version>4.2.0</guice.version>
     <httpclient.version>4.5.13</httpclient.version>
     <httpcore.version>4.4.15</httpcore.version>
+    <jackson-dataformat-yaml.version>2.15.2</jackson-dataformat-yaml.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
@@ -514,7 +516,7 @@
     <dependency>
       <groupId>io.frictionlessdata</groupId>
       <artifactId>datapackage-java</artifactId>
-      <version>0.6.14-gbif-SNAPSHOT</version>
+      <version>${frictionless.datapackage-java.version}</version>
     </dependency>
 
     <!-- excel parsing -->
@@ -700,7 +702,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.14.2</version>
+      <version>${jackson-dataformat-yaml.version}</version>
     </dependency>
 
     <!-- Test dependencies -->
