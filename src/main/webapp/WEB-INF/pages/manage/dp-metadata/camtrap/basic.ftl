@@ -117,7 +117,18 @@
                     return $(this).attr("id");
                 });
                 $("#contributor-item-" + index + " [for$='role']").attr("for", "metadata.contributors[" + index + "].role");
-                $("#contributor-item-" + index + " [id$='role']").select2({placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#contributor-item-" + index + " [id$='role']").select2({
+                    placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    minimumResultsForSearch: 15,
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
 
                 $("#contributor-item-" + index + " [id$='organization']").attr("id", "metadata.contributors[" + index + "].organization").attr("name", function () {
                     return $(this).attr("id");
@@ -167,9 +178,42 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            $('#metadata\\.licenses\\[0\\]\\.name').select2({placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}', minimumResultsForSearch: 'Infinity', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('#metadata\\.licenses\\[1\\]\\.name').select2({placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}', minimumResultsForSearch: 'Infinity', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="metadata.contributors["][id$=".role"]').select2({placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('#metadata\\.licenses\\[0\\]\\.name').select2({
+                placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 'Infinity',
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#metadata\\.licenses\\[1\\]\\.name').select2({
+                placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 'Infinity',
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="metadata.contributors["][id$=".role"]').select2({
+                placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <#assign currentMenu="manage"/>

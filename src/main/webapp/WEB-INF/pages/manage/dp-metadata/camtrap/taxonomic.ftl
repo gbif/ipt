@@ -129,7 +129,18 @@
                     return $(this).attr("id");
                 });
                 $("#taxon-item-" + index + " [for$='taxonRank']").attr("for", "metadata.taxonomic[" + index + "].taxonRank");
-                $("#taxon-item-" + index + " [id$='taxonRank']").select2({placeholder: '${action.getText("datapackagemetadata.taxonomic.taxonRank.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#taxon-item-" + index + " [id$='taxonRank']").select2({
+                    placeholder: '${action.getText("datapackagemetadata.taxonomic.taxonRank.select")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    minimumResultsForSearch: 15,
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
 
                 $("#taxon-item-" + index + " [id$='kingdom']").attr("id", "metadata.taxonomic[" + index + "].kingdom").attr("name", function () {
                     return $(this).attr("id");
@@ -243,7 +254,18 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            $('[id^="metadata.taxonomic["][id$=".taxonRank"]').select2({placeholder: '${action.getText("datapackagemetadata.taxonomic.taxonRank.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="metadata.taxonomic["][id$=".taxonRank"]').select2({
+                placeholder: '${action.getText("datapackagemetadata.taxonomic.taxonRank.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <#assign currentMenu="manage"/>

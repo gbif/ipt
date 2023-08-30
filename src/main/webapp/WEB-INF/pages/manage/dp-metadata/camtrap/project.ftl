@@ -7,9 +7,42 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            $('select#metadata\\.project\\.captureMethod').select2({placeholder: '${action.getText("datapackagemetadata.project.captureMethod.select")?js_string}', width:"100%", allowClear: true, multiple: true, theme: 'bootstrap4'});
-            $('select#metadata\\.project\\.observationLevel').select2({placeholder: '${action.getText("datapackagemetadata.project.observationLevel.select")?js_string}', width:"100%", allowClear: true, multiple: true, theme: 'bootstrap4'});
-            $('#metadata\\.project\\.samplingDesign').select2({placeholder: '${action.getText("datapackagemetadata.project.samplingDesign.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('select#metadata\\.project\\.captureMethod').select2({
+                placeholder: '${action.getText("datapackagemetadata.project.captureMethod.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                multiple: true,
+                theme: 'bootstrap4'
+            });
+            $('select#metadata\\.project\\.observationLevel').select2({
+                placeholder: '${action.getText("datapackagemetadata.project.observationLevel.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                multiple: true,
+                theme: 'bootstrap4'
+            });
+            $('#metadata\\.project\\.samplingDesign').select2({
+                placeholder: '${action.getText("datapackagemetadata.project.samplingDesign.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <#assign currentMenu="manage"/>

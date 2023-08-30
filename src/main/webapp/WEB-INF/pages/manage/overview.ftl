@@ -1058,7 +1058,18 @@
             theme: 'bootstrap4'
         });
 
-        $("#publishingOrganizationKey").select2({placeholder: '', dropdownParent: $('#change-publishing-organization-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#publishingOrganizationKey").select2({
+            placeholder: '',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            dropdownParent: $('#change-publishing-organization-modal'),
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
 
         $("#change-publishing-organization").on('click', function (e) {
             e.preventDefault();

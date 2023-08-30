@@ -10,8 +10,28 @@
 
     <script>
         $(document).ready(function(){
-            $("#schemaFile").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
-            $("#source").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+            $("#schemaFile").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 15,
+                theme: 'bootstrap4'
+            });
+            $("#source").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 15,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <#include "/WEB-INF/pages/inc/menu.ftl">

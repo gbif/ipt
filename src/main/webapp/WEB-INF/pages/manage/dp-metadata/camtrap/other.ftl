@@ -91,7 +91,18 @@
                     return $(this).attr("id");
                 });
                 $("#relatedIdentifier-item-" + index + " [for$='relationType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relationType");
-                $("#relatedIdentifier-item-" + index + " [id$='relationType']").select2({placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#relatedIdentifier-item-" + index + " [id$='relationType']").select2({
+                    placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    minimumResultsForSearch: 15,
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
 
                 $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifier']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifier").attr("name", function () {
                     return $(this).attr("id");
@@ -102,13 +113,35 @@
                     return $(this).attr("id");
                 });
                 $("#relatedIdentifier-item-" + index + " [for$='resourceTypeGeneral']").attr("for", "metadata.relatedIdentifiers[" + index + "].resourceTypeGeneral");
-                $("#relatedIdentifier-item-" + index + " [id$='resourceTypeGeneral']").select2({placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#relatedIdentifier-item-" + index + " [id$='resourceTypeGeneral']").select2({
+                    placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    minimumResultsForSearch: 15,
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
 
                 $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType").attr("name", function () {
                     return $(this).attr("id");
                 });
                 $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifierType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType");
-                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").select2({placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").select2({
+                    placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    minimumResultsForSearch: 15,
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
             }
 
             function setReferenceItemIndex(item, index) {
@@ -148,9 +181,42 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            $('[id^="metadata.relatedIdentifiers["][id$=".relationType"]').select2({placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="metadata.relatedIdentifiers["][id$=".resourceTypeGeneral"]').select2({placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="metadata.relatedIdentifiers["][id$=".relatedIdentifierType"]').select2({placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}', minimumResultsForSearch: 15, width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="metadata.relatedIdentifiers["][id$=".relationType"]').select2({
+                placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="metadata.relatedIdentifiers["][id$=".resourceTypeGeneral"]').select2({
+                placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="metadata.relatedIdentifiers["][id$=".relatedIdentifierType"]').select2({
+                placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <#assign currentMenu="manage"/>

@@ -137,12 +137,83 @@
 
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
 
-            $("#idColumn").select2({placeholder: '<@s.text name="manage.mapping.noid"/>', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
-            $("#mapping\\.filter\\.filterTime").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
-            $("#filterName").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
-            $("#filterComp").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
-            $("[id^=fIdx]").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
-            $(".fval-select").select2({placeholder: '', width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+            $("#idColumn").select2({
+                placeholder: '<@s.text name="manage.mapping.noid"/>',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
+            $("#mapping\\.filter\\.filterTime").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
+            $("#filterName").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
+            $("#filterComp").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
+            $("[id^=fIdx]").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
+            $(".fval-select").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 15,
+                dropdownCssClass: 'text-smaller',
+                theme: 'bootstrap4'
+            });
         });
     </script>
 
