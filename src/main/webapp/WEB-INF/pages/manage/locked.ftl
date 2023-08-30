@@ -1,6 +1,7 @@
 <#escape x as x?html>
 <#setting url_escaping_charset="UTF-8">
 <#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name="manage.publication.title"/>: ${resource.title!resource.shortname}</title>
 <script>
     $(document).ready(function(){
         loadReport();
