@@ -208,7 +208,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       case CANCELLED:
         return "Data package generation cancelled";
       case FAILED:
-        return "Failed. Fatal error!";
+        return "Data package generation failed";
       default:
         return "You should never see this";
     }
