@@ -96,16 +96,16 @@ public class ExtensionsActionTest {
 
   @Test
   public void testGetLatestVersions() {
-    // start with 52 extensions
-    assertEquals(52, extensions.size());
+    // start with 53 extensions
+    assertEquals(53, extensions.size());
     // start with 3 extensions with Occurrence rowType
     assertEquals(3, countOccurrenceExtensions(extensions));
 
     // filter extensions list so that it only includes the latest version of each extension
     List<Extension> filtered = action.getLatestVersions(extensions);
 
-    // end with 44 extensions
-    assertEquals(44, filtered.size());
+    // end with 45 extensions
+    assertEquals(45, filtered.size());
     // end with 1 extension with Occurrence rowType
     assertEquals(1, countOccurrenceExtensions(filtered));
     // make sure that Occurrence extension is the right one

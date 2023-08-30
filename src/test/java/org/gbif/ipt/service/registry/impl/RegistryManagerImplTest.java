@@ -134,8 +134,8 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Extension> extensions = manager.getExtensions();
-    // a total of 52 Extensions are expected
-    assertEquals(52, extensions.size());
+    // a total of 53 Extensions are expected
+    assertEquals(53, extensions.size());
 
     // a total of 3 Extensions with rowType Occurrence are expected
     List<Extension> occurrenceCoreExtensions = new ArrayList<>();
