@@ -113,7 +113,17 @@
                 hideProcessing();
             }
 
-            $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({placeholder: '${action.getText("eml.rank.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({
+                placeholder: '${action.getText("eml.rank.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>

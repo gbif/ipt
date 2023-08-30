@@ -131,7 +131,20 @@
             dialogWindow.modal('show');
         }
 
-        $("#addNewTranslation").select2({placeholder: '${action.getText("manage.translation.select")?js_string}', dropdownParent: $('#dialog'), width:"100%", allowClear: true, minimumResultsForSearch: 15, dropdownCssClass: 'text-smaller', theme: 'bootstrap4'});
+        $("#addNewTranslation").select2({
+            placeholder: '${action.getText("manage.translation.select")?js_string}',
+            dropdownParent: $('#dialog'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            allowClear: true,
+            minimumResultsForSearch: 15,
+            dropdownCssClass: 'text-smaller',
+            theme: 'bootstrap4'
+        });
 
     });
 </script>

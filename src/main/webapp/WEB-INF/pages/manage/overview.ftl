@@ -981,9 +981,42 @@
             return false;
         });
 
-        $("#rowType").select2({placeholder: '', dropdownParent: $('#mapping-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
-        $("#manager").select2({placeholder: '${action.getText("manage.overview.resource.managers.select")?js_string}', dropdownParent: $('#managers-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
-        $("#network").select2({placeholder: '${action.getText("manage.overview.networks.select")?js_string}', dropdownParent: $('#networks-modal'), width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#rowType").select2({
+            placeholder: '',
+            dropdownParent: $('#mapping-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+        $("#manager").select2({
+            placeholder: '${action.getText("manage.overview.resource.managers.select")?js_string}',
+            dropdownParent: $('#managers-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+        $("#network").select2({
+            placeholder: '${action.getText("manage.overview.networks.select")?js_string}',
+            dropdownParent: $('#networks-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
     });
 </script>
 

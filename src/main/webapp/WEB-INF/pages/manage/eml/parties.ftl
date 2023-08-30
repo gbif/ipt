@@ -77,13 +77,81 @@
             }
 
             var copyAgentModal = $('#copy-agent-modal');
-            $('#resource').select2({placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-            $('#agentType').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-            $('#agent').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+            $('#resource').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agentType').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agent').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
 
-            $('[id^="eml.associatedParties"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.associatedParties"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.associatedParties"][id$=".role"]').select2({placeholder: '${action.getText("eml.agent.role.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.associatedParties"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".role"]').select2({
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <style>

@@ -193,20 +193,152 @@
                 }
             }
 
-            $('select#eml\\.metadataLanguage').select2({placeholder: '', width:"100%", theme: 'bootstrap4'});
-            $('select#resource\\.coreType').select2({placeholder: '${action.getText("resource.coreType.selection")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
-            $('select#id').select2({placeholder: '${action.getText("admin.organisation.name.select")?js_string}', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
-            $('select#eml\\.language').select2({placeholder: '', width:"100%", theme: 'bootstrap4'});
-            $('select#resource\\.subtype').select2({placeholder: '${action.getText("resource.subtype.selection")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
-            $('select#eml\\.updateFrequency').select2({placeholder: '', width:"100%", minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
-            $('select#eml\\.intellectualRights\\.license').select2({placeholder: '${action.getText("eml.intellectualRights.nolicenses")?js_string}', width:"100%", allowClear: true, minimumResultsForSearch: 'Infinity', theme: 'bootstrap4'});
+            $('select#eml\\.metadataLanguage').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                theme: 'bootstrap4'
+            });
+            $('select#resource\\.coreType').select2({
+                placeholder: '${action.getText("resource.coreType.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#id').select2({
+                placeholder: '${action.getText("admin.organisation.name.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 15,
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.language').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                theme: 'bootstrap4'});
+            $('select#resource\\.subtype').select2({
+                placeholder: '${action.getText("resource.subtype.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.updateFrequency').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.intellectualRights\\.license').select2({
+                placeholder: '${action.getText("eml.intellectualRights.nolicenses")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
 
-            $('[id^="eml.contacts"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.contacts"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.creators"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.creators"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({placeholder: '${action.getText("eml.country.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
-            $('[id^="eml.metadataProviders"][id$=".directory"]').select2({placeholder: '${action.getText("eml.contact.noDirectory")?js_string}', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: true, theme: 'bootstrap4'});
+            $('[id^="eml.contacts"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.contacts"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.creators"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.creators"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.metadataProviders"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
 
             function changeAgentInputNamesAfterDragging(e) {
                 displayProcessing();
@@ -237,9 +369,45 @@
             }
 
             var copyAgentModal = $('#copy-agent-modal');
-            $('#resource').select2({placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-            $('#agentType').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
-            $('#agent').select2({placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}', dropdownParent: copyAgentModal, minimumResultsForSearch: 10, width: "100%", allowClear: true, theme: 'bootstrap4'});
+            $('#resource').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agentType').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agent').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
 
     </script>
