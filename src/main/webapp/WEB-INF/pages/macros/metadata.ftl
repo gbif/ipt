@@ -211,7 +211,17 @@ $(document).ready(function(){
                 $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id^='trash']").attr("id", "trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).attr("name", function () {
                     return $(this).attr("id");
                 });
-                $("#eml\\.taxonomicCoverages\\[" + itemIndex + "\\]\\.taxonKeywords\\[" + subBaseIndex + "\\]\\.rank").select2({placeholder: '${action.getText("eml.rank.selection")?js_string}', width:"100%", allowClear: true, theme: 'bootstrap4'});
+                $("#eml\\.taxonomicCoverages\\[" + itemIndex + "\\]\\.taxonKeywords\\[" + subBaseIndex + "\\]\\.rank").select2({
+                    placeholder: '${action.getText("eml.rank.selection")?js_string}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
                 $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).click(function (event) {
                     removeSubItem(event);
                 });
@@ -418,7 +428,18 @@ $(document).ready(function(){
                 $("#item-" + index + " input").attr("name", function() { return $(this).attr("id"); });
                 $("#item-" + index + " select").attr("name", function() { return $(this).attr("id"); });
                 $("#item-" + index + " .subitem").attr("id", "subitem-" + index);
-                $("#type-" + index).select2({placeholder: '', width:"100%", minimumResultsForSearch: 'Infinity', allowClear: false, theme: 'bootstrap4'});
+                $("#type-" + index).select2({
+                    placeholder: '',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    width: "100%",
+                    minimumResultsForSearch: 'Infinity',
+                    allowClear: false,
+                    theme: 'bootstrap4'
+                });
 
                 var selectValue = $("#item-" + index + " #type-" + index).val();
                 if (selectValue == "COUNT_RANGE") {
@@ -564,6 +585,11 @@ $(document).ready(function(){
 
         $("#eml\\.specimenPreservationMethods\\[" + index + "\\]").select2({
             placeholder: '${action.getText("eml.preservation.methods.selection")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
             width: "100%",
             minimumResultsForSearch: 15,
             allowClear: true,

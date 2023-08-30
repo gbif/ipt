@@ -7,7 +7,17 @@
 
     <script>
         $(document).ready(function(){
-            $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width: "100%", allowClear: true, theme: 'bootstrap4'});
+            $('#organisation\\.key').select2({
+                placeholder: '${action.getText("admin.organisation.name.select")}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
 
             function displayChangeTokensView() {
                 $('#tokens-block').show();
@@ -168,7 +178,18 @@
                 }
             });
 
-            $('select#networkKey').select2({placeholder: '<@s.text name="admin.ipt.network.selection"/>', minimumResultsForSearch: 'Infinity', allowClear: true, width:"100%", theme: 'bootstrap4'});
+            $('select#networkKey').select2({
+                placeholder: '${action.getText("admin.ipt.network.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                minimumResultsForSearch: 15,
+                allowClear: true,
+                width: "100%",
+                theme: 'bootstrap4'
+            });
 
             $("#network").on("click", displayProcessing);
         });

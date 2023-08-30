@@ -93,3 +93,4 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     [#assign currentMenu = "home"]
+    [#assign selectNoResultsFound][@s.text name="select.noResults"/][/#assign]

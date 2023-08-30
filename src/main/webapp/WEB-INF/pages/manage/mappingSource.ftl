@@ -11,7 +11,17 @@
     $(document).ready(function(){
         $("#save").on("click", displayProcessing);
 
-        $("#source").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#source").select2({
+            placeholder: '',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
     });
 </script>
 

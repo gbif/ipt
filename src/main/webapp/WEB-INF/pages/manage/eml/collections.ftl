@@ -103,6 +103,11 @@
 
             $('[id^="eml.specimenPreservationMethods"]').select2({
                 placeholder: '${action.getText("eml.preservation.methods.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
                 width: "100%",
                 minimumResultsForSearch: 15,
                 allowClear: true,
@@ -110,6 +115,11 @@
             });
             $('[id^=type-]').select2({
                 placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
                 width: "100%",
                 minimumResultsForSearch: 'Infinity',
                 allowClear: false,

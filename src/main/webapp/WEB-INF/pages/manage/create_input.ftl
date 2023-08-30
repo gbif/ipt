@@ -10,7 +10,17 @@
 
 <script>
     $(document).ready(function(){
-        $("#resourceType").select2({placeholder: '${action.getText("manage.resource.create.coreType.selection")?js_string}', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+        $("#resourceType").select2({
+            placeholder: '${action.getText("manage.resource.create.coreType.selection")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
     });
 </script>
 

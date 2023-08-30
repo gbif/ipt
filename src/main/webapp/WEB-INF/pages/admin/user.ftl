@@ -24,7 +24,16 @@
                 buttonType: "danger"
             });
 
-            $("#user\\.role").select2({placeholder: '', width:"100%", minimumResultsForSearch: 15, theme: 'bootstrap4'});
+            $("#user\\.role").select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width:"100%",
+                minimumResultsForSearch: 15,
+                theme: 'bootstrap4'});
         });
     </script>
     <#assign currentMenu = "admin"/>

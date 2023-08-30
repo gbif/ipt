@@ -10,10 +10,42 @@
 
     <script>
         $(document).ready(function() {
-            $('#primaryColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#navbarColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#navbarLinkColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
-            $('#linkColor-select').select2({placeholder: 'Select color...', theme: 'bootstrap4'});
+            $('#primaryColor-select').select2({
+                placeholder: 'Select color',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                theme: 'bootstrap4'
+            });
+            $('#navbarColor-select').select2({
+                placeholder: 'Select color',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                theme: 'bootstrap4'
+            });
+            $('#navbarLinkColor-select').select2({
+                placeholder: 'Select color',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                theme: 'bootstrap4'
+            });
+            $('#linkColor-select').select2({
+                placeholder: 'Select color',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <script>

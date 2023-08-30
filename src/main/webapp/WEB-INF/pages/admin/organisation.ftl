@@ -15,7 +15,17 @@
                 buttonType: "danger"
             });
 
-            $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('select#organisation\\.key').select2({
+                placeholder: '${action.getText("admin.organisation.name.select")}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
 
             $('#organisation\\.key').change(function() {
 
