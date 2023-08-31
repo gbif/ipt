@@ -1,12 +1,17 @@
-# Set to 0.1 etc for release candidates, and 1 etc for releases
-%define release_number 1
+#%define nr_ver_extra 1
+#%define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
+# Use this section for release candidates
+%define nr_ver 3.0
+%define nr_ver_extra -RC1
+%define release_number 0.1
+%define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
 
 Name: ipt
 Version: %{nr_ver}
 Release: %{release_number}%{dist}
 License: ASL 2.0
 URL: https://www.gbif.org/ipt
-Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
+Source0: %{source0url}
 Source1: ipt.service
 Source2: ipt.sysconfig
 Source3: ipt-vhost.conf

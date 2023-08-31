@@ -11,7 +11,31 @@ Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGU
 endif::[]
 ====
 
-// Next release text kept for reuse, as it will be part of the Crowdin translation memory.
+== *3.0-RC1* – August 2023
+
+*Release candidate.*
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0-RC1/ipt-3.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:3.0@release-notes.adoc[IPT v3.0-RC1 Release Notes]
+* xref:3.0@index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/38?closed=1[TBC issues].
+* Translated into 7 languages
+
+Version 3.0.0 is a major version release as it brings in a new capability that goes beyond the Darwin Core Archive format. The IPT 3 will still provide all the functions of previous versions, but will additionally allow a user to map datasets to supported https://frictionlessdata.io[Frictionless Data] schemas. The first of these are the https://tdwg.github.io/camtrap-dp/[Camera Trap Data Package (Camtrap DP)] and https://github.com/CatalogueOfLife/coldp#name[Catalogue of Life Data Package (CoL DP)].
+
+This version also introduces a new core for Darwin Core Archives, for https://rs.gbif.org/sandbox/core/dwc_material_2023-04-29.xml[MaterialEntity], which is in preparation for the outputs of the Darwin Core Material task group.
+
+Existing users should upgrade to this version following the instructions in the xref:3.0@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+In particular, note this release now requires Tomcat 9 (Servlet 4.0) or later.
+
+*Please note that this is a release candidate and is intended for testing and preview purposes only. _It is not for production use_ — the IPT should be set up in test mode to register published datasets to the test system, gbif-uat.org.*
+
+Feedback is appreciated through issues on the https://github.com/gbif/ipt/issues[GitHub issue tracker] or by email.
+
+//No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+//Minor issues and security issues will be addressed in patch releases.
 
 == *2.7.5* – August 2023
 
@@ -31,7 +55,6 @@ Minor issues and security issues will be addressed in patch releases.
 
 == *2.7.4* – July 2023
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.4/ipt-2.7.4.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.7.4 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/46?closed=1[21 issues].
@@ -42,7 +65,6 @@ This release brings new file uploader, new IPT setup, compressed URL sources and
 
 == *2.7.3* – March 2023
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.3/ipt-2.7.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.7.3 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/45?closed=1[5 issues].
@@ -52,7 +74,6 @@ This minor release brings UI improvements and minor fixes.
 
 == *2.7.2* – February 2023
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.2/ipt-2.7.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.7.2 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/44?closed=1[1 issue].
@@ -62,7 +83,6 @@ This minor release addresses the bug with translations.
 
 == *2.7.1* – January 2023
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.1/ipt-2.7.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.7.1 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/43?closed=1[2 issues].
@@ -72,7 +92,6 @@ This minor release brings bug fixes for issue with resource tables and with DOI 
 
 == *2.7.0* – January 2023
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.0/ipt-2.7.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.7.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/42?closed=1[47 issues].
