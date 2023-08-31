@@ -25,13 +25,17 @@ Version 3.0.0 is a major version release as it brings in a new capability that g
 
 This version also introduces a new core for Darwin Core Archives, for https://rs.gbif.org/sandbox/core/dwc_material_2023-04-29.xml[MaterialEntity], which is in preparation for the outputs of the Darwin Core Material task group.
 
-Existing users should upgrade to this version following the instructions in the xref:3.0@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+// Existing users should upgrade to this version following the instructions in the xref:3.0@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 In particular, note this release now requires Tomcat 9 (Servlet 4.0) or later.
 
 *Please note that this is a release candidate and is intended for testing and preview purposes only. _It is not for production use_ — the IPT should be set up in test mode to register published datasets to the test system, gbif-uat.org.*
 
+Interested users may upgrade to this version following the instructions in the xref:3.0@release-notes.adoc[Release Notes], or create a new installation by following the xref:getting-started.adoc[Getting Started guide].
+
 Feedback is appreciated through issues on the https://github.com/gbif/ipt/issues[GitHub issue tracker] or by email.
+
+Documentation for the new features is still being prepared.
 
 //No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
 
