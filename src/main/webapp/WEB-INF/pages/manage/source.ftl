@@ -151,7 +151,7 @@
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
-                            <div class="col-12 border rounded px-5 py-4 mb-3">
+                            <div class="col-12 border rounded px-lg-5 px-md-4 px-3 py-lg-4 py-3 mb-3">
                                 <div class="table-responsive">
                                     <table id="source-properties" class="table table-sm text-smaller">
                                         <tr>
