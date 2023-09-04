@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 
+    <#attempt>
+        <#assign emailError>
+            ${action.getFieldErrors()['user.email']}
+        </#assign>
+        <#recover>
+    </#attempt>
+
     <script>
         $(document).ready(function(){
             $('.userConfirmDeletion').jConfirmAction({
@@ -65,7 +72,7 @@
                     </#if>
                 </h1>
 
-                <#if user.email?has_content>
+                <#if user.email?has_content && !emailError?has_content>
                     <div class="text-smaller">
                         <a href="mailto:${user.email!}">${user.email!}</a>
                     </div>
@@ -94,7 +101,9 @@
 
             <form id="newuser" class="needs-validation" action="user.do" method="post">
                 <div class="row g-3 mt-2">
-                    <@s.hidden name="id" value="${(user.email)!}" required="true"/>
+                    <#if !emailError?has_content>
+                        <@s.hidden name="id" value="${(user.email)!}" required="true"/>
+                    </#if>
 
                     <div class="col-md-6">
                         <@input tabindex=1 name="user.firstname" />
@@ -104,9 +113,11 @@
                         <@input tabindex=2 name="user.lastname" />
                     </div>
 
-                    <div class="col-md-6">
-                        <@input tabindex=3 name="user.email" disabled=id?has_content/>
-                    </div>
+                    <#if !id?has_content>
+                        <div class="col-md-6">
+                            <@input tabindex=3 name="user.email" disabled=id?has_content/>
+                        </div>
+                    </#if>
 
                     <div class="col-md-6">
                         <@select name="user.role" tabindex=4 value=(user.role)! javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
