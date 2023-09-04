@@ -78,6 +78,10 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
+<#assign currentLocale = .vars["locale"]/>
+<#if source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE' || source.sourceType == 'URL'>
+    <#assign formattedFileSize><@source.formattedFileSize(currentLocale)?interpret /></#assign>
+</#if>
 
     <form class="topForm needs-validation" action="source.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -201,11 +205,11 @@
                                                 <tr>
                                                     <th><@s.text name='manage.source.size'/></th>
                                                     <td>
-                                                        <#if (source.fileSizeFormatted)??>
-                                                            <@source.fileSizeFormatted?interpret />
-                                                        <#else>
+                                                        <#attempt>
+                                                            <@source.formattedFileSize(currentLocale)?interpret />
+                                                        <#recover>
                                                             -
-                                                        </#if>
+                                                        </#attempt>
                                                     </td>
                                                 </tr>
                                             </#if>
@@ -230,11 +234,13 @@
                                             </tr>
                                             <tr>
                                                 <th><@s.text name='manage.source.size'/></th>
-                                                <td><#if (source.fileSizeFormatted)??>
-                                                        <@source.fileSizeFormatted?interpret />
-                                                    <#else>
+                                                <td>
+                                                    <#attempt>
+                                                        <@source.formattedFileSize(currentLocale)?interpret />
+                                                    <#recover>
                                                         -
-                                                    </#if></td>
+                                                    </#attempt>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th><@s.text name='manage.source.modified'/></th>
