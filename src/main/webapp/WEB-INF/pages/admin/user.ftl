@@ -7,9 +7,10 @@
     <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 
     <#attempt>
-        <#assign emailError>
-            ${action.getFieldErrors()['user.email']}
-        </#assign>
+        <#assign fieldErrors>${action.fieldErrors!}</#assign>
+        <#if action.fieldErrors??>
+            <#assign emailError>${action.fieldErrors['user.email']!}</#assign>
+        </#if>
         <#recover>
     </#attempt>
 
