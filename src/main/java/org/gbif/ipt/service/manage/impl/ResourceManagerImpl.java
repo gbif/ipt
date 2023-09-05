@@ -438,7 +438,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws InvalidEmlException if EML is invalid
    */
   private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
-      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_1);
+      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_2);
       String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
       emlValidator.validate(emlString);
   }
