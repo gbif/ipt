@@ -8,7 +8,11 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
 <#macro usersTable numUsersShown sEmptyTable columnToSortOn sortOrder>
     <script charset="utf-8">
 
-        <#assign never>${action.getText('admin.users.last.login.never')}</#assign>
+        <#attempt>
+            <#assign never>${action.getText('admin.users.last.login.never')?replace("'", "\\'")?replace("\"", '\\"')}</#assign>
+        <#recover>
+            <#assign never="never"/>
+        </#attempt>
 
         /* organisation list */
         var aDataSet = [
