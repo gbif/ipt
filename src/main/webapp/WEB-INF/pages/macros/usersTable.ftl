@@ -8,13 +8,15 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
 <#macro usersTable numUsersShown sEmptyTable columnToSortOn sortOrder>
     <script charset="utf-8">
 
+        <#assign never>${action.getText('admin.users.last.login.never')}</#assign>
+
         /* organisation list */
         var aDataSet = [
             <#list users as u>
             ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '&quot;')!}" class="resource-table-link">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
                 '${u.email?replace("'", "\\'")?replace("\"", '\\"')!}',
                 '<span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill user-${u.role?lower_case}"><@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/></span>',
-                '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"never"}',
+                '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"${never}"}',
                 '<form class="needs-validation" action="user.do" method="post">' +
                 '<div class="form-group d-flex justify-content-end">' +
                 '<input type="hidden" name="id" value="${u.email?replace("'", "\\'")?replace("\"", '\\"')!}" required="true">' +
