@@ -11,14 +11,14 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
         /* organisation list */
         var aDataSet = [
             <#list users as u>
-            ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}" class="resource-table-link">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
+            ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '&quot;')!}" class="resource-table-link">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
                 '${u.email?replace("'", "\\'")?replace("\"", '\\"')!}',
                 '<span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill user-${u.role?lower_case}"><@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/></span>',
                 '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"never"}',
                 '<form class="needs-validation" action="user.do" method="post">' +
                 '<div class="form-group d-flex justify-content-end">' +
                 '<input type="hidden" name="id" value="${u.email?replace("'", "\\'")?replace("\"", '\\"')!}" required="true">' +
-                '<a title="<@s.text name="button.edit"/>" class="icon-button icon-button-sm" type="button" href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}">' +
+                '<a title="<@s.text name="button.edit"/>" class="icon-button icon-button-sm" type="button" href="user?id=${u.email?replace("'", "\\'")?replace("\"", '&quot;')!}">' +
                 '<svg class="icon-button-svg icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">' +
                 '<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>' +
                 '</svg>' +
