@@ -235,9 +235,7 @@
                         <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
                             <@s.text name='button.edit'/>
                         </a>
-                    </#if>
-                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                        <#if adminRights>
+                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                             <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                 <@s.text name='button.delete.version'/>
                             </a>
