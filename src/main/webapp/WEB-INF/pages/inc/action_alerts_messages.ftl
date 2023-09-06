@@ -7,7 +7,9 @@
                 <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
             </div>
             <div class="overflow-x-hidden pt-1">
-                <span>${message!}</span>
+                [#if message?has_content]
+                <span>[@message?interpret /]</span>
+                [/#if]
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
