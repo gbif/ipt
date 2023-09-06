@@ -1,18 +1,18 @@
 <#escape x as x?html>
+    <#if "${newUser!}"=="no">
+        <#assign newUserPage=false/>
+        <#assign editUserPage=true/>
+    <#else>
+        <#assign newUserPage=true/>
+        <#assign editUserPage=false/>
+    </#if>
+
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
+    <title><#if editUserPage><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
-
-    <#attempt>
-        <#assign fieldErrors>${action.fieldErrors!}</#assign>
-        <#if action.fieldErrors??>
-            <#assign emailError>${action.fieldErrors['user.email']!}</#assign>
-        </#if>
-        <#recover>
-    </#attempt>
 
     <script>
         $(document).ready(function(){
@@ -66,14 +66,14 @@
 
             <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if "${newUser!}"=="no">
+                    <#if editUserPage>
                         ${user.firstname!} ${user.lastname!}
                     <#else>
                         <@s.text name="admin.user.title.new"/>
                     </#if>
                 </h1>
 
-                <#if user.email?has_content && !emailError?has_content>
+                <#if editUserPage>
                     <div class="text-smaller">
                         <a href="mailto:${user.email!}">${user.email!}</a>
                     </div>
@@ -81,11 +81,22 @@
 
                 <div class="mt-2">
                     <@s.submit tabindex=7 cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="newuser" name="save" key="button.save"/>
-                    <#if "${newUser!}"=="no">
-                        <@s.submit tabindex=8 cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="delete" key="button.delete"/>
-                        <@s.submit tabindex=9 cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger top-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                    <#if editUserPage>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button id="btnGroup" tabindex=8 type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <@s.text name="button.options"/>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
+                                <li>
+                                    <@s.submit cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                                </li>
+                                <li>
+                                    <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="delete" key="button.delete"/>
+                                </li>
+                            </ul>
+                        </div>
                     </#if>
-                    <@s.submit tabindex=10 cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
+                    <@s.submit tabindex=9 cssClass="button btn btn-sm btn-outline-secondary top-button" form="newuser" name="cancel" key="button.cancel"/>
                 </div>
             </div>
         </div>
@@ -93,16 +104,16 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p class="mb-0">
+            <p>
                 <@s.text name="admin.user.intro"/>
             </p>
-            <p class="mb-0">
+            <p>
                 <@s.text name="admin.user.intro2"/>
             </p>
 
             <form id="newuser" class="needs-validation" action="user.do" method="post">
                 <div class="row g-3 mt-2">
-                    <#if !emailError?has_content>
+                    <#if editUserPage>
                         <@s.hidden name="id" value="${(user.email)!}" required="true"/>
                     </#if>
 
@@ -124,7 +135,7 @@
                         <@select name="user.role" tabindex=4 value=(user.role)! javaGetter=false options={"User":"user.roles.user", "Manager":"user.roles.manager", "Publisher":"user.roles.publisher", "Admin":"user.roles.admin"}/>
                     </div>
 
-                    <#if "${newUser!}"!="no">
+                    <#if newUserPage>
                         <div class="col-md-6">
                             <@input name="user.password" type="password" tabindex=5 />
                         </div>
