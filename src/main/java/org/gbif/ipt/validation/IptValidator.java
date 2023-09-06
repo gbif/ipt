@@ -16,6 +16,8 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 
+import static org.gbif.ipt.validation.EmailValidationMessageTranslator.EMAIL_ERROR_TRANSLATIONS;
+
 public class IptValidator extends BaseValidator {
 
   public void validate(BaseAction action, Ipt ipt) {
@@ -59,8 +61,12 @@ public class IptValidator extends BaseValidator {
     if (ipt.getPrimaryContactEmail() != null && ipt.getPrimaryContactEmail().length() < 6) {
       action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.short"));
     }
-    if (!isValidEmail(ipt.getPrimaryContactEmail())) {
-      action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.invalid"));
+    ValidationResult result = checkEmailValid(ipt.getPrimaryContactEmail());
+    if (!result.isValid()) {
+      action.addFieldError(
+              fieldPrefix + ".primaryContactEmail",
+              action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(result.getMessage(), "validation.ipt.contactEmail.invalid"))
+      );
     }
   }
 }
