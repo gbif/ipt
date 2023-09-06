@@ -42,6 +42,8 @@
                 width:"100%",
                 minimumResultsForSearch: 15,
                 theme: 'bootstrap4'});
+
+            $("#save").on("click", displayProcessing);
         });
     </script>
     <#assign currentMenu = "admin"/>
