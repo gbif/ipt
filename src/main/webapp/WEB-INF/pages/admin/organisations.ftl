@@ -26,9 +26,6 @@
             $('#add').click(function() {
                 window.location='organisation.do';
             });
-            $('#cancel').click(function() {
-                window.location='/';
-            });
             $('.edit').each(function() {
                 $(this).click(function() {
                     window.location = $(this).parent('a').attr('href');
@@ -69,7 +66,9 @@
                     <form class="d-inline-block" action="organisationsSynchronize.do" method="post">
                         <@s.submit name="synchronise" cssClass="btn btn-sm btn-outline-gbif-primary top-button" key="button.synchronise"/>
                     </form>
-                    <button id="cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></button>
+                    <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.cancel"/>
+                    </a>
                 </div>
             </div>
         </div>
