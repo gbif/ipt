@@ -30,6 +30,27 @@
                 }
             }
 
+            setTimeout(initializeConfirmationWindows, 1000);
+
+            function initializeConfirmationWindows() {
+                $(".paginate_button").click(function () {
+                    $('.userConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                    $('.confirmPasswordReset').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                });
+            }
+
             initConfirmationModal();
 
             // Hack needed for Internet Explorer

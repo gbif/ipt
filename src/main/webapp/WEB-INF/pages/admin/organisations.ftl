@@ -20,6 +20,20 @@
 
             initConfirmationModal();
 
+            setTimeout(initializeConfirmationWindows, 1000);
+
+            function initializeConfirmationWindows() {
+                $(".paginate_button").click(function () {
+                    $('.organizationConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                });
+            }
+
             $('#organisation\\.key').click(function() {
                 $('#organisation\\.name').val($('#organisation\\.key :selected').text());
             });
