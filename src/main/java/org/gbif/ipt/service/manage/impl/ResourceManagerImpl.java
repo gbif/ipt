@@ -483,7 +483,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws InvalidEmlException if EML is invalid
    */
   private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
-      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_1);
+      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_2);
       String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
       emlValidator.validate(emlString);
   }
@@ -3174,7 +3174,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // geographic coverage section
-            if (geoDataMappedForThisMapping) {
+            if (geoDataMappedForThisMapping
+                    && decimalLatitudeSourceColumnIndex < in.length
+                    && decimalLongitudeSourceColumnIndex < in.length) {
               String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
               String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
 
@@ -3214,26 +3216,31 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             // taxonomic coverage section
             if (taxDataMappedForThisMapping && taxonItemsAdded < maxNumberOfTaxonItems) {
               if (kingdomSourceColumnIndex != -1
+                  && kingdomSourceColumnIndex < in.length
                   && StringUtils.isNotEmpty(in[kingdomSourceColumnIndex])) {
                 taxa.add(new TaxonKeyword(in[kingdomSourceColumnIndex], KINGDOM, null));
                 taxonItemsAdded++;
               }
               if (phylumSourceColumnIndex != -1
+                  && phylumSourceColumnIndex < in.length
                   && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
                 taxa.add(new TaxonKeyword(in[phylumSourceColumnIndex], PHYLUM, null));
                 taxonItemsAdded++;
               }
               if (classSourceColumnIndex != -1
+                  && classSourceColumnIndex < in.length
                   && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
                 taxa.add(new TaxonKeyword(in[classSourceColumnIndex], CLASS, null));
                 taxonItemsAdded++;
               }
               if (orderSourceColumnIndex != -1
+                  && orderSourceColumnIndex < in.length
                   && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
                 taxa.add(new TaxonKeyword(in[orderSourceColumnIndex], ORDER, null));
                 taxonItemsAdded++;
               }
               if (familySourceColumnIndex != -1
+                  && familySourceColumnIndex < in.length
                   && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
                 taxa.add(new TaxonKeyword(in[familySourceColumnIndex], FAMILY, null));
                 taxonItemsAdded++;
@@ -3241,7 +3248,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // temporal coverage section
-            if (tempDataMappedForThisMapping) {
+            if (tempDataMappedForThisMapping && eventDataSourceColumnIndex < in.length) {
               String rawEventDateValue = in[eventDataSourceColumnIndex];
 
               TemporalParser temporalParser = DateParsers.defaultTemporalParser();

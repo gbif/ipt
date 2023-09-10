@@ -20,14 +20,25 @@
 
             initConfirmationModal();
 
+            setTimeout(initializeConfirmationWindows, 1000);
+
+            function initializeConfirmationWindows() {
+                $(".paginate_button").click(function () {
+                    $('.organizationConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                });
+            }
+
             $('#organisation\\.key').click(function() {
                 $('#organisation\\.name').val($('#organisation\\.key :selected').text());
             });
             $('#add').click(function() {
                 window.location='organisation.do';
-            });
-            $('#cancel').click(function() {
-                window.location='/';
             });
             $('.edit').each(function() {
                 $(this).click(function() {
@@ -69,7 +80,9 @@
                     <form class="d-inline-block" action="organisationsSynchronize.do" method="post">
                         <@s.submit name="synchronise" cssClass="btn btn-sm btn-outline-gbif-primary top-button" key="button.synchronise"/>
                     </form>
-                    <button id="cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></button>
+                    <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.cancel"/>
+                    </a>
                 </div>
             </div>
         </div>

@@ -87,15 +87,6 @@
     </div>
 
     <div class="p-3">
-<#--        <div class="form-check form-check-inline">-->
-<#--            <input class="form-check-input" type="radio" name="metadata-radio" id="edit-profile-radio" value="edit" checked>-->
-<#--            <label class="form-check-label" for="edit-profile-radio"><@s.text name="account.profile.title"/></label>-->
-<#--        </div>-->
-<#--        <div class="form-check form-check-inline">-->
-<#--            <input class="form-check-input" type="radio" name="metadata-radio" id="change-password-radio" value="change-password">-->
-<#--            <label class="form-check-label" for="change-password-radio"><@s.text name="account.passwordChange.title"/></label>-->
-<#--        </div>-->
-
         <div class="tabs-root">
             <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
                 <div class="tabs-flexContainer justify-content-start" role="tablist">

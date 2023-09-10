@@ -16,6 +16,9 @@ package org.gbif.ipt.utils;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
+import java.util.Locale;
+
+import org.apache.commons.lang3.LocaleUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,5 +32,16 @@ public class FileUtilsTest {
     assertEquals("http_rs_gbif_org_extension_gbif_1_0_multimedia_xml.xml", FileUtils
       .getSuffixedFileName("http://rs.gbif.org/extension/gbif/1.0/multimedia.xml",
         ExtensionManagerImpl.EXTENSION_FILE_SUFFIX));
+  }
+
+  @Test
+  void testLocaleUtilsLocaleParse() {
+    assertEquals(Locale.UK, LocaleUtils.toLocale("en_GB"));
+    assertEquals(Locale.FRENCH, LocaleUtils.toLocale("fr"));
+    assertEquals(new Locale("es"), LocaleUtils.toLocale("es"));
+    assertEquals(Locale.CHINESE, LocaleUtils.toLocale("zh"));
+    assertEquals(new Locale("ru"), LocaleUtils.toLocale("ru"));
+    assertEquals(new Locale("pt"), LocaleUtils.toLocale("pt"));
+    assertEquals(Locale.JAPANESE, LocaleUtils.toLocale("ja"));
   }
 }

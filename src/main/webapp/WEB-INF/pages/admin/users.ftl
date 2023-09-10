@@ -30,14 +30,32 @@
                 }
             }
 
+            setTimeout(initializeConfirmationWindows, 1000);
+
+            function initializeConfirmationWindows() {
+                $(".paginate_button").click(function () {
+                    $('.userConfirmDeletion').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.delete.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                    $('.confirmPasswordReset').jConfirmAction({
+                        titleQuestion: "<@s.text name="basic.confirm"/>",
+                        question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
+                        yesAnswer: "<@s.text name="basic.yes"/>",
+                        cancelAnswer: "<@s.text name="basic.no"/>",
+                        buttonType: "danger"
+                    });
+                });
+            }
+
             initConfirmationModal();
 
             // Hack needed for Internet Explorer
             $('#create').click(function() {
                 window.location='user.do';
-            });
-            $('#cancel').click(function() {
-                window.location='/';
             });
         });
     </script>
@@ -64,7 +82,9 @@
 
                 <div class="mt-2">
                     <button id="create" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.create"/></button>
-                    <button id="cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></button>
+                    <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.cancel"/>
+                    </a>
                 </div>
             </div>
         </div>

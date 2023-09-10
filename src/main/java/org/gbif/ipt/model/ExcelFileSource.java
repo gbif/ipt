@@ -70,8 +70,8 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return fileSize;
   }
 
-  public String getFileSizeFormatted() {
-    return FileUtils.formatSize(fileSize, 1, true);
+  public String formattedFileSize(String locale) {
+    return FileUtils.formatSize(fileSize, 1, locale, true);
   }
 
   @Override

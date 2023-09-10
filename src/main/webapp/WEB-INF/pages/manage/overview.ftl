@@ -66,6 +66,8 @@
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 
+<#assign currentLocale = .vars["locale"]!"en"/>
+
 <script>
     $(document).ready(function(){
         try {
@@ -944,7 +946,17 @@
             var k = 1000;
             var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
             var i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+            var parsed = parseFloat((bytes / Math.pow(k, i)).toFixed(1));
+            var locale = '${currentLocale}';
+            var formatted;
+
+            try {
+                formatted = parsed.toLocaleString(locale.replace("_", "-"), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+            } catch (e) {
+                formatted = parsed.toLocaleString("en", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+            }
+
+            return formatted + " " + sizes[i];
         }
 
         function closeModal() {
