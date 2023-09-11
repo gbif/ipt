@@ -4,26 +4,28 @@
 <#assign currentMenu = "health"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<div class="container-fluid bg-body border-bottom">
-  <div class="container my-3 p-3">
-    <div class="text-center">
-      <div class="text-center text-uppercase fw-bold fs-smaller-2">
-        <span>IPT</span>
-      </div>
+<div class="container-fluid border-bottom">
+  <div class="container bg-body border rounded-2 mb-4">
+    <div class="container my-3 p-3">
+      <div class="text-center">
+        <div class="text-center fs-smaller">
+          <span>IPT</span>
+        </div>
 
-      <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-        <@s.text name='portal.health.title'/>
-      </h1>
+        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+          <@s.text name='portal.health.title'/>
+        </h1>
 
-      <#assign aDateTime = .now>
-      <div class="text-smaller text-gbif-primary mb-2">
-        ${aDateTime?date?string.long}
+        <#assign aDateTime = .now>
+        <div class="text-smaller text-gbif-primary mb-2">
+          ${aDateTime?date?string.long}
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<main class="container">
+<main class="container main-content-container">
     <div class="row g-3 mt-1">
       <div class="col-lg-6">
         <div class="card">

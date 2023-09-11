@@ -23,6 +23,11 @@
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
         }
+
+        #navbarNavDropdown {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 

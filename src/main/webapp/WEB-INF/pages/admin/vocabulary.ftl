@@ -10,7 +10,7 @@
 
     <div class="container my-3 p-3">
         <div class="text-center">
-            <div class="text-uppercase fw-bold fs-smaller-2">
+            <div class="fs-smaller">
                 <span><@s.text name="admin.vocabulary.title"/></span>
             </div>
 

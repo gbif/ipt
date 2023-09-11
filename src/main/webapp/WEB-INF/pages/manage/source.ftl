@@ -84,72 +84,74 @@
 </#if>
 
     <form class="topForm needs-validation" action="source.do" method="post" novalidate>
+        <div class="container px-0">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
+
         <div class="container-fluid bg-body border-bottom">
-            <div class="container my-3">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-            </div>
+            <div class="container border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center">
+                        <div class="text-center fs-smaller">
+                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center mb-0">
+                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                    <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.source"/></li>
+                                </ol>
+                            </nav>
+                        </div>
 
-            <div class="container my-3 p-3">
-                <div class="text-center">
-                    <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center mb-0">
-                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.source"/></li>
-                            </ol>
-                        </nav>
-                    </div>
+                        <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
+                            <#if source.name?has_content>
+                                ${source.name}
+                            <#else>
+                                <@s.text name='manage.source.title'/>
+                            </#if>
+                        </h5>
 
-                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
-                        <#if source.name?has_content>
-                            ${source.name}
-                        <#else>
-                            <@s.text name='manage.source.title'/>
-                        </#if>
-                    </h5>
+                        <div class="text-smaller">
+                            <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                        </div>
 
-                    <div class="text-smaller">
-                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                    </div>
+                        <div class="mt-2">
+                            <#if source??>
+                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
 
-                    <div class="mt-2">
-                        <#if source??>
-                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <@s.text name="button.options"/>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete" style="">
+                                      <li>
+                                          <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
+                                      </li>
+                                      <li>
+                                        <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                            <@s.text name="button.preview"/>
+                                        </a>
+                                      </li>
+                                        <#if id?has_content>
+                                      <li>
+                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                      </li>
+                                        </#if>
+                                    </ul>
+                                </div>
 
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <@s.text name="button.options"/>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete" style="">
-                                  <li>
-                                      <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
-                                  </li>
-                                  <li>
-                                    <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
-                                        <@s.text name="button.preview"/>
-                                    </a>
-                                  </li>
-                                    <#if id?has_content>
-                                  <li>
-                                      <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
-                                  </li>
-                                    </#if>
-                                </ul>
-                            </div>
-
-                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
-                        <#else>
-                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                        </#if>
+                                <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                            <#else>
+                                <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                            </#if>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container-fluid bg-body">
-            <main class="container">
-                <div class="my-3 p-3">
+            <main class="container px-0">
+                <div class="my-3 p-2">
                     <div class="row g-3">
                         <input type="hidden" name="r" value="${resource.shortname}" />
                         <input type="hidden" name="id" value="${id!}" />

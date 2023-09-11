@@ -272,31 +272,33 @@
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center">
+                    <div class="fs-smaller">
+                        <span><@s.text name="menu.admin"/></span>
+                    </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-uppercase fw-bold fs-smaller-2">
-                    <span><@s.text name="menu.admin"/></span>
-                </div>
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <@s.text name="admin.home.manageUI"/>
+                    </h1>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="admin.home.manageUI"/>
-                </h1>
-
-                <div class="mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="ui-management-form" name="save" id="save" key="button.save" />
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-danger top-button" form="ui-management-form" name="reset" id="reset" key="button.reset" />
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="ui-management-form" name="cancel" key="button.cancel"/>
+                    <div class="mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="ui-management-form" name="save" id="save" key="button.save" />
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-danger top-button" form="ui-management-form" name="reset" id="reset" key="button.reset" />
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="ui-management-form" name="cancel" key="button.cancel"/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container main-content-container">
         <div class="my-3 p-3">
             <div id="ui-management-form-wrapper" class="mt-4">
                 <form id="ui-management-form" class="needs-validation" action="uiManagement.do" method="post" novalidate>

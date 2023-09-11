@@ -276,7 +276,7 @@
 /* Principle settings for all pages */
 body {
     font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
-    padding-top: 3.5rem; /* Separates nav and main */
+    padding-top: 90px; /* Separates nav and main */
     color: #575757;
 }
 
@@ -286,7 +286,7 @@ table {
 
 /* Login container */
 .login-container {
-    max-width: 450px;
+    max-width: 500px;
     display: flex;
     align-items: center;
     margin-top: auto;
@@ -308,7 +308,7 @@ table {
 }
 
 #login-button {
-    font-size: 0.875rem !important;
+    font-size: 1rem !important;
     font-weight: 500 !important;
     border: 2px solid rgb(var(--navbar-link-color));
 }
@@ -326,9 +326,9 @@ table {
 }
 
 #gbif-logo, #gbif-logo-setup, #gbif-logo-custom {
-    height: 32px;
+    height: 38px;
     position: relative;
-    line-height: 32px;
+    /*line-height: 32px;*/
     padding-right: 8px;
     padding-left: 8px;
     transition: all .3s;
@@ -345,7 +345,7 @@ table {
 }
 
 header, .dropdown-menu {
-    font-size: 0.875rem !important;
+    font-size: 1rem !important;
 }
 
 .dropdown-menu[data-bs-popper] {
@@ -403,6 +403,7 @@ header, .dropdown-menu {
 
 .bg-gbif-main-navbar {
     background-image: linear-gradient(to bottom, rgba(var(--navbar-color), 1), rgba(var(--navbar-color), 0.85));
+    /*background-color: #f8f9fa !important;*/
 }
 
 .navbar-button {
@@ -415,8 +416,17 @@ header, .dropdown-menu {
     border-color: rgb(var(--navbar-link-color)) !important;
 }
 
+.custom-nav-link {
+    padding: 1.25rem 2rem !important;
+}
+
 .nav-link {
+    font-weight: 500;
     color: rgb(var(--navbar-link-color)) !important;
+}
+
+.nav-item:has(a.nav-link.active) {
+    border-bottom: 3px solid rgb(var(--navbar-link-color)) !important;
 }
 
 .nav-link.active {
@@ -1540,6 +1550,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     border-radius: 50%;
     padding: 5px;
     min-width: 32px;
+    font-size: 0.875rem !important;
 }
 
 .account-dropdown-icon {
@@ -2099,6 +2110,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 /* Main icon color */
 #gbif-logo .ipt-icon-piece, #gbif-logo-setup .ipt-icon-piece  {
     fill: rgb(var(--navbar-link-color)) !important;
+    /*fill: rgb(var(--color-gbif-primary)) !important;*/
 }
 
 /* Login icon color */
@@ -2569,3 +2581,41 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   color: rgb(var(--color-gbif-primary));
 }
 
+@media (min-width: 768px) {
+    .main-content-container {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+    }
+}
+
+.page-top-container {
+    position: sticky;
+    top: 80px;
+    background-color: #ffffff !important;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "/" !important;
+}
+
+/* Header shrinking */
+header nav {
+    transition: all 0.2s ease;
+}
+
+header.shrink nav {
+    padding: 10px;
+    font-size: 14px !important;;
+}
+
+header.shrink .custom-nav-link {
+    padding: 1rem 2rem !important;
+}
+
+header.shrink #login-button {
+    font-size: 0.875rem !important;
+}
+
+header.shrink #accountDropdownLink {
+    font-size: 0.75rem !important;
+}

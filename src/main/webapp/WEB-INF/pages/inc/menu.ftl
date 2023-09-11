@@ -21,8 +21,8 @@
 <body class="bg-body d-flex flex-column h-100">
 
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 border-bottom">
-        <div class="container">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
+        <div class="container-fluid">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <svg id="gbif-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="enable-background:new 0 0 539.7 523.9;" xml:space="preserve">
                     <path class="ipt-icon-piece" d="M230.7,255.5c0-102.2,49.9-190.7,198.4-190.7C429.1,167.2,361.7,255.5,230.7,255.5"/>
@@ -31,7 +31,7 @@
                 <img id="gbif-logo-custom" src="${baseURL}/appLogo.do" onerror="handleCustomLogoError()" />
                 [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
-                    <span class="test-mode-banner">TEST MODE</span>
+[#--                    <span class="test-mode-banner">TEST MODE</span>--]
                 [/#if]
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,19 +39,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <!-- Navbar -->
-                <ul class="navbar-nav me-auto mb-md-0">
+                <ul class="navbar-nav mx-auto mb-md-0">
                     <li class="nav-item nav-item-border-bottom">
-                        <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
+                        <a class="nav-link custom-nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
                     </li>
                     [#if managerRights]
                         <li class="nav-item nav-item-border-bottom">
-                            <a class="nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
+                            <a class="nav-link custom-nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
                         </li>
                     [/#if]
                     [#if adminRights]
                         <ul class="navbar-nav nav-item-border-bottom">
                             <li class="nav-item dropdown">
-                                <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="#" id="adminDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link custom-nav-link [#if currentMenu=='admin']active[/#if]" href="#" id="adminDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     [@s.text name="menu.admin"/]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-admin dropdown-menu-light text-light" aria-labelledby="adminDropdownLink">
@@ -132,7 +132,7 @@
                         </ul>
                     [/#if]
                     <li class="nav-item nav-item-border-bottom">
-                        <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
+                        <a class="nav-link custom-nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
                 </ul>
 

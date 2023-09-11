@@ -39,39 +39,41 @@
     ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
 </#macro>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
-
-    <div class="container my-3 p-3">
-        <div class="text-center">
-            <div class="text-uppercase fw-bold fs-smaller-2">
-                <span><@s.text name="admin.extension.title"/></span>
-            </div>
-
-            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                ${extension.title}
-            </h1>
-
-            <#if extension.link?has_content>
-                <div class="text-smaller mb-2">
-                    <a href="${extension.link}">${extension.link}</a>
+    <div class="container border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="fs-smaller">
+                    <span><@s.text name="admin.extension.title"/></span>
                 </div>
-            </#if>
 
-            <#if extension.issued??>
-                <div class="text-smaller text-gbif-primary">
-                    <span>
-                        <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${extension.issued?date?string.long}
-                    </span>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    ${extension.title}
+                </h1>
+
+                <#if extension.link?has_content>
+                    <div class="text-smaller mb-2">
+                        <a href="${extension.link}">${extension.link}</a>
+                    </div>
+                </#if>
+
+                <#if extension.issued??>
+                    <div class="text-smaller text-gbif-primary">
+                        <span>
+                            <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${extension.issued?date?string.long}
+                        </span>
+                    </div>
+                </#if>
+
+                <div class="mt-2">
+                    <a href="extensions.do" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.back"/>
+                    </a>
                 </div>
-            </#if>
-
-            <div class="mt-2">
-                <a href="extensions.do" class="btn btn-sm btn-outline-secondary top-button">
-                    <@s.text name="button.back"/>
-                </a>
             </div>
         </div>
     </div>
@@ -80,7 +82,7 @@
 <#assign groups = propertiesByGroup?keys/>
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout">
+    <div class="container my-md-4 bd-layout main-content-container">
         <main class="bd-main">
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">

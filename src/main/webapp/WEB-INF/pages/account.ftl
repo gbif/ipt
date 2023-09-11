@@ -51,31 +51,33 @@
     });
 </script>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
+    <div class="container bg-body border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center fs-smaller">
+                <@s.text name="menu.account"/>
+            </div>
 
-    <div class="container my-3 p-3">
-        <div class="text-center text-uppercase fw-bold fs-smaller-2">
-            <@s.text name="menu.account"/>
-        </div>
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="account.title"/>
+                </h1>
 
-        <div class="text-center">
-            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                <@s.text name="account.title"/>
-            </h1>
-
-            <div class="mt-2">
-                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
-                <@s.submit form="changePassword" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" cssStyle="display: none;" name="change-password" key="button.save"/>
-                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button mt-1" name="cancel" key="button.cancel"/>
+                <div class="mt-2">
+                    <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
+                    <@s.submit form="changePassword" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" cssStyle="display: none;" name="change-password" key="button.save"/>
+                    <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button mt-1" name="cancel" key="button.cancel"/>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<main class="container">
+<main class="container main-content-container">
     <div class="mt-3 p-3">
         <p>
             <@s.text name="account.intro"/>

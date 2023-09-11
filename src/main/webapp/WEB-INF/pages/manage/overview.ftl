@@ -1111,114 +1111,116 @@
     <#assign disableRegistrationRights="true"/>
 </#if>
 
-    <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <#if !currentUser.hasRegistrationRights()>
-                <#if resource.status == "DELETED">
-                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
-                        <div class="me-3">
-                            <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                        </div>
-                        <div class="overflow-x-hidden pt-1">
-                            <span><@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <#if !currentUser.hasRegistrationRights()>
+            <#if resource.status == "DELETED">
+                <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
+                    <div class="me-3">
+                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
-                <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
-                        <div class="me-3">
-                            <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                        </div>
-                        <div class="overflow-x-hidden pt-1">
-                            <span><@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="overflow-x-hidden pt-1">
+                        <span><@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
                     </div>
-                </#if>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
+                <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
+                    <div class="me-3">
+                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+                    </div>
+                    <div class="overflow-x-hidden pt-1">
+                        <span><@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </#if>
-        </div>
+        </#if>
+    </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
-                    </ol>
-                </nav>
-            </div>
-
-            <div class="text-center mt-1">
-                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if resource.title?has_content>
-                        ${resource.title}
-                    <#else>
-                        ${resource.shortname}
-                    </#if>
-                </h1>
-
-                <div class="mt-2">
-                    <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
-
-                    <#if resource.status == "DELETED">
-                        <div style="display: inline-block;">
-                            <#if disableRegistrationRights == "false">
-                                <form action='resource-undelete.do' method='post'>
-                                    <input name="r" type="hidden" value="${resource.shortname}" />
-                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
-                                </form>
-                            <#else>
-                                <button class="btn btn-sm btn-outline-gbif-primary top-button" name="undelete" disabled><@s.text name="button.undelete"/></button>
-                            </#if>
-                        </div>
-                    <#else>
-                        <#if disableRegistrationRights == "false">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <@s.text name="button.delete"/>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                    <li>
-                                        <form action="resource-delete.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="resource-deleteFromIpt.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        <#else>
-                            <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
-                        </#if>
-                    </#if>
-
-                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+    <div class="container-fluid border-bottom">
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
+                        </ol>
+                    </nav>
                 </div>
 
-                <p class="mt-3 mb-0 text-smaller fst-italic">
-                    <#if dataPackageResource>
-                        <@s.text name="manage.overview.dataSchema.description"/>
-                    <#elseif resource.coreType?has_content && resource.coreType==metadataType>
-                        <@s.text name="manage.overview.description.metadataOnly"/>
-                    <#else>
-                        <@s.text name="manage.overview.description"/>
-                    </#if>
-                </p>
+                <div class="text-center mt-1">
+                    <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <#if resource.title?has_content>
+                            ${resource.title}
+                        <#else>
+                            ${resource.shortname}
+                        </#if>
+                    </h1>
 
-                <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+                    <div class="mt-2">
+                        <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+
+                        <#if resource.status == "DELETED">
+                            <div style="display: inline-block;">
+                                <#if disableRegistrationRights == "false">
+                                    <form action='resource-undelete.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
+                                    </form>
+                                <#else>
+                                    <button class="btn btn-sm btn-outline-gbif-primary top-button" name="undelete" disabled><@s.text name="button.undelete"/></button>
+                                </#if>
+                            </div>
+                        <#else>
+                            <#if disableRegistrationRights == "false">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <@s.text name="button.delete"/>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                        <li>
+                                            <form action="resource-delete.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="resource-deleteFromIpt.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <#else>
+                                <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
+                            </#if>
+                        </#if>
+
+                        <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+                    </div>
+
+                    <p class="mt-3 mb-0 text-smaller fst-italic">
+                        <#if dataPackageResource>
+                            <@s.text name="manage.overview.dataSchema.description"/>
+                        <#elseif resource.coreType?has_content && resource.coreType==metadataType>
+                            <@s.text name="manage.overview.description.metadataOnly"/>
+                        <#else>
+                            <@s.text name="manage.overview.description"/>
+                        </#if>
+                    </p>
+
+                    <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="sections" class="container-fluid bg-body">
-        <div class="container my-md-4 bd-layout">
+        <div class="container main-content-container my-md-4 bd-layout">
 
             <main class="bd-main">
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">

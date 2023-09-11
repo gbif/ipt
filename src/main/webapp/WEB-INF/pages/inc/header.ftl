@@ -29,7 +29,9 @@
             --color-gbif-secondary: ${"78, 86, 95"};
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
+            /*--navbar-color: 248, 249, 250;*/
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
+            /*--navbar-link-color: 87, 87, 87;*/
             --link-color: ${linkColor!"75, 162, 206"};
         }
     </style>
@@ -47,6 +49,19 @@
     <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
     <script src="${baseURL}/js/global.js"></script>
+
+    <script>
+        window.addEventListener("scroll", () => {
+            const header = document.querySelector("header");
+            const scrollY = window.scrollY;
+
+            if (scrollY > 100) { // Adjust the scroll position where the header should shrink
+                header.classList.add("shrink");
+            } else {
+                header.classList.remove("shrink");
+            }
+        });
+    </script>
 
 
     [#-- GOOGLE ANALYTICS - asynchroneous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]

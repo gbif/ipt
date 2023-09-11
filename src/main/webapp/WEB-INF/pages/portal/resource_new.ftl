@@ -180,69 +180,71 @@
     })
 </script>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
-
     <#-- display watermark for preview pages -->
-    <#if isPreviewPage>
-        <div id="watermark" class="text-center text-uppercase fs-1 mb-2">
-            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>
-        </div>
-    </#if>
+<#--    <#if isPreviewPage>-->
+<#--        <div id="watermark" class="text-center text-uppercase fs-1 mb-2">-->
+<#--            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>-->
+<#--        </div>-->
+<#--    </#if>-->
 
-    <div class="container my-3 p-3">
-        <div class="text-center text-uppercase fw-bold fs-smaller-2">
-            <span>${coreType}</span>
-        </div>
+    <div class="container border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center fs-smaller">
+                <span>${coreType}</span>
+            </div>
 
-        <div class="text-center">
-            <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                ${eml.title!resource.shortname}
-            </h1>
+            <div class="text-center">
+                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    ${eml.title!resource.shortname}
+                </h1>
 
-            <#if resource.lastPublished?? && resource.organisation??>
-                <div class="text-gbif-primary text-smaller">
-                    <span>
-                        <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                            <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                        <#else>
-                            <@s.text name='portal.resource.latest.version'/>
-                        </#if>
+                <#if resource.lastPublished?? && resource.organisation??>
+                    <div class="text-gbif-primary text-smaller">
+                        <span>
+                            <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                            <#else>
+                                <@s.text name='portal.resource.latest.version'/>
+                            </#if>
 
-                        <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                            ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.long}</span>
-                            <br>
-                            <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
-                        <#else>
-                            <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.long_short}</span>
-                            <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
-                        </#if>
-                    </span>
-                </div>
-            <#else>
-                <div class="text-gbif-danger text-smaller">
-                    <@s.text name='portal.resource.published.never.long'/>
-                </div>
-            </#if>
+                            <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.long}</span>
+                                <br>
+                                <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
+                            <#else>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.long_short}</span>
+                                <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
+                            </#if>
+                        </span>
+                    </div>
+                <#else>
+                    <div class="text-gbif-danger text-smaller">
+                        <@s.text name='portal.resource.published.never.long'/>
+                    </div>
+                </#if>
 
-            <#if eml.distributionUrl?has_content || resource.lastPublished??>
-                <div class="mt-2">
+                <#if eml.distributionUrl?has_content || resource.lastPublished??>
+                    <div class="mt-2">
 
-                    <#if managerRights>
-                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
-                            <@s.text name='button.edit'/>
-                        </a>
-                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                            <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
-                                <@s.text name='button.delete.version'/>
+                        <#if managerRights>
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
+                                <@s.text name='button.edit'/>
                             </a>
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                    <@s.text name='button.delete.version'/>
+                                </a>
+                            </#if>
                         </#if>
-                    </#if>
-                </div>
-            </#if>
+                    </div>
+                </#if>
+            </div>
         </div>
     </div>
 </div>
@@ -250,7 +252,7 @@
 <#assign isLogoPresent=eml.logoUrl?has_content/>
 
 <div class="container-fluid bg-light border-bottom">
-    <div class="container">
+    <div class="container px-0">
         <div class="my-4 px-4 py-4 bg-body border rounded shadow-sm">
             <span class="anchor anchor-home-resource-page-2 mb-3" id="anchor-downloads"></span>
             <div class="mx-md-4 mx-2">
@@ -409,8 +411,7 @@
 
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout">
-
+    <div class="container my-md-4 bd-layout main-content-container">
         <main class="bd-main">
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">

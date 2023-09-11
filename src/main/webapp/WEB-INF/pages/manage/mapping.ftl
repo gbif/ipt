@@ -460,66 +460,65 @@
 </#macro>
 
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
-<div class="container-fluid bg-body border-bottom">
 
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
 
-    <div class="container p-3">
+<div class="container-fluid border-bottom">
+    <div class="container bg-body border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="text-center fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
+                        </ol>
+                    </nav>
+                </div>
 
-        <div class="text-center">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                        <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
-                    </ol>
-                </nav>
+                <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
+<#--                    <@popoverPropertyInfo "manage.mapping.intro"/>-->
+                    <@s.text name='manage.mapping.title'/>
+                </h5>
+
+                <div class="text-center fs-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+
+                <#if action.isCoreMapping()>
+                    <#assign extensionType><@s.text name='extension.core'/></#assign>
+                <#else>
+                    <#assign extensionType><@s.text name='extension'/></#assign>
+                </#if>
+
+                <div class="mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                </div>
+
+                <p class="mt-3 mb-0 text-smaller fst-italic">
+                    <@s.text name='manage.mapping.intro1'>
+                        <@s.param>
+                            <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">
+                                ${mapping.source.name}
+                            </a>
+                        </@s.param>
+                        <@s.param>${extensionType?lower_case}:</@s.param>
+                        <@s.param><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType!}" target="_blank">${mapping.extension.title!}</a></@s.param>
+                    </@s.text>
+                </p>
             </div>
-
-            <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
-                <@popoverPropertyInfo "manage.mapping.intro"/>
-                <@s.text name='manage.mapping.title'/>
-            </h5>
-
-            <div class="text-center fs-smaller">
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-            </div>
-
-            <#if action.isCoreMapping()>
-                <#assign extensionType><@s.text name='extension.core'/></#assign>
-            <#else>
-                <#assign extensionType><@s.text name='extension'/></#assign>
-            </#if>
-
-            <div class="mt-2">
-                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
-                <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-            </div>
-
-            <p class="mt-3 text-smaller fst-italic">
-                <@s.text name='manage.mapping.intro1'>
-                    <@s.param>
-                        <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">
-                            ${mapping.source.name}
-                        </a>
-                    </@s.param>
-                    <@s.param>${extensionType?lower_case}:</@s.param>
-                    <@s.param><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType!}" target="_blank">${mapping.extension.title!}</a></@s.param>
-                </@s.text>
-            </p>
         </div>
     </div>
 </div>
 
 <div class="container-fluid bg-body mt-2">
-    <div class="container bd-layout">
-
+    <div class="container bd-layout main-content-container">
         <main class="bd-main">
-
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <#assign groups = fieldsByGroup?keys/>
                 <nav id="sidebar-content">

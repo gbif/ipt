@@ -24,41 +24,43 @@
     });
 </script>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <form id="create-form" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center fs-smaller">
+                    <@s.text name="menu.manage.short"/>
+                </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <@s.text name="menu.manage.short"/>
-            </div>
+                <div class="text-center">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <@s.text name="manage.resource.create.title"/>
+                    </h1>
 
-            <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="manage.resource.create.title"/>
-                </h1>
-
-                <#if (organisations?size==0)>
-                    <div class="text-smaller text-gbif-danger">
-                        <@s.text name="manage.resource.create.forbidden"/>
-                    </div>
-                </#if>
-
-                <div class="mt-2">
-                    <#if (organisations?size>0) >
-                        <@s.submit form="create-form" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="create" key="button.create"/>
+                    <#if (organisations?size==0)>
+                        <div class="text-smaller text-gbif-danger">
+                            <@s.text name="manage.resource.create.forbidden"/>
+                        </div>
                     </#if>
-                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button">
-                        <@s.text name="button.cancel"/>
-                    </a>
+
+                    <div class="mt-2">
+                        <#if (organisations?size>0) >
+                            <@s.submit form="create-form" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="create" key="button.create"/>
+                        </#if>
+                        <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.cancel"/>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container main-content-container">
         <div class="my-3 p-3">
             <p class="pt-2"><@s.text name="manage.resource.create.intro"/></p>
 

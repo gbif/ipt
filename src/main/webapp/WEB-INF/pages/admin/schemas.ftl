@@ -108,45 +108,47 @@
         <#assign schemasCount=schemasCount+1>
     </#list>
 
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center">
+                    <div class="fs-smaller">
+                        <span><@s.text name="menu.admin"/></span>
+                    </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-uppercase fw-bold fs-smaller-2">
-                    <span><@s.text name="menu.admin"/></span>
-                </div>
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <@s.text name="admin.schemas.title"/>
+                    </h1>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="admin.schemas.title"/>
-                </h1>
-
-                <div class="text-smaller">
-                    <#if schemasCount=0>
-                        <span class="text-gbif-danger mt-3">
-                            <@s.text name="admin.schemas.no.schemas.installed"/>
-                        </span>
-                    <#else>
-                        <#if action.isUpToDate()>
-                            <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
+                    <div class="text-smaller">
+                        <#if schemasCount=0>
+                            <span class="text-gbif-danger mt-3">
+                                <@s.text name="admin.schemas.no.schemas.installed"/>
+                            </span>
                         <#else>
-                            <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
+                            <#if action.isUpToDate()>
+                                <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
+                            <#else>
+                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
+                            </#if>
                         </#if>
-                    </#if>
-                </div>
+                    </div>
 
-                <div class="mt-2">
-                    <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
-                        <@s.text name="button.back"/>
-                    </a>
+                    <div class="mt-2">
+                        <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container main-content-container">
         <div class="my-3 p-3">
             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                 <@s.text name="admin.schemas.installed"/>
