@@ -48,7 +48,13 @@
         <div class="container my-3 p-3">
             <div class="text-center">
                 <div class="fs-smaller">
-                    <span><@s.text name="admin.extension.title"/></span>
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/extensions.do"><@s.text name="breadcrumb.admin.extensions"/></a></li>
+                            <li class="breadcrumb-item"><@s.text name="admin.extension.title"/></li>
+                        </ol>
+                    </nav>
                 </div>
 
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
@@ -62,10 +68,16 @@
                 </#if>
 
                 <#if extension.issued??>
-                    <div class="text-smaller text-gbif-primary">
-                        <span>
-                            <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${extension.issued?date?string.long}
-                        </span>
+                    <div class="text-smaller">
+                        <#if extension.isLatest()>
+                            <span class="text-gbif-primary">
+                                <@s.text name="extension.version.issued.upToDate"><@s.param>${extension.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        <#else>
+                            <span class="text-gbif-danger">
+                                <@s.text name="extension.version.issued.outdated"><@s.param>${extension.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        </#if>
                     </div>
                 </#if>
 
@@ -115,6 +127,12 @@
                     <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name="basic.description"/>
                     </h5>
+
+                    <#if !extension.isLatest()>
+                        <div class="mb-2 text-gbif-danger">
+                            <@s.text name="admin.extension.version.warning"/>
+                        </div>
+                    </#if>
 
                     <div class="mb-3" id="description">
                         ${extension.description}

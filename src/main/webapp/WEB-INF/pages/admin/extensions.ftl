@@ -11,112 +11,92 @@
         $("#synchronise").on("click", displayProcessing);
     </script>
 
-    <#macro extensionRow ext currentIndex numberOfExtensions>
-        <div class="row py-2 pb-2 g-2 border-bottom">
-            <div class="col-lg-3 mt-3">
-                <did class="d-flex justify-content-between">
-                    <div class="d-flex title">
-                        <div class="head">
-                            <a href="extension.do?id=${ext.rowType?url}" class="fw-bold">${ext.title}</a>
-                            <#if !ext.isLatest()>
-                                <a tabindex="0" role="button"
-                                   class="popover-link"
-                                   data-bs-toggle="popover"
-                                   data-bs-trigger="focus"
-                                   data-bs-html="true"
-                                   data-bs-content="<@s.text name="admin.extension.version.warning" escapeHtml=true/>">
-                                    <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                                </a>
-                            </#if>
-                        </div>
+    <#macro installedExtensionItem ext >
+        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
+            <div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+                <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
+                    <div>
+                        <h4 class="d-flex fs-regular mt-1 mb-0">
+                            ${ext.title}
+                        </h4>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${ext.issued?date?string["d MMMM yyyy"]}
+                        </p>
                     </div>
+                </div>
+                <div class="d-flex flex-column flex-auto flex-justify-between">
+                    <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
+                        ${ext.description!?truncate(300)}
+                    </div>
+                    <div class="d-flex pt-2 pb-4 px-4">
+                        <a href="extension.do?id=${ext.rowType?url}" title="" class="action-link-button action-link-button-primary">
+                            <@s.text name="button.view"/>
+                        </a>
 
-                    <div class="d-flex justify-content-end d-lg-none">
                         <#if !ext.isLatest()>
                             <form action='updateExtension.do' method='post'>
                                 <input type='hidden' name='id' value='${ext.rowType}' />
 
-                                <button type="submit" value="Update" id="update" name="update" class="confirm extension-action-button extension-action-button-primary me-1">
-                                    <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                      <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"></path>
-                                    </svg>
+                                <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">
                                     <@s.text name="button.update"/>
                                 </button>
                             </form>
                         </#if>
+
                         <form action='extension.do' method='post'>
                             <input type='hidden' name='id' value='${ext.rowType}' />
 
-                            <button type="submit" value="Delete" id="delete" name="delete" class="extension-action-button extension-action-button-danger">
-                                <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                </svg>
+                            <button type="submit" value="Delete" id="delete" name="delete" class="action-link-button action-link-button-danger">
                                 <@s.text name="button.remove"/>
                             </button>
                         </form>
                     </div>
-                </did>
-            </div>
-
-            <div class="col-lg-7 text-smaller mt-3">
-                <div class="definition">
-                    <div class="body">
-                        <div>
-                            <p class="overflow-x-auto">
-                                ${ext.description!}
-                            </p>
-                            <#if ext.link?has_content>
-                                <p class="text-truncate">
-                                    <@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a>
-                                </p>
-                            </#if>
-                        </div>
-                        <div class="details table-responsive">
-                            <table class="table table-sm table-borderless">
-                                <#if ext.issued??>
-                                    <tr><th class="col-3 py-0"><@s.text name="basic.issued"/></th><td class="py-0">${ext.issued?date?string.long}</td></tr>
-                                </#if>
-                                <tr><th class="col-3 py-0"><@s.text name="extension.properties"/></th><td class="py-0">${ext.properties?size}</td></tr>
-                                <tr><th class="py-0"><@s.text name="basic.name"/></th><td class="py-0">${ext.name}</td></tr>
-                                <tr><th class="py-0"><@s.text name="basic.namespace"/></th><td class="py-0">${ext.namespace}</td></tr>
-                                <tr><th class="py-0"><@s.text name="extension.rowtype"/></th><td class="py-0">${ext.rowType}</td></tr>
-                                <#if ext.subject?has_content>
-                                    <tr><th class="py-0"><@s.text name="basic.keywords"/></th><td class="py-0">${ext.subject!}</td></tr>
-                                </#if>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-lg-2 text-smaller d-lg-max-none mt-3">
-                <div class="actions d-flex justify-content-end">
-                    <#if !ext.isLatest()>
-                        <form action='updateExtension.do' method='post'>
-                            <input type='hidden' name='id' value='${ext.rowType}' />
-
-                            <button type="submit" value="Update" id="update" name="update" class="confirm extension-action-button extension-action-button-primary me-1">
-                                <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"></path>
-                                </svg>
-                                <@s.text name="button.update"/>
-                            </button>
-                        </form>
-                    </#if>
-                    <form action='extension.do' method='post'>
-                        <input type='hidden' name='id' value='${ext.rowType}' />
-
-                        <button type="submit" value="Delete" id="delete" name="delete" class="extension-action-button extension-action-button-danger">
-                            <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                            </svg>
-                            <@s.text name="button.remove"/>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
     </#macro>
+
+    <#macro newExtensionItem ext>
+        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
+            <div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+                <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
+                    <div>
+                        <h4 class="d-flex fs-regular mt-1 mb-0">
+                            ${ext.title}
+                        </h4>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${ext.issued?date?string["d MMMM yyyy"]}
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-auto flex-justify-between">
+                    <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
+                        ${ext.description!?truncate(300)}
+                    </div>
+                    <div class="d-flex pt-2 pb-4 px-4">
+                        <form action='extension.do' method='post'>
+                            <input type='hidden' name='url' value='${ext.url}' />
+
+                            <button type="submit" value="Install" id="install" name="install" class="action-link-button action-link-button-primary">
+                                <@s.text name="button.install"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#macro>
+
+    <#assign numberOfCoreExtensions=0>
+    <#assign numberOfNonCoreExtensions=0>
+
+    <#list extensions! as ext>
+        <#if ext.core>
+            <#assign numberOfCoreExtensions=numberOfCoreExtensions+1>
+        <#else>
+            <#assign numberOfNonCoreExtensions=numberOfNonCoreExtensions+1>
+        </#if>
+    </#list>
 
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -130,12 +110,27 @@
             <div class="container my-3 p-3">
                 <div class="text-center">
                     <div class="fs-smaller">
-                        <span><@s.text name="menu.admin"/></span>
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                                <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.extensions"/></li>
+                            </ol>
+                        </nav>
                     </div>
 
                     <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                         <@s.text name="admin.home.manageExtensions"/>
                     </h1>
+
+                    <div class="text-smaller">
+                        <#if numberOfCoreExtensions == 0 && numberOfNonCoreExtensions == 0>
+                            <span class="text-gbif-danger"><@s.text name="admin.extensions.noneInstalled"/></span>
+                        <#elseif upToDate>
+                            <span class="text-gbif-primary"><@s.text name="admin.extensions.upToDate"/></span>
+                        <#else>
+                            <span class="text-gbif-danger"><@s.text name="admin.extensions.not.upToDate"/></span>
+                        </#if>
+                    </div>
 
                     <div class="mt-2">
                         <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
@@ -153,33 +148,28 @@
                 <@s.text name="admin.extension.coreTypes"/>
             </h5>
 
-            <p>
+            <p class="mb-0">
                 <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
             </p>
 
-            <#assign count=0>
-            <#assign numberOfCoreExtensions=0>
-
-            <#list extensions as ext>
-                <#if ext.core>
-                    <#assign numberOfCoreExtensions=numberOfCoreExtensions+1>
-                </#if>
-            </#list>
-
-            <#list extensions as ext>
-                <#if ext.core>
-                    <#assign count=count+1>
-                    <@extensionRow ext count numberOfCoreExtensions/>
-                </#if>
-            </#list>
-
-            <#if count=0>
-                <div class="callout callout-warning">
+            <#if numberOfCoreExtensions=0>
+                <div class="callout callout-warning mb-0">
                     <@s.text name="admin.extension.no.coreTypes.installed"/>
                     <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                 </div>
             </#if>
+        </div>
 
+        <div class="">
+            <div class="flex-auto">
+                <div class="d-flex flex-items-stretch flex-wrap">
+                    <#list extensions as ext>
+                        <#if ext.core>
+                            <@installedExtensionItem ext/>
+                        </#if>
+                    </#list>
+                </div>
+            </div>
         </div>
 
         <div class="my-3 p-3">
@@ -191,26 +181,23 @@
                 <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
             </p>
 
-            <#assign count=0>
-            <#assign numberOfExtensions=0>
-
-            <#list extensions as ext>
-                <#if !ext.core>
-                    <#assign numberOfExtensions=numberOfExtensions+1>
-                </#if>
-            </#list>
-
-            <#list extensions as ext>
-                <#if !ext.core>
-                    <#assign count=count+1>
-                    <@extensionRow ext count numberOfExtensions/>
-                </#if>
-            </#list>
-            <#if count=0>
-                <div class="callout callout-warning">
+            <#if numberOfNonCoreExtensions=0>
+                <div class="callout callout-warning mb-0">
                     <@s.text name="admin.extension.no.extensions.installed"/>
                 </div>
             </#if>
+        </div>
+
+        <div class="">
+            <div class="flex-auto">
+                <div class="d-flex flex-items-stretch flex-wrap">
+                    <#list extensions as ext>
+                        <#if !ext.core>
+                            <@installedExtensionItem ext/>
+                        </#if>
+                    </#list>
+                </div>
+            </div>
         </div>
 
         <div class="my-3 p-3">
@@ -218,17 +205,21 @@
                 <@s.text name="extension.synchronise.title"/>
             </h5>
 
-            <p class="mb-0">
+            <p>
                 <@s.text name="admin.extensions.synchronise.help"/>
             </p>
 
-            <#if lastSynchronised?has_content>
-                <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string.long_short}</@s.param></@s.text></p>
-            </#if>
-
             <form action='extensions.do' method='post'>
                 <div class="col-12 mt-2">
-                    <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
+                    <button id="synchronise" name="synchronise" type="submit" class="action-link-button action-link-button-primary">
+                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
+                            <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                        </svg>
+                        <@s.text name="button.synchronise"/>
+                    </button>
+                    <span class="fs-smaller">
+                        <@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string["d MMMM yyyy HH:mm"]}</@s.param></@s.text>
+                    </span>
                 </div>
             </form>
         </div>
@@ -242,74 +233,22 @@
                 <@s.text name="extension.further.title.help"/>
             </p>
 
-            <#assign count=0>
-            <#list newExtensions as ext>
-                <#assign count=count+1>
-                <div class="row py-2 pb-2 g-2 <#sep>border-bottom</#sep>">
-                    <div class="col-lg-3 mt-3">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex title">
-                            <div class="head fw-bold">
-                                ${ext.title}
-                            </div>
-                          </div>
-
-                          <div class="d-flex justify-content-end d-lg-none">
-                            <form action='extension.do' method='post'>
-                              <input type='hidden' name='url' value='${ext.url}' />
-
-                              <button type="submit" value="Install" id="install" name="install" class="extension-action-button extension-action-button-primary">
-                                <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                  <path d="M20 17H4V5h8V3H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h4v2h8v-2h4c1.1 0 2-.9 2-2v-3h-2v3z"></path><path d="m17 14 5-5-1.41-1.41L18 10.17V3h-2v7.17l-2.59-2.58L12 9z"></path>
-                                </svg>
-                                  <@s.text name="button.install"/>
-                              </button>
-                            </form>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8 text-smaller mt-3">
-                        <div class="definition">
-                            <div class="body">
-                                <div>
-                                    <p class="overflow-x-auto">${ext.description!}</p>
-                                </div>
-                                <div class="details table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <tr><th class="col-3 py-0"><@s.text name="extension.rowtype"/></th><td class="py-0">${ext.rowType!}</td></tr>
-                                        <#if ext.subject?has_content>
-                                            <tr><th class="py-0"><@s.text name="basic.keywords"/></th><td class="py-0">${ext.subject}</td></tr>
-                                        </#if>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-1 text-smaller mt-3 d-lg-max-none">
-                        <div class="actions d-flex justify-content-end">
-                            <form action='extension.do' method='post'>
-                                <input type='hidden' name='url' value='${ext.url}' />
-
-                                <button type="submit" value="Install" id="install" name="install" class="extension-action-button extension-action-button-primary">
-                                    <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M20 17H4V5h8V3H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h4v2h8v-2h4c1.1 0 2-.9 2-2v-3h-2v3z"></path><path d="m17 14 5-5-1.41-1.41L18 10.17V3h-2v7.17l-2.59-2.58L12 9z"></path>
-                                    </svg>
-                                    <@s.text name="button.install"/>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </#list>
-
-            <#if count=0>
+            <#if !newExtensions?has_content>
                 <div class="callout callout-info">
                     <@s.text name="extension.already.installed"/>
                 </div>
             </#if>
 
+        </div>
+
+        <div class="">
+            <div class="flex-auto">
+                <div class="d-flex flex-items-stretch flex-wrap">
+                    <#list newExtensions as ext>
+                        <@newExtensionItem ext/>
+                    </#list>
+                </div>
+            </div>
         </div>
     </main>
 

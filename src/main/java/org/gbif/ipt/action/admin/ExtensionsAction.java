@@ -230,12 +230,6 @@ public class ExtensionsAction extends POSTAction {
             }
           }
         }
-        // warn user if updates to installed extensions are available
-        if (isUpToDate()) {
-          addActionMessage(getText("admin.extensions.upToDate"));
-        } else {
-          addActionWarning(getText("admin.extensions.not.upToDate"));
-        }
       } catch (RegistryException e) {
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
@@ -383,5 +377,9 @@ public class ExtensionsAction extends POSTAction {
 
   public void setUpToDate(boolean upToDate) {
     this.upToDate = upToDate;
+  }
+
+  public Date getLastSynchronised() {
+    return lastSynchronised;
   }
 }
