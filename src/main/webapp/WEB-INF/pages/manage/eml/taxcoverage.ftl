@@ -135,7 +135,7 @@
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <div id="taxcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+        <div id="taxcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
             <div class="me-3">
                 <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
             </div>
@@ -147,7 +147,7 @@
 
         <#if (inferredMetadata.inferredTaxonomicCoverage)??>
             <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
-                <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                     <div class="me-3">
                         <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
                     </div>

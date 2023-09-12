@@ -1116,7 +1116,7 @@
 
         <#if !currentUser.hasRegistrationRights()>
             <#if resource.status == "DELETED">
-                <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
+                <div class="alert alert-warning alert-dismissible fade show d-flex" role="alert">
                     <div class="me-3">
                         <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
@@ -1126,7 +1126,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
+                <div class="alert alert-warning alert-dismissible fade show d-flex" role="alert">
                     <div class="me-3">
                         <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                     </div>
