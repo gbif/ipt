@@ -49,7 +49,7 @@
 							<@s.text name="admin.home.editConfig.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/config.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/config.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -76,7 +76,7 @@
 							<@s.text name="admin.home.bulkPublication.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/bulk-publication.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/bulk-publication.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -103,7 +103,7 @@
 							<@s.text name="admin.home.manageUsers.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/users.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/users.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -130,7 +130,7 @@
 							<@s.text name="admin.home.editRegistration.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/registration.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/registration.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -157,7 +157,7 @@
 							<@s.text name="admin.home.organisations.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/organisations.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/organisations.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -184,7 +184,7 @@
 							<@s.text name="admin.home.manageExtensions.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/extensions.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/extensions.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -211,7 +211,7 @@
 							<@s.text name="admin.home.manageSchemas.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/schemas.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/schemas.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -238,7 +238,7 @@
 							<@s.text name="admin.home.manageUI.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/uiManagement.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/uiManagement.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
@@ -265,7 +265,7 @@
 							<@s.text name="admin.home.manageLogs.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/logs.do" title="" class="icon-button link-action-button">
+							<a href="${baseURL}/admin/logs.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>
