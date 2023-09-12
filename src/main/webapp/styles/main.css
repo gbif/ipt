@@ -483,6 +483,19 @@ header, .dropdown-menu {
 /*}*/
 /* Logo, header, menu etc. END */
 
+/* Additional flex properties */
+.flex-justify-between {
+    justify-content: space-between !important;
+}
+
+.flex-auto {
+    flex: auto !important;
+}
+
+.flex-items-stretch {
+    align-items: stretch !important;
+}
+
 /* Overview */
 .source-item:hover, .mapping-item:hover, .network-item:hover, .version-item:hover, .registration-item:hover {
     background-color: rgba(0, 0, 0, 0.04);
@@ -593,10 +606,6 @@ label.icon-button:hover:not(.overview-action-button) {
 
 .admin-col-listing .admin-col-listing-item .admin-icon {
     color: rgb(var(--color-gbif-primary));
-}
-
-.admin-icon {
-    font-size: 36px;
 }
 
 .admin-col-listing .admin-col-listing-item .admin-card-title {
