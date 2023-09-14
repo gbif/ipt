@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<main class="container main-content-container border rounded mt-4">
+<main class="container main-content-container border rounded my-4">
     <div class="mb-3 py-4 px-5">
         <div id="tableContainer" class="resource-table text-smaller pt-2"></div>
     </div>
