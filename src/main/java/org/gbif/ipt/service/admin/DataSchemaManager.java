@@ -51,7 +51,7 @@ public interface DataSchemaManager {
   /**
    * Install base data schemas.
    */
-  void installBaseSchemas() throws InvalidConfigException;
+  void installSupportedSchemas() throws InvalidConfigException;
 
   /**
    * Downloads a data schema to the local cache and installs it for mapping. If the file is already locally existing

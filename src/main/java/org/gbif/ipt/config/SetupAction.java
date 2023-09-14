@@ -29,7 +29,6 @@ import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
@@ -432,7 +431,7 @@ public class SetupAction extends BaseAction {
     List<DataSchema> schemas = schemaManager.list();
     if (schemas.isEmpty()) {
       try {
-        schemaManager.installBaseSchemas();
+        schemaManager.installSupportedSchemas();
       } catch (InvalidConfigException e) {
         LOG.error(e);
         addActionWarning(getText("admin.schemas.couldnt.install"), e);

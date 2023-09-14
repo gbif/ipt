@@ -57,7 +57,17 @@ public interface RegistryManager {
    *
    * @throws RegistryException if the list of data schemas couldn't be populated
    */
-  List<DataSchema> getDataSchemas() throws RegistryException;
+  List<DataSchema> getLatestDataSchemas() throws RegistryException;
+
+  /**
+   * Gets list of all registered data schemas from the Registry.
+   * Similar to {@link this#getLatestDataSchemas()} but returns schemas with versions supported by the IPT.
+   *
+   * @return list of data schemas, or an empty list if none were retrieved from valid response
+   *
+   * @throws RegistryException if the list of data schemas couldn't be populated
+   */
+  List<DataSchema> getSupportedDataSchemas() throws RegistryException;
 
   /**
    * Retrieves a list of Organisation from the Registry.

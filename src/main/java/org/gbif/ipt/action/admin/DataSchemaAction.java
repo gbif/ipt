@@ -167,7 +167,7 @@ public class DataSchemaAction extends POSTAction {
   private void loadLatestDataSchemasVersions() {
     try {
       // list of all registered data schemas
-      List<DataSchema> all = registryManager.getDataSchemas();
+      List<DataSchema> all = registryManager.getLatestDataSchemas();
       if (!all.isEmpty()) {
         // list of latest data schema versions
         setLatestDataSchemasVersions(getLatestVersions(all));
@@ -229,7 +229,7 @@ public class DataSchemaAction extends POSTAction {
     if (!dataSchemas.isEmpty()) {
       try {
         // complete list of registered data schemas (latest and non-latest versions)
-        List<DataSchema> registered = registryManager.getDataSchemas();
+        List<DataSchema> registered = registryManager.getLatestDataSchemas();
         for (DataSchema schema : dataSchemas) {
           schema.setLatest(true);
           for (DataSchema registeredSchema : registered) {

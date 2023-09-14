@@ -17,6 +17,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.SupportedDatapackageType;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
@@ -30,6 +31,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
@@ -111,6 +113,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
   }
 
+  // Not in use temporarily. Schemas cannot be updated/deleted
   @Override
   public synchronized void update(String identifier) throws IOException, RegistryException {
     // identify installed data schema by identifier
@@ -119,7 +122,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     if (installed != null) {
       // verify there is a newer (latest) version
       DataSchema latestVersion = null;
-      for (DataSchema ds : registryManager.getDataSchemas()) {
+      for (DataSchema ds : registryManager.getLatestDataSchemas()) {
         // match by rowType and isLatest, plus the URL cannot be null in order to be installed
         if (ds.getIdentifier() != null && ds.getIdentifier().equalsIgnoreCase(identifier) && ds.isLatest()) {
           latestVersion = ds;
@@ -191,8 +194,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   }
 
   @Override
-  public void installBaseSchemas() throws InvalidConfigException {
-    List<DataSchema> schemas = getBaseDataSchemas();
+  public void installSupportedSchemas() throws InvalidConfigException {
+    List<DataSchema> schemas = getSupportedDataSchemas();
     for (DataSchema schema : schemas) {
       install(schema);
     }
@@ -352,7 +355,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public boolean isSchemaType(String nameOrIdentifier) {
     boolean result = false;
 
-    List<DataSchema> dataSchemas = registryManager.getDataSchemas();
+    List<DataSchema> dataSchemas = registryManager.getLatestDataSchemas();
     for (DataSchema dataSchema : dataSchemas) {
       if (dataSchema.getIdentifier().equals(nameOrIdentifier)
           || dataSchema.getName().equals(nameOrIdentifier)) {
@@ -368,7 +371,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public String getSchemaIdentifier(String schemaName) {
     String result = null;
 
-    List<DataSchema> dataSchemas = registryManager.getDataSchemas();
+    List<DataSchema> dataSchemas = registryManager.getLatestDataSchemas();
     for (DataSchema dataSchema : dataSchemas) {
       if (dataSchema.getName().equals(schemaName)) {
         result = dataSchema.getIdentifier();
@@ -404,18 +407,16 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   }
 
   /**
-   * Return the latest versions of base schemas from the registry.
+   * Return the supported versions of schemas from the registry.
    *
    * @return list containing latest versions of data schemas
    */
-  private List<DataSchema> getBaseDataSchemas() {
-    List<DataSchema> baseDataSchemas = new ArrayList<>();
+  private List<DataSchema> getSupportedDataSchemas() {
+    List<DataSchema> supportedDataSchemas = new ArrayList<>();
     try {
-      for (DataSchema schema : registryManager.getDataSchemas()) {
-        if (schema.getIdentifier() != null && AppConfig.getBaseDataSchemas().contains(schema.getIdentifier())) {
-          if (schema.isLatest()) { // must be the latest version
-            baseDataSchemas.add(schema);
-          }
+      for (DataSchema schema : registryManager.getSupportedDataSchemas()) {
+        if (schema.getIdentifier() != null) {
+            supportedDataSchemas.add(schema);
         }
       }
     } catch (RegistryException e) {
@@ -430,13 +431,13 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       LOG.error(msg);
     }
 
-    // throw exception if not all base data schemas could not be loaded
-    if (AppConfig.getBaseDataSchemas().size() != baseDataSchemas.size()) {
-      String msg = "Not all base data schemas were loaded!";
+    // throw exception if all supported data schemas could not be loaded
+    if (SupportedDatapackageType.values().length != supportedDataSchemas.size()) {
+      String msg = "Not all supported data schemas were loaded!";
       LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);
     }
-    return baseDataSchemas;
+    return supportedDataSchemas;
   }
 
   /**

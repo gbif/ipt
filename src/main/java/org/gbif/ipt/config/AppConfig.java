@@ -32,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -102,7 +101,6 @@ public class AppConfig {
 
   private static List<String> coreRowTypes;
   private static Map<String, String> coreRowTypeIdTerms;
-  private static List<String> baseDataSchemas;
 
   static {
     DEFAULT_CORE_ROW_TYPES = Arrays.asList(
@@ -119,8 +117,6 @@ public class AppConfig {
 
     coreRowTypes = DEFAULT_CORE_ROW_TYPES;
     coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
-
-    baseDataSchemas = Collections.singletonList(Constants.DATA_SCHEMA_CAMTRAP_DP);
   }
 
   private AppConfig() {
@@ -158,8 +154,9 @@ public class AppConfig {
     return coreRowTypes;
   }
 
-  public static List<String> getBaseDataSchemas() {
-    return baseDataSchemas;
+  public static Map<String, String> getSupportedDataSchemaNamesWithVersions() {
+    return Arrays.stream(SupportedDatapackageType.values())
+            .collect(Collectors.toMap(SupportedDatapackageType::getName, SupportedDatapackageType::getSupportedVersion));
   }
 
   /**

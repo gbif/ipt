@@ -15,8 +15,6 @@ package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Network;
-import org.gbif.api.util.VocabularyUtils;
-import org.gbif.api.vocabulary.DatasetSubtype;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.BaseAction;
@@ -313,12 +311,28 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
-  public List<DataSchema> getDataSchemas() throws RegistryException {
+  public List<DataSchema> getLatestDataSchemas() throws RegistryException {
     Map<String, List<DataSchema>> jSONDataSchemas = gson
         .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
             new TypeToken<Map<String, List<DataSchema>>>() {
             }.getType());
     return (jSONDataSchemas.get("schemas") == null) ? new ArrayList<>() : jSONDataSchemas.get("schemas");
+  }
+
+  @Override
+  public List<DataSchema> getSupportedDataSchemas() throws RegistryException {
+    List<DataSchema> result = new ArrayList<>();
+    Map<String, String> schemasWithVersions = AppConfig.getSupportedDataSchemaNamesWithVersions();
+
+    for (Map.Entry<String, String> entrySchemaVersion : schemasWithVersions.entrySet()) {
+      DataSchema jsonDataSchema = gson
+              .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(entrySchemaVersion.getKey(), entrySchemaVersion.getValue())).getContent(),
+                      new TypeToken<DataSchema>() {
+                      }.getType());
+      result.add(jsonDataSchema);
+    }
+
+    return result;
   }
 
   /**
@@ -333,6 +347,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getDataSchemasURL() {
     return cfg.getRegistryUrl() + "/registry/schemas.json";
+  }
+
+  /**
+   * Returns the Data schema url by name and version.
+   */
+  private String getDataSchemaURL(String schemaName, String schemaVersion) {
+    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion;
   }
 
   /**
