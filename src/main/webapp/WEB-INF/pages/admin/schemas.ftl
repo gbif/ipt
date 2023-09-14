@@ -27,56 +27,6 @@
                         <a href="schema.do?id=${ds.identifier?url}" title="" class="action-link-button action-link-button-primary">
                             <@s.text name="button.view"/>
                         </a>
-
-                        <#if !ds.isLatest()>
-                            <form action='updateSchema.do' method='post'>
-                                <input type='hidden' name='id' value='${ds.identifier}' />
-
-                                <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">
-                                    <@s.text name="button.update"/>
-                                </button>
-                            </form>
-                        </#if>
-
-                        <form action='schema.do' method='post'>
-                            <input type='hidden' name='id' value='${ds.identifier}'/>
-                            <input type='hidden' name='schemaName' value='${ds.name}'/>
-
-                            <button type="submit" value="Delete" id="delete" name="delete" class="action-link-button action-link-button-danger">
-                                <@s.text name="button.remove"/>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </#macro>
-
-    <#macro newSchemaItem ds>
-        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
-            <div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
-                <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
-                    <div>
-                        <h4 class="d-flex fs-regular mt-1 mb-0">
-                            ${ds.title}
-                        </h4>
-                        <p class="color-fg-muted mb-0 fs-smaller-2">
-                            ${ds.issued?date?string["d MMMM yyyy"]}
-                        </p>
-                    </div>
-                </div>
-                <div class="d-flex flex-column flex-auto flex-justify-between">
-                    <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
-                        ${ds.description!?truncate(300)}
-                    </div>
-                    <div class="d-flex pt-2 pb-4 px-4">
-                        <form action='schema.do' method='post'>
-                            <input type='hidden' name='id' value='${ds.identifier}' />
-
-                            <button type="submit" value="Install" id="install" name="install" class="action-link-button action-link-button-primary">
-                                <@s.text name="button.install"/>
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -86,9 +36,13 @@
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
-    <#assign schemasCount=0>
+    <#assign schemasCount=0/>
+    <#assign updateRequired=false/>
     <#list schemas as ds>
-        <#assign schemasCount=schemasCount+1>
+        <#assign schemasCount=schemasCount+1/>
+        <#if !ds.isLatest()>
+            <#assign updateRequired=true/>
+        </#if>
     </#list>
 
     <div class="container px-0">
@@ -147,6 +101,12 @@
                     <@s.text name="admin.schemas.no.schemas.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                 </div>
             </#if>
+
+            <#if updateRequired>
+                <div class="callout callout-warning">
+                    <@s.text name="admin.schemas.not.upToDate.warning"/>
+                </div>
+            </#if>
         </div>
 
         <div>
@@ -158,24 +118,6 @@
                 </div>
             </div>
         </div>
-
-        <#if (newSchemas?size > 0)>
-            <div class="mt-3 mb-0 p-3">
-                <h5 class="pb-2 mb-0 pt-2 text-gbif-header-2 fs-5 fw-400">
-                    <@s.text name="schema.further.title"/>
-                </h5>
-            </div>
-
-            <div class="mb-5">
-                <div class="flex-auto">
-                    <div class="d-flex flex-items-stretch flex-wrap">
-                        <#list newSchemas as ds>
-                            <@newSchemaItem ds/>
-                        </#list>
-                    </div>
-                </div>
-            </div>
-        </#if>
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
