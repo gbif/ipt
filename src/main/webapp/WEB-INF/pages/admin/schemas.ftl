@@ -7,13 +7,16 @@
         <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
             <div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
                 <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
-                    <div>
+                    <div class="me-2">
                         <h4 class="d-flex fs-regular mt-1 mb-0">
                             ${ds.title}
                         </h4>
                         <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ds.issued?date?string["d MMMM yyyy"]}
                         </p>
+                    </div>
+                    <div class="fs-smaller pt-1">
+                        v${ds.version!}
                     </div>
                 </div>
                 <div class="d-flex flex-column flex-auto flex-justify-between">

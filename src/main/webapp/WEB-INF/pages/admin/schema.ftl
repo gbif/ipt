@@ -67,8 +67,7 @@
 
                     <div class="text-smaller text-gbif-primary">
                         <span>
-                            <@s.text name='schema.version'/> ${dataSchema.version}
-                            <@s.text name='schema.issuedOn'/> ${dataSchema.issued?date?string.long}
+                            <@s.text name="schema.versionIssuedOn"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
                         </span>
                     </div>
 
