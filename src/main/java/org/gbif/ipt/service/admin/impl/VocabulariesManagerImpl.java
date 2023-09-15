@@ -224,8 +224,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
       Vocabulary alreadyInstalled = get(vocabulary.getUriString());
 
-      if (alreadyInstalled == null || (!alreadyInstalled.isLatest() && vocabulary.isLatest())) {
+      if (alreadyInstalled == null) {
         finishInstall(tmpFile, vocabulary);
+      } else if (vocabulary.getIssued() != null
+              && alreadyInstalled.getIssued() != null
+              && vocabulary.getIssued().after(alreadyInstalled.getIssued())) {
+        try {
+          updateToLatest(alreadyInstalled, vocabulary);
+        } catch (IOException e) {
+          throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
+                  "Can't update installed vocabulary: " + alreadyInstalled.getUriString(), e);
+        }
       } else {
         LOG.info("Vocabulary {} already installed (id {}), skipping", url, vocabulary.getUriString());
         FileUtils.deleteQuietly(tmpFile);
@@ -373,11 +382,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   @Override
   public synchronized void installOrUpdateDefaults() throws InvalidConfigException, RegistryException {
     // all registered vocabularies
-    List<Vocabulary> vocabularies = registryManager.getVocabularies();
+    List<Vocabulary> registeredVocabularies = registryManager.getVocabularies();
+    List<Vocabulary> storedVocabularies = list();
 
-    for (Vocabulary latest : getLatestDefaults(vocabularies)) {
+    for (Vocabulary latest : getLatestDefaults(registeredVocabularies)) {
       Vocabulary installed = null;
-      for (Vocabulary vocabulary : list()) {
+      for (Vocabulary vocabulary : storedVocabularies) {
         if (latest.getUriString().equalsIgnoreCase(vocabulary.getUriString())) {
           installed = vocabulary;
           break;
@@ -407,7 +417,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     // update each installed vocabulary indicating whether it is the latest version (for its identifier) or not
-    updateIsLatest(list(), vocabularies);
+    updateIsLatest(storedVocabularies, registeredVocabularies);
   }
 
   /**
