@@ -296,7 +296,9 @@
                     <div class="mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="ui-management-form" name="save" id="save" key="button.save" />
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-danger top-button" form="ui-management-form" name="reset" id="reset" key="button.reset" />
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" form="ui-management-form" name="cancel" key="button.cancel"/>
+                        <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
                     </div>
                 </div>
             </div>

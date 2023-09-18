@@ -83,7 +83,7 @@
 
                     <div class="mt-2">
                         <button id="create" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.create"/></button>
-                        <a href="${baseURL}" class="btn btn-sm btn-outline-secondary top-button">
+                        <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button">
                             <@s.text name="button.cancel"/>
                         </a>
                     </div>
