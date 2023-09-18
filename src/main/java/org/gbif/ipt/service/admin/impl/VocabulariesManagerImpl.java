@@ -382,12 +382,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   @Override
   public synchronized void installOrUpdateDefaults() throws InvalidConfigException, RegistryException {
     // all registered vocabularies
-    List<Vocabulary> registeredVocabularies = registryManager.getVocabularies();
-    List<Vocabulary> storedVocabularies = list();
+    List<Vocabulary> vocabularies = registryManager.getVocabularies();
 
-    for (Vocabulary latest : getLatestDefaults(registeredVocabularies)) {
+    for (Vocabulary latest : getLatestDefaults(vocabularies)) {
       Vocabulary installed = null;
-      for (Vocabulary vocabulary : storedVocabularies) {
+      for (Vocabulary vocabulary : list()) {
         if (latest.getUriString().equalsIgnoreCase(vocabulary.getUriString())) {
           installed = vocabulary;
           break;
@@ -417,7 +416,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     // update each installed vocabulary indicating whether it is the latest version (for its identifier) or not
-    updateIsLatest(storedVocabularies, registeredVocabularies);
+    updateIsLatest(list(), vocabularies);
   }
 
   /**
