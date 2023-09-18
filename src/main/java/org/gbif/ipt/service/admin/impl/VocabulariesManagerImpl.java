@@ -386,7 +386,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
     for (Vocabulary latest : getLatestDefaults(vocabularies)) {
       Vocabulary installed = null;
-      for (Vocabulary vocabulary : list() {
+      for (Vocabulary vocabulary : list()) {
         if (latest.getUriString().equalsIgnoreCase(vocabulary.getUriString())) {
           installed = vocabulary;
           break;
