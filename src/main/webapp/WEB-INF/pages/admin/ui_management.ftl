@@ -109,19 +109,33 @@
 
             // on color select (in select2 component)
             $("#primaryColor-select").on("select2:select", function (e) {
-                $("#primaryColor-colorBox").css("background", e.params.data.id)
+                $("#primaryColor-colorBox").css("background", e.params.data.id);
+                applyPrimaryColor(e.params.data.id);
             });
 
             $("#navbarColor-select").on("select2:select", function (e) {
-                $("#navbarColor-colorBox").css("background", e.params.data.id)
+                $("#navbarColor-colorBox").css("background", e.params.data.id);
+                applyNavbarColor(e.params.data.id);
             });
 
             $("#navbarLinkColor-select").on("select2:select", function (e) {
-                $("#navbarLinkColor-colorBox").css("background", e.params.data.id)
+                $("#navbarLinkColor-colorBox").css("background", e.params.data.id);
+                applyNavbarLinkColor(e.params.data.id);
+            });
+
+            $("#navbarGbifLogoColor-select").on("select2:select", function (e) {
+                $("#navbarGbifLogoColor-colorBox").css("background", e.params.data.id);
+                applyNavbarGbifLogoColor(e.params.data.id);
+            });
+
+            $("#navbarActiveTabColor-select").on("select2:select", function (e) {
+                $("#navbarActiveTabColor-colorBox").css("background", e.params.data.id);
+                applyNavbarActiveTabColor(e.params.data.id);
             });
 
             $("#linkColor-select").on("select2:select", function (e) {
-                $("#linkColor-colorBox").css("background", e.params.data.id)
+                $("#linkColor-colorBox").css("background", e.params.data.id);
+                applyLinkColor(e.params.data.id);
             });
 
             // open color picker on color box click; change color box and select color
@@ -185,6 +199,50 @@
                 colorSelect.val(pickedColor);
                 // Notify any JS components that the value changed
                 colorSelect.trigger('change');
+                // Apply changes live
+                if (component === 'primaryColor') {
+                    applyPrimaryColor(pickedColor);
+                } else if (component === 'linkColor') {
+                    applyLinkColor(pickedColor);
+                } else if (component === 'navbarColor') {
+                    applyNavbarColor(pickedColor);
+                } else if (component === 'navbarLinkColor') {
+                    applyNavbarLinkColor(pickedColor);
+                } else if (component === 'navbarGbifLogoColor') {
+                    applyNavbarGbifLogoColor(pickedColor);
+                } else if (component === 'navbarActiveTabColor') {
+                    applyNavbarActiveTabColor(pickedColor);
+                }
+            }
+
+            function applyPrimaryColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--color-gbif-primary', rgb);
+            }
+
+            function applyLinkColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--link-color', rgb);
+            }
+
+            function applyNavbarColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--navbar-color', rgb);
+            }
+
+            function applyNavbarLinkColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--navbar-link-color', rgb);
+            }
+
+            function applyNavbarGbifLogoColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--navbar-gbif-logo-color', rgb);
+            }
+
+            function applyNavbarActiveTabColor(hex) {
+                const rgb = hexToRgb(hex);
+                document.documentElement.style.setProperty('--navbar-active-tab-color', rgb);
             }
 
             // initialize absent values (values chosen from color picker and not present in the list)
@@ -237,31 +295,37 @@
                 $primaryColorSelect.val("#61a861");
                 $primaryColorSelect.trigger('change');
                 $("#primaryColor-colorBox").css("background", "#61a861");
+                applyPrimaryColor("#61a861");
 
                 var $navbarColorSelect = $("#navbarColor-select");
                 $navbarColorSelect.val("#78b578");
                 $navbarColorSelect.trigger('change');
                 $("#navbarColor-colorBox").css("background", "#78b578");
+                applyNavbarColor("#78b578");
 
                 var $navbarLinkColorSelect = $("#navbarLinkColor-select");
                 $navbarLinkColorSelect.val("#ffffff");
                 $navbarLinkColorSelect.trigger('change');
                 $("#navbarLinkColor-colorBox").css("background", "#ffffff");
+                applyNavbarLinkColor("#ffffff")
 
                 var $navbarGbifLogoColorSelect = $("#navbarGbifLogoColor-select");
                 $navbarGbifLogoColorSelect.val("#ffffff");
                 $navbarGbifLogoColorSelect.trigger('change');
                 $("#navbarGbifLogoColor-colorBox").css("background", "#ffffff");
+                applyNavbarGbifLogoColor("#ffffff")
 
                 var $navbarActiveTabColorSelect = $("#navbarActiveTabColor-select");
                 $navbarActiveTabColorSelect.val("#ffffff");
                 $navbarActiveTabColorSelect.trigger('change');
                 $("#navbarActiveTabColor-colorBox").css("background", "#ffffff");
+                applyNavbarActiveTabColor("#ffffff");
 
                 var $linkColorSelect = $("#linkColor-select");
                 $linkColorSelect.val("#4ba2ce");
                 $linkColorSelect.trigger('change');
                 $("#linkColor-colorBox").css("background", "#4ba2ce");
+                applyLinkColor("#4ba2ce");
             })
 
             function urlExists(url, cb) {
@@ -318,6 +382,17 @@
                     $("#applogo-image").hide();
                 }
             });
+
+            function hexToRgb(hex) {
+                hex = hex.replace(/^#/, '');
+
+                // Parse the hex values for red, green, and blue
+                const r = parseInt(hex.slice(0, 2), 16);
+                const g = parseInt(hex.slice(2, 4), 16);
+                const b = parseInt(hex.slice(4, 6), 16);
+
+                return  r + ',' + g + ',' + b;
+            }
         });
     </script>
     <title><@s.text name="title"/></title>

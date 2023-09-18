@@ -415,13 +415,13 @@ table {
 }
 
 .navbar-button {
-    color: rgb(var(--navbar-link-color)) !important;
-    border-color: rgb(var(--navbar-link-color)) !important;
+    color: rgb(var(--navbar-link-color));
+    border-color: rgb(var(--navbar-link-color));
 }
 
 .navbar-button:hover, .navbar-button:focus {
-    color: rgb(var(--navbar-link-color)) !important;
-    border-color: rgb(var(--navbar-link-color)) !important;
+    color: rgb(var(--navbar-link-color));
+    border-color: rgb(var(--navbar-link-color));
 }
 
 @media (min-width: 1200px) {
@@ -430,23 +430,23 @@ table {
     }
 }
 
-.nav-link {
+.navbar-dark .navbar-nav .nav-link {
     font-weight: 500;
-    color: rgb(var(--navbar-link-color)) !important;
+    color: rgb(var(--navbar-link-color));
 }
 
 @media (min-width: 1200px) {
     .nav-item:has(a.nav-link.active) {
-        border-bottom: 3px solid rgb(var(--navbar-link-color)) !important;
+        border-bottom: 3px solid rgb(var(--navbar-active-tab-color));
     }
 }
 
-.nav-link.active {
-    color: rgb(var(--navbar-link-color)) !important;
+.navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
+    color: rgb(var(--navbar-link-color));
 }
 
-.nav-link:hover {
-    color: rgb(var(--navbar-link-color)) !important;
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
+    color: rgb(var(--navbar-link-color));
     text-shadow: 0 0 var(--navbar-link-color);
 }
 
@@ -1193,7 +1193,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .extension-action-button-primary, .action-link-button-primary {
-    color: rgb(var(--color-gbif-primary)) !important;
+    color: rgb(var(--color-gbif-primary));
 }
 
 .extension-action-button-danger, .action-link-button-danger {
@@ -1220,7 +1220,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .extension-action-button-primary .extension-action-button-icon, .action-link-button-primary .action-link-button-icon {
-    fill: rgb(var(--color-gbif-primary)) !important;
+    fill: rgb(var(--color-gbif-primary));
 }
 
 .extension-action-button-danger .extension-action-button-icon, .action-link-button-danger .action-link-button-icon {
@@ -2135,13 +2135,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 /* Main icon color */
 #gbif-logo .ipt-icon-piece, #gbif-logo-setup .ipt-icon-piece  {
-    fill: rgb(var(--navbar-link-color)) !important;
-    /*fill: rgb(var(--color-gbif-primary)) !important;*/
+    fill: rgb(var(--navbar-gbif-logo-color));
 }
 
 /* Login icon color */
 #login-page-logo .ipt-icon-piece {
-    fill: rgb(var(--color-gbif-primary)) !important;
+    fill: rgb(var(--color-gbif-primary));
 }
 
 
