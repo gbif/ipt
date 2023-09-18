@@ -29,9 +29,9 @@
             --color-gbif-secondary: ${"78, 86, 95"};
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
-            /*--navbar-color: 248, 249, 250;*/
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
-            /*--navbar-link-color: 87, 87, 87;*/
+            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
+            --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
         }
     </style>

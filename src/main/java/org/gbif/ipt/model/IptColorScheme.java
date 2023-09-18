@@ -25,12 +25,18 @@ public class IptColorScheme {
   public static final String NAVBAR_COLOR_DEFAULT_VALUE = "#78b578";
   public static final String NAVBAR_LINK_COLOR_PROPERTY = "navbarLinkColor";
   public static final String NAVBAR_LINK_COLOR_DEFAULT_VALUE = "#ffffff";
+  public static final String NAVBAR_GBIF_LOGO_COLOR_PROPERTY = "navbarGbifLogoColor";
+  public static final String NAVBAR_GBIF_LOGO_COLOR_DEFAULT_VALUE = "#ffffff";
+  public static final String NAVBAR_ACTIVE_TAB_COLOR_PROPERTY = "navbarActiveTabColor";
+  public static final String NAVBAR_ACTIVE_TAB_COLOR_DEFAULT_VALUE = "#ffffff";
   public static final String LINK_COLOR_PROPERTY = "linkColor";
   public static final String LINK_COLOR_DEFAULT_VALUE = "#4ba2ce";
 
   private String primaryColor = "#61a861";
   private String navbarColor = "#78b578";
   private String navbarLinkColor = "#ffffff";
+  private String navbarGbifLogoColor = "#ffffff";
+  private String navbarActiveTabColor = "#ffffff";
   private String linkColor = "#4ba2ce";
 
   public IptColorScheme() {
@@ -40,6 +46,8 @@ public class IptColorScheme {
     setPrimaryColor(props.getProperty(PRIMARY_COLOR_PROPERTY));
     setNavbarColor(props.getProperty(NAVBAR_COLOR_PROPERTY));
     setNavbarLinkColor(props.getProperty(NAVBAR_LINK_COLOR_PROPERTY));
+    setNavbarGbifLogoColor(props.getProperty(NAVBAR_GBIF_LOGO_COLOR_PROPERTY, NAVBAR_GBIF_LOGO_COLOR_DEFAULT_VALUE));
+    setNavbarActiveTabColor(props.getProperty(NAVBAR_ACTIVE_TAB_COLOR_PROPERTY, NAVBAR_ACTIVE_TAB_COLOR_DEFAULT_VALUE));
     setLinkColor(props.getProperty(LINK_COLOR_PROPERTY));
   }
 
@@ -48,6 +56,8 @@ public class IptColorScheme {
     props.setProperty(PRIMARY_COLOR_PROPERTY, primaryColor);
     props.setProperty(NAVBAR_COLOR_PROPERTY, navbarColor);
     props.setProperty(NAVBAR_LINK_COLOR_PROPERTY, navbarLinkColor);
+    props.setProperty(NAVBAR_GBIF_LOGO_COLOR_PROPERTY, navbarGbifLogoColor);
+    props.setProperty(NAVBAR_ACTIVE_TAB_COLOR_PROPERTY, navbarActiveTabColor);
     props.setProperty(LINK_COLOR_PROPERTY, linkColor);
     return props;
   }
@@ -76,6 +86,22 @@ public class IptColorScheme {
     this.navbarLinkColor = navbarLinkColor;
   }
 
+  public String getNavbarGbifLogoColor() {
+    return navbarGbifLogoColor;
+  }
+
+  public void setNavbarGbifLogoColor(String navbarGbifLogoColor) {
+    this.navbarGbifLogoColor = navbarGbifLogoColor;
+  }
+
+  public String getNavbarActiveTabColor() {
+    return navbarActiveTabColor;
+  }
+
+  public void setNavbarActiveTabColor(String navbarActiveTabColor) {
+    this.navbarActiveTabColor = navbarActiveTabColor;
+  }
+
   public String getLinkColor() {
     return linkColor;
   }
@@ -92,12 +118,14 @@ public class IptColorScheme {
     return Objects.equals(primaryColor, that.primaryColor)
         && Objects.equals(navbarColor, that.navbarColor)
         && Objects.equals(navbarLinkColor, that.navbarLinkColor)
+        && Objects.equals(navbarGbifLogoColor, that.navbarGbifLogoColor)
+        && Objects.equals(navbarActiveTabColor, that.navbarActiveTabColor)
         && Objects.equals(linkColor, that.linkColor);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(primaryColor, navbarColor, navbarLinkColor, linkColor);
+    return Objects.hash(primaryColor, navbarColor, navbarGbifLogoColor, navbarActiveTabColor, navbarLinkColor, linkColor);
   }
 
   @Override
@@ -106,6 +134,8 @@ public class IptColorScheme {
         .add("primaryColor='" + primaryColor + "'")
         .add("navbarColor='" + navbarColor + "'")
         .add("navbarLinkColor='" + navbarLinkColor + "'")
+        .add("navbarGbifLogoColor='" + navbarGbifLogoColor + "'")
+        .add("navbarActiveTabColor='" + navbarActiveTabColor + "'")
         .add("linkColor='" + linkColor + "'")
         .toString();
   }
