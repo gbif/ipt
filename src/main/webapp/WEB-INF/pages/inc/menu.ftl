@@ -31,7 +31,7 @@
                 <img id="gbif-logo-custom" src="${baseURL}/appLogo.do" onerror="handleCustomLogoError()" />
                 [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
-[#--                    <span class="test-mode-banner">TEST MODE</span>--]
+                    <span class="test-mode-banner">TEST MODE</span>
                 [/#if]
             </a>
             <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
