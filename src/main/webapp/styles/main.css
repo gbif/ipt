@@ -2115,11 +2115,21 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 /* Test mode banner */
 .test-mode-banner {
-    width: 100px;
-    color: rgb(var(--color-gbif-danger));
-    padding: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    background: tomato;
+    color: white;
+    padding: 0 2px;
+    font-size: 10px;
+    font-weight: bolder;
+    position: absolute;
+    top: 45px;
+    left: 15px;
+    border-radius: 3px;
+}
+
+header.shrink span.test-mode-banner {
+    position: absolute;
+    top: 35px;
+    left: 15px;
 }
 
 /* Color squares for color selector */
