@@ -2668,6 +2668,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
 
+    if (resource.isDataPackage()) {
+      restoreDataPackageResourceVersion(resource, rollingBack, action);
+    } else {
+      restoreDarwinCoreResourceVersion(resource, rollingBack, action);
+    }
+  }
+
+  private void restoreDarwinCoreResourceVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
     // determine version to restore (looking at version history)
     BigDecimal toRestore = getVersionToRestore(resource, rollingBack);
 
@@ -2742,6 +2750,76 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       String msg = action
           .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
+      LOG.error(msg);
+      action.addActionError(msg);
+    }
+  }
+
+  private void restoreDataPackageResourceVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
+    // determine version to restore (looking at version history)
+    BigDecimal toRestore = getVersionToRestore(resource, rollingBack);
+
+    if (toRestore != null) {
+      String shortname = resource.getShortname();
+      LOG.info(
+              "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
+                      + " of resource " + shortname);
+
+      try {
+        // delete versioned metadata file if exists (datapackage.json must remain)
+        File versionedCamtrapMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, CAMTRAP_DP, rollingBack);
+        if (versionedCamtrapMetadataFile.exists()) {
+          FileUtils.forceDelete(versionedCamtrapMetadataFile);
+        }
+
+        File versionedColMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, COL_DP, rollingBack);
+        if (versionedColMetadataFile.exists()) {
+          FileUtils.forceDelete(versionedColMetadataFile);
+        }
+
+        // delete versioned data package archive if exists
+        File versionedDataPackageFile = dataDir.resourceDataPackageFile(shortname, rollingBack);
+        if (versionedDataPackageFile.exists()) {
+          FileUtils.forceDelete(versionedDataPackageFile);
+        }
+
+        // remove VersionHistory of version being rolled back
+        resource.removeVersionHistory(rollingBack);
+
+        // update version
+        resource.setMetadataVersion(toRestore);
+
+        // update replaced version with next last version
+        if (resource.getVersionHistory().size() > 1) {
+          BigDecimal replacedVersion = new BigDecimal(resource.getVersionHistory().get(1).getVersion());
+          resource.setReplacedDataPackageMetadataVersion(replacedVersion);
+        }
+
+        // persist resource.xml changes
+        save(resource);
+
+        // persist EML changes
+        saveDatapackageMetadata(resource);
+
+      } catch (IOException e) {
+        String msg = action
+                .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
+        LOG.error(msg, e);
+        action.addActionError(msg);
+      }
+      // alert user version rollback was successful
+      String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
+      LOG.info(msg);
+      action.addActionMessage(msg);
+      // update StatusReport on publishing page
+      // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
+      StatusReport report = processReports.get(shortname);
+      if (report != null) {
+        report.getMessages().add(new TaskMessage(Level.INFO, msg));
+      }
+    } else {
+      String msg = action
+              .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
       LOG.error(msg);
       action.addActionError(msg);
     }
@@ -2933,7 +3011,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // update metadata created (represents date when the resource was last published)
     resource.getDataPackageMetadata().setVersion(version.toPlainString());
 
-    // save all changes to Eml
+    // save all changes to metadata
     saveDatapackageMetadata(resource);
 
     // create versioned metadata file
