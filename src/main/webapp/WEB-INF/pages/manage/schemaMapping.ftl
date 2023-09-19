@@ -386,11 +386,25 @@
 
                         <div class="my-2">
                             <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                            <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <@s.text name="button.options"/>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
+                                    <li>
+                                        <a id="toggleFields" class="button btn btn-sm btn-outline-secondary w-100 dropdown-button"><@s.text name='manage.mapping.hideEmpty'/></a>
+                                    </li>
+                                    <li>
+                                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                         </div>
 
-                        <p class="mt-3 text-smaller fst-italic">
+                        <p class="mt-3 mb-0 text-smaller fst-italic">
                             <@s.text var="adminSchemaTitle" name="admin.schema.title"/>
                             <@s.text name='manage.mapping.intro1'>
                                 <@s.param>
@@ -407,94 +421,76 @@
             </div>
         </div>
 
-        <div class="container-fluid bg-body">
-            <div class="container bd-layout main-content-container">
-
-                <main class="bd-main">
-
-                    <div class="bd-toc mt-lg-5 mt-4 mb-5 ps-3 mb-lg-5 text-muted">
-                        <nav id="sidebar-content">
-                            <ul>
-                                <li><a id="toggleFields" class="sidebar-link"><@s.text name='manage.mapping.hideEmpty'/></a></li>
-                            </ul>
-
-                            <div class="d-flex align-content-between" style="margin-left: -10px;">
-                                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="delete" key="button.delete"/>
-                                <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
-                            </div>
-                        </nav>
+        <main class="container main-content-container">
+            <div class="mt-0 mb-5 px-1">
+                <div class="row g-3">
+                    <div>
+                        <input type="hidden" name="r" value="${resource.shortname}" />
+                        <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
+                        <input type="hidden" name="mid" value="${mid!}" />
                     </div>
 
-                    <div class="bd-content ps-lg-4">
-                        <div>
-                            <input type="hidden" name="r" value="${resource.shortname}" />
-                            <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
-                            <input type="hidden" name="mid" value="${mid!}" />
-                        </div>
+                    <#-- Filter and required mapping -->
+                    <div class="border-bottom mb-2 text-smaller">
+                        <div id="filterSection" class="mappingRow">
 
-                        <#-- Filter and required mapping -->
-                        <div class="border-bottom mb-2 text-smaller">
-                            <div id="filterSection" class="mappingRow">
-
-                                <div class="row py-3 g-2 mappingFiler">
-                                    <div class="col-lg-1 pt-1" id="filter">
-                                        <@popoverPropertyInfo "manage.mapping.info" />
-                                        <strong><@s.text name='manage.mapping.filter'/></strong>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select form-select-sm">
-                                            <#list mapping.filter.filterTimes?keys as filterTime>
-                                              <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
-                                            </#list>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm">
-                                            <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
-                                            <#list columns as c>
-                                                <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
-                                            </#list>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-2">
-                                        <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm">
-                                            <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
-                                            <#list comparators as c>
-                                                <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
-                                            </#list>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-2">
-                                        <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" />
-                                    </div>
+                            <div class="row py-3 g-2 mappingFiler">
+                                <div class="col-lg-1 pt-1" id="filter">
+                                    <@popoverPropertyInfo "manage.mapping.info" />
+                                    <strong><@s.text name='manage.mapping.filter'/></strong>
                                 </div>
 
-                            </div>
-                        </div>
-
-                        <div id="sections" class="mt-4">
-                            <#list dataSchema.subSchemas as subSchema>
-                                <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
-                                    <div id="${subSchema.name}" class="mt-lg-5">
-                                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                            ${subSchema.title}
-                                        </h4>
-                                        <#list fields as field>
-                                            <@showField subSchema field field_index/>
+                                <div class="col-lg-3">
+                                    <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select form-select-sm">
+                                        <#list mapping.filter.filterTimes?keys as filterTime>
+                                            <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
                                         </#list>
-                                    </div>
-                                </#if>
-                            </#list>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm">
+                                        <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
+                                        <#list columns as c>
+                                            <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
+                                        </#list>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm">
+                                        <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
+                                        <#list comparators as c>
+                                            <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
+                                        </#list>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </main>
+
+                    <div id="sections">
+                        <#list dataSchema.subSchemas as subSchema>
+                            <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
+                                <div id="${subSchema.name}" class="mt-lg-3">
+                                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                        ${subSchema.title}
+                                    </h4>
+                                    <#list fields as field>
+                                        <@showField subSchema field field_index/>
+                                    </#list>
+                                </div>
+                            </#if>
+                        </#list>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
 
     </form>
 
