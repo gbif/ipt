@@ -26,7 +26,12 @@
                 </div>
                 <div class="d-flex flex-column flex-auto flex-justify-between">
                     <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
-                        ${ext.description!?truncate(300)}
+                        <div>
+                            <#if !ext.isLatest()>
+                                <span class="text-gbif-danger"><@s.text name="admin.extension.version.warning.short"/></span><br>
+                            </#if>
+                            ${ext.description!?truncate(300)}
+                        </div>
                     </div>
                     <div class="d-flex pt-2 pb-4 px-4">
                         <a href="extension.do?id=${ext.rowType?url}" title="" class="action-link-button action-link-button-primary">

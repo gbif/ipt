@@ -65,17 +65,23 @@
                         ${dataSchema.title}
                     </h1>
 
-                    <div class="text-smaller text-gbif-primary">
-                        <span>
-                            <@s.text name="schema.versionIssuedOn"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
-                        </span>
-                    </div>
-
                     <#if dataSchema.url??>
-                        <div class="text-center fs-smaller">
+                        <div class="text-center fs-smaller mb-2">
                             <a href="${dataSchema.url}">${dataSchema.url}</a>
                         </div>
                     </#if>
+
+                    <div class="text-smaller">
+                        <#if dataSchema.isLatest()>
+                            <span class="text-gbif-primary">
+                                <@s.text name="schema.version.issued.upToDate"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        <#else>
+                            <span class="text-gbif-danger">
+                                <@s.text name="schema.version.issued.outdated"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        </#if>
+                    </div>
 
                     <div class="mt-2">
                         <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
@@ -162,7 +168,7 @@
                                                         </ul>
                                                     </#if>
                                                     <p class="overflow-x-auto">
-                                                        <em><@s.text name="schema.field.type"/></em> <@dataBage field.type/>
+                                                        <em><@s.text name="schema.field.type"/></em> ${field.type!}
                                                     </p>
                                                     <#if field.format?? && field.format != 'default'>
                                                         <p class="overflow-x-auto">

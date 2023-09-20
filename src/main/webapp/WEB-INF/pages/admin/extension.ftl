@@ -129,7 +129,7 @@
                     </h5>
 
                     <#if !extension.isLatest()>
-                        <div class="mb-2 text-gbif-danger">
+                        <div class="callout callout-danger mb-2">
                             <@s.text name="admin.extension.version.warning"/>
                         </div>
                     </#if>
@@ -231,7 +231,7 @@
                                                     <table>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="basic.namespace"/></th><td>${p.namespace()}</td></tr>
-                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td><@dataBage p.type/></td></tr>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td>${p.type!}</td></tr>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.required"/></th><td><#if p.required><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if></td></tr>
                                                     </table>
                                                 </div>

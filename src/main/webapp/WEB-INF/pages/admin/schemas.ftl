@@ -21,7 +21,12 @@
                 </div>
                 <div class="d-flex flex-column flex-auto flex-justify-between">
                     <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
-                        ${ds.description!?truncate(300)}
+                        <div>
+                            <#if !ds.isLatest()>
+                                <span class="text-gbif-danger"><@s.text name="admin.schemas.version.warning"/></span><br>
+                            </#if>
+                            ${ds.description!?truncate(300)}
+                        </div>
                     </div>
                     <div class="d-flex pt-2 pb-4 px-4">
                         <a href="schema.do?id=${ds.identifier?url}" title="" class="action-link-button action-link-button-primary">
@@ -75,7 +80,7 @@
                             <#if action.isUpToDate()>
                                 <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
                             <#else>
-                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
+                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate.warning"/></span>
                             </#if>
                         </#if>
                     </div>
@@ -95,18 +100,6 @@
             <h5 class="pb-2 mb-0 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="admin.schemas.installed"/>
             </h5>
-
-            <#if schemasCount=0>
-                <div class="callout callout-warning">
-                    <@s.text name="admin.schemas.no.schemas.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                </div>
-            </#if>
-
-            <#if updateRequired>
-                <div class="callout callout-warning">
-                    <@s.text name="admin.schemas.not.upToDate.warning"/>
-                </div>
-            </#if>
         </div>
 
         <div>
