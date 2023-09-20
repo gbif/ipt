@@ -1050,7 +1050,7 @@ td.left_padding {
 /* DataTables styles START */
 /* DataTable loader styles */
 .resourcesTable {
-    max-width: 1264px; /* Temp fix to prevent scroll */
+    width: 100% !important;
 }
 
 div.dataTables_processing>div:last-child>div {
@@ -1898,12 +1898,6 @@ button.close {
 .anchor-home-resource-page-2 {
     height: 90px;
     margin-top: -104px;
-}
-
-@media (max-width: 1399px) {
-    .resource-table {
-        overflow-x: auto;
-    }
 }
 
 .logoImg>img {

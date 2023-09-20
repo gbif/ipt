@@ -8,6 +8,7 @@
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
 <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
+<script src="${baseURL}/js/jquery/dataTables.responsive-2.5.0.min.js"></script>
 
 <@resourcesTable resources=resources shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
@@ -54,7 +55,7 @@
 </div>
 
 <main class="container main-content-container border rounded my-4">
-    <div class="mb-3 py-4 px-5">
+    <div class="py-md-4 py-3 px-md-5 px-3">
         <div id="tableContainer" class="resource-table text-smaller pt-2"></div>
     </div>
 </main>
