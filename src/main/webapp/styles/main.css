@@ -430,7 +430,7 @@ table {
     }
 }
 
-.navbar-dark .navbar-nav .nav-link {
+.navbar-dark .navbar-nav .nav-link, .navbar-dark .nav-link {
     font-weight: 500;
     color: rgb(var(--navbar-link-color));
 }
