@@ -51,7 +51,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">

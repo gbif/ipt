@@ -5,7 +5,7 @@
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/usersTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
     <script>
         $(document).ready(function(){
             var initConfirmationModal = function () {
