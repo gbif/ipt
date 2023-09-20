@@ -2132,6 +2132,18 @@ header.shrink span.test-mode-banner {
     left: 15px;
 }
 
+@media (max-width: 1199px) {
+    span.test-mode-banner {
+        position: absolute;
+        top: 35px;
+        left: 15px;
+    }
+
+    body {
+        padding-top: 80px;
+    }
+}
+
 /* Color squares for color selector */
 .color-square {
     display: inline-block;
