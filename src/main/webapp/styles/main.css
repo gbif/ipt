@@ -2108,10 +2108,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 /* Test mode banner */
-.test-mode-banner {
+span.test-mode-banner {
     background: tomato;
     color: white;
-    padding: 0 2px;
+    padding: 0 3px;
     font-size: 10px;
     font-weight: bolder;
     position: absolute;
