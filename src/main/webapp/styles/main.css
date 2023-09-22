@@ -1086,14 +1086,17 @@ div.dataTables_processing>div:last-child>div {
     color: #575757 !important;
 }
 
-.license-pill, .doi-pill {
+.license-pill, .doi-pill, .version-pill {
     border: 1px solid;
-    color: rgb(var(--color-gbif-primary));
     border-radius: 8px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     display: inline-block;
     vertical-align: middle;
+}
+
+.license-pill, .doi-pill {
+    color: rgb(var(--color-gbif-primary));
 }
 
 .status-public, .statuspublic {

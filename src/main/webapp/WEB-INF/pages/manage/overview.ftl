@@ -1383,29 +1383,35 @@
 
                                 <div class="row g-2">
                                     <#if resource.lastPublished??>
-                                        <div class="col-xl-6" style="height: 100%">
-                                            <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
+                                        <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
 
+                                        <div class="col-xl-6" style="height: 100%">
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                                 <div class="ps-2 published-version-item-link">
+                                                    <span>
+                                                        <#if lastPublishedVersionStatus == "registered">
+                                                            <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
+                                                        <#elseif lastPublishedVersionStatus == "public">
+                                                            <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
+                                                        <#elseif lastPublishedVersionStatus == "private">
+                                                            <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
+                                                        <#elseif lastPublishedVersionStatus == "deleted">
+                                                            <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
+                                                        </#if>
+                                                    </span>
                                                     <span class="me-2 overview-version-title">
                                                         <#if isDataPackage>
                                                             <strong><@s.text name="footer.version"/> ${resource.metadataVersion.toPlainString()}</strong>
                                                         <#else>
                                                             <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
                                                         </#if>
-                                                    </span>
-                                                    <span class="fs-smaller-2 status-${lastPublishedVersionStatus}">
-                                                        <#if lastPublishedVersionStatus == "registered">
-                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
-                                                        <#elseif lastPublishedVersionStatus == "public">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
-                                                        <#elseif lastPublishedVersionStatus == "private">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
-                                                        <#elseif lastPublishedVersionStatus == "deleted">
-                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
-                                                        </#if>
                                                     </span><br>
+                                                    <span class="fs-smaller-2">
+                                                        <small>
+                                                            ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
+                                                        </small>
+                                                    </span><br>
+                                                    <span class="fs-smaller-2 text-nowrap version-pill text-gbif-primary mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
                                                     <#if resource.isAlreadyAssignedDoi()>
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
@@ -1424,12 +1430,6 @@
                                                             <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                         </#if>
                                                     </#if>
-                                                    <span class="fs-smaller-2">
-                                                        <small>
-                                                            ${lastPublishedTitle?cap_first} |
-                                                            ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
-                                                        </small>
-                                                    </span>
                                                 </div>
 
                                                 <div class="d-flex justify-content-end my-auto version-item-actions">
@@ -1510,18 +1510,32 @@
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                             <div class="ps-2 next-version-item-link">
-                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.nextVersionPlainString}</strong></span>
-                                                <span class="fs-smaller-2 status-${nextVersionStatus}">
+                                                <span>
                                                     <#if nextVersionStatus == "registered">
-                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
+                                                        <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
                                                     <#elseif nextVersionStatus == "public">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
+                                                        <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
                                                     <#elseif nextVersionStatus == "private">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                        <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
                                                     <#elseif nextVersionStatus == "deleted">
-                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
+                                                        <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
                                                     </#if>
+                                                </span>
+                                                <span class="me-2 overview-version-title">
+                                                    <strong><@s.text name="footer.version"/> ${resource.nextVersionPlainString}</strong>
                                                 </span><br>
+                                                <span class="fs-smaller-2">
+                                                    <small>
+                                                        <#if resource.nextPublished??>
+                                                            ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
+                                                        <#else>
+                                                            <@s.text name="manage.overview.published.date.not.set"/>
+                                                        </#if>
+                                                    </small>
+                                                </span><br>
+                                                <span class="fs-smaller-2 text-nowrap version-pill mt-2 mb-1">
+                                                    ${nextPublishedTitle?upper_case}
+                                                </span>
                                                 <#if resource.isAlreadyAssignedDoi()>
                                                     <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                 </#if>
@@ -1544,16 +1558,6 @@
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                     </#if>
                                                 </#if>
-                                                <span class="fs-smaller-2">
-                                                    <small>
-                                                        ${nextPublishedTitle?cap_first} |
-                                                        <#if resource.nextPublished??>
-                                                            ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
-                                                        <#else>
-                                                            <@s.text name="manage.overview.published.date.not.set"/>
-                                                        </#if>
-                                                    </small>
-                                                </span>
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
