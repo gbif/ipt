@@ -1095,6 +1095,15 @@ div.dataTables_processing>div:last-child>div {
     vertical-align: middle;
 }
 
+.version-current {
+    color: white;
+    background: rgb(var(--color-gbif-primary));
+}
+
+.version-next {
+    color: rgb(var(--color-gbif-primary));
+}
+
 .license-pill, .doi-pill {
     color: rgb(var(--color-gbif-primary));
 }

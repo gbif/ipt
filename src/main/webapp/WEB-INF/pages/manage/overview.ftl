@@ -1411,7 +1411,7 @@
                                                             ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
                                                         </small>
                                                     </span><br>
-                                                    <span class="fs-smaller-2 text-nowrap version-pill text-gbif-primary mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
+                                                    <span class="fs-smaller-2 text-nowrap version-pill version-current mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
                                                     <#if resource.isAlreadyAssignedDoi()>
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
@@ -1533,7 +1533,7 @@
                                                         </#if>
                                                     </small>
                                                 </span><br>
-                                                <span class="fs-smaller-2 text-nowrap version-pill mt-2 mb-1">
+                                                <span class="fs-smaller-2 text-nowrap version-pill version-next mt-2 mb-1">
                                                     ${nextPublishedTitle?upper_case}
                                                 </span>
                                                 <#if resource.isAlreadyAssignedDoi()>
