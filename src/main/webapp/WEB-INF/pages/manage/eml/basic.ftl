@@ -466,7 +466,7 @@
 
     <div class="container-fluid bg-body">
         <div class="container bd-layout main-content-container">
-            <main class="bd-main bd-main">
+            <main class="bd-main">
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <#include "eml_sidebar.ftl"/>
                 </div>
