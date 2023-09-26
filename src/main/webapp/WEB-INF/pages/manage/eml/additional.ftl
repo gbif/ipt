@@ -122,7 +122,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <div class="container pt-2">
+    <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
