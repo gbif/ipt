@@ -1101,11 +1101,15 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .version-next {
+    color: #575757;
+}
+
+.license-pill-current, .doi-pill-current {
     color: rgb(var(--color-gbif-primary));
 }
 
-.license-pill, .doi-pill {
-    color: rgb(var(--color-gbif-primary));
+.license-pill-next, .doi-pill-next {
+    color: #575757;
 }
 
 .status-public, .statuspublic {

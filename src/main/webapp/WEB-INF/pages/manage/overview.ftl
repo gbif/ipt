@@ -1413,21 +1413,21 @@
                                                     </span><br>
                                                     <span class="fs-smaller-2 text-nowrap version-pill version-current mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
                                                     <#if resource.isAlreadyAssignedDoi()>
-                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-current mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
                                                     <#if !resource.isDataPackage()>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <#else>
                                                         <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                         <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
                                                             <#list resource.dataPackageMetadata.licenses as license>
                                                                 <#if license.scope?? && license.scope == "data">
-                                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(license.name)!}</span><br>
+                                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(license.name)!}</span><br>
                                                                 </#if>
                                                             </#list>
                                                         <#elseif resource.coreType?? && resource.coreType == "coldp">
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                         </#if>
                                                     </#if>
                                                 </div>
@@ -1537,25 +1537,25 @@
                                                     ${nextPublishedTitle?upper_case}
                                                 </span>
                                                 <#if resource.isAlreadyAssignedDoi()>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                 </#if>
                                                 <#if (resource.eml)?has_content && !resource.isDataPackage()>
                                                     <#if resource.getEml().parseLicenseUrl()?has_content>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
                                                     <#else>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     </#if>
                                                 <#elseif resource.isDataPackage()>
                                                     <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
                                                         <#list resource.dataPackageMetadata.licenses as license>
                                                             <#if license.scope?? && license.scope == "data">
-                                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(license.name)!}</span><br>
+                                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(license.name)!}</span><br>
                                                             </#if>
                                                         </#list>
                                                     <#elseif resource.coreType?? && resource.coreType == "coldp">
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
                                                     </#if>
                                                 </#if>
                                             </div>
