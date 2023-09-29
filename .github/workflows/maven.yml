@@ -27,5 +27,5 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn --batch-mode --update-snapshots verify
+    - name: Run tests
+      run: mvn --batch-mode --update-snapshots test
