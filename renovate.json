@@ -10,7 +10,11 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
-    }
+    },
+    {
+      "matchConfidence": ["low"],
+      "dependencyDashboardApproval": true,
+	  }
   ],
   "prHourlyLimit": 20
 }
