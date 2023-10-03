@@ -1,0 +1,17 @@
+name: Jenkins Trigger
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST -u "jenkins_username:jenkins_api_token" \
+          "https://builds.gbif.org/job/ipt/buildWithParameters?token=your_token&PARAMETER_NAME=$GITHUB_PR_NUMBER"
