@@ -561,36 +561,38 @@ public class EmlValidator extends BaseValidator {
           if (!isTemporalPageEmpty(eml)) {
             int index = 0;
             for (TemporalCoverage tc : eml.getTemporalCoverages()) {
-              if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
-                action
-                  .addFieldError("eml.temporalCoverages[" + index + "].startDate",
-                    action.getText("validation.required",
-                      new String[] {action.getText("eml.temporalCoverages.startDate")}));
-              }
-              if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
-                if (!exists(tc.getStartDate())) {
-                  action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
-                    .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
-                }
-                if (!exists(tc.getEndDate())) {
+              if (tc != null) {
+                if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
                   action
-                    .addFieldError("eml.temporalCoverages[" + index + "].endDate",
-                      action.getText("validation.required",
-                        new String[] {action.getText("eml.temporalCoverages.endDate")}));
+                          .addFieldError("eml.temporalCoverages[" + index + "].startDate",
+                                  action.getText("validation.required",
+                                          new String[]{action.getText("eml.temporalCoverages.startDate")}));
                 }
-              }
-              if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
-                action
-                  .addFieldError(
-                    "eml.temporalCoverages[" + index + "].formationPeriod",
+                if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
+                  if (!exists(tc.getStartDate())) {
+                    action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
+                            .getText("validation.required", new String[]{action.getText("eml.temporalCoverages.startDate")}));
+                  }
+                  if (!exists(tc.getEndDate())) {
                     action
-                      .getText("validation.required",
-                        new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
-              }
-              if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
-                action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
-                  .getText("validation.required",
-                    new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
+                            .addFieldError("eml.temporalCoverages[" + index + "].endDate",
+                                    action.getText("validation.required",
+                                            new String[]{action.getText("eml.temporalCoverages.endDate")}));
+                  }
+                }
+                if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
+                  action
+                          .addFieldError(
+                                  "eml.temporalCoverages[" + index + "].formationPeriod",
+                                  action
+                                          .getText("validation.required",
+                                                  new String[]{action.getText("eml.temporalCoverages.formationPeriod")}));
+                }
+                if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
+                  action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
+                          .getText("validation.required",
+                                  new String[]{action.getText("eml.temporalCoverages.livingTimePeriod")}));
+                }
               }
               index++;
             }
