@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
@@ -8,7 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class InferredTaxonomicCoverage {
+public class InferredEmlTaxonomicCoverage {
 
   private TaxonomicCoverage data;
   // for UI representation
@@ -55,8 +68,8 @@ public class InferredTaxonomicCoverage {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof  InferredTaxonomicCoverage)) return false;
-    InferredTaxonomicCoverage that = (InferredTaxonomicCoverage) o;
+    if (!(o instanceof InferredEmlTaxonomicCoverage)) return false;
+    InferredEmlTaxonomicCoverage that = (InferredEmlTaxonomicCoverage) o;
     return inferred == that.inferred
         && Objects.equals(data, that.data)
         && Objects.equals(organizedData, that.organizedData)
@@ -70,7 +83,7 @@ public class InferredTaxonomicCoverage {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", InferredTaxonomicCoverage.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", InferredEmlTaxonomicCoverage.class.getSimpleName() + "[", "]")
         .add("data=" + data)
         .add("organizedData=" + organizedData)
         .add("inferred=" + inferred)

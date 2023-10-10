@@ -148,8 +148,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <#if (inferredMetadata.inferredTaxonomicCoverage)??>
-                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
+                <#if (inferredMetadata.inferredEmlTaxonomicCoverage)??>
+                    <#list inferredMetadata.inferredEmlTaxonomicCoverage.errors as error>
                         <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
@@ -339,10 +339,10 @@
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
                                 <!-- Data is inferred, preview -->
-                                <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
+                                <#if (inferredMetadata.inferredEmlTaxonomicCoverage.organizedData.keywords)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
-                                            <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
+                                            <#list inferredMetadata.inferredEmlTaxonomicCoverage.organizedData.keywords as k>
                                                 <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
                                                     <tr>
                                                         <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
@@ -363,8 +363,8 @@
                                         </table>
                                     </div>
                                 <!-- Data infer finished, but there are errors/warnings -->
-                                <#elseif (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0>
-                                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
+                                <#elseif (inferredMetadata.inferredEmlTaxonomicCoverage)?? && inferredMetadata.inferredEmlTaxonomicCoverage.errors?size != 0>
+                                    <#list inferredMetadata.inferredEmlTaxonomicCoverage.errors as error>
                                         <div class="callout callout-danger text-smaller">
                                             <@s.text name="${error}"/>
                                         </div>

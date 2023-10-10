@@ -66,11 +66,11 @@ $(document).ready(function(){
 
         $("#dateInferred").show();
 
-        <#if (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size gt 0>
+        <#if (inferredMetadata.inferredEmlTaxonomicCoverage)?? && inferredMetadata.inferredEmlTaxonomicCoverage.errors?size gt 0>
         $(".metadata-error-alert").show();
         </#if>
 
-        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
+        <#if (inferredMetadata.inferredEmlTaxonomicCoverage.data.taxonKeywords)??>
             // remove all current items
             $("[id^=item-]").remove();
 
@@ -79,7 +79,7 @@ $(document).ready(function(){
 
             addNewItem(true);
 
-            <#list inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords as taxon>
+            <#list inferredMetadata.inferredEmlTaxonomicCoverage.data.taxonKeywords as taxon>
                 <#if !taxon?is_first>
                     addNewSubItemByIndex(0, "");
                 </#if>

@@ -44,10 +44,11 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredEmlGeographicCoverage;
+import org.gbif.ipt.model.InferredEmlMetadata;
+import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
+import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.InferredGeographicCoverage;
-import org.gbif.ipt.model.InferredTaxonomicCoverage;
-import org.gbif.ipt.model.InferredTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -889,10 +890,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("user", User.class);
 
     // aliases for inferred metadata
-    xstream.alias("inferredMetadata", InferredMetadata.class);
-    xstream.alias("inferredGeographicCoverage", InferredGeographicCoverage.class);
-    xstream.alias("inferredTaxonomicCoverage", InferredTaxonomicCoverage.class);
-    xstream.alias("inferredTemporalCoverage", InferredTemporalCoverage.class);
+    xstream.alias("inferredMetadata", InferredEmlMetadata.class);
+    xstream.alias("inferredGeographicCoverage", InferredEmlGeographicCoverage.class);
+    xstream.alias("inferredTaxonomicCoverage", InferredEmlTaxonomicCoverage.class);
+    xstream.alias("inferredTemporalCoverage", InferredEmlTemporalCoverage.class);
     xstream.alias("taxonKeyword", TaxonKeyword.class);
     xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
 
@@ -1613,13 +1614,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void loadInferredMetadata(Resource resource) {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
     if (!inferredMetadataFile.exists()) {
-      resource.setInferredMetadata(new InferredMetadata());
+      resource.setInferredMetadata(new InferredEmlMetadata());
       return;
     }
 
     try {
       InputStream input = new FileInputStream(inferredMetadataFile);
-      InferredMetadata inferredMetadata = (InferredMetadata) xstream.fromXML(input);
+      InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
       resource.setInferredMetadata(inferredMetadata);
     } catch (Exception e) {
       LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
@@ -2432,21 +2433,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.isInferGeocoverageAutomatically()
         || resource.isInferTaxonomicCoverageAutomatically()
         || resource.isInferTemporalCoverageAutomatically()) {
-      InferredMetadata inferredMetadata = inferMetadata(resource);
+      InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) inferMetadata(resource);
       // save inferred metadata
       resource.setInferredMetadata(inferredMetadata);
       saveInferredMetadata(resource);
 
       if (resource.isInferGeocoverageAutomatically()) {
-        updateGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
 
       if (resource.isInferTaxonomicCoverageAutomatically()) {
-        updateTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
 
       if (resource.isInferTemporalCoverageAutomatically()) {
-        updateTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
     }
 
@@ -2535,11 +2536,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return combined;
   }
 
-  private void updateGeocoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateEmlGeocoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredGeographicCoverage() != null
-        && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
-      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredGeographicCoverage().getData();
+        && inferredMetadata.getInferredEmlGeographicCoverage() != null
+        && inferredMetadata.getInferredEmlGeographicCoverage().getData() != null) {
+      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredEmlGeographicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
@@ -2552,11 +2553,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private void updateTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateEmlTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredTaxonomicCoverage() != null
-        && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
-      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
+        && inferredMetadata.getInferredEmlTaxonomicCoverage() != null
+        && inferredMetadata.getInferredEmlTaxonomicCoverage().getData() != null) {
+      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredEmlTaxonomicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getTaxonomicCoverages().isEmpty()) {
@@ -2569,11 +2570,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private void updateTemporalCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateEmlTemporalCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredTemporalCoverage() != null
-        && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
-      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
+        && inferredMetadata.getInferredEmlTemporalCoverage() != null
+        && inferredMetadata.getInferredEmlTemporalCoverage().getData() != null) {
+      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredEmlTemporalCoverage().getData();
       resource.getEml().getTemporalCoverages().clear();
       resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
     }
@@ -2581,7 +2582,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public InferredMetadata inferMetadata(Resource resource) {
-    InferredMetadata inferredMetadata = new InferredMetadata();
+    return inferEmlMetadata(resource);
+  }
+
+  private InferredEmlMetadata inferEmlMetadata(Resource resource) {
+    InferredEmlMetadata inferredMetadata = new InferredEmlMetadata();
 
     boolean serverError = false;
 
@@ -2828,64 +2833,64 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     // finalize geocoverage
-    InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
-    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
+    InferredEmlGeographicCoverage inferredEmlGeographicCoverage = new InferredEmlGeographicCoverage();
+    inferredMetadata.setInferredEmlGeographicCoverage(inferredEmlGeographicCoverage);
     if (serverError) {
-      inferredGeographicCoverage.addError("eml.error.serverError");
+      inferredEmlGeographicCoverage.addError("eml.error.serverError");
     } else if (isNoMappings) {
-      inferredGeographicCoverage.addError("eml.error.noMappings");
+      inferredEmlGeographicCoverage.addError("eml.error.noMappings");
     } else if (!geoDataMappedForAtLeastOneMapping) {
-      inferredGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
+      inferredEmlGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
     } else if (noValidDataGeo) {
-      inferredGeographicCoverage.addError("eml.error.noValidData");
+      inferredEmlGeographicCoverage.addError("eml.error.noValidData");
     } else {
-      inferredGeographicCoverage.setInferred(true);
+      inferredEmlGeographicCoverage.setInferred(true);
       GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
       geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
-      inferredGeographicCoverage.setData(geospatialCoverage);
+      inferredEmlGeographicCoverage.setData(geospatialCoverage);
     }
 
     // finalize taxcoverage
-    InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
-    inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
+    InferredEmlTaxonomicCoverage inferredEmlTaxonomicCoverage = new InferredEmlTaxonomicCoverage();
+    inferredMetadata.setInferredEmlTaxonomicCoverage(inferredEmlTaxonomicCoverage);
     if (serverError) {
-      inferredTaxonomicCoverage.addError("eml.error.serverError");
+      inferredEmlTaxonomicCoverage.addError("eml.error.serverError");
     } else if (isNoMappings) {
-      inferredTaxonomicCoverage.addError("eml.error.noMappings");
+      inferredEmlTaxonomicCoverage.addError("eml.error.noMappings");
     } else if (!taxDataMappedForAtLeastOneMapping) {
-      inferredTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
+      inferredEmlTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
     } else if (taxonItemsAdded == 0) {
-      inferredTaxonomicCoverage.addError("eml.error.noValidData");
+      inferredEmlTaxonomicCoverage.addError("eml.error.noValidData");
     } else {
       TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
       taxCoverage.setTaxonKeywords(new ArrayList<>(taxa));
       OrganizedTaxonomicCoverage organizedTaxCoverage = constructOrganizedTaxonomicCoverage(taxCoverage);
-      inferredTaxonomicCoverage.setInferred(true);
-      inferredTaxonomicCoverage.setData(taxCoverage);
-      inferredTaxonomicCoverage.setOrganizedData(organizedTaxCoverage);
+      inferredEmlTaxonomicCoverage.setInferred(true);
+      inferredEmlTaxonomicCoverage.setData(taxCoverage);
+      inferredEmlTaxonomicCoverage.setOrganizedData(organizedTaxCoverage);
     }
 
     // finalize tempcoverage
-    InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
-    inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
+    InferredEmlTemporalCoverage inferredEmlTemporalCoverage = new InferredEmlTemporalCoverage();
+    inferredMetadata.setInferredEmlTemporalCoverage(inferredEmlTemporalCoverage);
     if (serverError) {
-      inferredTemporalCoverage.addError("eml.error.serverError");
+      inferredEmlTemporalCoverage.addError("eml.error.serverError");
     } else if (isNoMappings) {
-      inferredTemporalCoverage.addError("eml.error.noMappings");
+      inferredEmlTemporalCoverage.addError("eml.error.noMappings");
     } else if (!tempDataMappedForAtLeastOneMapping) {
-      inferredTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
+      inferredEmlTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
     } else if (noValidDataTemporal) {
-      inferredTemporalCoverage.addError("eml.error.noValidData");
+      inferredEmlTemporalCoverage.addError("eml.error.noValidData");
     } else {
       TemporalCoverage tempCoverage = new TemporalCoverage();
       try {
         tempCoverage.setStart(startDateStr);
         tempCoverage.setEnd(endDateStr);
-        inferredTemporalCoverage.setInferred(true);
-        inferredTemporalCoverage.setData(tempCoverage);
+        inferredEmlTemporalCoverage.setInferred(true);
+        inferredEmlTemporalCoverage.setData(tempCoverage);
       } catch (ParseException e) {
         LOG.error("Failed to parse date for temporal coverage", e);
-        inferredTemporalCoverage.addError("eml.temporalCoverages.error.dateParseException");
+        inferredEmlTemporalCoverage.addError("eml.temporalCoverages.error.dateParseException");
       }
     }
 
