@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="text-center">
-                    <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                         ${dpMetadata.title!resource.shortname}
                     </h1>
 
@@ -308,7 +308,7 @@
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='portal.resource.description'/>
                         </h4>
-                        <div property="dc:abstract" class="mt-3 overflow-x-auto">
+                        <div class="mt-3 overflow-x-auto">
                             <#if (dpMetadata.description)?has_content>
                                 <p>
                                     <@dpMetadata.description?interpret />
@@ -388,23 +388,23 @@
                                 <div class="table-responsive">
                                     <table class="text-smaller table table-sm table-borderless">
                                         <tr>
-                                            <th class="col-4">Title</th>
+                                            <th class="col-4"><@s.text name="portal.resource.source.title"/></th>
                                             <td>${source.title!}</td>
                                         </tr>
                                         <#if source.path??>
                                             <tr>
-                                                <th class="col-4">Path</th>
+                                                <th class="col-4"><@s.text name="portal.resource.source.path"/></th>
                                                 <td><a href="${source.path}">${source.path}</a></td>
                                             </tr>
                                         </#if>
                                         <#if source.email??>
                                             <tr>
-                                                <th class="col-4">Email</th>
+                                                <th class="col-4"><@s.text name="portal.resource.source.email"/></th>
                                                 <td><a href="mailto:${source.email}">${source.email}</a> </td>
                                             </tr>
                                         </#if>
                                         <tr>
-                                            <th class="col-4">Version</th>
+                                            <th class="col-4"><@s.text name="portal.resource.source.version"/></th>
                                             <td>${source.version!source.additionalProperties['version']!"-"}</td>
                                         </tr>
                                     </table>
@@ -426,24 +426,24 @@
                                     <table class="text-smaller table table-sm table-borderless">
                                         <#if license.name??>
                                             <tr>
-                                                <th class="col-4">Name</th>
+                                                <th class="col-4"><@s.text name="portal.resource.license.name"/></th>
                                                 <td>${license.name}</td>
                                             </tr>
                                         </#if>
                                         <#if license.title??>
                                             <tr>
-                                                <th class="col-4">Title</th>
+                                                <th class="col-4"><@s.text name="portal.resource.license.title"/></th>
                                                 <td>${license.title}</td>
                                             </tr>
                                         </#if>
                                         <#if license.path??>
                                             <tr>
-                                                <th class="col-4">Path</th>
+                                                <th class="col-4"><@s.text name="portal.resource.license.path"/></th>
                                                 <td>${license.path}</td>
                                             </tr>
                                         </#if>
                                         <tr>
-                                            <th class="col-4">Scope</th>
+                                            <th class="col-4"><@s.text name="portal.resource.license.name"/></th>
                                             <td>${license.scope!}</td>
                                         </tr>
                                     </table>
@@ -523,8 +523,8 @@
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <tr>
-                                        <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                        <td property="dc:temporal">${dpMetadata.temporal.start?date} / ${dpMetadata.temporal.end?date}</td>
+                                        <th class="col-4"><@s.text name='portal.resource.temporal.start'/> / <@s.text name='portal.resource.temporal.start'/></th>
+                                        <td>${dpMetadata.temporal.start?date} / ${dpMetadata.temporal.end?date}</td>
                                     </tr>
                                 </table>
                             </div>
