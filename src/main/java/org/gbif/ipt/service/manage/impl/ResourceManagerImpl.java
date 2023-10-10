@@ -52,6 +52,9 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredCamtrapGeographicScope;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredCamtrapTemporalScope;
 import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
@@ -136,6 +139,7 @@ import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
+import org.gbif.metadata.eml.ipt.util.DateUtils;
 import org.gbif.metadata.eml.parse.DatasetEmlParser;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
@@ -156,6 +160,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -2043,19 +2048,44 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private void loadInferredMetadata(Resource resource) {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
-    if (!inferredMetadataFile.exists()) {
-      resource.setInferredMetadata(new InferredEmlMetadata());
-      return;
-    }
 
-    try {
-      InputStream input = new FileInputStream(inferredMetadataFile);
-      InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
-      resource.setInferredMetadata(inferredMetadata);
-    } catch (Exception e) {
-      LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-          "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+    if (resource.isDataPackage()) {
+      // skip non-camtrap resources
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        return;
+      }
+
+      // no metadata file found - initialize with an empty object
+      if (!inferredMetadataFile.exists()) {
+        resource.setInferredMetadata(new InferredCamtrapMetadata());
+        return;
+      }
+
+      // otherwise read the metadata file
+      try {
+        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
+        InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
+        resource.setInferredMetadata(inferredMetadata);
+      } catch (Exception e) {
+        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
+        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+      }
+    } else {
+      if (!inferredMetadataFile.exists()) {
+        resource.setInferredMetadata(new InferredEmlMetadata());
+        return;
+      }
+
+      try {
+        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
+        InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
+        resource.setInferredMetadata(inferredMetadata);
+      } catch (Exception e) {
+        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
+        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+      }
     }
   }
 
@@ -3143,7 +3173,262 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public InferredMetadata inferMetadata(Resource resource) {
-    return inferEmlMetadata(resource);
+    if (resource.isDataPackage()) {
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        return inferCamtrapMetadata(resource);
+      } else {
+        LOG.error("Metadata inferring is not supported for the type {}", resource.getCoreType());
+        return null;
+      }
+    } else {
+      return inferEmlMetadata(resource);
+    }
+  }
+
+  private InferredCamtrapMetadata inferCamtrapMetadata(Resource resource) {
+    InferredCamtrapMetadata inferredMetadata = new InferredCamtrapMetadata();
+
+    boolean serverError = false;
+
+    // geographic scope column indexes
+    int longitudeSourceColumnIndex = -1;
+    int latitudeSourceColumnIndex = -1;
+
+    // taxonomic scope column indexes
+    int taxonIdSourceColumnIndex = -1;
+    int scientificNameSourceColumnIndex = -1;
+
+    // temporal scope column indexes
+    int deploymentStartSourceColumnIndex = -1;
+    int deploymentEndSourceColumnIndex = -1;
+
+
+    // geographic scope variables
+    String fileName = "deployments";
+    boolean geoDataMappedForAtLeastOneMapping = false;
+    boolean geoDataMappedForThisMapping;
+    boolean noValidDataGeo = true;
+    Double minDecimalLongitude = -180.0D;
+    Double maxDecimalLongitude = 180.0D;
+    Double minDecimalLatitude = -90.0D;
+    Double maxDecimalLatitude = 90.0D;
+
+    // temp coverage variables
+    boolean tempDataMappedForAtLeastOneMapping = false;
+    boolean tempDataMappedForThisMapping;
+    boolean noValidDataTemporal = true;
+    String startDateStr = null;
+    TemporalAccessor startDateTA = null;
+    String endDateStr = null;
+    TemporalAccessor endDateTA = null;
+
+    boolean isDataMapped = !resource.getDataSchemaMappings().isEmpty();
+
+    // TODO: 10/10/2023 make sure deployments and observations mapped
+    if (isDataMapped) {
+      for (DataSchemaMapping mapping : resource.getDataSchemaMappings()) {
+        // make sure we are searching in the suitable file/table
+        // TODO: 10/10/2023 should be handled better - first check we have mapped schemas
+        if (fileName.equals(mapping.getDataSchemaFile())) {
+          // calculate column indexes for mapping
+          latitudeSourceColumnIndex = Optional.ofNullable(mapping.getField("latitude"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+          longitudeSourceColumnIndex = Optional.ofNullable(mapping.getField("longitude"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+          deploymentStartSourceColumnIndex = Optional.ofNullable(mapping.getField("deploymentStart"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+          deploymentEndSourceColumnIndex = Optional.ofNullable(mapping.getField("deploymentEnd"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+
+
+          // both geographic fields should be present
+          if (longitudeSourceColumnIndex != -1 && latitudeSourceColumnIndex != -1) {
+            geoDataMappedForThisMapping = true;
+            geoDataMappedForAtLeastOneMapping = true;
+          } else {
+            geoDataMappedForThisMapping = false;
+          }
+
+          // both temporal fields should be present
+          if (deploymentStartSourceColumnIndex != -1 && deploymentEndSourceColumnIndex != -1) {
+            tempDataMappedForThisMapping = true;
+            tempDataMappedForAtLeastOneMapping = true;
+          } else {
+            tempDataMappedForThisMapping = false;
+          }
+
+          ClosableReportingIterator<String[]> iter = null;
+          try {
+            // get the source iterator
+            iter = sourceManager.rowIterator(mapping.getSource());
+            boolean initializeExtremeValues = true;
+
+            while (iter.hasNext()) {
+              String[] in = iter.next();
+              if (in == null || in.length == 0) {
+                continue;
+              }
+
+              // geographic scope section
+              if (geoDataMappedForThisMapping
+                      && latitudeSourceColumnIndex < in.length
+                      && longitudeSourceColumnIndex < in.length) {
+                String rawLatitudeValue = in[latitudeSourceColumnIndex];
+                String rawLongitudeValue = in[longitudeSourceColumnIndex];
+
+                OccurrenceParseResult<LatLng> latLngParseResult =
+                        CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
+                LatLng latLng = latLngParseResult.getPayload();
+
+                // skip erratic records
+                if (latLng != null && latLngParseResult.isSuccessful()) {
+                  noValidDataGeo = false;
+
+                  // initialize min and max values
+                  if (initializeExtremeValues) {
+                    minDecimalLatitude = latLng.getLat();
+                    maxDecimalLatitude = latLng.getLat();
+                    minDecimalLongitude = latLng.getLng();
+                    maxDecimalLongitude = latLng.getLng();
+                    initializeExtremeValues = false;
+                  }
+
+                  if (latLng.getLat() > maxDecimalLatitude) {
+                    maxDecimalLatitude = latLng.getLat();
+                  }
+                  if (latLng.getLat() < minDecimalLatitude) {
+                    minDecimalLatitude = latLng.getLat();
+                  }
+
+                  if (latLng.getLng() > maxDecimalLongitude) {
+                    maxDecimalLongitude = latLng.getLng();
+                  }
+                  if (latLng.getLng() < minDecimalLongitude) {
+                    minDecimalLongitude = latLng.getLng();
+                  }
+                }
+              }
+
+              // temporal scope section
+              if (tempDataMappedForThisMapping && deploymentStartSourceColumnIndex < in.length && deploymentEndSourceColumnIndex < in.length) {
+                String rawDeploymentStartValue = in[deploymentStartSourceColumnIndex];
+                String rawDeploymentEndValue = in[deploymentEndSourceColumnIndex];
+
+                TemporalParser temporalParser = DateParsers.defaultTemporalParser();
+                ParseResult<TemporalAccessor> parsedDeploymentStartResult = temporalParser.parse(rawDeploymentStartValue);
+                ParseResult<TemporalAccessor> parsedDeploymentEndResult = temporalParser.parse(rawDeploymentEndValue);
+                TemporalAccessor parsedDeploymentStartTA = parsedDeploymentStartResult.getPayload();
+                TemporalAccessor parsedDeploymentEndTA = parsedDeploymentEndResult.getPayload();
+
+                // skip erratic records
+                if (!parsedDeploymentStartResult.isSuccessful() || parsedDeploymentStartTA == null || !parsedDeploymentStartTA.isSupported(ChronoField.YEAR)
+                        || !parsedDeploymentEndResult.isSuccessful() || parsedDeploymentEndTA == null || !parsedDeploymentEndTA.isSupported(ChronoField.YEAR)) {
+                  continue;
+                } else {
+                  noValidDataTemporal = false;
+                }
+
+                if (startDateTA == null) {
+                  startDateTA = parsedDeploymentStartTA;
+                  startDateStr = rawDeploymentStartValue;
+                }
+                if (endDateTA == null) {
+                  endDateTA = parsedDeploymentEndTA;
+                  endDateStr = rawDeploymentEndValue;
+                }
+
+                if (parsedDeploymentStartTA instanceof YearMonth) {
+                  parsedDeploymentStartTA = ((YearMonth) parsedDeploymentStartTA).atEndOfMonth();
+                }
+
+                if (parsedDeploymentEndTA instanceof YearMonth) {
+                  parsedDeploymentEndTA = ((YearMonth) parsedDeploymentEndTA).atEndOfMonth();
+                }
+
+                if (parsedDeploymentStartTA instanceof ChronoLocalDate
+                        && startDateTA instanceof ChronoLocalDate
+                        && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedDeploymentStartTA)) {
+                  startDateTA = parsedDeploymentStartTA;
+                  startDateStr = rawDeploymentStartValue;
+                }
+
+                if (parsedDeploymentEndTA instanceof ChronoLocalDate
+                        && endDateTA instanceof ChronoLocalDate
+                        && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedDeploymentEndTA)) {
+                  endDateTA = parsedDeploymentEndTA;
+                  endDateStr = rawDeploymentEndValue;
+                }
+              }
+
+            }
+            // Catch ParseException, occurs for Excel files. Find out why
+          } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+            LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+          } catch (Exception e) {
+            LOG.error("Error while trying to infer metadata from source data", e);
+            serverError = true;
+          } finally {
+            if (iter != null) {
+              try {
+                iter.close();
+              } catch (Exception e) {
+                LOG.error("Error while closing iterator", e);
+                serverError = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // finalize geographic scope
+    InferredCamtrapGeographicScope inferredGeographicScope = new InferredCamtrapGeographicScope();
+    inferredMetadata.setInferredGeographicScope(inferredGeographicScope);
+    if (serverError) {
+      inferredGeographicScope.addError("datapackagemetadata.error.serverError");
+    } else if (!isDataMapped) {
+      inferredGeographicScope.addError("datapackagemetadata.error.noMappings");
+    } else if (!geoDataMappedForAtLeastOneMapping) {
+      inferredGeographicScope.addError("datapackagemetadata.geographic.error.fieldsNotMapped");
+    } else if (noValidDataGeo) {
+      inferredGeographicScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      inferredGeographicScope.setMinLatitude(minDecimalLatitude);
+      inferredGeographicScope.setMinLongitude(minDecimalLongitude);
+      inferredGeographicScope.setMaxLatitude(maxDecimalLatitude);
+      inferredGeographicScope.setMaxLongitude(maxDecimalLongitude);
+      inferredGeographicScope.setInferred(true);
+    }
+
+    // finalize temporal scope
+    InferredCamtrapTemporalScope inferredTemporalScope = new InferredCamtrapTemporalScope();
+    inferredMetadata.setInferredTemporalScope(inferredTemporalScope);
+    if (serverError) {
+      inferredTemporalScope.addError("datapackagemetadata.error.serverError");
+    } else if (!isDataMapped) {
+      inferredTemporalScope.addError("datapackagemetadata.error.noMappings");
+    } else if (!tempDataMappedForAtLeastOneMapping) {
+      inferredTemporalScope.addError("datapackagemetadata.temporal.error.fieldsNotMapped");
+    } else if (noValidDataTemporal) {
+      inferredTemporalScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      try {
+        inferredTemporalScope.setStartDate(DateUtils.calendarDate(startDateStr));
+        inferredTemporalScope.setEndDate(DateUtils.calendarDate(endDateStr));
+        inferredTemporalScope.setInferred(true);
+      } catch (ParseException e) {
+        LOG.error("Failed to parse date for temporal coverage", e);
+        inferredTemporalScope.addError("datapackagemetadata.temporal.error.dateParseException");
+      }
+    }
+
+    inferredMetadata.setLastModified(new Date());
+
+    return inferredMetadata;
   }
 
   private InferredEmlMetadata inferEmlMetadata(Resource resource) {

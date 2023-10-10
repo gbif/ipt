@@ -15,6 +15,8 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
@@ -59,6 +61,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
+  private InferredMetadata inferredMetadata;
 
   public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
 
@@ -100,6 +103,31 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     if (camtrapMetadataSection == null) {
       return;
+    }
+
+    boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
+
+    // infer metadata if absent or re-infer if requested
+    if (reinferMetadata || resource.getInferredMetadata() == null) {
+      InferredMetadata inferredMetadataRaw = resourceManager.inferMetadata(resource);
+
+      if (inferredMetadataRaw instanceof InferredCamtrapMetadata) {
+        inferredMetadata = inferredMetadataRaw;
+      } else {
+        LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
+                InferredCamtrapMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+        inferredMetadata = new InferredCamtrapMetadata();
+      }
+      resource.setInferredMetadata(inferredMetadata);
+      resourceManager.saveInferredMetadata(resource);
+    } else {
+      if (resource.getInferredMetadata() instanceof InferredCamtrapMetadata) {
+        inferredMetadata = resource.getInferredMetadata();
+      } else {
+        LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
+                InferredCamtrapMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+        inferredMetadata = new InferredCamtrapMetadata();
+      }
     }
 
     switch (camtrapMetadataSection) {
@@ -314,5 +342,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getRelatedIdentifierTypes() {
     return RelatedIdentifier.RelatedIdentifierType.VOCABULARY;
+  }
+
+  public InferredMetadata getInferredMetadata() {
+    return inferredMetadata;
   }
 }
