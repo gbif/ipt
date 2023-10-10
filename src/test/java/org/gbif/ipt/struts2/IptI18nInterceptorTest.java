@@ -26,11 +26,18 @@ public class IptI18nInterceptorTest {
   public void testGetLocaleFromParam() {
     IptI18nInterceptor interceptor = new IptI18nInterceptor();
 
-    // Test Italian, which is not yet supported by the IPT and should return the default Locale
-    assertEquals(Locale.getDefault(), interceptor.getLocaleFromParam(Locale.ITALIAN));
+    Locale defaultLocale = Locale.getDefault();
 
-    // Test non-interpretable language that should return default Locale
-    assertEquals(Locale.getDefault(), interceptor.getLocaleFromParam("$"));
+    // Test Italian, which is not yet supported by the IPT and should return the default Locale
+    assertEquals(defaultLocale, interceptor.getLocaleFromParam(Locale.ITALIAN));
+
+    // Test non-interpretable language that should return default Locale unless the default one is English
+    // which will be transformed into English UK
+    if (!defaultLocale.equals(Locale.ENGLISH)) {
+      assertEquals(defaultLocale, interceptor.getLocaleFromParam("$"));
+    } else {
+      assertEquals(Locale.UK, interceptor.getLocaleFromParam("$"));
+    }
 
     // Test support for Persian, which is soon supported by the IPT, but not supported by Struts2/JRE by default
     assertEquals(new Locale("fa"), interceptor.getLocaleFromParam(new Locale("fa")));

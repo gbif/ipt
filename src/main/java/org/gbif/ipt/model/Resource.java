@@ -103,7 +103,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   // automatically infer temporal coverage from source data
   private boolean inferTemporalCoverageAutomatically = false;
   // inferred metadata from source data
-  private InferredMetadata inferredMetadata = new InferredMetadata();
+  private InferredMetadata inferredMetadata = new InferredEmlMetadata();
   // resource version and eml version are the same
   private BigDecimal emlVersion;
   private BigDecimal dataPackageMetadataVersion;

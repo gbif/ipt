@@ -73,11 +73,11 @@
 
                 $("#dateInferred").show();
 
-                <#if (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size gt 0>
+                <#if (inferredMetadata.inferredEmlTemporalCoverage)?? && inferredMetadata.inferredEmlTemporalCoverage.errors?size gt 0>
                 $(".metadata-error-alert").show();
                 </#if>
 
-                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
+                <#if (inferredMetadata.inferredEmlTemporalCoverage.data)??>
                 count = 0;
                 // remove all current items
                 $("[id^=temporal-]").remove();
@@ -93,8 +93,8 @@
                 updateFields(idNewForm, count, DATE_RANGE);
                 $("#tempTypes-" + count).val(DATE_RANGE);
                 $("#temporal-" + count).slideDown("slow").css('zoom', 1);
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredEmlTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredEmlTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
                 count++;
                 </#if>
             });
@@ -334,20 +334,20 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <#if (inferredMetadata.inferredTemporalCoverage)??>
-            <#list inferredMetadata.inferredTemporalCoverage.errors as error>
-                <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="${error}"/></span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </#list>
-        </#if>
-    </div>
+                <#if (inferredMetadata.inferredEmlTemporalCoverage)??>
+                    <#list inferredMetadata.inferredEmlTemporalCoverage.errors as error>
+                        <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                            <div class="me-3">
+                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                            </div>
+                            <div class="overflow-x-hidden pt-1">
+                                <span><@s.text name="${error}"/></span>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </#list>
+                </#if>
+            </div>
 
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -492,18 +492,18 @@
                             <!-- Static data -->
                             <div id="static-temporal" class="mt-4" style="display: none;">
                                 <!-- Data is inferred, preview -->
-                                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
+                                <#if (inferredMetadata.inferredEmlTemporalCoverage.data)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                                <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
+                                                <td>${(inferredMetadata.inferredEmlTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredEmlTemporalCoverage.data.endDate?date)!}</td>
                                             </tr>
                                         </table>
                                     </div>
                                 <!-- Data infer finished, but there are errors/warnings -->
-                                <#elseif (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size != 0>
-                                    <#list inferredMetadata.inferredTemporalCoverage.errors as error>
+                                <#elseif (inferredMetadata.inferredEmlTemporalCoverage)?? && inferredMetadata.inferredEmlTemporalCoverage.errors?size != 0>
+                                    <#list inferredMetadata.inferredEmlTemporalCoverage.errors as error>
                                         <div class="callout callout-danger text-smaller">
                                             <@s.text name="${error}"/>
                                         </div>

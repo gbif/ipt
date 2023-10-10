@@ -21,6 +21,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
@@ -101,7 +102,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
-  private InferredMetadata inferredMetadata;
+  private InferredEmlMetadata inferredMetadata;
   private BBox inferredGeocoverage;
   private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
   private KeyNamePair inferredTemporalCoverage;
@@ -310,11 +311,25 @@ public class MetadataAction extends ManagerBaseAction {
 
     // infer metadata if absent or re-infer if requested
     if (reinferMetadata || resource.getInferredMetadata() == null) {
-      inferredMetadata = resourceManager.inferMetadata(resource);
+      InferredMetadata inferredMetadataRaw = resourceManager.inferMetadata(resource);
+
+      if (inferredMetadataRaw instanceof InferredEmlMetadata) {
+        inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;
+      } else {
+        LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
+                InferredEmlMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+        inferredMetadata = new InferredEmlMetadata();
+      }
       resource.setInferredMetadata(inferredMetadata);
       resourceManager.saveInferredMetadata(resource);
     } else {
-      inferredMetadata = resource.getInferredMetadata();
+      if (resource.getInferredMetadata() instanceof InferredEmlMetadata) {
+        inferredMetadata = (InferredEmlMetadata) resource.getInferredMetadata();
+      } else {
+        LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
+                InferredEmlMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+        inferredMetadata = new InferredEmlMetadata();
+      }
     }
 
     switch (section) {
@@ -972,7 +987,7 @@ public class MetadataAction extends ManagerBaseAction {
     return s;
   }
 
-  public InferredMetadata getInferredMetadata() {
+  public InferredEmlMetadata getInferredMetadata() {
     return inferredMetadata;
   }
 

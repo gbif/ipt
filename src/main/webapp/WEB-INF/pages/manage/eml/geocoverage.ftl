@@ -75,7 +75,7 @@
                 $("#dateInferred").show();
                 $("#globalCoverage").prop("checked", false);
                 adjustMapWithInferredCoordinates();
-                <#if (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size gt 0>
+                <#if (inferredMetadata.inferredEmlGeographicCoverage)?? && inferredMetadata.inferredEmlGeographicCoverage.errors?size gt 0>
                     $(".metadata-error-alert").show();
                 </#if>
             });
@@ -123,19 +123,19 @@
                 locationFilter.enable();
 
                 // replace "," with "." (if needed) for correct work of locationFilter
-                var minLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!?replace(",", ".")}"
+                var minLngRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!?replace(",", ".")}"
                 var minLngVal = parseFloat(minLngRaw);
                 if (isNaN(minLngVal)) minLngVal = -180;
 
-                var maxLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!?replace(",", ".")}";
+                var maxLngRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!?replace(",", ".")}";
                 var maxLngVal = parseFloat(maxLngRaw);
                 if (isNaN(maxLngVal)) maxLngVal = 180;
 
-                var minLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!?replace(",", ".")}";
+                var minLatRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!?replace(",", ".")}";
                 var minLatVal = parseFloat(minLatRaw);
                 if (isNaN(minLatVal)) minLatVal = -90;
 
-                var maxLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!?replace(",", ".")}";
+                var maxLatRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!?replace(",", ".")}";
                 var maxLatVal = parseFloat(maxLatRaw);
                 if (isNaN(maxLatVal)) maxLatVal = 90;
 
@@ -143,11 +143,11 @@
             }
 
             function setInferredCoordinatesToInputs() {
-                <#if (inferredMetadata.inferredGeographicCoverage.data)??>
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!}");
+                <#if (inferredMetadata.inferredEmlGeographicCoverage.data)??>
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!}");
                 </#if>
             }
 
@@ -369,20 +369,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <#if (inferredMetadata.inferredGeographicCoverage)??>
-        <#list inferredMetadata.inferredGeographicCoverage.errors as error>
-            <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-                <div class="me-3">
-                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                </div>
-                <div class="overflow-x-hidden pt-1">
-                    <span><@s.text name="${error}"/></span>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </#list>
-    </#if>
-</div>
+            <#if (inferredMetadata.inferredEmlGeographicCoverage)??>
+                <#list inferredMetadata.inferredEmlGeographicCoverage.errors as error>
+                    <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                        <div class="me-3">
+                            <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                        </div>
+                        <div class="overflow-x-hidden pt-1">
+                            <span><@s.text name="${error}"/></span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </#list>
+            </#if>
+        </div>
 
 <form id="geocoverage-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
@@ -459,18 +459,18 @@
 
                         <div id="static-coordinates" class="mt-3" style="display: none;">
                             <!-- Data is inferred, preview -->
-                            <#if (inferredMetadata.inferredGeographicCoverage.data)??>
+                            <#if (inferredMetadata.inferredEmlGeographicCoverage.data)??>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-borderless">
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
-                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
+                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
                                         </tr>
                                     </table>
                                 </div>
                             <!-- Data infer finished, but there are errors/warnings -->
-                            <#elseif (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size != 0>
-                                <#list inferredMetadata.inferredGeographicCoverage.errors as error>
+                            <#elseif (inferredMetadata.inferredEmlGeographicCoverage)?? && inferredMetadata.inferredEmlGeographicCoverage.errors?size != 0>
+                                <#list inferredMetadata.inferredEmlGeographicCoverage.errors as error>
                                     <div class="callout callout-danger text-smaller">
                                         <@s.text name="${error}"/>
                                     </div>
