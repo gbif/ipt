@@ -1426,8 +1426,8 @@
                                                         <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
                                                     </#if>
                                                 </span><br>
-                                                <#if resource.isAlreadyAssignedDoi()>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                <#if resource.doi??>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.doi!}</span>
                                                 </#if>
                                                 <#if resource.getEml().parseLicenseUrl()?has_content>
                                                     <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
