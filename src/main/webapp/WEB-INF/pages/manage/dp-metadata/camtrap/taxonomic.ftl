@@ -266,6 +266,12 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+
+            $("#preview-inferred-taxonomic").click(function (e) {
+                e.preventDefault();
+                $("#actual-metadata-block").hide();
+                $("#inferred-metadata-block").show();
+            });
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -328,133 +334,89 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
-                            <p class="mb-4"><@s.text name="datapackagemetadata.taxonomic.intro"/></p>
+                            <p class="mb-2"><@s.text name="datapackagemetadata.taxonomic.intro"/></p>
+
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-6">
+                                </div>
+
+                                <div id="preview-links" class="col-md-6">
+                                    <div class="d-flex justify-content-end">
+                                        <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                            </svg>
+                                        </span>
+                                            <span><@s.text name="eml.previewInferred"/></span>
+                                        </a>
+                                    </div>
+                                    <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
+                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                        <a href="camtrap-metadata-taxonomic.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                            <span>
+                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                </svg>
+                                            </span>
+                                            <span><@s.text name="datapackagemetadata.reinfer"/></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
 
-                            <!-- List of Sources -->
-                            <div>
-                                <div id="taxon-items">
-                                    <#if (metadata.taxonomic)?has_content>
-                                        <#list metadata.taxonomic as item>
-                                            <div id="taxon-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                                <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                    <a id="taxon-removeLink-${item_index}" href="" class="removeTaxonLink metadata-action-link">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${removeTaxonLink?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].taxonID" help="i18n" i18nkey="datapackagemetadata.taxonomic.taxonId" requiredField=true />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].taxonIDReference" help="i18n" i18nkey="datapackagemetadata.taxonomic.taxonIdReference" requiredField=true />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].scientificName" help="i18n" i18nkey="datapackagemetadata.taxonomic.scientificName" requiredField=true />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <#if (metadata.taxonomic[item_index].taxonRank)??>
-                                                        <@select name="metadata.taxonomic[${item_index}].taxonRank" help="i18n" includeEmpty=true compareValues=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value="${metadata.taxonomic[item_index].taxonRank!}"/>
-                                                    <#else>
-                                                        <@select name="metadata.taxonomic[${item_index}].taxonRank" help="i18n" includeEmpty=true compareValues=true options=taxonRanks i18nkey="datapackagemetadata.taxonomic.taxonRank" value=""/>
-                                                    </#if>
-                                                </div>
+                            <#if (inferredMetadata.inferredTaxonomicScope)?? && inferredMetadata.inferredTaxonomicScope.inferred && !inferredMetadata.inferredTaxonomicScope.errors?has_content>
+                                <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
+                                    <input type="hidden" name="metadata.taxonomic[${tx?index}].taxonID" value="${tx.taxonID!}">
+                                    <input type="hidden" name="metadata.taxonomic[${tx?index}].scientificName" value="${tx.scientificName!}">
+                                </#list>
+                            </#if>
 
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].kingdom" help="i18n" i18nkey="datapackagemetadata.taxonomic.kingdom" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].phylum" help="i18n" i18nkey="datapackagemetadata.taxonomic.phylum" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].class" help="i18n" i18nkey="datapackagemetadata.taxonomic.class" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].order" help="i18n" i18nkey="datapackagemetadata.taxonomic.order" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].family" help="i18n" i18nkey="datapackagemetadata.taxonomic.family" />
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input name="metadata.taxonomic[${item_index}].genus" help="i18n" i18nkey="datapackagemetadata.taxonomic.genus" />
-                                                </div>
+                            <div id="actual-metadata-block">
+                                <#list (metadata.taxonomic)! as tx>
+                                    <div class="table-responsive">
+                                        <table class="text-smaller table table-sm table-borderless">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
+                                                <td>
+                                                    ${tx.taxonID!}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                <td>
+                                                    ${tx.scientificName!}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </#list>
+                            </div>
 
-                                                <div class="col-12 mb-2">
-                                                    <span class="form-label">
-                                                        <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='datapackagemetadata.taxonomic.vernacularNames.help'/>" data-bs-original-title="" title="">
-                                                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                                        </a>
-                                                        <@s.text name="datapackagemetadata.taxonomic.vernacularNames"/>
-                                                    </span>
-                                                </div>
-
-<#--                                                ${fieldErrors}-->
-
-                                                <div id="vernacularName-items-${item_index}" class="col-12 mt-0 vernacularName-items-wrapper">
-                                                    <#if metadata.taxonomic[item_index].vernacularNames?has_content>
-                                                        <#list metadata.taxonomic[item_index].vernacularNames?keys as vernacularNameKey>
-                                                            <div id="vernacularName-item-${item_index}-${vernacularNameKey_index}" class="row g-3 <#if vernacularNameKey_index != 0>mt-1</#if> item">
-                                                                <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                                    <a id="vernacularName-removeLink-${item_index}-${vernacularNameKey_index}" href="" class="removeVernacularNameLink metadata-action-link">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                        <span>${removeVernacularNameLink?lower_case?cap_first}</span>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <label for="metadata.taxonomic" class="form-label">
-                                                                      Language code
-                                                                    </label>
-                                                                    <input class="form-control" type="text" id="vernacularNames-key-${item_index}-${vernacularNameKey_index}" name="vernacularNames-key-${item_index}-${vernacularNameKey_index}" value="${vernacularNameKey}">
-                                                                    <@s.fielderror id="field-error-vernacularNames-key-${item_index}-${vernacularNameKey_index}" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="vernacularNames-key-${item_index}-${vernacularNameKey_index}"/>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <label for="metadata.taxonomic" class="form-label">
-                                                                      Vernacular name
-                                                                    </label>
-                                                                    <input class="form-control" type="text" id="metadata.taxonomic[${item_index}].vernacularNames[${vernacularNameKey_index}].value" name="metadata.taxonomic[${item_index}].vernacularNames['${vernacularNameKey}']" value="${metadata.taxonomic[item_index].vernacularNames[vernacularNameKey]}">
-                                                                </div>
-                                                            </div>
-                                                        </#list>
-                                                    </#if>
-                                                </div>
-
-                                                <div class="addNew col-12 mt-2">
-                                                    <a id="plus-vernacularName-${item_index}" class="metadata-action-link" href="">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addVernacularNameLink?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-
-                                            </div>
-                                        </#list>
-                                    </#if>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-taxon" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addTaxonLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
+                            <div id="inferred-metadata-block" style="display: none;">
+                                <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
+                                    <div class="table-responsive">
+                                        <table class="text-smaller table table-sm table-borderless">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
+                                                <td>
+                                                    ${tx.taxonID!}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                <td>
+                                                    ${tx.scientificName!}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </#list>
                             </div>
                         </div>
                     </div>

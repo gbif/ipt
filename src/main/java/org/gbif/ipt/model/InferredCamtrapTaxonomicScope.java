@@ -13,13 +13,28 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class InferredCamtrapTaxonomicScope {
 
+    private List<Taxonomic> data = new ArrayList<>();
     private boolean inferred = false;
     private Set<String> errors = new HashSet<>();
+
+    public List<Taxonomic> getData() {
+        return data;
+    }
+
+    public void setData(List<Taxonomic> data) {
+        this.data = data;
+    }
 
     public boolean isInferred() {
         return inferred;
@@ -39,5 +54,27 @@ public class InferredCamtrapTaxonomicScope {
 
     public void addError(String error) {
         errors.add(error);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InferredCamtrapTaxonomicScope that = (InferredCamtrapTaxonomicScope) o;
+        return inferred == that.inferred && Objects.equals(data, that.data) && Objects.equals(errors, that.errors);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", InferredCamtrapTaxonomicScope.class.getSimpleName() + "[", "]")
+                .add("data=" + data)
+                .add("inferred=" + inferred)
+                .add("errors=" + errors)
+                .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, inferred, errors);
     }
 }

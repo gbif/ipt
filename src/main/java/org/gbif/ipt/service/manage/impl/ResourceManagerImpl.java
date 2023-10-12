@@ -54,6 +54,7 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
 import org.gbif.ipt.model.InferredCamtrapTemporalScope;
 import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
@@ -82,6 +83,7 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
@@ -3205,7 +3207,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
 
     // geographic scope variables
-    String fileName = "deployments";
+    String deployments = "deployments";
+    String observations = "observations";
     boolean geoDataMappedForAtLeastOneMapping = false;
     boolean geoDataMappedForThisMapping;
     boolean noValidDataGeo = true;
@@ -3214,7 +3217,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Double minDecimalLatitude = -90.0D;
     Double maxDecimalLatitude = 90.0D;
 
-    // temp coverage variables
+    // temporal scope variables
     boolean tempDataMappedForAtLeastOneMapping = false;
     boolean tempDataMappedForThisMapping;
     boolean noValidDataTemporal = true;
@@ -3223,14 +3226,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     String endDateStr = null;
     TemporalAccessor endDateTA = null;
 
+    // taxonomic scope variables
+    boolean taxDataMappedForAtLeastOneMapping = false;
+    boolean taxDataMappedForThisMapping;
+    int taxonItemsAdded = 0;
+    final int maxNumberOfTaxonItems = 200;
+    Map<String, String> taxa = new HashMap<>();
+
     boolean isDataMapped = !resource.getDataSchemaMappings().isEmpty();
 
-    // TODO: 10/10/2023 make sure deployments and observations mapped
     if (isDataMapped) {
       for (DataSchemaMapping mapping : resource.getDataSchemaMappings()) {
         // make sure we are searching in the suitable file/table
-        // TODO: 10/10/2023 should be handled better - first check we have mapped schemas
-        if (fileName.equals(mapping.getDataSchemaFile())) {
+        if (deployments.equals(mapping.getDataSchemaFile())) {
           // calculate column indexes for mapping
           latitudeSourceColumnIndex = Optional.ofNullable(mapping.getField("latitude"))
                   .map(DataSchemaFieldMapping::getIndex)
@@ -3382,6 +3390,67 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               }
             }
           }
+        } else if (observations.equals(mapping.getDataSchemaFile())) {
+          // calculate column indexes for mapping
+          taxonIdSourceColumnIndex = Optional.ofNullable(mapping.getField("taxonID"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+          scientificNameSourceColumnIndex = Optional.ofNullable(mapping.getField("scientificName"))
+                  .map(DataSchemaFieldMapping::getIndex)
+                  .orElse(-1);
+
+          // both taxonomic fields should be present
+          if (taxonIdSourceColumnIndex != -1 || scientificNameSourceColumnIndex != -1) {
+            taxDataMappedForThisMapping = true;
+            taxDataMappedForAtLeastOneMapping = true;
+          } else {
+            taxDataMappedForThisMapping = false;
+          }
+
+
+          ClosableReportingIterator<String[]> iter = null;
+          try {
+            // get the source iterator
+            iter = sourceManager.rowIterator(mapping.getSource());
+            boolean initializeExtremeValues = true;
+
+            while (iter.hasNext()) {
+              String[] in = iter.next();
+              if (in == null || in.length == 0) {
+                continue;
+              }
+
+              // taxonomic scope section
+              if (taxDataMappedForThisMapping && taxonItemsAdded < maxNumberOfTaxonItems) {
+                if (taxonIdSourceColumnIndex != -1
+                        && taxonIdSourceColumnIndex < in.length
+                        && StringUtils.isNotEmpty(in[taxonIdSourceColumnIndex])
+                        && scientificNameSourceColumnIndex != -1
+                        && scientificNameSourceColumnIndex < in.length
+                        && StringUtils.isNotEmpty(in[scientificNameSourceColumnIndex])) {
+
+                  taxa.put(in[taxonIdSourceColumnIndex], in[scientificNameSourceColumnIndex]);
+                  taxonItemsAdded++;
+                }
+              }
+
+            }
+            // Catch ParseException, occurs for Excel files. Find out why
+          } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+            LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+          } catch (Exception e) {
+            LOG.error("Error while trying to infer metadata from source data", e);
+            serverError = true;
+          } finally {
+            if (iter != null) {
+              try {
+                iter.close();
+              } catch (Exception e) {
+                LOG.error("Error while closing iterator", e);
+                serverError = true;
+              }
+            }
+          }
         }
       }
     }
@@ -3425,6 +3494,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         LOG.error("Failed to parse date for temporal coverage", e);
         inferredTemporalScope.addError("datapackagemetadata.temporal.error.dateParseException");
       }
+    }
+
+    // finalize taxonomic scope
+    InferredCamtrapTaxonomicScope inferredTaxonomicScope = new InferredCamtrapTaxonomicScope();
+    inferredMetadata.setInferredTaxonomicScope(inferredTaxonomicScope);
+    if (serverError) {
+      inferredTaxonomicScope.addError("datapackagemetadata.error.serverError");
+    } else if (!isDataMapped) {
+      inferredTaxonomicScope.addError("datapackagemetadata.error.noMappings");
+    } else if (!taxDataMappedForAtLeastOneMapping) {
+      inferredTaxonomicScope.addError("datapackagemetadata.taxonomic.error.fieldsNotMapped");
+    } else if (taxonItemsAdded == 0) {
+      inferredTaxonomicScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      List<Taxonomic> taxCoverage = taxa.entrySet().stream()
+              .map(entry -> {
+                Taxonomic t = new Taxonomic();
+                t.setTaxonID(entry.getKey());
+                t.setScientificName(entry.getValue());
+                return t;
+              })
+              .collect(Collectors.toList());
+      inferredTaxonomicScope.setData(taxCoverage);
+      inferredTaxonomicScope.setInferred(true);
     }
 
     inferredMetadata.setLastModified(new Date());

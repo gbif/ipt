@@ -50,7 +50,8 @@ public class Taxonomic implements Serializable {
    * (Required)
    */
   @JsonProperty("taxonIDReference")
-  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
+  // TODO: 12/10/2023 temporarily lift requirement
+//  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   private URI taxonIDReference;
 
   /**
