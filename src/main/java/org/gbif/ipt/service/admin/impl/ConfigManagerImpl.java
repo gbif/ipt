@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -508,5 +509,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   @Override
   public void setAdminEmail(String adminEmail) {
     cfg.setProperty(AppConfig.ADMIN_EMAIL, adminEmail);
+  }
+
+  @Override
+  public void setDefaultLocale(String defaultLocale) {
+    Optional.ofNullable(defaultLocale)
+            .filter(cfg::isSupportedLanguage)
+            .ifPresent(cfg::setDefaultLocale);
   }
 }

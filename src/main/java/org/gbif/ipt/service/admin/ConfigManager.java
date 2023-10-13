@@ -126,4 +126,9 @@ public interface ConfigManager {
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
   void setAdminEmail(String adminEmail);
+
+  /**
+   * Sets default IPT language.
+   */
+  void setDefaultLocale(String defaultLanguage);
 }

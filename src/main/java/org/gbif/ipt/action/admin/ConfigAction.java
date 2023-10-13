@@ -27,7 +27,9 @@ import org.gbif.ipt.utils.URLUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +50,18 @@ public class ConfigAction extends POSTAction {
   protected ConfigManager configManager;
   private final ResourceManager resourceManager;
 
+  private static final Map<String, String> DEFAULT_LOCALES = new HashMap<>();
+
+  static {
+    DEFAULT_LOCALES.put("en", "English");
+    DEFAULT_LOCALES.put("fr", "Française");
+    DEFAULT_LOCALES.put("es", "Español");
+    DEFAULT_LOCALES.put("zh", "繁體中文");
+    DEFAULT_LOCALES.put("pt", "Português");
+    DEFAULT_LOCALES.put("ja", "日本語");
+    DEFAULT_LOCALES.put("ru", "Русский");
+  }
+
   // these are transient properties that are set on a per request basis
   // getters and setters are called by the Struts2 interceptors based on the
   // http request submitted
@@ -60,6 +74,7 @@ public class ConfigAction extends POSTAction {
   protected Double longitude;
   protected Boolean archivalMode;
   protected Integer archivalLimit;
+  protected String defaultLocale;
 
   @Inject
   public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -123,6 +138,14 @@ public class ConfigAction extends POSTAction {
    */
   public Integer getArchivalLimit() {
     return cfg.getArchivalLimit();
+  }
+
+  public String getDefaultLocale() {
+    return cfg.getDefaultLocale();
+  }
+
+  public Map<String, String> getDefaultLocales() {
+    return DEFAULT_LOCALES;
   }
 
   /**
@@ -237,6 +260,14 @@ public class ConfigAction extends POSTAction {
       return INPUT;
     }
 
+    // Default locale
+    try {
+      configManager.setDefaultLocale(defaultLocale);
+    } catch (InvalidConfigException e) {
+      addActionWarning(getText("admin.config.defaultLocale.error"));
+      return INPUT;
+    }
+
     try {
       configManager.saveConfig();
     } catch (InvalidConfigException e) {
@@ -286,6 +317,10 @@ public class ConfigAction extends POSTAction {
 
   public void setArchivalLimit(Integer archivalLimit) {
     this.archivalLimit = archivalLimit;
+  }
+
+  public void setDefaultLocale(String defaultLocale) {
+    this.defaultLocale = defaultLocale;
   }
 
   /**

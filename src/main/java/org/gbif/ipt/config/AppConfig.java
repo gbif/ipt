@@ -36,10 +36,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
@@ -79,6 +82,7 @@ public class AppConfig {
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
   public static final String ADMIN_EMAIL = "admin.email";
+  public static final String DEFAULT_LOCALE = "defaultLocale";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   public static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
@@ -99,10 +103,11 @@ public class AppConfig {
 
   // mapping of the id to the term that is the row ID
   private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  private static final Set<Locale> IPT_SUPPORTED_LOCALES;
+  private static final Set<String> IPT_SUPPORTED_LANGUAGES;
 
   private static List<String> coreRowTypes;
   private static Map<String, String> coreRowTypeIdTerms;
-  private static List<String> baseDataSchemas;
 
   static {
     DEFAULT_CORE_ROW_TYPES = Arrays.asList(
@@ -115,8 +120,26 @@ public class AppConfig {
 
     coreRowTypes = DEFAULT_CORE_ROW_TYPES;
     coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  }
 
-    baseDataSchemas = Collections.singletonList(Constants.DATA_SCHEMA_CAMTRAP_DP);
+  static {
+    IPT_SUPPORTED_LOCALES = new HashSet<>();
+    IPT_SUPPORTED_LOCALES.add(Locale.UK); // Used to ensure a day-month-year order in formatted dates.
+    IPT_SUPPORTED_LOCALES.add(Locale.FRENCH);
+    IPT_SUPPORTED_LOCALES.add(Locale.CHINESE);
+    IPT_SUPPORTED_LOCALES.add(Locale.JAPANESE);
+    IPT_SUPPORTED_LOCALES.add(new Locale("es"));
+    IPT_SUPPORTED_LOCALES.add(new Locale("pt"));
+    IPT_SUPPORTED_LOCALES.add(new Locale("ru"));
+
+    IPT_SUPPORTED_LANGUAGES = new HashSet<>();
+    IPT_SUPPORTED_LANGUAGES.add("en");
+    IPT_SUPPORTED_LANGUAGES.add("fr");
+    IPT_SUPPORTED_LANGUAGES.add("zh");
+    IPT_SUPPORTED_LANGUAGES.add("ja");
+    IPT_SUPPORTED_LANGUAGES.add("es");
+    IPT_SUPPORTED_LANGUAGES.add("pt");
+    IPT_SUPPORTED_LANGUAGES.add("ru");
   }
 
   private AppConfig() {
@@ -154,10 +177,6 @@ public class AppConfig {
     return coreRowTypes;
   }
 
-  public static List<String> getBaseDataSchemas() {
-    return baseDataSchemas;
-  }
-
   /**
    * @return true if the row type is suitable for use as a core.
    */
@@ -187,6 +206,10 @@ public class AppConfig {
 
   public String getAdminEmail() {
     return properties.getProperty(ADMIN_EMAIL);
+  }
+
+  public String getDefaultLocale() {
+    return properties.getProperty(DEFAULT_LOCALE);
   }
 
   public DataDir getDataDir() {
@@ -643,6 +666,10 @@ public class AppConfig {
     properties.setProperty(key, StringUtils.trimToEmpty(value));
   }
 
+  public void setDefaultLocale(String value) {
+    properties.setProperty(DEFAULT_LOCALE, value);
+  }
+
   protected void setRegistryType(REGISTRY_TYPE newType) throws InvalidConfigException {
     Objects.requireNonNull(newType, "Registry type cannot be null");
     if (this.type != null) {
@@ -671,5 +698,13 @@ public class AppConfig {
       lock.flush();
       LOG.info("Locked DataDir to registry of type " + registryType);
     }
+  }
+
+  public boolean isSupportedLanguage(String language) {
+    return IPT_SUPPORTED_LANGUAGES.contains(language);
+  }
+
+  public boolean isSupportedLocale(Locale locale) {
+    return IPT_SUPPORTED_LOCALES.contains(locale);
   }
 }
