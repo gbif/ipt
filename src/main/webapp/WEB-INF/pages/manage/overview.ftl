@@ -1536,7 +1536,7 @@
                                                 <span class="fs-smaller-2 text-nowrap version-pill version-next mt-2 mb-1">
                                                     ${nextPublishedTitle?upper_case}
                                                 </span>
-                                                <#if resource.isAlreadyAssignedDoi()>
+                                                <#if resource.doi??>
                                                     <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                 </#if>
                                                 <#if (resource.eml)?has_content && !resource.isDataPackage()>
