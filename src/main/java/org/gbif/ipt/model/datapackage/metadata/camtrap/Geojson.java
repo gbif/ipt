@@ -55,7 +55,7 @@ public class Geojson implements Serializable {
   private Geojson.Type type = Geojson.Type.POLYGON;
 
   @JsonProperty("coordinates")
-  private List<List<List<Double>>> coordinates = new ArrayList<>();
+  private List<?> coordinates = new ArrayList<>();
 
   /**
    * Bounding Box
@@ -96,12 +96,12 @@ public class Geojson implements Serializable {
   }
 
   @JsonProperty("coordinates")
-  public List<List<List<Double>>> getCoordinates() {
+  public List<?> getCoordinates() {
     return coordinates;
   }
 
   @JsonProperty("coordinates")
-  public void setCoordinates(List<List<List<Double>>> coordinates) {
+  public void setCoordinates(List<?> coordinates) {
     this.coordinates = coordinates;
   }
 
