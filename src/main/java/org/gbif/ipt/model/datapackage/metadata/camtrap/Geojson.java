@@ -14,7 +14,6 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.GeographicScopeMetadata;
-import org.gbif.ipt.validation.ValidCoordinates;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -63,9 +61,7 @@ public class Geojson implements Serializable {
    * To include information on the coordinate range for geometries, features, or feature collections, a GeoJSON object may have a member named `bbox`. The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the contained geometries, with the lowest values for all axes followed by the highest values. The axes order of a bbox follows the axes order of geometries. In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference system of the GeoJSON object of which it is a member.
    */
   @JsonProperty("bbox")
-  @Size(min = 4, groups = GeographicScopeMetadata.class)
-  @ValidCoordinates(groups = GeographicScopeMetadata.class)
-  @Valid
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<Double> bbox = new ArrayList<>();
 
   @SuppressWarnings("FieldMayBeFinal")

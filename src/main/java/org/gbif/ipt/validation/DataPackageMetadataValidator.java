@@ -177,35 +177,7 @@ public class DataPackageMetadataValidator {
             = validator.validate(metadata, GeographicScopeMetadata.class);
 
         for (ConstraintViolation<DataPackageMetadata> violation : geographicSectionViolations) {
-          if (violation.getMessage().contains("type")) {
-            action.addFieldError("metadata.spatial.type", action.getText(violation.getMessage()));
-          }
-
-          if (violation.getMessage().contains("west")) {
-            action.addFieldError("metadata.spatial.bbox[0]", action.getText(violation.getMessage()));
-          }
-
-          if (violation.getMessage().contains("east")) {
-            action.addFieldError("metadata.spatial.bbox[1]", action.getText(violation.getMessage()));
-          }
-
-          if (violation.getMessage().contains("south")) {
-            action.addFieldError("metadata.spatial.bbox[2]", action.getText(violation.getMessage()));
-          }
-
-          if (violation.getMessage().contains("north")) {
-            action.addFieldError("metadata.spatial.bbox[3]", action.getText(violation.getMessage()));
-          }
-
-          if (violation.getMessage().contains("longitude.swapped")) {
-            action.addFieldError("metadata.spatial.bbox[0]", action.getText(violation.getMessage()));
-            action.addFieldError("metadata.spatial.bbox[1]", action.getText(violation.getMessage() + ".viceversa"));
-          }
-
-          if (violation.getMessage().contains("latitude.swapped")) {
-            action.addFieldError("metadata.spatial.bbox[2]", action.getText(violation.getMessage()));
-            action.addFieldError("metadata.spatial.bbox[3]", action.getText(violation.getMessage() + ".viceversa"));
-          }
+          action.addActionError(action.getText(violation.getMessage()));
         }
 
         break;
