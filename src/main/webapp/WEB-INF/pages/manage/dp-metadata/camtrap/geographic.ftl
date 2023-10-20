@@ -80,6 +80,9 @@
 
                 if (isCustomScope) {
                     filteredData.push({ name: "customGeoJson", value: customGeoJson });
+                } else {
+                    filteredData.push({ name: "metadata.spatial.type", value: "Polygon" });
+                    filteredData.push({ name: "metadata.spatial.coordinates", value: "Polygon" });
                 }
 
                 // Remove parameters if custom scope is true
@@ -186,7 +189,6 @@
                                 <div>Current saved metadata</div>
                                 <div class="table-responsive border rounded p-3">
                                     <table class="text-smaller table table-sm table-borderless mb-0">
-                                        <#--                                        <caption>Current saved metadata</caption>-->
                                         <tr>
                                             <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
                                             <td>
@@ -196,20 +198,13 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
                                             <td>
-                                                <#--                                                <#if (metadata.spatial.bbox[0])?? && (metadata.spatial.bbox[1])?? && (metadata.spatial.bbox[2])?? && (metadata.spatial.bbox[3])??>-->
-                                                <#--                                                    [${metadata.spatial.bbox[0]}, ${metadata.spatial.bbox[1]}, ${metadata.spatial.bbox[2]}, ${metadata.spatial.bbox[3]}]-->
-                                                <#--                                                <#else>-->
-                                                <#--                                                    --->
-                                                <#--                                                </#if>-->
                                                 <#if (metadata.spatial.coordinates)??>
                                                     [${metadata.spatial.coordinates}]
+                                                <#else>
+                                                    -
                                                 </#if>
                                             </td>
                                         </tr>
-                                        <#--                                        <tr>-->
-                                        <#--                                            <th class="col-4"><@s.text name='datapackagemetadata.coordinatePrecision'/></th>-->
-                                        <#--                                            <td>${metadata.coordinatePrecision!"0.001"}</td>-->
-                                        <#--                                        </tr>-->
                                     </table>
                                 </div>
                             </div>
@@ -233,17 +228,13 @@
                                         </svg>
                                         <@s.text name="button.upload"/>
                                     </a>
-<#--                                    <a href="#" class="action-link-button action-link-button-danger fs-smaller" id="buttonRemove">-->
-<#--                                        <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
-<#--                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>-->
-<#--                                        </svg>-->
-<#--                                        <@s.text name="button.remove"/>-->
-<#--                                    </a>-->
                                 </div>
 
                                 <pre id="jsonContent" class="border rounded p-3 mt-3 fs-smaller-2" style="background: #f6f8fa; display: none;"></pre>
                             </div>
 
+
+                            <#assign geographicScopeMetadataIsInferred = (inferredMetadata.inferredGeographicScope)?? && inferredMetadata.inferredGeographicScope.inferred && !inferredMetadata.inferredGeographicScope.errors?has_content/>
 
                             <div id="inferred-metadata-block" class="mt-4">
                                 <div class="row">
@@ -267,14 +258,18 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
                                             <td>
-                                                Polygon
+                                                <#if geographicScopeMetadataIsInferred>
+                                                    Polygon
+                                                <#else>
+                                                    -
+                                                </#if>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
                                             <td>
-                                                <#if (inferredMetadata.inferredGeographicScope)?? && inferredMetadata.inferredGeographicScope.inferred && !inferredMetadata.inferredGeographicScope.errors?has_content>
-                                                    [${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}, ${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}]
+                                                <#if geographicScopeMetadataIsInferred>
+                                                    [[${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}, ${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}]]
                                                 <#else>
                                                     -
                                                 </#if>

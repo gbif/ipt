@@ -797,9 +797,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setCreated(new Date());
     res.setCreator(creator);
 
-    // make sure correct metadata class is set
+    // make sure the correct metadata class is set
     if (CAMTRAP_DP.equals(type)) {
       res.setDataPackageMetadata(new CamtrapMetadata());
+      res.inferCoverageMetadataAutomatically(true);
     } else if (COL_DP.equals(type)) {
       res.setDataPackageMetadata(new FrictionlessColMetadata());
     }

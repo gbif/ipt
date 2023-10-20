@@ -58,8 +58,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-
 /**
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
@@ -102,6 +100,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private boolean inferTaxonomicCoverageAutomatically = false;
   // automatically infer temporal coverage from source data
   private boolean inferTemporalCoverageAutomatically = false;
+  private boolean customGeocoverage = false;
   // inferred metadata from source data
   private InferredMetadata inferredMetadata = new InferredEmlMetadata();
   // resource version and eml version are the same
@@ -1680,5 +1679,19 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isDataPackage() {
     return schemaIdentifier != null;
+  }
+
+  public boolean isCustomGeocoverage() {
+    return customGeocoverage;
+  }
+
+  public void setCustomGeocoverage(boolean customGeocoverage) {
+    this.customGeocoverage = customGeocoverage;
+  }
+
+  public void inferCoverageMetadataAutomatically(boolean param) {
+    setInferGeocoverageAutomatically(param);
+    setInferTaxonomicCoverageAutomatically(param);
+    setInferTemporalCoverageAutomatically(param);
   }
 }

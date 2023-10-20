@@ -79,7 +79,7 @@ public class DataPackageMetadataValidator {
 
     if (metadata instanceof CamtrapMetadata) {
       for (CamtrapMetadataSection section : CamtrapMetadataSection.values()) {
-        validateCamtrap(action, metadata, section);
+        validateCamtrap(action, (CamtrapMetadata) metadata, section);
         // only highlight first section has errors
         if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
           problemsEncountered = true;
@@ -122,7 +122,7 @@ public class DataPackageMetadataValidator {
       DataPackageMetadata metadata = (resource.getDataPackageMetadata() == null) ? new FrictionlessMetadata() : resource.getDataPackageMetadata();
 
       if (CAMTRAP_DP.equals(resource.getCoreType())) {
-        validateCamtrap(action, metadata, ((CamtrapMetadataSection) section));
+        validateCamtrap(action, (CamtrapMetadata) metadata, ((CamtrapMetadataSection) section));
       } else {
         validateFrictionless(action, metadata, ((FrictionlessMetadataSection) section));
       }
@@ -138,7 +138,7 @@ public class DataPackageMetadataValidator {
    * @param metadata data package metadata
    * @param section EML document section name
    */
-  public void validateCamtrap(BaseAction action, DataPackageMetadata metadata, @Nullable CamtrapMetadataSection section) {
+  public void validateCamtrap(BaseAction action, CamtrapMetadata metadata, @Nullable CamtrapMetadataSection section) {
     // set default
     if (section == null) {
       section = CamtrapMetadataSection.BASIC_SECTION;

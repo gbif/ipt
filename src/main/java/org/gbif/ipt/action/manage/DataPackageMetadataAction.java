@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
@@ -47,6 +48,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -58,10 +61,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private static final long serialVersionUID = -1669636958170716515L;
 
   private final DataPackageMetadataValidator metadataValidator;
+  private final ObjectMapper objectMapper;
   private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
   private Map<String, String> organisations = new LinkedHashMap<>();
   private InferredMetadata inferredMetadata;
+  private String customGeoJson;
 
   public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
 
@@ -76,6 +81,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
                                    ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.metadataValidator = metadataValidator;
+    this.objectMapper = new ObjectMapper();
   }
 
   @Override
@@ -189,11 +195,16 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
+    // pre-process (convert) Camtrap metadata
+    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+      if (section == CamtrapMetadataSection.GEOGRAPHIC_SECTION) {
+        convertCamtrapGeographicMetadata();
+      }
+    }
+
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
     if (metadataValidator.isSectionValid(this, resource, section)) {
-      // set coordinates object (if camtrap)
-      setCoordinates(resource);
       // Save metadata information (datapackage.json)
       resourceManager.saveDatapackageMetadata(resource);
       // save date metadata was last modified
@@ -213,6 +224,46 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     }
 
     return SUCCESS;
+  }
+
+  /**
+   * 1. When custom GeoJSON is selected: serialize JSON string and set it to the geographic scope metadata.
+   * 2. When inferred metadata is selected: set inferred metadata to the geographic scope metadata.
+   */
+  private void convertCamtrapGeographicMetadata() {
+    if (resource.isCustomGeocoverage()) {
+      if (customGeoJson != null) {
+        try {
+          Geojson geojson = objectMapper.readValue(customGeoJson, Geojson.class);
+          ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+        } catch (JsonProcessingException e) {
+          // TODO: 18/10/2023 translate message
+          addActionError("Error processing custom GeoJSON");
+        }
+      } else {
+        // TODO: 20/10/2023 translate message
+        addActionError("Please provide GeoJSON object");
+      }
+    } else {
+      if (inferredMetadata instanceof InferredCamtrapMetadata) {
+        if (((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().isInferred() &&
+                ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().getErrors().isEmpty()) {
+          Geojson geojson = new Geojson();
+          geojson.setType(Geojson.Type.POLYGON);
+          List<Double> coordinates = new ArrayList<>();
+          InferredCamtrapGeographicScope inferredGeographicScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope();
+          coordinates.add(inferredGeographicScope.getMinLongitude());
+          coordinates.add(inferredGeographicScope.getMinLatitude());
+          coordinates.add(inferredGeographicScope.getMaxLongitude());
+          coordinates.add(inferredGeographicScope.getMaxLatitude());
+          geojson.setCoordinates(coordinates);
+          ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+        } else {
+          // TODO: 20/10/2023 translate message
+          addActionError("Failed to infer metadata: " + ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().getErrors());
+        }
+      }
+    }
   }
 
   private void nextSectionCamtrap() {
@@ -242,46 +293,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
       default:
         break;
-    }
-  }
-
-  /**
-   * Populate coordinates object for the spatial field. It's produced from bbox field.
-   */
-  private void setCoordinates(Resource resource) {
-    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-      Geojson spatial = camtrapMetadata.getSpatial();
-      if (spatial != null) {
-        List<Double> bbox = spatial.getBbox();
-        camtrapMetadata.getSpatial().getCoordinates().clear();
-
-        List<List<Double>> coordinates = new ArrayList<>();
-        List<Double> coordinate0 = new ArrayList<>();
-        List<Double> coordinate1 = new ArrayList<>();
-        List<Double> coordinate2 = new ArrayList<>();
-        List<Double> coordinate3 = new ArrayList<>();
-        List<Double> coordinate4 = new ArrayList<>();
-
-        coordinate0.add(bbox.get(0));
-        coordinate0.add(bbox.get(1));
-        coordinate1.add(bbox.get(2));
-        coordinate1.add(bbox.get(1));
-        coordinate2.add(bbox.get(2));
-        coordinate2.add(bbox.get(3));
-        coordinate3.add(bbox.get(0));
-        coordinate3.add(bbox.get(3));
-        coordinate4.add(bbox.get(0));
-        coordinate4.add(bbox.get(1));
-
-        coordinates.add(coordinate0);
-        coordinates.add(coordinate1);
-        coordinates.add(coordinate2);
-        coordinates.add(coordinate3);
-        coordinates.add(coordinate4);
-
-        camtrapMetadata.getSpatial().getCoordinates().add(coordinates);
-      }
     }
   }
 
@@ -346,5 +357,13 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public InferredMetadata getInferredMetadata() {
     return inferredMetadata;
+  }
+
+  public String getCustomGeoJson() {
+    return customGeoJson;
+  }
+
+  public void setCustomGeoJson(String customGeoJson) {
+    this.customGeoJson = customGeoJson;
   }
 }
