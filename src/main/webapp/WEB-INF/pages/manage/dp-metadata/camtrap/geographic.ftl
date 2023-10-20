@@ -5,16 +5,6 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            // scroll to the error if present
-            var invalidElements = $(".is-invalid");
-
-            if (invalidElements !== undefined && invalidElements.length > 0) {
-                var invalidElement = invalidElements.first();
-                var pos = invalidElement.offset().top - 100;
-                // scroll to the element
-                $('body, html').animate({scrollTop: pos});
-            }
-
             var $customScopeCheckbox = $("#resource\\.customGeocoverage");
             var isCustomScopeEnabled = $customScopeCheckbox.is(":checked");
 
@@ -36,12 +26,13 @@
                     $("#inferred-metadata-block").show();
                     $("#preview-links").show();
                     $("#custom-data").hide();
+                    $("#custom-data-textarea").text('');
                 }
             });
 
             var customGeoJson;
 
-            $('#buttonUpload').on('click', function () {
+            function readFile() {
                 const fileInput = $('#custom-data-input')[0];
                 const file = fileInput.files[0];
                 if (file) {
@@ -54,71 +45,25 @@
                             customGeoJson = jsonString;
 
                             $("#custom-data-textarea").text(jsonString);
+                            $("#error-upload-file").text("");
                         } catch (error) {
-                            $('#jsonContent').text("Invalid JSON file.");
+                            $("#error-upload-file").text("Error: Invalid JSON");
                         }
                     };
 
                     reader.readAsText(file);
-                } else {
-                    $('#jsonContent').text("Please select a JSON file first.");
                 }
-            });
-
-            $("#geographic-scope-form").submit(function (e) {
-                e.preventDefault();
-                var formData = $(this).serializeArray();
-
-                // Check if the form submits custom scope data
-                var isCustomScope = formData.some(function(input) {
-                    return input.name === "resource.customGeocoverage" && input.value === 'true';
-                });
-
-                // Create a new array to store the parameters
-                var filteredData = [];
-                filteredData.push({ name: "Save", value: "save" });
-
-                if (isCustomScope) {
-                    filteredData.push({ name: "customGeoJson", value: customGeoJson });
-                } else {
-                    filteredData.push({ name: "metadata.spatial.type", value: "Polygon" });
-                    filteredData.push({ name: "metadata.spatial.coordinates", value: "Polygon" });
-                }
-
-                // Remove parameters if custom scope is true
-                formData.forEach(function(input) {
-                    if (!input.name.startsWith("metadata.spatial.bbox") || !isCustomScope) {
-                        filteredData.push(input);
-                    }
-                });
-
-                // Serialize the modified data back into a query string
-                var modifiedData = $.param(filteredData);
-
-                // Re-submit form
-                $.ajax({
-                    type: 'POST',
-                    url: 'camtrap-metadata-${section}.do',
-                    data: modifiedData,
-                    success: function() {
-                        window.location.href = "${baseURL}/manage/camtrap-metadata-taxonomic.do?r=${resource.shortname}";
-                    }
-                });
-            });
-
+            }
 
             $("#file-selector").click(function() {
                 $("#custom-data-input").click();
             });
 
             $("#custom-data-input").change(function() {
-                const fileNameDisplay = $("#file-name");
                 const fileInput = $("#custom-data-input")[0];
 
                 if (fileInput.files.length > 0) {
-                    fileNameDisplay.text("Selected file: " + fileInput.files[0].name);
-                } else {
-                    fileNameDisplay.text("");
+                    readFile();
                 }
             });
         });
@@ -218,16 +163,15 @@
                                     <@s.file id="custom-data-input" cssClass="form-control form-control-sm my-1 d-none" />
                                 </div>
 
-                                <textarea id="custom-data-textarea" name="text" placeholder="Input custom Geo JSON object" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;"></textarea>
+                                <textarea id="custom-data-textarea" name="customGeoJson" placeholder="Input custom Geo JSON object" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;"></textarea>
                                 <div id="file-selector" class="border-bottom border-start border-end rounded py-2 px-3 fs-smaller text-muted" style="cursor: pointer;border-color: #ced4da !important;border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
-                                    Or upload file
-                                    <span id="file-name"></span>
-                                    <a href="#" class="action-link-button action-link-button-primary fs-smaller" id="buttonUpload">
+                                    <span id="upload-file">
                                         <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                            <path style="fill:#6c757d!important;" d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"></path>
                                         </svg>
-                                        <@s.text name="button.upload"/>
-                                    </a>
+                                        Upload file
+                                    </span>
+                                    <span id="error-upload-file" class="text-gbif-danger"></span>
                                 </div>
 
                                 <pre id="jsonContent" class="border rounded p-3 mt-3 fs-smaller-2" style="background: #f6f8fa; display: none;"></pre>
