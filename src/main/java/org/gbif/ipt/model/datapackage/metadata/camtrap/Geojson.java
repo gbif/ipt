@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -53,6 +54,7 @@ public class Geojson implements Serializable {
   private Geojson.Type type = Geojson.Type.POLYGON;
 
   @JsonProperty("coordinates")
+  @NotEmpty(message = "validation.camtrap.metadata.spatial.coordinates.required", groups = GeographicScopeMetadata.class)
   private List<?> coordinates = new ArrayList<>();
 
   /**

@@ -156,6 +156,13 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
 
       case GEOGRAPHIC_SECTION:
+        InferredCamtrapGeographicScope inferredGeographicScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope();
+
+        if (reinferMetadata && inferredGeographicScope != null && !inferredGeographicScope.getErrors().isEmpty()) {
+          for (String errorMessage : inferredGeographicScope.getErrors()) {
+            addActionError(getText(errorMessage));
+          }
+        }
         break;
 
       case TAXONOMIC_SECTION:
