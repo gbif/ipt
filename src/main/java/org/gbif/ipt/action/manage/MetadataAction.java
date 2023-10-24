@@ -33,6 +33,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
@@ -76,6 +77,7 @@ public class MetadataAction extends ManagerBaseAction {
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
+  private final ResourceMetadataInferringService resourceMetadataInferringService;
   private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
   private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
   private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
@@ -118,9 +120,11 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings configWarnings, DataDir dataDir) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager,
+    ResourceMetadataInferringService resourceMetadataInferringService, ConfigWarnings configWarnings, DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.resourceMetadataInferringService = resourceMetadataInferringService;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.configWarnings = configWarnings;
     this.dataDir = dataDir;
@@ -311,7 +315,7 @@ public class MetadataAction extends ManagerBaseAction {
 
     // infer metadata if absent or re-infer if requested
     if (reinferMetadata || resource.getInferredMetadata() == null) {
-      InferredMetadata inferredMetadataRaw = resourceManager.inferMetadata(resource);
+      InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredEmlMetadata) {
         inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;

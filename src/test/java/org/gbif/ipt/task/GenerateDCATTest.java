@@ -40,6 +40,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
@@ -304,7 +305,8 @@ public class GenerateDCATTest {
           mockEml2Rtf,
           mockVocabulariesManager,
           mockSimpleTextProvider,
-          mockRegistrationManager);
+          mockRegistrationManager,
+          mock(ResourceMetadataInferringService.class));
 
     // creator
     User creator = new User();

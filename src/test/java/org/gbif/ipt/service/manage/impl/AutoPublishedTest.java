@@ -27,6 +27,7 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -76,7 +77,8 @@ public class AutoPublishedTest {
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),
       mock(SimpleTextProvider.class),
-      mock(RegistrationManager.class));
+      mock(RegistrationManager.class),
+      mock(ResourceMetadataInferringService.class));
   }
 
   public Resource getResource() {

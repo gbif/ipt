@@ -22,6 +22,7 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 
@@ -46,7 +47,8 @@ public class MetadataActionTest {
 
     // initiate action
     action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mock(ResourceManager.class), mock(VocabulariesManager.class), mock(ConfigWarnings.class), mock(DataDir.class));
+      mock(ResourceManager.class), mock(VocabulariesManager.class), mock(ResourceMetadataInferringService.class),
+      mock(ConfigWarnings.class), mock(DataDir.class));
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
     datasetSubtypes = new LinkedHashMap<>();

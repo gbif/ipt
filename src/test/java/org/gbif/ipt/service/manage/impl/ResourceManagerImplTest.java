@@ -60,6 +60,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -257,7 +258,8 @@ public class ResourceManagerImplTest {
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManager);
+        mockRegistrationManager,
+        mock(ResourceMetadataInferringService.class));
   }
 
   /**
@@ -1019,7 +1021,8 @@ public class ResourceManagerImplTest {
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManager);
+        mockRegistrationManager,
+        mock(ResourceMetadataInferringService.class));
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);

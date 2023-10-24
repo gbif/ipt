@@ -410,15 +410,6 @@ public interface ResourceManager {
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
 
   /**
-   * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
-   *
-   * @param resource resource
-   *
-   * @return inferred metadata
-   */
-  InferredMetadata inferMetadata(Resource resource);
-
-  /**
    * Update organisation name and alias for published resources.
    */
   void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias);
