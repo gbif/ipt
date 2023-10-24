@@ -63,6 +63,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -266,6 +267,7 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
+        mock(ResourceMetadataInferringService.class),
         mock(MetadataReader.class));
   }
 
@@ -1032,6 +1034,7 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
+        mock(ResourceMetadataInferringService.class),
         mock(MetadataReader.class));
 
     // update alt. id

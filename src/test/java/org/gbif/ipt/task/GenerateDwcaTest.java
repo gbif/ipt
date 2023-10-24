@@ -49,6 +49,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
@@ -525,7 +526,8 @@ public class GenerateDwcaTest {
           mockVocabulariesManager,
           mockSimpleTextProvider,
           mockRegistrationManager,
-          mock(MetadataReader.class));
+          mock(MetadataReader.class),
+          mock(ResourceMetadataInferringService.class));
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);

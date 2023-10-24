@@ -31,6 +31,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -89,7 +90,8 @@ public class ArchivalModeTest {
       mock(VocabulariesManager.class),
       mock(SimpleTextProvider.class),
       mock(RegistrationManager.class),
-      mock(MetadataReader.class));
+      mock(MetadataReader.class),
+      mock(ResourceMetadataInferringService.class));
   }
 
   public Resource getResource(String shortName) {
