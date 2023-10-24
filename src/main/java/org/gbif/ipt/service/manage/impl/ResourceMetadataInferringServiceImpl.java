@@ -22,7 +22,13 @@ import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.InferredCamtrapGeographicScope;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
+import org.gbif.ipt.model.InferredCamtrapTemporalScope;
 import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
@@ -30,6 +36,7 @@ import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -39,6 +46,7 @@ import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
+import org.gbif.metadata.eml.ipt.util.DateUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.text.ParseException;
@@ -48,12 +56,15 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -62,6 +73,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
@@ -81,6 +93,15 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   protected final Logger LOG = LogManager.getLogger(ResourceMetadataInferringServiceImpl.class);
 
+  private static final String CAMTRAP_DEPLOYMENTS = "deployments";
+  private static final String CAMTRAP_OBSERVATIONS = "observations";
+  public static final String CAMTRAP_OBSERVATIONS_TAXON_ID = "taxonID";
+  public static final String CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME = "scientificName";
+  public static final String CAMTRAP_DEPLOYMENTS_LATITUDE = "latitude";
+  public static final String CAMTRAP_DEPLOYMENTS_LONGITUDE = "longitude";
+  public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START = "deploymentStart";
+  public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END = "deploymentEnd";
+
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
 
@@ -92,7 +113,16 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   @Override
   public InferredMetadata inferMetadata(Resource resource) {
-    return inferEmlMetadata(resource);
+    if (resource.isDataPackage()) {
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        return inferCamtrapMetadata(resource);
+      } else {
+        LOG.error("Metadata inferring is not supported for the type {}", resource.getCoreType());
+        return null;
+      }
+    } else {
+      return inferEmlMetadata(resource);
+    }
   }
 
   private InferredEmlMetadata inferEmlMetadata(Resource resource) {
@@ -610,5 +640,462 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       }
     }
     return combined;
+  }
+
+  private InferredCamtrapMetadata inferCamtrapMetadata(Resource resource) {
+    InferredCamtrapMetadata inferredMetadata = new InferredCamtrapMetadata();
+    InferredCamtrapMetadataParams params = new InferredCamtrapMetadataParams();
+
+    boolean requiredSchemasMapped = isRequiredSchemasMapped(resource, params);
+
+    if (requiredSchemasMapped) {
+      for (DataSchemaMapping mapping : resource.getDataSchemaMappings()) {
+        processMapping(mapping, params);
+      }
+    }
+
+    finalizeInferredMetadata(inferredMetadata, params);
+    inferredMetadata.setLastModified(new Date());
+
+    return inferredMetadata;
+  }
+
+  private boolean isRequiredSchemasMapped(Resource resource, InferredCamtrapMetadataParams params) {
+    boolean isDeploymentsMapped = isSchemaMapped(resource, CAMTRAP_DEPLOYMENTS);
+    boolean isObservationsMapped = isSchemaMapped(resource, CAMTRAP_OBSERVATIONS);
+    params.geographic.isDeploymentsMapped = isDeploymentsMapped;
+    params.temporal.isDeploymentsMapped = isDeploymentsMapped;
+    params.taxonomic.isObservationsMapped = isObservationsMapped;
+
+    return isDeploymentsMapped || isObservationsMapped;
+  }
+
+  private void processMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
+    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataSchemaFile())) {
+      processDeploymentsMapping(mapping, params);
+    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataSchemaFile())) {
+      processObservationsMapping(mapping, params);
+    }
+  }
+
+  private void processObservationsMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
+    // calculate column indexes for mapping
+    params.taxonomic.taxonIdSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_TAXON_ID);
+    params.taxonomic.scientificNameSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME);
+
+    ClosableReportingIterator<String[]> iter = null;
+    try {
+      // get the source iterator
+      iter = sourceManager.rowIterator(mapping.getSource());
+
+      while (iter.hasNext()) {
+        String[] in = iter.next();
+        if (in == null || in.length == 0) {
+          continue;
+        }
+
+        processLine(in, params.taxonomic);
+      }
+      // Catch ParseException, occurs for Excel files. Find out why
+    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+    } catch (Exception e) {
+      LOG.error("Error while trying to infer metadata from source data", e);
+      params.taxonomic.serverError = true;
+    } finally {
+      if (iter != null) {
+        try {
+          iter.close();
+        } catch (Exception e) {
+          LOG.error("Error while closing iterator", e);
+          params.taxonomic.serverError = true;
+        }
+      }
+    }
+  }
+
+  private void processDeploymentsMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
+    // calculate column indexes for mapping
+    params.geographic.latitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LATITUDE);
+    params.geographic.longitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LONGITUDE);
+    params.temporal.deploymentStartSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START);
+    params.temporal.deploymentEndSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END);
+
+    ClosableReportingIterator<String[]> iter = null;
+    try {
+      // get the source iterator
+      iter = sourceManager.rowIterator(mapping.getSource());
+
+      while (iter.hasNext()) {
+        String[] in = iter.next();
+        if (in == null || in.length == 0) {
+          continue;
+        }
+
+        processLine(in, params.geographic);
+        processLine(in, params.temporal);
+      }
+      // Catch ParseException, occurs for Excel files. Find out why
+    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+    } catch (Exception e) {
+      LOG.error("Error while trying to infer metadata from source data", e);
+      params.geographic.serverError = true;
+      params.temporal.serverError = true;
+    } finally {
+      if (iter != null) {
+        try {
+          iter.close();
+        } catch (Exception e) {
+          LOG.error("Error while closing iterator", e);
+          params.geographic.serverError = true;
+          params.temporal.serverError = true;
+        }
+      }
+    }
+  }
+
+  private void processLine(String[] in, InferredCamtrapGeographicScopeParams params) {
+    if (params.isLatitudeMapped()
+        && params.isLongitudeMapped()
+        && params.isColumnIndexesWithinRange(in.length)) {
+      String rawLatitudeValue = in[params.latitudeSourceColumnIndex];
+      String rawLongitudeValue = in[params.longitudeSourceColumnIndex];
+
+      OccurrenceParseResult<LatLng> latLngParseResult =
+          CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
+      LatLng latLng = latLngParseResult.getPayload();
+
+      // skip erratic records
+      // TODO: 23/10/2023 store invalid values?
+      if (latLng != null && latLngParseResult.isSuccessful()) {
+        params.noValidDataGeo = false;
+
+        // initialize min and max values
+        if (!params.coordinatesInitialized) {
+          params.minDecimalLatitude = latLng.getLat();
+          params.maxDecimalLatitude = latLng.getLat();
+          params.minDecimalLongitude = latLng.getLng();
+          params.maxDecimalLongitude = latLng.getLng();
+          params.coordinatesInitialized = true;
+        }
+
+        if (latLng.getLat() > params.maxDecimalLatitude) {
+          params.maxDecimalLatitude = latLng.getLat();
+        }
+        if (latLng.getLat() < params.minDecimalLatitude) {
+          params.minDecimalLatitude = latLng.getLat();
+        }
+
+        if (latLng.getLng() > params.maxDecimalLongitude) {
+          params.maxDecimalLongitude = latLng.getLng();
+        }
+        if (latLng.getLng() < params.minDecimalLongitude) {
+          params.minDecimalLongitude = latLng.getLng();
+        }
+      }
+    }
+  }
+
+  private void processLine(String[] in, InferredCamtrapTemporalScopeParams params) {
+    if (params.isDeploymentStartMapped()
+        && params.isDeploymentEndMapped()
+        && params.isColumnIndexesWithinRange(in.length)) {
+      String rawDeploymentStartValue = in[params.deploymentStartSourceColumnIndex];
+      String rawDeploymentEndValue = in[params.deploymentEndSourceColumnIndex];
+
+      TemporalParser temporalParser = DateParsers.defaultTemporalParser();
+      ParseResult<TemporalAccessor> parsedDeploymentStartResult = temporalParser.parse(rawDeploymentStartValue);
+      ParseResult<TemporalAccessor> parsedDeploymentEndResult = temporalParser.parse(rawDeploymentEndValue);
+      TemporalAccessor parsedDeploymentStartTA = parsedDeploymentStartResult.getPayload();
+      TemporalAccessor parsedDeploymentEndTA = parsedDeploymentEndResult.getPayload();
+
+      // skip erratic records
+      if (!parsedDeploymentStartResult.isSuccessful() || parsedDeploymentStartTA == null || !parsedDeploymentStartTA.isSupported(ChronoField.YEAR)
+          || !parsedDeploymentEndResult.isSuccessful() || parsedDeploymentEndTA == null || !parsedDeploymentEndTA.isSupported(ChronoField.YEAR)) {
+        return;
+      } else {
+        params.noValidDataTemporal = false;
+      }
+
+      if (params.startDateTA == null) {
+        params.startDateTA = parsedDeploymentStartTA;
+        params.startDateStr = rawDeploymentStartValue;
+      }
+      if (params.endDateTA == null) {
+        params.endDateTA = parsedDeploymentEndTA;
+        params.endDateStr = rawDeploymentEndValue;
+      }
+
+      if (parsedDeploymentStartTA instanceof YearMonth) {
+        parsedDeploymentStartTA = ((YearMonth) parsedDeploymentStartTA).atEndOfMonth();
+      }
+
+      if (parsedDeploymentEndTA instanceof YearMonth) {
+        parsedDeploymentEndTA = ((YearMonth) parsedDeploymentEndTA).atEndOfMonth();
+      }
+
+      if (parsedDeploymentStartTA instanceof ChronoLocalDate
+          && params.startDateTA instanceof ChronoLocalDate
+          && ((ChronoLocalDate) params.startDateTA).isAfter((ChronoLocalDate) parsedDeploymentStartTA)) {
+        params.startDateTA = parsedDeploymentStartTA;
+        params.startDateStr = rawDeploymentStartValue;
+      }
+
+      if (parsedDeploymentEndTA instanceof ChronoLocalDate
+          && params.endDateTA instanceof ChronoLocalDate
+          && ((ChronoLocalDate) params.endDateTA).isBefore((ChronoLocalDate) parsedDeploymentEndTA)) {
+        params.endDateTA = parsedDeploymentEndTA;
+        params.endDateStr = rawDeploymentEndValue;
+      }
+    }
+  }
+
+  private void processLine(String[] in, InferredCamtrapTaxonomicScopeParams params) {
+    if (params.isTaxonIdMapped()
+        && params.isScientificNameMapped()
+        && params.taxonItemsAdded < params.maxNumberOfTaxonItems) {
+      if (params.isColumnIndexesWithinRange(in.length)
+          && StringUtils.isNotEmpty(in[params.taxonIdSourceColumnIndex])
+          && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
+
+        params.taxa.put(in[params.taxonIdSourceColumnIndex], in[params.scientificNameSourceColumnIndex]);
+        params.taxonItemsAdded++;
+      }
+    }
+  }
+
+  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapMetadataParams params) {
+    finalizeInferredMetadata(metadata, params.geographic);
+    finalizeInferredMetadata(metadata, params.temporal);
+    finalizeInferredMetadata(metadata, params.taxonomic);
+  }
+
+  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapGeographicScopeParams params) {
+    InferredCamtrapGeographicScope inferredGeographicScope = new InferredCamtrapGeographicScope();
+    metadata.setInferredGeographicScope(inferredGeographicScope);
+    boolean errorOccurredWhileProcessingGeographicMetadata
+        = handleCamtrapGeographicScopeErrors(inferredGeographicScope, params);
+
+    if (!errorOccurredWhileProcessingGeographicMetadata) {
+      inferredGeographicScope.setMinLatitude(params.minDecimalLatitude);
+      inferredGeographicScope.setMinLongitude(params.minDecimalLongitude);
+      inferredGeographicScope.setMaxLatitude(params.maxDecimalLatitude);
+      inferredGeographicScope.setMaxLongitude(params.maxDecimalLongitude);
+      inferredGeographicScope.setInferred(true);
+    }
+  }
+
+  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapTemporalScopeParams params) {
+    InferredCamtrapTemporalScope inferredTemporalScope = new InferredCamtrapTemporalScope();
+    metadata.setInferredTemporalScope(inferredTemporalScope);
+
+    boolean errorOccurredWhileProcessingTemporalMetadata
+        = handleCamtrapTemporalScopeErrors(inferredTemporalScope, params);
+
+    if (!errorOccurredWhileProcessingTemporalMetadata) {
+      try {
+        inferredTemporalScope.setStartDate(DateUtils.calendarDate(params.startDateStr));
+        inferredTemporalScope.setEndDate(DateUtils.calendarDate(params.endDateStr));
+        inferredTemporalScope.setInferred(true);
+      } catch (ParseException e) {
+        LOG.error("Failed to parse date for temporal coverage", e);
+        inferredTemporalScope.addError("datapackagemetadata.temporal.error.dateParseException");
+      }
+    }
+  }
+
+  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapTaxonomicScopeParams params) {
+    InferredCamtrapTaxonomicScope inferredTaxonomicScope = new InferredCamtrapTaxonomicScope();
+    metadata.setInferredTaxonomicScope(inferredTaxonomicScope);
+    boolean errorOccurredWhileProcessingTaxonomicMetadata
+        = handleCamtrapTaxonomicScopeErrors(inferredTaxonomicScope, params);
+
+    if (errorOccurredWhileProcessingTaxonomicMetadata) {
+      List<Taxonomic> taxCoverage = params.taxa.entrySet().stream()
+          .map(entry -> {
+            Taxonomic t = new Taxonomic();
+            t.setTaxonID(entry.getKey());
+            t.setScientificName(entry.getValue());
+            return t;
+          })
+          .collect(Collectors.toList());
+      inferredTaxonomicScope.setData(taxCoverage);
+      inferredTaxonomicScope.setInferred(true);
+    }
+  }
+
+  private boolean isSchemaMapped(Resource resource, String schemaName) {
+    return resource.getDataSchemaMappings().stream()
+        .map(DataSchemaMapping::getDataSchemaFile)
+        .anyMatch(schemaName::equals);
+  }
+
+  private int getFieldIndexInMapping(DataSchemaMapping mapping, String fieldName) {
+    return Optional.ofNullable(mapping.getField(fieldName))
+        .map(DataSchemaFieldMapping::getIndex)
+        .orElse(-1);
+  }
+
+  private boolean handleCamtrapGeographicScopeErrors(
+      InferredCamtrapGeographicScope metadata,
+      InferredCamtrapGeographicScopeParams params) {
+    boolean errorsPresent = false;
+
+    if (params.serverError) {
+      metadata.addError("datapackagemetadata.error.serverError");
+      errorsPresent = true;
+    } else if (!params.isDeploymentsMapped) {
+      metadata.addError("datapackagemetadata.error.noDeploymentsMapped");
+      errorsPresent = true;
+    } else if (!params.isLatitudeMapped() && !params.isLongitudeMapped()) {
+      metadata.addError("datapackagemetadata.geographic.error.fieldsNotMapped");
+      errorsPresent = true;
+    } else if (!params.isLatitudeMapped()) {
+      metadata.addError("datapackagemetadata.geographic.error.latitudeNotMapped");
+      errorsPresent = true;
+    } else if (!params.isLongitudeMapped()) {
+      metadata.addError("datapackagemetadata.geographic.error.longitudeNotMapped");
+      errorsPresent = true;
+    } else if (params.noValidDataGeo) {
+      metadata.addError("datapackagemetadata.error.noValidData");
+      errorsPresent = true;
+    }
+
+    return errorsPresent;
+  }
+
+  private boolean handleCamtrapTaxonomicScopeErrors(
+      InferredCamtrapTaxonomicScope metadata,
+      InferredCamtrapTaxonomicScopeParams params) {
+    boolean errorOccurred = false;
+
+    if (params.serverError) {
+      metadata.addError("datapackagemetadata.error.serverError");
+      errorOccurred = true;
+    } else if (!params.isObservationsMapped) {
+      metadata.addError("datapackagemetadata.error.noObservationsMapped");
+      errorOccurred = true;
+    } else if (!params.isTaxonIdMapped() && !params.isScientificNameMapped()) {
+      metadata.addError("datapackagemetadata.taxonomic.error.fieldsNotMapped");
+      errorOccurred = true;
+    } else if (!params.isTaxonIdMapped()) {
+      metadata.addError("datapackagemetadata.taxonomic.error.taxonIdNotMapped");
+      errorOccurred = true;
+    } else if (!params.isScientificNameMapped()) {
+      metadata.addError("datapackagemetadata.taxonomic.error.scientificNameNotMapped");
+      errorOccurred = true;
+    } else if (params.taxonItemsAdded == 0) {
+      metadata.addError("datapackagemetadata.error.noValidData");
+      errorOccurred = true;
+    }
+
+    return errorOccurred;
+  }
+
+  private boolean handleCamtrapTemporalScopeErrors(
+      InferredCamtrapTemporalScope metadata,
+      InferredCamtrapTemporalScopeParams params) {
+    boolean errorOccurred = false;
+
+    if (params.serverError) {
+      metadata.addError("datapackagemetadata.error.serverError");
+      errorOccurred = true;
+    } else if (!params.isDeploymentsMapped) {
+      metadata.addError("datapackagemetadata.error.noDeployments");
+      errorOccurred = true;
+    } else if (!params.isDeploymentStartMapped() && !params.isDeploymentEndMapped()) {
+      metadata.addError("datapackagemetadata.temporal.error.fieldsNotMapped");
+      errorOccurred = true;
+    } else if (!params.isDeploymentStartMapped()) {
+      metadata.addError("datapackagemetadata.temporal.error.deploymentStartNotMapped");
+      errorOccurred = true;
+    } else if (!params.isDeploymentEndMapped()) {
+      metadata.addError("datapackagemetadata.temporal.error.deploymentEndNotMapped");
+      errorOccurred = true;
+    } else if (params.noValidDataTemporal) {
+      metadata.addError("datapackagemetadata.error.noValidData");
+      errorOccurred = true;
+    }
+
+    return errorOccurred;
+  }
+
+  static class InferredCamtrapMetadataParams {
+    private final InferredCamtrapGeographicScopeParams geographic = new InferredCamtrapGeographicScopeParams();
+    private final InferredCamtrapTemporalScopeParams temporal = new InferredCamtrapTemporalScopeParams();
+    private final InferredCamtrapTaxonomicScopeParams taxonomic = new InferredCamtrapTaxonomicScopeParams();
+  }
+
+  static class InferredCamtrapGeographicScopeParams {
+    private Double minDecimalLongitude = -180.0D;
+    private Double maxDecimalLongitude = 180.0D;
+    private Double minDecimalLatitude = -90.0D;
+    private Double maxDecimalLatitude = 90.0D;
+    private boolean coordinatesInitialized;
+    private int longitudeSourceColumnIndex = -1;
+    private int latitudeSourceColumnIndex = -1;
+    private boolean serverError;
+    private boolean isDeploymentsMapped;
+    private boolean noValidDataGeo = true;
+
+    public boolean isLatitudeMapped() {
+      return latitudeSourceColumnIndex != -1;
+    }
+
+    public boolean isLongitudeMapped() {
+      return longitudeSourceColumnIndex != -1;
+    }
+
+    public boolean isColumnIndexesWithinRange(int range) {
+      return longitudeSourceColumnIndex < range && latitudeSourceColumnIndex < range;
+    }
+  }
+
+  static class InferredCamtrapTaxonomicScopeParams {
+    private int taxonItemsAdded = 0;
+    private final int maxNumberOfTaxonItems = 200;
+    private final Map<String, String> taxa = new HashMap<>();
+    private int taxonIdSourceColumnIndex = -1;
+    private int scientificNameSourceColumnIndex = -1;
+    private boolean serverError;
+    private boolean isObservationsMapped;
+    private boolean noValidDataGeo;
+
+    public boolean isColumnIndexesWithinRange(int range) {
+      return taxonIdSourceColumnIndex < range && scientificNameSourceColumnIndex < range;
+    }
+
+    public boolean isTaxonIdMapped() {
+      return taxonIdSourceColumnIndex != -1;
+    }
+
+    public boolean isScientificNameMapped() {
+      return scientificNameSourceColumnIndex != -1;
+    }
+  }
+
+  static class InferredCamtrapTemporalScopeParams {
+    private String startDateStr = null;
+    private TemporalAccessor startDateTA = null;
+    private String endDateStr = null;
+    private TemporalAccessor endDateTA = null;
+    private int deploymentStartSourceColumnIndex = -1;
+    private int deploymentEndSourceColumnIndex = -1;
+    private boolean serverError;
+    private boolean isDeploymentsMapped;
+    private boolean noValidDataTemporal = true;
+
+    public boolean isColumnIndexesWithinRange(int range) {
+      return deploymentEndSourceColumnIndex < range && deploymentStartSourceColumnIndex < range;
+    }
+
+    public boolean isDeploymentStartMapped() {
+      return deploymentStartSourceColumnIndex != -1;
+    }
+
+    public boolean isDeploymentEndMapped() {
+      return deploymentEndSourceColumnIndex != -1;
+    }
   }
 }

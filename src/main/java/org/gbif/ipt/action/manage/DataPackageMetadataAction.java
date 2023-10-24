@@ -35,6 +35,7 @@ import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
@@ -60,6 +61,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -1669636958170716515L;
 
+  private final ResourceMetadataInferringService metadataInferringService;
   private final DataPackageMetadataValidator metadataValidator;
   private final ObjectMapper objectMapper;
   private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
@@ -78,10 +80,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                                   ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator) {
+                                   ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator,
+                                   ResourceMetadataInferringService metadataInferringService) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.metadataValidator = metadataValidator;
     this.objectMapper = new ObjectMapper();
+    this.metadataInferringService = metadataInferringService;
   }
 
   @Override
@@ -115,7 +119,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     // infer metadata if absent or re-infer if requested
     if (reinferMetadata || resource.getInferredMetadata() == null) {
-      InferredMetadata inferredMetadataRaw = resourceManager.inferMetadata(resource);
+      InferredMetadata inferredMetadataRaw = metadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredCamtrapMetadata) {
         inferredMetadata = inferredMetadataRaw;

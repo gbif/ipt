@@ -267,8 +267,8 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(ResourceMetadataInferringService.class),
-        mock(MetadataReader.class));
+        mock(MetadataReader.class),
+        mock(ResourceMetadataInferringService.class));
   }
 
   /**
@@ -1034,8 +1034,8 @@ public class ResourceManagerImplTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(ResourceMetadataInferringService.class),
-        mock(MetadataReader.class));
+        mock(MetadataReader.class),
+        mock(ResourceMetadataInferringService.class));
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);

@@ -14,7 +14,6 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -426,15 +425,6 @@ public interface ResourceManager {
    * @param validate
    */
   void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, InvalidMetadataException;
-
-  /**
-   * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
-   *
-   * @param resource resource
-   *
-   * @return inferred metadata
-   */
-  InferredMetadata inferMetadata(Resource resource);
 
   /**
    * Update organisation name and alias for published resources.
