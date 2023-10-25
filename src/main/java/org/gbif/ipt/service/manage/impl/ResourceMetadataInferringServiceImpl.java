@@ -1002,7 +1002,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       metadata.addError("datapackagemetadata.error.serverError");
       errorOccurred = true;
     } else if (!params.isDeploymentsMapped) {
-      metadata.addError("datapackagemetadata.error.noDeployments");
+      metadata.addError("datapackagemetadata.error.noDeploymentsMapped");
       errorOccurred = true;
     } else if (!params.isDeploymentStartMapped() && !params.isDeploymentEndMapped()) {
       metadata.addError("datapackagemetadata.temporal.error.fieldsNotMapped");
