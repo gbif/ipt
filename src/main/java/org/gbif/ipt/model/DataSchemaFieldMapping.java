@@ -15,9 +15,16 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
-import java.util.StringJoiner;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DataSchemaFieldMapping implements Serializable, Comparable<DataSchemaFieldMapping> {
 
   private static final long serialVersionUID = 521368321389202377L;
@@ -27,44 +34,9 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   private DataSchemaField field;
   private Map<String, String> translation;
 
-  public DataSchemaFieldMapping() {
-  }
-
   public DataSchemaFieldMapping(Integer index, DataSchemaField field) {
     this.index = index;
     this.field = field;
-  }
-
-  public Integer getIndex() {
-    return index;
-  }
-
-  public void setIndex(Integer index) {
-    this.index = index;
-  }
-
-  public String getDefaultValue() {
-    return defaultValue;
-  }
-
-  public void setDefaultValue(String defaultValue) {
-    this.defaultValue = defaultValue;
-  }
-
-  public DataSchemaField getField() {
-    return field;
-  }
-
-  public void setField(DataSchemaField field) {
-    this.field = field;
-  }
-
-  public Map<String, String> getTranslation() {
-    return translation;
-  }
-
-  public void setTranslation(Map<String, String> translation) {
-    this.translation = translation;
   }
 
   /**
@@ -77,31 +49,5 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   @Override
   public int compareTo(DataSchemaFieldMapping fieldMapping) {
     return field.getName().compareTo(fieldMapping.getField().getName());
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof DataSchemaFieldMapping)) return false;
-    DataSchemaFieldMapping that = (DataSchemaFieldMapping) o;
-    return Objects.equals(index, that.index)
-      && Objects.equals(defaultValue, that.defaultValue)
-      && Objects.equals(field, that.field)
-      && Objects.equals(translation, that.translation);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(index, defaultValue, field, translation);
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", DataSchemaFieldMapping.class.getSimpleName() + "[", "]")
-        .add("index=" + index)
-        .add("defaultValue='" + defaultValue + "'")
-        .add("field='" + field + "'")
-        .add("translation='" + field + "'")
-        .toString();
   }
 }

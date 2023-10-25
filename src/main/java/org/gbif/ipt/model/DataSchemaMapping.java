@@ -18,6 +18,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DataSchemaMapping implements Serializable {
 
   private static final long serialVersionUID = -8441887797416795559L;
@@ -33,7 +42,7 @@ public class DataSchemaMapping implements Serializable {
   /**
    * @param peek Peek of File source.
    *
-   * @return list of columns names depending on its mapping.
+   * @return list of column names depending on its mapping.
    */
   public List<String> getColumns(List<String[]> peek) {
     if (!peek.isEmpty()) {
@@ -69,61 +78,5 @@ public class DataSchemaMapping implements Serializable {
       }
     }
     return null;
-  }
-
-  public Source getSource() {
-    return source;
-  }
-
-  public void setSource(Source source) {
-    this.source = source;
-  }
-
-  public DataSchema getDataSchema() {
-    return dataSchema;
-  }
-
-  public void setDataSchema(DataSchema dataSchema) {
-    this.dataSchema = dataSchema;
-  }
-
-  public String getDataSchemaFile() {
-    return dataSchemaFile;
-  }
-
-  public void setDataSchemaFile(String dataSchemaFile) {
-    this.dataSchemaFile = dataSchemaFile;
-  }
-
-  public List<DataSchemaFieldMapping> getFields() {
-    return fields;
-  }
-
-  public void setFields(List<DataSchemaFieldMapping> fields) {
-    this.fields = fields;
-  }
-
-  public int getFieldsMapped() {
-    return fieldsMapped;
-  }
-
-  public void setFieldsMapped(int fieldsMapped) {
-    this.fieldsMapped = fieldsMapped;
-  }
-
-  public RecordFilter getFilter() {
-    return filter;
-  }
-
-  public void setFilter(RecordFilter filter) {
-    this.filter = filter;
-  }
-
-  public Date getLastModified() {
-    return lastModified;
-  }
-
-  public void setLastModified(Date lastModified) {
-    this.lastModified = lastModified;
   }
 }

@@ -14,50 +14,16 @@
 package org.gbif.ipt.model;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.StringJoiner;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class DataSchemaFieldReference implements Serializable {
 
   private static final long serialVersionUID = 4640804542595922498L;
 
   private String resource;
   private String fields;
-
-  public String getResource() {
-    return resource;
-  }
-
-  public void setResource(String resource) {
-    this.resource = resource;
-  }
-
-  public String getFields() {
-    return fields;
-  }
-
-  public void setFields(String fields) {
-    this.fields = fields;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof DataSchemaFieldReference)) return false;
-    DataSchemaFieldReference that = (DataSchemaFieldReference) o;
-    return Objects.equals(resource, that.resource) && Objects.equals(fields, that.fields);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(resource, fields);
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", DataSchemaFieldReference.class.getSimpleName() + "[", "]")
-        .add("resource='" + resource + "'")
-        .add("fields='" + fields + "'")
-        .toString();
-  }
 }
