@@ -20,7 +20,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +31,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@ToString
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Taxonomic implements Serializable {
 
@@ -369,23 +373,5 @@ public class Taxonomic implements Serializable {
       }
     }
 
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", Taxonomic.class.getSimpleName() + "[", "]")
-        .add("taxonID='" + taxonID + "'")
-        .add("taxonIDReference=" + taxonIDReference)
-        .add("scientificName='" + scientificName + "'")
-        .add("taxonRank=" + taxonRank)
-        .add("kingdom='" + kingdom + "'")
-        .add("phylum='" + phylum + "'")
-        .add("_class='" + _class + "'")
-        .add("order='" + order + "'")
-        .add("family='" + family + "'")
-        .add("genus='" + genus + "'")
-        .add("vernacularNames=" + vernacularNames)
-        .add("additionalProperties=" + additionalProperties)
-        .toString();
   }
 }
