@@ -91,11 +91,12 @@ public class ResourceCamtrapMetadataInferringTest {
     );
   }
 
-  @DisplayName("Test metadata inferring for the resource with valid mappings")
+  @DisplayName("Test metadata inferring for the resource with multiple valid mappings")
   @Test
   public void testMetadataInferring() throws Exception {
     Resource resource = getCamtrapResource("regular-resource");
     TextFileSource deploymentsFileSource = getTextFileSource("deployments", "data/deployments.txt");
+    TextFileSource deploymentsFileSource2 = getTextFileSource("deployments2", "data/deployments-additional.txt");
     TextFileSource observationsFileSource = getTextFileSource("observations", "data/observations.txt");
 
     when(sourceManagerMock.rowIterator(any(FileSource.class))).thenAnswer(invocation -> {
@@ -103,6 +104,8 @@ public class ResourceCamtrapMetadataInferringTest {
 
       if ("deployments".equals(source.getName())) {
         return deploymentsFileSource.rowIterator();
+      } else if ("deployments2".equals(source.getName())) {
+        return deploymentsFileSource2.rowIterator();
       } else if ("observations".equals(source.getName())) {
         return observationsFileSource.rowIterator();
       } else {
@@ -111,9 +114,11 @@ public class ResourceCamtrapMetadataInferringTest {
     });
 
     DataSchemaMapping deploymentsMapping = getDeploymentsMapping(deploymentsFileSource);
+    DataSchemaMapping deploymentsMapping2 = getDeploymentsMapping(deploymentsFileSource2);
     DataSchemaMapping observationsMapping = getObservationsMapping(observationsFileSource);
     resource.addDataSchemaMapping(deploymentsMapping);
     resource.addDataSchemaMapping(observationsMapping);
+    resource.addDataSchemaMapping(deploymentsMapping2);
 
     InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
 
@@ -125,8 +130,8 @@ public class ResourceCamtrapMetadataInferringTest {
         "Inferred geographic metadata must be present and valid",
         () -> assertTrue(geographic.isInferred()),
         () -> assertTrue(geographic.getErrors().isEmpty()),
-        () -> assertEquals(50.69905, geographic.getMinLatitude()),
-        () -> assertEquals(3.51755, geographic.getMinLongitude()),
+        () -> assertEquals(49.4781, geographic.getMinLatitude()),
+        () -> assertEquals(2.4328, geographic.getMinLongitude()),
         () -> assertEquals(53.40744, geographic.getMaxLatitude()),
         () -> assertEquals(8.32994, geographic.getMaxLongitude())
     );
