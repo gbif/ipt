@@ -858,7 +858,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       if (params.isColumnIndexesWithinRange(in.length)
           && StringUtils.isNotEmpty(in[params.taxonIdSourceColumnIndex])
           && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
-
         params.taxa.put(in[params.taxonIdSourceColumnIndex], in[params.scientificNameSourceColumnIndex]);
         params.taxonItemsAdded++;
       }
@@ -911,7 +910,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     boolean errorOccurredWhileProcessingTaxonomicMetadata
         = handleCamtrapTaxonomicScopeErrors(inferredTaxonomicScope, params);
 
-    if (errorOccurredWhileProcessingTaxonomicMetadata) {
+    if (!errorOccurredWhileProcessingTaxonomicMetadata) {
       List<Taxonomic> taxCoverage = params.taxa.entrySet().stream()
           .map(entry -> {
             Taxonomic t = new Taxonomic();
