@@ -60,7 +60,7 @@
     <freemarker.version>2.3.31</freemarker.version>
     <gson.version>2.9.0</gson.version>
     <guava.version>20.0</guava.version>
-    <guice.version>4.2.0</guice.version>
+    <guice.version>4.2.3</guice.version>
     <httpclient.version>4.5.13</httpclient.version>
     <httpcore.version>4.4.15</httpcore.version>
     <javassist.version>3.12.1.GA</javassist.version>
