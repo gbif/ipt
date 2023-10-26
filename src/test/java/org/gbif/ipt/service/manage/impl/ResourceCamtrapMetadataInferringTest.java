@@ -29,6 +29,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.FileUtils;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +37,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,6 +58,13 @@ public class ResourceCamtrapMetadataInferringTest {
 
   @InjectMocks
   private ResourceMetadataInferringServiceImpl metadataInferringService;
+
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+
+  @BeforeAll
+  static void beforeAll() {
+    DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("CEST"));
+  }
 
   @DisplayName("Test metadata inferring for the resource without mappings")
   @Test
@@ -140,8 +151,8 @@ public class ResourceCamtrapMetadataInferringTest {
         "Inferred temporal metadata must be present and valid",
         () -> assertTrue(temporal.isInferred()),
         () -> assertTrue(temporal.getErrors().isEmpty()),
-        () -> assertEquals("Wed May 04 00:00:00 CEST 2022", temporal.getStartDate().toString()),
-        () -> assertEquals("Wed Jun 01 00:00:00 CEST 2022", temporal.getEndDate().toString())
+        () -> assertEquals(toDate("Wed May 04 00:00:00 CEST 2022"), temporal.getStartDate()),
+        () -> assertEquals(toDate("Wed Jun 01 00:00:00 CEST 2022"), temporal.getEndDate())
     );
 
     assertAll(
@@ -306,5 +317,9 @@ public class ResourceCamtrapMetadataInferringTest {
                         .build())
                     .build()))
         .build();
+  }
+
+  private static Date toDate(String strDate) throws Exception {
+    return DATE_FORMAT.parse(strDate);
   }
 }
