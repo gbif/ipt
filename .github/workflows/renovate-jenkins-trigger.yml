@@ -27,14 +27,9 @@ jobs:
         id: trigger_jenkins
         run: |
           BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
-          
-#          if [[ "$BRANCH_NAME" == renovate* ]]; then
-#            echo "Skipping workflow execution for branch starting with 'renovate'."
-#            exit 0
-#          fi
 
           # Trigger the Jenkins job and capture the response headers
-          RESPONSE_HEADERS=$(curl -X POST -u "JENKINS_API_TOKEN_NAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-token-test&BRANCH_NAME=$BRANCH_NAME")
+          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_API_TOKEN_NAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-token-test&BRANCH_NAME=$BRANCH_NAME")
 
           # Extract the queue number from the response headers
           QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
@@ -57,11 +52,6 @@ jobs:
         id: check_jenkins_job
         run: |
           BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
-
-#          if [[ "$BRANCH_NAME" == renovate* ]]; then
-#            echo "Skipping workflow execution for branch starting with 'renovate'."
-#            exit 0
-#          fi
 
           # Access the queue_number output from the previous step
           QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
