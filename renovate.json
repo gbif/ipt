@@ -30,5 +30,5 @@
     "before 5am every weekday",
     "every weekend"
   ],
-  "prHourlyLimit": 20
+  "prHourlyLimit": 2
 }
