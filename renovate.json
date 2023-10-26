@@ -25,5 +25,10 @@
       "automerge": false
     }
   ],
+  "schedule": [
+    "after 11pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
   "prHourlyLimit": 20
 }
