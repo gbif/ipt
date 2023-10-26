@@ -1,0 +1,91 @@
+name: Renovate Jenkins Trigger
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      JENKINS_API_TOKEN_NAME: "${{ secrets.RENOVATE_JENKINS_API_TOKEN_NAME }}"
+      JENKINS_API_TOKEN: "${{ secrets.RENOVATE_JENKINS_API_TOKEN }}"
+      JENKINS_JOB_URL: "https://builds.gbif.org/job/ipt-renovate"
+      JENKINS_URL: "https://builds.gbif.org"
+
+    steps:
+      - name: Extract Branch Name
+        id: extract_branch
+        run: |
+          BRANCH_NAME=$(jq -r '.pull_request.head.ref' $GITHUB_EVENT_PATH)
+          echo "::set-output name=branch::$BRANCH_NAME"
+
+      - name: Trigger Jenkins Job
+        id: trigger_jenkins
+        run: |
+          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+          
+#          if [[ "$BRANCH_NAME" == renovate* ]]; then
+#            echo "Skipping workflow execution for branch starting with 'renovate'."
+#            exit 0
+#          fi
+
+          # Trigger the Jenkins job and capture the response headers
+          RESPONSE_HEADERS=$(curl -X POST -u "JENKINS_API_TOKEN_NAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-token-test&BRANCH_NAME=$BRANCH_NAME")
+
+          # Extract the queue number from the response headers
+          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
+
+          # Set QUEUE_NUMBER as an output variable
+          echo "::set-output name=queue_number::$QUEUE_NUMBER"
+
+          # Extract the HTTP response status code
+          HTTP_RESPONSE_STATUS=$(echo "$RESPONSE_HEADERS" | grep -i "HTTP/" | awk '{print $2}')
+
+          echo "Jenkins job queued with queue number: $QUEUE_NUMBER"
+          echo "HTTP Response Status: $HTTP_RESPONSE_STATUS"
+
+          if [[ "$HTTP_RESPONSE_STATUS" -ne 201 ]]; then
+            echo "Failed to trigger Jenkins job. HTTP Response Code: HTTP_RESPONSE_STATUS"
+            exit 1
+          fi
+
+      - name: Check Jenkins Job Status
+        id: check_jenkins_job
+        run: |
+          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+
+#          if [[ "$BRANCH_NAME" == renovate* ]]; then
+#            echo "Skipping workflow execution for branch starting with 'renovate'."
+#            exit 0
+#          fi
+
+          # Access the queue_number output from the previous step
+          QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
+
+          JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
+
+          while true; do
+            JOB_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.task.color')
+          
+            echo "Job status is $JOB_STATUS"
+            if [[ "$JOB_STATUS" == "red" || "$JOB_STATUS" == "yellow" ]]; then
+              echo "Jenkins job has failed."
+              echo "See more $JOB_URL"
+              exit 1
+            elif [[ "$JOB_STATUS" == "blue" ]]; then
+              echo "Jenkins job has succeeded."
+              echo "See more $JOB_URL"
+              exit 0
+            elif [[ "$JOB_STATUS" == "blue_anime" || "$JOB_STATUS" == "red_anime" || "$JOB_STATUS" == "yellow_anime" ]]; then
+              echo "Jenkins job is still running..."
+              sleep 30  # Sleep for 30 seconds before checking again
+            else
+              echo "Jenkins job is in an unknown state $JOB_STATUS"
+              echo "See more $JOB_URL"
+              exit 1
+            fi
+          done
