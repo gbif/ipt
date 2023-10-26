@@ -63,7 +63,7 @@ public class ResourceCamtrapMetadataInferringTest {
 
   @BeforeAll
   static void beforeAll() {
-    DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("CEST"));
+    DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
   }
 
   @DisplayName("Test metadata inferring for the resource without mappings")
