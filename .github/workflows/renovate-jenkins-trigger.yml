@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # Username (currently my own one, use something else in the future)
+      JENKINS_USERNAME: "${{ secrets.RENOVATE_JENKINS_USERNAME }}"
+      # API token, generated in Jenkins, stored in GitHub
       JENKINS_API_TOKEN_NAME: "${{ secrets.RENOVATE_JENKINS_API_TOKEN_NAME }}"
       JENKINS_API_TOKEN: "${{ secrets.RENOVATE_JENKINS_API_TOKEN }}"
       JENKINS_JOB_URL: "https://builds.gbif.org/job/ipt-renovate"
@@ -29,7 +32,7 @@ jobs:
           BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
 
           # Trigger the Jenkins job and capture the response headers
-          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_API_TOKEN_NAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-token-test&BRANCH_NAME=$BRANCH_NAME")
+          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=$JENKINS_API_TOKEN_NAME&BRANCH_NAME=$BRANCH_NAME")
 
           # Extract the queue number from the response headers
           QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
