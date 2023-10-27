@@ -57,7 +57,7 @@
     <commons-validator.version>1.7</commons-validator.version>
     <commons-text.version>1.10.0</commons-text.version>
     <excel-streaming-reader.version>4.0.5</excel-streaming-reader.version>
-    <freemarker.version>2.3.31</freemarker.version>
+    <freemarker.version>2.3.32</freemarker.version>
     <gson.version>2.10.1</gson.version>
     <guava.version>20.0</guava.version>
     <guice.version>4.2.3</guice.version>
