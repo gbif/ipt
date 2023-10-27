@@ -57,24 +57,22 @@ jobs:
 
           # Access the queue_number output from the previous step
           QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
-          echo "$QUEUE_NUMBER"
 
           JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
-          echo "$JOB_URL"
 
           while true; do
-            JOB_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.task.color')
+            JOB_STATUS=$(curl -s "$JOB_URL/api/json" | jq -r '.result')
           
             echo "Job status is $JOB_STATUS"
-            if [[ "$JOB_STATUS" == "red" || "$JOB_STATUS" == "yellow" ]]; then
+            if [[ "$JOB_STATUS" == "FAILURE" || "$JOB_STATUS" == "UNSTABLE" ]]; then
               echo "Jenkins job has failed."
               echo "See more $JOB_URL"
               exit 1
-            elif [[ "$JOB_STATUS" == "blue" ]]; then
+            elif [[ "$JOB_STATUS" == "SUCCESS" ]]; then
               echo "Jenkins job has succeeded."
               echo "See more $JOB_URL"
               exit 0
-            elif [[ "$JOB_STATUS" == "blue_anime" || "$JOB_STATUS" == "red_anime" || "$JOB_STATUS" == "yellow_anime" ]]; then
+            elif [[ "$JOB_STATUS" == "null" ]]; then
               echo "Jenkins job is still running..."
               sleep 30  # Sleep for 30 seconds before checking again
             else
