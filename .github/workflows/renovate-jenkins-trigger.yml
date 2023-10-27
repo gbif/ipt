@@ -57,8 +57,10 @@ jobs:
 
           # Access the queue_number output from the previous step
           QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
+          echo "$QUEUE_NUMBER"
 
           JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
+          echo "$JOB_URL"
 
           while true; do
             JOB_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.task.color')
