@@ -62,7 +62,7 @@
     <guava.version>20.0</guava.version>
     <guice.version>4.2.3</guice.version>
     <httpclient.version>4.5.14</httpclient.version>
-    <httpcore.version>4.4.15</httpcore.version>
+    <httpcore.version>4.4.16</httpcore.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
