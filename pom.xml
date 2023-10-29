@@ -44,7 +44,7 @@
     <gbif-common.version>0.60</gbif-common.version>
     <gbif-doi.version>2.21</gbif-doi.version>
     <gbif-metadata-profile.version>2.1</gbif-metadata-profile.version>
-    <gbif-parsers.version>0.60</gbif-parsers.version>
+    <gbif-parsers.version>0.62</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
 
     <!-- Third party dependencies -->
