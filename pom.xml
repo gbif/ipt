@@ -69,7 +69,7 @@
     <jetty-maven-plugin.version>9.4.53.v20231009</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>5.9.1</junit.version>
+    <junit.version>5.10.0</junit.version>
     <log4j.version>2.19.0</log4j.version>
     <mockito.version>4.9.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
