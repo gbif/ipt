@@ -88,7 +88,7 @@
     <mssql-jdbc.version>11.2.3.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
     <ojdbc.version>21.11.0.0</ojdbc.version>
-    <postgresql.version>42.5.1</postgresql.version>
+    <postgresql.version>42.6.0</postgresql.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
