@@ -92,7 +92,7 @@
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
-    <native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
+    <native2ascii-maven-plugin.version>2.1.0</native2ascii-maven-plugin.version>
     <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
   </properties>
 
