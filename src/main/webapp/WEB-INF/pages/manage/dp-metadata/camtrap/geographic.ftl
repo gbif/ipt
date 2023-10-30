@@ -150,6 +150,14 @@
                                                 </#if>
                                             </td>
                                         </tr>
+                                        <#if (metadata.coordinatePrecision)??>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='datapackagemetadata.coordinatePrecision'/></th>
+                                            <td>
+                                                ${metadata.coordinatePrecision}
+                                            </td>
+                                        </tr>
+                                        </#if>
                                     </table>
                                 </div>
                             </div>

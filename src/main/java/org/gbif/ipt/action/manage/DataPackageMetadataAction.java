@@ -259,36 +259,40 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
    * 2. When inferred metadata is selected: set inferred metadata to the geographic scope metadata.
    */
   private void convertCamtrapGeographicMetadata() {
-    if (resource.isCustomGeocoverage()) {
-      if (customGeoJson != null) {
+    CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+    if (!resource.isInferGeocoverageAutomatically()) {
+      if (StringUtils.isNotEmpty(customGeoJson)) {
         try {
           Geojson geojson = objectMapper.readValue(customGeoJson, Geojson.class);
-          ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+          camtrapMetadata.setSpatial(geojson);
+          camtrapMetadata.setCoordinatePrecision(null);
         } catch (JsonProcessingException e) {
-          // TODO: 18/10/2023 translate message
-          addActionError("Error processing custom GeoJSON");
+          addActionError(getText("datapackagemetadata.geographic.error.customGeojson"));
+          LOG.error("Error processing custom GeoJSON object", e);
         }
-      } else {
-        // TODO: 20/10/2023 translate message
-        addActionError("Please provide GeoJSON object");
       }
     } else {
       if (inferredMetadata instanceof InferredCamtrapMetadata) {
-        if (((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().isInferred() &&
-                ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().getErrors().isEmpty()) {
+        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
+        if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred() &&
+            inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
           Geojson geojson = new Geojson();
           geojson.setType(Geojson.Type.POLYGON);
           List<Double> coordinates = new ArrayList<>();
-          InferredCamtrapGeographicScope inferredGeographicScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope();
+          InferredCamtrapGeographicScope inferredGeographicScope = inferredCamtrapMetadata.getInferredGeographicScope();
           coordinates.add(inferredGeographicScope.getMinLongitude());
           coordinates.add(inferredGeographicScope.getMinLatitude());
           coordinates.add(inferredGeographicScope.getMaxLongitude());
           coordinates.add(inferredGeographicScope.getMaxLatitude());
           geojson.setCoordinates(coordinates);
-          ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+
+          camtrapMetadata.setSpatial(geojson);
+          camtrapMetadata.setCoordinatePrecision(null);
         } else {
-          // TODO: 20/10/2023 translate message
-          addActionError("Failed to infer metadata: " + ((InferredCamtrapMetadata) inferredMetadata).getInferredGeographicScope().getErrors());
+          for (String error : inferredCamtrapMetadata.getInferredGeographicScope().getErrors()) {
+            addActionError(getText(error));
+          }
         }
       }
     }
