@@ -8,6 +8,31 @@
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
+            var $inferAutomaticallyCheckbox = $("#resource\\.inferTaxonomicCoverageAutomatically");
+            var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
+
+            if (isInferAutomaticallyEnabled) {
+                $("#custom-data").hide();
+            } else {
+                $("#actual-metadata-block").show();
+                $("#inferred-metadata-block").hide();
+                $("#preview-links").hide();
+                $("#custom-data").show();
+            }
+
+            $inferAutomaticallyCheckbox.click(function() {
+                if ($(this).is(":checked")) {
+                    $("#inferred-metadata-block").show();
+                    $("#preview-links").show();
+                    $("#custom-data").hide();
+                    $("#custom-data-textarea").text('');
+                } else {
+                    $("#inferred-metadata-block").hide();
+                    $("#preview-links").hide();
+                    $("#custom-data").show();
+                }
+            });
+
             var taxonItems = calcNumberOfItems("taxon");
 
             function calcNumberOfItems(name) {
@@ -267,11 +292,6 @@
                 theme: 'bootstrap4'
             });
 
-            $("#preview-inferred-taxonomic").click(function (e) {
-                e.preventDefault();
-                $("#actual-metadata-block").hide();
-                $("#inferred-metadata-block").show();
-            });
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -333,37 +353,8 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 p-3">
+                        <div class="my-md-3 ps-3 py-3">
                             <p class="mb-2"><@s.text name="datapackagemetadata.taxonomic.intro"/></p>
-
-                            <div class="row g-2 mt-0">
-                                <div class="col-md-6">
-                                </div>
-
-                                <div id="preview-links" class="col-md-6">
-                                    <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                            </svg>
-                                        </span>
-                                            <span><@s.text name="eml.previewInferred"/></span>
-                                        </a>
-                                    </div>
-                                    <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
-                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                        <a href="camtrap-metadata-taxonomic.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
-                                            <span>
-                                                <svg class="link-icon" viewBox="0 0 24 24">
-                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                                </svg>
-                                            </span>
-                                            <span><@s.text name="datapackagemetadata.reinfer"/></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
 
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
@@ -377,46 +368,83 @@
                                 </#list>
                             </#if>
 
-                            <div id="actual-metadata-block">
-                                <#list (metadata.taxonomic)! as tx>
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
-                                                <td>
-                                                    ${tx.taxonID!}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
-                                                <td>
-                                                    ${tx.scientificName!}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </#list>
+                            <div id="actual-metadata-block" class="mt-3">
+                                <div><@s.text name="datapackagemetadata.currentSaved"/></div>
+                                <div class="border rounded p-3">
+                                    <#if (metadata.taxonomic)?has_content>
+                                        <#list (metadata.taxonomic)! as tx>
+                                            <div class="table-responsive">
+                                                <table class="text-smaller table table-sm table-borderless mb-0">
+                                                    <tr>
+                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
+                                                        <td>
+                                                            ${tx.taxonID!}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                        <td>
+                                                            ${tx.scientificName!}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </#list>
+                                    <#else>
+                                        <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
+                                    </#if>
+                                </div>
                             </div>
 
-                            <div id="inferred-metadata-block" style="display: none;">
-                                <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
-                                                <td>
-                                                    ${tx.taxonID!}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
-                                                <td>
-                                                    ${tx.scientificName!}
-                                                </td>
-                                            </tr>
-                                        </table>
+                            <div class="mt-4">
+                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
+                            </div>
+
+                            <div id="custom-data" class="mt-4"></div>
+
+
+                            <div id="inferred-metadata-block" class="mt-4">
+                                <div class="row">
+                                    <div class="col-md-6"><@s.text name="datapackagemetadata.lastInferred"/></div>
+                                    <div id="preview-links" class="col-md-6">
+                                        <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
+                                            <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                            <a href="camtrap-metadata-taxonomic.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                                <span>
+                                                    <svg class="link-icon" viewBox="0 0 24 24">
+                                                        <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span><@s.text name="datapackagemetadata.reinfer"/></span>
+                                            </a>
+                                        </div>
                                     </div>
-                                </#list>
+                                </div>
+
+                                <div class="border rounded p-3">
+                                    <#if (inferredMetadata.inferredTaxonomicScope.data)?has_content>
+                                        <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
+                                            <div class="table-responsive">
+                                                <table class="text-smaller table table-sm table-borderless mb-0">
+                                                    <tr>
+                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
+                                                        <td>
+                                                            ${tx.taxonID!}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                        <td>
+                                                            ${tx.scientificName!}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </#list>
+                                    <#else>
+                                        <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
+                                    </#if>
+                                </div>
                             </div>
                         </div>
                     </div>

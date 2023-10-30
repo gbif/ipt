@@ -5,28 +5,28 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            var $customScopeCheckbox = $("#resource\\.customGeocoverage");
-            var isCustomScopeEnabled = $customScopeCheckbox.is(":checked");
+            var $inferAutomaticallyCheckbox = $("#resource\\.inferGeocoverageAutomatically");
+            var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
 
-            if (isCustomScopeEnabled) {
+            if (isInferAutomaticallyEnabled) {
+                $("#custom-data").hide();
+            } else {
                 $("#actual-metadata-block").show();
                 $("#inferred-metadata-block").hide();
                 $("#preview-links").hide();
                 $("#custom-data").show();
-            } else {
-                $("#custom-data").hide();
             }
 
-            $customScopeCheckbox.click(function() {
+            $inferAutomaticallyCheckbox.click(function() {
                 if ($(this).is(":checked")) {
-                    $("#inferred-metadata-block").hide();
-                    $("#preview-links").hide();
-                    $("#custom-data").show();
-                } else {
                     $("#inferred-metadata-block").show();
                     $("#preview-links").show();
                     $("#custom-data").hide();
                     $("#custom-data-textarea").text('');
+                } else {
+                    $("#inferred-metadata-block").hide();
+                    $("#preview-links").hide();
+                    $("#custom-data").show();
                 }
             });
 
@@ -131,7 +131,7 @@
                             <p class="mb-2"><@s.text name="datapackagemetadata.geographic.intro"/></p>
 
                             <div id="actual-metadata-block" class="mt-3">
-                                <div>Current saved metadata</div>
+                                <div><@s.text name="datapackagemetadata.currentSaved"/></div>
                                 <div class="table-responsive border rounded p-3">
                                     <table class="text-smaller table table-sm table-borderless mb-0">
                                         <tr>
@@ -155,7 +155,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <@checkbox name="resource.customGeocoverage" i18nkey="datapackagemetadata.geographic.custom" value="${resource.customGeocoverage?c}" />
+                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferGeocoverageAutomatically?c}" />
                             </div>
 
                             <div id="custom-data" class="mt-4">
@@ -182,7 +182,7 @@
 
                             <div id="inferred-metadata-block" class="mt-4">
                                 <div class="row">
-                                    <div class="col-md-6">Inferred metadata (not saved)</div>
+                                    <div class="col-md-6"><@s.text name="datapackagemetadata.lastInferred"/></div>
                                     <div id="preview-links" class="col-md-6">
                                         <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
                                             <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
@@ -198,28 +198,24 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive border rounded p-3">
-                                    <table class="text-smaller table table-sm table-borderless mb-0">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
-                                            <td>
-                                                <#if geographicScopeMetadataIsInferred>
+                                    <#if geographicScopeMetadataIsInferred>
+                                        <table class="text-smaller table table-sm table-borderless mb-0">
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
+                                                <td>
                                                     Polygon
-                                                <#else>
-                                                    -
-                                                </#if>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
-                                            <td>
-                                                <#if geographicScopeMetadataIsInferred>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
+                                                <td>
                                                     [[${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}, ${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}]]
-                                                <#else>
-                                                    -
-                                                </#if>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    <#else>
+                                        <@s.text name="datapackagemetadata.noData"/>
+                                    </#if>
                                 </div>
                             </div>
                         </div>

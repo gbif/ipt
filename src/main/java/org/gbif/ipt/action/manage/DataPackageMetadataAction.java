@@ -17,6 +17,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
+import org.gbif.ipt.model.InferredCamtrapTemporalScope;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -173,9 +175,24 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           metadata.getTaxonomic().clear();
         }
+
+        InferredCamtrapTaxonomicScope inferredTaxonomicScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredTaxonomicScope();
+
+        if (reinferMetadata && inferredTaxonomicScope != null && !inferredTaxonomicScope.getErrors().isEmpty()) {
+          for (String errorMessage : inferredTaxonomicScope.getErrors()) {
+            addActionError(getText(errorMessage));
+          }
+        }
         break;
 
       case TEMPORAL_SECTION:
+        InferredCamtrapTemporalScope inferredTemporalScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredTemporalScope();
+
+        if (reinferMetadata && inferredTemporalScope != null && !inferredTemporalScope.getErrors().isEmpty()) {
+          for (String errorMessage : inferredTemporalScope.getErrors()) {
+            addActionError(getText(errorMessage));
+          }
+        }
         break;
 
       case KEYWORDS_SECTION:
