@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>55</version>
+    <version>56</version>
   </parent>
 
   <artifactId>ipt</artifactId>
