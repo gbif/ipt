@@ -361,13 +361,6 @@
                             <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
 
-                            <#if (inferredMetadata.inferredTaxonomicScope)?? && inferredMetadata.inferredTaxonomicScope.inferred && !inferredMetadata.inferredTaxonomicScope.errors?has_content>
-                                <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
-                                    <input type="hidden" name="metadata.taxonomic[${tx?index}].taxonID" value="${tx.taxonID!}">
-                                    <input type="hidden" name="metadata.taxonomic[${tx?index}].scientificName" value="${tx.scientificName!}">
-                                </#list>
-                            </#if>
-
                             <div id="actual-metadata-block" class="mt-3">
                                 <div><@s.text name="datapackagemetadata.currentSaved"/></div>
                                 <div class="border rounded p-3">

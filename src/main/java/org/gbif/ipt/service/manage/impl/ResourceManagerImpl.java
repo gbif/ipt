@@ -15,12 +15,6 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
-import org.gbif.common.parsers.core.OccurrenceParseResult;
-import org.gbif.common.parsers.core.ParseResult;
-import org.gbif.common.parsers.date.DateParsers;
-import org.gbif.common.parsers.date.TemporalParser;
-import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
-import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -34,7 +28,6 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -60,7 +53,6 @@ import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
-import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -83,7 +75,8 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
@@ -132,19 +125,15 @@ import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
-import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Citation;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
-import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
-import org.gbif.metadata.eml.ipt.util.DateUtils;
 import org.gbif.metadata.eml.parse.DatasetEmlParser;
-import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -165,12 +154,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
-import java.time.chrono.ChronoLocalDate;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -178,7 +162,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -214,20 +197,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.COL_DP;
-import static org.gbif.ipt.config.Constants.FAMILY;
-import static org.gbif.ipt.config.Constants.KINGDOM;
-import static org.gbif.ipt.config.Constants.ORDER;
-import static org.gbif.ipt.config.Constants.PHYLUM;
-import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
-import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
-import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
-import static org.gbif.ipt.config.Constants.VOCAB_EVENT_DATE;
-import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
-import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
-import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
-import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
@@ -264,6 +234,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
   private static final Comparator<Date> nullSafeDateComparator = Comparator.nullsFirst(Date::compareTo);
   private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
@@ -3049,6 +3020,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // update metadata created (represents date when the resource was last published)
     resource.getDataPackageMetadata().setVersion(version.toPlainString());
 
+    // update metadata with inferred data (if infer automatically is turned on)
+    if (resource.isInferGeocoverageAutomatically()
+        || resource.isInferTaxonomicCoverageAutomatically()
+        || resource.isInferTemporalCoverageAutomatically()) {
+      InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) resourceMetadataInferringService.inferMetadata(resource);
+      // save inferred metadata
+      resource.setInferredMetadata(inferredMetadata);
+      saveInferredMetadata(resource);
+
+      if (resource.isInferGeocoverageAutomatically()) {
+        updateCamtrapGeographicScopeWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTaxonomicCoverageAutomatically()) {
+        updateCamtrapTaxonomicScopeWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTemporalCoverageAutomatically()) {
+        updateCamtrapTemporalScopeWithInferredFromSourceData(resource, inferredMetadata);
+      }
+    }
+
     // save all changes to metadata
     saveDatapackageMetadata(resource);
 
@@ -3080,6 +3073,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  private void updateCamtrapGeographicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataSchemaMappings().isEmpty()
+        && inferredMetadata.getInferredGeographicScope() != null
+        && inferredMetadata.getInferredGeographicScope().isInferred()) {
+
+      Geojson geojson = new Geojson();
+      geojson.setType(Geojson.Type.POLYGON);
+      List<Double> coordinates = new ArrayList<>();
+      InferredCamtrapGeographicScope inferredGeographicScope = inferredMetadata.getInferredGeographicScope();
+      coordinates.add(inferredGeographicScope.getMinLongitude());
+      coordinates.add(inferredGeographicScope.getMinLatitude());
+      coordinates.add(inferredGeographicScope.getMaxLongitude());
+      coordinates.add(inferredGeographicScope.getMaxLatitude());
+      geojson.setCoordinates(coordinates);
+
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+    }
+  }
+
   private void updateEmlTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
         && inferredMetadata.getInferredEmlTaxonomicCoverage() != null
@@ -3097,6 +3109,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  private void updateCamtrapTaxonomicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataSchemaMappings().isEmpty()
+        && inferredMetadata.getInferredTaxonomicScope() != null
+        && inferredMetadata.getInferredTaxonomicScope().isInferred()) {
+
+      InferredCamtrapTaxonomicScope inferredTaxonomicScope = inferredMetadata.getInferredTaxonomicScope();
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setTaxonomic(inferredTaxonomicScope.getData());
+    }
+  }
+
   private void updateEmlTemporalCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
         && inferredMetadata.getInferredEmlTemporalCoverage() != null
@@ -3104,6 +3126,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredEmlTemporalCoverage().getData();
       resource.getEml().getTemporalCoverages().clear();
       resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
+    }
+  }
+
+  private void updateCamtrapTemporalScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataSchemaMappings().isEmpty()
+        && inferredMetadata.getInferredTemporalScope() != null
+        && inferredMetadata.getInferredTemporalScope().isInferred()) {
+
+      InferredCamtrapTemporalScope inferredTemporalScope = inferredMetadata.getInferredTemporalScope();
+
+      Temporal temporal = new Temporal();
+      temporal.setStart(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getStartDate()));
+      temporal.setEnd(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getEndDate()));
+
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setTemporal(temporal);
     }
   }
 

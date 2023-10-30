@@ -32,6 +32,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.ObservationLevel;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
@@ -56,6 +57,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.service.manage.impl.ResourceManagerImpl.CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT;
 
 public class DataPackageMetadataAction extends ManagerBaseAction {
 
@@ -72,7 +74,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private InferredMetadata inferredMetadata;
   private String customGeoJson;
 
-  public final static Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
+  public static final Map<String, String> CAMTRAP_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
 
   static {
     CAMTRAP_SUPPORTED_LICENSES_VOCABULARY.put("CC0-1.0", "CC0-1.0");
@@ -172,10 +174,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         break;
 
       case TAXONOMIC_SECTION:
-        if (isHttpPost()) {
-          metadata.getTaxonomic().clear();
-        }
-
         InferredCamtrapTaxonomicScope inferredTaxonomicScope = ((InferredCamtrapMetadata) inferredMetadata).getInferredTaxonomicScope();
 
         if (reinferMetadata && inferredTaxonomicScope != null && !inferredTaxonomicScope.getErrors().isEmpty()) {
@@ -223,12 +221,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    // pre-process (convert) Camtrap metadata
-    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-      if (section == CamtrapMetadataSection.GEOGRAPHIC_SECTION) {
-        convertCamtrapGeographicMetadata();
-      }
-    }
+    preProcessCamtrapMetadata();
 
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
@@ -254,6 +247,18 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  private void preProcessCamtrapMetadata() {
+    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+      if (section == CamtrapMetadataSection.GEOGRAPHIC_SECTION) {
+        convertCamtrapGeographicMetadata();
+      } else if (section == CamtrapMetadataSection.TAXONOMIC_SECTION) {
+        convertCamtrapTaxonomicMetadata();
+      } else if (section == CamtrapMetadataSection.TEMPORAL_SECTION) {
+        convertCamtrapTemporalMetadata();
+      }
+    }
+  }
+
   /**
    * 1. When custom GeoJSON is selected: serialize JSON string and set it to the geographic scope metadata.
    * 2. When inferred metadata is selected: set inferred metadata to the geographic scope metadata.
@@ -275,8 +280,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     } else {
       if (inferredMetadata instanceof InferredCamtrapMetadata) {
         InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
-        if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred() &&
-            inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
+        if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred()
+            && inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
           Geojson geojson = new Geojson();
           geojson.setType(Geojson.Type.POLYGON);
           List<Double> coordinates = new ArrayList<>();
@@ -293,6 +298,43 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
           for (String error : inferredCamtrapMetadata.getInferredGeographicScope().getErrors()) {
             addActionError(getText(error));
           }
+        }
+      }
+    }
+  }
+
+  private void convertCamtrapTaxonomicMetadata() {
+    CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+    if (resource.isInferTaxonomicCoverageAutomatically()) {
+      if (inferredMetadata instanceof InferredCamtrapMetadata) {
+        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
+
+        if (inferredCamtrapMetadata.getInferredTaxonomicScope().isInferred()
+            && inferredCamtrapMetadata.getInferredTaxonomicScope().getErrors().isEmpty()) {
+          InferredCamtrapTaxonomicScope inferredTaxonomicScope = inferredCamtrapMetadata.getInferredTaxonomicScope();
+          camtrapMetadata.setTaxonomic(inferredTaxonomicScope.getData());
+        }
+      }
+    }
+  }
+
+  private void convertCamtrapTemporalMetadata() {
+    CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+    if (resource.isInferTemporalCoverageAutomatically()) {
+      if (inferredMetadata instanceof InferredCamtrapMetadata) {
+        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
+
+        if (inferredCamtrapMetadata.getInferredTemporalScope().isInferred()
+            && inferredCamtrapMetadata.getInferredTemporalScope().getErrors().isEmpty()) {
+          InferredCamtrapTemporalScope inferredTemporalScope = inferredCamtrapMetadata.getInferredTemporalScope();
+
+          Temporal temporal = new Temporal();
+          temporal.setStart(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getStartDate()));
+          temporal.setEnd(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getEndDate()));
+
+          camtrapMetadata.setTemporal(temporal);
         }
       }
     }

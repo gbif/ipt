@@ -102,11 +102,6 @@
                         <div class="my-md-3 ps-3 py-3">
                             <p class="mb-2"><@s.text name="datapackagemetadata.temporal.intro"/></p>
 
-                            <#if (inferredMetadata.inferredTemporalScope)?? && inferredMetadata.inferredTemporalScope.inferred && !inferredMetadata.inferredTemporalScope.errors?has_content>
-                                <input type="hidden" name="metadata.temporal.start" value="${(inferredMetadata.inferredTemporalScope.startDate)!?date}">
-                                <input type="hidden" name="metadata.temporal.end" value="${(inferredMetadata.inferredTemporalScope.endDate)!?date}">
-                            </#if>
-
                             <div id="actual-metadata-block" class="mt-3">
                                 <div><@s.text name="datapackagemetadata.currentSaved"/></div>
                                 <div class="table-responsive border rounded p-3">
@@ -115,7 +110,7 @@
                                             <th class="col-4"><@s.text name='datapackagemetadata.temporal.start'/> / <@s.text name='datapackagemetadata.temporal.end'/></th>
                                             <td>
                                                 <#if (metadata.temporal.start)?? && (metadata.temporal.end)??>
-                                                    ${metadata.temporal.start?date} / ${metadata.temporal.end?date}
+                                                    ${metadata.temporal.start} / ${metadata.temporal.end}
                                                 <#else>
                                                     -
                                                 </#if>
