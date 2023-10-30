@@ -418,13 +418,8 @@ public interface ResourceManager {
 
   /**
    * Replace the datapackage metadata file in a resource by the provided file
-   *
-   * @param action
-   * @param resource
-   * @param metadataFile
-   * @param validate
    */
-  void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, InvalidMetadataException;
+  void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate, boolean preserveScopeMetadata) throws IOException, ImportException, InvalidMetadataException;
 
   /**
    * Update organisation name and alias for published resources.

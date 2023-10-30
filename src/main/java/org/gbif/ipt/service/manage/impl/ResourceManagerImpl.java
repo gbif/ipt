@@ -991,7 +991,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, org.gbif.ipt.service.InvalidMetadataException {
+  public void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate, boolean preserveScopeMetadata)
+      throws IOException, ImportException, org.gbif.ipt.service.InvalidMetadataException {
     if (validate) {
       validateDatapackageMetadataFile(action, metadataFile, metadataClassForType(resource.getCoreType()));
     }
@@ -1009,6 +1010,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     resource.setDataPackageMetadata(metadata);
+    resource.setInferGeocoverageAutomatically(!preserveScopeMetadata);
+    resource.setInferTaxonomicCoverageAutomatically(!preserveScopeMetadata);
+    resource.setInferTemporalCoverageAutomatically(!preserveScopeMetadata);
     resource.setMetadataModified(new Date());
     save(resource);
     saveDatapackageMetadata(resource);
