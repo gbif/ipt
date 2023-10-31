@@ -12,6 +12,10 @@
       "automerge": true
     },
     {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
       "matchPackageNames": ["com.microsoft.sqlserver:mssql-jdbc"],
       "versioning": "regex:^(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<compatibility>.*))?$",
       "description": "Take into account mssql-jdbc compatibility suffix (jre8 currently)"
