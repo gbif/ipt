@@ -16,10 +16,6 @@
       "automerge": false
     },
     {
-      "excludeRepositories": ["docs", "package"],
-      "enabled": false
-    },
-    {
       "matchPackageNames": ["com.microsoft.sqlserver:mssql-jdbc"],
       "versioning": "regex:^(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<compatibility>.*))?$",
       "description": "Take into account mssql-jdbc compatibility suffix (jre8 currently)"
@@ -27,12 +23,9 @@
     {
       "matchPackageNames": ["com.google.guava:guava"],
       "automerge": false
-    },
-    {
-      "matchPackageNames": ["tomcat"],
-      "automerge": false
     }
   ],
+  "ignorePaths": ["package/**", "docs/**"],
   "schedule": [
     "after 11pm every weekday",
     "before 5am every weekday",
