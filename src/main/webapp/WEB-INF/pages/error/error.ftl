@@ -9,8 +9,8 @@
 </div>
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3 p-3">
-        <div class="container bg-body border rounded-2 mb-4">
+    <div class="container bg-body border rounded-2 mb-4">
+        <div class="container my-3 p-3">
             <div class="text-center fs-smaller">
                 [@s.text name="basic.error"/]
             </div>
