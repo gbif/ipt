@@ -224,6 +224,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     LOG.info("Loading data schemas ...");
     schemaManager.load();
 
+    LOG.info("Ensure supported versions of default schemas are installed...");
+    schemaManager.installOrUpdateDefaults();
+
     if (!dataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2).exists()) {
       LOG.info("Perform 1-time event: migrate registration.xml into registration2.xml with passwords encrypted");
       registrationManager.encryptRegistration();

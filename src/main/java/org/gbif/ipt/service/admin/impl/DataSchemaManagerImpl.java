@@ -120,7 +120,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     DataSchema installed = get(identifier);
 
     if (installed != null) {
-      // verify there is a newer (latest) version
+      // verify there is a newer version
       DataSchema latestVersion = null;
       for (DataSchema ds : registryManager.getLatestDataSchemas()) {
         // match by rowType and isLatest, plus the URL cannot be null in order to be installed
@@ -260,7 +260,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     if (dataSchemasDir.isDirectory()) {
       String[] dataSchemaNames = dataSchemasDir.list((current, name) -> new File(current, name).isDirectory());
       FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
-      DataSchema dataSchema = null;
+      DataSchema dataSchema;
       Set<DataSubschema> dataSubschemas;
 
       try {
@@ -298,6 +298,33 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       }
     }
     return counter;
+  }
+
+  @Override
+  public void installOrUpdateDefaults() {
+    List<DataSchema> supportedDataSchemas = registryManager.getSupportedDataSchemas();
+
+    for (DataSchema supportedDataSchema : supportedDataSchemas) {
+      if (!isSchemaInstalled(supportedDataSchema.getIdentifier())) {
+        // schema is not installed, install it
+        LOG.info("Missing default schema {}. Installing", supportedDataSchema.getIdentifier());
+        install(supportedDataSchema);
+      } else {
+        // schema is installed, make sure the proper version used
+        DataSchema installedDataSchema = dataSchemasByIdentifiers.get(supportedDataSchema.getIdentifier());
+
+        String installedDataSchemaVersion = installedDataSchema.getVersion();
+        String dataSchemaName = installedDataSchema.getName();
+        String dataSchemaIdentifier = installedDataSchema.getIdentifier();
+
+        if (!installedDataSchemaVersion.equals(supportedDataSchema.getVersion())) {
+          LOG.info("Schema {} uses unsupported version {}. Updating to {}",
+              supportedDataSchema.getIdentifier(), installedDataSchemaVersion, supportedDataSchema.getVersion());
+          uninstall(dataSchemaIdentifier, dataSchemaName);
+          install(supportedDataSchema);
+        }
+      }
+    }
   }
 
   /**

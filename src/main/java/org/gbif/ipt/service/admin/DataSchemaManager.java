@@ -74,6 +74,11 @@ public interface DataSchemaManager {
   int load();
 
   /**
+   * Install or update the latest versions of all default schemas.
+   */
+  void installOrUpdateDefaults();
+
+  /**
    * Check whether schema is installed
    */
   boolean isSchemaInstalled(String nameOrIdentifier);
