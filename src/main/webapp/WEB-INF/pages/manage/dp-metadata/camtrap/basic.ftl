@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             var contributorItems = calcNumberOfItems("contributor");
             var sourcesItems = calcNumberOfItems("source");
             var licensesItems = calcNumberOfItems("license");
@@ -231,10 +231,15 @@
                 <div class="container my-3 p-3">
                     <div class="text-center fs-smaller">
                         <div class="text-center fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                                 aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center mb-0">
-                                    <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                    <li class="breadcrumb-item">
+                                        <a href="/manage/"><@s.text name="breadcrumb.manage"/></a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a>
+                                    </li>
                                     <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
                                 </ol>
                             </nav>
@@ -265,7 +270,7 @@
             </div>
         </div>
 
-<#--        <#include "metadata_section_select.ftl"/>-->
+        <#--        <#include "metadata_section_select.ftl"/>-->
 
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
@@ -305,9 +310,11 @@
                                 <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
                                 <div id="contributor-items">
                                     <#list metadata.contributors as item>
-                                        <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                        <div id="contributor-item-${item_index}"
+                                             class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="contributor-removeLink-${item_index}" href="" class="metadata-action-link removeContributorLink">
+                                                <a id="contributor-removeLink-${item_index}" href=""
+                                                   class="metadata-action-link removeContributorLink">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -351,49 +358,55 @@
                             </div>
                         </div>
 
-                      <div class="my-md-3 p-3">
-                          <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
-                          <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                        <div class="my-md-3 p-3">
+                            <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
 
-                          <#assign dataLicenseItemIndex = -1 />
-                          <#assign mediaLicenseItemIndex = -1 />
+                            <#assign dataLicenseItemIndex = -1 />
+                            <#assign mediaLicenseItemIndex = -1 />
 
-                        <#list metadata.licenses! as item>
-                            <#if (item.scope)?has_content && item.scope == "data">
-                                <#assign dataLicenseItemIndex = item_index />
-                            <#elseif (item.scope)?has_content && item.scope == "media">
-                                <#assign mediaLicenseItemIndex = item_index />
-                            </#if>
-                        </#list>
+                            <#list metadata.licenses! as item>
+                                <#if (item.scope)?has_content && item.scope == "data">
+                                    <#assign dataLicenseItemIndex = item_index />
+                                <#elseif (item.scope)?has_content && item.scope == "media">
+                                    <#assign mediaLicenseItemIndex = item_index />
+                                </#if>
+                            </#list>
 
-                        <!-- List of Licenses -->
-                        <div>
-                            <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
-                          <div id="license-items">
-                            <div class="row g-3 mt-1">
-                              <div class="col-lg-6">
-                                  <#if (dataLicenseItemIndex > -1)>
-                                    <input type="hidden" name="metadata.licenses[${dataLicenseItemIndex}].scope" value="DATA" required>
-                                      <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="${(metadata.licenses[dataLicenseItemIndex].name)!''}" requiredField=true/>
-                                  <#else>
-                                    <input type="hidden" name="metadata.licenses[0].scope" value="DATA" required>
-                                      <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
-                                  </#if>
-                              </div>
+                            <!-- List of Licenses -->
+                            <div>
+                                <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
+                                <div id="license-items">
+                                    <div class="row g-3 mt-1">
+                                        <div class="col-lg-6">
+                                            <#if (dataLicenseItemIndex > -1)>
+                                                <input type="hidden"
+                                                       name="metadata.licenses[${dataLicenseItemIndex}].scope"
+                                                       value="DATA" required>
+                                                <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=gbifSupportedLicenseNames i18nkey="datapackagemetadata.license.name.data" value="${(metadata.licenses[dataLicenseItemIndex].name)!''}" requiredField=true/>
+                                            <#else>
+                                                <input type="hidden" name="metadata.licenses[0].scope" value="DATA"
+                                                       required>
+                                                <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
+                                            </#if>
+                                        </div>
 
-                              <div class="col-lg-6">
-                                  <#if (mediaLicenseItemIndex > -1)>
-                                    <input type="hidden" name="metadata.licenses[${mediaLicenseItemIndex}].scope" value="MEDIA" required>
-                                      <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" requiredField=true />
-                                  <#else>
-                                    <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA" required>
-                                      <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
-                                  </#if>
-                              </div>
+                                        <div class="col-lg-6">
+                                            <#if (mediaLicenseItemIndex > -1)>
+                                                <input type="hidden"
+                                                       name="metadata.licenses[${mediaLicenseItemIndex}].scope"
+                                                       value="MEDIA" required>
+                                                <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=openDefinitionLicenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" requiredField=true />
+                                            <#else>
+                                                <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA"
+                                                       required>
+                                                <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
+                                            </#if>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
 
                         <div class="my-md-3 p-3">
                             <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
@@ -404,9 +417,11 @@
                                 <@textinline name="datapackagemetadata.sources" help="i18n" />
                                 <div id="source-items">
                                     <#list metadata.sources as item>
-                                        <div id="source-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                        <div id="source-item-${item_index}"
+                                             class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="source-removeLink-${item_index}" href="" class="metadata-action-link removeSourceLink">
+                                                <a id="source-removeLink-${item_index}" href=""
+                                                   class="metadata-action-link removeSourceLink">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
