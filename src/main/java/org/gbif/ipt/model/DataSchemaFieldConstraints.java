@@ -32,8 +32,8 @@ public class DataSchemaFieldConstraints implements Serializable {
 
   private Boolean required;
   private Boolean unique;
-  private Integer maximum;
-  private Integer minimum;
+  private Double maximum;
+  private Double minimum;
   private String pattern;
   @SerializedName("enum")
   private List<String> vocabulary;
