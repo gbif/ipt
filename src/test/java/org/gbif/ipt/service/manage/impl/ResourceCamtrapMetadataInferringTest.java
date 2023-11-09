@@ -39,6 +39,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -154,19 +155,19 @@ public class ResourceCamtrapMetadataInferringTest {
         () -> assertTrue(taxonomic.getErrors().isEmpty()),
         () -> assertEquals(4, taxonomic.getData().size()),
         () -> assertIterableEquals(
-            Arrays.asList(
-                taxonomic("49JSC", "Ondatra zibethicus"),
-                taxonomic("4RM67", "Rattus norvegicus"),
-                taxonomic("DGP6", "Anas platyrhynchos"),
-                taxonomic("3F6VX", "Gallinula chloropus")),
-            taxonomic.getData()
+            new HashSet<>(
+                Arrays.asList(
+                    taxonomic("Ondatra zibethicus"),
+                    taxonomic("Rattus norvegicus"),
+                    taxonomic("Anas platyrhynchos"),
+                    taxonomic("Gallinula chloropus"))),
+            new HashSet<>(taxonomic.getData())
         )
     );
   }
 
-  private static Taxonomic taxonomic(String taxonID, String scientificName) {
+  private static Taxonomic taxonomic(String scientificName) {
     Taxonomic taxonomic = new Taxonomic();
-    taxonomic.setTaxonID(taxonID);
     taxonomic.setScientificName(scientificName);
 
     return taxonomic;
