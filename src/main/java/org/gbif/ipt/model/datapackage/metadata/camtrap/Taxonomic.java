@@ -16,7 +16,6 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,21 +41,10 @@ public class Taxonomic implements Serializable {
   private final static long serialVersionUID = 2951714488879146221L;
 
   /**
-   * Unique identifier of the taxon according to the taxonomic reference list defined by `taxonIDReference`.
-   * (Required)
+   * Unique identifier of the taxon. Preferably a global unique identifier issued by an authoritative checklist.
    */
   @JsonProperty("taxonID")
-  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
   private String taxonID;
-
-  /**
-   * URL of the source (reference list) of the `taxonID`.
-   * (Required)
-   */
-  @JsonProperty("taxonIDReference")
-  // TODO: 12/10/2023 temporarily lift requirement
-//  @NotNull(message = "validation.input.required", groups = TaxonomicScopeMetadata.class)
-  private URI taxonIDReference;
 
   /**
    * Scientific name of the taxon.
@@ -127,8 +115,7 @@ public class Taxonomic implements Serializable {
   private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
-   * Unique identifier of the taxon according to the taxonomic reference list defined by `taxonIDReference`.
-   * (Required)
+   * Unique identifier of the taxon. Preferably a global unique identifier issued by an authoritative checklist.
    */
   @JsonProperty("taxonID")
   public String getTaxonID() {
@@ -136,30 +123,11 @@ public class Taxonomic implements Serializable {
   }
 
   /**
-   * Unique identifier of the taxon according to the taxonomic reference list defined by `taxonIDReference`.
-   * (Required)
+   * Unique identifier of the taxon. Preferably a global unique identifier issued by an authoritative checklist.
    */
   @JsonProperty("taxonID")
   public void setTaxonID(String taxonID) {
     this.taxonID = taxonID;
-  }
-
-  /**
-   * URL of the source (reference list) of the `taxonID`.
-   * (Required)
-   */
-  @JsonProperty("taxonIDReference")
-  public URI getTaxonIDReference() {
-    return taxonIDReference;
-  }
-
-  /**
-   * URL of the source (reference list) of the `taxonID`.
-   * (Required)
-   */
-  @JsonProperty("taxonIDReference")
-  public void setTaxonIDReference(URI taxonIDReference) {
-    this.taxonIDReference = taxonIDReference;
   }
 
   /**
