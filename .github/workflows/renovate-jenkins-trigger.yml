@@ -1,0 +1,99 @@
+name: Renovate Jenkins Trigger
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      # Username (currently my own one, use something else in the future)
+      JENKINS_USERNAME: "${{ secrets.RENOVATE_JENKINS_USERNAME }}"
+      # API token, generated in Jenkins, stored in GitHub
+      JENKINS_API_TOKEN: "${{ secrets.RENOVATE_JENKINS_API_TOKEN }}"
+      JENKINS_JOB_URL: "https://builds.gbif.org/job/ipt-renovate"
+      JENKINS_URL: "https://builds.gbif.org"
+
+    steps:
+      - name: Extract Branch Name
+        id: extract_branch
+        run: |
+          BRANCH_NAME=$(jq -r '.pull_request.head.ref' $GITHUB_EVENT_PATH)
+          echo "::set-output name=branch::$BRANCH_NAME"
+
+      - name: Trigger Jenkins Job
+        id: trigger_jenkins
+        run: |
+          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+
+          # Trigger the Jenkins job and capture the response headers
+          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
+
+          # Extract the queue number from the response headers
+          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
+
+          # Set QUEUE_NUMBER as an output variable
+          echo "::set-output name=queue_number::$QUEUE_NUMBER"
+
+          # Extract the HTTP response status code
+          HTTP_RESPONSE_STATUS=$(echo "$RESPONSE_HEADERS" | grep -i "HTTP/" | awk '{print $2}')
+
+          echo "Jenkins job queued with queue number: $QUEUE_NUMBER"
+          echo "HTTP Response Status: $HTTP_RESPONSE_STATUS"
+
+          if [[ "$HTTP_RESPONSE_STATUS" -ne 201 ]]; then
+            echo "Failed to trigger Jenkins job. HTTP Response Code: HTTP_RESPONSE_STATUS"
+            exit 1
+          fi
+
+      - name: Check Jenkins Job Status
+        id: check_jenkins_job
+        run: |
+          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+
+          # Access the queue_number output from the previous step
+          QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
+
+          while true; do
+            QUEUE_ITEM_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
+
+            if [[ "$QUEUE_ITEM_STATUS" == "false" ]]; then
+              # The job has left the queue, query the job's URL for its status
+              JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
+              JOB_RESPONSE=$(curl -s "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
+              JOB_STATUS=$(echo "$JOB_RESPONSE" | jq -r '.result')
+              IS_JOB_BUILDING=$(echo "$JOB_RESPONSE" | jq -r '.is_building')
+
+              echo "Job status is $JOB_RESPONSE"
+
+              if [[ "$IS_JOB_BUILDING" == "false" ]]; then
+                if [[ "$JOB_STATUS" == "FAILURE" || "$JOB_STATUS" == "UNSTABLE" ]]; then
+                  echo "Jenkins job has failed."
+                  echo "See more $JOB_URL"
+                  exit 1
+                elif [[ "$JOB_STATUS" == "SUCCESS" ]]; then
+                  echo "Jenkins job has succeeded."
+                  echo "See more $JOB_URL"
+                  exit 0
+                elif [[ "$JOB_STATUS" == "null" ]]; then
+                  echo "Something went wrong, Jenkins job is in null status"
+                  echo "See more $JOB_URL"
+                  exit 1
+                else
+                  echo "Jenkins job is in an unknown state $JOB_STATUS"
+                  echo "See more $JOB_URL"
+                  exit 1
+                fi
+              else
+                echo "Job is still running"
+                sleep 30  # Sleep for 30 seconds before checking again
+              fi  
+            else
+              echo "Job is still in the queue..."
+              sleep 30
+            fi  
+          done
