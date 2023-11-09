@@ -396,23 +396,26 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     } else {
       if (inferredMetadata instanceof InferredCamtrapMetadata) {
         InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
-        if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred()
-            && inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
-          Geojson geojson = new Geojson();
-          geojson.setType(Geojson.Type.POLYGON);
-          List<Double> coordinates = new ArrayList<>();
-          InferredCamtrapGeographicScope inferredGeographicScope = inferredCamtrapMetadata.getInferredGeographicScope();
-          coordinates.add(inferredGeographicScope.getMinLongitude());
-          coordinates.add(inferredGeographicScope.getMinLatitude());
-          coordinates.add(inferredGeographicScope.getMaxLongitude());
-          coordinates.add(inferredGeographicScope.getMaxLatitude());
-          geojson.setCoordinates(coordinates);
 
-          camtrapMetadata.setSpatial(geojson);
-          camtrapMetadata.setCoordinatePrecision(null);
-        } else {
-          for (String error : inferredCamtrapMetadata.getInferredGeographicScope().getErrors()) {
-            addActionError(getText(error));
+        if (inferredCamtrapMetadata.getInferredGeographicScope() != null) {
+          if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred()
+              && inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
+            Geojson geojson = new Geojson();
+            geojson.setType(Geojson.Type.POLYGON);
+            List<Double> coordinates = new ArrayList<>();
+            InferredCamtrapGeographicScope inferredGeographicScope = inferredCamtrapMetadata.getInferredGeographicScope();
+            coordinates.add(inferredGeographicScope.getMinLongitude());
+            coordinates.add(inferredGeographicScope.getMinLatitude());
+            coordinates.add(inferredGeographicScope.getMaxLongitude());
+            coordinates.add(inferredGeographicScope.getMaxLatitude());
+            geojson.setCoordinates(coordinates);
+
+            camtrapMetadata.setSpatial(geojson);
+            camtrapMetadata.setCoordinatePrecision(null);
+          } else {
+            for (String error : inferredCamtrapMetadata.getInferredGeographicScope().getErrors()) {
+              addActionError(getText(error));
+            }
           }
         }
       }
@@ -426,7 +429,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       if (inferredMetadata instanceof InferredCamtrapMetadata) {
         InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
 
-        if (inferredCamtrapMetadata.getInferredTaxonomicScope().isInferred()
+        if (inferredCamtrapMetadata.getInferredTaxonomicScope() != null
+            && inferredCamtrapMetadata.getInferredTaxonomicScope().isInferred()
             && inferredCamtrapMetadata.getInferredTaxonomicScope().getErrors().isEmpty()) {
           InferredCamtrapTaxonomicScope inferredTaxonomicScope = inferredCamtrapMetadata.getInferredTaxonomicScope();
           camtrapMetadata.setTaxonomic(inferredTaxonomicScope.getData());
@@ -442,7 +446,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       if (inferredMetadata instanceof InferredCamtrapMetadata) {
         InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
 
-        if (inferredCamtrapMetadata.getInferredTemporalScope().isInferred()
+        if (inferredCamtrapMetadata.getInferredTemporalScope() != null
+            && inferredCamtrapMetadata.getInferredTemporalScope().isInferred()
             && inferredCamtrapMetadata.getInferredTemporalScope().getErrors().isEmpty()) {
           InferredCamtrapTemporalScope inferredTemporalScope = inferredCamtrapMetadata.getInferredTemporalScope();
 
