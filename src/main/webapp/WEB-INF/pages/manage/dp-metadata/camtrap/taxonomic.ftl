@@ -416,24 +416,18 @@
 
                                 <div class="border rounded p-3">
                                     <#if (inferredMetadata.inferredTaxonomicScope.data)?has_content>
-                                        <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
-                                            <div class="table-responsive">
-                                                <table class="text-smaller table table-sm table-borderless mb-0">
-                                                    <tr>
-                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
-                                                        <td>
-                                                            ${tx.taxonID!}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
-                                                        <td>
-                                                            ${tx.scientificName!}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </#list>
+                                        <div class="table-responsive">
+                                            <table class="text-smaller table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                    <td>
+                                                        <#list (inferredMetadata.inferredTaxonomicScope.data)! as tx>
+                                                        ${tx.scientificName!}<#sep>;</#sep>
+                                                        </#list>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     <#else>
                                         <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
                                     </#if>

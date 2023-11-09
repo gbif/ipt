@@ -95,7 +95,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private static final String CAMTRAP_DEPLOYMENTS = "deployments";
   private static final String CAMTRAP_OBSERVATIONS = "observations";
-  public static final String CAMTRAP_OBSERVATIONS_TAXON_ID = "taxonID";
   public static final String CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME = "scientificName";
   public static final String CAMTRAP_DEPLOYMENTS_LATITUDE = "latitude";
   public static final String CAMTRAP_DEPLOYMENTS_LONGITUDE = "longitude";
@@ -680,7 +679,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void processObservationsMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
     // calculate column indexes for mapping
-    params.taxonomic.taxonIdSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_TAXON_ID);
     params.taxonomic.scientificNameSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME);
 
     ClosableReportingIterator<String[]> iter = null;
@@ -852,13 +850,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private void processLine(String[] in, InferredCamtrapTaxonomicScopeParams params) {
-    if (params.isTaxonIdMapped()
-        && params.isScientificNameMapped()
+    if (params.isScientificNameMapped()
         && params.taxonItemsAdded < params.maxNumberOfTaxonItems) {
       if (params.isColumnIndexesWithinRange(in.length)
-          && StringUtils.isNotEmpty(in[params.taxonIdSourceColumnIndex])
           && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
-        params.taxa.put(in[params.taxonIdSourceColumnIndex], in[params.scientificNameSourceColumnIndex]);
+        params.taxa.add(in[params.scientificNameSourceColumnIndex]);
         params.taxonItemsAdded++;
       }
     }
@@ -911,11 +907,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         = handleCamtrapTaxonomicScopeErrors(inferredTaxonomicScope, params);
 
     if (!errorOccurredWhileProcessingTaxonomicMetadata) {
-      List<Taxonomic> taxCoverage = params.taxa.entrySet().stream()
-          .map(entry -> {
+      List<Taxonomic> taxCoverage = params.taxa.stream()
+          .map(val -> {
             Taxonomic t = new Taxonomic();
-            t.setTaxonID(entry.getKey());
-            t.setScientificName(entry.getValue());
+            t.setScientificName(val);
             return t;
           })
           .collect(Collectors.toList());
@@ -974,12 +969,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       errorOccurred = true;
     } else if (!params.isObservationsMapped) {
       metadata.addError("datapackagemetadata.error.noObservationsMapped");
-      errorOccurred = true;
-    } else if (!params.isTaxonIdMapped() && !params.isScientificNameMapped()) {
-      metadata.addError("datapackagemetadata.taxonomic.error.fieldsNotMapped");
-      errorOccurred = true;
-    } else if (!params.isTaxonIdMapped()) {
-      metadata.addError("datapackagemetadata.taxonomic.error.taxonIdNotMapped");
       errorOccurred = true;
     } else if (!params.isScientificNameMapped()) {
       metadata.addError("datapackagemetadata.taxonomic.error.scientificNameNotMapped");
@@ -1054,19 +1043,14 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   static class InferredCamtrapTaxonomicScopeParams {
     private int taxonItemsAdded = 0;
     private final int maxNumberOfTaxonItems = 200;
-    private final Map<String, String> taxa = new HashMap<>();
-    private int taxonIdSourceColumnIndex = -1;
+    private final Set<String> taxa = new HashSet<>();
     private int scientificNameSourceColumnIndex = -1;
     private boolean serverError;
     private boolean isObservationsMapped;
     private boolean noValidDataGeo;
 
     public boolean isColumnIndexesWithinRange(int range) {
-      return taxonIdSourceColumnIndex < range && scientificNameSourceColumnIndex < range;
-    }
-
-    public boolean isTaxonIdMapped() {
-      return taxonIdSourceColumnIndex != -1;
+      return scientificNameSourceColumnIndex < range;
     }
 
     public boolean isScientificNameMapped() {
