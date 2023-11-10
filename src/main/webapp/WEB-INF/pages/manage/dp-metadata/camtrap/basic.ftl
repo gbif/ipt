@@ -387,7 +387,7 @@
                                             <#else>
                                                 <input type="hidden" name="metadata.licenses[0].scope" value="DATA"
                                                        required>
-                                                <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
+                                                <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=gbifSupportedLicenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
                                             </#if>
                                         </div>
 
@@ -400,7 +400,7 @@
                                             <#else>
                                                 <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA"
                                                        required>
-                                                <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=licenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
+                                                <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=openDefinitionLicenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
                                             </#if>
                                         </div>
                                     </div>
