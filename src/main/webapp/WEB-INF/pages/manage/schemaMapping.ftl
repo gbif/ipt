@@ -218,6 +218,7 @@
     </script>
 
     <#assign currentMenu = "manage"/>
+    <#assign nonMapped = action.getNonMappedColumns()/>
     <#include "/WEB-INF/pages/inc/menu.ftl"/>
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
@@ -487,6 +488,24 @@
                                 </div>
                             </#if>
                         </#list>
+
+                        <#if (nonMapped?size>0)>
+                            <span class="anchor anchor-base" id="anchor-nonmapped"></span>
+                            <div class="mt-5" style="height: 100vh; min-height: 200px;">
+                                <h4 id="nonmapped" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                    <@s.text name="manage.mapping.no.mapped.title"/>
+                                </h4>
+                                <p><@s.text name="manage.mapping.schema.no.mapped.columns"/>:</p>
+
+                                <div class="text-smaller">
+                                    <#list nonMapped as col>
+                                        <#if col?has_content>
+                                            <span class="unmapped-field"><strong>${col}</strong></span><#sep> </#sep>
+                                        </#if>
+                                    </#list>
+                                </div>
+                            </div>
+                        </#if>
                     </div>
                 </div>
             </div>

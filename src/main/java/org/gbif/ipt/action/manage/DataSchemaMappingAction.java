@@ -377,4 +377,32 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   public RecordFilter.Comparator[] getComparators() {
     return RecordFilter.Comparator.values();
   }
+
+  /**
+   * @return list of columns in the source data that have not been mapped to field(s) yet, or an empty list if the
+   * source data has no columns
+   */
+  public List<String> getNonMappedColumns() {
+    List<String> mapped = new ArrayList<>();
+
+    // return an empty list if source data has no columns
+    if (columns.isEmpty()) {
+      return mapped;
+    }
+
+    // get a list of all columns mapped to fields
+    for (DataSchemaFieldMapping field : fields) {
+      if (field.getIndex() != null && field.getIndex() >=0 && field.getIndex() < columns.size()) {
+        String sourceColumn = columns.get(field.getIndex());
+        if (sourceColumn != null) {
+          mapped.add(sourceColumn);
+        }
+      }
+    }
+
+    // return list all source columns excluding those mapped
+    List<String> nonMapped = new ArrayList<>(columns);
+    nonMapped.removeAll(mapped);
+    return nonMapped;
+  }
 }
