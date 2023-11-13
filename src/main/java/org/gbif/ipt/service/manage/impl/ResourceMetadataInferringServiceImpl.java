@@ -1051,7 +1051,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     private int scientificNameSourceColumnIndex = -1;
     private boolean serverError;
     private boolean isObservationsMapped;
-    private boolean noValidDataGeo;
 
     public boolean isColumnIndexesWithinRange(int range) {
       return scientificNameSourceColumnIndex < range;
