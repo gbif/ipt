@@ -39,12 +39,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -153,17 +152,24 @@ public class ResourceCamtrapMetadataInferringTest {
         "Inferred taxonomic metadata must be present and valid",
         () -> assertTrue(taxonomic.isInferred()),
         () -> assertTrue(taxonomic.getErrors().isEmpty()),
-        () -> assertEquals(4, taxonomic.getData().size()),
-        () -> assertIterableEquals(
-            new HashSet<>(
-                Arrays.asList(
-                    taxonomic("Ondatra zibethicus"),
-                    taxonomic("Rattus norvegicus"),
-                    taxonomic("Anas platyrhynchos"),
-                    taxonomic("Gallinula chloropus"))),
-            new HashSet<>(taxonomic.getData())
-        )
+        () -> assertEquals(10, taxonomic.getData().size(), "Expected 10 taxa"),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Ardea cinerea")), "Taxa must contain \"Ardea cinerea\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Rattus norvegicus")), "Taxa must contain \"Rattus norvegicus\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Homo sapiens")), "Taxa must contain \"Homo sapiens\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Anas platyrhynchos")), "Taxa must contain \"Anas platyrhynchos\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Anas strepera")), "Taxa must contain \"Anas strepera\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Mustela putorius")), "Taxa must contain \"Mustela putorius\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Vulpes vulpes")), "Taxa must contain \"Vulpes vulpes\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Martes foina")), "Taxa must contain \"Martes foina\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Aves")), "Taxa must contain \"Aves\". Values: " + toString(taxonomic)),
+        () -> assertTrue(taxonomic.getData().contains(taxonomic("Ardea")), "Taxa must contain \"Ardea\". Values: " + toString(taxonomic))
     );
+  }
+
+  private static String toString(InferredCamtrapTaxonomicScope taxonomic) {
+    return taxonomic.getData().stream()
+        .map(Taxonomic::getScientificName)
+        .collect(Collectors.joining(", ", "[", "]"));
   }
 
   private static Taxonomic taxonomic(String scientificName) {
@@ -298,13 +304,6 @@ public class ResourceCamtrapMetadataInferringTest {
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(9)
-                    .field(DataSchemaField.builder()
-                        .name("taxonID")
-                        .type("string")
-                        .build())
-                    .build(),
-                DataSchemaFieldMapping.builder()
-                    .index(10)
                     .field(DataSchemaField.builder()
                         .name("scientificName")
                         .type("string")

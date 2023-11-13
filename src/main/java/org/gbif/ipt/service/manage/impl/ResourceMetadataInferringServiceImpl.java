@@ -693,6 +693,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         }
 
         processLine(in, params.taxonomic);
+
+        if (isMaxNumberOfTaxaReached(params.taxonomic)) {
+          break;
+        }
       }
       // Catch ParseException, occurs for Excel files. Find out why
     } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
@@ -851,13 +855,14 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void processLine(String[] in, InferredCamtrapTaxonomicScopeParams params) {
     if (params.isScientificNameMapped()
-        && params.taxonItemsAdded < params.maxNumberOfTaxonItems) {
-      if (params.isColumnIndexesWithinRange(in.length)
-          && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
-        params.taxa.add(in[params.scientificNameSourceColumnIndex]);
-        params.taxonItemsAdded++;
-      }
+        && params.isColumnIndexesWithinRange(in.length)
+        && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
+      params.taxa.add(in[params.scientificNameSourceColumnIndex]);
     }
+  }
+
+  private boolean isMaxNumberOfTaxaReached(InferredCamtrapTaxonomicScopeParams params) {
+    return params.taxa.size() >= params.maxNumberOfTaxonItems;
   }
 
   private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapMetadataParams params) {
@@ -973,7 +978,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     } else if (!params.isScientificNameMapped()) {
       metadata.addError("datapackagemetadata.taxonomic.error.scientificNameNotMapped");
       errorOccurred = true;
-    } else if (params.taxonItemsAdded == 0) {
+    } else if (params.taxa.size() == 0) {
       metadata.addError("datapackagemetadata.error.noValidData");
       errorOccurred = true;
     }
@@ -1041,7 +1046,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   static class InferredCamtrapTaxonomicScopeParams {
-    private int taxonItemsAdded = 0;
     private final int maxNumberOfTaxonItems = 200;
     private final Set<String> taxa = new HashSet<>();
     private int scientificNameSourceColumnIndex = -1;
