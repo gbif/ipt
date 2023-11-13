@@ -197,7 +197,7 @@
                         return '${selectNoResultsFound}';
                     }
                 },
-                minimumResultsForSearch: 'Infinity',
+                minimumResultsForSearch: 15,
                 width: "100%",
                 allowClear: true,
                 theme: 'bootstrap4'
