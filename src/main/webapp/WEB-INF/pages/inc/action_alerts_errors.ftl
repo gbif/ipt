@@ -7,7 +7,9 @@
                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
             </div>
             <div class="overflow-x-hidden pt-1">
-                <span>${error!}</span>
+                [#if error?has_content]
+                    <span>[@error?interpret /]</span>
+                [/#if]
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
