@@ -18,8 +18,9 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.Source;
 import org.gbif.ipt.validation.BasicMetadata;
-import org.gbif.ipt.validation.GbifCompatibleLicense;
 import org.gbif.ipt.validation.GeographicScopeMetadata;
+import org.gbif.ipt.validation.HasGbifCompatibleLicense;
+import org.gbif.ipt.validation.HasOpenDefinitionCompatibleLicense;
 import org.gbif.ipt.validation.ProjectMetadata;
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 import org.gbif.ipt.validation.TemporalScopeMetadata;
@@ -386,7 +387,12 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
   @Element(CamtrapLicense.class)
   @Size(min = 2, message = "validation.camtrap.metadata.licenses.size", groups = BasicMetadata.class)
-  @GbifCompatibleLicense(message = "validation.camtrap.metadata.licenses.gbifCompatible.required", groups = BasicMetadata.class)
+  @HasGbifCompatibleLicense(
+      message = "validation.camtrap.metadata.licenses.gbifCompatible.required",
+      groups = BasicMetadata.class)
+  @HasOpenDefinitionCompatibleLicense(
+      message = "validation.camtrap.metadata.licenses.openDefinitionCompatible.required",
+      groups = BasicMetadata.class)
   public List<License> getLicenses() {
     return super.getLicenses();
   }

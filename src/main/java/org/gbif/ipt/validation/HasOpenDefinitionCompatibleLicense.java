@@ -25,11 +25,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = GbifCompatibleLicenseValidator.class)
+@Constraint(validatedBy = HasOpenDefinitionCompatibleLicenseValidator.class)
 @Documented
-public @interface GbifCompatibleLicense {
+public @interface HasOpenDefinitionCompatibleLicense {
 
-  String message() default "{validation.gbifCompatibleLicenseRequired}";
+  String message() default "{validation.openDefinitionCompatibleLicenseRequired}";
 
   Class<?>[] groups() default {};
 

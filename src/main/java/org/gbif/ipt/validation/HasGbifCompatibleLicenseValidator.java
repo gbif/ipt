@@ -22,7 +22,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class GbifCompatibleLicenseValidator implements ConstraintValidator<GbifCompatibleLicense, List<License>> {
+public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<HasGbifCompatibleLicense, List<License>> {
 
   private static final String[] GBIF_COMPATIBLE_LICENSES = {"CC0-1.0", "CC-BY-4.0", "CC-BY-NC-4.0"};
 
@@ -42,8 +42,7 @@ public class GbifCompatibleLicenseValidator implements ConstraintValidator<GbifC
         continue;
       }
 
-      // Data license must be GBIF compatible
-      if (!isValid(camtrapLicense)) {
+      if (isDataLicense(camtrapLicense) && !isValid(camtrapLicense)) {
         isValid = false;
 
         context.disableDefaultConstraintViolation();
@@ -55,7 +54,11 @@ public class GbifCompatibleLicenseValidator implements ConstraintValidator<GbifC
     return isValid;
   }
 
+  private boolean isDataLicense(CamtrapLicense license) {
+    return license.getScope() == CamtrapLicense.Scope.DATA;
+  }
+
   private boolean isValid(CamtrapLicense license) {
-    return license.getScope() != CamtrapLicense.Scope.DATA || StringUtils.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
+    return StringUtils.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
   }
 }
