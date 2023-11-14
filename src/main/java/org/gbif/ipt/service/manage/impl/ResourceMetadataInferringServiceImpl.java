@@ -52,11 +52,11 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import java.text.ParseException;
 import java.time.YearMonth;
 import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -820,6 +820,14 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.noValidDataTemporal = false;
       }
 
+      if (parsedDeploymentStartTA instanceof YearMonth) {
+        parsedDeploymentStartTA = ((YearMonth) parsedDeploymentStartTA).atEndOfMonth();
+      }
+
+      if (parsedDeploymentEndTA instanceof YearMonth) {
+        parsedDeploymentEndTA = ((YearMonth) parsedDeploymentEndTA).atEndOfMonth();
+      }
+
       if (params.startDateTA == null) {
         params.startDateTA = parsedDeploymentStartTA;
         params.startDateStr = rawDeploymentStartValue;
@@ -829,26 +837,44 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.endDateStr = rawDeploymentEndValue;
       }
 
-      if (parsedDeploymentStartTA instanceof YearMonth) {
-        parsedDeploymentStartTA = ((YearMonth) parsedDeploymentStartTA).atEndOfMonth();
-      }
-
-      if (parsedDeploymentEndTA instanceof YearMonth) {
-        parsedDeploymentEndTA = ((YearMonth) parsedDeploymentEndTA).atEndOfMonth();
-      }
-
       if (parsedDeploymentStartTA instanceof ChronoLocalDate
-          && params.startDateTA instanceof ChronoLocalDate
-          && ((ChronoLocalDate) params.startDateTA).isAfter((ChronoLocalDate) parsedDeploymentStartTA)) {
-        params.startDateTA = parsedDeploymentStartTA;
-        params.startDateStr = rawDeploymentStartValue;
+          && params.startDateTA instanceof ChronoLocalDate) {
+        ChronoLocalDate parsedLocalDate = (ChronoLocalDate) parsedDeploymentStartTA;
+        ChronoLocalDate existingLocalDate = (ChronoLocalDate) params.startDateTA;
+
+        if (existingLocalDate.isAfter(parsedLocalDate)) {
+          params.startDateTA = parsedDeploymentStartTA;
+          params.startDateStr = rawDeploymentStartValue;
+        }
+      } else if (parsedDeploymentStartTA instanceof ChronoZonedDateTime
+          && params.startDateTA instanceof ChronoZonedDateTime) {
+        ChronoLocalDate parsedLocalDate = ((ChronoZonedDateTime<?>) parsedDeploymentStartTA).toLocalDate();
+        ChronoLocalDate existingLocalDate = ((ChronoZonedDateTime<?>) params.startDateTA).toLocalDate();
+
+        if (existingLocalDate.isAfter(parsedLocalDate)) {
+          params.startDateTA = parsedDeploymentStartTA;
+          params.startDateStr = rawDeploymentStartValue;
+        }
       }
 
       if (parsedDeploymentEndTA instanceof ChronoLocalDate
-          && params.endDateTA instanceof ChronoLocalDate
-          && ((ChronoLocalDate) params.endDateTA).isBefore((ChronoLocalDate) parsedDeploymentEndTA)) {
-        params.endDateTA = parsedDeploymentEndTA;
-        params.endDateStr = rawDeploymentEndValue;
+          && params.endDateTA instanceof ChronoLocalDate) {
+        ChronoLocalDate parsedLocalDate = (ChronoLocalDate) parsedDeploymentEndTA;
+        ChronoLocalDate existingLocalDate = (ChronoLocalDate) params.endDateTA;
+
+        if (existingLocalDate.isBefore(parsedLocalDate)) {
+          params.endDateTA = parsedDeploymentEndTA;
+          params.endDateStr = rawDeploymentEndValue;
+        }
+      } else if (parsedDeploymentEndTA instanceof ChronoZonedDateTime
+          && params.endDateTA instanceof ChronoZonedDateTime) {
+        ChronoLocalDate parsedLocalDate = ((ChronoZonedDateTime<?>) parsedDeploymentEndTA).toLocalDate();
+        ChronoLocalDate existingLocalDate = ((ChronoZonedDateTime<?>) params.endDateTA).toLocalDate();
+
+        if (existingLocalDate.isBefore(parsedLocalDate)) {
+          params.endDateTA = parsedDeploymentEndTA;
+          params.endDateStr = rawDeploymentEndValue;
+        }
       }
     }
   }

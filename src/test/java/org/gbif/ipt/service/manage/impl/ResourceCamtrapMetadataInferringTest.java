@@ -144,8 +144,8 @@ public class ResourceCamtrapMetadataInferringTest {
         "Inferred temporal metadata must be present and valid",
         () -> assertTrue(temporal.isInferred()),
         () -> assertTrue(temporal.getErrors().isEmpty()),
-        () -> assertEquals("2022-05-04", formatDate(temporal.getStartDate())),
-        () -> assertEquals("2022-06-01", formatDate(temporal.getEndDate()))
+        () -> assertEquals("2019-09-18", formatDate(temporal.getStartDate()), "Start date does not match"),
+        () -> assertEquals("2023-05-02", formatDate(temporal.getEndDate()), "End date does not match")
     );
 
     assertAll(
