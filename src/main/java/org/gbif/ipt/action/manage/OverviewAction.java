@@ -150,7 +150,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean validateEml = false;
 
   private boolean validateDatapackageMetadata = false;
-  private boolean preserveScopeMetadata = false;
   private String summary;
   private String makePublicDateTime;
   private long usableSpace;
@@ -1598,14 +1597,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.validateDatapackageMetadata = validateDatapackageMetadata;
   }
 
-  public boolean isPreserveScopeMetadata() {
-    return preserveScopeMetadata;
-  }
-
-  public void setPreserveScopeMetadata(boolean preserveScopeMetadata) {
-    this.preserveScopeMetadata = preserveScopeMetadata;
-  }
-
   public void setEmlFile(File emlFile) {
     this.emlFile = emlFile;
   }
@@ -1640,7 +1631,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public String replaceDatapackageMetadata() {
     try {
-      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata, preserveScopeMetadata);
+      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata);
       addActionMessage(getText("manage.overview.success.replace.metadata"));
       return SUCCESS;
     } catch (ImportException e) {

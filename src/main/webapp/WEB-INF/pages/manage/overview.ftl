@@ -2269,11 +2269,6 @@
                                     <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
                                         <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
                                     </div>
-                                    <#if resource.coreType?? && resource.coreType == "camtrap-dp">
-                                        <div id="datapackage-metadata-preserve-scope-metadata" class="col-12 text-smaller" style="display: none;">
-                                            <@checkbox name="preserveScopeMetadata" i18nkey="manage.overview.datapackagemetadata.preserveScopeMetadata" value="${validateDatapackageMetadata?c}"/>
-                                        </div>
-                                    </#if>
                                     <div class="col-12">
                                         <@s.submit name="datapackageMetadataReplace" cssClass="btn btn-sm btn-outline-gbif-primary my-1 confirmDatapackageMetadataReplace" cssStyle="display: none" key="button.replace"/>
                                         <@s.submit name="datapackageMetadataCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
