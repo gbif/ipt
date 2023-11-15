@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"PO-Revision-Date: 2023-11-15 22:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,7 +26,7 @@ msgstr "La forma más sencilla de empezar a utilizar el IPT es solicitar una cue
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
 #: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
-msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Introducción] es su punto de inicio."
+msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Inicio] es su punto de partida."
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
@@ -49,7 +49,7 @@ msgstr "_Para obtener información sobre la última versión, incluyendo las des
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
 msgid "The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:"
-msgstr "El Integrated Publishing Toolkit (IPT) de GBIF es una aplicación web de código abierto, disponible de forma gratuita, que facilita compartir cuatro tipos de información sobre biodiversidad:"
+msgstr "El Integrated Publishing Toolkit (IPT) de GBIF es una aplicación web de código abierto, disponible gratuitamente, que facilita la publicación de cuatro tipos de información relacionada con la biodiversidad:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:8
@@ -69,7 +69,7 @@ msgstr "Datos de eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11
 msgid "general metadata about data sources."
-msgstr "Metadatos de conjuntos de datos"
+msgstr "metadatos generales sobre las fuentes de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:13
@@ -79,7 +79,7 @@ msgstr "Una instancia del IPT, así como los datos y metadatos registrados a tra
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr "Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos https://www.gbif.org/es/participation/participant-list[Aliados de GBIF] se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos que son producto de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo, a través de Internet, para apoyar a la ciencia, la conservación y el desarrollo sostenible. Puede obtener más información acerca de GBIF en http://www.gbif.org/es/."
+msgstr "Fundada y financiada por los gobiernos en el año 2001, el Sistema Global de Información en Biodiversidad (GBIF, por sus siglas en inglés) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos https://www.gbif.org/es/participation/participant-list[participantes de GBIF] se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos que son producto de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo, a través de Internet, para apoyar a la ciencia, la conservación y el desarrollo sostenible. Puede obtener más información acerca de GBIF en https://www.gbif.org/es/[GBIF.org]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
@@ -109,7 +109,7 @@ msgstr "La necesidad de ofrecer beneficios y servicios adicionales a los publica
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:26
 msgid "the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata."
-msgstr "La carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas de chequeo y metadatos."
+msgstr "La carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como listas de chequeo y metadatos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:28
