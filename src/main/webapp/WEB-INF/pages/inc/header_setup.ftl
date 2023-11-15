@@ -21,6 +21,8 @@
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
+            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
+            --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
         }
 
