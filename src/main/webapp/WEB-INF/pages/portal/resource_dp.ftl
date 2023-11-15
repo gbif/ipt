@@ -115,7 +115,7 @@
                         ${dpMetadata.title!resource.shortname}
                     </h1>
 
-                    <#if resource.lastPublished?? && resource.organisation??>
+                    <#if resource.lastPublished??>
                         <div class="text-gbif-primary text-smaller">
                             <span>
                                 <#-- the existence of parameter version means the version is not equal to the latest published version -->
@@ -134,13 +134,14 @@
                                     </#assign>
                                 </#if>
 
-                                <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                                    ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
+                                <#if !resource.organisation?has_content ||
+                                (action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString())>
+                                    ${publishedOnText?lower_case}<span>${createdLongDate!}</span>
                                     <br>
                                     <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                                 <#else>
-                                    <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span>${createdLongShortDate!}</span>
-                                    <span style="display: none">${resource.organisation.name}</span>
+                                    <@s.text name='portal.resource.publishedOn'><@s.param>${(resource.organisation.name)!}</@s.param></@s.text> <span>${createdLongShortDate!}</span>
+                                    <span style="display: none">${(resource.organisation.name)!}</span>
                                 </#if>
                             </span>
                         </div>
