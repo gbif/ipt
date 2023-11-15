@@ -91,16 +91,18 @@
     </div>
 
     <main class="container main-content-container border rounded-2 mt-4 mb-5">
-        <div class="mb-3 py-4 px-5">
-            <#if !registeredIpt?has_content>
+        <#if !registeredIpt?has_content>
+            <div class="mb-0 py-4 px-5">
                 <div class="text-center">
                     <@s.text name="admin.home.organisations.disabled"/>
                 </div>
-            <#else>
+            </div>
+        <#else>
+            <div class="mb-3 py-4 px-5">
                 <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
-            </#if>
-        </div>
+            </div>
+        </#if>
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
