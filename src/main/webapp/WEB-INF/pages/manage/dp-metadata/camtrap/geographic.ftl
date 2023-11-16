@@ -167,7 +167,9 @@
                             </div>
 
                             <div id="custom-data" class="mt-4">
-                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <@s.file id="custom-data-input" cssClass="form-control form-control-sm my-1 d-none" />
+                                </div>
 
                                 <textarea id="custom-data-textarea" name="customGeoJson" placeholder="Input custom Geo JSON object" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;"></textarea>
                                 <div id="file-selector" class="border-bottom border-start border-end rounded py-2 px-3 fs-smaller text-muted" style="cursor: pointer;border-color: #ced4da !important;border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
