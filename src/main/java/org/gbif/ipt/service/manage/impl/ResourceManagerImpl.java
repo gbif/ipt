@@ -3030,9 +3030,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.getDataPackageMetadata().setVersion(version.toPlainString());
 
     // update metadata with inferred data (if infer automatically is turned on)
-    if (resource.isInferGeocoverageAutomatically()
+    if (CAMTRAP_DP.equals(resource.getCoreType())
+        && (resource.isInferGeocoverageAutomatically()
         || resource.isInferTaxonomicCoverageAutomatically()
-        || resource.isInferTemporalCoverageAutomatically()) {
+        || resource.isInferTemporalCoverageAutomatically())) {
       InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) resourceMetadataInferringService.inferMetadata(resource);
       // save inferred metadata
       resource.setInferredMetadata(inferredMetadata);
