@@ -120,7 +120,7 @@ public abstract class ReportingTask {
    *
    * @throws IOException if publication log writer could not be created
    */
-  private BufferedWriter getPublicationLogWriter(String resourceShortname) throws IOException {
+  protected BufferedWriter getPublicationLogWriter(String resourceShortname) throws IOException {
     File logFile = dataDir.resourcePublicationLogFile(resourceShortname);
     return Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8);
   }
