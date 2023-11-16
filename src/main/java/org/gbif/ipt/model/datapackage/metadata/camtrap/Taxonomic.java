@@ -106,6 +106,7 @@ public class Taxonomic implements Serializable {
    * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Valid
   private Map<String, String> vernacularNames = new LinkedHashMap<>();
 
@@ -270,6 +271,7 @@ public class Taxonomic implements Serializable {
    * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public Map<String, String> getVernacularNames() {
     return vernacularNames;
   }
@@ -278,6 +280,7 @@ public class Taxonomic implements Serializable {
    * Common or vernacular names of the taxon, as `languageCode: vernacular name` pairs. Language codes should follow ISO 693-3 (e.g. `eng` for English).
    */
   @JsonProperty("vernacularNames")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public void setVernacularNames(Map<String, String> vernacularNames) {
     this.vernacularNames = vernacularNames;
   }
