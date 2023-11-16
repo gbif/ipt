@@ -127,8 +127,10 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 ps-3 py-3">
-                            <p class="mb-2"><@s.text name="datapackagemetadata.geographic.intro"/></p>
+                        <div class="mb-md-3 ps-3 py-3">
+                            <div class="mt-4">
+                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferGeocoverageAutomatically?c}" />
+                            </div>
 
                             <div id="actual-metadata-block" class="mt-3">
                                 <div><@s.text name="datapackagemetadata.currentSaved"/></div>
@@ -160,10 +162,6 @@
                                         </#if>
                                     </table>
                                 </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferGeocoverageAutomatically?c}" />
                             </div>
 
                             <div id="custom-data" class="mt-4">

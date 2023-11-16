@@ -99,8 +99,10 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 ps-3 py-3">
-                            <p class="mb-2"><@s.text name="datapackagemetadata.temporal.intro"/></p>
+                        <div class="mb-md-3 ps-3 py-3">
+                            <div class="mt-4">
+                                <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTemporalCoverageAutomatically?c}" />
+                            </div>
 
                             <div id="actual-metadata-block" class="mt-3">
                                 <div><@s.text name="datapackagemetadata.currentSaved"/></div>
@@ -118,10 +120,6 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTemporalCoverageAutomatically?c}" />
                             </div>
 
                             <#assign temporalScopeMetadataIsInferred = (inferredMetadata.inferredTemporalScope)?? && inferredMetadata.inferredTemporalScope.inferred && !inferredMetadata.inferredTemporalScope.errors?has_content/>

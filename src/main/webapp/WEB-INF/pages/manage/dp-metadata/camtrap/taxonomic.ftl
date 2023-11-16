@@ -353,13 +353,15 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 ps-3 py-3">
-                            <p class="mb-2"><@s.text name="datapackagemetadata.taxonomic.intro"/></p>
-
+                        <div class="mb-md-3 ps-3 py-3">
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
                             <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+
+                            <div class="mt-4">
+                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
+                            </div>
 
                             <div id="actual-metadata-block" class="mt-3">
                                 <div><@s.text name="datapackagemetadata.currentSaved"/></div>
@@ -387,10 +389,6 @@
                                         <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
                                     </#if>
                                 </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
                             </div>
 
                             <div id="custom-data" class="mt-4"></div>
