@@ -18,6 +18,7 @@
             var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
 
             if (isInferAutomaticallyEnabled) {
+                $("#actual-metadata-block").hide();
                 $("#custom-data").hide();
             } else {
                 $("#actual-metadata-block").show();
@@ -28,11 +29,13 @@
 
             $inferAutomaticallyCheckbox.click(function() {
                 if ($(this).is(":checked")) {
+                    $("#actual-metadata-block").hide();
                     $("#inferred-metadata-block").show();
                     $("#preview-links").show();
                     $("#custom-data").hide();
                     $("#custom-data-textarea").text('');
                 } else {
+                    $("#actual-metadata-block").show();
                     $("#inferred-metadata-block").hide();
                     $("#preview-links").hide();
                     $("#custom-data").show();
@@ -105,7 +108,6 @@
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">
-                                <div><@s.text name="datapackagemetadata.currentSaved"/></div>
                                 <div class="table-responsive border rounded p-3">
                                     <table class="text-smaller table table-sm table-borderless mb-0">
                                         <tr>
@@ -126,7 +128,7 @@
 
                             <div id="inferred-metadata-block" class="mt-4">
                                 <div class="row">
-                                    <div class="col-md-6"><@s.text name="datapackagemetadata.lastInferred"/></div>
+                                    <div class="col-md-6"></div>
                                     <div id="preview-links" class="col-md-6">
                                         <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
                                             <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
