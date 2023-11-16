@@ -369,24 +369,24 @@
                             <div id="actual-metadata-block" class="mt-3">
                                 <div class="border rounded p-3">
                                     <#if (metadata.taxonomic)?has_content>
-                                        <#list (metadata.taxonomic)! as tx>
-                                            <div class="table-responsive">
-                                                <table class="text-smaller table table-sm table-borderless mb-0">
-                                                    <tr>
-                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
-                                                        <td>
-                                                            ${tx.taxonID!}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
-                                                        <td>
-                                                            ${tx.scientificName!}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </#list>
+                                        <div class="table-responsive">
+                                            <table class="text-smaller table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <th class="col-4"><@s.text name='datapackagemetadata.taxonomic.scientificName'/></th>
+                                                    <th><@s.text name='datapackagemetadata.taxonomic.taxonId'/></th>
+                                                </tr>
+                                                <#list (metadata.taxonomic)! as tx>
+                                                <tr>
+                                                    <td>
+                                                        ${tx.scientificName!}
+                                                    </td>
+                                                    <td>
+                                                        ${tx.taxonID!}
+                                                    </td>
+                                                </tr>
+                                                </#list>
+                                            </table>
+                                        </div>
                                     <#else>
                                         <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
                                     </#if>
