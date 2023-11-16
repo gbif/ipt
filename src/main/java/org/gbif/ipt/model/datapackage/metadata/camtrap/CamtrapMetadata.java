@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.opensymphony.xwork2.util.Element;
+import org.gbif.ipt.validation.ValidGeojson;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends FrictionlessMetadata {
@@ -87,6 +88,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @JsonProperty("spatial")
   @NotNull(message = "validation.input.required", groups = GeographicScopeMetadata.class)
+  @ValidGeojson(message = "validation.camtrap.metadata.spatial.geojson", groups = GeographicScopeMetadata.class)
   @Valid
   private Geojson spatial;
 

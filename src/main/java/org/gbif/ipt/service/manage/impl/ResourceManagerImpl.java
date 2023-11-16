@@ -3089,12 +3089,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       Geojson geojson = new Geojson();
       geojson.setType(Geojson.Type.POLYGON);
-      List<Double> coordinates = new ArrayList<>();
-      InferredCamtrapGeographicScope inferredGeographicScope = inferredMetadata.getInferredGeographicScope();
-      coordinates.add(inferredGeographicScope.getMinLongitude());
-      coordinates.add(inferredGeographicScope.getMinLatitude());
-      coordinates.add(inferredGeographicScope.getMaxLongitude());
-      coordinates.add(inferredGeographicScope.getMaxLatitude());
+      List<List<List<Double>>> coordinates = new ArrayList<>();
+      InferredCamtrapGeographicScope inferredScope = inferredMetadata.getInferredGeographicScope();
+
+      coordinates.add(
+          Arrays.asList(
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude()),
+              Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMinLatitude()),
+              Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMaxLatitude()),
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMaxLatitude()),
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude())
+          )
+      );
+
       geojson.setCoordinates(coordinates);
 
       ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);

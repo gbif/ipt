@@ -43,6 +43,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -402,12 +403,19 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
               && inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
             Geojson geojson = new Geojson();
             geojson.setType(Geojson.Type.POLYGON);
-            List<Double> coordinates = new ArrayList<>();
-            InferredCamtrapGeographicScope inferredGeographicScope = inferredCamtrapMetadata.getInferredGeographicScope();
-            coordinates.add(inferredGeographicScope.getMinLongitude());
-            coordinates.add(inferredGeographicScope.getMinLatitude());
-            coordinates.add(inferredGeographicScope.getMaxLongitude());
-            coordinates.add(inferredGeographicScope.getMaxLatitude());
+            List<List<List<Double>>> coordinates = new ArrayList<>();
+            InferredCamtrapGeographicScope inferredScope = inferredCamtrapMetadata.getInferredGeographicScope();
+
+            coordinates.add(
+                Arrays.asList(
+                    Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude()),
+                    Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMinLatitude()),
+                    Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMaxLatitude()),
+                    Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMaxLatitude()),
+                    Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude())
+                )
+            );
+
             geojson.setCoordinates(coordinates);
 
             camtrapMetadata.setSpatial(geojson);

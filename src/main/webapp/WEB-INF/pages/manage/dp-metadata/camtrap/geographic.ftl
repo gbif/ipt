@@ -144,7 +144,7 @@
                                             <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
                                             <td>
                                                 <#if (metadata.spatial.coordinates)??>
-                                                    [${metadata.spatial.coordinates}]
+                                                    ${metadata.spatial.coordinates}
                                                 <#else>
                                                     -
                                                 </#if>
@@ -195,11 +195,11 @@
                                         <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
                                             <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
                                             <a href="camtrap-metadata-geographic.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
-                                        <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
+                                                <span>
+                                                    <svg class="link-icon" viewBox="0 0 24 24">
+                                                        <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span><@s.text name="datapackagemetadata.reinfer"/></span>
                                             </a>
                                         </div>
@@ -217,7 +217,11 @@
                                             <tr>
                                                 <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
                                                 <td>
-                                                    [[${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}, ${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}]]
+                                                    [[[${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}],
+                                                    [${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}],
+                                                    [${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}],
+                                                    [${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}],
+                                                    [${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}]]]
                                                 </td>
                                             </tr>
                                         </table>
