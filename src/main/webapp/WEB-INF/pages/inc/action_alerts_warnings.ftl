@@ -9,7 +9,9 @@
                 </div>
                 <div class="overflow-x-hidden pt-1">
                     <span>
-                        ${w!}
+                        [#if w?has_content]
+                            <span>[@w?interpret /]</span>
+                        [/#if]
                         [#if w?index == 2 && warnings?size > 3](There are more warnings, see logs for details)[/#if]
                     </span>
                 </div>

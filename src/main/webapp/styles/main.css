@@ -797,6 +797,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: rgb(var(--alert-success-background-color));
 }
 
+.alert-success a, .alert-success a:hover, .alert-success a:focus {
+    color: rgb(var(--alert-success-text-color)) !important;
+    font-weight: 500;
+}
+
 .alert-orange-2 {
     color: rgb(var(--alert-warning-icon-color));
 }
@@ -807,6 +812,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: rgb(var(--alert-warning-background-color));
 }
 
+.alert-warning a, .alert-warning a:hover, .alert-warning a:focus {
+    color: rgb(var(--alert-warning-text-color)) !important;
+    font-weight: 500;
+}
+
 .alert-red-2 {
     color: rgb(var(--alert-danger-icon-color));
 }
@@ -815,6 +825,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--alert-danger-text-color));
     background-color: rgb(var(--alert-danger-background-color));
     border-color: rgb(var(--alert-danger-background-color));
+}
+
+.alert-danger a, .alert-danger a:hover, .alert-danger a:focus {
+    color: rgb(var(--alert-danger-text-color)) !important;
+    font-weight: 500;
 }
 /* Custom alerts colors END */
 
