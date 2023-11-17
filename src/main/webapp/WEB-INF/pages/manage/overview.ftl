@@ -1116,12 +1116,14 @@
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                    <li>
-                                        <form action="resource-delete.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
-                                        </form>
-                                    </li>
+                                    <#if resource.key?? && resource.status == "REGISTERED">
+                                        <li>
+                                            <form action="resource-delete.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            </form>
+                                        </li>
+                                    </#if>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
