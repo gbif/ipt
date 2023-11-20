@@ -52,7 +52,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
 
-  public static final String PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/1.0-rc.1/profile/camtrap-dp-profile.json";
+  public static final String PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/1.0/profile/camtrap-dp-profile.json";
 
   private String profile = PROFILE;
 
