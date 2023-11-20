@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
 <script src="${baseURL}/js/leaflet/leaflet.js"></script>
-<script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
@@ -12,11 +11,19 @@
 <script>
     $(document).ready(function(){
         <#if latitude?? && longitude??>
-        var map = L.map('locationMap').setView([${latitude}, ${longitude}], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
-        var layer = new L.StamenTileLayer("terrain");
-        map.addLayer(layer, {
-            detectRetina: true
-        });
+        var pixel_ratio = parseInt(window.devicePixelRatio) || 1;
+        var max_zoom = 16;
+        var tile_size = 512;
+
+        var map = L.map('locationMap').setView([${latitude}, ${longitude}], 5).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
+
+        L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
+            minZoom: 1,
+            maxZoom: max_zoom + 1,
+            zoomOffset: -1,
+            tileSize: tile_size
+        }).addTo(map);
+
         L.Icon.Default.imagePath = '${baseURL}/images/leaflet';
         var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
         </#if>

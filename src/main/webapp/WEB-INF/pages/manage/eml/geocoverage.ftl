@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
     <script src="${baseURL}/js/leaflet/leaflet.js"></script>
-    <script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
     <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
 
     <#assign currentLocale = .vars["locale"]/>
@@ -32,12 +31,19 @@
             const MIN_LAT_VAL_LIMIT = -90;
             const MAX_LAT_VAL_LIMIT = 90;
 
-            var map = new L.map('map').setView([0, 0], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -360), L.latLng(90, 360)));
+            var pixel_ratio = parseInt(window.devicePixelRatio) || 1;
 
-            var layer = new L.StamenTileLayer("terrain");
-            map.addLayer(layer, {
-                detectRetina: true
-            });
+            var max_zoom = 16;
+            var tile_size = 512;
+
+            var map = L.map('map').setView([0, 0], 1);
+
+            L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
+                minZoom: 1,
+                maxZoom: max_zoom + 1,
+                zoomOffset: -1,
+                tileSize: tile_size
+            }).addTo(map);
 
             // populate coordinate fields, using min max values as defaults if none exist
             var minLngInputValue = $("#" + minLngId).val();
