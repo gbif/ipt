@@ -23,11 +23,6 @@
     {
       "matchPackageNames": ["com.google.guava:guava"],
       "automerge": false
-    },
-    {
-      "matchPackageNames": ["org.glassfish.jaxb:jaxb-runtime"],
-      "automerge": false,
-      "description": "Issues with the bytecode version"
     }
   ],
   "ignorePaths": ["package/**", "docs/**"],
