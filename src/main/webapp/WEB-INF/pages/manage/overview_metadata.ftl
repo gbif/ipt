@@ -5,7 +5,7 @@
         <div class="d-flex">
             <h5 class="my-auto text-gbif-header-2 fw-400">
                 <#assign metadataHeaderInfo>
-                    <@s.text name='manage.metadata.description'/>
+                    <@s.text name='manage.metadata.description1'/><br><br><#if resource.dataPackage??><@s.text name='manage.metadata.description2.dp'/><#else><@s.text name='manage.metadata.description2.dwc'/></#if>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <br><br>
                         <@s.text name='manage.overview.source.hidden'>

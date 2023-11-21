@@ -9,7 +9,7 @@
             <div class="d-flex">
                 <h5 class="my-auto text-gbif-header-2 fw-400">
                     <#assign sourcesInfo>
-                        <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
+                        <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text><br><br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text><#if !resource.dataPackage??><br><br><@s.text name='manage.overview.source.description5'/></#if>
                     </#assign>
                     <@popoverTextInfo sourcesInfo/>
 

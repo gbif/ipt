@@ -1334,6 +1334,8 @@
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
+                                        <#elseif resource.dataPackage??>
+                                            <@s.text name="manage.overview.published.description.dp"/>
                                         <#else>
                                             <@s.text name="manage.overview.published.description"/>
                                         </#if>
@@ -1666,8 +1668,7 @@
                                 <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <#assign registrationTitleInfo>
                                         <@s.text name="manage.resource.status.intro.registration"/>
-                                        <br><br>
-                                        <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text>
+                                        <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></#if>
                                         <br><br>
                                         <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
                                     </#assign>
