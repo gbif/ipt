@@ -869,6 +869,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: rgb(var(--alert-warning-background-color));
 }
 
+.alert-warning a, .alert-warning a:hover, .alert-warning a:focus {
+    color: rgb(var(--alert-warning-text-color)) !important;
+    font-weight: 500;
+}
+
 .alert-red-2 {
     color: rgb(var(--alert-danger-icon-color));
 }

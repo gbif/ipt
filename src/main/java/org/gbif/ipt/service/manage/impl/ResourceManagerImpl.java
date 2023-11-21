@@ -2456,6 +2456,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
     // finalise/update version history
     addOrUpdateVersionHistory(resource, version, true, action);
+    // remove resource from the list if it's private
+    if (resource.getStatus() == PublicationStatus.PRIVATE) {
+      publishedPublicVersionsSimplified.remove(resource.getShortname());
+    }
     // persist resource object changes
     save(resource);
     // if archival mode is NOT turned on, don't keep former archive version (version replaced)
@@ -3664,7 +3668,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      // update visibility to public
+      // update visibility to private
       resource.setStatus(PublicationStatus.PRIVATE);
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL

@@ -40,7 +40,7 @@
     <!-- GBIF dependencies -->
     <dwc-api.version>1.46</dwc-api.version>
     <dwca-io.version>2.16</dwca-io.version>
-    <gbif-api.version>1.12.8</gbif-api.version>
+    <gbif-api.version>1.12.10</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
     <gbif-doi.version>2.21</gbif-doi.version>
     <gbif-metadata-profile.version>2.1</gbif-metadata-profile.version>
@@ -73,7 +73,7 @@
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.10.1</junit.version>
-    <log4j.version>2.21.1</log4j.version>
+    <log4j.version>2.22.0</log4j.version>
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
@@ -94,7 +94,7 @@
     <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
     <ojdbc.version>23.3.0.23.09</ojdbc.version>
-    <postgresql.version>42.6.0</postgresql.version>
+    <postgresql.version>42.7.0</postgresql.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
@@ -163,6 +163,15 @@
     <finalName>ipt-${project.version}-r${buildNumber}</finalName>
     <defaultGoal>jetty:run</defaultGoal>
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-plugin.version}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

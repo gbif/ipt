@@ -659,7 +659,8 @@ public class ResourceAction extends PortalBaseAction {
       // if the specific version requested is not the latest published version, warn user
       if (resource.getLastPublishedVersionsVersion() != null
           && version.compareTo(resource.getLastPublishedVersionsVersion()) != 0) {
-        addActionWarning(getText("portal.resource.warning.notLatest"));
+        addActionWarning(getText("portal.resource.warning.notLatest",
+            new String[] {cfg.getBaseUrl() + "/resource?r=" + resource.getShortname()}));
       }
 
       if (resource.getSchemaIdentifier() != null) {
