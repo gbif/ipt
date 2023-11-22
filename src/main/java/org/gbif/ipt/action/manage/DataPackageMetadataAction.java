@@ -355,10 +355,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       if (section instanceof CamtrapMetadataSection) {
         nextSectionCamtrap();
       }
-
     } else {
-      // stay on the same section, since save failed
-      next = section;
+      return INPUT;
     }
 
     return SUCCESS;

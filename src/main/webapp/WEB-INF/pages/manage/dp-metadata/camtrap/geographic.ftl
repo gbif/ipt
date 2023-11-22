@@ -174,7 +174,7 @@
                                     <@s.file id="custom-data-input" cssClass="form-control form-control-sm my-1 d-none" />
                                 </div>
 
-                                <textarea id="custom-data-textarea" name="customGeoJson" placeholder="Input custom Geo JSON object" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;"></textarea>
+                                <textarea id="custom-data-textarea" name="customGeoJson" placeholder="<@s.text name='datapackagemetadata.geographic.custom.input'/>" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;">${customGeoJson!}</textarea>
                                 <div id="file-selector" class="border-bottom border-start border-end rounded py-2 px-3 fs-smaller text-muted" style="cursor: pointer;border-color: #ced4da !important;border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
                                     <span id="upload-file">
                                         <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
