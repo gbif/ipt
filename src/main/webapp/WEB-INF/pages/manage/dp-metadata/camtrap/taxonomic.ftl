@@ -11,7 +11,10 @@
             var $inferAutomaticallyCheckbox = $("#resource\\.inferTaxonomicCoverageAutomatically");
             var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
 
-            if (isInferAutomaticallyEnabled) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isReinferMetadataActivated = urlParams.get('reinferMetadata');
+
+            if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
                 $("#custom-data").hide();
                 $("#actual-metadata-block").hide();
             } else {

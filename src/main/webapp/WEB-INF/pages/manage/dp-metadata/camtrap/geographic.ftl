@@ -8,7 +8,10 @@
             var $inferAutomaticallyCheckbox = $("#resource\\.inferGeocoverageAutomatically");
             var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
 
-            if (isInferAutomaticallyEnabled) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isReinferMetadataActivated = urlParams.get('reinferMetadata');
+
+            if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
                 $("#actual-metadata-block").hide();
                 $("#custom-data").hide();
             } else {
