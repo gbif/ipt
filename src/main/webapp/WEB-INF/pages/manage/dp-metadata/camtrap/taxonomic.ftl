@@ -17,6 +17,7 @@
             if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
                 $("#custom-data").hide();
                 $("#actual-metadata-block").hide();
+                $('#resource\\.inferTaxonomicCoverageAutomatically').prop('checked', true);
             } else {
                 $("#actual-metadata-block").show();
                 $("#inferred-metadata-block").hide();

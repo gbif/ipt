@@ -14,6 +14,7 @@
             if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
                 $("#actual-metadata-block").hide();
                 $("#custom-data").hide();
+                $('#resource\\.inferGeocoverageAutomatically').prop('checked', true);
             } else {
                 $("#actual-metadata-block").show();
                 $("#inferred-metadata-block").hide();
