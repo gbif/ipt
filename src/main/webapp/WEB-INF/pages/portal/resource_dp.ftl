@@ -464,8 +464,8 @@
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <tr>
-                                        <th class="col-4"><@s.text name='portal.resource.spatial.boundingCoordinates'/></th>
-                                        <td>${dpMetadata.spatial.bbox}</td>
+                                        <th class="col-4"><@s.text name='portal.resource.spatial.coordinates'/></th>
+                                        <td>${(dpMetadata.spatial.coordinates)!}</td>
                                     </tr>
                                     <tr>
                                         <th class="col-4"><@s.text name='portal.resource.spatial.coordinatePrecision'/></th>
