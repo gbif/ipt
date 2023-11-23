@@ -821,6 +821,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       for (File packageFile : packageFiles) {
         if ("csv".equals(getFileExtension(packageFile))) {
           TextFileSource s = importSource(resource, packageFile);
+          // set default property
+          s.setFieldsEnclosedBy("\"");
           String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
           sources.put(filenameWithoutExtension, s);
 
