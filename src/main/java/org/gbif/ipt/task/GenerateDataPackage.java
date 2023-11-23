@@ -693,13 +693,18 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         empty = false;
         columns[i] = StringUtils.trimToNull(ESCAPE_CHARS.matcher(columns[i]).replaceAll(""));
 
+        boolean containsDoubleQuotes = StringUtils.contains(columns[i], '"');
+        boolean containsComma = StringUtils.contains(columns[i], ',');
+
         // Escape double quotes if present
-        if (StringUtils.contains(columns[i], '"')) {
+        if (containsDoubleQuotes) {
+          // escape double quotes
           columns[i] = StringUtils.replace(columns[i], "\"", "\"\"");
         }
 
         // commas break the whole line, wrap in double quotes
-        if (StringUtils.contains(columns[i], ',')) {
+        // same for double quotes
+        if (containsComma || containsDoubleQuotes) {
           columns[i] = StringUtils.wrap(columns[i], '"');
         }
       }
