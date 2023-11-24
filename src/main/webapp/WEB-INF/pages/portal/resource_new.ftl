@@ -208,8 +208,14 @@
                     ${eml.title!resource.shortname}
                 </h1>
 
+                <#if typesVocabulary[resourceTypeLowerCase]??>
+                    <div class="text-center">
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                    </div>
+                </#if>
+
                 <#if resource.lastPublished?? && resource.organisation??>
-                    <div class="text-gbif-primary text-smaller">
+                    <div class="text-gbif-primary fs-smaller-2 mt-2">
                         <span>
                             <#-- the existence of parameter version means the version is not equal to the latest published version -->
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
@@ -220,8 +226,6 @@
 
                             <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
                                 ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.long}</span>
-                                <br>
-                                <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                             <#else>
                                 <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.long_short}</span>
                                 <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>

@@ -118,8 +118,14 @@
                         ${dpMetadata.title!resource.shortname}
                     </h1>
 
+                    <#if typesVocabulary[resourceTypeLowerCase]??>
+                        <div class="text-center">
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                        </div>
+                    </#if>
+
                     <#if resource.lastPublished??>
-                        <div class="text-gbif-primary text-smaller">
+                        <div class="text-gbif-primary fs-smaller-2 mt-2">
                             <span>
                                 <#-- the existence of parameter version means the version is not equal to the latest published version -->
                                 <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
@@ -140,8 +146,6 @@
                                 <#if !resource.organisation?has_content ||
                                 (action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString())>
                                     ${publishedOnText?lower_case}<span>${createdLongDate!}</span>
-                                    <br>
-                                    <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                                 <#else>
                                     <@s.text name='portal.resource.publishedOn'><@s.param>${(resource.organisation.name)!}</@s.param></@s.text> <span>${createdLongShortDate!}</span>
                                     <span style="display: none">${(resource.organisation.name)!}</span>
@@ -149,7 +153,7 @@
                             </span>
                         </div>
                     <#else>
-                        <div class="text-gbif-danger text-smaller">
+                        <div class="text-gbif-danger text-smaller mt-2">
                             <@s.text name='portal.resource.published.never.long'/>
                         </div>
                     </#if>

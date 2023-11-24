@@ -148,35 +148,39 @@
                         ${dpMetadata.title!resource.shortname}
                     </h1>
 
+                    <#if typesVocabulary[resourceTypeLowerCase]??>
+                        <div class="text-center">
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                        </div>
+                    </#if>
+
                     <#if resource.lastPublished?? && resource.organisation??>
-                        <div class="text-gbif-primary text-smaller">
-                  <span>
-                      <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                      <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
-                          <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                      <#else>
-                          <@s.text name='portal.resource.latest.version'/>
-                      </#if>
+                        <div class="text-gbif-primary fs-smaller-2">
+                            <span>
+                                <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                                <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
+                                    <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                                <#else>
+                                    <@s.text name='portal.resource.latest.version'/>
+                                </#if>
 
-                      <#if dpMetadata.created?has_content>
-                          <#assign createdLongDate>
-                              ${dpMetadata.created?date?string.long}
-                          </#assign>
-                          <#assign createdLongShortDate>
-                              ${dpMetadata.created?date?string.long_short}
-                          </#assign>
-                      </#if>
+                                <#if dpMetadata.created?has_content>
+                                    <#assign createdLongDate>
+                                        ${dpMetadata.created?date?string.long}
+                                    </#assign>
+                                    <#assign createdLongShortDate>
+                                        ${dpMetadata.created?date?string.long_short}
+                                    </#assign>
+                                </#if>
 
-                      <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                          ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
-                          <br>
-                          <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
-                      <#else>
-                          <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text>
-                          <span>${createdLongShortDate!}</span>
-                          <span style="display: none">${resource.organisation.name}</span>
-                      </#if>
-                  </span>
+                                <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                    ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
+                                <#else>
+                                    <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text>
+                                    <span>${createdLongShortDate!}</span>
+                                    <span style="display: none">${resource.organisation.name}</span>
+                                </#if>
+                            </span>
                         </div>
                     <#else>
                         <div class="text-gbif-danger text-smaller">
