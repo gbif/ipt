@@ -3029,7 +3029,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // update metadata version
     resource.setMetadataVersion(version);
     if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata) {
-      ((FrictionlessMetadata) resource.getDataPackageMetadata()).setCreated(new Date());
+      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
+      frictionlessMetadata.setCreated(new Date());
+      frictionlessMetadata.setProfile(frictionlessMetadata.getDefaultProfile());
     }
 
     // update metadata created (represents date when the resource was last published)

@@ -24,6 +24,7 @@ import org.gbif.ipt.validation.HasOpenDefinitionCompatibleLicense;
 import org.gbif.ipt.validation.ProjectMetadata;
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 import org.gbif.ipt.validation.TemporalScopeMetadata;
+import org.gbif.ipt.validation.ValidGeojson;
 
 import java.io.IOException;
 import java.net.URI;
@@ -35,6 +36,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,7 +47,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.opensymphony.xwork2.util.Element;
-import org.gbif.ipt.validation.ValidGeojson;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends FrictionlessMetadata {
@@ -554,6 +555,12 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonProperty("references")
   public void setReferences(List<String> references) {
     this.references = references;
+  }
+
+  @Override
+  @JsonIgnore
+  public String getDefaultProfile() {
+    return PROFILE;
   }
 
   // Accepts both arrays and plain strings
