@@ -1162,6 +1162,13 @@
                         </#if>
                     </h1>
 
+                    <div>
+                        <div class="my-auto me-3">
+                            <#if typesVocabulary[resourceTypeLowerCase]??><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span></#if>
+                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.email)!}</@s.param><@s.param>${resource.created?date?string["d MMMM yyyy"]}</@s.param></@s.text></span>
+                        </div>
+                    </div>
+
                     <div class="mt-2">
                         <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
 

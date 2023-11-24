@@ -20,6 +20,28 @@
 
 <body class="bg-body d-flex flex-column h-100">
 
+[#assign currentLocale = .vars["locale"]!"en"/]
+[#if currentLocale == "en"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "es"]
+    [#assign typesVocabulary = {"occurrence": "Registros biológicos", "checklist": "Lista de chequeo", "samplingevent": "Evento de muestreo", "metadata": "Solamente metadatos", "other": "Otro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "pt"]
+    [#assign typesVocabulary = {"occurrence": "Ocorrência", "checklist": "Checklist", "samplingevent": "Evento de amostragem", "metadata": "Somente metadatos", "other": "Outro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "fr"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Données d'échantillonnage", "metadata": "Métadonnées uniquement", "other": "Autre", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "zh"]
+    [#assign typesVocabulary = {"occurrence": "出現紀錄", "checklist": "名錄", "samplingevent": "Sampling event", "metadata": "元數據", "other": "其它", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "ja"]
+    [#assign typesVocabulary = {"occurrence": "オカレンス（観察データと標本)", "checklist": "チェックリスト", "samplingevent": "サンプリング イベント", "metadata": "メタデータ", "other": "その他", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#elseif currentLocale == "ru"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[#else]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP"}]
+[/#if]
+
+[#assign resourceTypeLowerCase = (resource.coreType?lower_case)!"other"]
+
+
 <header>
     <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
         <div class="container-fluid">
