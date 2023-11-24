@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 public enum CaptureMethod {
 
-  ACTIVITI_DETECTION("activityDetection"),
+  ACTIVITY_DETECTION("activityDetection"),
   TIME_LAPSE("timeLapse");
   private final String value;
   public final static Map<String, CaptureMethod> CONSTANTS = new HashMap<>();
