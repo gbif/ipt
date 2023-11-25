@@ -172,9 +172,27 @@
                     </div>
                 </div>
                 <div class="my-auto">
-                    <button class="btn btn-sm btn-outline-gbif-primary" name="undelete">View</button>
-                    <button class="btn btn-sm btn-outline-gbif-danger" name="undelete">Delete</button>
-                    <button class="btn btn-sm btn-outline-secondary" name="undelete">Cancel</button>
+                    <button class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource" name="view">[@s.text name="button.view"/]</button>
+
+                    [#if resource.status == "DELETED"]
+                        [#if disableRegistrationRights == "false"]
+                            <button class="btn btn-sm btn-outline-gbif-primary proxy-button-undelete-resource" name="undelete">[@s.text name="button.undelete"/]</button>
+                        [#else]
+                            <button class="btn btn-sm btn-outline-gbif-primary" name="undelete" disabled>[@s.text name="button.undelete"/]</button>
+                        [/#if]
+                    [#else]
+                        [#if disableRegistrationRights == "false"]
+                            [#if resource.key?? && resource.status == "REGISTERED"]
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-modal" name="delete">[@s.text name="button.delete"/]</button>
+                            [#else]
+                                <button class="btn btn-sm btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete">[@s.text name="button.delete"/]</button>
+                            [/#if]
+                        [#else]
+                            <button class="btn btn-sm btn-outline-gbif-danger" name="delete" disabled>[@s.text name="button.delete"/]</button>
+                        [/#if]
+                    [/#if]
+
+                    <button class="btn btn-sm btn-outline-secondary proxy-button-cancel" name="cancel">[@s.text name="button.cancel"/]</button>
                 </div>
             </div>
         </div>

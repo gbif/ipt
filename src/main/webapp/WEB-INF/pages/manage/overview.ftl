@@ -1072,6 +1072,7 @@
             theme: 'bootstrap4'
         });
 
+
         $(".proxy-button-delete-from-ipt").on('click', function () {
             $("#delete-resource-modal").modal('hide');
             $(".confirmDeletionFromIptOnly").click();
@@ -1082,10 +1083,23 @@
             $(".confirmDeletionFromIptAndGbif").click();
         });
 
+        $(".proxy-button-view-resource").on('click', function () {
+            $("#top-button-view-resource")[0].click();
+        });
+
+        $(".proxy-button-cancel").on('click', function () {
+            $("#top-button-cancel")[0].click();
+        });
+
+        $(".proxy-button-undelete-resource").on('click', function () {
+            $(".confirmUndeletion").click();
+        });
+
         $(".button-show-delete-resource-modal").on('click', function () {
             var dialogWindow = $("#delete-resource-modal");
             dialogWindow.modal('show');
         });
+
 
         $("#publishingOrganizationKey").select2({
             placeholder: '',
@@ -1132,13 +1146,6 @@
 
 <#assign currentMenu = "manage"/>
 <#assign currentPage = "overview"/>
-<#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
-<#include "/WEB-INF/pages/macros/popover.ftl"/>
-<#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
-<#assign metadataType = "metadata"/>
-<#assign isDataPackage = resource.isDataPackage()/>
-
 <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
     <#assign disableRegistrationRights="false"/>
 <#elseif currentUser.hasRegistrationRights()?string == "true">
@@ -1146,6 +1153,12 @@
 <#else>
     <#assign disableRegistrationRights="true"/>
 </#if>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
+<#include "/WEB-INF/pages/macros/popover.ftl"/>
+<#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
+<#assign metadataType = "metadata"/>
+<#assign isDataPackage = resource.isDataPackage()/>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -1204,7 +1217,7 @@
                     </div>
 
                     <div class="mt-2">
-                        <a href="${baseURL}/resource?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+                        <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
 
                         <#if resource.status == "DELETED">
                             <div style="display: inline-block;">
@@ -1241,7 +1254,7 @@
                             </#if>
                         </#if>
 
-                        <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+                        <a href="${baseURL}/manage/" id="top-button-cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
                     </div>
 
                     <p class="mt-3 mb-0 text-smaller fst-italic">
