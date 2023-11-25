@@ -1831,6 +1831,10 @@ button.close {
         height: calc(100vh - 7rem);
         overflow-y: auto;
     }
+
+    .bd-toc-overview {
+        top: 8rem;
+    }
 }
 
 @media (max-width: 767px) {
@@ -1919,8 +1923,8 @@ button.close {
 }
 
 .anchor-home-resource-page {
-    height: 45px;
-    margin-top: -59px;
+    height: 104px;
+    margin-top: -104px;
 }
 
 .anchor-home-resource-page-2 {

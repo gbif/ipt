@@ -191,10 +191,10 @@
 
                 var sectionsContainer = $("#sections");
 
-                if (sectionsContainer.position().top - 50 > scrollPosition) {
+                if (sectionsContainer.position().top - 120 > scrollPosition) {
                     var removeActiveFromThisLink = $('.bd-toc nav a.active');
                     removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 50 <= scrollPosition
+                } else if (section.position().top - 120 <= scrollPosition
                     && section.position().top + section.height() > scrollPosition) {
                     if (!currentLink.hasClass("active")) {
                         var removeFromThisLink = $('.bd-toc nav a.active');
@@ -1261,10 +1261,10 @@
     </div>
 
     <div id="sections" class="container-fluid bg-body">
-        <div class="container main-content-container my-md-4 bd-layout">
+        <div class="container main-content-container mb-md-4 bd-layout">
 
             <main class="bd-main">
-                <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                <div class="bd-toc bd-toc-overview mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
                             <#if resource.coreType?has_content && resource.coreType==metadataType>
