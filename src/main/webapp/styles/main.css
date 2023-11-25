@@ -1558,13 +1558,6 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 
-/* Resource deletion buttons */
-.confirmDeletion {
-    border: none;
-    color: #575757;
-}
-
-
 /* Alerts close buttons */
 .btn-close:focus {
     box-shadow: none;
@@ -1666,6 +1659,10 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .fw-400 {
     font-weight: 400;
+}
+
+.fw-500 {
+    font-weight: 500;
 }
 
 @media (max-width:575px) {

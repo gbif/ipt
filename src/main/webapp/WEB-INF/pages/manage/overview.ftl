@@ -1072,6 +1072,21 @@
             theme: 'bootstrap4'
         });
 
+        $(".proxy-button-delete-from-ipt").on('click', function () {
+            $("#delete-resource-modal").modal('hide');
+            $(".confirmDeletionFromIptOnly").click();
+        });
+
+        $(".proxy-button-delete-from-gbif-and-ipt").on('click', function () {
+            $("#delete-resource-modal").modal('hide');
+            $(".confirmDeletionFromIptAndGbif").click();
+        });
+
+        $(".button-show-delete-resource-modal").on('click', function () {
+            var dialogWindow = $("#delete-resource-modal");
+            dialogWindow.modal('show');
+        });
+
         $("#publishingOrganizationKey").select2({
             placeholder: '',
             language: {
@@ -1204,27 +1219,23 @@
                             </div>
                         <#else>
                             <#if disableRegistrationRights == "false">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <@s.text name="button.delete"/>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                        <#if resource.key?? && resource.status == "REGISTERED">
-                                            <li>
-                                                <form action="resource-delete.do" method='post'>
-                                                    <input name="r" type="hidden" value="${resource.shortname}" />
-                                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
-                                                </form>
-                                            </li>
-                                        </#if>
-                                        <li>
-                                            <form action="resource-deleteFromIpt.do" method='post'>
-                                                <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <#if resource.key?? && resource.status == "REGISTERED">
+                                    <form action="resource-delete.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                    </form>
+                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="delete"><@s.text name="button.delete"/></button>
+                                <#else>
+                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="delete" key="button.delete.fromIpt"/>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete"/></button>
+                                </#if>
                             <#else>
                                 <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
                             </#if>
@@ -2595,6 +2606,24 @@
                         <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
                         <@s.submit id="changePublishingOrganization-submit" name="change" cssClass="btn btn-outline-gbif-primary my-3" key="button.change"/>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-resource-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="delete-resource-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <@s.text name="manage.overview.resource.delete.description"/>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete.fromIpt"/></button>
+                    <button class="btn btn-outline-gbif-danger proxy-button-delete-from-gbif-and-ipt" name="delete"><@s.text name="button.delete.fromIptAndGbif"/></button>
                 </div>
             </div>
         </div>
