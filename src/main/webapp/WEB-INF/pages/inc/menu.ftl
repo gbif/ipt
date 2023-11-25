@@ -171,7 +171,7 @@
                         <span class="fs-smaller-2 text-discreet"></span>
                     </div>
                 </div>
-                <div class="my-auto">
+                <div class="d-flex gap-1 my-auto">
                     <button class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource" name="view">[@s.text name="button.view"/]</button>
 
                     [#if resource.status == "DELETED"]

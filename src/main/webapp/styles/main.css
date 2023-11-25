@@ -2696,10 +2696,12 @@ header.shrink #accountDropdownLink {
     z-index: 1031;
 }
 
-.resource-nav {
-    position: fixed;
-    top: 58px;
-    right: 0;
-    left: 0;
-    z-index: 1030;
+@media (min-width: 768px) {
+    .resource-nav {
+        position: fixed;
+        top: 58px;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
 }
