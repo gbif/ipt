@@ -2675,7 +2675,7 @@ header nav {
     transition: all 0.2s ease;
 }
 
-header.shrink nav {
+header.shrink nav.main-nav {
     font-size: 0.875rem !important;;
 }
 
@@ -2689,4 +2689,16 @@ header.shrink #login-button {
 
 header.shrink #accountDropdownLink {
     font-size: 0.75rem !important;
+}
+
+.main-nav {
+    z-index: 1031;
+}
+
+.resource-nav {
+    position: fixed;
+    top: 58px;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 }

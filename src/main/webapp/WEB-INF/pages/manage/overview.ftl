@@ -1094,10 +1094,29 @@
             var dialogWindow = $("#change-publishing-organization-modal");
             dialogWindow.modal('show');
         }
+
+        var resourceNav = document.getElementById("resource-nav");
+        window.onscroll = function() {
+            displayHideSecondNavOnScroll();
+        };
+
+        function displayHideSecondNavOnScroll() {
+            if ($(document).scrollTop() > 220) {
+                resourceNav.style.display = "block";
+            } else {
+                resourceNav.style.display = "none";
+            }
+        }
+
+        var scrollPosition = $(document).scrollTop();
+        if (scrollPosition > 220) {
+            resourceNav.style.display = "block";
+        }
     });
 </script>
 
 <#assign currentMenu = "manage"/>
+<#assign currentPage = "overview"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>

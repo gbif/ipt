@@ -43,7 +43,7 @@
 
 
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
+    <nav class="main-nav navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
         <div class="container-fluid">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <svg id="gbif-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="enable-background:new 0 0 539.7 523.9;" xml:space="preserve">
@@ -153,6 +153,33 @@
             </div>
         </div>
     </nav>
+
+    [#if currentPage?? && currentPage == "overview"]
+    <nav id="resource-nav" class="resource-nav bg-body border-bottom" style="display: none;">
+        <div class="container mx-auto">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex py-2 fs-smaller">
+                    [#if typesVocabulary[resourceTypeLowerCase]??]
+                        <div class="my-auto me-3">
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+                        </div>
+                    [/#if]
+
+                    <div>
+                        <span class="fw-500">${resource.title!resource.shortname}</span><br>
+                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.email)!}[/@s.param][@s.param]${resource.created?date?string["d MMMM yyyy"]}[/@s.param][/@s.text]</span>
+                        <span class="fs-smaller-2 text-discreet"></span>
+                    </div>
+                </div>
+                <div class="my-auto">
+                    <button class="btn btn-sm btn-outline-gbif-primary" name="undelete">View</button>
+                    <button class="btn btn-sm btn-outline-gbif-danger" name="undelete">Delete</button>
+                    <button class="btn btn-sm btn-outline-secondary" name="undelete">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    [/#if]
 </header>
 
 <div id="dialog-confirm" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
