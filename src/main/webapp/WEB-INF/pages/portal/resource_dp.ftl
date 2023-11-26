@@ -228,8 +228,9 @@
                                         <td class="p-0">
                                             <a href="${download_dp_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}' ]);">
                                                 <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
-                                                <@s.text name='portal.resource.download'/> (${dataPackageSizeForVersion!"-"})
+                                                <@s.text name='portal.resource.download'/>
                                             </a>
+                                            (${dataPackageSizeForVersion!"-"})
                                         </td>
                                     </tr>
                                     <tr>
@@ -237,8 +238,9 @@
                                         <td class="p-0">
                                             <a href="${download_metadata_url}" onClick="_gaq.push(['_trackEvent', 'Metadata', 'Download', '${resource.shortname}']);" download>
                                                 <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
-                                                <@s.text name='portal.resource.download'/> (${metadataSizeForVersion!"-"})
+                                                <@s.text name='portal.resource.download'/>
                                             </a>
+                                            (${metadataSizeForVersion!"-"})
                                         </td>
                                     </tr>
                                 </table>
