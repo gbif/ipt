@@ -186,11 +186,11 @@
 
 <div class="container-fluid bg-body border-bottom">
     <#-- display watermark for preview pages -->
-<#--    <#if isPreviewPage>-->
-<#--        <div id="watermark" class="text-center text-uppercase fs-1 mb-2">-->
-<#--            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>-->
-<#--        </div>-->
-<#--    </#if>-->
+    <#if isPreviewPage>
+        <div id="watermark" class="text-center text-uppercase fs-1 mb-2">
+            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>
+        </div>
+    </#if>
 
     <div class="container border rounded-2 mb-4">
         <div class="container my-3 p-3">

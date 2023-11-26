@@ -483,7 +483,6 @@ public class ResourceAction extends PortalBaseAction {
 
     BigDecimal nextVersion = resource.getNextVersion();
     resource = generatePreviewResource(resource, eml, nextVersion);
-    // TODO: 26/11/2023 preview data package!
     finishLoadingDetail(resource, eml, nextVersion);
     setPreview(true);
 
@@ -514,6 +513,7 @@ public class ResourceAction extends PortalBaseAction {
 
     BigDecimal nextVersion = resource.getNextVersion();
     resource = generatePreviewDataPackageResource(resource, dpMetadata, nextVersion);
+    finishLoadingDetail(resource, dpMetadata, nextVersion);
     setPreview(true);
 
     return SUCCESS;
@@ -533,6 +533,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   private Resource generatePreviewResource(Resource resource, Eml eml, BigDecimal nextVersion) {
     Resource copy = new Resource();
+    copy.setCoreType(resource.getCoreType());
     copy.setShortname(resource.getShortname());
     copy.setTitle(resource.getTitle());
     copy.setLastPublished(resource.getLastPublished());
@@ -585,6 +586,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   private Resource generatePreviewDataPackageResource(Resource resource, DataPackageMetadata metadata, BigDecimal nextVersion) {
     Resource copy = new Resource();
+    copy.setCoreType(resource.getCoreType());
     copy.setShortname(resource.getShortname());
     copy.setTitle(resource.getTitle());
     copy.setLastPublished(resource.getLastPublished());
