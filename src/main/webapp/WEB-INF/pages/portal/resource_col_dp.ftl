@@ -150,7 +150,7 @@
 
                     <#if typesVocabulary[resourceTypeLowerCase]??>
                         <div class="text-center">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
                         </div>
                     </#if>
 
