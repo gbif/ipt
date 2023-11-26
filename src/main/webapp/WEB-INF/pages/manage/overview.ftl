@@ -1211,8 +1211,22 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <#if typesVocabulary[resourceTypeLowerCase]??><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span></#if>
-                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.email)!}</@s.param><@s.param>${resource.created?date?string["d MMMM yyyy"]}</@s.param></@s.text></span>
+                            <#if typesVocabulary[resourceTypeLowerCase]??>
+                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                            </#if>
+                            <#if resource.status??>
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
+                                    <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
+                                        <i class="bi bi-circle fs-smaller-2"></i>
+                                    <#else>
+                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                    </#if>
+                                    <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
+                                </span>
+                            </#if>
+                        </div>
+                        <div>
+                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.email)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
                         </div>
                     </div>
 

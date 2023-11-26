@@ -1102,7 +1102,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .license-pill, .doi-pill, .version-pill {
-    border: 1px solid;
+    border: 1px #dee2e6 solid;
     border-radius: 8px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -1116,7 +1116,7 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .version-next {
-    color: #575757;
+    color: #666666;
 }
 
 .license-pill-current, .doi-pill-current {
@@ -1124,23 +1124,32 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .license-pill-next, .doi-pill-next {
-    color: #575757;
+    color: #666666;
+}
+
+.status-pill {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 50rem !important;
+    padding: 0.125rem 0.5rem;
 }
 
 .status-public, .statuspublic {
     color: #5EA642 !important;
+    border-color: #5EA642C0 !important;
 }
 
 .status-private, .statusprivate {
-    color: #575757 !important;
+    color: #666666 !important;
 }
 
 .status-deleted, .statusdeleted {
     color: #E37C72 !important;
+    border-color: #E37C72C0 !important;
 }
 
 .status-registered, .statusregistered {
     color: #5EA642 !important;
+    border-color: #5EA642C0 !important;
 }
 
 .type-occurrence, .type-camtrap-dp, .type-coldp, .type-material-dp {

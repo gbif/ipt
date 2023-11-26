@@ -160,15 +160,25 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex py-2 fs-smaller">
                     [#if typesVocabulary[resourceTypeLowerCase]??]
-                        <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+                        <div class="py-2 me-3">
+                            <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+
+                            [#if resource.status??]
+                            <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
+                                [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
+                                    <i class="bi bi-circle fs-smaller-2"></i>
+                                [#else]
+                                    <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                [/#if]
+                                <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
+                            </span>
+                            [/#if]
                         </div>
                     [/#if]
 
                     <div>
                         <span class="fw-500">${resource.title!resource.shortname}</span><br>
-                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.email)!}[/@s.param][@s.param]${resource.created?date?string["d MMMM yyyy"]}[/@s.param][/@s.text]</span>
-                        <span class="fs-smaller-2 text-discreet"></span>
+                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.email)!}[/@s.param][@s.param]${resource.created?date?string("MMM d, yyyy")}[/@s.param][/@s.text]</span>
                     </div>
                 </div>
                 <div class="d-flex gap-1 my-auto">
