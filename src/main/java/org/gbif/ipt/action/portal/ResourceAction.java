@@ -108,7 +108,9 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, Integer> recordsByExtensionForVersion = new HashMap<>();
   private String coreType;
   private String dwcaSizeForVersion;
+  private String dataPackageSizeForVersion;
   private String emlSizeForVersion;
+  private String metadataSizeForVersion;
   private String rtfSizeForVersion;
 
   @Inject
@@ -348,14 +350,14 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Finish loading all details shown on resource homepage.
+   * Finish loading all details shown on the resource homepage.
    *
    * @param resource resource
    * @param eml      Eml instance
    * @param version  resource version (eml version) to load
    */
   public void finishLoadingDetail(@NotNull Resource resource, @NotNull Eml eml, @NotNull BigDecimal version) {
-    // determine whether version of resource requested is metadata-only or not (has published DwC-A or not)
+    // determine whether the version of resource requested is metadata-only or not (has published DwC-A or not)
     String name = resource.getShortname();
     File dwcaFile = dataDir.resourceDwcaFile(name, version);
     if (dwcaFile.exists()) {
@@ -431,6 +433,23 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
+   * Finish loading all details shown on the resource homepage.
+   *
+   * @param resource  resource
+   * @param metadata  metadata
+   * @param version   resource version (eml version) to load
+   */
+  public void finishLoadingDetail(@NotNull Resource resource, @NotNull DataPackageMetadata metadata, @NotNull BigDecimal version) {
+    String name = resource.getShortname();
+    File dataPackageFile = dataDir.resourceDataPackageFile(name, version);
+    dataPackageSizeForVersion = FileUtils.formatSize(dataPackageFile.length(), 0);
+
+    // determine EML file size
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(name, resource.getCoreType(), version);
+    metadataSizeForVersion = FileUtils.formatSize(metadataFile.length(), 0);
+  }
+
+  /**
    * Preview the next published version of the resource page.
    *
    * @return Struts2 result string
@@ -464,6 +483,7 @@ public class ResourceAction extends PortalBaseAction {
 
     BigDecimal nextVersion = resource.getNextVersion();
     resource = generatePreviewResource(resource, eml, nextVersion);
+    // TODO: 26/11/2023 preview data package!
     finishLoadingDetail(resource, eml, nextVersion);
     setPreview(true);
 
@@ -684,7 +704,9 @@ public class ResourceAction extends PortalBaseAction {
       return ERROR;
     }
 
-    if (resource.getSchemaIdentifier() == null) {
+    if (resource.isDataPackage()) {
+      finishLoadingDetail(resource, dpMetadata, version);
+    } else {
       finishLoadingDetail(resource, eml, version);
     }
 
@@ -1016,6 +1038,14 @@ public class ResourceAction extends PortalBaseAction {
    */
   public String getRtfSizeForVersion() {
     return rtfSizeForVersion;
+  }
+
+  public String getDataPackageSizeForVersion() {
+    return dataPackageSizeForVersion;
+  }
+
+  public String getMetadataSizeForVersion() {
+    return metadataSizeForVersion;
   }
 
   /**
