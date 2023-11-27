@@ -1152,7 +1152,7 @@ div.dataTables_processing>div:last-child>div {
     border-color: #5EA642C0 !important;
 }
 
-.type-occurrence, .type-camtrap-dp, .type-coldp, .type-material-dp {
+.type-occurrence, .type-camtrap-dp, .type-coldp, .type-material-dp, .type-interaction-dp {
     background: #3e8622 !important;
     color: white;
 }
