@@ -117,17 +117,17 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
-      // different order - for Camtrap/Material first create metadata and then add resources
-      if (StringUtils.equalsAny(resource.getCoreType(), CAMTRAP_DP, MATERIAL_DP)) {
-        // copy datapackage descriptor file (datapackage.json)
-        addMetadata();
-        // create data files
-        createDataFiles();
-      } else if (COL_DP.equals(resource.getCoreType())) {
+      // different order - for Camtrap/Material/etc. first create metadata and then add resources
+      if (COL_DP.equals(resource.getCoreType())) {
         // create data files
         createDataFiles();
         // create datapackage descriptor file (metadata.yml)
         addMetadata();
+      } else {
+        // copy datapackage descriptor file (datapackage.json)
+        addMetadata();
+        // create data files
+        createDataFiles();
       }
 
       // validation is a part of frictionless datapackage generation
@@ -372,10 +372,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataSchema dataSchema)
       throws GeneratorException {
     SubSchemaRequirement requirements = dataSchema.getSubSchemaRequirements();
-    SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
 
-    if (!validationResult.isValid()) {
-      throw new GeneratorException(validationResult.getReason());
+    if (requirements != null) {
+      SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
+
+      if (!validationResult.isValid()) {
+        throw new GeneratorException(validationResult.getReason());
+      }
     }
   }
 
