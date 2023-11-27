@@ -15,13 +15,15 @@ package org.gbif.ipt.config;
 
 import static org.gbif.ipt.config.Constants.DATA_SCHEMA_CAMTRAP_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_SCHEMA_COLDP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_SCHEMA_INTERACTION_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_SCHEMA_MATERIAL_DP_IDENTIFIER;
 
 public enum SupportedDatapackageType {
 
     CAMTRAP_DP(Constants.CAMTRAP_DP, DATA_SCHEMA_CAMTRAP_DP_IDENTIFIER, "1.0"),
     COLDP(Constants.COL_DP, DATA_SCHEMA_COLDP_IDENTIFIER, "1.0"),
-    MATERIAL_DP(Constants.MATERIAL_DP, DATA_SCHEMA_MATERIAL_DP_IDENTIFIER, "0.1");
+    MATERIAL_DP(Constants.MATERIAL_DP, DATA_SCHEMA_MATERIAL_DP_IDENTIFIER, "0.1"),
+    INTERACTION_DP(Constants.INTERACTION_DP, DATA_SCHEMA_INTERACTION_DP_IDENTIFIER, "0.1");
 
     private final String name;
     private final String identifier;
