@@ -122,7 +122,7 @@
             </div>
 
             <div class="bd-content ps-lg-4">
-                <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
+                <span class="anchor anchor-extension-page" id="anchor-description"></span>
                 <div class="mt-5 section">
                     <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name="basic.description"/>
@@ -181,7 +181,7 @@
                 </div>
 
                 <#list propertiesByGroup as group, groupProperties>
-                    <span class="anchor anchor-home-resource-page" id="anchor-group_${group?replace(' ', '_')}"></span>
+                    <span class="anchor anchor-extension-page" id="anchor-group_${group?replace(' ', '_')}"></span>
                     <div id="group_${group?replace(' ', '_')}" class="mt-5 section">
                         <#if group?has_content>
                             <h6 class="pb-2 mb-2 pt-2 mt-3 text-gbif-header-2 fw-400 text-capitalize" style="font-size: 1.125rem;">

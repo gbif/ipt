@@ -111,7 +111,7 @@
 
                 <div class="bd-content ps-lg-4">
                     <#list dataSchema.subSchemas as subSchema>
-                        <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
+                        <span class="anchor anchor-schema-page" id="anchor-${subSchema.name}"></span>
                         <div id="${subSchema.name}" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 ${subSchema.title}
