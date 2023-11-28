@@ -169,7 +169,7 @@
                                         ${dpMetadata.created?date?string.long}
                                     </#assign>
                                     <#assign createdLongShortDate>
-                                        ${dpMetadata.created?date?string.long_short}
+                                        ${dpMetadata.created?date?string("MMM d, yyyy")}
                                     </#assign>
                                 </#if>
 
@@ -177,7 +177,7 @@
                                     ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
                                 <#else>
                                     <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text>
-                                    <span>${createdLongShortDate!}</span>
+                                    <span>${createdLongShortDate}</span>
                                     <span style="display: none">${resource.organisation.name}</span>
                                 </#if>
                             </span>
