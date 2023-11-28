@@ -1226,7 +1226,7 @@
                             </#if>
                         </div>
                         <div>
-                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.email)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
+                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
                         </div>
                     </div>
 
