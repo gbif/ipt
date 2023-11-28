@@ -178,7 +178,7 @@
 
                     <div>
                         <span class="fw-500">${resource.title!resource.shortname}</span><br>
-                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.email)!}[/@s.param][@s.param]${resource.created?date?string("MMM d, yyyy")}[/@s.param][/@s.text]</span>
+                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.name)!}[/@s.param][@s.param]${resource.created?date?string("MMM d, yyyy")}[/@s.param][/@s.text]</span>
                     </div>
                 </div>
                 <div class="d-flex gap-1 my-auto">
