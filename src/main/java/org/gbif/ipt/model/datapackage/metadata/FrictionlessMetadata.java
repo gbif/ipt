@@ -456,11 +456,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
     this.additionalProperties.put(name, value);
   }
 
-  @JsonIgnore
-  public String getDefaultProfile() {
-    return profile;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

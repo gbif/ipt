@@ -110,7 +110,7 @@ public class DataSchemaAction extends POSTAction {
 
     // update each installed extension indicating whether it is the latest version or not
     // also update isUpdatable field
-    updateIsLatest(schemas);
+    updateComputableFields(schemas);
 
     // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
     newSchemas = getLatestDataSchemasVersions();
@@ -221,66 +221,111 @@ public class DataSchemaAction extends POSTAction {
   }
 
   /**
-   * Method used for 1) updating each data schema's isLatest field, and 2) for action logging (logging if at least
+   * Method used for
+   * <ol>
+   *   <li>updating each data schema's isLatest field</li>
+   *   <li>for action logging (logging if at least</li>
+   * </ol>
+   *
    * one data schema is not up-to-date).
    * </br>
    * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */
-  protected void updateIsLatest(List<DataSchema> installedDataSchemas) {
-    if (!installedDataSchemas.isEmpty()) {
-      try {
-        // complete list of registered data schemas (latest and non-latest versions)
-        List<DataSchema> registered = registryManager.getLatestDataSchemas();
-        for (DataSchema installedSchema : installedDataSchemas) {
-          installedSchema.setLatest(true);
-          for (DataSchema registeredSchema : registered) {
-            // check if registered extension is latest, and if it is, try to use it in comparison
-            if (registeredSchema.isLatest() && installedSchema.getIdentifier().equalsIgnoreCase(registeredSchema.getIdentifier())) {
-              Date installedSchemaIssuedDate = installedSchema.getIssued();
-              Date registeredSchemaIssuedDate = registeredSchema.getIssued();
-              if (installedSchemaIssuedDate == null && registeredSchemaIssuedDate != null) {
-                upToDate = false;
-                iptReinstallationRequired = true;
-                installedSchema.setLatest(false);
-                LOG.debug(
-                    "Installed data schema with identifier {} has no issued date. A newer version issued {} exists.",
-                    installedSchema.getIdentifier(), registeredSchemaIssuedDate);
-              } else if (registeredSchemaIssuedDate != null && registeredSchemaIssuedDate.compareTo(installedSchemaIssuedDate) > 0) {
-                upToDate = false;
-                installedSchema.setLatest(false);
-                LOG.debug(
-                    "Installed data schema with identifier {} was issued {}. A newer version issued {} exists.",
-                    installedSchema.getIdentifier(), installedSchemaIssuedDate, registeredSchemaIssuedDate);
+  protected void updateComputableFields(List<DataSchema> installedDataSchemas) {
+    if (installedDataSchemas.isEmpty()) {
+      return;
+    }
 
-                // check whether the schema is updatable
-                String latestCompatibleVersion
-                    = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
+    try {
+      // complete list of registered data schemas (latest and non-latest versions)
+      List<DataSchema> registeredSchemas = registryManager.getLatestDataSchemas();
 
-                if (!installedSchema.getVersion().equals(latestCompatibleVersion)) {
-                  installedSchema.setUpdatable(true);
-                } else {
-                  iptReinstallationRequired = true;
-                }
-              } else {
-                LOG.debug("Installed data schema with identifier {} is the latest version", installedSchema.getIdentifier());
-              }
-              break;
-            }
-          }
-        }
-      } catch (RegistryException e) {
-        // add startup error message about Registry error
-        String msg = RegistryException.logRegistryException(e, this);
-        configWarnings.addStartupError(msg);
-        LOG.error(msg);
+      for (DataSchema installedSchema : installedDataSchemas) {
+        updateComputableFields(installedSchema, registeredSchemas);
+      }
+    } catch (RegistryException e) {
+      // add startup error message about Registry error
+      String msg = RegistryException.logRegistryException(e, this);
+      configWarnings.addStartupError(msg);
+      LOG.error(msg);
 
-        // add startup error message that explains the consequence of the Registry error
-        msg = getText("admin.schemas.couldnt.load", new String[] {cfg.getRegistryUrl()});
-        configWarnings.addStartupError(msg);
-        LOG.error(msg);
+      // add startup error message that explains the consequence of the Registry error
+      msg = getText("admin.schemas.couldnt.load", new String[]{cfg.getRegistryUrl()});
+      configWarnings.addStartupError(msg);
+      LOG.error(msg);
+    }
+  }
+
+  private void updateComputableFields(DataSchema installedSchema, List<DataSchema> registeredSchemas) {
+    installedSchema.setLatest(true);
+
+    for (DataSchema registeredSchema : registeredSchemas) {
+      if (isLatest(registeredSchema) && isSameIdentifier(installedSchema, registeredSchema)) {
+        handleSchema(installedSchema, registeredSchema);
+        break;
       }
     }
+  }
+
+  private void handleSchema(DataSchema installedSchema, DataSchema registeredSchema) {
+    Date installedSchemaIssuedDate = installedSchema.getIssued();
+    Date registeredSchemaIssuedDate = registeredSchema.getIssued();
+
+    if (installedSchemaIssuedDate == null && registeredSchemaIssuedDate != null) {
+      handleMissingIssuedDate(installedSchema, registeredSchemaIssuedDate);
+    } else if (registeredSchemaIssuedDate != null) {
+      handleWithIssuedDate(installedSchema);
+    } else {
+      LOG.debug("Installed data schema with identifier {} is the latest version", installedSchema.getIdentifier());
+    }
+  }
+
+  private void handleWithIssuedDate(DataSchema installedSchema) {
+    String latestCompatibleVersion = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
+
+    if (latestCompatibleVersion != null && latestCompatibleVersion.equals(installedSchema.getVersion())) {
+      handleCompatibleVersionMatchesInstalled(installedSchema, latestCompatibleVersion);
+    } else if (latestCompatibleVersion != null) {
+      handleCompatibleVersionNotMatchInstalled(installedSchema, latestCompatibleVersion);
+    }
+  }
+
+  private void handleCompatibleVersionNotMatchInstalled(DataSchema installedSchema, String latestCompatibleVersion) {
+    upToDate = false;
+    installedSchema.setLatest(false);
+    installedSchema.setUpdatable(true);
+
+    LOG.debug("Installed data schema with identifier {} was issued {}. A newer compatible version {} exists.",
+        installedSchema.getIdentifier(), installedSchema.getIssued(), latestCompatibleVersion);
+  }
+
+  private void handleCompatibleVersionMatchesInstalled(DataSchema installedSchema, String latestCompatibleVersion) {
+    DataSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
+    Date latestCompatibleSchemaIssuedDate = latestCompatibleSchema.getIssued();
+
+    if (latestCompatibleSchemaIssuedDate.after(installedSchema.getIssued())) {
+      upToDate = false;
+      installedSchema.setLatest(false);
+      installedSchema.setUpdatable(true);
+    }
+  }
+
+  private void handleMissingIssuedDate(DataSchema installedSchema, Date registeredSchemaIssuedDate) {
+    upToDate = false;
+    iptReinstallationRequired = true;
+    installedSchema.setLatest(false);
+
+    LOG.debug("Installed data schema with identifier {} has no issued date. A newer version issued {} exists.",
+        installedSchema.getIdentifier(), registeredSchemaIssuedDate);
+  }
+
+  private boolean isSameIdentifier(DataSchema first, DataSchema second) {
+    return first.getIdentifier().equalsIgnoreCase(second.getIdentifier());
+  }
+
+  private boolean isLatest(DataSchema schema) {
+    return schema.isLatest();
   }
 
   public List<DataSchema> getLatestDataSchemasVersions() {

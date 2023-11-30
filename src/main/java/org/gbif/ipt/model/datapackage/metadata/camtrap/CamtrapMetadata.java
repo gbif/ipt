@@ -36,7 +36,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,14 +47,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.opensymphony.xwork2.util.Element;
 
+/**
+ * https://rs.gbif.org/sandbox/experimental/camtrap-dp/1.0/profile/camtrap-dp-profile.json
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends FrictionlessMetadata {
 
   private final static long serialVersionUID = 7011607601336714408L;
-
-  public static final String PROFILE = "https://rs.gbif.org/sandbox/experimental/camtrap-dp/1.0/profile/camtrap-dp-profile.json";
-
-  private String profile = PROFILE;
 
   /**
    * Bibliographic/recommended citation for the package.
@@ -139,7 +137,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("profile")
   public String getProfile() {
-    return profile;
+    return super.getProfile();
   }
 
   /**
@@ -152,7 +150,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("profile")
   public void setProfile(String profile) {
-    this.profile = profile;
+    super.setProfile(profile);
   }
 
   /**
@@ -555,12 +553,6 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonProperty("references")
   public void setReferences(List<String> references) {
     this.references = references;
-  }
-
-  @Override
-  @JsonIgnore
-  public String getDefaultProfile() {
-    return PROFILE;
   }
 
   // Accepts both arrays and plain strings

@@ -847,7 +847,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
           // set name, erase some internal fields
           frictionlessMetadata.setName(resource.getShortname());
-          frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
           frictionlessMetadata.setId(null);
           frictionlessMetadata.setCreated(null);
           frictionlessMetadata.getAdditionalProperties().clear();
@@ -1008,7 +1007,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
       // set name, erase some internal fields
       frictionlessMetadata.setName(resource.getShortname());
-      frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
       frictionlessMetadata.setId(null);
       frictionlessMetadata.setCreated(null);
       frictionlessMetadata.getAdditionalProperties().clear();
@@ -1102,7 +1100,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
         // set name, erase some internal fields
         frictionlessMetadata.setName(shortname);
-        frictionlessMetadata.setProfile(CamtrapMetadata.PROFILE);
         frictionlessMetadata.setId(null);
         frictionlessMetadata.setCreated(null);
         frictionlessMetadata.getAdditionalProperties().clear();
@@ -3031,7 +3028,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata) {
       FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
       frictionlessMetadata.setCreated(new Date());
-      frictionlessMetadata.setProfile(frictionlessMetadata.getDefaultProfile());
     }
 
     // update metadata created (represents date when the resource was last published)

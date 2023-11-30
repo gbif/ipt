@@ -61,6 +61,11 @@ public class DataSchema implements Serializable {
    */
   private URL url;
 
+  /**
+   * Metadata profile
+   */
+  private String metadataProfile;
+
   private Set<DataSubschema> subSchemas = new LinkedHashSet<>();
 
   private SubSchemaRequirement subSchemaRequirements = new SubSchemaRequirement();

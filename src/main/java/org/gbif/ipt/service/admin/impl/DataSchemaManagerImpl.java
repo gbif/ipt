@@ -21,6 +21,7 @@ import org.gbif.ipt.config.SupportedDatapackageType;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.factory.DataSchemaFactory;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -58,6 +59,7 @@ import com.google.inject.Singleton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHEMA;
 import static org.gbif.utils.HttpUtil.success;
 
@@ -139,11 +141,23 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
         }
       }
 
-      // TODO: 16/03/2022 manage affected resources
       if (isNewVersion && latestCompatibleSchema.getUrl() != null) {
         // uninstall and install new version
         uninstall(identifier, latestCompatibleSchema.getName());
         install(latestCompatibleSchema);
+
+        String metadataProfile = latestCompatibleSchema.getMetadataProfile();
+
+        // update metadata profile field
+        resourceManager.list()
+            .stream()
+            .filter(res -> CAMTRAP_DP.equals(res.getCoreType()))
+            .forEach(res -> {
+              if (res.getDataPackageMetadata() instanceof CamtrapMetadata) {
+                CamtrapMetadata metadata = (CamtrapMetadata) res.getDataPackageMetadata();
+                metadata.setProfile(metadataProfile);
+              }
+            });
       }
     }
   }
@@ -314,9 +328,14 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
         String installedDataSchemaVersion = installedDataSchema.getVersion();
         String dataSchemaName = installedDataSchema.getName();
         String dataSchemaIdentifier = installedDataSchema.getIdentifier();
+        Date installedSchemaIssuedDate = installedDataSchema.getIssued();
+        Date supportedSchemaIssuedDate = supportedDataSchema.getIssued();
 
-        if (!installedDataSchemaVersion.equals(supportedDataSchema.getVersion())) {
-          LOG.info("Schema {} uses unsupported version {}. Updating to {}",
+        // version must not match
+        // installed schema must be older than supported one (do not downgrade)
+        if (!installedDataSchemaVersion.equals(supportedDataSchema.getVersion())
+            && installedSchemaIssuedDate.compareTo(supportedSchemaIssuedDate) < 0) {
+          LOG.info("Schema {} uses outdated version {}. Updating to {}",
               supportedDataSchema.getIdentifier(), installedDataSchemaVersion, supportedDataSchema.getVersion());
           uninstall(dataSchemaIdentifier, dataSchemaName);
           install(supportedDataSchema);
