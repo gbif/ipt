@@ -69,6 +69,8 @@ public class DataSchema implements Serializable {
 
   private boolean isLatest;
 
+  public boolean isUpdatable;
+
   private Date issued;
 
   public DataSubschema subschemaByName(String subSchemaName) {
