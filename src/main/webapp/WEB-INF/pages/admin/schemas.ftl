@@ -22,7 +22,7 @@
                 <div class="d-flex flex-column flex-auto flex-justify-between">
                     <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
                         <div>
-                            <#if !ds.isLatest()>
+                            <#if !ds.latest>
                                 <span class="text-gbif-danger"><@s.text name="admin.schemas.version.warning"/></span><br>
                             </#if>
                             ${ds.description!?truncate(300)}
@@ -32,6 +32,18 @@
                         <a href="schema.do?id=${ds.identifier?url}" title="" class="action-link-button action-link-button-primary">
                             <@s.text name="button.view"/>
                         </a>
+                        <#if !ds.latest && ds.updatable>
+                            <form action='updateSchema.do' method='post'>
+                                <input type='hidden' name='id' value='${ds.identifier}' />
+
+                                <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">
+<#--                                    <svg class="extension-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">-->
+<#--                                        <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"></path>-->
+<#--                                    </svg>-->
+                                    <@s.text name="button.update"/>
+                                </button>
+                            </form>
+                        </#if>
                     </div>
                 </div>
             </div>
@@ -77,10 +89,12 @@
                                 <@s.text name="admin.schemas.no.schemas.installed"/>
                             </span>
                         <#else>
-                            <#if action.isUpToDate()>
+                            <#if upToDate>
                                 <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
+                            <#elseif iptReinstallationRequired>
+                                <span class="text-gbif-danger"><@s.text name="admin.schemas.iptReinstallationRequired"/></span>
                             <#else>
-                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate.warning"/></span>
+                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
                             </#if>
                         </#if>
                     </div>

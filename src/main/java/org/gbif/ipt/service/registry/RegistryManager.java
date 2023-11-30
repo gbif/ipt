@@ -60,6 +60,28 @@ public interface RegistryManager {
   List<DataSchema> getLatestDataSchemas() throws RegistryException;
 
   /**
+   * Get the latest compatible version with the provided one
+   *
+   * @param schemaName schema name
+   * @param schemaVersion schema version
+   * @return the latest compatible version with the provided one
+   *
+   * @throws RegistryException if the data couldn't be populated
+   */
+  String getLatestCompatibleSchemaVersion(String schemaName, String schemaVersion) throws RegistryException;
+
+  /**
+   * Get the schema by schema name and version
+   *
+   * @param schemaName schema name
+   * @param schemaVersion schema version
+   * @return the schema
+   *
+   * @throws RegistryException if the data couldn't be populated
+   */
+  DataSchema getSchema(String schemaName, String schemaVersion) throws RegistryException;
+
+  /**
    * Gets list of all registered data schemas from the Registry.
    * Similar to {@link this#getLatestDataSchemas()} but returns schemas with versions supported by the IPT.
    *

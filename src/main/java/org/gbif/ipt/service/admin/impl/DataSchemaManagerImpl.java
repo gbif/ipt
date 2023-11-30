@@ -31,7 +31,6 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
@@ -113,7 +112,6 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
   }
 
-  // Not in use temporarily. Schemas cannot be updated/deleted
   @Override
   public synchronized void update(String identifier) throws IOException, RegistryException {
     // identify installed data schema by identifier
@@ -121,31 +119,31 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
     if (installed != null) {
       // verify there is a newer version
-      DataSchema latestVersion = null;
-      for (DataSchema ds : registryManager.getLatestDataSchemas()) {
-        // match by rowType and isLatest, plus the URL cannot be null in order to be installed
-        if (ds.getIdentifier() != null && ds.getIdentifier().equalsIgnoreCase(identifier) && ds.isLatest()) {
-          latestVersion = ds;
-          break;
-        }
+      DataSchema latestCompatibleSchema = null;
+      String latestCompatibleSchemaVersion = registryManager.getLatestCompatibleSchemaVersion(installed.getName(), installed.getVersion());
+
+      if (latestCompatibleSchemaVersion != null) {
+        latestCompatibleSchema = registryManager.getSchema(installed.getName(), latestCompatibleSchemaVersion);
       }
 
       boolean isNewVersion = false;
-      if (latestVersion != null) {
+      if (latestCompatibleSchema != null) {
         Date issued = installed.getIssued();
-        Date issuedLatest = latestVersion.getIssued();
+        Date issuedLatest = latestCompatibleSchema.getIssued();
+
         if (issued == null && issuedLatest != null) {
           isNewVersion = true;
         } else if (issued != null && issuedLatest != null) {
-          isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
+          // the latest version must have newer issued date
+          isNewVersion = (issuedLatest.compareTo(issued) > 0);
         }
       }
 
       // TODO: 16/03/2022 manage affected resources
-      if (isNewVersion && latestVersion.getUrl() != null) {
+      if (isNewVersion && latestCompatibleSchema.getUrl() != null) {
         // uninstall and install new version
-        uninstall(identifier, latestVersion.getName());
-        install(latestVersion);
+        uninstall(identifier, latestCompatibleSchema.getName());
+        install(latestCompatibleSchema);
       }
     }
   }

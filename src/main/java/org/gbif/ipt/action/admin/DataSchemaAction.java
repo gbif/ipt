@@ -53,6 +53,7 @@ public class DataSchemaAction extends POSTAction {
   private String schemaName;
   private DataSchema dataSchema;
   private boolean upToDate = true;
+  private boolean iptReinstallationRequired = false;
 
   @Inject
   public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -107,7 +108,8 @@ public class DataSchemaAction extends POSTAction {
     // retrieve all data schemas that have been installed already
     schemas = schemaManager.list();
 
-    // update each installed extension indicating whether it is the latest version (for its rowType) or not
+    // update each installed extension indicating whether it is the latest version or not
+    // also update isUpdatable field
     updateIsLatest(schemas);
 
     // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
@@ -225,32 +227,43 @@ public class DataSchemaAction extends POSTAction {
    * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */
-  protected void updateIsLatest(List<DataSchema> dataSchemas) {
-    if (!dataSchemas.isEmpty()) {
+  protected void updateIsLatest(List<DataSchema> installedDataSchemas) {
+    if (!installedDataSchemas.isEmpty()) {
       try {
         // complete list of registered data schemas (latest and non-latest versions)
         List<DataSchema> registered = registryManager.getLatestDataSchemas();
-        for (DataSchema schema : dataSchemas) {
-          schema.setLatest(true);
+        for (DataSchema installedSchema : installedDataSchemas) {
+          installedSchema.setLatest(true);
           for (DataSchema registeredSchema : registered) {
             // check if registered extension is latest, and if it is, try to use it in comparison
-            if (registeredSchema.isLatest() && schema.getIdentifier().equalsIgnoreCase(registeredSchema.getIdentifier())) {
-              Date issuedOne = schema.getIssued();
-              Date issuedTwo = registeredSchema.getIssued();
-              if (issuedOne == null && issuedTwo != null) {
-                setUpToDate(false);
-                schema.setLatest(false);
+            if (registeredSchema.isLatest() && installedSchema.getIdentifier().equalsIgnoreCase(registeredSchema.getIdentifier())) {
+              Date installedSchemaIssuedDate = installedSchema.getIssued();
+              Date registeredSchemaIssuedDate = registeredSchema.getIssued();
+              if (installedSchemaIssuedDate == null && registeredSchemaIssuedDate != null) {
+                upToDate = false;
+                iptReinstallationRequired = true;
+                installedSchema.setLatest(false);
                 LOG.debug(
                     "Installed data schema with identifier {} has no issued date. A newer version issued {} exists.",
-                    schema.getIdentifier(), issuedTwo);
-              } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
-                setUpToDate(false);
-                schema.setLatest(false);
+                    installedSchema.getIdentifier(), registeredSchemaIssuedDate);
+              } else if (registeredSchemaIssuedDate != null && registeredSchemaIssuedDate.compareTo(installedSchemaIssuedDate) > 0) {
+                upToDate = false;
+                installedSchema.setLatest(false);
                 LOG.debug(
                     "Installed data schema with identifier {} was issued {}. A newer version issued {} exists.",
-                    schema.getIdentifier(), issuedOne, issuedTwo);
+                    installedSchema.getIdentifier(), installedSchemaIssuedDate, registeredSchemaIssuedDate);
+
+                // check whether the schema is updatable
+                String latestCompatibleVersion
+                    = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
+
+                if (!installedSchema.getVersion().equals(latestCompatibleVersion)) {
+                  installedSchema.setUpdatable(true);
+                } else {
+                  iptReinstallationRequired = true;
+                }
               } else {
-                LOG.debug("Installed data schema with identifier {} is the latest version", schema.getIdentifier());
+                LOG.debug("Installed data schema with identifier {} is the latest version", installedSchema.getIdentifier());
               }
               break;
             }
@@ -295,5 +308,9 @@ public class DataSchemaAction extends POSTAction {
 
   public void setUpToDate(boolean upToDate) {
     this.upToDate = upToDate;
+  }
+
+  public boolean isIptReinstallationRequired() {
+    return iptReinstallationRequired;
   }
 }

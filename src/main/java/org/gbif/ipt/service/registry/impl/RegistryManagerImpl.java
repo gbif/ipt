@@ -320,6 +320,24 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
+  public String getLatestCompatibleSchemaVersion(String schemaName, String schemaVersion) throws RegistryException {
+    Map<String, String> jSON = gson
+        .fromJson(requestHttpGetFromRegistry(getDataSchemaVersionURL(schemaName, schemaVersion)).getContent(),
+            new TypeToken<Map<String, String>>() {
+            }.getType());
+
+    return jSON.get("latestCompatibleVersion");
+  }
+
+  @Override
+  public DataSchema getSchema(String schemaName, String schemaVersion) throws RegistryException {
+    return gson
+        .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(schemaName, schemaVersion)).getContent(),
+            new TypeToken<DataSchema>() {
+            }.getType());
+  }
+
+  @Override
   public List<DataSchema> getSupportedDataSchemas() throws RegistryException {
     List<DataSchema> result = new ArrayList<>();
     Map<String, String> schemasWithVersions = AppConfig.getSupportedDataSchemaNamesWithVersions();
@@ -354,6 +372,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getDataSchemaURL(String schemaName, String schemaVersion) {
     return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion;
+  }
+
+  /**
+   * Returns the Data schema version url by name and version.
+   */
+  private String getDataSchemaVersionURL(String schemaName, String schemaVersion) {
+    // TODO: 30/11/2023 configure varnish
+//    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion + "/version";
+    return "https://rs.gbif.org/sandbox/experimental/" + schemaName + "/" + schemaVersion + "/_schema/version.json";
   }
 
   /**
