@@ -224,11 +224,10 @@ public class DataSchemaAction extends POSTAction {
    * Method used for
    * <ol>
    *   <li>updating each data schema's isLatest field</li>
-   *   <li>for action logging (logging if at least</li>
+   *   <li>updating each data schema's isUpdatable field</li>
+   *   <li>for action logging (logging if at least one data schema is not up-to-date).</li>
    * </ol>
    *
-   * one data schema is not up-to-date).
-   * </br>
    * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */
@@ -268,25 +267,17 @@ public class DataSchemaAction extends POSTAction {
     }
   }
 
-  private void handleSchema(DataSchema installedSchema, DataSchema registeredSchema) {
-    Date installedSchemaIssuedDate = installedSchema.getIssued();
-    Date registeredSchemaIssuedDate = registeredSchema.getIssued();
-
-    if (installedSchemaIssuedDate == null && registeredSchemaIssuedDate != null) {
-      handleMissingIssuedDate(installedSchema, registeredSchemaIssuedDate);
-    } else if (registeredSchemaIssuedDate != null) {
-      handleWithIssuedDate(installedSchema);
-    } else {
-      LOG.debug("Installed data schema with identifier {} is the latest version", installedSchema.getIdentifier());
-    }
-  }
-
-  private void handleWithIssuedDate(DataSchema installedSchema) {
+  private void handleSchema(DataSchema installedSchema, DataSchema latestSchema) {
     String latestCompatibleVersion = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
+    String installedVersion = installedSchema.getVersion();
+    String latestVersion = latestSchema.getVersion();
 
-    if (latestCompatibleVersion != null && latestCompatibleVersion.equals(installedSchema.getVersion())) {
-      handleCompatibleVersionMatchesInstalled(installedSchema, latestCompatibleVersion);
-    } else if (latestCompatibleVersion != null) {
+    if (installedVersion.equals(latestCompatibleVersion) && latestCompatibleVersion.equals(latestVersion)) {
+      LOG.debug("Installed data schema with identifier {} was issued {}. It's the latest available schema.",
+          installedSchema.getIdentifier(), installedSchema.getIssued());
+    } else if (installedVersion.equals(latestCompatibleVersion)) {
+      handleCompatibleVersionMatchesInstalledButNotMatchLatest(installedSchema, latestCompatibleVersion);
+    } else {
       handleCompatibleVersionNotMatchInstalled(installedSchema, latestCompatibleVersion);
     }
   }
@@ -300,24 +291,24 @@ public class DataSchemaAction extends POSTAction {
         installedSchema.getIdentifier(), installedSchema.getIssued(), latestCompatibleVersion);
   }
 
-  private void handleCompatibleVersionMatchesInstalled(DataSchema installedSchema, String latestCompatibleVersion) {
+  private void handleCompatibleVersionMatchesInstalledButNotMatchLatest(DataSchema installedSchema, String latestCompatibleVersion) {
     DataSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
     Date latestCompatibleSchemaIssuedDate = latestCompatibleSchema.getIssued();
 
-    if (latestCompatibleSchemaIssuedDate.after(installedSchema.getIssued())) {
-      upToDate = false;
-      installedSchema.setLatest(false);
-      installedSchema.setUpdatable(true);
-    }
-  }
-
-  private void handleMissingIssuedDate(DataSchema installedSchema, Date registeredSchemaIssuedDate) {
     upToDate = false;
-    iptReinstallationRequired = true;
     installedSchema.setLatest(false);
 
-    LOG.debug("Installed data schema with identifier {} has no issued date. A newer version issued {} exists.",
-        installedSchema.getIdentifier(), registeredSchemaIssuedDate);
+    if (latestCompatibleSchemaIssuedDate.after(installedSchema.getIssued())) {
+      LOG.debug("Installed data schema with identifier {} was issued {}. " +
+              "A newer compatible schema with the same version but newer issued date exists.",
+          installedSchema.getIdentifier(), installedSchema.getIssued());
+      installedSchema.setUpdatable(true);
+    } else {
+      LOG.debug("Installed data schema with identifier {} was issued {}. " +
+              "Latest compatible version already installed. IPT update required",
+          installedSchema.getIdentifier(), installedSchema.getIssued());
+      iptReinstallationRequired = true;
+    }
   }
 
   private boolean isSameIdentifier(DataSchema first, DataSchema second) {
