@@ -173,6 +173,13 @@ public interface ResourceManager {
   List<Resource> list();
 
   /**
+   * list all resources in the IPT by the type.
+   *
+   * @return list of resources, or an empty list if none were found
+   */
+  List<Resource> list(String type);
+
+  /**
    * list all resources in the IPT having a certain publication status.
    *
    * @param status PublicationStatus

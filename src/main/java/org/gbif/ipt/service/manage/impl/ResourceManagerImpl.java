@@ -1528,6 +1528,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public List<Resource> list(String type) {
+    return resources.values().stream()
+        .filter(res -> type.equals(res.getCoreType()))
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public List<Resource> list(PublicationStatus status) {
     List<Resource> result = new ArrayList<>();
     for (Resource r : resources.values()) {

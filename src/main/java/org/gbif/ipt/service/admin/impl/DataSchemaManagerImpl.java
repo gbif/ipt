@@ -146,19 +146,21 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
         uninstall(identifier, latestCompatibleSchema.getName());
         install(latestCompatibleSchema);
 
-        String metadataProfile = latestCompatibleSchema.getMetadataProfile();
-
-        // update metadata profile field
-        resourceManager.list()
-            .stream()
-            .filter(res -> CAMTRAP_DP.equals(res.getCoreType()))
-            .forEach(res -> {
-              if (res.getDataPackageMetadata() instanceof CamtrapMetadata) {
-                CamtrapMetadata metadata = (CamtrapMetadata) res.getDataPackageMetadata();
-                metadata.setProfile(metadataProfile);
-              }
-            });
+        updateResourcesAfterSchemaUpdate(latestCompatibleSchema);
       }
+    }
+  }
+
+  private void updateResourcesAfterSchemaUpdate(DataSchema newlyInstalledSchema) {
+    resourceManager.list(CAMTRAP_DP)
+        .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
+  }
+
+  private void updateResourceAfterSchemaUpdate(Resource resource, DataSchema newlyInstalledSchema) {
+    // update metadata profile
+    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+      CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+      metadata.setProfile(newlyInstalledSchema.getMetadataProfile());
     }
   }
 
