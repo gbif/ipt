@@ -378,9 +378,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schema version url by name and version.
    */
   private String getDataSchemaVersionURL(String schemaName, String schemaVersion) {
-    // TODO: 30/11/2023 configure varnish
-//    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion + "/version";
-    return "https://rs.gbif.org/sandbox/experimental/" + schemaName + "/" + schemaVersion + "/_schema/version.json";
+    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion + "/version.json";
   }
 
   /**
