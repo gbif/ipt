@@ -64,7 +64,7 @@ import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHE
 import static org.gbif.utils.HttpUtil.success;
 
 @Singleton
-public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager  {
+public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager {
 
   private static final String CONFIG_FOLDER = ".dataSchemas";
   private static final String DATA_SCHEMA_FILE_SUFFIX = ".json";
@@ -152,16 +152,23 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   }
 
   private void updateResourcesAfterSchemaUpdate(DataSchema newlyInstalledSchema) {
-    resourceManager.list(CAMTRAP_DP)
+    resourceManager.list()
+        .stream()
+        .filter(Resource::isDataPackage)
         .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
   }
 
   private void updateResourceAfterSchemaUpdate(Resource resource, DataSchema newlyInstalledSchema) {
     // update metadata profile
-    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-      CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-      metadata.setProfile(newlyInstalledSchema.getMetadataProfile());
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+        CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+        metadata.setProfile(newlyInstalledSchema.getMetadataProfile());
+      }
     }
+
+    // update schema in mappings
+    resource.getDataSchemaMappings().forEach(m -> m.setDataSchema(newlyInstalledSchema));
   }
 
   @Override
