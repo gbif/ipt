@@ -39,7 +39,7 @@ If sampling-event data, occurrence data or checklist data are being published us
 
 === Publishing metadata using the IPT
 
-The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation.
+The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an https://www.gbif.org/data-hosting-centres[IPT data hosting centre^] instead of installing and maintaining their own installation.
 
 In total, the IPT has 12 different metadata forms that logically organize metadata entry:
 
