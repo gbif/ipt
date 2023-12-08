@@ -4,4 +4,4 @@ This Getting Started Guide is meant for those wishing to install and run an IPT 
 
 Developers who wish to work with the latest revision of the source code should consult the xref:developer-guide.adoc[] section.
 
-Publishers who would prefer not to run their own IPT may refer to the list of xref:data-hosting-centres.adoc[data hosting centres].
+Publishers who would prefer not to run their own IPT may refer to the list of https://www.gbif.org/data-hosting-centres[data hosting centres^].
