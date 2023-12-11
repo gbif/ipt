@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2023-12-11 09:50\n"
+"PO-Revision-Date: 2023-12-11 11:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -99,7 +99,7 @@ msgstr "Usted necesita una cuenta en un Integrated Publishing Toolkit (IPT) de G
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:24
 msgid "Hint: it is highly recommended that you save yourself time and money by requesting an account on an IPT located at a https://www.gbif.org/data-hosting-centres[data hosting centre] in your country or community."
-msgstr ""
+msgstr "Consejo: se recomienda encarecidamente que ahorre tiempo y dinero solicitando una cuenta en un IPT ubicado en un https://www.gbif.org/data-hosting-centres[centro de alojamiento de datos] en su país o comunidad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:25
