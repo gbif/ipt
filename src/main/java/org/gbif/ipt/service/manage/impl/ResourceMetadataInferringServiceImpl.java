@@ -671,9 +671,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private void processMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
-    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataSchemaFile())) {
+    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataSchemaFile().getName())) {
       processDeploymentsMapping(mapping, params);
-    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataSchemaFile())) {
+    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataSchemaFile().getName())) {
       processObservationsMapping(mapping, params);
     }
   }
