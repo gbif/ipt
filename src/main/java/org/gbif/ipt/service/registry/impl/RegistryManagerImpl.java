@@ -316,7 +316,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
             new TypeToken<Map<String, List<DataSchema>>>() {
             }.getType());
-    return (jSONDataSchemas.get("schemas") == null) ? new ArrayList<>() : jSONDataSchemas.get("schemas");
+    return (jSONDataSchemas.get("dataPackages") == null) ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
   }
 
   @Override
