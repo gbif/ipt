@@ -100,7 +100,7 @@
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
-                            <#list dataSchema.subSchemas as subSchema>
+                            <#list dataSchema.tableSchemas as subSchema>
                                 <li>
                                     <a href="#anchor-${subSchema.name}" class="sidebar-navigation-link">${subSchema.title}</a>
                                 </li>
@@ -110,7 +110,7 @@
                 </div>
 
                 <div class="bd-content ps-lg-4">
-                    <#list dataSchema.subSchemas as subSchema>
+                    <#list dataSchema.tableSchemas as subSchema>
                         <span class="anchor anchor-schema-page" id="anchor-${subSchema.name}"></span>
                         <div id="${subSchema.name}" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">

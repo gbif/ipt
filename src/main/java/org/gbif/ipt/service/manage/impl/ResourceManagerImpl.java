@@ -1317,7 +1317,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
-    DataSubschema subschema = dataSchema.getSubSchemas().stream()
+    DataSubschema subschema = dataSchema.getTableSchemas().stream()
       .filter(s -> s.getName().equals(filenameWithoutExtension))
       .findAny()
       .orElse(null);

@@ -88,7 +88,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <@selectList name="schemaFile" options=dataSchema.subSchemas objValue="name" objTitle="name" i18nkey="${dataSchema.shortTitle!'manage.mapping.schemaFile'}" requiredField=true />
+                    <@selectList name="schemaFile" options=dataSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataSchema.shortTitle!'manage.mapping.schemaFile'}" requiredField=true />
                 </div>
                 <div class="col-sm-6">
                     <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />

@@ -64,11 +64,11 @@ public class DataSchema implements Serializable {
   /**
    * Metadata profile
    */
-  private String metadataProfile;
+  private String profile;
 
-  private Set<DataSubschema> subSchemas = new LinkedHashSet<>();
+  private Set<DataSubschema> tableSchemas = new LinkedHashSet<>();
 
-  private SubSchemaRequirement subSchemaRequirements = new SubSchemaRequirement();
+  private SubSchemaRequirement tableSchemasRequirements = new SubSchemaRequirement();
 
   private String description;
 
@@ -79,12 +79,12 @@ public class DataSchema implements Serializable {
   private Date issued;
 
   public DataSubschema subschemaByName(String subSchemaName) {
-    return subSchemas.stream()
+    return tableSchemas.stream()
         .filter(ds -> ds.getName().equals(subSchemaName))
         .findFirst().orElse(null);
   }
 
   public void addDataSchemaFile(DataSubschema dataSubschema) {
-    subSchemas.add(dataSubschema);
+    tableSchemas.add(dataSubschema);
   }
 }

@@ -51,7 +51,7 @@ public class DataPackageMappingValidator {
     String resourceName = mapping.getDataSchemaFile().getName();
 
     if (dataSchema != null) {
-      for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+      for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
         if (resourceName.equals(subSchema.getName())) {
           for (DataSchemaField field : subSchema.getFields()) {
             String fieldName = field.getName();

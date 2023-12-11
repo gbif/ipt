@@ -66,7 +66,7 @@ import static org.gbif.utils.HttpUtil.success;
 @Singleton
 public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager {
 
-  private static final String CONFIG_FOLDER = ".dataSchemas";
+  private static final String CONFIG_FOLDER = ".dataPackages";
   private static final String DATA_SCHEMA_FILE_SUFFIX = ".json";
 
   private final ConfigWarnings warnings;
@@ -163,7 +163,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     if (CAMTRAP_DP.equals(resource.getCoreType())) {
       if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
         CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-        metadata.setProfile(newlyInstalledSchema.getMetadataProfile());
+        metadata.setProfile(newlyInstalledSchema.getProfile());
       }
     }
 
@@ -236,14 +236,14 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       finishInstallSchema(tmpFileSchema, dataSchema.getIdentifier(), dataSchema.getName());
 
       Set<DataSubschema> dataSubschemas = new LinkedHashSet<>();
-      for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+      for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
         File tmpFile = download(subSchema.getUrl());
         DataSubschema dataSubschema = loadSubschemaFromFile( tmpFile);
         finishInstallSubschema(tmpFile, dataSchema.getIdentifier(), dataSchema.getName(), dataSubschema);
         dataSubschemas.add(dataSubschema);
       }
 
-      dataSchema.setSubSchemas(dataSubschemas);
+      dataSchema.setTableSchemas(dataSubschemas);
 
       // keep data schemas in local lookup: allowed one installed data schema per identifier
       dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
@@ -299,7 +299,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
               // keep data schema in local lookup
               dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
 
-              for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+              for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
                 String filename = org.gbif.ipt.utils.FileUtils
                     .getSuffixedFileName(subSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
@@ -307,7 +307,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
                 dataSubschemas.add(loadSubschemaFromFile(subSchemaFile));
               }
 
-              dataSchema.setSubSchemas(dataSubschemas);
+              dataSchema.setTableSchemas(dataSubschemas);
               dataSchemas.add(dataSchema);
             }
             counter++;

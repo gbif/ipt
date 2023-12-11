@@ -62,7 +62,7 @@ public class DataSchemaFieldConverter implements Converter {
 
     if (schema != null) {
       DataSubschema subschema = null;
-      for (DataSubschema dss : schema.getSubSchemas()) {
+      for (DataSubschema dss : schema.getTableSchemas()) {
         if (dss.getName().equals(subschemaName)) {
           subschema = dss;
           break;

@@ -36,7 +36,7 @@ public class DataSubschema implements Serializable {
   private String name;
   private String title;
   private String description;
-  private List<DataSchemaField> fields = new ArrayList<>();
+  private List<DataSchemaField> fields;
   private String primaryKey;
-  private List<DataSubschemaForeignKey> foreignKeys = new ArrayList<>();
+  private List<DataSubschemaForeignKey> foreignKeys;
 }

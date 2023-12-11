@@ -166,7 +166,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       dataSchema = mapping.getDataSchema();
 
       // reload schema if sub-schemas are empty
-      if (dataSchema == null || CollectionUtils.isEmpty(dataSchema.getSubSchemas())) {
+      if (dataSchema == null || CollectionUtils.isEmpty(dataSchema.getTableSchemas())) {
         dataSchema = schemaManager.get(id);
       }
 

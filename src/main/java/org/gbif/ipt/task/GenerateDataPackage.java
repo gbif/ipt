@@ -73,7 +73,6 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
-import static org.gbif.ipt.config.Constants.MATERIAL_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -346,7 +345,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // before starting to add subschemas, check all required schemas mapped
     checkRequiredSubSchemasMapped(mappedSubSchemas, dataSchema);
 
-    for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
+    for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
       // skip un-mapped (optional) schemas
       if (!mappedSubSchemas.contains(subSchema.getName())) {
         continue;
@@ -373,7 +372,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    */
   private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataSchema dataSchema)
       throws GeneratorException {
-    SubSchemaRequirement requirements = dataSchema.getSubSchemaRequirements();
+    SubSchemaRequirement requirements = dataSchema.getTableSchemasRequirements();
 
     if (requirements != null) {
       SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
