@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,8 +113,8 @@ msgstr ""
 #: en/modules/ROOT/pages/how-to-publish.adoc:24
 msgid ""
 "Hint: it is highly recommended that you save yourself time and money by "
-"requesting an account on a xref:data-hosting-centres.adoc[data hosting "
-"centre IPT] that is located in your country."
+"requesting an account on an IPT located at a https://www.gbif.org/data-"
+"hosting-centres[data hosting centre] in your country or community."
 msgstr ""
 
 #. type: Plain text
