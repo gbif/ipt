@@ -2,7 +2,6 @@
 * xref:introduction.adoc[]
 * xref:getting-started.adoc[]
 ** xref:requirements.adoc[]
-** xref:data-hosting-centres.adoc[]
 ** xref:installation.adoc[]
 *** xref:tomcat-installation-linux.adoc[]
 *** xref:tomcat-installation-windows.adoc[]
