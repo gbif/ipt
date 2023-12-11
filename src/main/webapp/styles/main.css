@@ -1602,7 +1602,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     text-transform: none !important;
     border: 2px solid rgb(var(--navbar-link-color));
     border-radius: 50%;
-    padding: 5px;
+    padding: 4px;
     min-width: 32px;
     font-size: 0.875rem !important;
 }
