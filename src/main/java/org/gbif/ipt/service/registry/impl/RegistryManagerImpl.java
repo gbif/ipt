@@ -364,21 +364,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schemas url.
    */
   private String getDataSchemasURL() {
-    return cfg.getRegistryUrl() + "/registry/schemas.json";
+    return cfg.getRegistryUrl() + "/registry/dataPackages.json";
   }
 
   /**
    * Returns the Data schema url by name and version.
    */
   private String getDataSchemaURL(String schemaName, String schemaVersion) {
-    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion;
+    return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion;
   }
 
   /**
    * Returns the Data schema version url by name and version.
    */
   private String getDataSchemaVersionURL(String schemaName, String schemaVersion) {
-    return cfg.getRegistryUrl() + "/registry/schema/" + schemaName + "/" + schemaVersion + "/version.json";
+    return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion + "/version.json";
   }
 
   /**
