@@ -4,7 +4,7 @@
 
 == Upgrade instructions
 
-WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
+WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the https://www.gbif.org/data-hosting-centres#_criteria-for-data-hosting-centres[criteria for data hosting centres], it is highly recommended to run scheduled backups of the IPT data directory in general.
 
 CAUTION: Once an IPT has been upgraded to 2.5.6 or later from 2.5.5 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
