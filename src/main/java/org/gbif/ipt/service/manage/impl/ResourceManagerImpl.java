@@ -40,6 +40,7 @@ import org.gbif.ipt.model.DataSchemaFieldReference;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.DataSubschemaForeignKey;
+import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -65,13 +66,7 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
-import org.gbif.ipt.model.converter.JdbcInfoConverter;
-import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
-import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -237,12 +232,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   @Inject
-  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-                             OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-                             DataSchemaIdentifierConverter dataSchemaConverter,
-                             JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-                             ExtensionManager extensionManager, DataSchemaManager schemaManager,
-                             RegistryManager registryManager, ConceptTermConverter conceptTermConverter,
+  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
+                             SourceManager sourceManager, ExtensionManager extensionManager,
+                             DataSchemaManager schemaManager, RegistryManager registryManager,
                              GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager,
@@ -257,8 +249,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, dataSchemaConverter, conceptTermConverter, jdbcInfoConverter,
-      passwordEncrypter);
+    defineXstreamMapping(resourceConvertersManager, passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
     this.metadataReader = metadataReader;
@@ -1138,10 +1129,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-                                    ExtensionRowTypeConverter extensionConverter, DataSchemaIdentifierConverter dataSchemaConverter,
-                                    ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter,
-                                    PasswordEncrypter passwordEncrypter) {
+  private void defineXstreamMapping(ResourceConvertersManager resourceConvertersManager, PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
@@ -1183,19 +1171,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.omitField(TextFileSource.class, "file");
 
     // persist only emails for users
-    xstream.registerConverter(userConverter);
+    xstream.registerConverter(resourceConvertersManager.getUserConverter());
     // persist only rowtype
-    xstream.registerConverter(extensionConverter);
-    // persist only schema identifier
-    xstream.registerConverter(dataSchemaConverter);
+    xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
-    xstream.registerConverter(conceptTermConverter);
+    xstream.registerConverter(resourceConvertersManager.getConceptTermConverter());
+    // persist only schema identifier, subschema name and field name
+    xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
+    xstream.registerConverter(resourceConvertersManager.getDataSubschemaNameConverter());
+    xstream.registerConverter(resourceConvertersManager.getDataSchemaFieldConverter());
     // encrypt passwords
     xstream.registerConverter(passwordEncrypter);
 
     xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
-    xstream.registerConverter(orgConverter);
-    xstream.registerConverter(jdbcInfoConverter);
+    xstream.registerConverter(resourceConvertersManager.getOrgConverter());
+    xstream.registerConverter(resourceConvertersManager.getJdbcInfoConverter());
   }
 
   @Override
@@ -1338,7 +1328,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     map.setDataSchema(dataSchema);
-    map.setDataSchemaFile(subschema.getName());
+    map.setDataSchemaFile(new DataSubschemaName(subschema.getName()));
     map.setSource(source);
 
     // extract column names from file's first row

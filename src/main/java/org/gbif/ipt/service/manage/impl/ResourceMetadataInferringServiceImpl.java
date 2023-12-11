@@ -24,6 +24,7 @@ import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
@@ -953,6 +954,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   private boolean isSchemaMapped(Resource resource, String schemaName) {
     return resource.getDataSchemaMappings().stream()
         .map(DataSchemaMapping::getDataSchemaFile)
+        .map(DataSubschemaName::getName)
         .anyMatch(schemaName::equals);
   }
 

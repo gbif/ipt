@@ -239,7 +239,7 @@
                                     <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataSchema.identifier?url}" data-ipt-mapping="${m_index}">
                                         <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
                                         <i class="bi bi-arrow-right"></i>
-                                        <strong class="fs-smaller">${(m.dataSchemaFile)!"?"}</strong>
+                                        <strong class="fs-smaller">${(m.dataSchemaFile.name)!"?"}</strong>
                                         <br>
                                         <small>${(m.fields)!?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>

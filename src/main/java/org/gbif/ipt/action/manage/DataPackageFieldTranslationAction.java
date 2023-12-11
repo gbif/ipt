@@ -167,7 +167,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       // 1. ensure the translation map on the FieldMapping is empty
       fieldMapping.setTranslation(new TreeMap<>());
       // 2. ensure the static sessionScoped translation for this field is empty
-      trans.setTmap(this.mapping.getDataSchemaFile(), field.getName(), new TreeMap<>(), new TreeMap<>());
+      trans.setTmap(this.mapping.getDataSchemaFile().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
@@ -216,7 +216,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 
-        if (!trans.isLoaded(mapping.getDataSchemaFile(), fieldMapping.getField())) {
+        if (!trans.isLoaded(mapping.getDataSchemaFile().getName(), fieldMapping.getField())) {
           reloadSourceValues();
         }
 
@@ -253,7 +253,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       }
 
       // reinitialize translation, including maps
-      trans.setTmap(mapping.getDataSchemaFile(), field.getName(), new TreeMap<>(), new TreeMap<>());
+      trans.setTmap(mapping.getDataSchemaFile().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
 
       // reload new values
       int i = 1;
@@ -301,7 +301,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     fieldMapping.setTranslation(trans.getPersistentMap());
     // save entire resource config
     saveResource();
-    id = mapping.getDataSchemaFile();
+    id = mapping.getDataSchemaFile().getName();
     addActionMessage(getText("manage.translation.saved", new String[] {fieldMapping.getField().getName()}));
 
     return NONE;

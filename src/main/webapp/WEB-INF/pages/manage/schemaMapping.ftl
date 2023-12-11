@@ -414,7 +414,7 @@
                                     </a>
                                 </@s.param>
                                 <@s.param><@s.property value="#adminSchemaTitle.toLowerCase()"/></@s.param>
-                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataSchema.identifier!}#anchor-${mapping.dataSchemaFile!}" target="_blank">${mapping.dataSchema.name!}/${mapping.dataSchemaFile!}</a></@s.param>
+                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataSchema.identifier!}#anchor-${(mapping.dataSchemaFile.name)!}" target="_blank">${(mapping.dataSchema.name)!}/${(mapping.dataSchemaFile.name)!}</a></@s.param>
                             </@s.text>
                         </p>
                     </div>
@@ -477,7 +477,7 @@
 
                     <div id="sections">
                         <#list dataSchema.subSchemas as subSchema>
-                            <#if (mapping.dataSchemaFile)?? && mapping.dataSchemaFile == subSchema.name>
+                            <#if (mapping.dataSchemaFile.name)?? && mapping.dataSchemaFile.name == subSchema.name>
                                 <div id="${subSchema.name}" class="mt-lg-3">
                                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                         ${subSchema.title}

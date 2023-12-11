@@ -20,6 +20,7 @@ import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SubSchemaRequirement;
@@ -337,6 +338,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     List<DataSchemaMapping> allMappings = resource.getDataSchemaMappings();
     Set<String> mappedSubSchemas = allMappings.stream()
         .map(DataSchemaMapping::getDataSchemaFile)
+        .map(DataSubschemaName::getName)
         .collect(Collectors.toSet());
     DataSchema dataSchema = resource.getDataSchemaMappings().get(0).getDataSchema();
     currSchema = dataSchema.getName();

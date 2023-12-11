@@ -33,7 +33,7 @@ public class DataSchemaMapping implements Serializable {
 
   private Source source;
   private DataSchema dataSchema;
-  private String dataSchemaFile;
+  private DataSubschemaName dataSchemaFile;
   private List<DataSchemaFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;
   private RecordFilter filter;

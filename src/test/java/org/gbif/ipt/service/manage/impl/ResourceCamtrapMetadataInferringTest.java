@@ -17,6 +17,7 @@ import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
@@ -207,7 +208,7 @@ public class ResourceCamtrapMetadataInferringTest {
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())
-        .dataSchemaFile("deployments")
+        .dataSchemaFile(new DataSubschemaName("deployments"))
         .source(source)
         .fields(
             Arrays.asList(
@@ -256,7 +257,7 @@ public class ResourceCamtrapMetadataInferringTest {
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())
-        .dataSchemaFile("observations")
+        .dataSchemaFile(new DataSubschemaName("observations"))
         .source(source)
         .fields(
             Arrays.asList(

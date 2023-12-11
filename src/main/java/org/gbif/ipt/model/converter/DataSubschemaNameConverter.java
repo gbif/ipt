@@ -13,10 +13,8 @@
  */
 package org.gbif.ipt.model.converter;
 
-import org.gbif.ipt.model.DataSchema;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.model.DataSubschemaName;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -25,36 +23,31 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 @Singleton
-public class DataSchemaIdentifierConverter implements Converter {
+public class DataSubschemaNameConverter implements Converter {
 
-  private final DataSchemaManager manager;
-  private DataSchema lastDataSchemaConverted;
-
-  @Inject
-  public DataSchemaIdentifierConverter(DataSchemaManager manager) {
-    this.manager = manager;
-  }
+  private String lastDataSubschemaConverted;
 
   @Override
   public boolean canConvert(Class clazz) {
-    return clazz.equals(DataSchema.class);
+    return clazz.equals(DataSubschemaName.class);
   }
 
-  public DataSchema getLastDataSchemaConverted() {
-    return lastDataSchemaConverted;
+  public String getLastDataSubschemaConverted() {
+    return lastDataSubschemaConverted;
   }
 
   @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    DataSchema d = (DataSchema) value;
-    writer.setValue(d.getIdentifier());
+    DataSubschemaName u = (DataSubschemaName) value;
+    writer.setValue(u.getName());
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    DataSchema d = manager.get(reader.getValue());
-    lastDataSchemaConverted = d;
-    return d;
+    String subschemaName = reader.getValue();
+    lastDataSubschemaConverted = subschemaName;
+    DataSubschemaName result = new DataSubschemaName();
+    result.setName(subschemaName);
+    return result;
   }
-
 }

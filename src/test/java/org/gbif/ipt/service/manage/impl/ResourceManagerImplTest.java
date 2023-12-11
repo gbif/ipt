@@ -39,7 +39,9 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
+import org.gbif.ipt.model.converter.DataSubschemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -105,7 +107,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -244,22 +245,22 @@ public class ResourceManagerImplTest {
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
+        new ConceptTermConverter(extensionRowTypeConverter), mock(DataSchemaIdentifierConverter.class),
+        mock(DataSubschemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
+
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
     return new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mockEmailConverter,
-        mockOrganisationKeyConverter,
-        extensionRowTypeConverter,
-        mock(DataSchemaIdentifierConverter.class),
-        jdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         extensionManager,
         mockSchemaManager,
         mockRegistryManager,
-        conceptTermConverter,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
         passwordEncrypter,
@@ -1014,19 +1015,19 @@ public class ResourceManagerImplTest {
     // mock changing the the baseURL now (returning a different public resource URL)
     when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://192.38.28.24:7001/ipt/resource?r=bees");
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionRowTypeConverter.class),
+        mock(ConceptTermConverter.class), mock(DataSchemaIdentifierConverter.class),
+        mock(DataSubschemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
+
     manager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mockEmailConverter,
-        mockOrganisationKeyConverter,
-        mock(ExtensionRowTypeConverter.class),
-        mock(DataSchemaIdentifierConverter.class),
-        mockJdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         mock(ExtensionManager.class),
         mock(DataSchemaManager.class),
         mockRegistryManager,
-        mock(ConceptTermConverter.class),
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
         mockPasswordEncrypter,

@@ -19,6 +19,7 @@ import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
@@ -175,7 +176,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         String source = StringUtils.trimToNull(req.getParameter("source"));
         String schemaFile = StringUtils.trimToNull(req.getParameter("schemaFile"));
         if (schemaFile != null) {
-          mapping.setDataSchemaFile(schemaFile);
+          mapping.setDataSchemaFile(new DataSubschemaName(schemaFile));
         }
 
         if (source != null) {
@@ -200,7 +201,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       readSource();
 
       // prepare fields
-      DataSubschema dataSubschema = mapping.getDataSchema().subschemaByName(mapping.getDataSchemaFile());
+      DataSubschema dataSubschema = mapping.getDataSchema().subschemaByName(mapping.getDataSchemaFile().getName());
       fieldsIndices = new HashMap<>();
       int index = 0;
       if (dataSubschema != null) {

@@ -33,7 +33,9 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
+import org.gbif.ipt.model.converter.DataSubschemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -51,6 +53,7 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -504,21 +507,21 @@ public class GenerateDwcaTest {
     // create SourceManagerImpl
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
+        new ConceptTermConverter(extensionRowTypeConverter), mock(DataSchemaIdentifierConverter.class),
+        mock(DataSubschemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
+
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
       new ResourceManagerImpl(
           mockAppConfig,
           mockDataDir,
-          mockEmailConverter,
-          mockOrganisationKeyConverter,
-          extensionRowTypeConverter,
-          mock(DataSchemaIdentifierConverter.class),
-          jdbcConverter,
+          mockResourceConvertersManager,
           mockSourceManager,
           extensionManager,
           mockSchemaManager,
           mockRegistryManager,
-          conceptTermConverter,
           mockDwcaFactory,
           mock(GenerateDataPackageFactory.class),
           passwordEncrypter,

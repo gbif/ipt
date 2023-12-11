@@ -29,7 +29,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
+import org.gbif.ipt.model.converter.DataSubschemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -155,20 +157,20 @@ public class ResourceManagerImplIT {
     DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter,
+        mockConceptTermConverter, mock(DataSchemaIdentifierConverter.class),
+        mock(DataSubschemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
+
     // mock ResourceManagerImpl for DataCite
     ResourceManagerImpl managerDataCite = new ResourceManagerImpl(
         mockAppConfig,
         MOCK_DATA_DIR,
-        mockEmailConverter,
-        new OrganisationKeyConverter(mockRegistrationManagerDataCite),
-        mockExtensionRowTypeConverter,
-        mock(DataSchemaIdentifierConverter.class),
-        mockJdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         mockExtensionManager,
         mockSchemaManager,
         mockRegistryManager,
-        mockConceptTermConverter,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
         mockPasswordEncrypter,
