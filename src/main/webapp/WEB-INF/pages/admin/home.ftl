@@ -208,10 +208,10 @@
 					</div>
 					<div class="d-flex flex-column flex-auto flex-justify-between">
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-0 px-4 fs-smaller">
-							<@s.text name="admin.home.manageSchemas.description"/>
+							<@s.text name="admin.home.manageDataPackageSchemas.description"/>
 						</div>
 						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
-							<a href="${baseURL}/admin/schemas.do" title="" class="action-link-button action-link-button-primary">
+							<a href="${baseURL}/admin/dataPackages.do" title="" class="action-link-button action-link-button-primary">
 								<@s.text name="button.view"/>
 							</a>
 						</div>

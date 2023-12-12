@@ -44,7 +44,7 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.voc.IdentifierStatus;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -466,7 +466,7 @@ public class GenerateDwcaTest {
     PasswordEncrypter passwordEncrypter = injector.getInstance(PasswordEncrypter.class);
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
-    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(

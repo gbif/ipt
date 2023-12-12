@@ -89,7 +89,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -211,7 +211,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
-  private DataSchemaManager schemaManager;
+  private DataPackageSchemaManager schemaManager;
   private RegistryManager registryManager;
   private ResourceMetadataInferringService resourceMetadataInferringService;
   private ThreadPoolExecutor executor;
@@ -234,7 +234,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
                              SourceManager sourceManager, ExtensionManager extensionManager,
-                             DataSchemaManager schemaManager, RegistryManager registryManager,
+                             DataPackageSchemaManager schemaManager, RegistryManager registryManager,
                              GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager,

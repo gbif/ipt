@@ -18,15 +18,9 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
-import org.gbif.ipt.model.converter.JdbcInfoConverter;
-import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
-import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -76,7 +70,7 @@ public class ArchivalModeTest {
       mock(ResourceConvertersManager.class),
       mock(SourceManager.class),
       mock(ExtensionManager.class),
-      mock(DataSchemaManager.class),
+      mock(DataPackageSchemaManager.class),
       mock(RegistryManager.class),
       mock(GenerateDwcaFactory.class),
       mock(GenerateDataPackageFactory.class),

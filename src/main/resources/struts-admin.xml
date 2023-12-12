@@ -64,15 +64,15 @@
     </action>
 
     <!-- DATA SCHEMA MANAGEMENT -->
-    <action name="schemas" class="org.gbif.ipt.action.admin.DataSchemaAction" method="list">
-      <result>/WEB-INF/pages/admin/schemas.ftl</result>
+    <action name="dataPackages" class="org.gbif.ipt.action.admin.DataPackageSchemaAction" method="list">
+      <result>/WEB-INF/pages/admin/dataPackageSchemas.ftl</result>
     </action>
-    <action name="updateSchema" class="org.gbif.ipt.action.admin.DataSchemaAction" method="update">
-      <result type="redirect">${baseURL}/admin/schemas.do</result>
+    <action name="updateDataPackage" class="org.gbif.ipt.action.admin.DataPackageSchemaAction" method="update">
+      <result type="redirect">${baseURL}/admin/dataPackages.do</result>
     </action>
-    <action name="schema" class="org.gbif.ipt.action.admin.DataSchemaAction">
-      <result name="input">/WEB-INF/pages/admin/schema.ftl</result>
-      <result type="redirect">${baseURL}/admin/schemas.do</result>
+    <action name="dataPackage" class="org.gbif.ipt.action.admin.DataPackageSchemaAction">
+      <result name="input">/WEB-INF/pages/admin/dataPackageSchema.ftl</result>
+      <result type="redirect">${baseURL}/admin/dataPackages.do</result>
     </action>
 
     <!-- LOGS -->

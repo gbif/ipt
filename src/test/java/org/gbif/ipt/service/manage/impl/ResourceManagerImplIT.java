@@ -40,7 +40,7 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -113,7 +113,7 @@ public class ResourceManagerImplIT {
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     ExtensionRowTypeConverter mockExtensionRowTypeConverter = mock(ExtensionRowTypeConverter.class);
     ExtensionManager mockExtensionManager = mock(ExtensionManager.class);
-    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
     JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();

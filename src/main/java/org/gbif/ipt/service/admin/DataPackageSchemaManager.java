@@ -16,15 +16,15 @@ package org.gbif.ipt.service.admin;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.DataSchemaManagerImpl;
+import org.gbif.ipt.service.admin.impl.DataPackageSchemaManagerImpl;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(DataSchemaManagerImpl.class)
-public interface DataSchemaManager {
+@ImplementedBy(DataPackageSchemaManagerImpl.class)
+public interface DataPackageSchemaManager {
 
   /**
    * Safely remove an installed data schema by its unique identifier, making sure no mappings to this data schema exist.

@@ -57,7 +57,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -233,7 +233,7 @@ public class ResourceManagerImplTest {
     Extension simpleImage = extensionFactory.build(simpleImageIs);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
-    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
@@ -1026,7 +1026,7 @@ public class ResourceManagerImplTest {
         mockResourceConvertersManager,
         mockSourceManager,
         mock(ExtensionManager.class),
-        mock(DataSchemaManager.class),
+        mock(DataPackageSchemaManager.class),
         mockRegistryManager,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),

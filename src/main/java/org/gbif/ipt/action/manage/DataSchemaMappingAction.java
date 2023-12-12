@@ -23,7 +23,7 @@ import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -55,7 +55,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   private static final Pattern FIELD_FORBIDDEN_CHARACTERS_PATTERN = Pattern.compile("[\\W\\s_0-9]+");
 
-  private final DataSchemaManager schemaManager;
+  private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
   private DataPackageSchema dataPackageSchema;
@@ -69,7 +69,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   @Inject
   public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
                                  RegistrationManager registrationManager, ResourceManager resourceManager,
-                                 DataSchemaManager schemaManager, SourceManager sourceManager) {
+                                 DataPackageSchemaManager schemaManager, SourceManager sourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.schemaManager = schemaManager;
     this.sourceManager = sourceManager;

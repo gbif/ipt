@@ -24,7 +24,7 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -68,13 +68,13 @@ public class CreateResourceAction extends POSTAction {
   private Map<String, String> dataPackageTypes;
   private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
-  private final DataSchemaManager schemaManager;
+  private final DataPackageSchemaManager schemaManager;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
   public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
                               ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager,
-                              DataSchemaManager schemaManager) {
+                              DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;

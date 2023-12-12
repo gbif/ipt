@@ -19,7 +19,7 @@ import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.voc.PublicationMode;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -65,7 +65,7 @@ public class AutoPublishedTest {
       mock(ResourceConvertersManager.class),
       mock(SourceManager.class),
       mock(ExtensionManager.class),
-      mock(DataSchemaManager.class),
+      mock(DataPackageSchemaManager.class),
       mock(RegistryManager.class),
       mock(GenerateDwcaFactory.class),
       mock(GenerateDataPackageFactory.class),

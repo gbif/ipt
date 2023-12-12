@@ -406,7 +406,7 @@
                         </div>
 
                         <p class="mt-3 mb-0 text-smaller fst-italic">
-                            <@s.text var="adminSchemaTitle" name="admin.schema.title"/>
+                            <@s.text var="adminSchemaTitle" name="admin.dataPackageSchema.title"/>
                             <@s.text name='manage.mapping.intro1'>
                                 <@s.param>
                                     <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">

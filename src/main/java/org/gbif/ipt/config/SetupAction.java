@@ -25,7 +25,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -64,7 +64,7 @@ public class SetupAction extends BaseAction {
   private final UserAccountManager userManager;
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
-  private final DataSchemaManager schemaManager;
+  private final DataPackageSchemaManager schemaManager;
   private final HttpClient client;
 
   private final UserValidator userValidation = new UserValidator();
@@ -88,7 +88,7 @@ public class SetupAction extends BaseAction {
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
                      ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-                     ExtensionManager extensionManager, DataSchemaManager schemaManager, HttpClient client) {
+                     ExtensionManager extensionManager, DataPackageSchemaManager schemaManager, HttpClient client) {
     super(textProvider, cfg, regManager);
     this.cfg = cfg;
     this.configManager = configManager;

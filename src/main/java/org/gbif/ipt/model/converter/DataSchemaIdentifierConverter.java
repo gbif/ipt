@@ -14,7 +14,7 @@
 package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -27,11 +27,11 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class DataSchemaIdentifierConverter implements Converter {
 
-  private final DataSchemaManager manager;
+  private final DataPackageSchemaManager manager;
   private DataPackageSchema lastDataSchemaConverted;
 
   @Inject
-  public DataSchemaIdentifierConverter(DataSchemaManager manager) {
+  public DataSchemaIdentifierConverter(DataPackageSchemaManager manager) {
     this.manager = manager;
   }
 

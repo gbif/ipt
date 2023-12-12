@@ -19,7 +19,7 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -38,12 +38,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
-public class DataSchemaAction extends POSTAction {
+public class DataPackageSchemaAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(DataSchemaAction.class);
+  private static final long serialVersionUID = -535308367714585780L;
 
-  private final DataSchemaManager schemaManager;
+  private static final Logger LOG = LogManager.getLogger(DataPackageSchemaAction.class);
+
+  private final DataPackageSchemaManager schemaManager;
   private final RegistryManager registryManager;
   private final ConfigWarnings configWarnings;
 
@@ -56,9 +57,9 @@ public class DataSchemaAction extends POSTAction {
   private boolean iptReinstallationRequired = false;
 
   @Inject
-  public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                          DataSchemaManager schemaManager, RegistryManager registryManager,
-                          ConfigWarnings configWarnings) {
+  public DataPackageSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
+                                 DataPackageSchemaManager schemaManager, RegistryManager registryManager,
+                                 ConfigWarnings configWarnings) {
     super(textProvider, cfg, registrationManager);
     this.schemaManager = schemaManager;
     this.registryManager = registryManager;
@@ -331,7 +332,7 @@ public class DataSchemaAction extends POSTAction {
     this.schemaName = schemaName;
   }
 
-  public DataPackageSchema getDataSchema() {
+  public DataPackageSchema getDataPackageSchema() {
     return dataPackageSchema;
   }
 

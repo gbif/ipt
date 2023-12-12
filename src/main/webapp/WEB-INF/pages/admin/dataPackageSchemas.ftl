@@ -1,6 +1,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name="admin.home.manageSchemas"/></title>
+    <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <#macro installedSchemaItem ds>
@@ -29,11 +29,11 @@
                         </div>
                     </div>
                     <div class="d-flex pt-2 pb-4 px-4">
-                        <a href="schema.do?id=${ds.identifier?url}" title="" class="action-link-button action-link-button-primary">
+                        <a href="dataPackage.do?id=${ds.identifier?url}" title="" class="action-link-button action-link-button-primary">
                             <@s.text name="button.view"/>
                         </a>
                         <#if !ds.latest && ds.updatable>
-                            <form action='updateSchema.do' method='post'>
+                            <form action='updateDatapackage.do' method='post'>
                                 <input type='hidden' name='id' value='${ds.identifier}' />
 
                                 <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">
@@ -74,13 +74,13 @@
                         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center mb-0">
                                 <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                                <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.schemas"/></li>
+                                <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.dataPackageSchemas"/></li>
                             </ol>
                         </nav>
                     </div>
 
                     <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                        <@s.text name="admin.schemas.title"/>
+                        <@s.text name="admin.dataPackageSchemas.title"/>
                     </h1>
 
                     <div class="text-smaller">

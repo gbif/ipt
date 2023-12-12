@@ -28,7 +28,7 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -102,7 +102,7 @@ public class OverviewActionTest {
           mock(GenerateDataPackageFactory.class),
           mock(VocabulariesManager.class),
           mock(RegistryManager.class),
-          mock(DataSchemaManager.class));
+          mock(DataPackageSchemaManager.class));
   }
 
   @Test
@@ -343,7 +343,7 @@ public class OverviewActionTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataSchemaManager.class));
+        mock(DataPackageSchemaManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -392,7 +392,7 @@ public class OverviewActionTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataSchemaManager.class));
+        mock(DataPackageSchemaManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

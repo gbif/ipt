@@ -43,7 +43,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.UndeletNotAllowedException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -167,13 +167,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final RegistryManager registryManager;
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
-  private final DataSchemaManager schemaManager;
+  private final DataPackageSchemaManager schemaManager;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
     GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
-    RegistryManager registryManager, DataSchemaManager schemaManager) {
+    RegistryManager registryManager, DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;

@@ -27,7 +27,7 @@ import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DataSchemaManager;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -64,7 +64,7 @@ import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHE
 import static org.gbif.utils.HttpUtil.success;
 
 @Singleton
-public class DataSchemaManagerImpl extends BaseManager implements DataSchemaManager {
+public class DataPackageSchemaManagerImpl extends BaseManager implements DataPackageSchemaManager {
 
   private static final String CONFIG_FOLDER = ".dataPackages";
   private static final String DATA_SCHEMA_FILE_SUFFIX = ".json";
@@ -83,9 +83,9 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private Map<String, DataPackageSchema> dataPackageSchemasByIdentifiers = new HashMap<>();
 
   @Inject
-  public DataSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
-                               SimpleTextProvider textProvider, RegistrationManager registrationManager,
-                               RegistryManager registryManager, ResourceManager resourceManager, HttpClient downloader) {
+  public DataPackageSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
+                                      SimpleTextProvider textProvider, RegistrationManager registrationManager,
+                                      RegistryManager registryManager, ResourceManager resourceManager, HttpClient downloader) {
     super(cfg, dataDir);
     this.warnings = warnings;
     this.factory = factory;
