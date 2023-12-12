@@ -27,8 +27,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
-import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
+import org.gbif.ipt.model.converter.DataPackageFieldConverter;
+import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
 import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -297,8 +297,8 @@ public class GenerateDCATTest {
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataSchemaIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
+        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =

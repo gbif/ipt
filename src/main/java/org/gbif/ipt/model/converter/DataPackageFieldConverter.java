@@ -29,15 +29,15 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 @Singleton
-public class DataSchemaFieldConverter implements Converter {
+public class DataPackageFieldConverter implements Converter {
 
-  private static final Logger LOG = LogManager.getLogger(DataSchemaFieldConverter.class);
-  private final DataSchemaIdentifierConverter schemaConverter;
+  private static final Logger LOG = LogManager.getLogger(DataPackageFieldConverter.class);
+  private final DataPackageIdentifierConverter schemaConverter;
   private final TableSchemaNameConverter schemaNameConverter;
 
   @Inject
-  public DataSchemaFieldConverter(DataSchemaIdentifierConverter schemaConverter,
-                                  TableSchemaNameConverter schemaNameConverter) {
+  public DataPackageFieldConverter(DataPackageIdentifierConverter schemaConverter,
+                                   TableSchemaNameConverter schemaNameConverter) {
     this.schemaConverter = schemaConverter;
     this.schemaNameConverter = schemaNameConverter;
   }

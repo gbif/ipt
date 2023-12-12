@@ -25,13 +25,13 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 @Singleton
-public class DataSchemaIdentifierConverter implements Converter {
+public class DataPackageIdentifierConverter implements Converter {
 
   private final DataPackageSchemaManager manager;
   private DataPackageSchema lastDataPackageConverted;
 
   @Inject
-  public DataSchemaIdentifierConverter(DataPackageSchemaManager manager) {
+  public DataPackageIdentifierConverter(DataPackageSchemaManager manager) {
     this.manager = manager;
   }
 
