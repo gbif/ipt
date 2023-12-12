@@ -241,7 +241,7 @@
                                         <i class="bi bi-arrow-right"></i>
                                         <strong class="fs-smaller">${(m.dataSchemaFile.name)!"?"}</strong>
                                         <br>
-                                        <small>${(m.fields)!?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                        <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>
                                     <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
@@ -336,7 +336,7 @@
                                         <i class="bi bi-arrow-right"></i>
                                         <strong class="fs-smaller">${m.extension.title}</strong>
                                         <br>
-                                        <small>${m.fields?size} terms | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                        <small><@s.text name='manage.overview.mappings.terms'><@s.param>${m.fields?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>
                                     <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                         <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
