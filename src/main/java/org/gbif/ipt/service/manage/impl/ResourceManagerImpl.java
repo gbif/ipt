@@ -308,7 +308,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         : cfg.getDataDir().resourceEmlFile(shortname, v);
 
     Resource publishedPublicVersion = ResourceUtils
-        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getSchemaIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
+        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
             resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
 
     SimplifiedResource result = new SimplifiedResource();
@@ -772,7 +772,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
     if (schemaIdentifier != null) {
-      res.setSchemaIdentifier(schemaIdentifier);
+      res.setDataPackageIdentifier(schemaIdentifier);
     }
 
     res.setCoreType(type);
@@ -2175,7 +2175,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
-        if (resource.getSchemaIdentifier() == null) {
+        if (resource.getDataPackageIdentifier() == null) {
           // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
           if (resource.getLastPublishedVersionsVersion() != null) {
             renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
@@ -2392,7 +2392,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       processReports.remove(resource.getShortname());
     }
 
-    if (resource.getSchemaIdentifier() == null) { // DwC archive
+    if (resource.getDataPackageIdentifier() == null) { // DwC archive
       // (re)generate dwca asynchronously
       boolean dwca = false;
       if (resource.hasMappedData()) {
@@ -2624,7 +2624,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // reconstruct last published version (version being replaced)
         File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
         Resource lastPublishedVersion = ResourceUtils
-          .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getSchemaIdentifier(), doiToReplace, resource.getOrganisation(),
+          .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), doiToReplace, resource.getOrganisation(),
             resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
 
         DataCiteMetadata assignedDoiMetadata =
@@ -3670,7 +3670,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getSchemaIdentifier() == null) {
+      if (resource.getDataPackageIdentifier() == null) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 
@@ -3693,7 +3693,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getSchemaIdentifier() == null) {
+      if (resource.getDataPackageIdentifier() == null) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 

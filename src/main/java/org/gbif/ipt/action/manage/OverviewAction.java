@@ -502,7 +502,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
           UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
-          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), doi, organisation,
+          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), doi, organisation,
             resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
@@ -524,7 +524,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 File formerVersionToUndeleteEmlFile =
                   cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
-                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getSchemaIdentifier(), formerDoi, organisation,
+                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), formerDoi, organisation,
                     resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
@@ -1335,12 +1335,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
           if (resource.getCoreType() != null
-              && resource.getSchemaIdentifier() == null // not a data schema base resource
+              && resource.getDataPackageIdentifier() == null // not a data schema base resource
               && !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
 
-          if (resource.getSchemaIdentifier() != null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
+          if (resource.getDataPackageIdentifier() != null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
 
@@ -1407,7 +1407,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
     // not applicable for data packages
-    if (resource.getSchemaIdentifier() == null && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+    if (resource.getDataPackageIdentifier() == null && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
       String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
       addActionError(msg);
       LOG.error(msg);
@@ -1729,7 +1729,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       rowType = TERM_FACTORY.findTerm(id);
     }
 
-    if (resource.getSchemaIdentifier() != null) {
+    if (resource.getDataPackageIdentifier() != null) {
       // TODO: 06/04/2022 implement for schema resources?
       // There are many files inside, how to display that?
     } else {
@@ -1852,7 +1852,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   public boolean isDataPackageResource() {
-    return resource.getSchemaIdentifier() != null;
+    return resource.getDataPackageIdentifier() != null;
   }
 
   public boolean isDataPackageMappingsMissing() {

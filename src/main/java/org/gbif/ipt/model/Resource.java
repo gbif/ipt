@@ -134,7 +134,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
   private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
-  private String schemaIdentifier;
+  private String dataPackageIdentifier;
 
   private String changeSummary;
   private List<VersionHistory> versionHistory = new ArrayList<>();
@@ -404,12 +404,12 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the schema identifier of the data schema
    */
   @Nullable
-  public String getSchemaIdentifier() {
-    return schemaIdentifier;
+  public String getDataPackageIdentifier() {
+    return dataPackageIdentifier;
   }
 
-  public void setSchemaIdentifier(String schemaIdentifier) {
-    this.schemaIdentifier = schemaIdentifier;
+  public void setDataPackageIdentifier(String dataPackageIdentifier) {
+    this.dataPackageIdentifier = dataPackageIdentifier;
   }
 
   /**
@@ -490,7 +490,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   @NotNull
   public BigDecimal getMetadataVersion() {
-    return schemaIdentifier != null ? getDataPackageMetadataVersion() : getEmlVersion();
+    return dataPackageIdentifier != null ? getDataPackageMetadataVersion() : getEmlVersion();
   }
 
   /**
@@ -503,7 +503,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   @NotNull
   public BigDecimal getNextVersion() {
-    if (schemaIdentifier != null) {
+    if (dataPackageIdentifier != null) {
       String versionAsString = getDataPackageMetadata().getVersion();
       // first publication retrieve existing version
       if (lastPublished == null) {
@@ -738,9 +738,9 @@ public class Resource implements Serializable, Comparable<Resource> {
       dataPackageMappings = new ArrayList<>();
     }
 
-    if (schemaIdentifier != null) {
+    if (dataPackageIdentifier != null) {
       for (DataPackageMapping m : dataPackageMappings) {
-        if (schemaIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
+        if (dataPackageIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
           maps.add(m);
         }
       }
@@ -892,7 +892,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getTitle() {
-    if (schemaIdentifier != null && dataPackageMetadata != null) {
+    if (dataPackageIdentifier != null && dataPackageMetadata != null) {
       return dataPackageMetadata.getTitle();
     } else if (eml != null) {
       return eml.getTitle();
@@ -909,7 +909,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public String getTitleAndShortname() {
     StringBuilder sb = new StringBuilder();
-    if (schemaIdentifier != null && dataPackageMetadata != null) {
+    if (dataPackageIdentifier != null && dataPackageMetadata != null) {
       sb.append(dataPackageMetadata.getTitle());
       if (!shortname.equalsIgnoreCase(dataPackageMetadata.getTitle())) {
         sb.append(" (").append(shortname).append(")");
@@ -1280,7 +1280,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public BigDecimal getReplacedMetadataVersion() {
-    return schemaIdentifier != null ? getReplacedDataPackageMetadataVersion() : getReplacedEmlVersion();
+    return dataPackageIdentifier != null ? getReplacedDataPackageMetadataVersion() : getReplacedEmlVersion();
   }
 
   /**
@@ -1677,7 +1677,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public boolean isDataPackage() {
-    return schemaIdentifier != null;
+    return dataPackageIdentifier != null;
   }
 
   public void inferCoverageMetadataAutomatically(boolean param) {

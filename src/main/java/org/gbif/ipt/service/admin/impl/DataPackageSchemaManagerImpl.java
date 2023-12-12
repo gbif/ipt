@@ -101,8 +101,8 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     if (dataPackageSchemasByIdentifiers.containsKey(schemaIdentifier)) {
       // check if it's used by some resources
       for (Resource r : resourceManager.list()) {
-        if (r.getSchemaIdentifier() != null
-            && r.getSchemaIdentifier().equals(schemaIdentifier) && !r.getDataPackageMappings().isEmpty()) {
+        if (r.getDataPackageIdentifier() != null
+            && r.getDataPackageIdentifier().equals(schemaIdentifier) && !r.getDataPackageMappings().isEmpty()) {
           LOG.warn("Schema mapped in resource " + r.getShortname());
           String msg = baseAction.getText("admin.schemas.delete.error.mapped", new String[] {r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);

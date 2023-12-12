@@ -22,7 +22,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -74,7 +73,6 @@ import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
-import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceAction extends PortalBaseAction {
@@ -593,7 +591,7 @@ public class ResourceAction extends PortalBaseAction {
     copy.setStatus(resource.getStatus());
     copy.setOrganisation(resource.getOrganisation());
     copy.setKey(resource.getKey());
-    copy.setSchemaIdentifier(resource.getSchemaIdentifier());
+    copy.setDataPackageIdentifier(resource.getDataPackageIdentifier());
 
     // update all version number and pubDate
     copy.setMetadataVersion(nextVersion);
@@ -685,7 +683,7 @@ public class ResourceAction extends PortalBaseAction {
             new String[] {cfg.getBaseUrl() + "/resource?r=" + resource.getShortname()}));
       }
 
-      if (resource.getSchemaIdentifier() != null) {
+      if (resource.getDataPackageIdentifier() != null) {
         dpMetadata = loadDataPackageMetadataFromFile(name, resource.getCoreType(), version);
       } else {
         // load EML instance for version requested

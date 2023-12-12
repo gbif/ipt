@@ -141,7 +141,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       setState(STATE.COMPLETED);
 
       Map<String, Integer> result = new HashMap<>();
-      result.put(resource.getSchemaIdentifier(), 0);
+      result.put(resource.getDataPackageIdentifier(), 0);
       return result;
     } catch (GeneratorException e) {
       // set last error report!
@@ -330,8 +330,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void createDataFiles() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATAFILES);
-    if (resource.getSchemaIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
-      throw new GeneratorException("Schema identifier or mappings are not set");
+    if (resource.getDataPackageIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
+      throw new GeneratorException("Data package identifier or mappings are not set");
     }
 
     List<DataPackageMapping> allMappings = resource.getDataPackageMappings();
@@ -422,7 +422,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       boolean headerWritten = false;
 
       for (DataPackageMapping dataPackageMapping : allMappings) {
-        if (dataPackageMapping.getDataPackageTableSchemaName().equals(tableSchema.getName())) {
+        if (dataPackageMapping.getDataPackageTableSchemaName().getName().equals(tableSchema.getName())) {
           // write header line 1 time only to file
           if (!headerWritten) {
             writer.write(header);

@@ -184,7 +184,7 @@ public class ResourceCamtrapMetadataInferringTest {
     Resource resource = new Resource();
     resource.setShortname(shortname);
     resource.setCoreType("camtrap-dp");
-    resource.setSchemaIdentifier("http://rs.gbif.org/schemas/camtrap-dp");
+    resource.setDataPackageIdentifier("http://rs.gbif.org/schemas/camtrap-dp");
 
     return resource;
   }

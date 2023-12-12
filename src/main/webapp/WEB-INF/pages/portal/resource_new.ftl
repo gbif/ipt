@@ -349,7 +349,7 @@
                     <div class="<#if isLogoPresent>col-lg-7<#else>col-lg-8</#if> text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
                         <#if metadataOnly == true>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
-                        <#elseif resource.schemaIdentifier??>
+                        <#elseif resource.dataPackageIdentifier??>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.dataPackageSchema.verbose'/></p>
                         <#else>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.verbose'/></p>
@@ -363,7 +363,7 @@
                                 <#if metadataOnly == false>
                                     <tr>
                                         <th class="col-4 p-0">
-                                            <#if resource.schemaIdentifier??>
+                                            <#if resource.dataPackageIdentifier??>
                                                 <@s.text name='portal.resource.dataPackage.verbose'/>
                                             <#else>
                                                 <@s.text name='portal.resource.dwca.verbose'/>
@@ -375,7 +375,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                <#if !resource.schemaIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         <#else>
                                             <td class="p-0">
@@ -383,7 +383,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                <#if !resource.schemaIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         </#if>
                                     </tr>
@@ -516,7 +516,7 @@
                             </h4>
 
                             <p>
-                                <#if resource.schemaIdentifier??>
+                                <#if resource.dataPackageIdentifier??>
                                     <@s.text name='portal.resource.dataRecords.dataPackageSchema.intro'/>
                                 <#else>
                                     <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>

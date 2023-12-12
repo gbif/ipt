@@ -98,7 +98,7 @@ public class ResourceUtils {
     // initiate new version, and set properties
     Resource resource = new Resource();
     resource.setCoreType(coreTypeOrPackageType);
-    resource.setSchemaIdentifier(schemaIdentifier);
+    resource.setDataPackageIdentifier(schemaIdentifier);
     resource.setShortname(shortname);
     resource.setMetadataVersion(version);
     resource.setDoi(doi);

@@ -81,7 +81,7 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    boolean isDataPackageResource = resource.getSchemaIdentifier() != null;
+    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
     // construct download filename
     StringBuilder sb = new StringBuilder();
 
@@ -125,7 +125,7 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    boolean isDataPackageResource = resource.getSchemaIdentifier() != null;
+    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
     // construct download filename
     StringBuilder sb = new StringBuilder();
 

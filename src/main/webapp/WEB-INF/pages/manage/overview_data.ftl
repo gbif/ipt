@@ -189,7 +189,7 @@
                 <#if (resource.sources?size>0)>
                     <form action='dataPackageMapping.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <input name="id" type="hidden" value="${resource.schemaIdentifier}">
+                        <input name="id" type="hidden" value="${resource.dataPackageIdentifier}">
                         <button name="add" class="icon-button icon-material-actions overview-action-button" type="submit">
                             <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -227,7 +227,7 @@
                 <@s.text name='manage.overview.mappings.description'/>
             </p>
 
-            <#if resource.schemaIdentifier?has_content>
+            <#if resource.dataPackageIdentifier?has_content>
                 <div class="details">
                     <div class="row g-2">
                         <#list resource.getDataPackageMappings() as m>
