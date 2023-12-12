@@ -32,15 +32,15 @@ import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataSchemaFieldConstraints;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataPackageFieldConstraints;
+import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageFieldReference;
-import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
-import org.gbif.ipt.model.DataSubschemaName;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -695,7 +695,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setSourcesModified(lastModifiedDate);
         res.getSources().forEach(s -> s.setLastModified(lastModifiedDate));
         res.getMappings().forEach(m -> m.setLastModified(lastModifiedDate));
-        res.getDataSchemaMappings().forEach(m -> m.setLastModified(lastModifiedDate));
+        res.getDataPackageMappings().forEach(m -> m.setLastModified(lastModifiedDate));
 
         if (!res.isDataPackage()) {
           // reset first and last published dates
@@ -817,9 +817,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
           sources.put(filenameWithoutExtension, s);
 
-          DataSchemaMapping map = importDataPackageMappings(alog, packageType, packageFile, s);
+          DataPackageMapping map = importDataPackageMappings(alog, packageType, packageFile, s);
           map.setLastModified(lastModifiedDate);
-          resource.addDataSchemaMapping(map);
+          resource.addDataPackageMapping(map);
         } else if (packageFile.getName().equals(FRICTIONLESS_METADATA_FILENAME) && metadataFile == null) {
           metadataFile = packageFile;
         } else if (packageFile.getName().equals(COL_DP_METADATA_FILENAME)) {
@@ -856,7 +856,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       saveDatapackageMetadata(resource);
 
       alog.info("manage.resource.dp.create.success",
-        new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataSchemaMappings().size())});
+        new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataPackageMappings().size())});
     } catch (UnsupportedArchiveException | InvalidConfigException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
@@ -1150,13 +1150,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
-    xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
-    xstream.alias("dataSchemaFieldMapping", DataSchemaFieldMapping.class);
-    xstream.alias("subschema", DataPackageTableSchema.class);
-    xstream.alias("dataSchemaField", DataPackageField.class);
-    xstream.alias("dataSubschemaForeignKey", DataPackageTableSchemaForeignKey.class);
-    xstream.alias("dataSchemaFieldReference", DataPackageFieldReference.class);
-    xstream.alias("constraints", DataSchemaFieldConstraints.class);
+    xstream.alias("dataPackageMapping", DataPackageMapping.class);
+    xstream.alias("dataPackageFieldMapping", DataPackageFieldMapping.class);
+    xstream.alias("tableSchema", DataPackageTableSchema.class);
+    xstream.alias("dataPackageField", DataPackageField.class);
+    xstream.alias("dataPackageForeignKey", DataPackageTableSchemaForeignKey.class);
+    xstream.alias("dataPackageFieldReference", DataPackageFieldReference.class);
+    xstream.alias("constraints", DataPackageFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
 
@@ -1176,9 +1176,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
     xstream.registerConverter(resourceConvertersManager.getConceptTermConverter());
-    // persist only schema identifier, subschema name and field name
+    // persist only schema identifier, table schema name and field name
     xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
-    xstream.registerConverter(resourceConvertersManager.getDataSubschemaNameConverter());
+    xstream.registerConverter(resourceConvertersManager.getTableSchemaNameConverter());
     xstream.registerConverter(resourceConvertersManager.getDataSchemaFieldConverter());
     // encrypt passwords
     xstream.registerConverter(passwordEncrypter);
@@ -1298,8 +1298,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
-  private DataSchemaMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
-    DataSchemaMapping map = new DataSchemaMapping();
+  private DataPackageMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
+    DataPackageMapping map = new DataPackageMapping();
     DataPackageSchema dataPackageSchema = schemaManager.get(packageType);
     String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
 
@@ -1317,18 +1317,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
-    DataPackageTableSchema subschema = dataPackageSchema.getTableSchemas().stream()
+    DataPackageTableSchema tableSchema = dataPackageSchema.getTableSchemas().stream()
       .filter(s -> s.getName().equals(filenameWithoutExtension))
       .findAny()
       .orElse(null);
 
-    if (subschema == null) {
-      alog.warn("manage.resource.create.subschema.null", new String[] {filenameWithoutExtension});
+    if (tableSchema == null) {
+      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
     }
 
     map.setDataPackageSchema(dataPackageSchema);
-    map.setDataSchemaFile(new DataSubschemaName(subschema.getName()));
+    map.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchema.getName()));
     map.setSource(source);
 
     // extract column names from file's first row
@@ -1337,12 +1337,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String fileHeaderRow = brTest.readLine();
       columnNames = StringUtils.split(fileHeaderRow, ",");
     } catch (IOException e) {
-      alog.warn("manage.resource.create.subschema.null", new String[] {filenameWithoutExtension});
+      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
     }
 
-    List<DataSchemaFieldMapping> fields = new ArrayList<>();
-    Map<String, DataPackageField> schemaFieldsMap = subschema.getFields().stream()
+    List<DataPackageFieldMapping> fields = new ArrayList<>();
+    Map<String, DataPackageField> schemaFieldsMap = tableSchema.getFields().stream()
       .collect(Collectors.toMap(DataPackageField::getName, p -> p));
 
     // iterate over each field to make sure its part of the extension we know
@@ -1350,10 +1350,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String unwrappedColumnName = StringUtils.unwrap(columnNames[i], '"');
       DataPackageField dataPackageField = schemaFieldsMap.get(unwrappedColumnName);
       if (dataPackageField != null) {
-        fields.add(new DataSchemaFieldMapping(i, dataPackageField));
+        fields.add(new DataPackageFieldMapping(i, dataPackageField));
       } else {
         alog.warn("manage.resource.create.mapping.field.skip",
-          new String[] {columnNames[i], dataPackageSchema.getName() + "/" + subschema.getName()});
+          new String[] {columnNames[i], dataPackageSchema.getName() + "/" + tableSchema.getName()});
       }
     }
 
@@ -3085,7 +3085,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void updateCamtrapGeographicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
-    if (!resource.getDataSchemaMappings().isEmpty()
+    if (!resource.getDataPackageMappings().isEmpty()
         && inferredMetadata.getInferredGeographicScope() != null
         && inferredMetadata.getInferredGeographicScope().isInferred()) {
 
@@ -3128,7 +3128,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void updateCamtrapTaxonomicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
-    if (!resource.getDataSchemaMappings().isEmpty()
+    if (!resource.getDataPackageMappings().isEmpty()
         && inferredMetadata.getInferredTaxonomicScope() != null
         && inferredMetadata.getInferredTaxonomicScope().isInferred()) {
 
@@ -3148,7 +3148,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void updateCamtrapTemporalScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
-    if (!resource.getDataSchemaMappings().isEmpty()
+    if (!resource.getDataPackageMappings().isEmpty()
         && inferredMetadata.getInferredTemporalScope() != null
         && inferredMetadata.getInferredTemporalScope().isInferred()) {
 

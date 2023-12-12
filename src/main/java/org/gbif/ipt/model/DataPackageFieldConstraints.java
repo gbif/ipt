@@ -26,7 +26,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class DataSchemaFieldConstraints implements Serializable {
+public class DataPackageFieldConstraints implements Serializable {
 
   private static final long serialVersionUID = 3098053774204591658L;
 

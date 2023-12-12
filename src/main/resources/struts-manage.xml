@@ -189,7 +189,7 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="delete-schemaMapping" class="org.gbif.ipt.action.manage.DataSchemaMappingAction" method="delete">
+    <action name="delete-schemaMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
@@ -218,7 +218,7 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="schemaMapping" class="org.gbif.ipt.action.manage.DataSchemaMappingAction">
+    <action name="schemaMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
       <result name="input">/WEB-INF/pages/manage/schemaMapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/schemaMappingSource.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>

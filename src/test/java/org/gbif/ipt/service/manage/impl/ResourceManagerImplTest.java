@@ -41,7 +41,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.DataTableSchemaNameConverter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -248,7 +248,7 @@ public class ResourceManagerImplTest {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
         new ConceptTermConverter(extensionRowTypeConverter), mock(DataSchemaIdentifierConverter.class),
-        mock(DataTableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
+        mock(TableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
@@ -1018,7 +1018,7 @@ public class ResourceManagerImplTest {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionRowTypeConverter.class),
         mock(ConceptTermConverter.class), mock(DataSchemaIdentifierConverter.class),
-        mock(DataTableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
+        mock(TableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
 
     manager = new ResourceManagerImpl(
         mockAppConfig,

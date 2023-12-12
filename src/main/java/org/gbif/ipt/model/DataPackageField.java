@@ -36,7 +36,7 @@ public class DataPackageField implements Serializable {
   private String format;
   private String description;
   private Object example;
-  private DataSchemaFieldConstraints constraints;
+  private DataPackageFieldConstraints constraints;
 
   public String qualifiedName(String namespace) {
     return namespace + '/' + name;

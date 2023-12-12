@@ -27,14 +27,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataSchemaMapping implements Serializable {
+public class DataPackageMapping implements Serializable {
 
   private static final long serialVersionUID = -8441887797416795559L;
 
   private Source source;
   private DataPackageSchema dataPackageSchema;
-  private DataSubschemaName dataSchemaFile;
-  private List<DataSchemaFieldMapping> fields = new ArrayList<>();
+  private DataPackageTableSchemaName dataPackageTableSchemaName;
+  private List<DataPackageFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;
   private RecordFilter filter;
   private Date lastModified;
@@ -69,9 +69,9 @@ public class DataSchemaMapping implements Serializable {
     return new ArrayList<>();
   }
 
-  public DataSchemaFieldMapping getField(String name) {
+  public DataPackageFieldMapping getField(String name) {
     if (fields != null) {
-      for (DataSchemaFieldMapping dsfm : fields) {
+      for (DataPackageFieldMapping dsfm : fields) {
         if (dsfm.getField().getName().equals(name)) {
           return dsfm;
         }

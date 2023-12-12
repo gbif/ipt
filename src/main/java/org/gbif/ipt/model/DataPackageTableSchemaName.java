@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataSubschemaName implements Serializable {
+public class DataPackageTableSchemaName implements Serializable {
 
   private static final long serialVersionUID = -3502730453560563507L;
 

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataSchemaFieldMapping implements Serializable, Comparable<DataSchemaFieldMapping> {
+public class DataPackageFieldMapping implements Serializable, Comparable<DataPackageFieldMapping> {
 
   private static final long serialVersionUID = 521368321389202377L;
 
@@ -34,20 +34,20 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   private DataPackageField field;
   private Map<String, String> translation;
 
-  public DataSchemaFieldMapping(Integer index, DataPackageField field) {
+  public DataPackageFieldMapping(Integer index, DataPackageField field) {
     this.index = index;
     this.field = field;
   }
 
   /**
-   * Compares two DataSchemaFieldMapping lexicographically based on their names,
+   * Compares two DataPackageFieldMapping lexicographically based on their names,
    *
-   * @param fieldMapping DataSchemaFieldMapping
+   * @param fieldMapping DataPackageFieldMapping
    *
    * @return 0 if names are equal, -1 if argument is lexicographically less, 1 if argument is lexicographically greater
    */
   @Override
-  public int compareTo(DataSchemaFieldMapping fieldMapping) {
+  public int compareTo(DataPackageFieldMapping fieldMapping) {
     return field.getName().compareTo(fieldMapping.getField().getName());
   }
 }

@@ -102,7 +102,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       // check if it's used by some resources
       for (Resource r : resourceManager.list()) {
         if (r.getSchemaIdentifier() != null
-            && r.getSchemaIdentifier().equals(schemaIdentifier) && !r.getDataSchemaMappings().isEmpty()) {
+            && r.getSchemaIdentifier().equals(schemaIdentifier) && !r.getDataPackageMappings().isEmpty()) {
           LOG.warn("Schema mapped in resource " + r.getShortname());
           String msg = baseAction.getText("admin.schemas.delete.error.mapped", new String[] {r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
@@ -168,7 +168,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     }
 
     // update schema in mappings
-    resource.getDataSchemaMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
+    resource.getDataPackageMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
   }
 
   @Override
@@ -236,10 +236,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       finishInstallSchema(tmpFileSchema, dataPackageSchema.getIdentifier(), dataPackageSchema.getName());
 
       Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
-      for (DataPackageTableSchema subSchema : dataPackageSchema.getTableSchemas()) {
-        File tmpFile = download(subSchema.getUrl());
-        DataPackageTableSchema tableSchema = loadSubschemaFromFile( tmpFile);
-        finishInstallSubschema(tmpFile, dataPackageSchema.getIdentifier(), dataPackageSchema.getName(), tableSchema);
+      for (DataPackageTableSchema ts : dataPackageSchema.getTableSchemas()) {
+        File tmpFile = download(ts.getUrl());
+        DataPackageTableSchema tableSchema = loadTableSchemaFromFile(tmpFile);
+        finishInstallTableSchema(tmpFile, dataPackageSchema.getIdentifier(), dataPackageSchema.getName(), tableSchema);
         tableSchemas.add(tableSchema);
       }
 
@@ -299,12 +299,12 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
               // keep data schema in local lookup
               dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
 
-              for (DataPackageTableSchema subSchema : dataPackageSchema.getTableSchemas()) {
+              for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
                 String filename = org.gbif.ipt.utils.FileUtils
-                    .getSuffixedFileName(subSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
-                File subSchemaFile = getSubSubschemaFileByName(files, filename);
-                tableSchemas.add(loadSubschemaFromFile(subSchemaFile));
+                    .getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
+                File tableSchemaFile = getTableSchemaConfigFileByName(files, filename);
+                tableSchemas.add(loadTableSchemaFromFile(tableSchemaFile));
               }
 
               dataPackageSchema.setTableSchemas(tableSchemas);
@@ -354,20 +354,20 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   /**
-   * Find and get subschema file from array of files.
+   * Find and get a table schema file from an array of files.
    *
    * @param files array of files
-   * @param filename subschema file name
-   * @return subschema file from array
+   * @param filename table schema file name
+   * @return table schema file from an array
    */
-  private File getSubSubschemaFileByName(File[] files, String filename) {
+  private File getTableSchemaConfigFileByName(File[] files, String filename) {
     for (File file : files) {
       if (filename.equals(file.getName())) {
         return file;
       }
     }
 
-    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Sub schema file was not found: " + filename);
+    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Table schema file was not found: " + filename);
   }
 
   /**
@@ -528,15 +528,15 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    *
    * @throws InvalidConfigException if data schema could not be loaded successfully
    */
-  protected DataPackageTableSchema loadSubschemaFromFile(File localFile) throws InvalidConfigException {
+  protected DataPackageTableSchema loadTableSchemaFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
     if (!localFile.exists()) {
       throw new IllegalStateException();
     }
 
     try {
-      DataPackageTableSchema tableSchema = factory.buildSubschema(localFile);
-      LOG.info("Successfully loaded data subschema file " + tableSchema.getName());
+      DataPackageTableSchema tableSchema = factory.buildTableSchema(localFile);
+      LOG.info("Successfully loaded table schema file " + tableSchema.getName());
       return tableSchema;
     } catch (IOException e) {
       LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
@@ -576,13 +576,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    *
    * @throws IOException if moving file fails
    */
-  private void finishInstallSubschema(File tmpFile, String schemaIdentifier, String schemaName, DataPackageTableSchema tableSchema) throws IOException {
+  private void finishInstallTableSchema(File tmpFile, String schemaIdentifier, String schemaName, DataPackageTableSchema tableSchema) throws IOException {
     Objects.requireNonNull(tmpFile);
-    Objects.requireNonNull(tableSchema, "Subschema must not be null");
-    Objects.requireNonNull(tableSchema.getName(), "Subschema name is required");
+    Objects.requireNonNull(tableSchema, "Table schema must not be null");
+    Objects.requireNonNull(tableSchema.getName(), "Table schema name is required");
 
     try {
-      File installedFile = getDataSchemaFile(schemaIdentifier, schemaName, tableSchema.getName());
+      File installedFile = getTableSchemaFile(schemaIdentifier, schemaName, tableSchema.getName());
       FileUtils.moveFile(tmpFile, installedFile);
     } catch (IOException e) {
       LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);
@@ -595,12 +595,12 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    *
    * @param schemaIdentifier schema identifier
    * @param schemaName schema name
-   * @param subSchemaName sub schema name
+   * @param tableSchemaName table schema name
    *
    * @return data schema file
    */
-  private File getDataSchemaFile(String schemaIdentifier, String schemaName, String subSchemaName) {
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier + "_" + subSchemaName, DATA_SCHEMA_FILE_SUFFIX);
+  private File getTableSchemaFile(String schemaIdentifier, String schemaName, String tableSchemaName) {
+    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier + "_" + tableSchemaName, DATA_SCHEMA_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
   }
 

@@ -78,9 +78,9 @@ public class DataPackageSchema implements Serializable {
 
   private Date issued;
 
-  public DataPackageTableSchema tableSchemaByName(String subSchemaName) {
+  public DataPackageTableSchema tableSchemaByName(String tableSchemaName) {
     return tableSchemas.stream()
-        .filter(ds -> ds.getName().equals(subSchemaName))
+        .filter(ds -> ds.getName().equals(tableSchemaName))
         .findFirst().orElse(null);
   }
 

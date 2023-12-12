@@ -32,13 +32,13 @@ public class DataSchemaFactory {
   }
 
   /**
-   * Builds a data subschema from the supplied JSON file
+   * Builds a table schema from the supplied JSON file
    *
    * @param file JSON file
    *
-   * @return data subschema
+   * @return table schema
    */
-  public DataPackageTableSchema buildSubschema(File file) throws IOException {
+  public DataPackageTableSchema buildTableSchema(File file) throws IOException {
     DataPackageTableSchema result;
     try (FileReader fr = new FileReader(file)) {
       result = gson.fromJson(fr, DataPackageTableSchema.class);
@@ -47,7 +47,7 @@ public class DataSchemaFactory {
   }
 
   /**
-   * Builds a data schema from the supplied JSON file
+   * Builds a data package schema from the supplied JSON file
    *
    * @param file JSON file
    *

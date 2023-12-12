@@ -1340,7 +1340,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             addActionWarning(getText("manage.overview.data.missing"));
           }
 
-          if (resource.getSchemaIdentifier() != null && CollectionUtils.isEmpty(resource.getDataSchemaMappings())) {
+          if (resource.getSchemaIdentifier() != null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
 
@@ -1856,7 +1856,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   public boolean isDataPackageMappingsMissing() {
-    return resource.getDataSchemaMappings().size() == 0;
+    return resource.getDataPackageMappings().size() == 0;
   }
 
   public String getPublishingOrganizationKey() {

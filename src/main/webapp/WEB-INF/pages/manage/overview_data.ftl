@@ -230,7 +230,7 @@
             <#if resource.schemaIdentifier?has_content>
                 <div class="details">
                     <div class="row g-2">
-                        <#list resource.getDataSchemaMappings() as m>
+                        <#list resource.getDataPackageMappings() as m>
                             <div class="col-xl-6">
                                 <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
                                     <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -239,7 +239,7 @@
                                     <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
                                         <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
                                         <i class="bi bi-arrow-right"></i>
-                                        <strong class="fs-smaller">${(m.dataSchemaFile.name)!"?"}</strong>
+                                        <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                         <br>
                                         <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
                                     </div>

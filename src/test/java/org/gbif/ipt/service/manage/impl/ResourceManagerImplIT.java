@@ -31,7 +31,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.DataTableSchemaNameConverter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -160,7 +160,7 @@ public class ResourceManagerImplIT {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter,
         mockConceptTermConverter, mock(DataSchemaIdentifierConverter.class),
-        mock(DataTableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
+        mock(TableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), mockJdbcConverter);
 
     // mock ResourceManagerImpl for DataCite
     ResourceManagerImpl managerDataCite = new ResourceManagerImpl(

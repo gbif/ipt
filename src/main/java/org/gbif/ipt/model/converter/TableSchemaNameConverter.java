@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.converter;
 
-import org.gbif.ipt.model.DataSubschemaName;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
@@ -23,13 +23,13 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 @Singleton
-public class DataTableSchemaNameConverter implements Converter {
+public class TableSchemaNameConverter implements Converter {
 
   private String lastTableSchemaConverted;
 
   @Override
   public boolean canConvert(Class clazz) {
-    return clazz.equals(DataSubschemaName.class);
+    return clazz.equals(DataPackageTableSchemaName.class);
   }
 
   public String getLastTableSchemaConverted() {
@@ -38,16 +38,16 @@ public class DataTableSchemaNameConverter implements Converter {
 
   @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    DataSubschemaName u = (DataSubschemaName) value;
+    DataPackageTableSchemaName u = (DataPackageTableSchemaName) value;
     writer.setValue(u.getName());
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    String subschemaName = reader.getValue();
-    lastTableSchemaConverted = subschemaName;
-    DataSubschemaName result = new DataSubschemaName();
-    result.setName(subschemaName);
+    String tableSchemaName = reader.getValue();
+    lastTableSchemaConverted = tableSchemaName;
+    DataPackageTableSchemaName result = new DataPackageTableSchemaName();
+    result.setName(tableSchemaName);
     return result;
   }
 }

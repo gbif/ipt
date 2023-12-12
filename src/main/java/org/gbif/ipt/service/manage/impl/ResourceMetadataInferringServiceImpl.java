@@ -22,9 +22,9 @@ import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschemaName;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
@@ -649,7 +649,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     boolean requiredSchemasMapped = isRequiredSchemasMapped(resource, params);
 
     if (requiredSchemasMapped) {
-      for (DataSchemaMapping mapping : resource.getDataSchemaMappings()) {
+      for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
         processMapping(mapping, params);
       }
     }
@@ -670,15 +670,15 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     return isDeploymentsMapped || isObservationsMapped;
   }
 
-  private void processMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
-    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataSchemaFile().getName())) {
+  private void processMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
+    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataPackageTableSchemaName().getName())) {
       processDeploymentsMapping(mapping, params);
-    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataSchemaFile().getName())) {
+    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataPackageTableSchemaName().getName())) {
       processObservationsMapping(mapping, params);
     }
   }
 
-  private void processObservationsMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
+  private void processObservationsMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
     // calculate column indexes for mapping
     params.taxonomic.scientificNameSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME);
 
@@ -717,7 +717,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
   }
 
-  private void processDeploymentsMapping(DataSchemaMapping mapping, InferredCamtrapMetadataParams params) {
+  private void processDeploymentsMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
     // calculate column indexes for mapping
     params.geographic.latitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LATITUDE);
     params.geographic.longitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LONGITUDE);
@@ -952,15 +952,15 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private boolean isSchemaMapped(Resource resource, String schemaName) {
-    return resource.getDataSchemaMappings().stream()
-        .map(DataSchemaMapping::getDataSchemaFile)
-        .map(DataSubschemaName::getName)
+    return resource.getDataPackageMappings().stream()
+        .map(DataPackageMapping::getDataPackageTableSchemaName)
+        .map(DataPackageTableSchemaName::getName)
         .anyMatch(schemaName::equals);
   }
 
-  private int getFieldIndexInMapping(DataSchemaMapping mapping, String fieldName) {
+  private int getFieldIndexInMapping(DataPackageMapping mapping, String fieldName) {
     return Optional.ofNullable(mapping.getField(fieldName))
-        .map(DataSchemaFieldMapping::getIndex)
+        .map(DataPackageFieldMapping::getIndex)
         .orElse(-1);
   }
 

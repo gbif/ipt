@@ -16,10 +16,10 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageTableSchema;
-import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschemaName;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
@@ -47,9 +47,9 @@ import com.google.inject.Inject;
 import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
- * Similar to {@link MappingAction}, but manage data schema mappings.
+ * Similar to {@link MappingAction}, but manage data package mappings.
  */
-public class DataSchemaMappingAction extends ManagerBaseAction {
+public class DataPackageMappingAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -2005597864256786458L;
 
@@ -60,16 +60,16 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   private DataPackageSchema dataPackageSchema;
   private Integer mid;
-  private DataSchemaMapping mapping;
+  private DataPackageMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private List<DataSchemaFieldMapping> fields;
+  private List<DataPackageFieldMapping> fields;
   private Map<String, Integer> fieldsIndices;
 
   @Inject
-  public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
-                                 RegistrationManager registrationManager, ResourceManager resourceManager,
-                                 DataPackageSchemaManager schemaManager, SourceManager sourceManager) {
+  public DataPackageMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
+                                  RegistrationManager registrationManager, ResourceManager resourceManager,
+                                  DataPackageSchemaManager schemaManager, SourceManager sourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.schemaManager = schemaManager;
     this.sourceManager = sourceManager;
@@ -82,13 +82,13 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
 
     // a new mapping?
-    if (resource.getDataSchemaMapping(mid) == null) {
-      mid = resource.addDataSchemaMapping(mapping);
+    if (resource.getDataPackageMapping(mid) == null) {
+      mid = resource.addDataPackageMapping(mapping);
     } else {
       // save field mappings
       mapping.setFields(fields);
       int fieldsMapped = fields.stream()
-          .map(DataSchemaFieldMapping::getIndex)
+          .map(DataPackageFieldMapping::getIndex)
           .filter(Objects::nonNull)
           .map(f -> 1)
           .reduce(0, Integer::sum);
@@ -141,7 +141,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       if (mid == null) {
         DataPackageSchema ds = schemaManager.get(id);
         if (ds != null) {
-          mapping = new DataSchemaMapping();
+          mapping = new DataPackageMapping();
           mapping.setDataPackageSchema(ds);
         }
         // The data schema could have been null if:
@@ -154,7 +154,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
           defaultResult = "error";
         }
       } else {
-        List<DataSchemaMapping> maps = resource.getDataSchemaMappings();
+        List<DataPackageMapping> maps = resource.getDataPackageMappings();
         mapping = maps.get(mid);
       }
     } else {
@@ -174,9 +174,9 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
         String source = StringUtils.trimToNull(req.getParameter("source"));
-        String schemaFile = StringUtils.trimToNull(req.getParameter("schemaFile"));
-        if (schemaFile != null) {
-          mapping.setDataSchemaFile(new DataSubschemaName(schemaFile));
+        String tableSchemaName = StringUtils.trimToNull(req.getParameter("tableSchema"));
+        if (tableSchemaName != null) {
+          mapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchemaName));
         }
 
         if (source != null) {
@@ -201,20 +201,19 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       readSource();
 
       // prepare fields
-      DataPackageTableSchema tableSchema = mapping.getDataPackageSchema().tableSchemaByName(mapping.getDataSchemaFile().getName());
+      DataPackageTableSchema tableSchema = mapping.getDataPackageSchema().tableSchemaByName(mapping.getDataPackageTableSchemaName().getName());
       fieldsIndices = new HashMap<>();
       int index = 0;
       if (tableSchema != null) {
         for (DataPackageField field : tableSchema.getFields()) {
-          DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
+          DataPackageFieldMapping pm = populateDataSchemaFieldMapping(field);
           fields.add(pm);
           fieldsIndices.put(field.getName(), index++);
         }
       }
 
       // do automapping if no fields are found
-      // TODO: 05/10/2022 auto-mapping only for one subschema
-      List<DataSchemaFieldMapping> fieldsBySchema = mapping.getFields();
+      List<DataPackageFieldMapping> fieldsBySchema = mapping.getFields();
       boolean mappingEmpty = fieldsBySchema.isEmpty();
 
       if (mappingEmpty) {
@@ -257,7 +256,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     int automapped = 0;
 
     // next, try to automap the source's remaining columns against the data schema fields
-    for (DataSchemaFieldMapping f : fields) {
+    for (DataPackageFieldMapping f : fields) {
       int idx2 = 0;
       for (String col : columns) {
         String normCol = normalizeColumnName(col);
@@ -307,12 +306,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
    *
    * @return DataSchemaFieldMapping created
    */
-  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataPackageField field) {
+  private DataPackageFieldMapping populateDataSchemaFieldMapping(DataPackageField field) {
     // mapped already?
-    DataSchemaFieldMapping fm = mapping.getField(field.getName());
+    DataPackageFieldMapping fm = mapping.getField(field.getName());
     if (fm == null) {
       // no, create brand new DataSchemaFieldMapping
-      fm = new DataSchemaFieldMapping();
+      fm = new DataPackageFieldMapping();
     }
     fm.setField(field);
     return fm;
@@ -343,11 +342,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public DataPackageSchema getDataSchema() {
+  public DataPackageSchema getDataPackageSchema() {
     return dataPackageSchema;
   }
 
-  public DataSchemaMapping getMapping() {
+  public DataPackageMapping getMapping() {
     return mapping;
   }
 
@@ -359,11 +358,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public List<DataSchemaFieldMapping> getFields() {
+  public List<DataPackageFieldMapping> getFields() {
     return fields;
   }
 
-  public void setFields(List<DataSchemaFieldMapping> fields) {
+  public void setFields(List<DataPackageFieldMapping> fields) {
     this.fields = fields;
   }
 
@@ -392,7 +391,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
 
     // get a list of all columns mapped to fields
-    for (DataSchemaFieldMapping field : fields) {
+    for (DataPackageFieldMapping field : fields) {
       if (field.getIndex() != null && field.getIndex() >=0 && field.getIndex() < columns.size()) {
         String sourceColumn = columns.get(field.getIndex());
         if (sourceColumn != null) {

@@ -16,12 +16,12 @@ package org.gbif.ipt.task;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
-import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
@@ -93,7 +93,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private int currRecords = 0;
   private int currRecordsSkipped = 0;
   private String currSchema;
-  private String currSubschema;
+  private String currTableSchema;
 
   @Inject
   public GenerateDataPackage(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -194,7 +194,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       case STARTED:
         return "Starting data package generation";
       case DATAFILES:
-        return "Processing record " + currRecords + " for data file <em>" + currSubschema + "</em>";
+        return "Processing record " + currRecords + " for data file <em>" + currTableSchema + "</em>";
       case METADATA:
         return "Creating metadata files";
       case BUNDLING:
@@ -202,7 +202,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       case COMPLETED:
         return "Data package generated!";
       case VALIDATING:
-        return "Validating data package, " + currRecords + " for data file <em>" + currSubschema + "</em>";
+        return "Validating data package, " + currRecords + " for data file <em>" + currTableSchema + "</em>";
       case ARCHIVING:
         return "Archiving version of data package";
       case CANCELLED:
@@ -330,24 +330,24 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void createDataFiles() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATAFILES);
-    if (resource.getSchemaIdentifier() == null && CollectionUtils.isEmpty(resource.getDataSchemaMappings())) {
+    if (resource.getSchemaIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
       throw new GeneratorException("Schema identifier or mappings are not set");
     }
 
-    List<DataSchemaMapping> allMappings = resource.getDataSchemaMappings();
-    Set<String> mappedSubSchemas = allMappings.stream()
-        .map(DataSchemaMapping::getDataSchemaFile)
-        .map(DataSubschemaName::getName)
+    List<DataPackageMapping> allMappings = resource.getDataPackageMappings();
+    Set<String> mappedTableSchemas = allMappings.stream()
+        .map(DataPackageMapping::getDataPackageTableSchemaName)
+        .map(DataPackageTableSchemaName::getName)
         .collect(Collectors.toSet());
-    DataPackageSchema dataPackageSchema = resource.getDataSchemaMappings().get(0).getDataPackageSchema();
+    DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
     currSchema = dataPackageSchema.getName();
 
-    // before starting to add subschemas, check all required schemas mapped
-    checkRequiredSubSchemasMapped(mappedSubSchemas, dataPackageSchema);
+    // before starting to add a table schema, check all required schemas mapped
+    checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
 
     for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
       // skip un-mapped (optional) schemas
-      if (!mappedSubSchemas.contains(tableSchema.getName())) {
+      if (!mappedTableSchemas.contains(tableSchema.getName())) {
         continue;
       }
 
@@ -367,15 +367,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   /**
    * Checks if all required schemas mapped, otherwise throws an exception.
    *
-   * @param mappedSubSchemas mapped subschemas
+   * @param mappedTableSchemas mapped table schemas
    * @param dataPackageSchema data schema
    */
-  private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataPackageSchema dataPackageSchema)
+  private void checkRequiredTableSchemasMapped(Set<String> mappedTableSchemas, DataPackageSchema dataPackageSchema)
       throws GeneratorException {
     DataPackageTableSchemaRequirement requirements = dataPackageSchema.getTableSchemasRequirements();
 
     if (requirements != null) {
-      DataPackageTableSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
+      DataPackageTableSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedTableSchemas);
 
       if (!validationResult.isValid()) {
         throw new GeneratorException(validationResult.getReason());
@@ -384,52 +384,52 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Adds a single data file for a subschema mapping.
+   * Adds a single data file for a tableSchema mapping.
    *
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
    * @throws InterruptedException if the thread was interrupted
    * @throws IOException if problems occurred while persisting new data files
    * @throws GeneratorException if any problem was encountered writing data file
    */
-  public void addDataFile(String schemaName, DataPackageTableSchema subschema, List<DataSchemaMapping> allMappings) throws IOException,
+  public void addDataFile(String schemaName, DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
-    if (subschema == null || CollectionUtils.isEmpty(allMappings)) {
+    if (tableSchema == null || CollectionUtils.isEmpty(allMappings)) {
       return;
     }
 
     // update reporting
     currRecords = 0;
     currRecordsSkipped = 0;
-    currSubschema = subschema.getName();
+    currTableSchema = tableSchema.getName();
 
-    List<DataPackageField> fields = subschema.getFields();
+    List<DataPackageField> fields = tableSchema.getFields();
 
     // file header
     String header = fields.stream()
         .map(DataPackageField::getName)
         .collect(Collectors.joining(",", "", "\n"));
 
-    // total column count (number of fields in the subschema)
+    // total column count (number of fields in the tableSchema)
     int totalColumns = fields.size();
 
-    String fn = subschema.getName() + ".csv";
+    String fn = tableSchema.getName() + ".csv";
     File dataFile = new File(dataPackageFolder, fn);
 
     // ready to go through each mapping and dump the data
     try (Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile)) {
-      addMessage(Level.INFO, "Start writing data file for " + subschema.getName());
+      addMessage(Level.INFO, "Start writing data file for " + tableSchema.getName());
       boolean headerWritten = false;
 
-      for (DataSchemaMapping dataSchemaMapping : allMappings) {
-        if (dataSchemaMapping.getDataSchemaFile().equals(subschema.getName())) {
+      for (DataPackageMapping dataPackageMapping : allMappings) {
+        if (dataPackageMapping.getDataPackageTableSchemaName().equals(tableSchema.getName())) {
           // write header line 1 time only to file
           if (!headerWritten) {
             writer.write(header);
             headerWritten = true;
           }
 
-          dumpData(writer, dataSchemaMapping, dataSchemaMapping.getFields(), totalColumns);
+          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns);
         }
       }
     } catch (IOException e) {
@@ -444,17 +444,17 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     @SuppressWarnings({"rawtypes", "unchecked"})
     io.frictionlessdata.datapackage.resource.Resource packageResource =
         new FilebasedResource(
-            subschema.getName(),
+            tableSchema.getName(),
             Collections.singleton(new File(fn)),
             dataPackageFolder);
     packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
     packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
-    if (subschema.getUrl() != null) {
-      ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, subschema.getUrl().toString());
+    if (tableSchema.getUrl() != null) {
+      ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, tableSchema.getUrl().toString());
     }
 
     try {
-      Schema schema = Schema.fromJson(subschema.getUrl(), true);
+      Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
       packageResource.setSchema(schema);
     } catch (Exception e) {
       log.error("Fatal Package Generator Error encountered while adding schema data", e);
@@ -471,11 +471,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // final reporting
-    addMessage(Level.INFO, "Data file written for " + currSubschema + " with " + currRecords + " records and "
+    addMessage(Level.INFO, "Data file written for " + currTableSchema + " with " + currRecords + " records and "
         + totalColumns + " columns");
     // how many records were skipped?
     if (currRecordsSkipped > 0) {
-      addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currSubschema
+      addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currTableSchema
           + " due to errors interpreting line, or because the line was empty");
     }
   }
@@ -485,13 +485,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    *
    * @param writer file writer for single data file
    * @param schemaMapping schema mapping
-   * @param subschemaFieldMappings field mappings
+   * @param tableSchemaFieldMappings field mappings
    * @param dataFileRowSize number of columns in data file
    * @throws GeneratorException if there was an error writing data file for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, DataSchemaMapping schemaMapping,
-                        List<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
+  private void dumpData(Writer writer, DataPackageMapping schemaMapping,
+                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
     int recordsWithError = 0;
@@ -500,8 +500,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
-    Optional<Integer> maxMappedColumnIndexOpt = subschemaFieldMappings.stream()
-        .map(DataSchemaFieldMapping::getIndex)
+    Optional<Integer> maxMappedColumnIndexOpt = tableSchemaFieldMappings.stream()
+        .map(DataPackageFieldMapping::getIndex)
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
 
@@ -555,7 +555,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
               // need to apply translations first
-              applyTranslations(subschemaFieldMappings, in, translated);
+              applyTranslations(tableSchemaFieldMappings, in, translated);
               matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
@@ -571,7 +571,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
           // apply translations and default values
           if (!alreadyTranslated) {
-            applyTranslations(subschemaFieldMappings, in, translated);
+            applyTranslations(tableSchemaFieldMappings, in, translated);
           }
 
           // concatenate values
@@ -593,7 +593,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       log.error("Fatal Data Package Generator Error encountered", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error writing data file for mapping " + currSubschema
+      throw new GeneratorException("Error writing data file for mapping " + currTableSchema
           + " in source " + schemaMapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
@@ -653,9 +653,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param in values array, of all columns in row
    * @param translated translated values
    */
-  private void applyTranslations(List<DataSchemaFieldMapping> inCols, String[] in, String[] translated) {
+  private void applyTranslations(List<DataPackageFieldMapping> inCols, String[] in, String[] translated) {
     for (int i = 0; i < inCols.size(); i++) {
-      DataSchemaFieldMapping mapping = inCols.get(i);
+      DataPackageFieldMapping mapping = inCols.get(i);
       String val = null;
       if (mapping != null) {
         if (mapping.getIndex() != null) {

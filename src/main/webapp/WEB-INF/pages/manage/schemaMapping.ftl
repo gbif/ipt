@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataSchemaMappingAction" -->
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
 
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl"/>
@@ -414,7 +414,7 @@
                                     </a>
                                 </@s.param>
                                 <@s.param><@s.property value="#adminSchemaTitle.toLowerCase()"/></@s.param>
-                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataSchemaFile.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataSchemaFile.name)!}</a></@s.param>
+                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataPackageTableSchemaName.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataPackageTableSchemaName.name)!}</a></@s.param>
                             </@s.text>
                         </p>
                     </div>
@@ -476,14 +476,14 @@
                     </div>
 
                     <div id="sections">
-                        <#list dataPackageSchema.tableSchemas as subSchema>
-                            <#if (mapping.dataSchemaFile.name)?? && mapping.dataSchemaFile.name == subSchema.name>
-                                <div id="${subSchema.name}" class="mt-lg-3">
+                        <#list dataPackageSchema.tableSchemas as tableSchema>
+                            <#if (mapping.dataPackageTableSchemaName.name)?? && mapping.dataPackageTableSchemaName.name == tableSchema.name>
+                                <div id="${tableSchema.name}" class="mt-lg-3">
                                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                        ${subSchema.title}
+                                        ${tableSchema.title}
                                     </h4>
                                     <#list fields as field>
-                                        <@showField subSchema field field_index/>
+                                        <@showField tableSchema field field_index/>
                                     </#list>
                                 </div>
                             </#if>

@@ -14,9 +14,9 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
-import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.Resource;
 
 import java.util.ArrayList;
@@ -43,17 +43,17 @@ public class DataPackageMappingValidator {
     }
   }
 
-  public ValidationStatus validate(DataSchemaMapping mapping, Resource resource, List<String> columns) {
+  public ValidationStatus validate(DataPackageMapping mapping, Resource resource, List<String> columns) {
     ValidationStatus v = new ValidationStatus();
 
     // check required fields
     DataPackageSchema dataPackageSchema = mapping.getDataPackageSchema();
-    String resourceName = mapping.getDataSchemaFile().getName();
+    String resourceName = mapping.getDataPackageTableSchemaName().getName();
 
     if (dataPackageSchema != null) {
-      for (DataPackageTableSchema subSchema : dataPackageSchema.getTableSchemas()) {
-        if (resourceName.equals(subSchema.getName())) {
-          for (DataPackageField field : subSchema.getFields()) {
+      for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
+        if (resourceName.equals(tableSchema.getName())) {
+          for (DataPackageField field : tableSchema.getFields()) {
             String fieldName = field.getName();
             // required, but not mapped (index is NULL) or no default value
             if (isRequiredSchemaField(field)

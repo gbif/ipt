@@ -13,11 +13,11 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschemaName;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
@@ -118,12 +118,12 @@ public class ResourceCamtrapMetadataInferringTest {
       }
     });
 
-    DataSchemaMapping deploymentsMapping = getDeploymentsMapping(deploymentsFileSource);
-    DataSchemaMapping deploymentsMapping2 = getDeploymentsMapping(deploymentsFileSource2);
-    DataSchemaMapping observationsMapping = getObservationsMapping(observationsFileSource);
-    resource.addDataSchemaMapping(deploymentsMapping);
-    resource.addDataSchemaMapping(observationsMapping);
-    resource.addDataSchemaMapping(deploymentsMapping2);
+    DataPackageMapping deploymentsMapping = getDeploymentsMapping(deploymentsFileSource);
+    DataPackageMapping deploymentsMapping2 = getDeploymentsMapping(deploymentsFileSource2);
+    DataPackageMapping observationsMapping = getObservationsMapping(observationsFileSource);
+    resource.addDataPackageMapping(deploymentsMapping);
+    resource.addDataPackageMapping(observationsMapping);
+    resource.addDataPackageMapping(deploymentsMapping2);
 
     InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
 
@@ -201,46 +201,46 @@ public class ResourceCamtrapMetadataInferringTest {
     return source;
   }
 
-  private static DataSchemaMapping getDeploymentsMapping(Source source) {
-    return DataSchemaMapping.builder()
+  private static DataPackageMapping getDeploymentsMapping(Source source) {
+    return DataPackageMapping.builder()
         .dataPackageSchema(
             DataPackageSchema.builder()
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())
-        .dataSchemaFile(new DataSubschemaName("deployments"))
+        .dataPackageTableSchemaName(new DataPackageTableSchemaName("deployments"))
         .source(source)
         .fields(
             Arrays.asList(
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(0)
                     .field(DataPackageField.builder()
                         .name("deploymentID")
                         .type("string")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(3)
                     .field(DataPackageField.builder()
                         .name("latitude")
                         .type("number")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(4)
                     .field(DataPackageField.builder()
                         .name("longitude")
                         .type("number")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(6)
                     .field(DataPackageField.builder()
                         .name("deploymentStart")
                         .type("datetime")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(7)
                     .field(DataPackageField.builder()
                         .name("deploymentEnd")
@@ -250,60 +250,60 @@ public class ResourceCamtrapMetadataInferringTest {
         .build();
   }
 
-  private static DataSchemaMapping getObservationsMapping(Source source) {
-    return DataSchemaMapping.builder()
+  private static DataPackageMapping getObservationsMapping(Source source) {
+    return DataPackageMapping.builder()
         .dataPackageSchema(
             DataPackageSchema.builder()
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())
-        .dataSchemaFile(new DataSubschemaName("observations"))
+        .dataPackageTableSchemaName(new DataPackageTableSchemaName("observations"))
         .source(source)
         .fields(
             Arrays.asList(
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(0)
                     .field(DataPackageField.builder()
                         .name("observationID")
                         .type("string")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(1)
                     .field(DataPackageField.builder()
                         .name("deploymentID")
                         .type("string")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(4)
                     .field(DataPackageField.builder()
                         .name("eventStart")
                         .type("datetime")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(5)
                     .field(DataPackageField.builder()
                         .name("eventEnd")
                         .type("datetime")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(6)
                     .field(DataPackageField.builder()
                         .name("observationLevel")
                         .type("string")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(7)
                     .field(DataPackageField.builder()
                         .name("observationType")
                         .type("string")
                         .build())
                     .build(),
-                DataSchemaFieldMapping.builder()
+                DataPackageFieldMapping.builder()
                     .index(9)
                     .field(DataPackageField.builder()
                         .name("scientificName")

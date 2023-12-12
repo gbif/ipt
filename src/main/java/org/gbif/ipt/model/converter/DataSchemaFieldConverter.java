@@ -33,11 +33,11 @@ public class DataSchemaFieldConverter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(DataSchemaFieldConverter.class);
   private final DataSchemaIdentifierConverter schemaConverter;
-  private final DataTableSchemaNameConverter schemaNameConverter;
+  private final TableSchemaNameConverter schemaNameConverter;
 
   @Inject
   public DataSchemaFieldConverter(DataSchemaIdentifierConverter schemaConverter,
-                                  DataTableSchemaNameConverter schemaNameConverter) {
+                                  TableSchemaNameConverter schemaNameConverter) {
     this.schemaConverter = schemaConverter;
     this.schemaNameConverter = schemaNameConverter;
   }
@@ -56,21 +56,21 @@ public class DataSchemaFieldConverter implements Converter {
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     DataPackageSchema schema = schemaConverter.getLastDataPackageConverted();
-    String subschemaName = schemaNameConverter.getLastTableSchemaConverted();
+    String tableSchemaName = schemaNameConverter.getLastTableSchemaConverted();
 
     DataPackageField field = null;
 
     if (schema != null) {
-      DataPackageTableSchema subschema = null;
+      DataPackageTableSchema tableSchema = null;
       for (DataPackageTableSchema dss : schema.getTableSchemas()) {
-        if (dss.getName().equals(subschemaName)) {
-          subschema = dss;
+        if (dss.getName().equals(tableSchemaName)) {
+          tableSchema = dss;
           break;
         }
       }
 
-      if (subschema != null) {
-        for (DataPackageField dsf : subschema.getFields()) {
+      if (tableSchema != null) {
+        for (DataPackageField dsf : tableSchema.getFields()) {
           if (dsf.getName().equals(reader.getValue())) {
             field = dsf;
           }

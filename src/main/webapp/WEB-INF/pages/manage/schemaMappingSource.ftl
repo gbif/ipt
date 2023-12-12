@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataSchemaMappingAction" -->
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
 
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
@@ -88,7 +88,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <@selectList name="schemaFile" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.schemaFile'}" requiredField=true />
+                    <@selectList name="tableSchema" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                 </div>
                 <div class="col-sm-6">
                     <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />

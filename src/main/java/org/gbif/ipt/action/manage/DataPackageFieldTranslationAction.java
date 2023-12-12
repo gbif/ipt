@@ -14,10 +14,10 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -99,9 +99,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   protected static final String REQ_PARAM_MAPPINGID = "mid";
   protected static final String REQ_FIELD = "field";
   // config
-  private DataSchemaFieldMapping fieldMapping;
+  private DataPackageFieldMapping fieldMapping;
   private DataPackageField field;
-  private DataSchemaMapping mapping;
+  private DataPackageMapping mapping;
 
   private SimpleMapModel vocabTerms;
   private Integer mid;
@@ -159,7 +159,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       // 1. ensure the translation map on the FieldMapping is empty
       fieldMapping.setTranslation(new TreeMap<>());
       // 2. ensure the static sessionScoped translation for this field is empty
-      trans.setTmap(this.mapping.getDataSchemaFile().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
+      trans.setTmap(this.mapping.getDataPackageTableSchemaName().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
@@ -188,7 +188,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
       if (midStr != null) {
         mid = Integer.valueOf(midStr);
-        mapping = resource.getDataSchemaMapping(mid);
+        mapping = resource.getDataPackageMapping(mid);
       }
     } catch (Exception e) {
       LOG.error("An exception was encountered: " + e.getMessage(), e);
@@ -208,7 +208,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 
-        if (!trans.isLoaded(mapping.getDataSchemaFile().getName(), fieldMapping.getField())) {
+        if (!trans.isLoaded(mapping.getDataPackageTableSchemaName().getName(), fieldMapping.getField())) {
           reloadSourceValues();
         }
 
@@ -241,11 +241,11 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       String midStr = StringUtils.trimToNull(req.getParameter(REQ_PARAM_MAPPINGID));
       if (midStr != null) {
         mid = Integer.valueOf(midStr);
-        mapping = resource.getDataSchemaMapping(mid);
+        mapping = resource.getDataPackageMapping(mid);
       }
 
       // reinitialize translation, including maps
-      trans.setTmap(mapping.getDataSchemaFile().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
+      trans.setTmap(mapping.getDataPackageTableSchemaName().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
 
       // reload new values
       int i = 1;
@@ -293,7 +293,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     fieldMapping.setTranslation(trans.getPersistentMap());
     // save entire resource config
     saveResource();
-    id = mapping.getDataSchemaFile().getName();
+    id = mapping.getDataPackageTableSchemaName().getName();
     addActionMessage(getText("manage.translation.saved", new String[] {fieldMapping.getField().getName()}));
 
     return NONE;
@@ -337,11 +337,11 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     return trans;
   }
 
-  public DataSchemaMapping getMapping() {
+  public DataPackageMapping getMapping() {
     return mapping;
   }
 
-  public DataSchemaFieldMapping getFieldMapping() {
+  public DataPackageFieldMapping getFieldMapping() {
     return fieldMapping;
   }
 

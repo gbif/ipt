@@ -133,7 +133,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   // mapping configs
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
-  private List<DataSchemaMapping> dataSchemaMappings = new ArrayList<>();
+  private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
   private String schemaIdentifier;
 
   private String changeSummary;
@@ -227,14 +227,14 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   /**
    * Adds a new data schema mapping to the resource.
-   * It returns the list index for this mapping according to getDataSchemaMapping(identifier)
+   * It returns the list index for this mapping according to getDataPackageMapping(identifier)
    *
-   * @return list index corresponding to getDataSchemaMapping(identifier) or null if the mapping couldn't be added
+   * @return list index corresponding to getDataPackageMapping(identifier) or null if the mapping couldn't be added
    */
-  public Integer addDataSchemaMapping(@Nullable DataSchemaMapping mapping) {
+  public Integer addDataPackageMapping(@Nullable DataPackageMapping mapping) {
     if (mapping != null && mapping.getDataPackageSchema() != null) {
-      Integer index = getDataSchemaMappings().size();
-      this.dataSchemaMappings.add(mapping);
+      Integer index = getDataPackageMappings().size();
+      this.dataPackageMappings.add(mapping);
       return index;
     }
     return null;
@@ -309,15 +309,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * Delete a Resource's data schema mapping.
    *
-   * @param mapping DataSchemaMapping
+   * @param mapping DataPackageMapping
    *
    * @return if deletion was successful or not
    */
-  public boolean deleteMapping(DataSchemaMapping mapping) {
-    if (mapping != null && dataSchemaMappings.contains(mapping)) {
-      return dataSchemaMappings.remove(mapping);
+  public boolean deleteMapping(DataPackageMapping mapping) {
+    if (mapping != null && dataPackageMappings.contains(mapping)) {
+      return dataPackageMappings.remove(mapping);
     } else {
-      LOG.debug("Data Schema Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+      LOG.debug("Data Package Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
     }
     return false;
   }
@@ -335,11 +335,11 @@ public class Resource implements Serializable, Comparable<Resource> {
         }
       }
       // remove schema mappings
-      List<DataSchemaMapping> dsms = new ArrayList<>(dataSchemaMappings);
-      for (DataSchemaMapping dsm : dsms) {
-        if (dsm.getSource() != null && src.equals(dsm.getSource())) {
-          deleteMapping(dsm);
-          LOG.debug("Cascading source delete to schema mapping " + dsm.getDataPackageSchema().getName());
+      List<DataPackageMapping> dpms = new ArrayList<>(dataPackageMappings);
+      for (DataPackageMapping dpm : dpms) {
+        if (dpm.getSource() != null && src.equals(dpm.getSource())) {
+          deleteMapping(dpm);
+          LOG.debug("Cascading source delete to data package mapping " + dpm.getDataPackageSchema().getName());
         }
       }
     }
@@ -689,9 +689,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
-  public DataSchemaMapping getDataSchemaMapping(Integer index) {
+  public DataPackageMapping getDataPackageMapping(Integer index) {
     if (index != null) {
-      List<DataSchemaMapping> maps = getDataSchemaMappings();
+      List<DataPackageMapping> maps = getDataPackageMappings();
       if (maps.size() >= index) {
         return maps.get(index);
       }
@@ -731,15 +731,15 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return the list of mappings for the requested data schema identifier
    */
-  public List<DataSchemaMapping> getDataSchemaMappings() {
-    List<DataSchemaMapping> maps = new ArrayList<>();
+  public List<DataPackageMapping> getDataPackageMappings() {
+    List<DataPackageMapping> maps = new ArrayList<>();
 
-    if (dataSchemaMappings == null) {
-      dataSchemaMappings = new ArrayList<>();
+    if (dataPackageMappings == null) {
+      dataPackageMappings = new ArrayList<>();
     }
 
     if (schemaIdentifier != null) {
-      for (DataSchemaMapping m : dataSchemaMappings) {
+      for (DataPackageMapping m : dataPackageMappings) {
         if (schemaIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
           maps.add(m);
         }
@@ -984,8 +984,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public boolean hasSchemaMappedData() {
-    for (DataSchemaMapping dsm : getDataSchemaMappings()) {
-      if (!dsm.getFields().isEmpty()) {
+    for (DataPackageMapping dpm : getDataPackageMappings()) {
+      if (!dpm.getFields().isEmpty()) {
         return true;
       }
     }
