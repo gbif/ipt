@@ -34,7 +34,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.DataSubschemaNameConverter;
+import org.gbif.ipt.model.converter.DataTableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -413,7 +413,7 @@ public class GenerateDwcaEventTest {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
         new ConceptTermConverter(extensionRowTypeConverter), mock(DataSchemaIdentifierConverter.class),
-        mock(DataSubschemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
+        mock(DataTableSchemaNameConverter.class), mock(DataSchemaFieldConverter.class), jdbcConverter);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =

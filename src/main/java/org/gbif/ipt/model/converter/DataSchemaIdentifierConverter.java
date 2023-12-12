@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 public class DataSchemaIdentifierConverter implements Converter {
 
   private final DataPackageSchemaManager manager;
-  private DataPackageSchema lastDataSchemaConverted;
+  private DataPackageSchema lastDataPackageConverted;
 
   @Inject
   public DataSchemaIdentifierConverter(DataPackageSchemaManager manager) {
@@ -40,8 +40,8 @@ public class DataSchemaIdentifierConverter implements Converter {
     return clazz.equals(DataPackageSchema.class);
   }
 
-  public DataPackageSchema getLastDataSchemaConverted() {
-    return lastDataSchemaConverted;
+  public DataPackageSchema getLastDataPackageConverted() {
+    return lastDataPackageConverted;
   }
 
   @Override
@@ -53,7 +53,7 @@ public class DataSchemaIdentifierConverter implements Converter {
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     DataPackageSchema d = manager.get(reader.getValue());
-    lastDataSchemaConverted = d;
+    lastDataPackageConverted = d;
     return d;
   }
 

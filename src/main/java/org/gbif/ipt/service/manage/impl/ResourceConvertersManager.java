@@ -16,7 +16,7 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataSchemaFieldConverter;
 import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
-import org.gbif.ipt.model.converter.DataSubschemaNameConverter;
+import org.gbif.ipt.model.converter.DataTableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -33,7 +33,7 @@ public class ResourceConvertersManager {
   private final ExtensionRowTypeConverter extensionConverter;
   private final ConceptTermConverter conceptTermConverter;
   private final DataSchemaIdentifierConverter dataSchemaConverter;
-  private final DataSubschemaNameConverter dataSubschemaNameConverter;
+  private final DataTableSchemaNameConverter dataTableSchemaNameConverter;
   private final DataSchemaFieldConverter dataSchemaFieldConverter;
   private final JdbcInfoConverter jdbcInfoConverter;
 
@@ -41,14 +41,14 @@ public class ResourceConvertersManager {
   public ResourceConvertersManager(
       UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
       ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
-      DataSchemaIdentifierConverter dataSchemaConverter, DataSubschemaNameConverter dataSubschemaNameConverter,
+      DataSchemaIdentifierConverter dataSchemaConverter, DataTableSchemaNameConverter dataTableSchemaNameConverter,
       DataSchemaFieldConverter dataSchemaFieldConverter, JdbcInfoConverter jdbcInfoConverter) {
     this.userConverter = userConverter;
     this.orgConverter = orgConverter;
     this.extensionConverter = extensionConverter;
     this.conceptTermConverter = conceptTermConverter;
     this.dataSchemaConverter = dataSchemaConverter;
-    this.dataSubschemaNameConverter = dataSubschemaNameConverter;
+    this.dataTableSchemaNameConverter = dataTableSchemaNameConverter;
     this.dataSchemaFieldConverter = dataSchemaFieldConverter;
     this.jdbcInfoConverter = jdbcInfoConverter;
   }
@@ -73,8 +73,8 @@ public class ResourceConvertersManager {
     return dataSchemaConverter;
   }
 
-  public DataSubschemaNameConverter getDataSubschemaNameConverter() {
-    return dataSubschemaNameConverter;
+  public DataTableSchemaNameConverter getDataSubschemaNameConverter() {
+    return dataTableSchemaNameConverter;
   }
 
   public DataSchemaFieldConverter getDataSchemaFieldConverter() {

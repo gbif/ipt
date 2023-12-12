@@ -33,11 +33,11 @@ public class DataSchemaFieldConverter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(DataSchemaFieldConverter.class);
   private final DataSchemaIdentifierConverter schemaConverter;
-  private final DataSubschemaNameConverter schemaNameConverter;
+  private final DataTableSchemaNameConverter schemaNameConverter;
 
   @Inject
   public DataSchemaFieldConverter(DataSchemaIdentifierConverter schemaConverter,
-                                  DataSubschemaNameConverter schemaNameConverter) {
+                                  DataTableSchemaNameConverter schemaNameConverter) {
     this.schemaConverter = schemaConverter;
     this.schemaNameConverter = schemaNameConverter;
   }
@@ -55,8 +55,8 @@ public class DataSchemaFieldConverter implements Converter {
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    DataPackageSchema schema = schemaConverter.getLastDataSchemaConverted();
-    String subschemaName = schemaNameConverter.getLastDataSubschemaConverted();
+    DataPackageSchema schema = schemaConverter.getLastDataPackageConverted();
+    String subschemaName = schemaNameConverter.getLastTableSchemaConverted();
 
     DataPackageField field = null;
 

@@ -23,17 +23,17 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 @Singleton
-public class DataSubschemaNameConverter implements Converter {
+public class DataTableSchemaNameConverter implements Converter {
 
-  private String lastDataSubschemaConverted;
+  private String lastTableSchemaConverted;
 
   @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(DataSubschemaName.class);
   }
 
-  public String getLastDataSubschemaConverted() {
-    return lastDataSubschemaConverted;
+  public String getLastTableSchemaConverted() {
+    return lastTableSchemaConverted;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class DataSubschemaNameConverter implements Converter {
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     String subschemaName = reader.getValue();
-    lastDataSubschemaConverted = subschemaName;
+    lastTableSchemaConverted = subschemaName;
     DataSubschemaName result = new DataSubschemaName();
     result.setName(subschemaName);
     return result;
