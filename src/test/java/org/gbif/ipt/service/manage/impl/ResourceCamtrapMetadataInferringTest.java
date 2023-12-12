@@ -14,7 +14,7 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschemaName;
@@ -214,35 +214,35 @@ public class ResourceCamtrapMetadataInferringTest {
             Arrays.asList(
                 DataSchemaFieldMapping.builder()
                     .index(0)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("deploymentID")
                         .type("string")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(3)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("latitude")
                         .type("number")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(4)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("longitude")
                         .type("number")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(6)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("deploymentStart")
                         .type("datetime")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(7)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("deploymentEnd")
                         .type("datetime")
                         .build())
@@ -263,49 +263,49 @@ public class ResourceCamtrapMetadataInferringTest {
             Arrays.asList(
                 DataSchemaFieldMapping.builder()
                     .index(0)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("observationID")
                         .type("string")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(1)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("deploymentID")
                         .type("string")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(4)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("eventStart")
                         .type("datetime")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(5)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("eventEnd")
                         .type("datetime")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(6)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("observationLevel")
                         .type("string")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(7)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("observationType")
                         .type("string")
                         .build())
                     .build(),
                 DataSchemaFieldMapping.builder()
                     .index(9)
-                    .field(DataSchemaField.builder()
+                    .field(DataPackageField.builder()
                         .name("scientificName")
                         .type("string")
                         .build())

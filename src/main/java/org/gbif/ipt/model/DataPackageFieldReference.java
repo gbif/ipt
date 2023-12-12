@@ -20,10 +20,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class DataSubschemaForeignKey implements Serializable {
+public class DataPackageFieldReference implements Serializable {
 
-  private static final long serialVersionUID = 5858994392171274432L;
+  private static final long serialVersionUID = 4640804542595922498L;
 
+  private String resource;
   private String fields;
-  private DataSchemaFieldReference reference;
 }

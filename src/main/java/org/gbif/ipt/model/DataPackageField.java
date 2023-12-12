@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataSchemaField implements Serializable {
+public class DataPackageField implements Serializable {
 
   private static final long serialVersionUID = 2049952968649028260L;
 

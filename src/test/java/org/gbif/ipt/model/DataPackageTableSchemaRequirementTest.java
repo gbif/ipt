@@ -31,30 +31,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SubSchemaRequirementTest {
+class DataPackageTableSchemaRequirementTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final File requirementsJson = FileUtils.getClasspathFile("schemas/requirements.json");
 
   @Test
   public void testAtLeastOneRequiredSchemaPresent() throws Exception {
-    SubSchemaRequirement subSchemaRequirement = objectMapper.readValue(requirementsJson, SubSchemaRequirement.class);
+    DataPackageTableSchemaRequirement tableSchemaRequirement = objectMapper.readValue(requirementsJson, DataPackageTableSchemaRequirement.class);
     Set<String> schemas = new HashSet<>(Arrays.asList("bla", "schema", "random"));
-    assertFalse(subSchemaRequirement.validate(schemas).isValid());
+    assertFalse(tableSchemaRequirement.validate(schemas).isValid());
   }
 
   @ParameterizedTest
   @MethodSource("validRequiredSchemasCombinations")
   public void testRequiredSchemas(Set<String> schemas) throws Exception {
-    SubSchemaRequirement subSchemaRequirement = objectMapper.readValue(requirementsJson, SubSchemaRequirement.class);
-    assertTrue(subSchemaRequirement.validate(schemas).isValid());
+    DataPackageTableSchemaRequirement tableSchemaRequirement = objectMapper.readValue(requirementsJson, DataPackageTableSchemaRequirement.class);
+    assertTrue(tableSchemaRequirement.validate(schemas).isValid());
   }
 
   @ParameterizedTest
   @MethodSource("invalidCombinationsWithNameUsage")
   public void testNameUsageExcludesNameTaxonSynonym(Set<String> schemas) throws Exception {
-    SubSchemaRequirement subSchemaRequirement = objectMapper.readValue(requirementsJson, SubSchemaRequirement.class);
-    assertFalse(subSchemaRequirement.validate(schemas).isValid());
+    DataPackageTableSchemaRequirement tableSchemaRequirement = objectMapper.readValue(requirementsJson, DataPackageTableSchemaRequirement.class);
+    assertFalse(tableSchemaRequirement.validate(schemas).isValid());
   }
 
   @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")

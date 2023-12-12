@@ -13,9 +13,9 @@
  */
 package org.gbif.ipt.model.converter;
 
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
-import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.DataPackageTableSchema;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,12 +44,12 @@ public class DataSchemaFieldConverter implements Converter {
 
   @Override
   public boolean canConvert(Class clazz) {
-    return DataSchemaField.class.isAssignableFrom(clazz);
+    return DataPackageField.class.isAssignableFrom(clazz);
   }
 
   @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    DataSchemaField field = (DataSchemaField) value;
+    DataPackageField field = (DataPackageField) value;
     writer.setValue(field.getName());
   }
 
@@ -58,11 +58,11 @@ public class DataSchemaFieldConverter implements Converter {
     DataPackageSchema schema = schemaConverter.getLastDataSchemaConverted();
     String subschemaName = schemaNameConverter.getLastDataSubschemaConverted();
 
-    DataSchemaField field = null;
+    DataPackageField field = null;
 
     if (schema != null) {
-      DataSubschema subschema = null;
-      for (DataSubschema dss : schema.getTableSchemas()) {
+      DataPackageTableSchema subschema = null;
+      for (DataPackageTableSchema dss : schema.getTableSchemas()) {
         if (dss.getName().equals(subschemaName)) {
           subschema = dss;
           break;
@@ -70,7 +70,7 @@ public class DataSchemaFieldConverter implements Converter {
       }
 
       if (subschema != null) {
-        for (DataSchemaField dsf : subschema.getFields()) {
+        for (DataPackageField dsf : subschema.getFields()) {
           if (dsf.getName().equals(reader.getValue())) {
             field = dsf;
           }

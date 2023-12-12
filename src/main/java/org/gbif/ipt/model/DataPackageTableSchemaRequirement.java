@@ -24,15 +24,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Represents what {@link DataSubschema} are required in the data package.
+ * Represents what {@link DataPackageTableSchema} are required in the data package.
  */
-public class SubSchemaRequirement {
+public class DataPackageTableSchemaRequirement {
 
   private String description;
   private List<String> applicableIfPresentAny = new ArrayList<>();
-  private List<SubSchemaRequirement> allOf = new ArrayList<>();
-  private List<SubSchemaRequirement> anyOf = new ArrayList<>();
-  private List<SubSchemaRequirement> oneOf = new ArrayList<>();
+  private List<DataPackageTableSchemaRequirement> allOf = new ArrayList<>();
+  private List<DataPackageTableSchemaRequirement> anyOf = new ArrayList<>();
+  private List<DataPackageTableSchemaRequirement> oneOf = new ArrayList<>();
   private List<String> required = new ArrayList<>();
   private List<String> requiredAny = new ArrayList<>();
   private List<String> prohibited = new ArrayList<>();
@@ -53,27 +53,27 @@ public class SubSchemaRequirement {
     this.applicableIfPresentAny = applicableIfPresentAny;
   }
 
-  public List<SubSchemaRequirement> getAllOf() {
+  public List<DataPackageTableSchemaRequirement> getAllOf() {
     return allOf;
   }
 
-  public void setAllOf(List<SubSchemaRequirement> required) {
+  public void setAllOf(List<DataPackageTableSchemaRequirement> required) {
     this.allOf = required;
   }
 
-  public List<SubSchemaRequirement> getAnyOf() {
+  public List<DataPackageTableSchemaRequirement> getAnyOf() {
     return anyOf;
   }
 
-  public void setAnyOf(List<SubSchemaRequirement> anyOf) {
+  public void setAnyOf(List<DataPackageTableSchemaRequirement> anyOf) {
     this.anyOf = anyOf;
   }
 
-  public List<SubSchemaRequirement> getOneOf() {
+  public List<DataPackageTableSchemaRequirement> getOneOf() {
     return oneOf;
   }
 
-  public void setOneOf(List<SubSchemaRequirement> oneOf) {
+  public void setOneOf(List<DataPackageTableSchemaRequirement> oneOf) {
     this.oneOf = oneOf;
   }
 
@@ -147,7 +147,7 @@ public class SubSchemaRequirement {
 
     // check complex conditions
     if (!allOf.isEmpty()) {
-      for (SubSchemaRequirement subRequirement : allOf) {
+      for (DataPackageTableSchemaRequirement subRequirement : allOf) {
         ValidationResult subResult = subRequirement.validate(schemas);
         if (!subResult.isValid()) {
           result.setValid(false);
@@ -157,7 +157,7 @@ public class SubSchemaRequirement {
     } else if (!anyOf.isEmpty()) {
       result.setValid(false);
       result.setReason(String.format("At least one valid required, none found: %s", anyOf));
-      for (SubSchemaRequirement subRequirement : anyOf) {
+      for (DataPackageTableSchemaRequirement subRequirement : anyOf) {
         ValidationResult subResult = subRequirement.validate(schemas);
         if (subResult.isValid()) {
           result.setValid(true);
@@ -167,7 +167,7 @@ public class SubSchemaRequirement {
       }
     } else if (!oneOf.isEmpty()) {
       int numberOfValid = 0;
-      for (SubSchemaRequirement subRequirement : oneOf) {
+      for (DataPackageTableSchemaRequirement subRequirement : oneOf) {
         ValidationResult subResult = subRequirement.validate(schemas);
         if (subResult.isValid()) {
           numberOfValid = numberOfValid + 1;
@@ -218,7 +218,7 @@ public class SubSchemaRequirement {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SubSchemaRequirement that = (SubSchemaRequirement) o;
+    DataPackageTableSchemaRequirement that = (DataPackageTableSchemaRequirement) o;
     return Objects.equals(description, that.description)
         && Objects.equals(allOf, that.allOf)
         && Objects.equals(anyOf, that.anyOf)

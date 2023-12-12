@@ -21,11 +21,11 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * A single schema file of {@link DataPackageSchema}
+ * A single table schema of {@link DataPackageSchema}
  */
 @Data
 @Builder
-public class DataSubschema implements Serializable {
+public class DataPackageTableSchema implements Serializable {
 
   private static final long serialVersionUID = 3929428113035839253L;
 
@@ -35,7 +35,7 @@ public class DataSubschema implements Serializable {
   private String name;
   private String title;
   private String description;
-  private List<DataSchemaField> fields;
+  private List<DataPackageField> fields;
   private String primaryKey;
-  private List<DataSubschemaForeignKey> foreignKeys;
+  private List<DataPackageTableSchemaForeignKey> foreignKeys;
 }

@@ -33,13 +33,13 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataSchemaFieldConstraints;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaFieldReference;
+import org.gbif.ipt.model.DataPackageFieldReference;
 import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschema;
-import org.gbif.ipt.model.DataSubschemaForeignKey;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
 import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
@@ -1152,10 +1152,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
     xstream.alias("dataSchemaFieldMapping", DataSchemaFieldMapping.class);
-    xstream.alias("subschema", DataSubschema.class);
-    xstream.alias("dataSchemaField", DataSchemaField.class);
-    xstream.alias("dataSubschemaForeignKey", DataSubschemaForeignKey.class);
-    xstream.alias("dataSchemaFieldReference", DataSchemaFieldReference.class);
+    xstream.alias("subschema", DataPackageTableSchema.class);
+    xstream.alias("dataSchemaField", DataPackageField.class);
+    xstream.alias("dataSubschemaForeignKey", DataPackageTableSchemaForeignKey.class);
+    xstream.alias("dataSchemaFieldReference", DataPackageFieldReference.class);
     xstream.alias("constraints", DataSchemaFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
@@ -1317,7 +1317,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
-    DataSubschema subschema = dataPackageSchema.getTableSchemas().stream()
+    DataPackageTableSchema subschema = dataPackageSchema.getTableSchemas().stream()
       .filter(s -> s.getName().equals(filenameWithoutExtension))
       .findAny()
       .orElse(null);
@@ -1342,15 +1342,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     List<DataSchemaFieldMapping> fields = new ArrayList<>();
-    Map<String, DataSchemaField> schemaFieldsMap = subschema.getFields().stream()
-      .collect(Collectors.toMap(DataSchemaField::getName, p -> p));
+    Map<String, DataPackageField> schemaFieldsMap = subschema.getFields().stream()
+      .collect(Collectors.toMap(DataPackageField::getName, p -> p));
 
     // iterate over each field to make sure its part of the extension we know
     for (int i = 0; i < columnNames.length; i++) {
       String unwrappedColumnName = StringUtils.unwrap(columnNames[i], '"');
-      DataSchemaField dataSchemaField = schemaFieldsMap.get(unwrappedColumnName);
-      if (dataSchemaField != null) {
-        fields.add(new DataSchemaFieldMapping(i, dataSchemaField));
+      DataPackageField dataPackageField = schemaFieldsMap.get(unwrappedColumnName);
+      if (dataPackageField != null) {
+        fields.add(new DataSchemaFieldMapping(i, dataPackageField));
       } else {
         alog.warn("manage.resource.create.mapping.field.skip",
           new String[] {columnNames[i], dataPackageSchema.getName() + "/" + subschema.getName()});

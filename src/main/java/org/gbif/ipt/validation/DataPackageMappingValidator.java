@@ -13,10 +13,10 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ public class DataPackageMappingValidator {
 
   public static class ValidationStatus {
 
-    private final List<DataSchemaField> missingRequiredFields = new ArrayList<>();
+    private final List<DataPackageField> missingRequiredFields = new ArrayList<>();
 
-    public void addMissingRequiredField(DataSchemaField missingRequiredField) {
+    public void addMissingRequiredField(DataPackageField missingRequiredField) {
       this.missingRequiredFields.add(missingRequiredField);
     }
 
-    public List<DataSchemaField> getMissingRequiredFields() {
+    public List<DataPackageField> getMissingRequiredFields() {
       return missingRequiredFields;
     }
 
@@ -51,9 +51,9 @@ public class DataPackageMappingValidator {
     String resourceName = mapping.getDataSchemaFile().getName();
 
     if (dataPackageSchema != null) {
-      for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
+      for (DataPackageTableSchema subSchema : dataPackageSchema.getTableSchemas()) {
         if (resourceName.equals(subSchema.getName())) {
-          for (DataSchemaField field : subSchema.getFields()) {
+          for (DataPackageField field : subSchema.getFields()) {
             String fieldName = field.getName();
             // required, but not mapped (index is NULL) or no default value
             if (isRequiredSchemaField(field)
@@ -68,7 +68,7 @@ public class DataPackageMappingValidator {
     return v;
   }
 
-  private boolean isRequiredSchemaField(DataSchemaField field) {
+  private boolean isRequiredSchemaField(DataPackageField field) {
     return field.getConstraints() != null && field.getConstraints().getRequired() != null && field.getConstraints().getRequired();
   }
 }

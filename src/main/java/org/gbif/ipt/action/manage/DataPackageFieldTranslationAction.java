@@ -15,7 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.service.SourceException;
@@ -76,7 +76,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       return translatedValues;
     }
 
-    public boolean isLoaded(String tableSchema, DataSchemaField field) {
+    public boolean isLoaded(String tableSchema, DataPackageField field) {
       return this.tableSchema != null
         && this.tableSchema.equals(tableSchema)
         && this.field != null
@@ -100,7 +100,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   protected static final String REQ_FIELD = "field";
   // config
   private DataSchemaFieldMapping fieldMapping;
-  private DataSchemaField field;
+  private DataPackageField field;
   private DataSchemaMapping mapping;
 
   private SimpleMapModel vocabTerms;
@@ -345,7 +345,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     return fieldMapping;
   }
 
-  public DataSchemaField getField() {
+  public DataPackageField getField() {
     return field;
   }
 }

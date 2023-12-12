@@ -66,9 +66,9 @@ public class DataPackageSchema implements Serializable {
    */
   private String profile;
 
-  private Set<DataSubschema> tableSchemas = new LinkedHashSet<>();
+  private Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
 
-  private SubSchemaRequirement tableSchemasRequirements = new SubSchemaRequirement();
+  private DataPackageTableSchemaRequirement tableSchemasRequirements = new DataPackageTableSchemaRequirement();
 
   private String description;
 
@@ -78,13 +78,13 @@ public class DataPackageSchema implements Serializable {
 
   private Date issued;
 
-  public DataSubschema subschemaByName(String subSchemaName) {
+  public DataPackageTableSchema tableSchemaByName(String subSchemaName) {
     return tableSchemas.stream()
         .filter(ds -> ds.getName().equals(subSchemaName))
         .findFirst().orElse(null);
   }
 
-  public void addDataSchemaFile(DataSubschema dataSubschema) {
-    tableSchemas.add(dataSubschema);
+  public void addTableSchema(DataPackageTableSchema tableSchema) {
+    tableSchemas.add(tableSchema);
   }
 }

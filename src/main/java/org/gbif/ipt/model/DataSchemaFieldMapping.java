@@ -31,10 +31,10 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
 
   private Integer index;
   private String defaultValue;
-  private DataSchemaField field;
+  private DataPackageField field;
   private Map<String, String> translation;
 
-  public DataSchemaFieldMapping(Integer index, DataSchemaField field) {
+  public DataSchemaFieldMapping(Integer index, DataPackageField field) {
     this.index = index;
     this.field = field;
   }

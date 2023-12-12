@@ -15,15 +15,15 @@ package org.gbif.ipt.task;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.SubSchemaRequirement;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -345,15 +345,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // before starting to add subschemas, check all required schemas mapped
     checkRequiredSubSchemasMapped(mappedSubSchemas, dataPackageSchema);
 
-    for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
+    for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
       // skip un-mapped (optional) schemas
-      if (!mappedSubSchemas.contains(subSchema.getName())) {
+      if (!mappedSubSchemas.contains(tableSchema.getName())) {
         continue;
       }
 
       report();
       try {
-        addDataFile(currSchema, subSchema, allMappings);
+        addDataFile(currSchema, tableSchema, allMappings);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing data file", e);
       }
@@ -372,10 +372,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    */
   private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataPackageSchema dataPackageSchema)
       throws GeneratorException {
-    SubSchemaRequirement requirements = dataPackageSchema.getTableSchemasRequirements();
+    DataPackageTableSchemaRequirement requirements = dataPackageSchema.getTableSchemasRequirements();
 
     if (requirements != null) {
-      SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
+      DataPackageTableSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
 
       if (!validationResult.isValid()) {
         throw new GeneratorException(validationResult.getReason());
@@ -391,7 +391,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws IOException if problems occurred while persisting new data files
    * @throws GeneratorException if any problem was encountered writing data file
    */
-  public void addDataFile(String schemaName, DataSubschema subschema, List<DataSchemaMapping> allMappings) throws IOException,
+  public void addDataFile(String schemaName, DataPackageTableSchema subschema, List<DataSchemaMapping> allMappings) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (subschema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -403,11 +403,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     currRecordsSkipped = 0;
     currSubschema = subschema.getName();
 
-    List<DataSchemaField> fields = subschema.getFields();
+    List<DataPackageField> fields = subschema.getFields();
 
     // file header
     String header = fields.stream()
-        .map(DataSchemaField::getName)
+        .map(DataPackageField::getName)
         .collect(Collectors.joining(",", "", "\n"));
 
     // total column count (number of fields in the subschema)

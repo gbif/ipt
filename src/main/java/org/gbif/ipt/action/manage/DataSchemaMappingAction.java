@@ -15,9 +15,9 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschemaName;
 import org.gbif.ipt.model.RecordFilter;
@@ -201,11 +201,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       readSource();
 
       // prepare fields
-      DataSubschema dataSubschema = mapping.getDataPackageSchema().subschemaByName(mapping.getDataSchemaFile().getName());
+      DataPackageTableSchema tableSchema = mapping.getDataPackageSchema().tableSchemaByName(mapping.getDataSchemaFile().getName());
       fieldsIndices = new HashMap<>();
       int index = 0;
-      if (dataSubschema != null) {
-        for (DataSchemaField field : dataSubschema.getFields()) {
+      if (tableSchema != null) {
+        for (DataPackageField field : tableSchema.getFields()) {
           DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
           fields.add(pm);
           fieldsIndices.put(field.getName(), index++);
@@ -241,7 +241,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     DataPackageMappingValidator validator = new DataPackageMappingValidator();
     DataPackageMappingValidator.ValidationStatus v = validator.validate(mapping, resource, columns);
     if (v != null && !v.isValid()) {
-      for (DataSchemaField field : v.getMissingRequiredFields()) {
+      for (DataPackageField field : v.getMissingRequiredFields()) {
         addActionWarning(getText("validation.required", new String[] {field.getName()}));
       }
     }
@@ -307,7 +307,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
    *
    * @return DataSchemaFieldMapping created
    */
-  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataSchemaField field) {
+  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataPackageField field) {
     // mapped already?
     DataSchemaFieldMapping fm = mapping.getField(field.getName());
     if (fm == null) {
