@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.converter;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.admin.DataSchemaManager;
 
 import com.google.inject.Inject;
@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 public class DataSchemaIdentifierConverter implements Converter {
 
   private final DataSchemaManager manager;
-  private DataSchema lastDataSchemaConverted;
+  private DataPackageSchema lastDataSchemaConverted;
 
   @Inject
   public DataSchemaIdentifierConverter(DataSchemaManager manager) {
@@ -37,22 +37,22 @@ public class DataSchemaIdentifierConverter implements Converter {
 
   @Override
   public boolean canConvert(Class clazz) {
-    return clazz.equals(DataSchema.class);
+    return clazz.equals(DataPackageSchema.class);
   }
 
-  public DataSchema getLastDataSchemaConverted() {
+  public DataPackageSchema getLastDataSchemaConverted() {
     return lastDataSchemaConverted;
   }
 
   @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    DataSchema d = (DataSchema) value;
+    DataPackageSchema d = (DataPackageSchema) value;
     writer.setValue(d.getIdentifier());
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    DataSchema d = manager.get(reader.getValue());
+    DataPackageSchema d = manager.get(reader.getValue());
     lastDataSchemaConverted = d;
     return d;
   }

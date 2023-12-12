@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
@@ -203,8 +203,8 @@ public class ResourceCamtrapMetadataInferringTest {
 
   private static DataSchemaMapping getDeploymentsMapping(Source source) {
     return DataSchemaMapping.builder()
-        .dataSchema(
-            DataSchema.builder()
+        .dataPackageSchema(
+            DataPackageSchema.builder()
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())
@@ -252,8 +252,8 @@ public class ResourceCamtrapMetadataInferringTest {
 
   private static DataSchemaMapping getObservationsMapping(Source source) {
     return DataSchemaMapping.builder()
-        .dataSchema(
-            DataSchema.builder()
+        .dataPackageSchema(
+            DataPackageSchema.builder()
                 .name("camtrap-dp")
                 .identifier("http://rs.gbif.org/schemas/camtrap-dp")
                 .build())

@@ -168,7 +168,7 @@
                                         href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a>
                             </li>
                             <li class="breadcrumb-item"><a
-                                        href="schemaMapping.do?r=${resource.shortname}&id=${(mapping.dataSchema.identifier)!?url}&mid=${mid}"><@s.text name="breadcrumb.manage.overview.mapping"/></a>
+                                        href="schemaMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}"><@s.text name="breadcrumb.manage.overview.mapping"/></a>
                             </li>
                             <li class="breadcrumb-item active"
                                 aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping.translation"/></li>
@@ -214,7 +214,7 @@
                             </ul>
                         </div>
 
-                        <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href="schemaMapping.do?r=${resource.shortname}&id=${(mapping.dataSchema.identifier)!}&mid=${mid}">
+                        <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href="schemaMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!}&mid=${mid}">
                             <@s.text name='button.cancel'/>
                         </a>
                     </div>

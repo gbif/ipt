@@ -350,7 +350,7 @@
                         <#if metadataOnly == true>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
                         <#elseif resource.schemaIdentifier??>
-                            <p class="mb-1"><@s.text name='portal.resource.downloads.dataSchema.verbose'/></p>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.dataPackageSchema.verbose'/></p>
                         <#else>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.verbose'/></p>
                         </#if>
@@ -517,7 +517,7 @@
 
                             <p>
                                 <#if resource.schemaIdentifier??>
-                                    <@s.text name='portal.resource.dataRecords.dataSchema.intro'/>
+                                    <@s.text name='portal.resource.dataRecords.dataPackageSchema.intro'/>
                                 <#else>
                                     <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
                                 </#if>

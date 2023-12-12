@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.DataSchemaManagerImpl;
@@ -46,7 +46,7 @@ public interface DataSchemaManager {
    *
    * @return data schema for that identifier/name or null if not installed
    */
-  DataSchema get(String identifier);
+  DataPackageSchema get(String identifier);
 
   /**
    * Install base data schemas.
@@ -57,14 +57,14 @@ public interface DataSchemaManager {
    * Downloads a data schema to the local cache and installs it for mapping. If the file is already locally existing
    * overwrite the older copy.
    */
-  void install(DataSchema schema) throws InvalidConfigException;
+  void install(DataPackageSchema schema) throws InvalidConfigException;
 
   /**
    * List all installed data schemas.
    *
    * @return list of installed IPT data schemas
    */
-  List<DataSchema> list();
+  List<DataPackageSchema> list();
 
   /**
    * Load all installed data schemas from the data dir.

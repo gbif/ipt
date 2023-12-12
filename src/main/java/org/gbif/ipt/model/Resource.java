@@ -232,7 +232,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return list index corresponding to getDataSchemaMapping(identifier) or null if the mapping couldn't be added
    */
   public Integer addDataSchemaMapping(@Nullable DataSchemaMapping mapping) {
-    if (mapping != null && mapping.getDataSchema() != null) {
+    if (mapping != null && mapping.getDataPackageSchema() != null) {
       Integer index = getDataSchemaMappings().size();
       this.dataSchemaMappings.add(mapping);
       return index;
@@ -339,7 +339,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       for (DataSchemaMapping dsm : dsms) {
         if (dsm.getSource() != null && src.equals(dsm.getSource())) {
           deleteMapping(dsm);
-          LOG.debug("Cascading source delete to schema mapping " + dsm.getDataSchema().getName());
+          LOG.debug("Cascading source delete to schema mapping " + dsm.getDataPackageSchema().getName());
         }
       }
     }
@@ -740,7 +740,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
     if (schemaIdentifier != null) {
       for (DataSchemaMapping m : dataSchemaMappings) {
-        if (schemaIdentifier.equals(m.getDataSchema().getIdentifier())) {
+        if (schemaIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
           maps.add(m);
         }
       }

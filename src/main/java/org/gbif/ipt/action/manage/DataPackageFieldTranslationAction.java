@@ -13,21 +13,13 @@
  */
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.PropertyMapping;
-import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -178,7 +170,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       LOG.error("User wanted to deleted translation for propertyMapping field, but field was null");
     }
 
-    DataSchema schema = mapping.getDataSchema();
+    DataPackageSchema schema = mapping.getDataPackageSchema();
     id = (schema != null) ? schema.getIdentifier() : null;
 
     // leaves translation page, goes back to mapping page

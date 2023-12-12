@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.DataSubschema;
@@ -47,11 +47,11 @@ public class DataPackageMappingValidator {
     ValidationStatus v = new ValidationStatus();
 
     // check required fields
-    DataSchema dataSchema = mapping.getDataSchema();
+    DataPackageSchema dataPackageSchema = mapping.getDataPackageSchema();
     String resourceName = mapping.getDataSchemaFile().getName();
 
-    if (dataSchema != null) {
-      for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
+    if (dataPackageSchema != null) {
+      for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
         if (resourceName.equals(subSchema.getName())) {
           for (DataSchemaField field : subSchema.getFields()) {
             String fieldName = field.getName();

@@ -1273,7 +1273,7 @@
 
                     <p class="mt-3 mb-0 text-smaller fst-italic">
                         <#if dataPackageResource>
-                            <@s.text name="manage.overview.dataSchema.description"/>
+                            <@s.text name="manage.overview.dataPackageSchema.description"/>
                         <#elseif resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.description.metadataOnly"/>
                         <#else>

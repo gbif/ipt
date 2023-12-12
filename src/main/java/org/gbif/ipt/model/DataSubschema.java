@@ -15,14 +15,13 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * A single schema file of {@link DataSchema}
+ * A single schema file of {@link DataPackageSchema}
  */
 @Data
 @Builder

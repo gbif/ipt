@@ -17,7 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -233,9 +233,9 @@ public class CreateResourceAction extends POSTAction {
 
   public Map<String, String> getDataPackageTypes() {
     dataPackageTypes = new LinkedHashMap<>();
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
-      dataPackageTypes.put(installedSchema.getName(), installedSchema.getTitle());
+    List<DataPackageSchema> installedDataPackageSchemas = schemaManager.list();
+    for (DataPackageSchema installedDataPackageSchema : installedDataPackageSchemas) {
+      dataPackageTypes.put(installedDataPackageSchema.getName(), installedDataPackageSchema.getTitle());
     }
     dataPackageTypes = MapUtils.getMapWithLowercaseKeys(dataPackageTypes);
 

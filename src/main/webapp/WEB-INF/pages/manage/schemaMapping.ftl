@@ -414,7 +414,7 @@
                                     </a>
                                 </@s.param>
                                 <@s.param><@s.property value="#adminSchemaTitle.toLowerCase()"/></@s.param>
-                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataSchema.identifier!}#anchor-${(mapping.dataSchemaFile.name)!}" target="_blank">${(mapping.dataSchema.name)!}/${(mapping.dataSchemaFile.name)!}</a></@s.param>
+                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataSchemaFile.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataSchemaFile.name)!}</a></@s.param>
                             </@s.text>
                         </p>
                     </div>
@@ -427,7 +427,7 @@
                 <div class="row g-3">
                     <div>
                         <input type="hidden" name="r" value="${resource.shortname}" />
-                        <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
+                        <input type="hidden" name="id" value="${mapping.dataPackageSchema.identifier}" />
                         <input type="hidden" name="mid" value="${mid!}" />
                     </div>
 
@@ -476,7 +476,7 @@
                     </div>
 
                     <div id="sections">
-                        <#list dataSchema.tableSchemas as subSchema>
+                        <#list dataPackageSchema.tableSchemas as subSchema>
                             <#if (mapping.dataSchemaFile.name)?? && mapping.dataSchemaFile.name == subSchema.name>
                                 <div id="${subSchema.name}" class="mt-lg-3">
                                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">

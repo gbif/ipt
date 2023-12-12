@@ -18,7 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.SupportedDatapackageType;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -79,8 +79,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private final BaseAction baseAction;
 
-  private List<DataSchema> dataSchemas = new ArrayList<>();
-  private Map<String, DataSchema> dataSchemasByIdentifiers = new HashMap<>();
+  private List<DataPackageSchema> dataPackageSchemas = new ArrayList<>();
+  private Map<String, DataPackageSchema> dataPackageSchemasByIdentifiers = new HashMap<>();
 
   @Inject
   public DataSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
@@ -98,7 +98,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public void uninstallSafely(String schemaIdentifier, String schemaName) throws DeletionNotAllowedException {
-    if (dataSchemasByIdentifiers.containsKey(schemaIdentifier)) {
+    if (dataPackageSchemasByIdentifiers.containsKey(schemaIdentifier)) {
       // check if it's used by some resources
       for (Resource r : resourceManager.list()) {
         if (r.getSchemaIdentifier() != null
@@ -117,11 +117,11 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   @Override
   public synchronized void update(String identifier) throws IOException, RegistryException {
     // identify installed data schema by identifier
-    DataSchema installed = get(identifier);
+    DataPackageSchema installed = get(identifier);
 
     if (installed != null) {
       // verify there is a newer version
-      DataSchema latestCompatibleSchema = null;
+      DataPackageSchema latestCompatibleSchema = null;
       String latestCompatibleSchemaVersion = registryManager.getLatestCompatibleSchemaVersion(installed.getName(), installed.getVersion());
 
       if (latestCompatibleSchemaVersion != null) {
@@ -151,14 +151,14 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
   }
 
-  private void updateResourcesAfterSchemaUpdate(DataSchema newlyInstalledSchema) {
+  private void updateResourcesAfterSchemaUpdate(DataPackageSchema newlyInstalledSchema) {
     resourceManager.list()
         .stream()
         .filter(Resource::isDataPackage)
         .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
   }
 
-  private void updateResourceAfterSchemaUpdate(Resource resource, DataSchema newlyInstalledSchema) {
+  private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
     // update metadata profile
     if (CAMTRAP_DP.equals(resource.getCoreType())) {
       if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
@@ -168,20 +168,20 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
 
     // update schema in mappings
-    resource.getDataSchemaMappings().forEach(m -> m.setDataSchema(newlyInstalledSchema));
+    resource.getDataSchemaMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
   }
 
   @Override
-  public DataSchema get(String identifier) {
-    DataSchema result = dataSchemasByIdentifiers.get(identifier);
+  public DataPackageSchema get(String identifier) {
+    DataPackageSchema result = dataPackageSchemasByIdentifiers.get(identifier);
 
     // try name
     if (result == null) {
-      if (dataSchemas.isEmpty()) {
+      if (dataPackageSchemas.isEmpty()) {
         load();
       }
 
-      for (DataSchema ds : dataSchemas) {
+      for (DataPackageSchema ds : dataPackageSchemas) {
         if (identifier.equals(ds.getName()) || identifier.equals(ds.getIdentifier())) {
           result = ds;
           break;
@@ -199,9 +199,9 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    * @param name name of data schema to uninstall
    */
   private void uninstall(String identifier, String name) {
-    if (dataSchemasByIdentifiers.containsKey(identifier)) {
-      dataSchemasByIdentifiers.remove(identifier);
-      dataSchemas.removeIf(d -> StringUtils.equals(d.getIdentifier(), identifier));
+    if (dataPackageSchemasByIdentifiers.containsKey(identifier)) {
+      dataPackageSchemasByIdentifiers.remove(identifier);
+      dataPackageSchemas.removeIf(d -> StringUtils.equals(d.getIdentifier(), identifier));
 
       File f = getDataSchemaDirectory(name);
       if (f.exists()) {
@@ -216,50 +216,50 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public void installSupportedSchemas() throws InvalidConfigException {
-    List<DataSchema> schemas = getSupportedDataSchemas();
-    for (DataSchema schema : schemas) {
+    List<DataPackageSchema> schemas = getSupportedDataSchemas();
+    for (DataPackageSchema schema : schemas) {
       install(schema);
     }
   }
 
   @Override
-  public synchronized void install(DataSchema dataSchema) throws InvalidConfigException {
-    Objects.requireNonNull(dataSchema);
+  public synchronized void install(DataPackageSchema dataPackageSchema) throws InvalidConfigException {
+    Objects.requireNonNull(dataPackageSchema);
     try {
       String filename = org.gbif.ipt.utils.FileUtils
-          .getSuffixedFileName("_" + dataSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
+          .getSuffixedFileName("_" + dataPackageSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
       File tmpFileSchema = dataDir.tmpFile(filename);
 
       try (FileWriter fw = new FileWriter(tmpFileSchema)) {
-        gson.toJson(dataSchema, fw);
+        gson.toJson(dataPackageSchema, fw);
       }
-      finishInstallSchema(tmpFileSchema, dataSchema.getIdentifier(), dataSchema.getName());
+      finishInstallSchema(tmpFileSchema, dataPackageSchema.getIdentifier(), dataPackageSchema.getName());
 
       Set<DataSubschema> dataSubschemas = new LinkedHashSet<>();
-      for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
+      for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
         File tmpFile = download(subSchema.getUrl());
         DataSubschema dataSubschema = loadSubschemaFromFile( tmpFile);
-        finishInstallSubschema(tmpFile, dataSchema.getIdentifier(), dataSchema.getName(), dataSubschema);
+        finishInstallSubschema(tmpFile, dataPackageSchema.getIdentifier(), dataPackageSchema.getName(), dataSubschema);
         dataSubschemas.add(dataSubschema);
       }
 
-      dataSchema.setTableSchemas(dataSubschemas);
+      dataPackageSchema.setTableSchemas(dataSubschemas);
 
       // keep data schemas in local lookup: allowed one installed data schema per identifier
-      dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
-      dataSchemas.add(dataSchema);
+      dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
+      dataPackageSchemas.add(dataPackageSchema);
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
-      String msg = baseAction.getText("admin.schemas.install.error", new String[] {dataSchema.getUrl().toString()});
+      String msg = baseAction.getText("admin.schemas.install.error", new String[] {dataPackageSchema.getUrl().toString()});
       LOG.error(msg, e);
 
       // clean directory if installation failed
       try {
-        File schemaConfigFolder = dataDir.configFile(CONFIG_FOLDER + "/" + dataSchema.getName());
+        File schemaConfigFolder = dataDir.configFile(CONFIG_FOLDER + "/" + dataPackageSchema.getName());
         FileUtils.cleanDirectory(schemaConfigFolder);
       } catch (IOException ioe) {
-        LOG.error("Failed to clean directory for schema " + dataSchema.getName(), e);
+        LOG.error("Failed to clean directory for schema " + dataPackageSchema.getName(), e);
       }
 
       throw new InvalidConfigException(INVALID_DATA_SCHEMA, msg, e);
@@ -267,39 +267,39 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   }
 
   @Override
-  public List<DataSchema> list() {
-    if (dataSchemas.isEmpty()) {
+  public List<DataPackageSchema> list() {
+    if (dataPackageSchemas.isEmpty()) {
       load();
     }
-    return dataSchemas;
+    return dataPackageSchemas;
   }
 
   @Override
   public int load() {
-    File dataSchemasDir = dataDir.configFile(CONFIG_FOLDER);
+    File dataPackageSchemasDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
-    if (dataSchemasDir.isDirectory()) {
-      String[] dataSchemaNames = dataSchemasDir.list((current, name) -> new File(current, name).isDirectory());
+    if (dataPackageSchemasDir.isDirectory()) {
+      String[] dataSchemaNames = dataPackageSchemasDir.list((current, name) -> new File(current, name).isDirectory());
       FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
-      DataSchema dataSchema;
+      DataPackageSchema dataPackageSchema;
       Set<DataSubschema> dataSubschemas;
 
       try {
         if (dataSchemaNames != null) {
-          dataSchemasByIdentifiers.clear();
-          dataSchemas.clear();
+          dataPackageSchemasByIdentifiers.clear();
+          dataPackageSchemas.clear();
           for (String dataSchemaDirectoryName : dataSchemaNames) {
             dataSubschemas = new LinkedHashSet<>();
-            File dataSchemaDirectory = new File(dataSchemasDir, dataSchemaDirectoryName);
+            File dataSchemaDirectory = new File(dataPackageSchemasDir, dataSchemaDirectoryName);
             File[] files = dataSchemaDirectory.listFiles(filter);
 
             if (files != null) {
               File mainSchemaFile = getMainSchemaFileFromFiles(files);
-              dataSchema = loadSchemaFromFile(mainSchemaFile);
+              dataPackageSchema = loadSchemaFromFile(mainSchemaFile);
               // keep data schema in local lookup
-              dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
+              dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
 
-              for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
+              for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
                 String filename = org.gbif.ipt.utils.FileUtils
                     .getSuffixedFileName(subSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
@@ -307,8 +307,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
                 dataSubschemas.add(loadSubschemaFromFile(subSchemaFile));
               }
 
-              dataSchema.setTableSchemas(dataSubschemas);
-              dataSchemas.add(dataSchema);
+              dataPackageSchema.setTableSchemas(dataSubschemas);
+              dataPackageSchemas.add(dataPackageSchema);
             }
             counter++;
           }
@@ -323,31 +323,31 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public void installOrUpdateDefaults() {
-    List<DataSchema> supportedDataSchemas = registryManager.getSupportedDataSchemas();
+    List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();
 
-    for (DataSchema supportedDataSchema : supportedDataSchemas) {
-      if (!isSchemaInstalled(supportedDataSchema.getIdentifier())) {
+    for (DataPackageSchema supportedDataPackageSchema : supportedDataPackageSchemas) {
+      if (!isSchemaInstalled(supportedDataPackageSchema.getIdentifier())) {
         // schema is not installed, install it
-        LOG.info("Missing default schema {}. Installing", supportedDataSchema.getIdentifier());
-        install(supportedDataSchema);
+        LOG.info("Missing default schema {}. Installing", supportedDataPackageSchema.getIdentifier());
+        install(supportedDataPackageSchema);
       } else {
         // schema is installed, make sure the proper version used
-        DataSchema installedDataSchema = dataSchemasByIdentifiers.get(supportedDataSchema.getIdentifier());
+        DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
 
         String installedDataSchemaVersion = installedDataSchema.getVersion();
         String dataSchemaName = installedDataSchema.getName();
         String dataSchemaIdentifier = installedDataSchema.getIdentifier();
         Date installedSchemaIssuedDate = installedDataSchema.getIssued();
-        Date supportedSchemaIssuedDate = supportedDataSchema.getIssued();
+        Date supportedSchemaIssuedDate = supportedDataPackageSchema.getIssued();
 
         // version must not match
         // installed schema must be older than supported one (do not downgrade)
-        if (!installedDataSchemaVersion.equals(supportedDataSchema.getVersion())
+        if (!installedDataSchemaVersion.equals(supportedDataPackageSchema.getVersion())
             && installedSchemaIssuedDate.compareTo(supportedSchemaIssuedDate) < 0) {
           LOG.info("Schema {} uses outdated version {}. Updating to {}",
-              supportedDataSchema.getIdentifier(), installedDataSchemaVersion, supportedDataSchema.getVersion());
+              supportedDataPackageSchema.getIdentifier(), installedDataSchemaVersion, supportedDataPackageSchema.getVersion());
           uninstall(dataSchemaIdentifier, dataSchemaName);
-          install(supportedDataSchema);
+          install(supportedDataPackageSchema);
         }
       }
     }
@@ -390,13 +390,13 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public boolean isSchemaInstalled(String nameOrIdentifier) {
     boolean result = false;
 
-    if (dataSchemas.isEmpty()) {
+    if (dataPackageSchemas.isEmpty()) {
       load();
     }
 
-    for (DataSchema dataSchema : dataSchemas) {
-      if (dataSchema.getIdentifier().equals(nameOrIdentifier)
-          || dataSchema.getName().equals(nameOrIdentifier)) {
+    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
+      if (dataPackageSchema.getIdentifier().equals(nameOrIdentifier)
+          || dataPackageSchema.getName().equals(nameOrIdentifier)) {
         result = true;
         break;
       }
@@ -408,10 +408,10 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public boolean isSchemaType(String nameOrIdentifier) {
     boolean result = false;
 
-    List<DataSchema> dataSchemas = registryManager.getLatestDataSchemas();
-    for (DataSchema dataSchema : dataSchemas) {
-      if (dataSchema.getIdentifier().equals(nameOrIdentifier)
-          || dataSchema.getName().equals(nameOrIdentifier)) {
+    List<DataPackageSchema> dataPackageSchemas = registryManager.getLatestDataPackageSchemas();
+    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
+      if (dataPackageSchema.getIdentifier().equals(nameOrIdentifier)
+          || dataPackageSchema.getName().equals(nameOrIdentifier)) {
         result = true;
         break;
       }
@@ -424,10 +424,10 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public String getSchemaIdentifier(String schemaName) {
     String result = null;
 
-    List<DataSchema> dataSchemas = registryManager.getLatestDataSchemas();
-    for (DataSchema dataSchema : dataSchemas) {
-      if (dataSchema.getName().equals(schemaName)) {
-        result = dataSchema.getIdentifier();
+    List<DataPackageSchema> dataPackageSchemas = registryManager.getLatestDataPackageSchemas();
+    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
+      if (dataPackageSchema.getName().equals(schemaName)) {
+        result = dataPackageSchema.getIdentifier();
         break;
       }
     }
@@ -464,12 +464,12 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    *
    * @return list containing latest versions of data schemas
    */
-  private List<DataSchema> getSupportedDataSchemas() {
-    List<DataSchema> supportedDataSchemas = new ArrayList<>();
+  private List<DataPackageSchema> getSupportedDataSchemas() {
+    List<DataPackageSchema> supportedDataPackageSchemas = new ArrayList<>();
     try {
-      for (DataSchema schema : registryManager.getSupportedDataSchemas()) {
+      for (DataPackageSchema schema : registryManager.getSupportedDataSchemas()) {
         if (schema.getIdentifier() != null) {
-            supportedDataSchemas.add(schema);
+            supportedDataPackageSchemas.add(schema);
         }
       }
     } catch (RegistryException e) {
@@ -485,12 +485,12 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
 
     // throw exception if all supported data schemas could not be loaded
-    if (SupportedDatapackageType.values().length != supportedDataSchemas.size()) {
+    if (SupportedDatapackageType.values().length != supportedDataPackageSchemas.size()) {
       String msg = "Not all supported data schemas were loaded!";
       LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);
     }
-    return supportedDataSchemas;
+    return supportedDataPackageSchemas;
   }
 
   /**
@@ -502,16 +502,16 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    *
    * @throws InvalidConfigException if data schema could not be loaded successfully
    */
-  protected DataSchema loadSchemaFromFile(File localFile) throws InvalidConfigException {
+  protected DataPackageSchema loadSchemaFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
     if (!localFile.exists()) {
       throw new IllegalStateException();
     }
 
     try {
-      DataSchema dataSchema = factory.buildSchema(localFile);
-      LOG.info("Successfully loaded data schema file " + dataSchema.getIdentifier());
-      return dataSchema;
+      DataPackageSchema dataPackageSchema = factory.buildSchema(localFile);
+      LOG.info("Successfully loaded data schema file " + dataPackageSchema.getIdentifier());
+      return dataPackageSchema;
     } catch (IOException e) {
       LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,

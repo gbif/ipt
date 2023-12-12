@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.factory;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSubschema;
 
 import java.io.File;
@@ -53,10 +53,10 @@ public class DataSchemaFactory {
    *
    * @return data schema
    */
-  public DataSchema buildSchema(File file) throws IOException {
-    DataSchema result;
+  public DataPackageSchema buildSchema(File file) throws IOException {
+    DataPackageSchema result;
     try (FileReader fr = new FileReader(file)) {
-      result = gson.fromJson(fr, DataSchema.class);
+      result = gson.fromJson(fr, DataPackageSchema.class);
     }
     return result;
   }

@@ -62,23 +62,23 @@
 
                 <div class="text-center">
                     <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                        ${dataSchema.title}
+                        ${dataPackageSchema.title}
                     </h1>
 
-                    <#if dataSchema.url??>
+                    <#if dataPackageSchema.url??>
                         <div class="text-center fs-smaller mb-2">
-                            <a href="${dataSchema.url}">${dataSchema.url}</a>
+                            <a href="${dataPackageSchema.url}">${dataPackageSchema.url}</a>
                         </div>
                     </#if>
 
                     <div class="text-smaller">
-                        <#if dataSchema.isLatest()>
+                        <#if dataPackageSchema.isLatest()>
                             <span class="text-gbif-primary">
-                                <@s.text name="schema.version.issued.upToDate"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                                <@s.text name="schema.version.issued.upToDate"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
                             </span>
                         <#else>
                             <span class="text-gbif-danger">
-                                <@s.text name="schema.version.issued.outdated"><@s.param>${dataSchema.version}</@s.param><@s.param>${dataSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                                <@s.text name="schema.version.issued.outdated"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
                             </span>
                         </#if>
                     </div>
@@ -100,7 +100,7 @@
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
-                            <#list dataSchema.tableSchemas as subSchema>
+                            <#list dataPackageSchema.tableSchemas as subSchema>
                                 <li>
                                     <a href="#anchor-${subSchema.name}" class="sidebar-navigation-link">${subSchema.title}</a>
                                 </li>
@@ -110,7 +110,7 @@
                 </div>
 
                 <div class="bd-content ps-lg-4">
-                    <#list dataSchema.tableSchemas as subSchema>
+                    <#list dataPackageSchema.tableSchemas as subSchema>
                         <span class="anchor anchor-schema-page" id="anchor-${subSchema.name}"></span>
                         <div id="${subSchema.name}" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">

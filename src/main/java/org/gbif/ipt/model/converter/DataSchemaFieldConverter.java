@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model.converter;
 
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSubschema;
 
@@ -55,7 +55,7 @@ public class DataSchemaFieldConverter implements Converter {
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    DataSchema schema = schemaConverter.getLastDataSchemaConverted();
+    DataPackageSchema schema = schemaConverter.getLastDataSchemaConverted();
     String subschemaName = schemaNameConverter.getLastDataSubschemaConverted();
 
     DataSchemaField field = null;

@@ -27,7 +27,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class DataSchema implements Serializable {
+public class DataPackageSchema implements Serializable {
 
   private static final long serialVersionUID = -3130006092545816514L;
 

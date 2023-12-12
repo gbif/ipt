@@ -21,7 +21,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -311,10 +311,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
-  public List<DataSchema> getLatestDataSchemas() throws RegistryException {
-    Map<String, List<DataSchema>> jSONDataSchemas = gson
+  public List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException {
+    Map<String, List<DataPackageSchema>> jSONDataSchemas = gson
         .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
-            new TypeToken<Map<String, List<DataSchema>>>() {
+            new TypeToken<Map<String, List<DataPackageSchema>>>() {
             }.getType());
     return (jSONDataSchemas.get("dataPackages") == null) ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
   }
@@ -330,22 +330,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
-  public DataSchema getSchema(String schemaName, String schemaVersion) throws RegistryException {
+  public DataPackageSchema getSchema(String schemaName, String schemaVersion) throws RegistryException {
     return gson
         .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(schemaName, schemaVersion)).getContent(),
-            new TypeToken<DataSchema>() {
+            new TypeToken<DataPackageSchema>() {
             }.getType());
   }
 
   @Override
-  public List<DataSchema> getSupportedDataSchemas() throws RegistryException {
-    List<DataSchema> result = new ArrayList<>();
+  public List<DataPackageSchema> getSupportedDataSchemas() throws RegistryException {
+    List<DataPackageSchema> result = new ArrayList<>();
     Map<String, String> schemasWithVersions = AppConfig.getSupportedDataSchemaNamesWithVersions();
 
     for (Map.Entry<String, String> entrySchemaVersion : schemasWithVersions.entrySet()) {
-      DataSchema jsonDataSchema = gson
+      DataPackageSchema jsonDataSchema = gson
               .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(entrySchemaVersion.getKey(), entrySchemaVersion.getValue())).getContent(),
-                      new TypeToken<DataSchema>() {
+                      new TypeToken<DataPackageSchema>() {
                       }.getType());
       result.add(jsonDataSchema);
     }

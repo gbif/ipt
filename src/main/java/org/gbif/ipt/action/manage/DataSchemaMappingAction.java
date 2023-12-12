@@ -14,7 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSubschema;
@@ -58,7 +58,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private final DataSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
-  private DataSchema dataSchema;
+  private DataPackageSchema dataPackageSchema;
   private Integer mid;
   private DataSchemaMapping mapping;
   private List<String> columns;
@@ -77,8 +77,8 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   @Override
   public String save() throws IOException {
-    if (dataSchema == null) {
-      dataSchema = schemaManager.get(id);
+    if (dataPackageSchema == null) {
+      dataPackageSchema = schemaManager.get(id);
     }
 
     // a new mapping?
@@ -139,10 +139,10 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
     if (id != null) {
       if (mid == null) {
-        DataSchema ds = schemaManager.get(id);
+        DataPackageSchema ds = schemaManager.get(id);
         if (ds != null) {
           mapping = new DataSchemaMapping();
-          mapping.setDataSchema(ds);
+          mapping.setDataPackageSchema(ds);
         }
         // The data schema could have been null if:
         // 1. The user tried to add a mapping with the select help option, no schema would have been found
@@ -162,12 +162,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       notFound = true;
     }
 
-    if (!cancel && mapping != null && mapping.getDataSchema() != null) {
-      dataSchema = mapping.getDataSchema();
+    if (!cancel && mapping != null && mapping.getDataPackageSchema() != null) {
+      dataPackageSchema = mapping.getDataPackageSchema();
 
       // reload schema if sub-schemas are empty
-      if (dataSchema == null || CollectionUtils.isEmpty(dataSchema.getTableSchemas())) {
-        dataSchema = schemaManager.get(id);
+      if (dataPackageSchema == null || CollectionUtils.isEmpty(dataPackageSchema.getTableSchemas())) {
+        dataPackageSchema = schemaManager.get(id);
       }
 
       // is source assigned yet?
@@ -201,7 +201,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       readSource();
 
       // prepare fields
-      DataSubschema dataSubschema = mapping.getDataSchema().subschemaByName(mapping.getDataSchemaFile().getName());
+      DataSubschema dataSubschema = mapping.getDataPackageSchema().subschemaByName(mapping.getDataSchemaFile().getName());
       fieldsIndices = new HashMap<>();
       int index = 0;
       if (dataSubschema != null) {
@@ -343,8 +343,8 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public DataSchema getDataSchema() {
-    return dataSchema;
+  public DataPackageSchema getDataSchema() {
+    return dataPackageSchema;
   }
 
   public DataSchemaMapping getMapping() {

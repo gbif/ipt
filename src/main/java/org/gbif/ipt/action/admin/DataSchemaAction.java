@@ -16,7 +16,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataSchemaManager;
@@ -47,11 +47,11 @@ public class DataSchemaAction extends POSTAction {
   private final RegistryManager registryManager;
   private final ConfigWarnings configWarnings;
 
-  private List<DataSchema> latestDataSchemasVersions;
-  private List<DataSchema> schemas;
-  private List<DataSchema> newSchemas;
+  private List<DataPackageSchema> latestDataSchemasVersions;
+  private List<DataPackageSchema> schemas;
+  private List<DataPackageSchema> newSchemas;
   private String schemaName;
-  private DataSchema dataSchema;
+  private DataPackageSchema dataPackageSchema;
   private boolean upToDate = true;
   private boolean iptReinstallationRequired = false;
 
@@ -115,25 +115,25 @@ public class DataSchemaAction extends POSTAction {
     // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
     newSchemas = getLatestDataSchemasVersions();
     List<String> installedSchemasIdentifiers = schemas.stream()
-        .map(DataSchema::getIdentifier)
+        .map(DataPackageSchema::getIdentifier)
         .collect(Collectors.toList());
     newSchemas.removeIf(ds -> installedSchemasIdentifiers.contains(ds.getIdentifier()));
 
     return SUCCESS;
   }
 
-  public List<DataSchema> getSchemas() {
+  public List<DataPackageSchema> getSchemas() {
     return schemas;
   }
 
-  public List<DataSchema> getNewSchemas() {
+  public List<DataPackageSchema> getNewSchemas() {
     return newSchemas;
   }
 
   @Override
   public String save() {
     try {
-      Optional<DataSchema> wrappedSchema = latestDataSchemasVersions.stream()
+      Optional<DataPackageSchema> wrappedSchema = latestDataSchemasVersions.stream()
           .filter(ds -> ds.getIdentifier().equals(id))
           .findFirst();
 
@@ -159,7 +159,7 @@ public class DataSchemaAction extends POSTAction {
     loadLatestDataSchemasVersions();
 
     if (id != null) {
-      dataSchema = schemaManager.get(id);
+      dataPackageSchema = schemaManager.get(id);
     }
   }
 
@@ -169,7 +169,7 @@ public class DataSchemaAction extends POSTAction {
   private void loadLatestDataSchemasVersions() {
     try {
       // list of all registered data schemas
-      List<DataSchema> all = registryManager.getLatestDataSchemas();
+      List<DataPackageSchema> all = registryManager.getLatestDataPackageSchemas();
       if (!all.isEmpty()) {
         // list of latest data schema versions
         setLatestDataSchemasVersions(getLatestVersions(all));
@@ -196,28 +196,28 @@ public class DataSchemaAction extends POSTAction {
    * Filter a list of data schemas, returning the latest versions. The latest version of a data schema
    * is determined by its issued date.
    *
-   * @param dataSchemas unfiltered list of all registered data schemas
+   * @param dataPackageSchemas unfiltered list of all registered data schemas
    *
    * @return filtered list of data schemas
    */
-  protected List<DataSchema> getLatestVersions(List<DataSchema> dataSchemas) {
+  protected List<DataPackageSchema> getLatestVersions(List<DataPackageSchema> dataPackageSchemas) {
     // sort data schemas by issued date, starting with latest issued
-    List<DataSchema> sorted = dataSchemas.stream()
-        .sorted(Comparator.comparing(DataSchema::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
+    List<DataPackageSchema> sorted = dataPackageSchemas.stream()
+        .sorted(Comparator.comparing(DataPackageSchema::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
         .collect(Collectors.toList());
 
     // populate list of the latest data schema versions
-    Map<String, DataSchema> dataSchemasByIdentifier = new HashMap<>();
+    Map<String, DataPackageSchema> dataPackageSchemasByIdentifier = new HashMap<>();
     if (!sorted.isEmpty()) {
-      for (DataSchema dataSchema : sorted) {
-        String identifier = dataSchema.getIdentifier();
-        if (identifier != null && !dataSchemasByIdentifier.containsKey(identifier)) {
-          dataSchemasByIdentifier.put(identifier, dataSchema);
+      for (DataPackageSchema dataPackageSchema : sorted) {
+        String identifier = dataPackageSchema.getIdentifier();
+        if (identifier != null && !dataPackageSchemasByIdentifier.containsKey(identifier)) {
+          dataPackageSchemasByIdentifier.put(identifier, dataPackageSchema);
         }
       }
     }
 
-    return new ArrayList<>(dataSchemasByIdentifier.values());
+    return new ArrayList<>(dataPackageSchemasByIdentifier.values());
   }
 
   /**
@@ -231,16 +231,16 @@ public class DataSchemaAction extends POSTAction {
    * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */
-  protected void updateComputableFields(List<DataSchema> installedDataSchemas) {
+  protected void updateComputableFields(List<DataPackageSchema> installedDataSchemas) {
     if (installedDataSchemas.isEmpty()) {
       return;
     }
 
     try {
       // complete list of registered data schemas (latest and non-latest versions)
-      List<DataSchema> registeredSchemas = registryManager.getLatestDataSchemas();
+      List<DataPackageSchema> registeredSchemas = registryManager.getLatestDataPackageSchemas();
 
-      for (DataSchema installedSchema : installedDataSchemas) {
+      for (DataPackageSchema installedSchema : installedDataSchemas) {
         updateComputableFields(installedSchema, registeredSchemas);
       }
     } catch (RegistryException e) {
@@ -256,10 +256,10 @@ public class DataSchemaAction extends POSTAction {
     }
   }
 
-  private void updateComputableFields(DataSchema installedSchema, List<DataSchema> registeredSchemas) {
+  private void updateComputableFields(DataPackageSchema installedSchema, List<DataPackageSchema> registeredSchemas) {
     installedSchema.setLatest(true);
 
-    for (DataSchema registeredSchema : registeredSchemas) {
+    for (DataPackageSchema registeredSchema : registeredSchemas) {
       if (isLatest(registeredSchema) && isSameIdentifier(installedSchema, registeredSchema)) {
         handleSchema(installedSchema, registeredSchema);
         break;
@@ -267,7 +267,7 @@ public class DataSchemaAction extends POSTAction {
     }
   }
 
-  private void handleSchema(DataSchema installedSchema, DataSchema latestSchema) {
+  private void handleSchema(DataPackageSchema installedSchema, DataPackageSchema latestSchema) {
     String latestCompatibleVersion = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
     String installedVersion = installedSchema.getVersion();
     String latestVersion = latestSchema.getVersion();
@@ -282,7 +282,7 @@ public class DataSchemaAction extends POSTAction {
     }
   }
 
-  private void handleCompatibleVersionNotMatchInstalled(DataSchema installedSchema, String latestCompatibleVersion) {
+  private void handleCompatibleVersionNotMatchInstalled(DataPackageSchema installedSchema, String latestCompatibleVersion) {
     upToDate = false;
     installedSchema.setLatest(false);
     installedSchema.setUpdatable(true);
@@ -291,8 +291,8 @@ public class DataSchemaAction extends POSTAction {
         installedSchema.getIdentifier(), installedSchema.getIssued(), latestCompatibleVersion);
   }
 
-  private void handleCompatibleVersionMatchesInstalledButNotMatchLatest(DataSchema installedSchema, String latestCompatibleVersion) {
-    DataSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
+  private void handleCompatibleVersionMatchesInstalledButNotMatchLatest(DataPackageSchema installedSchema, String latestCompatibleVersion) {
+    DataPackageSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
     Date latestCompatibleSchemaIssuedDate = latestCompatibleSchema.getIssued();
 
     upToDate = false;
@@ -311,19 +311,19 @@ public class DataSchemaAction extends POSTAction {
     }
   }
 
-  private boolean isSameIdentifier(DataSchema first, DataSchema second) {
+  private boolean isSameIdentifier(DataPackageSchema first, DataPackageSchema second) {
     return first.getIdentifier().equalsIgnoreCase(second.getIdentifier());
   }
 
-  private boolean isLatest(DataSchema schema) {
+  private boolean isLatest(DataPackageSchema schema) {
     return schema.isLatest();
   }
 
-  public List<DataSchema> getLatestDataSchemasVersions() {
+  public List<DataPackageSchema> getLatestDataSchemasVersions() {
     return latestDataSchemasVersions;
   }
 
-  public void setLatestDataSchemasVersions(List<DataSchema> latestDataSchemasVersions) {
+  public void setLatestDataSchemasVersions(List<DataPackageSchema> latestDataSchemasVersions) {
     this.latestDataSchemasVersions = latestDataSchemasVersions;
   }
 
@@ -331,8 +331,8 @@ public class DataSchemaAction extends POSTAction {
     this.schemaName = schemaName;
   }
 
-  public DataSchema getDataSchema() {
-    return dataSchema;
+  public DataPackageSchema getDataSchema() {
+    return dataPackageSchema;
   }
 
   /**

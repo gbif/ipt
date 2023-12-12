@@ -14,7 +14,7 @@
 package org.gbif.ipt.service.registry;
 
 import org.gbif.api.model.registry.Network;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -57,7 +57,7 @@ public interface RegistryManager {
    *
    * @throws RegistryException if the list of data schemas couldn't be populated
    */
-  List<DataSchema> getLatestDataSchemas() throws RegistryException;
+  List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException;
 
   /**
    * Get the latest compatible version with the provided one
@@ -79,17 +79,17 @@ public interface RegistryManager {
    *
    * @throws RegistryException if the data couldn't be populated
    */
-  DataSchema getSchema(String schemaName, String schemaVersion) throws RegistryException;
+  DataPackageSchema getSchema(String schemaName, String schemaVersion) throws RegistryException;
 
   /**
    * Gets list of all registered data schemas from the Registry.
-   * Similar to {@link this#getLatestDataSchemas()} but returns schemas with versions supported by the IPT.
+   * Similar to {@link this#getLatestDataPackageSchemas()} but returns schemas with versions supported by the IPT.
    *
    * @return list of data schemas, or an empty list if none were retrieved from valid response
    *
    * @throws RegistryException if the list of data schemas couldn't be populated
    */
-  List<DataSchema> getSupportedDataSchemas() throws RegistryException;
+  List<DataPackageSchema> getSupportedDataSchemas() throws RegistryException;
 
   /**
    * Retrieves a list of Organisation from the Registry.

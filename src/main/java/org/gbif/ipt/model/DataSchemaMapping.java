@@ -32,7 +32,7 @@ public class DataSchemaMapping implements Serializable {
   private static final long serialVersionUID = -8441887797416795559L;
 
   private Source source;
-  private DataSchema dataSchema;
+  private DataPackageSchema dataPackageSchema;
   private DataSubschemaName dataSchemaFile;
   private List<DataSchemaFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;

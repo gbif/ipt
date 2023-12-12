@@ -32,7 +32,7 @@ import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldConstraints;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
@@ -1300,10 +1300,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private DataSchemaMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
     DataSchemaMapping map = new DataSchemaMapping();
-    DataSchema dataSchema = schemaManager.get(packageType);
+    DataPackageSchema dataPackageSchema = schemaManager.get(packageType);
     String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
 
-    if (dataSchema == null) {
+    if (dataPackageSchema == null) {
       // cleanup source file immediately
       if (source.isFileSource()) {
         boolean deleted = FileUtils.deleteQuietly(file);
@@ -1317,7 +1317,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
-    DataSubschema subschema = dataSchema.getTableSchemas().stream()
+    DataSubschema subschema = dataPackageSchema.getTableSchemas().stream()
       .filter(s -> s.getName().equals(filenameWithoutExtension))
       .findAny()
       .orElse(null);
@@ -1327,7 +1327,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
     }
 
-    map.setDataSchema(dataSchema);
+    map.setDataPackageSchema(dataPackageSchema);
     map.setDataSchemaFile(new DataSubschemaName(subschema.getName()));
     map.setSource(source);
 
@@ -1353,7 +1353,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         fields.add(new DataSchemaFieldMapping(i, dataSchemaField));
       } else {
         alog.warn("manage.resource.create.mapping.field.skip",
-          new String[] {columnNames[i], dataSchema.getName() + "/" + subschema.getName()});
+          new String[] {columnNames[i], dataPackageSchema.getName() + "/" + subschema.getName()});
       }
     }
 
@@ -1566,8 +1566,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
     // add data packages
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
+    List<DataPackageSchema> installedSchemas = schemaManager.list();
+    for (DataPackageSchema installedSchema : installedSchemas) {
       datasetTypes.put(
         installedSchema.getName(),
         Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
@@ -1892,8 +1892,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
     // add data packages
-    List<DataSchema> installedSchemas = schemaManager.list();
-    for (DataSchema installedSchema : installedSchemas) {
+    List<DataPackageSchema> installedSchemas = schemaManager.list();
+    for (DataPackageSchema installedSchema : installedSchemas) {
       datasetTypes.put(
         installedSchema.getName(),
         Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));

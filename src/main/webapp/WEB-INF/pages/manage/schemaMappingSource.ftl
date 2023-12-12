@@ -76,11 +76,11 @@
 
     <div class="container-fluid bg-body">
         <div class="container pt-4">
-            <p class="fst-italic text-center">${mapping.dataSchema.description}</p>
+            <p class="fst-italic text-center">${mapping.dataPackageSchema.description}</p>
 
             <input type="hidden" name="r" value="${resource.shortname}" />
-            <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
-            <input type="hidden" name="schemaName" value="${mapping.dataSchema.name}" />
+            <input type="hidden" name="id" value="${mapping.dataPackageSchema.identifier}" />
+            <input type="hidden" name="schemaName" value="${mapping.dataPackageSchema.name}" />
             <input type="hidden" name="mid" value="${mid!}" />
             <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
@@ -88,7 +88,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <@selectList name="schemaFile" options=dataSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataSchema.shortTitle!'manage.mapping.schemaFile'}" requiredField=true />
+                    <@selectList name="schemaFile" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.schemaFile'}" requiredField=true />
                 </div>
                 <div class="col-sm-6">
                     <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />

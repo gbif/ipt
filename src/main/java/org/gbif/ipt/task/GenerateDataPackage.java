@@ -15,7 +15,7 @@ package org.gbif.ipt.task;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
@@ -339,13 +339,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         .map(DataSchemaMapping::getDataSchemaFile)
         .map(DataSubschemaName::getName)
         .collect(Collectors.toSet());
-    DataSchema dataSchema = resource.getDataSchemaMappings().get(0).getDataSchema();
-    currSchema = dataSchema.getName();
+    DataPackageSchema dataPackageSchema = resource.getDataSchemaMappings().get(0).getDataPackageSchema();
+    currSchema = dataPackageSchema.getName();
 
     // before starting to add subschemas, check all required schemas mapped
-    checkRequiredSubSchemasMapped(mappedSubSchemas, dataSchema);
+    checkRequiredSubSchemasMapped(mappedSubSchemas, dataPackageSchema);
 
-    for (DataSubschema subSchema : dataSchema.getTableSchemas()) {
+    for (DataSubschema subSchema : dataPackageSchema.getTableSchemas()) {
       // skip un-mapped (optional) schemas
       if (!mappedSubSchemas.contains(subSchema.getName())) {
         continue;
@@ -368,11 +368,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * Checks if all required schemas mapped, otherwise throws an exception.
    *
    * @param mappedSubSchemas mapped subschemas
-   * @param dataSchema data schema
+   * @param dataPackageSchema data schema
    */
-  private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataSchema dataSchema)
+  private void checkRequiredSubSchemasMapped(Set<String> mappedSubSchemas, DataPackageSchema dataPackageSchema)
       throws GeneratorException {
-    SubSchemaRequirement requirements = dataSchema.getTableSchemasRequirements();
+    SubSchemaRequirement requirements = dataPackageSchema.getTableSchemasRequirements();
 
     if (requirements != null) {
       SubSchemaRequirement.ValidationResult validationResult = requirements.validate(mappedSubSchemas);
@@ -610,7 +610,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // common message part used in constructing all reporting messages below
-    String mp = " for mapping " + schemaMapping.getDataSchema().getTitle() + " in source " + schemaMapping.getSource().getName();
+    String mp = " for mapping " + schemaMapping.getDataPackageSchema().getTitle() + " in source " + schemaMapping.getSource().getName();
 
     // add lines incomplete message
     if (recordsWithError > 0) {

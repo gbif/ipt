@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * A field in schema file of {@link DataSchema}.
+ * A field in schema file of {@link DataPackageSchema}.
  */
 @Data
 @Builder

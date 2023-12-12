@@ -15,7 +15,7 @@ package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
-import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
@@ -428,7 +428,7 @@ public class SetupAction extends BaseAction {
       }
     }
 
-    List<DataSchema> schemas = schemaManager.list();
+    List<DataPackageSchema> schemas = schemaManager.list();
     if (schemas.isEmpty()) {
       try {
         schemaManager.installSupportedSchemas();
