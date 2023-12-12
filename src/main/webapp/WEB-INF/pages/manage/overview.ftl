@@ -113,7 +113,7 @@
             var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
             var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
             var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
-            location.href = 'schemaMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
+            location.href = 'dataPackageMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
         $(".network-item-link").click(function (e) {

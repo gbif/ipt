@@ -189,7 +189,7 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="delete-schemaMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
+    <action name="deleteDataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
@@ -218,9 +218,9 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="schemaMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
-      <result name="input">/WEB-INF/pages/manage/schemaMapping.ftl</result>
-      <result name="source">/WEB-INF/pages/manage/schemaMappingSource.ftl</result>
+    <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
+      <result name="source">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
@@ -255,17 +255,17 @@
     </action>
 
     <action name="dataPackageFieldTranslation" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction">
-      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
-      <result name="input">/WEB-INF/pages/manage/translation_dp.ftl</result>
-      <result name="none" type="redirect">${baseURL}/manage/schemaMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
+      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
     </action>
 
     <action name="dataPackageFieldTranslationReload" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="reload">
-      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
     </action>
 
     <action name="dataPackageFieldTranslationAutomap" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="automap">
-      <result>/WEB-INF/pages/manage/translation_dp.ftl</result>
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
     </action>
 
     <!-- ajaxy status report about background processes kicked off by the current user -->

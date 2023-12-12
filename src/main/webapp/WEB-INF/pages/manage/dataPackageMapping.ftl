@@ -361,7 +361,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form id="mappingForm" class="needs-validation" action="schemaMapping.do" method="post">
+    <form id="mappingForm" class="needs-validation" action="dataPackageMapping.do" method="post">
         <div class="container-fluid border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container p-3 my-3">

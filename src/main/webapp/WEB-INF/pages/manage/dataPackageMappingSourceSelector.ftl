@@ -41,7 +41,7 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<form class="topForm" action="schemaMapping.do" method="post">
+<form class="topForm" action="dataPackageMapping.do" method="post">
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container p-3 my-3">
