@@ -100,9 +100,9 @@
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
-                            <#list dataPackageSchema.tableSchemas as subSchema>
+                            <#list dataPackageSchema.tableSchemas as tableSchema>
                                 <li>
-                                    <a href="#anchor-${subSchema.name}" class="sidebar-navigation-link">${subSchema.title}</a>
+                                    <a href="#anchor-${tableSchema.name}" class="sidebar-navigation-link">${tableSchema.title}</a>
                                 </li>
                             </#list>
                         </ul>
@@ -110,20 +110,20 @@
                 </div>
 
                 <div class="bd-content ps-lg-4">
-                    <#list dataPackageSchema.tableSchemas as subSchema>
-                        <span class="anchor anchor-schema-page" id="anchor-${subSchema.name}"></span>
-                        <div id="${subSchema.name}" class="mt-5 section">
+                    <#list dataPackageSchema.tableSchemas as tableSchema>
+                        <span class="anchor anchor-schema-page" id="anchor-${tableSchema.name}"></span>
+                        <div id="${tableSchema.name}" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                ${subSchema.title}
+                                ${tableSchema.title}
                             </h4>
                             <div class="mt-3">
-                                <#if subSchema.description?has_content>
+                                <#if tableSchema.description?has_content>
                                     <p class="mb-4">
-                                        <@processDescription subSchema.description />
+                                        <@processDescription tableSchema.description />
                                     </p>
                                 </#if>
 
-                                <#list subSchema.fields as field>
+                                <#list tableSchema.fields as field>
                                     <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                         <div class="col-lg-3 mt-1">
                                             <div class="title">

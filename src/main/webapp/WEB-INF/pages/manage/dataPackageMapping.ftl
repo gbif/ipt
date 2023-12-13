@@ -230,8 +230,8 @@
         </#noescape>
     </#macro>
 
-    <#macro sourceSample index subschemaName fieldsIndex>
-        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-3">
+    <#macro sourceSample index tableSchemaName fieldsIndex>
+        <div id="fSIdx_${tableSchemaName}_${fieldsIndex}" class="text-collapse sample mappingText mx-3">
             <@s.text name='manage.mapping.sourceSample' />:
             <em>
                 <#list peek as row>
@@ -248,7 +248,7 @@
         </div>
     </#macro>
 
-    <#macro showField subschema field index>
+    <#macro showField tableSchema field index>
         <#assign fieldsIndex = action.getFieldsIndices().get(field.field.name)/>
 
         <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
@@ -307,7 +307,7 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx_${subschema.name}_${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
+                <select id="fIdx_${tableSchema.name}_${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
                         <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
@@ -318,7 +318,7 @@
             <div class="col-lg-4">
                 <#if field.field.constraints?? && field.field.constraints.vocabulary??>
                     <div class="input-group input-group-sm">
-                        <select id="fVal_${subschema.name}_${index}" class="fval fval-select form-select form-select-sm" name="fields[${index}].defaultValue">
+                        <select id="fVal_${tableSchema.name}_${index}" class="fval fval-select form-select form-select-sm" name="fields[${index}].defaultValue">
                             <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                             <#list field.field.constraints.vocabulary as code>
                                 <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${code}</option>
@@ -327,26 +327,26 @@
                     </div>
                 <#elseif field.field.type?? && field.field.type == "boolean" >
                       <div class="input-group input-group-sm">
-                            <select id="fVal_${subschema.name}_${index}" class="fval fval-select form-select form-select-sm" name="fields[${index}].defaultValue">
+                            <select id="fVal_${tableSchema.name}_${index}" class="fval fval-select form-select form-select-sm" name="fields[${index}].defaultValue">
                               <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                               <option value="true" <#if (field.defaultValue!"")=='true'> selected="selected"</#if>>true</option>
                               <option value="false" <#if (field.defaultValue!"")=='false'> selected="selected"</#if>>false</option>
                             </select>
                       </div>
                 <#else>
-                    <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
+                    <input id="fVal_${tableSchema.name}_${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
                 </#if>
             </div>
 
             <#if field.index??>
-                <small><@sourceSample field.index subschema.name fieldsIndex/></small>
+                <small><@sourceSample field.index tableSchema.name fieldsIndex/></small>
 
                 <div id="fTIdx${fieldsIndex}" class="sample mappingText">
                     <small class="mx-lg-3"><@s.text name='manage.mapping.translation' />:</small>
                     <small>
                         <a href="dataPackageFieldTranslation.do?r=${resource.shortname}&mid=${mid}&field=${field.field.name}">
                             <#if (((field.translation?size)!0)>0)>
-                                ${(field.translation?size)!0} terms
+                                <@s.text name="manage.overview.mappings.fields"><@s.param>${(field.translation?size)!0}</@s.param></@s.text>
                             <#else>
                                 <@s.text name="button.add"/>
                             </#if>
