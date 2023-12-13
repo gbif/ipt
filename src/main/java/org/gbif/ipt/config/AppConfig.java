@@ -181,8 +181,8 @@ public class AppConfig {
   }
 
   public static Map<String, String> getSupportedDataSchemaNamesWithVersions() {
-    return Arrays.stream(SupportedDatapackageType.values())
-            .collect(Collectors.toMap(SupportedDatapackageType::getName, SupportedDatapackageType::getSupportedVersion));
+    return Arrays.stream(SupportedDataPackageType.values())
+            .collect(Collectors.toMap(SupportedDataPackageType::getName, SupportedDataPackageType::getSupportedVersion));
   }
 
   /**

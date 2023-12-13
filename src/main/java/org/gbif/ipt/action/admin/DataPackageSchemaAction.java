@@ -70,9 +70,9 @@ public class DataPackageSchemaAction extends POSTAction {
   public String delete() throws Exception {
     try {
       schemaManager.uninstallSafely(id, schemaName);
-      addActionMessage(getText("admin.schemas.delete.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.delete.success", new String[] {id}));
     } catch (DeletionNotAllowedException e) {
-      addActionWarning(getText("admin.schemas.delete.error", new String[] {id}));
+      addActionWarning(getText("admin.dataPackages.delete.error", new String[] {id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
@@ -91,10 +91,10 @@ public class DataPackageSchemaAction extends POSTAction {
     try {
       LOG.info("Updating data schema {} to the latest version...", id);
       schemaManager.update(id);
-      addActionMessage(getText("admin.schemas.update.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.update.success", new String[] {id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.schemas.update.error", new String[] {e.getMessage()}), e);
+      addActionWarning(getText("admin.dataPackages.update.error", new String[] {e.getMessage()}), e);
     }
     return SUCCESS;
   }
@@ -141,13 +141,13 @@ public class DataPackageSchemaAction extends POSTAction {
       if (wrappedSchema.isPresent()) {
         schemaManager.install(wrappedSchema.get());
       } else {
-        addActionWarning(getText("admin.schemas.install.error", new String[] {id}));
+        addActionWarning(getText("admin.dataPackages.install.error", new String[] {id}));
       }
 
-      addActionMessage(getText("admin.schemas.install.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.install.success", new String[] {id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.schemas.install.error", new String[] {id}), e);
+      addActionWarning(getText("admin.dataPackages.install.error", new String[] {id}), e);
     }
     return SUCCESS;
   }
@@ -182,7 +182,7 @@ public class DataPackageSchemaAction extends POSTAction {
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
-      msg = getText("admin.schemas.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      msg = getText("admin.dataPackages.couldnt.load", new String[] {cfg.getRegistryUrl()});
       configWarnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
@@ -251,7 +251,7 @@ public class DataPackageSchemaAction extends POSTAction {
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
-      msg = getText("admin.schemas.couldnt.load", new String[]{cfg.getRegistryUrl()});
+      msg = getText("admin.dataPackages.couldnt.load", new String[]{cfg.getRegistryUrl()});
       configWarnings.addStartupError(msg);
       LOG.error(msg);
     }

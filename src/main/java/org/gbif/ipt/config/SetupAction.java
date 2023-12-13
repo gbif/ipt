@@ -434,7 +434,7 @@ public class SetupAction extends BaseAction {
         schemaManager.installSupportedSchemas();
       } catch (InvalidConfigException e) {
         LOG.error(e);
-        addActionWarning(getText("admin.schemas.couldnt.install"), e);
+        addActionWarning(getText("admin.dataPackages.couldnt.install"), e);
       }
     }
 

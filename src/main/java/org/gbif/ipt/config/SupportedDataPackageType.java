@@ -13,23 +13,23 @@
  */
 package org.gbif.ipt.config;
 
-import static org.gbif.ipt.config.Constants.DATA_SCHEMA_CAMTRAP_DP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_SCHEMA_COLDP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_SCHEMA_INTERACTION_DP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_SCHEMA_MATERIAL_DP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_COLDP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_INTERACTION_DP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_MATERIAL_DP_IDENTIFIER;
 
-public enum SupportedDatapackageType {
+public enum SupportedDataPackageType {
 
-  CAMTRAP_DP(Constants.CAMTRAP_DP, DATA_SCHEMA_CAMTRAP_DP_IDENTIFIER, "1.0"),
-  COLDP(Constants.COL_DP, DATA_SCHEMA_COLDP_IDENTIFIER, "1.0"),
-  MATERIAL_DP(Constants.MATERIAL_DP, DATA_SCHEMA_MATERIAL_DP_IDENTIFIER, "0.1"),
-  INTERACTION_DP(Constants.INTERACTION_DP, DATA_SCHEMA_INTERACTION_DP_IDENTIFIER, "0.1");
+  CAMTRAP_DP(Constants.CAMTRAP_DP, DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER, "1.0"),
+  COLDP(Constants.COL_DP, DATA_PACKAGE_COLDP_IDENTIFIER, "1.0"),
+  MATERIAL_DP(Constants.MATERIAL_DP, DATA_PACKAGE_MATERIAL_DP_IDENTIFIER, "0.1"),
+  INTERACTION_DP(Constants.INTERACTION_DP, DATA_PACKAGE_INTERACTION_DP_IDENTIFIER, "0.1");
 
   private final String name;
   private final String identifier;
   private final String supportedVersion;
 
-  SupportedDatapackageType(String name, String identifier, String supportedVersion) {
+  SupportedDataPackageType(String name, String identifier, String supportedVersion) {
     this.name = name;
     this.identifier = identifier;
     this.supportedVersion = supportedVersion;

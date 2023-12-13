@@ -17,7 +17,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.SupportedDatapackageType;
+import org.gbif.ipt.config.SupportedDataPackageType;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.Resource;
@@ -104,7 +104,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         if (r.getDataPackageIdentifier() != null
             && r.getDataPackageIdentifier().equals(schemaIdentifier) && !r.getDataPackageMappings().isEmpty()) {
           LOG.warn("Schema mapped in resource " + r.getShortname());
-          String msg = baseAction.getText("admin.schemas.delete.error.mapped", new String[] {r.getShortname()});
+          String msg = baseAction.getText("admin.dataPackages.delete.error.mapped", new String[] {r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
         }
       }
@@ -251,7 +251,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
-      String msg = baseAction.getText("admin.schemas.install.error", new String[] {dataPackageSchema.getUrl().toString()});
+      String msg = baseAction.getText("admin.dataPackages.install.error", new String[] {dataPackageSchema.getUrl().toString()});
       LOG.error(msg, e);
 
       // clean directory if installation failed
@@ -479,13 +479,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
-      msg = baseAction.getText("admin.schemas.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      msg = baseAction.getText("admin.dataPackages.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
       LOG.error(msg);
     }
 
     // throw exception if all supported data schemas could not be loaded
-    if (SupportedDatapackageType.values().length != supportedDataPackageSchemas.size()) {
+    if (SupportedDataPackageType.values().length != supportedDataPackageSchemas.size()) {
       String msg = "Not all supported data schemas were loaded!";
       LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);

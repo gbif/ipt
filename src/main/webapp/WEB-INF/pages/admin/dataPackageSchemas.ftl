@@ -23,7 +23,7 @@
                     <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
                         <div>
                             <#if !ds.latest>
-                                <span class="text-gbif-danger"><@s.text name="admin.schemas.version.warning"/></span><br>
+                                <span class="text-gbif-danger"><@s.text name="admin.dataPackages.version.warning"/></span><br>
                             </#if>
                             ${ds.description!?truncate(300)}
                         </div>
@@ -86,15 +86,15 @@
                     <div class="text-smaller">
                         <#if schemasCount=0>
                             <span class="text-gbif-danger mt-3">
-                                <@s.text name="admin.schemas.no.schemas.installed"/>
+                                <@s.text name="admin.dataPackages.no.schemas.installed"/>
                             </span>
                         <#else>
                             <#if upToDate>
-                                <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
+                                <span class="text-gbif-primary"><@s.text name="admin.dataPackages.upToDate"/></span>
                             <#elseif iptReinstallationRequired>
-                                <span class="text-gbif-danger"><@s.text name="admin.schemas.iptReinstallationRequired"/></span>
+                                <span class="text-gbif-danger"><@s.text name="admin.dataPackages.iptReinstallationRequired"/></span>
                             <#else>
-                                <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
+                                <span class="text-gbif-danger"><@s.text name="admin.dataPackages.not.upToDate"/></span>
                             </#if>
                         </#if>
                     </div>
@@ -112,7 +112,7 @@
     <main class="container main-content-container">
         <div class="mt-3 mb-0 p-3">
             <h5 class="pb-2 mb-0 pt-2 text-gbif-header-2 fw-400">
-                <@s.text name="admin.schemas.installed"/>
+                <@s.text name="admin.dataPackages.installed"/>
             </h5>
         </div>
 
