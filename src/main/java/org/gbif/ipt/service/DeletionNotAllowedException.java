@@ -36,7 +36,7 @@ public class DeletionNotAllowedException extends Exception {
      */
     EXTENSION_MAPPED,
     /**
-     * Because the data schema has been mapped in at least one resource. Used while deleting an data schema.
+     * Because the data package schema has been mapped in at least one resource. Used while deleting a data package schema.
      */
     DATA_SCHEMA_MAPPED,
     /**

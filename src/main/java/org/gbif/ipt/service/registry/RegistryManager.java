@@ -51,11 +51,11 @@ public interface RegistryManager {
   List<Extension> getExtensions() throws RegistryException;
 
   /**
-   * Gets list of all registered data schemas from the Registry.
+   * Gets a list of all registered data package schemas from the Registry.
    *
-   * @return list of data schemas, or an empty list if none were retrieved from valid response
+   * @return list of data package schemas, or an empty list if none were retrieved from valid response
    *
-   * @throws RegistryException if the list of data schemas couldn't be populated
+   * @throws RegistryException if the list of data package schemas couldn't be populated
    */
   List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException;
 

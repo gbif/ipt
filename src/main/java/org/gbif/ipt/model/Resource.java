@@ -226,7 +226,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Adds a new data schema mapping to the resource.
+   * Adds a new data package mapping to the resource.
    * It returns the list index for this mapping according to getDataPackageMapping(identifier)
    *
    * @return list index corresponding to getDataPackageMapping(identifier) or null if the mapping couldn't be added
@@ -307,7 +307,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Delete a Resource's data schema mapping.
+   * Delete a Resource's data package mapping.
    *
    * @param mapping DataPackageMapping
    *
@@ -334,7 +334,7 @@ public class Resource implements Serializable, Comparable<Resource> {
           LOG.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
         }
       }
-      // remove schema mappings
+      // remove data package mappings
       List<DataPackageMapping> dpms = new ArrayList<>(dataPackageMappings);
       for (DataPackageMapping dpm : dpms) {
         if (dpm.getSource() != null && src.equals(dpm.getSource())) {
@@ -401,7 +401,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * @return the schema identifier of the data schema
+   * @return the identifier of the data package
    */
   @Nullable
   public String getDataPackageIdentifier() {
@@ -725,7 +725,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Get the list of data schema mappings for its data schema identifier.
+   * Get the list of data package mappings for its data schema identifier.
    * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
    * list.
    *

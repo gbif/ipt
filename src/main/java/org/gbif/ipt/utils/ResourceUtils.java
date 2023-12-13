@@ -63,7 +63,7 @@ public class ResourceUtils {
    * @param version version to assign to reconstructed resource
    * @param shortname shortname to assign to reconstructed resource
    * @param coreTypeOrPackageType coreType or packageType
-   * @param schemaIdentifier data package schema identifier (optional)
+   * @param dataPackageIdentifier data package identifier (optional)
    * @param doi DOI to assign to reconstructed resource
    * @param organisation organisation to assign to reconstructed resource
    * @param versionHistory VersionHistory corresponding to resource version being reconstructed
@@ -73,12 +73,12 @@ public class ResourceUtils {
    * @return published version reconstructed
    */
   public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreTypeOrPackageType,
-    @Nullable String schemaIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
+    @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
     @Nullable VersionHistory versionHistory, @Nullable File versionMetadataFile, @Nullable UUID key) {
     Objects.requireNonNull(version);
     Objects.requireNonNull(shortname);
 
-    boolean isDataPackageResource = schemaIdentifier != null;
+    boolean isDataPackageResource = dataPackageIdentifier != null;
 
     if (organisation == null && !isDataPackageResource) {
       throw new IllegalArgumentException(
@@ -98,7 +98,7 @@ public class ResourceUtils {
     // initiate new version, and set properties
     Resource resource = new Resource();
     resource.setCoreType(coreTypeOrPackageType);
-    resource.setDataPackageIdentifier(schemaIdentifier);
+    resource.setDataPackageIdentifier(dataPackageIdentifier);
     resource.setShortname(shortname);
     resource.setMetadataVersion(version);
     resource.setDoi(doi);
@@ -125,7 +125,7 @@ public class ResourceUtils {
         } else {
           DataPackageMetadata metadata;
           try {
-            metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(schemaIdentifier));
+            metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(dataPackageIdentifier));
             resource.setDataPackageMetadata(metadata);
           } catch (IOException e) {
             LOG.error("Failed to produce metadata for the data package resource {}", shortname);
@@ -145,8 +145,8 @@ public class ResourceUtils {
     return resource;
   }
 
-  private static Class<? extends DataPackageMetadata> getDataPackageClass(String schemaIdentifier) {
-    if (schemaIdentifier.contains(CAMTRAP_DP)) {
+  private static Class<? extends DataPackageMetadata> getDataPackageClass(String dataPackageIdentifier) {
+    if (dataPackageIdentifier.contains(CAMTRAP_DP)) {
       return CamtrapMetadata.class;
     } else {
       return FrictionlessColMetadata.class;
