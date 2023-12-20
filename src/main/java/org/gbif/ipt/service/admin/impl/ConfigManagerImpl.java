@@ -221,7 +221,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     LOG.info("Loading extensions ...");
     extensionManager.load();
 
-    LOG.info("Loading data schemas ...");
+    LOG.info("Loading data package schemas ...");
     schemaManager.load();
 
     LOG.info("Ensure supported versions of default schemas are installed...");

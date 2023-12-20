@@ -431,7 +431,7 @@ public class SetupAction extends BaseAction {
     List<DataPackageSchema> schemas = schemaManager.list();
     if (schemas.isEmpty()) {
       try {
-        schemaManager.installSupportedSchemas();
+        schemaManager.installSupportedDataPackageSchemas();
       } catch (InvalidConfigException e) {
         LOG.error(e);
         addActionWarning(getText("admin.dataPackages.couldnt.install"), e);

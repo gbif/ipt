@@ -49,9 +49,9 @@ public interface DataPackageSchemaManager {
   DataPackageSchema get(String identifier);
 
   /**
-   * Install base data schemas.
+   * Install base data package schemas.
    */
-  void installSupportedSchemas() throws InvalidConfigException;
+  void installSupportedDataPackageSchemas() throws InvalidConfigException;
 
   /**
    * Downloads a data schema to the local cache and installs it for mapping. If the file is already locally existing

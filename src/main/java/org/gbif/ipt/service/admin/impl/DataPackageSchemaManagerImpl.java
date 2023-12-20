@@ -215,7 +215,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   @Override
-  public void installSupportedSchemas() throws InvalidConfigException {
+  public void installSupportedDataPackageSchemas() throws InvalidConfigException {
     List<DataPackageSchema> schemas = getSupportedDataSchemas();
     for (DataPackageSchema schema : schemas) {
       install(schema);
@@ -323,33 +323,37 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   @Override
   public void installOrUpdateDefaults() {
-    List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();
+    try {
+      List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();
 
-    for (DataPackageSchema supportedDataPackageSchema : supportedDataPackageSchemas) {
-      if (!isSchemaInstalled(supportedDataPackageSchema.getIdentifier())) {
-        // schema is not installed, install it
-        LOG.info("Missing default schema {}. Installing", supportedDataPackageSchema.getIdentifier());
-        install(supportedDataPackageSchema);
-      } else {
-        // schema is installed, make sure the proper version used
-        DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
-
-        String installedDataSchemaVersion = installedDataSchema.getVersion();
-        String dataSchemaName = installedDataSchema.getName();
-        String dataSchemaIdentifier = installedDataSchema.getIdentifier();
-        Date installedSchemaIssuedDate = installedDataSchema.getIssued();
-        Date supportedSchemaIssuedDate = supportedDataPackageSchema.getIssued();
-
-        // version must not match
-        // installed schema must be older than supported one (do not downgrade)
-        if (!installedDataSchemaVersion.equals(supportedDataPackageSchema.getVersion())
-            && installedSchemaIssuedDate.compareTo(supportedSchemaIssuedDate) < 0) {
-          LOG.info("Schema {} uses outdated version {}. Updating to {}",
-              supportedDataPackageSchema.getIdentifier(), installedDataSchemaVersion, supportedDataPackageSchema.getVersion());
-          uninstall(dataSchemaIdentifier, dataSchemaName);
+      for (DataPackageSchema supportedDataPackageSchema : supportedDataPackageSchemas) {
+        if (!isSchemaInstalled(supportedDataPackageSchema.getIdentifier())) {
+          // schema is not installed, install it
+          LOG.info("Missing default data package schema {}. Installing", supportedDataPackageSchema.getIdentifier());
           install(supportedDataPackageSchema);
+        } else {
+          // schema is installed, make sure the proper version used
+          DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
+
+          String installedDataSchemaVersion = installedDataSchema.getVersion();
+          String dataSchemaName = installedDataSchema.getName();
+          String dataSchemaIdentifier = installedDataSchema.getIdentifier();
+          Date installedSchemaIssuedDate = installedDataSchema.getIssued();
+          Date supportedSchemaIssuedDate = supportedDataPackageSchema.getIssued();
+
+          // version must not match
+          // installed schema must be older than supported one (do not downgrade)
+          if (!installedDataSchemaVersion.equals(supportedDataPackageSchema.getVersion())
+              && installedSchemaIssuedDate.compareTo(supportedSchemaIssuedDate) < 0) {
+            LOG.info("Schema {} uses outdated version {}. Updating to {}",
+                supportedDataPackageSchema.getIdentifier(), installedDataSchemaVersion, supportedDataPackageSchema.getVersion());
+            uninstall(dataSchemaIdentifier, dataSchemaName);
+            install(supportedDataPackageSchema);
+          }
         }
       }
+    } catch (Exception e) {
+      LOG.error("Failed to install/update default data package schemas", e);
     }
   }
 
@@ -510,10 +514,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
     try {
       DataPackageSchema dataPackageSchema = factory.buildSchema(localFile);
-      LOG.info("Successfully loaded data schema file " + dataPackageSchema.getIdentifier());
+      LOG.info("Successfully loaded data package schema file " + dataPackageSchema.getIdentifier());
       return dataPackageSchema;
     } catch (IOException e) {
-      LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local data package schema file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,
           "Can't access local data schema file");
     }
