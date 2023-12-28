@@ -139,7 +139,7 @@
 
                     <div class="my-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                        <a href="resource.do?r=${resource.shortname}" class="button btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
                     </div>
 
                 </div>
