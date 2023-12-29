@@ -34,9 +34,7 @@
         });
 
         function calculateNumberOfItems(name) {
-            console.log($("#mappings .item"))
-            console.log($("#mappings .item").length)
-            return $("#mappings .item").length;
+            return $("#mappings .item").length + 1;
         }
 
         $("#plus-mapping").click(function (event) {
@@ -54,7 +52,6 @@
                 newItem.slideDown('slow');
             }
 
-            console.log("mapping items: " + mappingItems)
             setMappingItemIndex(newItem, mappingItems);
         }
 
@@ -71,14 +68,8 @@
             $('#mapping-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
                 $(this).remove();
                 $("#mappings .item").each(function (index) {
-                    console.log("#mappings .item")
-                    console.log(index)
-                    console.log($(this))
-                    setMappingItemIndex($(this), index);
+                    setMappingItemIndex($(this), index + 1);
                 });
-                // console.log(mappingItems)
-                // calculateNumberOfItems("mapping");
-                // console.log(mappingItems)
 
             });
         }
@@ -91,19 +82,15 @@
                 removeMappingItem(event);
             });
 
-            console.log(index)
-            console.log($("#mapping-item-" + index + " [id^='additionalTableSchema']"))
-            $("#mapping-item-" + index + " [id^='additionalTableSchema']").attr("id", "additionalTableSchema[" + index + "]").attr("name", function () {
+            $("#mapping-item-" + index + " [id^='newTableSchemas']").attr("id", "newTableSchemas[" + index + "]").attr("name", function () {
                 return $(this).attr("id");
             });
-            $("#mapping-item-" + index + " [for^='additionalTableSchema']").attr("for", "additionalTableSchema[" + index + "]");
+            $("#mapping-item-" + index + " [for^='newTableSchemas']").attr("for", "newTableSchemas[" + index + "]");
 
-            console.log(index)
-            console.log($("#mapping-item-" + index + " [id^='source']"))
-            $("#mapping-item-" + index + " [id^='source']").attr("id", "source[" + index + "]").attr("name", function () {
+            $("#mapping-item-" + index + " [id^='newSources']").attr("id", "newSources[" + index + "]").attr("name", function () {
                 return $(this).attr("id");
             });
-            $("#mapping-item-" + index + " [for^='source']").attr("for", "source[" + index + "]");
+            $("#mapping-item-" + index + " [for^='newSources']").attr("for", "additionalSource[" + index + "]");
         }
     });
 </script>
@@ -114,7 +101,7 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<form class="topForm" action="dataPackageMapping.do" method="post">
+<form class="topForm" action="dataPackageMappingSourceCreate.do" method="post">
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container p-3 my-3">
@@ -162,10 +149,10 @@
             <div id="mappings">
                 <div class="row">
                     <div class="col-sm-6">
-                        <@selectList name="tableSchema" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                        <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                     </div>
                     <div class="col-sm-6">
-                        <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                        <@selectList name="nesSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
                     </div>
                 </div>
             </div>
@@ -196,10 +183,10 @@
                     </a>
                 </div>
                 <div class="col-sm-6">
-                    <@selectList name="additionalTableSchema" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                    <@selectList name="newTableSchemas" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                 </div>
                 <div class="col-sm-6">
-                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                    <@selectList name="newSources" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
                 </div>
             </div>
         </div>

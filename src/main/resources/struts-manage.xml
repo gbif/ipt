@@ -226,6 +226,17 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
+    <action name="dataPackageMappingSourceNew" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="source">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="dataPackageMappingSourceCreate" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="create">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${versionString}</result>

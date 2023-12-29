@@ -44,6 +44,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
@@ -58,13 +61,27 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
+  @Getter
   private DataPackageSchema dataPackageSchema;
+  @Getter
   private Integer mid;
+  @Getter
   private DataPackageMapping mapping;
+  @Getter
   private List<String> columns;
+  @Getter
   private List<String[]> peek;
+  @Getter
+  @Setter
   private List<DataPackageFieldMapping> fields;
+  @Getter
   private Map<String, Integer> fieldsIndices;
+  @Setter
+  @Getter
+  private List<String> newTableSchemas = new ArrayList<>();
+  @Setter
+  @Getter
+  private List<String> newSources = new ArrayList<>();
 
   @Inject
   public DataPackageMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -125,6 +142,80 @@ public class DataPackageMappingAction extends ManagerBaseAction {
         addActionWarning(getText("manage.mapping.source.no.columns", new String[] {src.getName()}));
       }
     }
+  }
+
+  private List<String> readSource(DataPackageMapping mapping) {
+    Source src = mapping.getSource();
+    List<String> columns;
+
+    if (src == null) {
+      columns = new ArrayList<>();
+    } else {
+      List<String[]> peek = sourceManager.peek(src, 5);
+      // If user wants to import a source without a header lines, the columns are going to be numbered with the first
+      // non-null value as an example. Otherwise, read the file/database normally.
+      if ((src.isUrlSource() || src.isFileSource())
+          && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0) {
+        columns = mapping.getColumns(peek);
+      } else {
+        columns = sourceManager.columns(src);
+      }
+    }
+
+    return columns;
+  }
+
+  public String source() {
+    return INPUT;
+  }
+
+  /**
+   * Create new mappings. One mapping is required and optional number of additional mappings.
+   */
+  public String create() {
+    if (!isHttpPost()) {
+      return CANCEL;
+    }
+
+    int newMappingsNumber = Math.min(newTableSchemas.size(), newSources.size());
+
+    for (int i = 0; i < newMappingsNumber; i++) {
+      String sourceName = newSources.get(i);
+      String tableSchemaName = newTableSchemas.get(i);
+
+      DataPackageMapping newMapping = new DataPackageMapping();
+
+      Source source = resource.getSource(sourceName);
+      newMapping.setSource(source);
+      newMapping.setDataPackageSchema(dataPackageSchema);
+      newMapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchemaName));
+      newMapping.setFilter(new RecordFilter());
+
+      List<DataPackageFieldMapping> newMappingFields = new ArrayList<>();
+
+      // inspect source
+      List<String> sourceColumns = readSource(newMapping);
+
+      // prepare fields
+      DataPackageTableSchema tableSchema = dataPackageSchema.tableSchemaByName(tableSchemaName);
+      if (tableSchema != null) {
+        for (DataPackageField field : tableSchema.getFields()) {
+          DataPackageFieldMapping pm = populateDataSchemaFieldMapping(field);
+          newMappingFields.add(pm);
+        }
+      }
+
+      automap(newMappingFields, sourceColumns);
+
+      newMapping.setFields(newMappingFields);
+      newMapping.setLastModified(new Date());
+
+      mid = resource.addDataPackageMapping(newMapping);
+    }
+
+    addActionMessage(getText("manage.mapping.multiple.created", new String[] {String.valueOf(newMappingsNumber)}));
+
+    return SUCCESS;
   }
 
   @Override
@@ -249,9 +340,31 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   /**
    * This method auto-maps a source's columns.
    *
-   * @return the number of terms that have been automapped
+   * @return the number of fields that have been automapped
    */
   private int automap() {
+    // keep track of how many fields were automapped
+    int automapped = 0;
+
+    // next, try to automap the source's remaining columns against the data schema fields
+    for (DataPackageFieldMapping f : fields) {
+      int idx2 = 0;
+      for (String col : columns) {
+        String normCol = normalizeColumnName(col);
+        if (f.getField().getName().equalsIgnoreCase(normCol)) {
+          f.setIndex(idx2);
+          // we have automapped the field, so increment automapped counter and exit
+          automapped++;
+          break;
+        }
+        idx2++;
+      }
+    }
+
+    return automapped;
+  }
+
+  private int automap(List<DataPackageFieldMapping> fields, List<String> columns) {
     // keep track of how many fields were automapped
     int automapped = 0;
 
@@ -340,38 +453,6 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
     }
     return SUCCESS;
-  }
-
-  public DataPackageSchema getDataPackageSchema() {
-    return dataPackageSchema;
-  }
-
-  public DataPackageMapping getMapping() {
-    return mapping;
-  }
-
-  public List<String> getColumns() {
-    return columns;
-  }
-
-  public Integer getMid() {
-    return mid;
-  }
-
-  public List<DataPackageFieldMapping> getFields() {
-    return fields;
-  }
-
-  public void setFields(List<DataPackageFieldMapping> fields) {
-    this.fields = fields;
-  }
-
-  public Map<String, Integer> getFieldsIndices() {
-    return fieldsIndices;
-  }
-
-  public List<String[]> getPeek() {
-    return peek;
   }
 
   public RecordFilter.Comparator[] getComparators() {

@@ -187,7 +187,7 @@
 
             <div class="d-flex justify-content-end">
                 <#if (resource.sources?size>0)>
-                    <form action='dataPackageMapping.do' method='post'>
+                    <form action='dataPackageMappingSourceNew.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <input name="id" type="hidden" value="${resource.dataPackageIdentifier}">
                         <button name="add" class="icon-button icon-material-actions overview-action-button" type="submit">
