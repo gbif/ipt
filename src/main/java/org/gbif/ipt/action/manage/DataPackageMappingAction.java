@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -443,14 +444,21 @@ public class DataPackageMappingAction extends ManagerBaseAction {
 
   @Override
   public String delete() {
+    String sourceName = Optional.ofNullable(mapping.getSource())
+        .map(Source::getName)
+        .orElse("unknown");
+    String tableSchemaName = Optional.ofNullable(mapping.getDataPackageTableSchemaName())
+        .map(DataPackageTableSchemaName::getName)
+        .orElse("unknown");
+
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
+      addActionMessage(getText("manage.mapping.deleted", new String[] {sourceName + " → " + tableSchemaName}));
       // set mappings modified date
       resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {sourceName + " → " + tableSchemaName}));
     }
     return SUCCESS;
   }
