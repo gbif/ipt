@@ -2,7 +2,7 @@
 
 <nav id="sidebar-content">
     <ul>
-        <#list ["basic", "geographic", "taxonomic", "temporal", "keywords", "project", "other"] as it>
+        <#list ["basic", "geographic", "taxonomic", "temporal", "keywords", "project", "citation", "other"] as it>
             <li>
                 <a class="sidebar-navigation-link <#if it == currentMetadataPage>active</#if>" href="camtrap-metadata-${it}.do?r=${resource.shortname!r!}">
                     <@s.text name="submenu.datapackagemetadata.${it}"/>
