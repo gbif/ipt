@@ -1,7 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name='manage.metadata.basic.title'/></title>
+    <title><@s.text name='manage.datapackagemetadata.camtrap.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
@@ -248,7 +248,7 @@
 
                     <div class="text-center">
                         <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                            <@s.text name='manage.datapackagemetadata.basic.title'/>
+                            <@s.text name='manage.datapackagemetadata.camtrap.basic.title'/>
                         </h1>
                     </div>
 

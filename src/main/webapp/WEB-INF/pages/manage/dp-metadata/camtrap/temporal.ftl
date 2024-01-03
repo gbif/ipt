@@ -1,6 +1,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name='manage.datapackagemetadata.temporal.title'/></title>
+    <title><@s.text name='manage.datapackagemetadata.camtrap.temporal.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
@@ -74,7 +74,7 @@
 
                     <div class="text-center">
                         <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                            <@s.text name='manage.datapackagemetadata.temporal.title'/>
+                            <@s.text name='manage.datapackagemetadata.camtrap.temporal.title'/>
                         </h1>
                     </div>
 

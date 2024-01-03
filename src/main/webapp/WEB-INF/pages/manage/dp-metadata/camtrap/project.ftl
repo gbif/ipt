@@ -1,6 +1,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name='manage.datapackagemetadata.project.title'/></title>
+    <title><@s.text name='manage.datapackagemetadata.camtrap.project.title'/></title>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
@@ -73,7 +73,7 @@
 
                     <div class="text-center">
                         <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                            <@s.text name='manage.datapackagemetadata.project.title'/>
+                            <@s.text name='manage.datapackagemetadata.camtrap.project.title'/>
                         </h1>
                     </div>
 

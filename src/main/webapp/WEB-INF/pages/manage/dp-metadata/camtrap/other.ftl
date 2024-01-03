@@ -1,6 +1,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name='manage.datapackagemetadata.other.title'/></title>
+    <title><@s.text name='manage.datapackagemetadata.camtrap.other.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
@@ -246,7 +246,7 @@
 
                     <div class="text-center">
                         <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                            <@s.text name='manage.datapackagemetadata.other.title'/>
+                            <@s.text name='manage.datapackagemetadata.camtrap.other.title'/>
                         </h1>
                     </div>
 
@@ -278,14 +278,6 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 p-3">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <@text name="metadata.bibliographicCitation" help="i18n" i18nkey="datapackagemetadata.other.bibliographicCitation" />
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="my-md-3 p-3">
                             <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
                             <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
