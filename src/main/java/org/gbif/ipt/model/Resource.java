@@ -18,7 +18,10 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -1396,6 +1399,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public String generateDataPackageResourceCitation(String version, String homepage) {
+    try {
+      return generateDataPackageResourceCitation(new BigDecimal(version), new URI(homepage));
+    } catch (URISyntaxException e) {
+      LOG.error("Failed to generate URI for homepage string: " + homepage, e);
+    }
+    return null;
+  }
+
   /**
    * Construct the resource citation from various parts for the version specified.
    * </br>
@@ -1471,6 +1483,79 @@ public class Resource implements Serializable, Comparable<Resource> {
     else {
       sb.append(homepage.toString());
     }
+    return sb.toString();
+  }
+
+  public String generateDataPackageResourceCitation(@NotNull BigDecimal version, @NotNull URI homepage) {
+    StringBuilder sb = new StringBuilder();
+
+    if (dataPackageMetadata instanceof CamtrapMetadata) {
+      // make a list of contributors
+      Set<String> contributorList = new LinkedHashSet<>();
+
+      CamtrapMetadata metadata = (CamtrapMetadata) dataPackageMetadata;
+
+      // TODO filter roles
+      Stream.of(metadata.getContributors())
+          .flatMap(Collection::stream)
+          .map(contributor -> (CamtrapContributor) contributor)
+          .map(FrictionlessContributor::getTitle)
+          .filter(StringUtils::isNotEmpty)
+          .forEach(contributorList::add);
+
+      // add comma separated agents
+      Iterator<String> iter = contributorList.iterator();
+      while (iter.hasNext()) {
+        sb.append(iter.next());
+        if (iter.hasNext()) {
+          sb.append(", ");
+        }
+      }
+
+      // add year the resource was most recently published
+      Date pubDate = metadata.getCreated() != null ? metadata.getCreated() : new Date();
+      int publicationYear = getPublicationYear(pubDate);
+      if (publicationYear > 0) {
+        sb.append(" (");
+        sb.append(publicationYear);
+        sb.append("). ");
+      }
+
+      // add title
+      sb.append((StringUtils.trimToNull(getTitle()) == null) ? getShortname() : StringUtils.trim(getTitle()));
+      sb.append(". ");
+
+      // add version
+      sb.append("Version ");
+      sb.append(version.toPlainString());
+      sb.append(". ");
+
+      // add publisher
+      String publisher = (getOrganisation() == null) ? null : StringUtils.trimToNull(getOrganisation().getName());
+      if (publisher != null) {
+        sb.append(publisher);
+        sb.append(". ");
+      }
+
+      // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
+      if (getCoreType() != null) {
+        sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
+        sb.append(" dataset");
+      }
+      sb.append(". ");
+
+      // TODO citation identifier if DOI is null?
+      // add DOI as the identifier. DataCite recommends using linkable, permanent URL
+      if (getDoi() != null) {
+        sb.append(getDoi().getUrl());
+      }
+      // otherwise, use its IPT homepage as the identifier
+      else {
+        sb.append(homepage.toString());
+      }
+
+    }
+
     return sb.toString();
   }
 
