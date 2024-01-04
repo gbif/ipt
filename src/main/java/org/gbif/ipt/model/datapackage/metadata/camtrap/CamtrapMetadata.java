@@ -48,7 +48,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.opensymphony.xwork2.util.Element;
 
 /**
- * <a href="https://rs.gbif.org/sandbox/experimental/camtrap-dp/1.0/profile/camtrap-dp-profile.json">Camtrap DP profile</a>
+ * <a href="https://rs.gbif.org/data-packages/camtrap-dp/1.0/profile/camtrap-dp-profile.json">Camtrap DP profile</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends FrictionlessMetadata {
