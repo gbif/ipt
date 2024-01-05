@@ -13,10 +13,9 @@
  */
 package org.gbif.ipt.action.manage;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
@@ -38,6 +37,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
@@ -59,6 +59,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.service.manage.impl.ResourceManagerImpl.CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT;
 
@@ -71,6 +74,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private final ResourceMetadataInferringService metadataInferringService;
   private final DataPackageMetadataValidator metadataValidator;
   private final ObjectMapper objectMapper;
+  private final DataPackageSchemaManager dataPackageSchemaManager;
   private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
   // map of organisations associated to IPT that can publish resources
@@ -209,9 +213,11 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   @Inject
   public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
                                    ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator,
-                                   ResourceMetadataInferringService metadataInferringService) {
+                                   ResourceMetadataInferringService metadataInferringService,
+                                   DataPackageSchemaManager dataPackageSchemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.metadataValidator = metadataValidator;
+    this.dataPackageSchemaManager = dataPackageSchemaManager;
     this.objectMapper = new ObjectMapper();
     this.metadataInferringService = metadataInferringService;
   }
@@ -238,6 +244,11 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "camtrap-metadata-", "."));
     CamtrapMetadataSection camtrapMetadataSection = (CamtrapMetadataSection) section;
     CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+    DataPackageSchema dataPackageSchema = dataPackageSchemaManager.get(CAMTRAP_DP);
+
+    if (dataPackageSchema != null) {
+      metadata.setProfile(dataPackageSchema.getProfile());
+    }
 
     if (camtrapMetadataSection == null) {
       return;
