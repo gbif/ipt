@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.action.manage;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
@@ -71,8 +73,13 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   private final ObjectMapper objectMapper;
   private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
   private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
+  // map of organisations associated to IPT that can publish resources
+  @Getter
   private Map<String, String> organisations = new LinkedHashMap<>();
+  @Getter
   private InferredMetadata inferredMetadata;
+  @Setter
+  @Getter
   private String customGeoJson;
 
   public static final Map<String, String> GBIF_SUPPORTED_LICENSES_VOCABULARY = new LinkedHashMap<>();
@@ -509,13 +516,6 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return resource.getDataPackageMetadata();
   }
 
-  /**
-   * @return map of organisations associated to IPT that can publish resources
-   */
-  public Map<String, String> getOrganisations() {
-    return organisations;
-  }
-
   public Map<String, String> getLicenseScopes() {
     return CamtrapLicense.Scope.VOCABULARY;
   }
@@ -558,17 +558,5 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getRelatedIdentifierTypes() {
     return RelatedIdentifier.RelatedIdentifierType.VOCABULARY;
-  }
-
-  public InferredMetadata getInferredMetadata() {
-    return inferredMetadata;
-  }
-
-  public String getCustomGeoJson() {
-    return customGeoJson;
-  }
-
-  public void setCustomGeoJson(String customGeoJson) {
-    this.customGeoJson = customGeoJson;
   }
 }

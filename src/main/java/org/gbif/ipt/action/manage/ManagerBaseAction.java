@@ -26,10 +26,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ManagerBaseAction extends POSTAction {
+
+  private static final long serialVersionUID = -7385261456013846954L;
 
   // the resourceManager session is populated by the resource interceptor and kept alive for an entire manager session
   protected final ResourceManager resourceManager;
+  @Setter
+  @Getter
   protected Resource resource;
 
   @Inject
@@ -65,15 +72,4 @@ public class ManagerBaseAction extends POSTAction {
       addActionError(e.getMessage());
     }
   }
-
-
-  public Resource getResource() {
-    return resource;
-  }
-
-
-  public void setResource(Resource resource) {
-    this.resource = resource;
-  }
-
 }
