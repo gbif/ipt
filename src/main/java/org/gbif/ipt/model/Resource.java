@@ -1464,7 +1464,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(". ");
     }
 
-    // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
+    // add ResourceType ResourceTypeGeneral, e.g. Occurrence Dataset, Checklist Dataset
     if (getCoreType() != null) {
       sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
       sb.append(" dataset");
@@ -1537,7 +1537,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         sb.append(". ");
       }
 
-      // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
+      // add ResourceTypeGeneral/ResourceType
       if (getCoreType() != null) {
         sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
         sb.append(" dataset");
