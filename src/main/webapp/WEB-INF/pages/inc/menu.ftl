@@ -59,7 +59,7 @@
             <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <svg class="navbar-toggler-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path stroke="rgba(var(--navbar-link-color), 0.75)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/></svg>
             </button>
-            <div class="collapse navbar-collapse ps-5" id="navbarCollapse">
+            <div class="collapse navbar-collapse ps-2" id="navbarCollapse">
                 <!-- Navbar -->
                 <ul class="navbar-nav mx-auto mb-md-0">
                     <li class="nav-item nav-item-border-bottom">
