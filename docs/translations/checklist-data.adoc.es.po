@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-02-21 11:16\n"
+"POT-Creation-Date: 2024-01-08 10:22+0000\n"
+"PO-Revision-Date: 2024-01-08 12:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -140,8 +140,8 @@ msgstr "Conjuntos de datos de ejemplo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:39
-msgid "Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
-msgstr "Base de datos de Plantas Vasculares de Canadá (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[página en el IPT]"
+msgid "Database of Vascular Plants of Canada (VASCAN): https://doi.org/10.5886/zw3aqw[DOI] /http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
