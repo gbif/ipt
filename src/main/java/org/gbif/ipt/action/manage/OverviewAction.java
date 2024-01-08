@@ -35,6 +35,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -92,6 +95,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -106,6 +110,8 @@ import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
@@ -1491,20 +1497,37 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (!history.isEmpty()) {
       VersionHistory latestVersionHistory = history.get(0);
       BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
-      File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
-      if (emlFile.exists()) {
-        try {
-          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
-          InputStream in = new FileInputStream(emlFile);
-          Eml eml = EmlFactory.build(in);
-          if (eml.parseLicenseUrl() != null) {
-            LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
-            return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+
+      if (resource.isDataPackage()) {
+        if (CAMTRAP_DP.equals(resource.getCoreType())) {
+          CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+          Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
+              .map(license -> (CamtrapLicense) license)
+              .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
+              .findFirst();
+
+          return dataLicenceWrapped
+              .map(FrictionlessLicense::getName)
+              .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+              .orElse(false);
+        }
+      } else {
+        File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
+        if (emlFile.exists()) {
+          try {
+            LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+            InputStream in = new FileInputStream(emlFile);
+            Eml eml = EmlFactory.build(in);
+            if (eml.parseLicenseUrl() != null) {
+              LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
+              return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+            }
+          } catch (Exception e) {
+            LOG.error(
+                "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
+                    .getMessage(), e);
           }
-        } catch (Exception e) {
-          LOG.error(
-            "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
-              .getMessage(), e);
         }
       }
     }

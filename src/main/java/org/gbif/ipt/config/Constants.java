@@ -123,6 +123,7 @@ public final class Constants {
 
   // Set of GBIF supported licenses
   public static final Set<String> GBIF_SUPPORTED_LICENSES;
+  public static final Set<String> GBIF_SUPPORTED_LICENSES_CODES;
 
   static {
     Set<String> licencesInternal = new HashSet<>();
@@ -132,6 +133,12 @@ public final class Constants {
     licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
     licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
     GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
+
+    Set<String> licenseCodesInternal = new HashSet<>();
+    licenseCodesInternal.add("CC0-1.0");
+    licenseCodesInternal.add("CC-BY-4.0");
+    licenseCodesInternal.add("CC-BY-NC-4.0");
+    GBIF_SUPPORTED_LICENSES_CODES = Collections.unmodifiableSet(licenseCodesInternal);
   }
 
   private Constants() {
