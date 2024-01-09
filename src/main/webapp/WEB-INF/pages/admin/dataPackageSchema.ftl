@@ -145,7 +145,7 @@
                             </ul>
                         </div>
 
-                        <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
+                        <a href="dataPackages.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
                             <@s.text name="button.back"/>
                         </a>
                     </div>
