@@ -442,7 +442,7 @@
                                             </tr>
                                         </#if>
                                         <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.license.name"/></th>
+                                            <th class="col-4"><@s.text name="portal.resource.license.scope"/></th>
                                             <td>${license.scope!}</td>
                                         </tr>
                                     </table>
