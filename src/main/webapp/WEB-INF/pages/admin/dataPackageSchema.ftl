@@ -27,9 +27,57 @@
                         }
                     }
                 });
-            })
+            });
+
+            $("#button-display-raw-data").on('click', function () {
+                var dialogWindow = $("#raw-data-modal");
+                dialogWindow.modal('show');
+            });
+
+            var jsonElement = document.getElementById('json-raw-data');
+            var jsonString = jsonElement.innerText;
+            jsonElement.innerHTML = jsonSyntaxHighlight(jsonString);
+
+            function jsonSyntaxHighlight(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    var cls = 'json-number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'json-key';
+                        } else {
+                            cls = 'json-string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'json-boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'json-null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
         })
     </script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+        }
+        .json-key {
+            color: brown;
+        }
+        .json-string {
+            color: green;
+        }
+        .json-number {
+            color: blue;
+        }
+        .json-boolean {
+            color: purple;
+        }
+        .json-null {
+            color: gray;
+        }
+    </style>
 
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -84,6 +132,19 @@
                     </div>
 
                     <div class="mt-2">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <@s.text name="button.options"/>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
+                                <li>
+                                    <a id="button-display-raw-data" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                        <@s.text name="schema.view.source"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                         <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
                             <@s.text name="button.back"/>
                         </a>
@@ -214,6 +275,20 @@
 
                 </div>
             </main>
+        </div>
+    </div>
+
+    <div id="raw-data-modal" class="modal fade" tabindex="-1" aria-labelledby="raw-data-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm" style="max-width: none !important; margin: 1.75rem; font-size: 12px;">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="raw-data-modal-title">${dataPackageSchema.title}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <pre id="json-raw-data" class="fs-smaller-2">${dataPackageSchemaRawData!}</pre>
+                </div>
+            </div>
         </div>
     </div>
 

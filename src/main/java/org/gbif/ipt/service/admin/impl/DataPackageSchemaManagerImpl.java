@@ -39,6 +39,8 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,6 +83,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   private List<DataPackageSchema> dataPackageSchemas = new ArrayList<>();
   private Map<String, DataPackageSchema> dataPackageSchemasByIdentifiers = new HashMap<>();
+  private Map<String, String> dataPackageSchemaRawContentByName = new HashMap<>();
 
   @Inject
   public DataPackageSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
@@ -192,6 +195,11 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     return result;
   }
 
+  @Override
+  public String getRawData(String name) {
+    return dataPackageSchemaRawContentByName.get(name);
+  }
+
   /**
    * Uninstall data schema by its unique identifier.
    *
@@ -201,6 +209,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   private void uninstall(String identifier, String name) {
     if (dataPackageSchemasByIdentifiers.containsKey(identifier)) {
       dataPackageSchemasByIdentifiers.remove(identifier);
+      dataPackageSchemaRawContentByName.remove(name);
       dataPackageSchemas.removeIf(d -> StringUtils.equals(d.getIdentifier(), identifier));
 
       File f = getDataSchemaDirectory(name);
@@ -229,6 +238,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       String filename = org.gbif.ipt.utils.FileUtils
           .getSuffixedFileName("_" + dataPackageSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
       File tmpFileSchema = dataDir.tmpFile(filename);
+      String dataPackageFileRawContent = "Failed to read the data package schema file";
+
+      try {
+        dataPackageFileRawContent = new String(Files.readAllBytes(tmpFileSchema.toPath()), StandardCharsets.UTF_8);
+      } catch (IOException e) {
+        LOG.error("Failed to read the data package schema file " + filename, e);
+      }
 
       try (FileWriter fw = new FileWriter(tmpFileSchema)) {
         gson.toJson(dataPackageSchema, fw);
@@ -247,6 +263,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
       // keep data schemas in local lookup: allowed one installed data schema per identifier
       dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
+      dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), dataPackageFileRawContent);
       dataPackageSchemas.add(dataPackageSchema);
     } catch (InvalidConfigException e) {
       throw e;
@@ -287,6 +304,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       try {
         if (dataSchemaNames != null) {
           dataPackageSchemasByIdentifiers.clear();
+          dataPackageSchemaRawContentByName.clear();
           dataPackageSchemas.clear();
           for (String dataSchemaDirectoryName : dataSchemaNames) {
             tableSchemas = new LinkedHashSet<>();
@@ -295,9 +313,18 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
             if (files != null) {
               File mainSchemaFile = getMainSchemaFileFromFiles(files);
+
+              String dataPackageRawContent = "Failed to read the data package schema file";
+              try {
+                dataPackageRawContent = new String(Files.readAllBytes(mainSchemaFile.toPath()), StandardCharsets.UTF_8);
+              } catch (IOException e) {
+                LOG.error("Failed to read the data package schema file " + mainSchemaFile, e);
+              }
+
               dataPackageSchema = loadSchemaFromFile(mainSchemaFile);
               // keep data schema in local lookup
               dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
+              dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), dataPackageRawContent);
 
               for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns

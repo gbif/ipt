@@ -49,6 +49,13 @@ public interface DataPackageSchemaManager {
   DataPackageSchema get(String identifier);
 
   /**
+   * Get locally installed data schema's raw data by its identifier or name.
+   *
+   * @return data schema for that identifier/name or null if not installed
+   */
+  String getRawData(String identifier);
+
+  /**
    * Install base data package schemas.
    */
   void installSupportedDataPackageSchemas() throws InvalidConfigException;

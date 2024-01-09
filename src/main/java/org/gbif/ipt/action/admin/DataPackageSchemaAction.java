@@ -38,6 +38,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class DataPackageSchemaAction extends POSTAction {
 
   private static final long serialVersionUID = -535308367714585780L;
@@ -48,12 +51,24 @@ public class DataPackageSchemaAction extends POSTAction {
   private final RegistryManager registryManager;
   private final ConfigWarnings configWarnings;
 
+  @Setter
+  @Getter
   private List<DataPackageSchema> latestDataSchemasVersions;
+  @Getter
   private List<DataPackageSchema> schemas;
+  @Getter
   private List<DataPackageSchema> newSchemas;
+  @Setter
   private String schemaName;
+  @Getter
   private DataPackageSchema dataPackageSchema;
+  @Getter
+  private String dataPackageSchemaRawData;
+  // true if all installed data schemas use the latest version, false otherwise
+  @Setter
+  @Getter
   private boolean upToDate = true;
+  @Getter
   private boolean iptReinstallationRequired = false;
 
   @Inject
@@ -123,14 +138,6 @@ public class DataPackageSchemaAction extends POSTAction {
     return SUCCESS;
   }
 
-  public List<DataPackageSchema> getSchemas() {
-    return schemas;
-  }
-
-  public List<DataPackageSchema> getNewSchemas() {
-    return newSchemas;
-  }
-
   @Override
   public String save() {
     try {
@@ -161,6 +168,7 @@ public class DataPackageSchemaAction extends POSTAction {
 
     if (id != null) {
       dataPackageSchema = schemaManager.get(id);
+      dataPackageSchemaRawData = schemaManager.getRawData(dataPackageSchema.getName());
     }
   }
 
@@ -318,36 +326,5 @@ public class DataPackageSchemaAction extends POSTAction {
 
   private boolean isLatest(DataPackageSchema schema) {
     return schema.isLatest();
-  }
-
-  public List<DataPackageSchema> getLatestDataSchemasVersions() {
-    return latestDataSchemasVersions;
-  }
-
-  public void setLatestDataSchemasVersions(List<DataPackageSchema> latestDataSchemasVersions) {
-    this.latestDataSchemasVersions = latestDataSchemasVersions;
-  }
-
-  public void setSchemaName(String schemaName) {
-    this.schemaName = schemaName;
-  }
-
-  public DataPackageSchema getDataPackageSchema() {
-    return dataPackageSchema;
-  }
-
-  /**
-   * @return true if all installed data schemas use the latest version, false otherwise
-   */
-  public boolean isUpToDate() {
-    return upToDate;
-  }
-
-  public void setUpToDate(boolean upToDate) {
-    this.upToDate = upToDate;
-  }
-
-  public boolean isIptReinstallationRequired() {
-    return iptReinstallationRequired;
   }
 }
