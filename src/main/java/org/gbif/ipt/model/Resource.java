@@ -1020,7 +1020,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource has been assigned a GBIF-supported license, false otherwise
    */
   public boolean isAssignedGBIFSupportedLicense() {
-    return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+    return !isDataPackage() && eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
   }
 
   public boolean isRegistered() {
