@@ -21,6 +21,7 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
@@ -49,6 +50,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -60,6 +62,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 /**
  * The main class to represent an IPT resource.
@@ -1020,7 +1024,22 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource has been assigned a GBIF-supported license, false otherwise
    */
   public boolean isAssignedGBIFSupportedLicense() {
-    return !isDataPackage() && eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+    if (isDataPackage()) {
+      if (CAMTRAP_DP.equals(coreType)) {
+        CamtrapMetadata camtrapMetadata = (CamtrapMetadata) dataPackageMetadata;
+        Optional<CamtrapLicense> dataLicenseWrapped = camtrapMetadata.getLicenses()
+            .stream()
+            .map(license -> (CamtrapLicense) license)
+            .filter(license -> license.getScope() == CamtrapLicense.Scope.DATA)
+            .findFirst();
+
+        return dataLicenseWrapped.isPresent() && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(dataLicenseWrapped.get().getName());
+      } else {
+        return false;
+      }
+    } else {
+      return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+    }
   }
 
   public boolean isRegistered() {

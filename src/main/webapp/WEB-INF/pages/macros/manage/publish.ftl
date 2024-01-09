@@ -26,7 +26,7 @@
             </svg>
             <@s.text name="button.publish"/>
         </a>
-    <#elseif resource.isRegistered() && !resource.isDataPackage() && !resource.isAssignedGBIFSupportedLicense()>
+    <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
         <a id="publish-button-show-warning" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
             <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
