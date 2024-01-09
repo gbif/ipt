@@ -77,7 +77,7 @@ import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
   private enum STATE {
-    WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
+    WAITING, STARTED, DATARESOURCES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
   }
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
@@ -112,22 +112,22 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       setState(STATE.STARTED);
 
       // initial reporting
-      addMessage(Level.INFO, "Data package generation started for version #" + resource.getDataPackageMetadataVersion());
+      addMessage(Level.INFO, "Data Package generation started for version #" + resource.getDataPackageMetadataVersion());
 
       // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
       // different order - for Camtrap/Material/etc. first create metadata and then add resources
       if (COL_DP.equals(resource.getCoreType())) {
-        // create data files
-        createDataFiles();
+        // create data resources
+        createDataResources();
         // create datapackage descriptor file (metadata.yml)
         addMetadata();
       } else {
         // copy datapackage descriptor file (datapackage.json)
         addMetadata();
-        // create data files
-        createDataFiles();
+        // create data resources
+        createDataResources();
       }
 
       // validation is a part of frictionless datapackage generation
@@ -192,23 +192,23 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       case WAITING:
         return "Not started yet";
       case STARTED:
-        return "Starting data package generation";
-      case DATAFILES:
-        return "Processing record " + currRecords + " for data file <em>" + currTableSchema + "</em>";
+        return "Starting Data Package generation";
+      case DATARESOURCES:
+        return "Processing record " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
       case METADATA:
         return "Creating metadata files";
       case BUNDLING:
-        return "Compressing data package (archive)";
+        return "Compressing Data Package (archive)";
       case COMPLETED:
-        return "Data package generated!";
+        return "Data Package generated!";
       case VALIDATING:
-        return "Validating data package, " + currRecords + " for data file <em>" + currTableSchema + "</em>";
+        return "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
       case ARCHIVING:
         return "Archiving version of data package";
       case CANCELLED:
-        return "Data package generation cancelled";
+        return "Data Package generation cancelled";
       case FAILED:
-        return "Data package generation failed";
+        return "Data Package generation failed";
       default:
         return "You should never see this";
     }
@@ -327,9 +327,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws GeneratorException if the resource had no core file that was mapped
    * @throws InterruptedException if the thread was interrupted
    */
-  private void createDataFiles() throws GeneratorException, InterruptedException {
+  private void createDataResources() throws GeneratorException, InterruptedException {
     checkForInterruption();
-    setState(STATE.DATAFILES);
+    setState(STATE.DATARESOURCES);
     if (resource.getDataPackageIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
       throw new GeneratorException("Data package identifier or mappings are not set");
     }
@@ -353,14 +353,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       report();
       try {
-        addDataFile(currSchema, tableSchema, allMappings);
+        addDataResource(currSchema, tableSchema, allMappings);
       } catch (IOException | IllegalArgumentException e) {
-        throw new GeneratorException("Problem occurred while writing data file", e);
+        throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
     }
 
     // final reporting
-    addMessage(Level.INFO, "All data files completed");
+    addMessage(Level.INFO, "All Data Resources completed");
     report();
   }
 
@@ -384,14 +384,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Adds a single data file for a tableSchema mapping.
+   * Adds a single data resource for a tableSchema mapping.
    *
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
    * @throws InterruptedException if the thread was interrupted
-   * @throws IOException if problems occurred while persisting new data files
-   * @throws GeneratorException if any problem was encountered writing data file
+   * @throws IOException if problems occurred while persisting new data resources
+   * @throws GeneratorException if any problem was encountered writing data resources
    */
-  public void addDataFile(String schemaName, DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings) throws IOException,
+  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (tableSchema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -418,7 +418,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     // ready to go through each mapping and dump the data
     try (Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile)) {
-      addMessage(Level.INFO, "Start writing data file for " + tableSchema.getName());
+      addMessage(Level.INFO, "Start creating Data Resource " + tableSchema.getName());
       boolean headerWritten = false;
 
       for (DataPackageMapping dataPackageMapping : allMappings) {
@@ -434,10 +434,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       // some error writing this file, report
-      log.error("Fatal Package Generator Error encountered while writing header line to data file", e);
+      log.error("Fatal Package Generator Error encountered while writing header line to Data Resource", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error writing header line to data file", e);
+      throw new GeneratorException("Error writing header line to Data Resource", e);
     }
 
     // create resource from file
@@ -471,7 +471,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // final reporting
-    addMessage(Level.INFO, "Data file written for " + currTableSchema + " with " + currRecords + " records and "
+    addMessage(Level.INFO, "Data Resource " + currTableSchema + " created with " + currRecords + " records and "
         + totalColumns + " columns");
     // how many records were skipped?
     if (currRecordsSkipped > 0) {
@@ -481,13 +481,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Write data file for mappings.
+   * Write data resource for mappings.
    *
-   * @param writer file writer for single data file
+   * @param writer file writer for single data resource
    * @param schemaMapping schema mapping
    * @param tableSchemaFieldMappings field mappings
-   * @param dataFileRowSize number of columns in data file
-   * @throws GeneratorException if there was an error writing data file for mapping.
+   * @param dataFileRowSize number of columns in data resource
+   * @throws GeneratorException if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataPackageMapping schemaMapping,
@@ -593,7 +593,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       log.error("Fatal Data Package Generator Error encountered", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error writing data file for mapping " + currTableSchema
+      throw new GeneratorException("Error writing Data Resource for mapping " + currTableSchema
           + " in source " + schemaMapping.getSource().getName() + ", line " + line, e);
     } finally {
       if (iter != null) {
@@ -647,7 +647,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * </br>
    * The method starts by iterating through all mapped properties, checking each one if it has been translated or a
    * default value provided. The original value in the row is then replaced with the translated or default value.
-   * A record array representing the values to be written to the data file is also updated.
+   * A record array representing the values to be written to the data resource is also updated.
    *
    * @param inCols values array, of columns in row that have been mapped
    * @param in values array, of all columns in row
@@ -672,7 +672,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           val = mapping.getDefaultValue();
         }
       }
-      // add value to data file record
+      // add value to data resource record
       translated[i] = val;
     }
   }
@@ -723,7 +723,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   /**
    * Check if each string in array is empty. Method joins each string together and then checks if it is blank. A
-   * blank string represents an empty line in a source data file.
+   * blank string represents an empty line in a source data resource.
    *
    * @param line string array
    *
