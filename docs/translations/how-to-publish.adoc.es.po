@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-01-11 10:21+0000\n"
-"PO-Revision-Date: 2024-01-11 10:32\n"
+"PO-Revision-Date: 2024-01-11 15:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -150,7 +150,7 @@ msgstr "Transforme sus datos a una estructura de tabla, utilizando los términos
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:43
 msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended (Excel templates for each dataset class are available in the above links - see the previous point)"
-msgstr ""
+msgstr "Sugerencia: utilice una plantilla de Excel para estructurar sus datos e identifique qué términos del DwC son necesarios y recomendados (las plantillas de Excel para cada tipo de conjunto de datos están disponibles en los enlaces del punto anterior)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:44
