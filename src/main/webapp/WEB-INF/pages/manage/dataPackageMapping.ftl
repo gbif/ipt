@@ -414,7 +414,7 @@
                                     </a>
                                 </@s.param>
                                 <@s.param><@s.property value="#adminSchemaTitle.toLowerCase()"/></@s.param>
-                                <@s.param><a href="${baseURL}/admin/schema.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataPackageTableSchemaName.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataPackageTableSchemaName.name)!}</a></@s.param>
+                                <@s.param><a href="${baseURL}/admin/dataPackage.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataPackageTableSchemaName.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataPackageTableSchemaName.name)!}</a></@s.param>
                             </@s.text>
                         </p>
                     </div>
