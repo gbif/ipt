@@ -463,9 +463,17 @@ public class ResourceAction extends PortalBaseAction {
     File dataPackageFile = dataDir.resourceDataPackageFile(name, version);
     dataPackageSizeForVersion = FileUtils.formatSize(dataPackageFile.length(), 0);
 
-    // determine EML file size
+    // determine metadata file size
     File metadataFile = dataDir.resourceDatapackageMetadataFile(name, resource.getCoreType(), version);
     metadataSizeForVersion = FileUtils.formatSize(metadataFile.length(), 0);
+
+    // find record counts for the published version
+    for (VersionHistory history : resource.getVersionHistory()) {
+      if (version.compareTo(new BigDecimal(history.getVersion())) == 0) {
+        recordsPublishedForVersion = history.getRecordsPublished();
+        setRecordsByExtensionForVersion(history.getRecordsByExtension());
+      }
+    }
   }
 
   /**

@@ -283,6 +283,7 @@
                         <ul>
                             <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
                             <#if resource.lastPublished??>
+                                <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
                                 <#if resource.versionHistory??>
                                     <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                                 </#if>
@@ -339,6 +340,36 @@
                                 <p><@s.text name='portal.resource.no.description'/></p>
                             </#if>
                         </div>
+                    </div>
+
+                    <!-- Data records -->
+                    <span class="anchor anchor-home-resource-page" id="anchor-dataRecords"></span>
+                    <div id="dataRecords" class="mt-5 section">
+                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                            <@s.text name='portal.resource.dataRecords'/>
+                        </h4>
+
+                        <p>
+                            <@s.text name='portal.resource.dataRecords.dataPackageSchema.intro'/>
+                        </p>
+
+                        <div id="record_graph" class="mb-3 ps-sm-5 ps-3">
+                            <div class="record_graph_inner">
+
+                                <#list recordsByExtensionOrdered?keys as k>
+                                    <div class="row record_graph_row">
+                                        <div class="col-lg-3 ps-0">${k}</div>
+                                        <div class="col-lg-8 color-bar">
+                                            ${recordsByExtensionOrdered.get(k)!?c}
+                                        </div>
+                                    </div>
+                                </#list>
+                            </div>
+                        </div>
+
+                        <p>
+                            <@s.text name='portal.resource.dataRecords.repository'/>
+                        </p>
                     </div>
 
                     <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
