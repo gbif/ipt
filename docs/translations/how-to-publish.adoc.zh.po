@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2023-12-11 09:50\n"
+"POT-Creation-Date: 2024-01-11 10:21+0000\n"
+"PO-Revision-Date: 2024-01-11 10:32\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -149,7 +149,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:43
-msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended"
+msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended (Excel templates for each dataset class are available in the above links - see the previous point)"
 msgstr ""
 
 #. type: Plain text
@@ -169,7 +169,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
-msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core]."
+msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core])."
 msgstr ""
 
 #. type: Plain text
