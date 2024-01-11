@@ -73,6 +73,9 @@ import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceAction extends PortalBaseAction {
@@ -81,34 +84,104 @@ public class ResourceAction extends PortalBaseAction {
 
   private MetadataReader metadataReader;
   private VocabulariesManager vocabManager;
+
+  // ExtensionManager, to retrieve Extension by rowType in template
+  @Getter
   private ExtensionManager extensionManager;
+
+  @Getter
   private List<Resource> resources;
+
   private Integer page = 1;
+
+  // Returns a list of OrganizedTaxonomicCoverage that facilitate the display of the resource's TaxonomicCoverage on the UI.
   // for conveniently displaying taxonomic coverages in freemarker template
+  @Getter
   private List<OrganizedTaxonomicCoverage> organizedCoverages;
+
+  // the list of Agent Roles specific to the current locale
+  @Getter
   private Map<String, String> roles;
+
+  // the list of Preservation Methods specific to the current locale
+  @Getter
   private Map<String, String> preservationMethods;
+
+  // the list of ISO 3 letter language codes specific to the current locale
+  @Getter
   private Map<String, String> languages;
+
+  // the list of 2-letter country codes specific to the current locale
+  @Getter
   private Map<String, String> countries;
+
+  // the list of Ranks specific to the current locale
+  @Getter
   private Map<String, String> ranks;
+
   private DataDir dataDir;
+
+  @Getter
+  @Setter
   private Eml eml;
+
+  @Getter
   private DataPackageMetadata dpMetadata;
+
   private Set<Agent> mergedContacts = new LinkedHashSet<>();
   private Set<Agent> deduplicatedProjectPersonnel = new LinkedHashSet<>();
+  @Getter
   private Map<String, Set<String>> contactRoles = new HashMap<>();
+
+  @Getter
   private Map<String, Set<String>> projectPersonnelRoles = new HashMap<>();
+
+  // Getter returns whether the version of the resource is a metadata-only resource. This is determined by the existence of
+  // a DwC-A. This method is only really of importance for versions of the resource that are not the latest. For the
+  // latest published version of the resource, one can just call resource.recordsPublished() and see if it's > 0.
+  @Getter
+  @Setter
   private boolean metadataOnly;
+
+  @Getter
+  @Setter
   private boolean preview;
+
+  // update frequencies map
+  @Getter
   private Map<String, String> frequencies;
+
+  // map of dataset subtypes
+  @Getter
   private Map<String, String> types;
+
+  // record count for the published version (specified from version parameter)
+  @Getter
   private int recordsPublishedForVersion;
+
+  // map of record counts by extension for the published version (specified from version parameter)
+  @Setter
   private Map<String, Integer> recordsByExtensionForVersion = new HashMap<>();
+
+  @Getter
   private String coreType;
+
+  // formatted size of DwC-A for the published version
+  @Getter
   private String dwcaSizeForVersion;
+
+  @Getter
   private String dataPackageSizeForVersion;
+
+  // formatted size of EML for the published version
+  @Getter
   private String emlSizeForVersion;
+
+  @Getter
   private String metadataSizeForVersion;
+
+  // formatted size of RTF for the published version
+  @Getter
   private String rtfSizeForVersion;
 
   @Inject
@@ -276,58 +349,6 @@ public class ResourceAction extends PortalBaseAction {
       return new Ipt();
     }
     return registrationManager.getIpt();
-  }
-
-  /**
-   * @return the resources
-   */
-  public List<Resource> getResources() {
-    return resources;
-  }
-
-  /**
-   * Return the list of Agent Roles specific to the current locale.
-   *
-   * @return the list of Agent Roles specific to the current locale
-   */
-  public Map<String, String> getRoles() {
-    return roles;
-  }
-
-  /**
-   * Return the list of Preservation Methods specific to the current locale.
-   *
-   * @return the list of Preservation Methods specific to the current locale
-   */
-  public Map<String, String> getPreservationMethods() {
-    return preservationMethods;
-  }
-
-  /**
-   * Return the list of ISO 3 letter language codes specific to the current locale.
-   *
-   * @return the list of ISO 3 letter language codes specific to the current locale
-   */
-  public Map<String, String> getLanguages() {
-    return languages;
-  }
-
-  /**
-   * Return the list of 2-letter country codes specific to the current locale.
-   *
-   * @return the list of 2-letter country codes specific to the current locale
-   */
-  public Map<String, String> getCountries() {
-    return countries;
-  }
-
-  /**
-   * Return the list Ranks specific to the current locale.
-   *
-   * @return the list of Ranks specific to the current locale
-   */
-  public Map<String, String> getRanks() {
-    return ranks;
   }
 
   public String rss() {
@@ -803,29 +824,6 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Returns a list of OrganizedTaxonomicCoverage that facilitate the display of the resource's TaxonomicCoverage on
-   * the UI.
-   *
-   * @return list of OrganizedTaxonomicCoverage or an empty list if none were added
-   */
-  public List<OrganizedTaxonomicCoverage> getOrganizedCoverages() {
-    return organizedCoverages;
-  }
-
-  /**
-   * Get the EML instance to display on Resource Portal page.
-   *
-   * @return EML instance
-   */
-  public Eml getEml() {
-    return eml;
-  }
-
-  public DataPackageMetadata getDpMetadata() {
-    return dpMetadata;
-  }
-
-  /**
    * Returns merged contacts. Populates collection if it's empty.
    * Puts all creators, contact, metadataProviders and associatedParties together removing duplicates.
    *
@@ -965,127 +963,6 @@ public class ResourceAction extends PortalBaseAction {
     }
   }
 
-  public Map<String, Set<String>> getContactRoles() {
-    return contactRoles;
-  }
-
-  public Map<String, Set<String>> getProjectPersonnelRoles() {
-    return projectPersonnelRoles;
-  }
-
-  /**
-   * Set the EML instance to display on Resource Portal page.
-   *
-   * @param eml EML instance
-   */
-  public void setEml(Eml eml) {
-    this.eml = eml;
-  }
-
-  /**
-   * Returns whether the version of the resource is a metadata-only resource. This is determined by the existence of
-   * a DwC-A. This method is only really of importance for versions of the resource that are not the latest. For the
-   * latest published version of the resource, one can just call resource.recordsPublished() and see if it's > 0.
-   *
-   * @return true if resource is metadata-only
-   */
-  public boolean isMetadataOnly() {
-    return metadataOnly;
-  }
-
-  /**
-   * Set whether resource is metadata-only or not.
-   *
-   * @param metadataOnly is the resource metadata-only
-   */
-  public void setMetadataOnly(boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
-  }
-
-  /**
-   * This map populates the update frequencies. The map is derived from the vocabulary {@link -linkoffline
-   * http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
-   *
-   * @return update frequencies map
-   */
-  public Map<String, String> getFrequencies() {
-    return frequencies;
-  }
-
-  /**
-   * @return record count for published version (specified from version parameter)
-   */
-  public int getRecordsPublishedForVersion() {
-    return recordsPublishedForVersion;
-  }
-
-  /**
-   * @return formatted size of DwC-A for published version
-   */
-  public String getDwcaSizeForVersion() {
-    return dwcaSizeForVersion;
-  }
-
-  /**
-   * @return formatted size of EML for published version
-   */
-  public String getEmlSizeForVersion() {
-    return emlSizeForVersion;
-  }
-
-  /**
-   * @return formatted size of RTF for published version
-   */
-  public String getRtfSizeForVersion() {
-    return rtfSizeForVersion;
-  }
-
-  public String getDataPackageSizeForVersion() {
-    return dataPackageSizeForVersion;
-  }
-
-  public String getMetadataSizeForVersion() {
-    return metadataSizeForVersion;
-  }
-
-  /**
-   * @return true if the page rendered is a preview of the next release
-   */
-  public boolean isPreview() {
-    return preview;
-  }
-
-  /**
-   * @param preview true if the page rendered is a preview of the next release, false otherwise
-   */
-  public void setPreview(boolean preview) {
-    this.preview = preview;
-  }
-
-  /**
-   * A map of dataset types keys to internationalized values.
-   *
-   * @return map of dataset subtypes
-   */
-  public Map<String, String> getTypes() {
-    return types;
-  }
-
-  /**
-   * @return ExtensionManager, to retrieve Extension by rowType in template
-   */
-  public ExtensionManager getExtensionManager() {
-    return extensionManager;
-  }
-
-  /**
-   * @param recordsByExtensionForVersion map of record counts by extension for published version (specified from version
-   *                                     parameter)
-   */
-  public void setRecordsByExtensionForVersion(Map<String, Integer> recordsByExtensionForVersion) {
-    this.recordsByExtensionForVersion = recordsByExtensionForVersion;
-  }
-
   /**
    * @return the largest number of records found in any extension, including the core extension
    */
@@ -1112,12 +989,5 @@ public class ResourceAction extends PortalBaseAction {
         .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
 
     return result;
-  }
-
-  /**
-   * @return the core type of the resource
-   */
-  public String getCoreType() {
-    return coreType;
   }
 }
