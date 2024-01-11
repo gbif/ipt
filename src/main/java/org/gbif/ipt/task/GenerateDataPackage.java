@@ -94,6 +94,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private int currRecordsSkipped = 0;
   private String currSchema;
   private String currTableSchema;
+  // record counts by extension <rowType, count>
+  private Map<String, Integer> recordsByTableSchema = new HashMap<>();
 
   @Inject
   public GenerateDataPackage(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -140,11 +142,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // set final state
       setState(STATE.COMPLETED);
 
-      Map<String, Integer> result = new HashMap<>();
-      result.put(resource.getDataPackageIdentifier(), 0);
-      return result;
+      return recordsByTableSchema;
     } catch (GeneratorException e) {
-      // set last error report!
+      // set the last error report!
       setState(e);
 
       // write exception to publication log file when IPT is in debug mode, otherwise just log it
@@ -430,6 +430,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           }
 
           dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns);
+
+          // store record number by extension rowType
+          recordsByTableSchema.put(tableSchema.getName(), currRecords);
         }
       }
     } catch (IOException e) {

@@ -192,6 +192,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
@@ -1421,7 +1422,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // store record counts by extension
           resource.setRecordsByExtension(f.get());
           // populate core record count
-          Integer recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+          Integer recordCount = null;
+
+          if (resource.isDataPackage()) {
+            if (CAMTRAP_DP.equals(resource.getCoreType())) {
+              // take number of observations as number of records
+              recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+            }
+          } else {
+            recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+          }
+
           resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
           // finish publication (update registration, persist resource changes)
           publishEnd(resource, action, version);
@@ -2392,7 +2403,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       processReports.remove(resource.getShortname());
     }
 
-    if (resource.getDataPackageIdentifier() == null) { // DwC archive
+    if (!resource.isDataPackage()) { // DwC archive
       // (re)generate dwca asynchronously
       boolean dwca = false;
       if (resource.hasMappedData()) {
@@ -2405,7 +2416,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         publishEnd(resource, action, version);
       }
       return dwca;
-    } else { // Data Schema based package
+    } else { // Data Package archive
       boolean dataPackage = false;
       if (resource.hasSchemaMappedData()) {
         generateDataPackage(resource);
@@ -2414,7 +2425,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // set number of records published
         resource.setRecordsPublished(0);
         // finish publication now
-        // TODO: 06/04/2022 check publishEnd works correctly (we can't register schema resources yet)
         publishEnd(resource, action, version);
       }
       return dataPackage;
@@ -2444,9 +2454,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // update the resource's registration (if registered), even if it is a metadata-only resource.
     updateRegistration(resource, action);
-    // set last published date
+    // set the last published date
     resource.setLastPublished(new Date());
-    // set next published date (if resource configured for auto-publishing)
+    // set the next published date (if resource configured for auto-publishing)
     updateNextPublishedDate(new Date(), resource);
     // register/update DOI
     executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
