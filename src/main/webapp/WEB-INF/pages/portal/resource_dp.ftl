@@ -206,6 +206,29 @@
                                     </div>
                                 </#if>
                             </dl>
+
+                            <#list (resource.dataPackageMetadata.licenses)! as l>
+                                <#if l.scope == "data">
+                                    <#assign license=l.name/>
+                                </#if>
+                            </#list>
+
+                            <#if license?has_content>
+                                <dl class="inline mb-0">
+                                    <div>
+                                        <dt><@s.text name='portal.resource.license'/>:</dt>
+                                        <dd>
+                                            <#if license.contains("CC-BY-NC")>
+                                                <a href="http://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_blank">CC-BY-NC 4.0</a>
+                                            <#elseif license.contains("CC-BY")>
+                                                <a href="http://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY 4.0</a>
+                                            <#elseif license.contains("CC0")>
+                                                <a href="http://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank">CC0 1.0</a>
+                                            </#if>
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </#if>
                         </div>
 
                         <#if isLogoPresent>
