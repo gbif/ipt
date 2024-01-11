@@ -39,11 +39,11 @@ image::ipt2/flow-all.png[]
 ** xref:occurrence-data.adoc[Occurrence Data]
 ** xref:sampling-event-data.adoc[Sampling Event Data]
 . Transform your data into a table structure, using Darwin Core (DwC) terms as column names
-** Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended
+** Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended (Excel templates for each dataset class are available in the above links - see the previous point)
 ** Hint: it is possible to use data stored in a xref:database-connection.adoc[supported database]
 . Upload your data to the IPT
 ** Hint: refer to other sections of this manual for additional guidance, such as the xref:manage-resources.adoc[Manage Resources Menu] section.
-. Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core].
+. Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core]).
 . Fill in resource metadata using the IPT's metadata editor
 . Publish the dataset (make it freely and openly available worldwide)
 . Register the dataset with GBIF.
