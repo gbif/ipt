@@ -356,7 +356,11 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    preProcessCamtrapMetadata();
+    boolean isCamtrap = resource.getDataPackageMetadata() instanceof CamtrapMetadata;
+
+    if (isCamtrap) {
+      preProcessCamtrapMetadata();
+    }
 
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
@@ -366,7 +370,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata." + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata." + (isCamtrap ? "camtrap." : "") + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
@@ -381,14 +385,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   }
 
   private void preProcessCamtrapMetadata() {
-    if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-      if (section == CamtrapMetadataSection.GEOGRAPHIC_SECTION) {
-        convertCamtrapGeographicMetadata();
-      } else if (section == CamtrapMetadataSection.TAXONOMIC_SECTION) {
-        convertCamtrapTaxonomicMetadata();
-      } else if (section == CamtrapMetadataSection.TEMPORAL_SECTION) {
-        convertCamtrapTemporalMetadata();
-      }
+    if (section == CamtrapMetadataSection.GEOGRAPHIC_SECTION) {
+      convertCamtrapGeographicMetadata();
+    } else if (section == CamtrapMetadataSection.TAXONOMIC_SECTION) {
+      convertCamtrapTaxonomicMetadata();
+    } else if (section == CamtrapMetadataSection.TEMPORAL_SECTION) {
+      convertCamtrapTemporalMetadata();
     }
   }
 
@@ -505,6 +507,9 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         next = CamtrapMetadataSection.PROJECT_SECTION;
         break;
       case PROJECT_SECTION:
+        next = CamtrapMetadataSection.CITATION_SECTION;
+        break;
+      case CITATION_SECTION:
         next = CamtrapMetadataSection.OTHER_SECTION;
         break;
       case OTHER_SECTION:

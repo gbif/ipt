@@ -27,7 +27,7 @@ public enum CamtrapMetadataSection implements DataPackageMetadataSection {
   TEMPORAL_SECTION ("temporal"),
   KEYWORDS_SECTION ("keywords"),
   PROJECT_SECTION ("project"),
-  CITATION("citation"),
+  CITATION_SECTION("citation"),
   OTHER_SECTION ("other");
 
   /**
