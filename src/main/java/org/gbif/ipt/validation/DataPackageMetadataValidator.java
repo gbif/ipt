@@ -102,7 +102,7 @@ public class DataPackageMetadataValidator {
     boolean problemsEncountered = false;
     validate(action, resource, section);
     if ((action.hasActionErrors() || action.hasFieldErrors())) {
-      action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu.datapackagemetadata." + section.getName())}));
+      action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
       problemsEncountered = true;
     }
     return !problemsEncountered;
