@@ -28,17 +28,60 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.gbif.ipt.validation.BasicMetadata;
+import org.gbif.ipt.validation.NotNullLastNameForPeopleContributors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NotNullLastNameForPeopleContributors(message = "validation.input.required", groups = BasicMetadata.class)
 public class CamtrapContributor extends FrictionlessContributor {
 
   private static final long serialVersionUID = -8059939413339566278L;
+
+  /**
+   * First name
+   * <p>
+   * First name of the contributor.
+   */
+  @JsonProperty("firstName")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  private String firstName;
+
+  /**
+   * Last name
+   * <p>
+   * Last name of the contributor.
+   */
+  @JsonProperty("lastName")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  private String lastName;
 
   @Override
   @JsonProperty("role")
   @JsonDeserialize(using = CamtrapContributorRoleDeserializer.class)
   public String getRole() {
     return super.getRole();
+  }
+
+  @JsonProperty("firstName")
+  public String getFirstName() {
+    return firstName;
+  }
+
+  @JsonProperty("firstName")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  @JsonProperty("lastName")
+  public String getLastName() {
+    return lastName;
+  }
+
+  @JsonProperty("lastName")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public static class CamtrapContributorDeserializer extends JsonDeserializer<Contributor> {
