@@ -27,7 +27,6 @@
 
             $("#plus-source").click(function (event) {
                 event.preventDefault();
-                console.log("plus source triggered")
                 addNewSourceItem(true);
             });
 
@@ -46,7 +45,6 @@
             }
 
             function addNewSourceItem(effects) {
-                console.log("add new source triggered")
                 var newItem = $('#baseItem-source').clone();
                 if (effects) newItem.hide();
                 newItem.appendTo('#source-items');
@@ -103,6 +101,16 @@
                 });
                 $("#contributor-item-" + index + " [for$='title']").attr("for", "metadata.contributors[" + index + "].title");
 
+                $("#contributor-item-" + index + " [id$='firstName']").attr("id", "metadata.contributors[" + index + "].firstName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='firstName']").attr("for", "metadata.contributors[" + index + "].firstName");
+
+                $("#contributor-item-" + index + " [id$='lastName']").attr("id", "metadata.contributors[" + index + "].lastName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='lastName']").attr("for", "metadata.contributors[" + index + "].lastName");
+
                 $("#contributor-item-" + index + " [id$='path']").attr("id", "metadata.contributors[" + index + "].path").attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -134,6 +142,46 @@
                     return $(this).attr("id");
                 });
                 $("#contributor-item-" + index + " [for$='organization']").attr("for", "metadata.contributors[" + index + "].organization");
+
+                // disable title, show last name and first name
+                $("#metadata\\.contributors\\[" + index + "\\]\\.role").on("change", function () {
+                    var selectedRole = $(this).val();
+
+                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                    var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+
+                    if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
+                        // title should be disabled
+                        $title.prop("disabled", true);
+                        $title.val($firstName.val() + " " + $lastName.val())
+
+                        // first name input and label should be displayed
+                        $firstName.show();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
+
+                        // last name input and label should be displayed
+                        $lastName.show();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
+
+
+                        $firstName.on('input', function() {
+                            $title.val($(this).val() + " " + $lastName.val());
+                        });
+
+                        $lastName.on('input', function() {
+                            $title.val($firstName.val() + " " + $(this).val());
+                        });
+
+                    } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
+                        $title.prop("disabled", false);
+                        $firstName.hide();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
+
+                        $lastName.hide();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
+                    }
+                });
             }
 
             function setSourceItemIndex(item, index) {
@@ -177,6 +225,108 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            $('input[id^="metadata\\.contributors"][id$="\\.firstName"]').on('input', function() {
+                var index = $(this)[0].id.match(/\d+/)[0];
+                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                var lastName = $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").val();
+
+                if (lastName) {
+                    $title.val($(this).val() + " " + lastName);
+                } else {
+                    $title.val($(this).val());
+                }
+            });
+
+            $('input[id^="metadata\\.contributors"][id$="\\.lastName"]').on('input', function() {
+                var index = $(this)[0].id.match(/\d+/)[0];
+                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                var firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName").val();
+
+                if (firstName) {
+                    $title.val(firstName + " " + $(this).val());
+                } else {
+                    $title.val($(this).val());
+                }
+            });
+
+            // go through the existing contributors, hide first/last name fields if needed
+            $('select[id^="metadata\\.contributors"][id$="\\.role"]').each(function () {
+                var id = $(this)[0].id;
+                var idNumbersMatch = id.match(/\d+/);
+
+                if (idNumbersMatch) {
+                    var index = idNumbersMatch[0];
+
+                    var role = $(this).val();
+
+                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                    var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+
+                    if (role === 'CONTACT' || role === 'PRINCIPAL_INVESTIGATOR' || role === 'CONTRIBUTOR') {
+                        // first name input and label should be displayed
+                        $firstName.show();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
+
+                        // last name input and label should be displayed
+                        $lastName.show();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
+                    } else {
+                        $title.prop("disabled", false);
+                        $firstName.hide();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
+
+                        $lastName.hide();
+                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
+                    }
+                }
+            });
+
+            // existing contributors - hide/display first/last name fields when role changes
+            $('select[id^="metadata\\.contributors"][id$="\\.role"]').on("change", function () {
+                var selectedRole = $(this).val();
+                var index = $(this)[0].id.match(/\d+/)[0];
+
+                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+
+                if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
+                    // title should be disabled (read-only)
+                    $title.prop("readonly", true);
+
+                    // first name input and label should be displayed
+                    $firstName.show();
+                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
+
+                    // last name input and label should be displayed
+                    $lastName.show();
+                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
+
+
+                    $firstName.on('input', function() {
+                        $title.val($(this).val() + " " + $lastName.val());
+                    });
+
+                    $lastName.on('input', function() {
+                        $title.val($firstName.val() + " " + $(this).val());
+                    });
+
+                } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
+                    $("#metadata\\.contributors\\[" + index + "\\]\\.title").prop("readonly", false);
+
+                    $firstName.hide();
+                    $firstName.val('');
+                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
+
+                    $lastName.hide();
+                    $lastName.val('');
+                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
+                }
+            });
+
+
 
             $('#metadata\\.licenses\\[0\\]\\.name').select2({
                 placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
