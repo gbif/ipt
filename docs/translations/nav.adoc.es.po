@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 10:21+0000\n"
-"PO-Revision-Date: 2023-12-11 11:26\n"
+"PO-Revision-Date: 2024-01-16 17:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -121,12 +121,12 @@ msgstr "Guías de buenas prácticas"
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:24
 msgid "xref:gbif-metadata-profile.adoc[Resource metadata]"
-msgstr "xref:gbif-metadata-profile.adoc[Metadatos del Recurso]"
+msgstr "xref:gbif-metadata-profile.adoc[Metadatos del recurso]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:25
 msgid "xref:best-practices-checklists.adoc[Checklist Data]"
-msgstr "xref:best-practices-checklists.adoc[Datos del Listado Taxonómico]"
+msgstr "xref:best-practices-checklists.adoc[Datos de la lista de chequeo]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:26
@@ -146,17 +146,17 @@ msgstr "xref:faq.adoc[]"
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:29
 msgid "Contributing"
-msgstr "Contribuyendo"
+msgstr "Contribución"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:30
 msgid "xref:translations.adoc[Translations]"
-msgstr "xref:translations.adoc[Translations]"
+msgstr "xref:translations.adoc[Traducciones]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:31
 msgid "xref:developer-guide.adoc[Development]"
-msgstr "xref:developer-guide.adoc[Development]"
+msgstr "xref:developer-guide.adoc[Desarrollo]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:32
