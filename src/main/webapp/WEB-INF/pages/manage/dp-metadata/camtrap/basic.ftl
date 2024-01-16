@@ -310,8 +310,7 @@
                                 <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
                                 <div id="contributor-items">
                                     <#list metadata.contributors as item>
-                                        <div id="contributor-item-${item_index}"
-                                             class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                        <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
                                                 <a id="contributor-removeLink-${item_index}" href=""
                                                    class="metadata-action-link removeContributorLink">
@@ -323,8 +322,18 @@
                                                     <span>${removeContributorLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
-                                            <div>
-                                                <@input name="metadata.contributors[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                            <div class="col-12">
+                                                <#if (item.role)?? && (item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator")>
+                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true disabled=true />
+                                                <#else>
+                                                    <@input name="metadata.contributors[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                </#if>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="metadata.contributors[${item_index}].lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="metadata.contributors[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
@@ -333,8 +342,8 @@
                                                 <@input name="metadata.contributors[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <#if (metadata.contributors[item_index].role)??>
-                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="${metadata.contributors[item_index].role}" />
+                                                <#if (item.role)??>
+                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="${item.role}" />
                                                 <#else>
                                                     <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="" />
                                                 </#if>
@@ -474,8 +483,14 @@
                 <span>${removeContributorLink?lower_case?cap_first}</span>
             </a>
         </div>
-        <div>
+        <div class="col-12">
             <@input name="metadata.contributors.title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true/>
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
+        </div>
+        <div class="col-lg-6">
+            <@input name="metadata.contributors.lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
         </div>
         <div class="col-lg-6">
             <@input name="metadata.contributors.path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
