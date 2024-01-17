@@ -1514,11 +1514,12 @@ public class Resource implements Serializable, Comparable<Resource> {
 
       CamtrapMetadata metadata = (CamtrapMetadata) dataPackageMetadata;
 
-      // TODO filter roles
       Stream.of(metadata.getContributors())
           .flatMap(Collection::stream)
           .map(contributor -> (CamtrapContributor) contributor)
-          .map(FrictionlessContributor::getTitle)
+          .filter(Objects::nonNull)
+          .filter(this::hasCitationRole)
+          .map(this::getCitationCamtrapContributorName)
           .filter(StringUtils::isNotEmpty)
           .forEach(contributorList::add);
 
@@ -1557,7 +1558,9 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
 
       // add ResourceTypeGeneral/ResourceType
-      if (getCoreType() != null) {
+      if (CAMTRAP_DP.equals(getCoreType())) {
+        sb.append("Camtrap DP dataset");
+      } else if (getCoreType() != null) {
         sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
         sb.append(" dataset");
       }
@@ -1576,6 +1579,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     return sb.toString();
+  }
+
+  private boolean hasCitationRole(CamtrapContributor contributor) {
+    return CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole());
   }
 
   /**
@@ -1607,6 +1614,29 @@ public class Resource implements Serializable, Comparable<Resource> {
     } else if (firstNames == null && organisation != null) {
       sb.append(organisation);
     }
+    return sb.toString();
+  }
+
+  protected String getCitationCamtrapContributorName(CamtrapContributor contributor) {
+    StringBuilder sb = new StringBuilder();
+    String lastNameTrimmed = StringUtils.trimToNull(contributor.getLastName());
+    String firstNamesTrimmed = StringUtils.trimToNull(contributor.getFirstName());
+
+    if (lastNameTrimmed != null) {
+      sb.append(lastNameTrimmed);
+      if (firstNamesTrimmed != null) {
+        sb.append(" ");
+        // add first initial of each first name, capitalized
+        String[] names = firstNamesTrimmed.split("\\s+", -1);
+        for (int i = 0; i < names.length; i++) {
+          sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
+          if (i < names.length - 1) {
+            sb.append(" ");
+          }
+        }
+      }
+    }
+
     return sb.toString();
   }
 

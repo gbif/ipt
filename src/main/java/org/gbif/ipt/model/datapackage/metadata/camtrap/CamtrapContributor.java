@@ -17,8 +17,10 @@ import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -122,6 +124,7 @@ public class CamtrapContributor extends FrictionlessContributor {
     CONTRIBUTOR("contributor");
 
     private final String value;
+    public final static List<String> CITATION_ROLES = Arrays.asList(CONTACT.value(), PRINCIPAL_INVESTIGATOR.value(), CONTRIBUTOR.value);
     public final static Map<String, Role> CONSTANTS = new HashMap<>();
     public final static Map<String, String> VOCABULARY = new LinkedHashMap<>();
 
