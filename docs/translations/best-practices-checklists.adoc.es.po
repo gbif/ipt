@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-11-21 10:29+0000\n"
-"PO-Revision-Date: 2023-12-13 20:31\n"
+"PO-Revision-Date: 2024-01-17 23:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -463,7 +463,7 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
 "| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
 "| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
-msgstr "| taxonID | reino | filo | clase | orden | familia | scientificName\n\n"
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
 "| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris\n"
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
 "| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
@@ -523,7 +523,7 @@ msgstr "Formatos de clasificación no recomendados para publicación"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:186
 msgid "The following examples illustrate data configurations that can fit the profile *but are not recommended or supported by GBIF* (i.e., GBIF parsers would not handle these cases properly)"
-msgstr "Los siguientes ejemplos ilustran configuraciones de datos que pueden ajustarse al perfil *pero que GBIF no recomienda ni admite* (es decir, los analizadores de GBIF no manejarían estos casos correctamente)"
+msgstr "Los siguientes ejemplos ilustran configuraciones de datos que pueden ajustarse al perfil *pero que GBIF no recomienda ni admite* (es decir, los algoritmos de GBIF no gestionarían estos casos correctamente)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:189
@@ -602,12 +602,12 @@ msgid "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclat
 "| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
 msgstr "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus\n\n"
-"| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |\n"
-"| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |\n"
-"| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |\n"
-"| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
-"| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
-"| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | aceptado            |\n"
+"| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Sinónimo homotípico   |\n"
+"| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Sinónimo homotípico   |\n"
+"| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Sinónimo heterotípico | nomen dubium\n"
+"| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Sinónimo heterotípico | nomen dubium\n"
+"| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Sinónimo heterotípico | nomen dubium\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:234
@@ -667,12 +667,12 @@ msgstr "Un *dwc:parentNameUsageID* debe apuntar a un registro existente en el co
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:260
 msgid "Do not confuse the *dwc:higherTaxonID* used to describe a classification with the *dwc:acceptedNameUsageID* used to describe the taxonomic status of a record."
-msgstr "No confunda el *dwc:higherTaxonID* utilizado para describir una clasificación con el *dwc:acceptedNameUsageID* utilizado para describir el estatus taxonómico de un registro."
+msgstr "No confunda el *dwc:higherTaxonID* utilizado para describir una clasificación con el *dwc:acceptedNameUsageID* utilizado para describir el estado taxonómico de un registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:261
 msgid "Do not “chain” synonyms. A synonym should only point to accepted taxon records via *dwc:acceptedNameUsageID*. They should never point to another synonym."
-msgstr "No “encadene” sinónimos. Un sinónimo solo debe apuntar a registros de taxón aceptados a través de *dwc:acceptNameUsageID*. Nunca deben apuntar a otro sinónimo."
+msgstr "No “concatene” sinónimos. Un sinónimo solo debe apuntar a registros de taxón aceptados a través de *dwc:acceptNameUsageID*. Nunca deben apuntar a otro sinónimo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:262
@@ -846,7 +846,7 @@ msgstr "*dc:source*: enlace a la página web de la fuente\n"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:320
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
-msgstr "Caso de uso 1: listado taxonómico compuestos por múltiples conjuntos de datos contribuyentes (p. ej., Catálogo de la Vida, PESI, WoRMS)"
+msgstr "Caso de Uso 1 - Listado taxonómico compuestos por múltiples conjuntos de datos que contribuyen (por ejemplo, Catálogo de la Vida, PESI, WoRMS)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:323
@@ -888,7 +888,7 @@ msgstr "Para citar individuos a nivel de registro, proporcionando un tercer nive
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:337
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
-msgstr "Caso de uso 2: listados taxonómicos derivados de una o más fuentes de autoridad"
+msgstr "Caso de Uso 2 - Listados taxonómicos derivados de una o más fuentes de autoridad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:340
