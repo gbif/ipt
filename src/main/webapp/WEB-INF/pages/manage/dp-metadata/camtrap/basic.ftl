@@ -8,9 +8,9 @@
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function () {
-            var contributorItems = calcNumberOfItems("contributor");
+            var nextContributorIndex;
+            getNextContributorIndex();
             var sourcesItems = calcNumberOfItems("source");
-            var licensesItems = calcNumberOfItems("license");
 
             function calcNumberOfItems(name) {
                 var lastItem = $("#" + name + "-items .item:last-child").attr("id");
@@ -18,6 +18,21 @@
                     return parseInt(lastItem.split("-")[2]);
                 else
                     return -1;
+            }
+
+            function getNextContributorIndex() {
+                var lastItem = $("#contributor-items .item:last-child").attr("id");
+                if (lastItem !== undefined) {
+                    nextContributorIndex = parseInt(lastItem.split("-")[2]);
+
+                    if (nextContributorIndex || nextContributorIndex === 0) {
+                        nextContributorIndex = nextContributorIndex + 1;
+                    } else {
+                        nextContributorIndex = 0;
+                    }
+                } else {
+                    nextContributorIndex = 0;
+                }
             }
 
             $("#plus-contributor").click(function (event) {
@@ -39,7 +54,8 @@
                     newItem.slideDown('slow');
                 }
 
-                setContributorItemIndex(newItem, ++contributorItems);
+                setContributorItemIndex(newItem, nextContributorIndex);
+                getNextContributorIndex();
 
                 initInfoPopovers(newItem[0]);
             }
@@ -96,10 +112,13 @@
                     removeContributorItem(event);
                 });
 
+                $("#contributor-item-" + index + " [id$='titleDisplay']").attr("id", "contributor[" + index + "].titleDisplay").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#contributor-item-" + index + " [for$='titleDisplay']").attr("for", "contributor[" + index + "].titleDisplay");
                 $("#contributor-item-" + index + " [id$='title']").attr("id", "metadata.contributors[" + index + "].title").attr("name", function () {
                     return $(this).attr("id");
                 });
-                $("#contributor-item-" + index + " [for$='title']").attr("for", "metadata.contributors[" + index + "].title");
 
                 $("#contributor-item-" + index + " [id$='firstName']").attr("id", "metadata.contributors[" + index + "].firstName").attr("name", function () {
                     return $(this).attr("id");
@@ -148,13 +167,15 @@
                     var selectedRole = $(this).val();
 
                     var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var $displayedTitle = $("#contributor\\[" + index + "\\]\\.titleDisplay");
                     var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
                     var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
 
                     if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
                         // title should be disabled
-                        $title.prop("disabled", true);
-                        $title.val($firstName.val() + " " + $lastName.val())
+                        $displayedTitle.prop("readonly", true);
+                        $displayedTitle.val($firstName.val() + " " + $lastName.val());
+                        $title.val($firstName.val() + " " + $lastName.val());
 
                         // first name input and label should be displayed
                         $firstName.show();
@@ -174,7 +195,12 @@
                         });
 
                     } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
-                        $title.prop("disabled", false);
+                        $displayedTitle.prop("readonly", false);
+                        $title.val($displayedTitle.val());
+                        $displayedTitle.on('input', function() {
+                            $title.val($displayedTitle.val());
+                        });
+
                         $firstName.hide();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
 
@@ -261,6 +287,7 @@
                     var role = $(this).val();
 
                     var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var $displayedTitle = $("#contributor\\[" + index + "\\]\\.titleDisplay");
                     var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
                     var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
 
@@ -273,7 +300,7 @@
                         $lastName.show();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
                     } else {
-                        $title.prop("disabled", false);
+                        $displayedTitle.prop("disabled", false);
                         $firstName.hide();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
 
@@ -294,7 +321,7 @@
 
                 if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
                     // title should be disabled (read-only)
-                    $title.prop("readonly", true);
+                    $("#contributor\\[" + index + "\\]\\.titleDisplay").prop("readonly", true);
 
                     // first name input and label should be displayed
                     $firstName.show();
@@ -314,7 +341,7 @@
                     });
 
                 } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
-                    $("#metadata\\.contributors\\[" + index + "\\]\\.title").prop("readonly", false);
+                    $("#contributor\\[" + index + "\\]\\.titleDisplay").prop("readonly", false);
 
                     $firstName.hide();
                     $firstName.val('');
@@ -474,10 +501,11 @@
                                             </div>
                                             <div class="col-12">
                                                 <#if (item.role)?? && (item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator")>
-                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true disabled=true />
+                                                    <@input name="contributor[${item_index}].titleDisplay" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true disabled=true />
                                                 <#else>
-                                                    <@input name="metadata.contributors[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                    <@input name="contributor[${item_index}].titleDisplay" value="${item.title!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
                                                 </#if>
+                                                <input type='hidden' id='metadata.contributors[${item_index}].title' name='metadata.contributors[${item_index}].title' value='${item.title!}' />
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="metadata.contributors[${item_index}].firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
@@ -634,7 +662,8 @@
             </a>
         </div>
         <div class="col-12">
-            <@input name="metadata.contributors.title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true/>
+            <@input name="contributor.titleDisplay" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true/>
+            <input type='hidden' id='metadata.contributors.title' name='metadata.contributors.title' value='' />
         </div>
         <div class="col-lg-6">
             <@input name="metadata.contributors.firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
