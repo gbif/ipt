@@ -487,6 +487,7 @@
                                 <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
                                 <div id="contributor-items">
                                     <#list metadata.contributors as item>
+                                        <#if item?has_content>
                                         <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
                                                 <a id="contributor-removeLink-${item_index}" href=""
@@ -530,6 +531,7 @@
                                                 <@input name="metadata.contributors[${item_index}].organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
                                             </div>
                                         </div>
+                                        </#if>
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
