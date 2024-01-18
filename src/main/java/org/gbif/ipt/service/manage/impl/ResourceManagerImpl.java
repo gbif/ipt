@@ -69,6 +69,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
@@ -1005,6 +1006,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       frictionlessMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
     }
 
+    if (metadata instanceof CamtrapMetadata) {
+      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
+
+      camtrapMetadata.getContributors().stream()
+          .map(contributor -> (CamtrapContributor) contributor)
+          .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
+          .forEach(this::inferNameFieldsForCamtrapContributor);
+    }
+
     resource.setDataPackageMetadata(metadata);
     // do not automatically infer scope metadata
     resource.setInferGeocoverageAutomatically(false);
@@ -1013,6 +1023,37 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setMetadataModified(new Date());
     save(resource);
     saveDatapackageMetadata(resource);
+  }
+
+  /**
+   * Infer firstName/lastName fields from the title field and set them.
+   *
+   * @param contributor camtrap contributor
+   */
+  protected void inferNameFieldsForCamtrapContributor(CamtrapContributor contributor) {
+    String title = StringUtils.trimToNull(contributor.getTitle());
+
+    if (StringUtils.isNotEmpty(title)) {
+      String[] names = title.split("\\s+");
+
+      if (names.length > 0) {
+        String lastName = names[names.length - 1];
+
+        // The first name is the concatenation of the remaining names
+        StringBuilder firstNameBuilder = new StringBuilder();
+        for (int i = 0; i < names.length - 1; i++) {
+          firstNameBuilder.append(names[i]);
+          if (i < names.length - 2) {
+            firstNameBuilder.append(" ");
+          }
+        }
+
+        String firstName = firstNameBuilder.toString();
+
+        contributor.setFirstName(firstName);
+        contributor.setLastName(lastName);
+      }
+    }
   }
 
   /**
