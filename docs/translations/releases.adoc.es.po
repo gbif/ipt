@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 10:30+0000\n"
-"PO-Revision-Date: 2023-12-13 19:26\n"
+"PO-Revision-Date: 2024-01-18 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "La versión estable actual es la <<2-7-7-november-2023,2.7.7>>."
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
 msgid "You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.  Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
-msgstr ""
+msgstr "Está leyendo la última versión del manual.  Puede leer versiones anteriores del manual utilizando los selectores situados en la parte superior derecha o inferior izquierda de la pantalla.  Tenga en cuenta que no todas las versiones del manual están disponibles en TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
 
 #.  Next release text kept for reuse, as it will be part of the Crowdin translation memory.
 #. type: Title ==
@@ -204,22 +204,22 @@ msgstr "Esta versión trae un nuevo cargador de archivos, una nueva configuraci�
 #: en/modules/ROOT/pages/releases.adoc:61
 #, no-wrap
 msgid "*2.7.3* – March 2023"
-msgstr ""
+msgstr "*2.7.3* - Marzo 2023"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:64
 msgid "xref:2.5@release-notes.adoc[IPT v2.7.3 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión de IPT v2.7.3]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:66
 msgid "Addressed https://github.com/gbif/ipt/milestone/45?closed=1[5 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/45?closed=1[5 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:69
 msgid "This minor release brings UI improvements and minor fixes."
-msgstr ""
+msgstr "Esta versión menor aporta mejoras en la interfaz de usuario y correcciones menores."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:70
