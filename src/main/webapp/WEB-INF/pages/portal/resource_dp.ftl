@@ -188,6 +188,12 @@
                 <div class="mx-md-4 mx-2">
                     <div class="row">
                         <div class="<#if isLogoPresent>col-lg-3-5 col-md-10 col-sm-9 col-8<#else>col-lg-4</#if> text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
+                            <#if resource.status=="REGISTERED" && resource.key??>
+                                <div>
+                                    <dt>GBIF UUID:</dt>
+                                    <dd><a href="${cfg.portalUrl}/dataset/${resource.key}">${resource.key}</a></dd>
+                                </div>
+                            </#if>
                             <dl class="inline mb-0">
                                 <#if (dpMetadata.created)??>
                                     <div>
