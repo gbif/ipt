@@ -426,9 +426,11 @@
                             <div class="row g-3 border">
                                 <#if (dpMetadata.contributors?size>0)>
                                     <#list dpMetadata.contributors as c>
-                                        <div class="col-lg-4 mt-0">
-                                            <@contributor contributor=c />
-                                        </div>
+                                        <#if c??>
+                                            <div class="col-lg-4 mt-0">
+                                                <@contributor contributor=c />
+                                            </div>
+                                        </#if>
                                     </#list>
                                 </#if>
                             </div>
