@@ -214,7 +214,7 @@
                             </dl>
 
                             <#list (resource.dataPackageMetadata.licenses)! as l>
-                                <#if l.scope == "data">
+                                <#if l?? && l.scope?? && l.scope == "data">
                                     <#assign license=l.name/>
                                 </#if>
                             </#list>
