@@ -152,7 +152,7 @@
                         <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                     </div>
                     <div class="col-sm-6">
-                        <@selectList name="nesSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                        <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
                     </div>
                 </div>
             </div>
@@ -183,10 +183,10 @@
                     </a>
                 </div>
                 <div class="col-sm-6">
-                    <@selectList name="newTableSchemas" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                    <@selectList name="newTableSchemasBase" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                 </div>
                 <div class="col-sm-6">
-                    <@selectList name="newSources" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                    <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
                 </div>
             </div>
         </div>
