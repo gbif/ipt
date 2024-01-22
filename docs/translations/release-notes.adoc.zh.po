@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-01-30 16:42+0000\n"
-"PO-Revision-Date: 2023-01-30 16:46\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"PO-Revision-Date: 2023-12-11 09:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
-msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
+msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the https://www.gbif.org/data-hosting-centres#_criteria-for-data-hosting-centres[criteria for data hosting centres], it is highly recommended to run scheduled backups of the IPT data directory in general."
 msgstr ""
 
 #. type: Plain text

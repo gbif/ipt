@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2023-08-15 11:54\n"
+"PO-Revision-Date: 2024-01-18 00:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -98,7 +98,7 @@ msgstr "en el directorio de datos del IPT, abra el archivo `config/ipt.propertie
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:27
 msgid "in the `ipt.properties` file, change the line starting with `ipt.baseURL` to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\\://example.org\\:7001/ipt` for http://example.org:7001/ipt."
-msgstr "en el archivo `ipt.properties` cambie la línea de inicio `ipt.baseURL` a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el carácter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
+msgstr "en el archivo `ipt.properties` cambie la línea de inicio `ipt.baseURL` a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el caracter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:28
@@ -590,7 +590,7 @@ msgstr "Esta página permite a un usuario con el rol de Administrador habilitar 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:155
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "Los vocabularios contienen una lista de valores válidos que puede tomar un elemento particular en un estándar o extensión. Por ejemplo, el {latest-basis-of-record}[Vocabulario Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgstr "Los vocabularios contienen una lista de valores válidos que puede tomar un elemento particular en un estándar o extensión. Por ejemplo, el {latest-basis-of-record}[Vocabulario Darwin Core para Type] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:157
@@ -673,7 +673,7 @@ msgstr "Cualquier extensión que ya esté instalada en el IPT puede eliminarse h
 #: en/modules/ROOT/pages/administration.adoc:181
 #, no-wrap
 msgid "Update extension"
-msgstr "Actualizar una extensión"
+msgstr "Actualizar extensión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:183
@@ -707,7 +707,7 @@ msgstr "ipt2/administration/IPTAdminUIManagement.png"
 #: en/modules/ROOT/pages/administration.adoc:192
 #, no-wrap
 msgid "View IPT logs"
-msgstr "Ver registros del IPT"
+msgstr "Ver los logs del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:194

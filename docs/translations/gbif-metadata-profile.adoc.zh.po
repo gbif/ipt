@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-27 14:20+0000\n"
-"PO-Revision-Date: 2023-07-27 15:19\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"PO-Revision-Date: 2023-12-11 09:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -138,7 +138,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:43
-msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation."
+msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an https://www.gbif.org/data-hosting-centres[IPT data hosting centre^] instead of installing and maintaining their own installation."
 msgstr ""
 
 #. type: Plain text

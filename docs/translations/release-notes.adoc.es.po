@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-01-30 16:42+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"PO-Revision-Date: 2023-12-13 20:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -58,8 +58,8 @@ msgstr "*Versiones IPT: aplica:[2.5.*, 2.6.*, 2.7.*]*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
-msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
-msgstr "Asegúrese de *realizar una copia de seguridad del directorio de datos del IPT antes de ejecutar una actualización*. Según los xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Criterios de los centros de alojamiento de datos], se recomienda encarecidamente realizar copias de seguridad programadas para los directorios de datos del IPT en general. "
+msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the https://www.gbif.org/data-hosting-centres#_criteria-for-data-hosting-centres[criteria for data hosting centres], it is highly recommended to run scheduled backups of the IPT data directory in general."
+msgstr "Asegúrese de *hacer una copia de seguridad del directorio de datos del IPT antes de realizar una actualización*. Según https://www.gbif.org/data-hosting-centres#_criteria-for-data-hosting-centres [criterios para centros de alojamiento de datos], se recomienda ejecutar copias de seguridad programadas del directorio de datos del IPT en general."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:10

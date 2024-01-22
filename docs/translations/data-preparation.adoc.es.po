@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2023-08-14 14:19\n"
+"PO-Revision-Date: 2024-01-16 18:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,7 +52,7 @@ msgstr "Servidor de la base de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:11
 msgid "setup a SQL view to use functions (can also be done in IPT SQL source definition)"
-msgstr "configurar una vista SQL para usar funciones (también se puede hacer en IPT definición de fuente SQL)"
+msgstr "configurar una vista SQL para utilizar las funciones (también puede hacerse en la definición de la fuente SQL del IPT)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:12
@@ -67,7 +67,7 @@ msgstr "formato de fechas de acuerdo a ISO"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:14
 msgid "create year/month/day by parsing native SQL date types"
-msgstr "crear año/mes/día con el mapeo de tipos de dato nativos de SQL"
+msgstr "crear año/mes/día analizando tipos de fecha SQL nativos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:15
@@ -83,7 +83,7 @@ msgstr "seleccione valores fijos (elija hacer esto en el mapeo IPT)"
 #: en/modules/ROOT/pages/data-preparation.adoc:17
 #, no-wrap
 msgid "Text Files Source"
-msgstr "Archivos de texto de origen"
+msgstr "Fuente de los archivos de texto"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:19

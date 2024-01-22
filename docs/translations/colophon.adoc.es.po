@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-07 16:26+0000\n"
-"PO-Revision-Date: 2023-07-07 17:45\n"
+"POT-Creation-Date: 2023-12-11 10:21+0000\n"
+"PO-Revision-Date: 2023-12-11 17:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -84,39 +84,24 @@ msgstr "El Integrated Publishing Toolkit de GBIF es un software de código abier
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:38
-msgid "This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:"
-msgstr "Este manual de usuario es lanzado bajo la Licencia Creative Commons Attribution-Non-commercial-Share Alike 3.0. Usted puede obtener una copia de esta licencia en http://creativecommons.org/licenses/by-nc-sa/3.0/. Aunque usted debe consultar el actual documento de licencia para obtener más detalles, en términos generales la licencia establece que usted es libre de copiar, distribuir, transmitir, modificar y adaptar el trabajo, bajo las siguientes condiciones:"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:40
-msgid "you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);"
-msgstr "usted debe citar el trabajo en la manera especificada en esta página (pero no en una forma que sugiera que GBIF o que la Secretaría de GBIF lo respalda a usted o el uso que usted le de al trabajo);"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:41
-msgid "you may not use this work for commercial purposes;"
-msgstr "usted no puede usar este trabajo para propósitos comerciales;"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:42
-msgid "if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one."
-msgstr "si usted altera, transforma, o construye sobre este trabajo, usted puede distribuir el trabajo resultante sólo bajo la misma licencia o alguna similar a esta."
+msgid "This user manual is released under the Creative Commons Attribution 4.0 International Licence. You may obtain a copy of this licence at https://creativecommons.org/licenses/by/4.0/."
+msgstr "Este manual de usuario se publica bajo la licencia Creative Commons Attribution 4.0 International License. Puede obtener una copia de esta licencia en https://creativecommons.org/licenses/by/4.0/."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/colophon.adoc:43
+#: en/modules/ROOT/pages/colophon.adoc:39
 #, no-wrap
 msgid "References"
 msgstr "Referencias"
 
 #.  GitHub and Google Code versions
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:47
-msgid "Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4. Copenhagen: GBIF Secretariat. https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki"
-msgstr ""
+#: en/modules/ROOT/pages/colophon.adoc:43
+msgid "Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User Manual, version 2.3.6. Copenhagen: GBIF Secretariat. https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki"
+msgstr "Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User Manual, version 2.3.6. Copenhagen: GBIF Secretariat. https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki"
 
 #.  https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/gbif-providertoolkit/GBIF_IPT_User_Manual_1.0.pdf
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:49
+#: en/modules/ROOT/pages/colophon.adoc:45
 msgid "Réveillon A (2009) The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: GBIF Secretariat. https://links.gbif.org/ipt_manual_1.0"
 msgstr ""
 

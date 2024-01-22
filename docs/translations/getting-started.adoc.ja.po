@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 15:16+0000\n"
-"PO-Revision-Date: 2023-07-26 13:19\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"PO-Revision-Date: 2023-12-11 09:50\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -34,6 +34,6 @@ msgstr "最新リビジョンのソースコードを使用したい開発者は
 
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:7
-msgid "Publishers who would prefer not to run their own IPT may refer to the list of xref:data-hosting-centres.adoc[data hosting centres]."
-msgstr "自前でIPTを運用することを望まない公開者は、xref:data-hosting-centres.adoc[データホスティングセンター]のリストを参照することができます。"
+msgid "Publishers who would prefer not to run their own IPT may refer to the list of https://www.gbif.org/data-hosting-centres[data hosting centres^]."
+msgstr ""
 
