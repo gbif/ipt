@@ -2535,6 +2535,11 @@
                             <div class="callout callout-warning text-smaller">
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                             </div>
+                        <#elseif resource.dataPackage || resource.coreType != "camtrap-dp">
+                            <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
+                            <div class="callout callout-warning text-smaller">
+                                <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
+                            </div>
                         <#elseif missingValidPublishingOrganisation?string == "true">
                             <!-- Show warning: user must assign valid publishing organisation -->
                             <div class="callout callout-warning text-smaller">
