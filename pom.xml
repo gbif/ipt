@@ -38,7 +38,7 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>1.46</dwc-api.version> <!-- Fixed to 1.46 because of MaterialEntity -->
+    <dwc-api.version>1.48</dwc-api.version>
     <dwca-io.version>2.16</dwca-io.version>
     <gbif-api.version>1.12.10</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
