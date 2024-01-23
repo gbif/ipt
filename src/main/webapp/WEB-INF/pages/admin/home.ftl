@@ -89,12 +89,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-people-fill admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.manageUsers"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-people-fill admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.manageUsers"/>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -116,12 +116,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-cloud-arrow-up-fill admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.editRegistration"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-cloud-arrow-up-fill admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.editRegistration"/>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -143,12 +143,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-building admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.organisations"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-building admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.organisations"/>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -170,12 +170,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-collection-fill admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.manageExtensions"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-collection-fill admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.manageExtensions"/>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -197,12 +197,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-columns-gap admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.manageDataPackageSchemas"/> <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary">New</span>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-columns-gap admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.manageDataPackageSchemas"/> <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary"><@s.text name="admin.home.new"/></span>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -224,12 +224,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-tv admin-icon"></i>
-							</span>
-							<span>
-								<@s.text name="admin.home.manageUI"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-tv admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.manageUI"/>
+								</span>
 							</h4>
 						</div>
 					</div>
@@ -251,12 +251,12 @@
 					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
-							<span class="text-gbif-primary me-2">
-								<i class="bi bi-journal-text admin-icon"></i>
-							</span>
-								<span>
-								<@s.text name="admin.home.manageLogs"/>
-							</span>
+								<span class="text-gbif-primary me-2">
+									<i class="bi bi-journal-text admin-icon"></i>
+								</span>
+									<span>
+									<@s.text name="admin.home.manageLogs"/>
+								</span>
 							</h4>
 						</div>
 					</div>
