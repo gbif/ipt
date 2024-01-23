@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"POT-Creation-Date: 2024-01-11 10:21+0000\n"
+"PO-Revision-Date: 2024-01-11 10:31\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -98,8 +98,8 @@ msgstr "データを公開するためには、GBIF Integrated Publishing Toolki
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:24
-msgid "Hint: it is highly recommended that you save yourself time and money by requesting an account on a xref:data-hosting-centres.adoc[data hosting centre IPT] that is located in your country."
-msgstr "ヒント：あなたの国にあるデータホスティングセンターのIPTのアカウントを要求して、時間とお金を節約することを強くお勧めします。"
+msgid "Hint: it is highly recommended that you save yourself time and money by requesting an account on an IPT located at a https://www.gbif.org/data-hosting-centres[data hosting centre] in your country or community."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:25
@@ -149,8 +149,8 @@ msgstr "データをダーウィンコア（DwC）用語を列名に使用した
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:43
-msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended"
-msgstr "ヒント：Excelのテンプレートを使ってデータを構成し、どのようなDwC用語が必要・推奨とされるか理解してください。"
+msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended (Excel templates for each dataset class are available in the above links - see the previous point)"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:44
@@ -169,9 +169,8 @@ msgstr "ヒント：補足的なガイダンスとして、本マニュアルの
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
-msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core]."
-msgstr "データのマッピングを行う（例：xref:checklist-data.adoc[チェックリストデータ]はlink:{latest-dwc-taxon}[タクソンコア]\n"
-"に、xref:occurrence-data.adoc[オカレンスデータ]はlink:{latest-dwc-occurrence}[オカレンスコア]に、xref:sampling-event-data.adoc[サンプリングイベントデータ]はlink:{latest-dwc-event}[イベントコア]にそれぞれマッピングされます）。"
+msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core])."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:48

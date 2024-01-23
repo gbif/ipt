@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-06-14 23:26\n"
+"PO-Revision-Date: 2024-01-16 17:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Esta página permite a los usuarios ver una lista de los recursos públi
 #: en/modules/ROOT/pages/home.adoc:5
 #, no-wrap
 msgid "ipt2/home/IPTHome.png"
-msgstr ""
+msgstr "ipt2/home/IPTHome.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:7
@@ -60,7 +60,7 @@ msgstr "**Nombre**: el título del recurso tal como figura en el Título de la e
 #: en/modules/ROOT/pages/home.adoc:13
 #, no-wrap
 msgid "**Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be \"No organization\". Review the information under the \"Organizations\" heading in the \"Administration Menu\" section for more information about registering organizations and registering a resource under an organization.\n"
-msgstr "**Organización**: la organización bajo la que se ha registrado el recurso. Si el recurso no está registrado, el valor en la columna de Organización será \"No registrado\". Revise la información en el encabezado “Organizaciones” de la sección de \"Menú administración\" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.\n"
+msgstr "**Organización**: la organización bajo la que se ha registrado el recurso. Si el recurso no está registrado, el valor en la columna de Organización será \"Sin organización\". Para más información sobre el registro de organizaciones y el registro de un recurso en una organización, consulte el apartado \"Organizaciones\" de la sección \"Menú Administración\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:14
@@ -167,7 +167,7 @@ msgstr "ipt2/home/IPTVersionHistoryTable.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:41
 msgid "Following are explanations of the table columns:"
-msgstr "A continuación se encuentran las explicaciones de las columnas de la tabla de versiones:"
+msgstr "A continuación se explican las columnas de la tabla:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:43

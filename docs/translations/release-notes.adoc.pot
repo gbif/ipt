@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-01-30 16:42+0000\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,9 +60,9 @@ msgstr ""
 #: en/modules/ROOT/pages/release-notes.adoc:8
 msgid ""
 "Be sure to *backup the IPT data directory before performing an upgrade*. As "
-"per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data "
-"Hosting Centre Criteria] it is highly recommended to run scheduled backups "
-"of the IPT data directory in general."
+"per the https://www.gbif.org/data-hosting-centres#_criteria-for-data-hosting-"
+"centres[criteria for data hosting centres], it is highly recommended to run "
+"scheduled backups of the IPT data directory in general."
 msgstr ""
 
 #. type: Plain text

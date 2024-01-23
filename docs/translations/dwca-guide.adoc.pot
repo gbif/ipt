@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"POT-Creation-Date: 2023-12-11 09:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -462,9 +462,9 @@ msgstr ""
 #: en/modules/ROOT/pages/index.adoc:38
 msgid ""
 "The simplest way to begin using the IPT is to request a free account on a "
-"xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to "
-"manage your own datasets and publish them through GBIF.org without the "
-"hassle of setting up and maintaining the IPT on your own server."
+"https://www.gbif.org/data-hosting-centres[trusted data hosting centre^] "
+"allowing you to manage your own datasets and publish them through GBIF.org "
+"without the hassle of setting up and maintaining the IPT on your own server."
 msgstr ""
 
 #. type: Plain text
@@ -546,8 +546,9 @@ msgid ""
 "IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-"
 "to-publish.adoc[How to publish biodiversity data through GBIF.org] provides "
 "a simple set of instructions how to do so. If you require an account on an "
-"IPT, it is highly recommended that you request an account on a xref:data-"
-"hosting-centres.adoc[trusted data hosting centre] located in your country."
+"IPT, it is highly recommended that you request an account on a https://www."
+"gbif.org/data-hosting-centres[trusted data hosting centre^] located in your "
+"country or community."
 msgstr ""
 
 #. type: Title ===
