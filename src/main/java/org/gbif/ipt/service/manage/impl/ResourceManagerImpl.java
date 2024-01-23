@@ -845,6 +845,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           frictionlessMetadata.getAdditionalProperties().clear();
         }
 
+        if (metadata instanceof CamtrapMetadata) {
+          CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
+
+          camtrapMetadata.getContributors().stream()
+              .map(contributor -> (CamtrapContributor) contributor)
+              .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
+              .forEach(this::inferNameFieldsForCamtrapContributor);
+        }
+
         resource.setDataPackageMetadata(metadata);
         resource.setMetadataModified(lastModifiedDate);
         // do not automatically infer metadata
