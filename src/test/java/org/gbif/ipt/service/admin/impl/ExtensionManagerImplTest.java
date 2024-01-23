@@ -200,7 +200,7 @@ public class ExtensionManagerImplTest {
   @Test
   public void testInstallCoreTypes() {
     extensionManager.installCoreTypes();
-    assertEquals(4, extensionManager.list().size());
+    assertEquals(3, extensionManager.list().size());
     // get ext. and assert a couple properties
     Extension ext = extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence");
     assertEquals(169, ext.getProperties().size());
@@ -218,21 +218,21 @@ public class ExtensionManagerImplTest {
   @Test
   public void testListCore() {
     extensionManager.installCoreTypes();
-    assertEquals(4, extensionManager.list().size());
+    assertEquals(3, extensionManager.list().size());
 
-    // of the four cores, only the occurrence core and the material entity core are suitable for use on the taxon core
+    // of the three cores, only the occurrence core is suitable for use on the taxon core
     List<Extension> results = extensionManager.listCore(Constants.DWC_ROWTYPE_TAXON);
-    assertEquals(2, results.size());
+    assertEquals(1, results.size());
 
-    // of the four cores, only the occurrence core and the material entity core are suitable for use on the event core
+    // of the three cores, only the occurrence core is suitable for use on the event core
     results = extensionManager.listCore(Constants.DWC_ROWTYPE_EVENT);
-    assertEquals(2, results.size());
+    assertEquals(1, results.size());
   }
 
   @Test
   public void testList() {
     extensionManager.installCoreTypes();
-    assertEquals(4, extensionManager.list().size());
+    assertEquals(3, extensionManager.list().size());
 
     // search excludes core types, otherwise it would return the occurrence core which is suitable for use on taxon core
     List<Extension> results = extensionManager.list(Constants.DWC_ROWTYPE_TAXON);
