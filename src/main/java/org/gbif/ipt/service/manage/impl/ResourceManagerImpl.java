@@ -1046,21 +1046,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String[] names = title.split("\\s+");
 
       if (names.length > 0) {
-        String lastName = names[names.length - 1];
+        if (names.length == 1) {
+          contributor.setLastName(names[0]);
+        } else {
+          String firstName = names[0];
+          String lastName = String.join(" ", Arrays.copyOfRange(names, 1, names.length));
 
-        // The first name is the concatenation of the remaining names
-        StringBuilder firstNameBuilder = new StringBuilder();
-        for (int i = 0; i < names.length - 1; i++) {
-          firstNameBuilder.append(names[i]);
-          if (i < names.length - 2) {
-            firstNameBuilder.append(" ");
-          }
+          contributor.setFirstName(firstName);
+          contributor.setLastName(lastName);
         }
-
-        String firstName = firstNameBuilder.toString();
-
-        contributor.setFirstName(firstName);
-        contributor.setLastName(lastName);
       }
     }
   }
