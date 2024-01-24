@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"PO-Revision-Date: 2024-01-24 21:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -105,7 +105,7 @@ msgstr "Git"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:32
 msgid "Please don't check in unused files."
-msgstr "Por favor no registre archivos en desuso."
+msgstr "No registres los archivos que no utilices."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:34
@@ -234,7 +234,7 @@ msgstr "Diseño HTML"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!"
-msgstr "Los enlaces deben utilizarse siempre con `+++${baseURL}/my/ipt/link.do+++` ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
+msgstr "Los enlaces deben utilizarse siempre  con `+++${baseURL}/my/ipt/link.do+++` ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:83
