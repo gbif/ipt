@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-07 16:26+0000\n"
-"PO-Revision-Date: 2024-01-24 16:28\n"
+"PO-Revision-Date: 2024-01-24 17:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -462,7 +462,7 @@ msgstr "Publicar datos de proyectos como un único conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
 msgid "Data produced from a large sampling project should be published as a single dataset if possible. If you must publish multiple datasets, we encourage linking them using a common project identifier in the metadata."
-msgstr "Los datos producidos por un proyecto de muestreo grande deberían ser publicados, si es posible, como un único conjunto de datos. Si debe publicar múltiples conjuntos de datos, le animamos a vincularlos utilizando un identificador común de proyecto en los metadatos."
+msgstr "Los datos producidos por un proyecto de muestreo grande deberían ser publicados, si es posible, como un único conjunto de datos. Si debe publicar múltiples conjuntos de datos, le recomendamos que los vincule utilizando un identificador de proyecto común en los metadatos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
@@ -865,7 +865,7 @@ msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | .
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:373
 #, no-wrap
 msgid "*_Aulostomus chinensis_* : A total of 4 individuals from 500 sq metres were obtained in this sampling event.\n"
-msgstr "*_Aulostomus chinensis_* : Un total de 4 individuos de 500 m2 son obtenidos en este evento de muestreo.\n"
+msgstr "*_Aulostomus chinensis_* : En este muestreo se obtuvieron un total de 4 individuos en 500 metros cuadrados.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:374
