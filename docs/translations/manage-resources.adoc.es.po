@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 14:15+0000\n"
-"PO-Revision-Date: 2023-11-16 00:32\n"
+"PO-Revision-Date: 2024-01-24 16:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -112,7 +112,7 @@ msgstr "Esta página permite, a usuarios que cumplan el rol que corresponde (edi
 #: en/modules/ROOT/pages/manage-resources.adoc:7
 #, no-wrap
 msgid "ipt2/manage/IPTManageResources.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResources.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:9
@@ -696,7 +696,7 @@ msgstr "Seleccione el conjunto de datos a mapear y luego haga clic en el botón 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:175
 msgid "After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the {threedots} menu and select \"Preview\" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version."
-msgstr ""
+msgstr "Una vez añadido un nuevo mapeo, será visible en el área de Mapeos del Darwin Core. Esta área contendrá una lista de todos los mapeos del recurso divididos en mapeos de Tipo Core y mapeos de Extensión. Haga clic en el elemento para modificarlo, o haga clic en el menú {threedots} y seleccione \"Vista previa\" para previsualizar el mapeo. Se recomienda a los administradores de recursos que previsualicen todos los mapeos antes de publicar una nueva versión."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:176
@@ -931,7 +931,7 @@ msgstr "*Clases con terminos redundantes*: esta sección contiene una lista de l
 #: en/modules/ROOT/pages/manage-resources.adoc:240
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMappingRedundantClasses.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMappingRedundantClasses.png"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:242
@@ -1000,7 +1000,7 @@ msgstr "Esta página muestra una lista de los conceptos que se encuentran dentro
 #: en/modules/ROOT/pages/manage-resources.adoc:259
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVocabularyDetail.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVocabularyDetail.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:261
@@ -1011,7 +1011,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select \"Edit\" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Incomplete\" in the Metadata area of the page."
-msgstr ""
+msgstr "Esta área de la página de Vista General del Recurso permite al usuario editar los metadatos del recurso. Para ello, haga clic en el menú {threedots} y seleccione \"Editar\" en el desplegable. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para ser publicado en la red de GBIF, y si es necesario que GBIF le asigne un DOI. Si falta alguno de los metadatos requeridos, la página de Vista General del Recurso se abrirá con un distintivo \"Incompleto\" en el área de Metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1027,7 +1027,7 @@ msgstr "Se puede cargar un archivo de un recurso existente, sustituyendo cualqui
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:269
 msgid "Clicking on the \"Edit\" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr ""
+msgstr "Al hacer clic en la opción \"Editar\" se abre la página <<Basic Metadata>>, la primera de una serie de páginas de metadatos. Cada página aparecerá en secuencia a medida que se pulse el botón \"Guardar\" al terminar de ingresar la información en cualquier página de metadatos. Al guardar los metadatos en la última de las páginas de metadatos, se volverá a la página <<Basic Metadata>>. Al hacer clic en el botón \"Cancelar\" en cualquier página de metadatos, no se tendrán en cuenta los cambios realizados en esa página y se volverá a la página de Vista general del recurso. En una columna a la izquierda de cada página de metadatos hay una lista de enlaces a todas las páginas de metadatos para facilitar la referencia y la navegación. Haga clic en cualquiera de los enlaces para abrir la página de metadatos correspondiente a ese tema."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:270
@@ -1115,7 +1115,7 @@ msgstr "*Contactos del recurso*: la lista de personas y organizaciones con las q
 #: en/modules/ROOT/pages/manage-resources.adoc:291
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataResourceContact.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataResourceContact.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:294
@@ -1247,13 +1247,13 @@ msgstr "Esta página de metadatos contiene información acerca del área geográ
 #: en/modules/ROOT/pages/manage-resources.adoc:322
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataGeographicCoverage.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataGeographicCoverage.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:325
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the geographical coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*Inferir automáticamente a partir de los datos fuente* - los datos fuente se analizarían y la cobertura geográfica se establecería automáticamente al publicarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:326
@@ -1261,7 +1261,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:365
 #, no-wrap
 msgid "*Preview inferred* - analyze source data and display inferred values.\n"
-msgstr ""
+msgstr "*Ver inferidos* - analiza los datos fuente y muestra los valores inferidos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:327
@@ -1296,13 +1296,13 @@ msgstr "Esta página de metadatos permite al usuario introducir información sob
 #: en/modules/ROOT/pages/manage-resources.adoc:335
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTaxonomic.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTaxonomic.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:338
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the taxonomic coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*Inferir automáticamente a partir de los datos fuente* - los datos fuente se analizarían y la cobertura taxonómica se establecería automáticamente en el momento de la publicación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:340
@@ -1326,7 +1326,7 @@ msgstr "*Añadir varios taxa*: este enlace adiciona un cuadro de texto a la pág
 #: en/modules/ROOT/pages/manage-resources.adoc:343
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTaxonList.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTaxonList.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:346
@@ -1344,13 +1344,13 @@ msgstr "*Agregar* : este botón procesa los valores ingresados en el cuadro de t
 #: en/modules/ROOT/pages/manage-resources.adoc:348
 #, no-wrap
 msgid "*Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a \"Remove this taxon\" link. The taxon can contain any combination of scientific and common name with an optional rank.\n"
-msgstr ""
+msgstr "*Añadir nuevo taxón* - este enlace añade controles para ingresar un solo taxón a la cobertura taxonómica - casillas de texto para Nombre Científico y Nombre Común, una casilla de selección para el Nivel y un enlace \"Eliminar este taxón\". El taxón puede contener cualquier combinación de nombre científico y común con un nivel opcional.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:349
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataSingleTaxon.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataSingleTaxon.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:352
@@ -1374,7 +1374,7 @@ msgstr "*Categoría*: este cuadro de texto está destinado para la categoría ta
 #: en/modules/ROOT/pages/manage-resources.adoc:355
 #, no-wrap
 msgid "*Remove this taxon* - clicking on this link will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.\n"
-msgstr ""
+msgstr "*Eliminar este taxón* - al hacer clic en este enlace se eliminará el taxón (nombre científico, nombre común y nivel) a la izquierda del icono de la cobertura taxonómica.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:356
@@ -1391,13 +1391,13 @@ msgstr "Esta página de metadatos contiene información acerca de una o más fec
 #: en/modules/ROOT/pages/manage-resources.adoc:361
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTemporalCoverages.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTemporalCoverages.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:364
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the temporal coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*Inferir automáticamente a partir de los datos fuente* - los datos fuente se analizarían y la cobertura temporal se establecería automáticamente al publicarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:366
@@ -1433,7 +1433,7 @@ msgstr "*Fecha inicial*: este cuadro de texto está destinado a contener una sol
 #: en/modules/ROOT/pages/manage-resources.adoc:371
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTemporalCoverageSingleDate.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTemporalCoverageSingleDate.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:374
@@ -1457,7 +1457,7 @@ msgstr "*Fecha Final*: este cuadro de texto está destinado para la fecha en que
 #: en/modules/ROOT/pages/manage-resources.adoc:377
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTemporalCoverageDateRange.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTemporalCoverageDateRange.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:380
@@ -1469,7 +1469,7 @@ msgstr "*Periodo de formación*: este tipo de cobertura temporal está destinada
 #: en/modules/ROOT/pages/manage-resources.adoc:381
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:384
@@ -1481,7 +1481,7 @@ msgstr "*Época de existencia*: este tipo de cobertura temporal está destinado 
 #: en/modules/ROOT/pages/manage-resources.adoc:385
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:387
@@ -1498,7 +1498,7 @@ msgstr "Esta página de metadatos permite a los usuarios crear uno o más conjun
 #: en/modules/ROOT/pages/manage-resources.adoc:391
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataKeywords.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataKeywords.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:394
@@ -1533,13 +1533,13 @@ msgstr "Esta página de metadatos contiene información acerca de una o más per
 #: en/modules/ROOT/pages/manage-resources.adoc:402
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataAssociatedParties.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataAssociatedParties.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:405
 #, no-wrap
 msgid "*Copy from another* - if this person or organization is the same as the other contact of any resource, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.\n"
-msgstr ""
+msgstr "*Copiar de otro* - si esta persona u organización es la misma que el otro contacto de cualquier recurso, todos los detalles pueden copiarse en los campos equivalentes para la parte asociada haciendo clic en este enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:406
@@ -1664,7 +1664,7 @@ msgstr "Esta página de metadatos contiene información sobre el proyecto en el 
 #: en/modules/ROOT/pages/manage-resources.adoc:429
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataProjectData.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataProjectData.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:432
@@ -1735,7 +1735,7 @@ msgstr "Esta página de metadatos contiene información acerca de los métodos d
 #: en/modules/ROOT/pages/manage-resources.adoc:448
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataSamplingMethods.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataSamplingMethods.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:451
@@ -1782,7 +1782,7 @@ msgstr "Esta página de metadatos contiene información sobre cómo citar el rec
 #: en/modules/ROOT/pages/manage-resources.adoc:461
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCitations.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataCitations.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:464
@@ -1826,7 +1826,7 @@ msgstr "*Generación automática Desactivada - Activar*: active la generación a
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
 msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
-msgstr ""
+msgstr "*Identificador de la cita* - un DOI, URI u otro identificador persistente que remita al conjunto de datos en línea. Se recomienda incluir el identificador en la cita. Si al recurso se le ha asignado un DOI (xref:doi-workflow.adoc[usando el IPT]), el IPT establece el DOI como identificador de la cita y ya no puede editarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
@@ -1856,7 +1856,7 @@ msgstr "*Identificador de la referencia bibliográfica*: un DOI, URI u otro iden
 #: en/modules/ROOT/pages/manage-resources.adoc:481
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataBibCitations.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataBibCitations.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:484
@@ -1873,7 +1873,7 @@ msgstr "Esta página de metadatos contiene información sobre la colección fís
 #: en/modules/ROOT/pages/manage-resources.adoc:489
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCollectionData.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataCollectionData.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:492
@@ -1915,7 +1915,7 @@ msgstr "*Eliminar colección*:al hacer clic sobre este enlace se eliminará la c
 #: en/modules/ROOT/pages/manage-resources.adoc:498
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCollections.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataCollections.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:501
@@ -1939,7 +1939,7 @@ msgstr "*Eliminar método de preservación*: al hacer clic sobre este enlace se 
 #: en/modules/ROOT/pages/manage-resources.adoc:504
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataPreservationMethods.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataPreservationMethods.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:507
@@ -2011,7 +2011,7 @@ msgstr "*Eliminar unidad curatorial*: al hacer clic sobre este enlace se elimina
 #: en/modules/ROOT/pages/manage-resources.adoc:518
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataCuratorialUnits.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataCuratorialUnits.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:520
@@ -2028,7 +2028,7 @@ msgstr "Esta página de metadatos contiene enlaces a la página web del recurso,
 #: en/modules/ROOT/pages/manage-resources.adoc:524
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataExternalLinks.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataExternalLinks.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:527
@@ -2093,7 +2093,7 @@ msgstr "Esta página de metadatos contiene información acerca de otros aspectos
 #: en/modules/ROOT/pages/manage-resources.adoc:540
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:543
@@ -2105,7 +2105,7 @@ msgstr "*Fecha de la primera publicación*: la fecha en la cual la primera versi
 #: en/modules/ROOT/pages/manage-resources.adoc:544
 #, no-wrap
 msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).\n"
-msgstr ""
+msgstr "*Fecha de publicación* - fecha en la que el recurso se publicó por última vez. Este valor se establece automáticamente al publicar (véase la sección <<Publicación>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:545
@@ -2135,7 +2135,7 @@ msgstr "*Información adicional*: cualquier información que no esté descrita e
 #: en/modules/ROOT/pages/manage-resources.adoc:549
 #, no-wrap
 msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr ""
+msgstr "*Identificadores alternativos* - esta sección contiene una lista de identificadores adicionales o alternativos para el recurso. Cuando se publica el recurso, la URL del IPT al recurso se añade a la lista de identificadores. Si a un recurso se le asigna un nuevo DOI xref:doi-workflow.adoc[usando el IPT], el IPT se asegura de que este DOI se coloca en primer lugar en la lista de identificadores. Cuando un recurso se registra en el Registro de GBIF, la clave única del recurso del Registro también se añade a la lista de identificadores. Si el recurso representa un recurso registrado existente en el Registro de GBIF, el UUID del recurso registrado existente puede añadirse a la lista de identificadores. Esto permitirá al recurso IPT actualizar el recurso existente durante el registro, en lugar de registrar un recurso completamente nuevo. Para más información sobre cómo migrar un recurso, vea la sección <<Migrate a Resource, this>>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:550
@@ -2171,12 +2171,12 @@ msgstr "Esta área de la página \"Vista general del recurso\" permite al usuari
 #: en/modules/ROOT/pages/manage-resources.adoc:570
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublish.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublish.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:559
 msgid "Click on the {threedots} menu and select the \"Publish\" option to trigger publishing a new version. The \"Publish\" option will be enabled if"
-msgstr ""
+msgstr "Haga clic en el menú {threedots} y seleccione la opción \"Publicar\" para activar la publicación de una nueva versión. La opción \"Publicar\" se activará si"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:561
@@ -2191,13 +2191,13 @@ msgstr "el usuario tiene el rol de \"Editor con/sin derechos de registro\"."
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:564
 msgid "Once the resource is registered only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear:"
-msgstr ""
+msgstr "Una vez registrado el recurso, sólo los usuarios con el rol \" Administrador con derechos de registro \" pueden publicar, ya que el registro del recurso se actualiza en cada publicación (véase la explicación del rol en la sección \" Crear un nuevo usuario \" en el apartado \" Configurar las cuentas de usuario \" de la sección \" Menú Administración \"). Tras pulsar la opción \"Publicar\", aparecerá un cuadro de diálogo de confirmación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:565
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishConfirm.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishConfirm.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:568
@@ -2208,60 +2208,60 @@ msgstr "El editor del recurso debe ingresar un resumen de los cambios que se le 
 #: en/modules/ROOT/pages/manage-resources.adoc:569
 #, no-wrap
 msgid "A pending publication:"
-msgstr ""
+msgstr "Una publicación pendiente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:573
 msgid "Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:"
-msgstr ""
+msgstr "Aquí se muestra una tabla que compara la versión actual con la versión pendiente. Los administradores de recursos pueden utilizar esta tabla para gestionar el versionado de recursos, previsualizar la versión pendiente y revisar y validar la versión actual. Los datos de la tabla incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:575
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].\n"
-msgstr ""
+msgstr "*Version* - el número de versión que rastrea la `major_version.minor_version` de la versión actual/pendiente.  Esto suele ser relevante sólo si se utiliza el xref:doi-workflow.adoc[flujo de trabajo para el DOI emitido por el IPT].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:576
 #, no-wrap
 msgid "*Current* - current already published version.\n"
-msgstr ""
+msgstr "*Actual* - versión actual ya publicada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:577
 #, no-wrap
 msgid "*Pending* - next version.\n"
-msgstr ""
+msgstr "*Pendiente* - próxima versión.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:578
 #, no-wrap
 msgid "*License* - resource license (e.g. CC0 1.0).\n"
-msgstr ""
+msgstr "*Licencia* - licencia del recurso (por ejemplo, CC0 1.0).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:579
 #, no-wrap
 msgid "*DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.\n"
-msgstr ""
+msgstr "*DOI* - véase xref:doi-workflow.adoc[] si está activado el DOI emitido por IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:580
 #, no-wrap
 msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.\n"
-msgstr ""
+msgstr "*Visibilidad* - la visibilidad de la versión actual/pendiente. Para registrar el recurso en GBIF, el administrador de recursos debe asegurarse de que la versión actual es pública.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:581
 #, no-wrap
 msgid "*Published on* - to date the current version was published on / the date the pending version will be published on.\n"
-msgstr ""
+msgstr "*Publicada el* - la fecha en que se publicó la versión actual / la fecha en que se publicará la versión pendiente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:582
 #, no-wrap
 msgid "*Publication log* - button. Click to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
-msgstr ""
+msgstr "*Log de la publicación* - botón. Haga clic para recuperar el \"publication.log\" de la versión actual. El administrador de recursos puede utilizar el log de la publicación para diagnosticar, por ejemplo, por qué ha fallado la publicación. Una descripción más detallada de su contenido se describe más adelante en la sección <<Página del estado de la publicación>>. Esto no es aplicable a la versión pendiente.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:583
@@ -2381,7 +2381,7 @@ msgstr "*Mensajes del sistema*: la página de \"Estado de la publicación\" mues
 #: en/modules/ROOT/pages/manage-resources.adoc:614
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishingStatus.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishingStatus.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:616
@@ -2392,7 +2392,7 @@ msgstr "Publicación automática"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:619
 msgid "To turn on automated publishing, in the Auto-publishing section click the {threedots} menu and select \"Edit\"."
-msgstr ""
+msgstr "Para activar la publicación automática, en la sección Publicación automática haga clic en el menú {threedots} y seleccione \"Editar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:620
@@ -2414,7 +2414,7 @@ msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:627
 msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" option can be used to change or disable auto-publishing."
-msgstr ""
+msgstr "Cuando la publicación automática está activada, el intervalo de publicación y la próxima fecha de publicación se muestran claramente en la sección de auto-publicación. La opción \"Editar\" permite modificar o desactivar la publicación automática."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:629
@@ -2430,69 +2430,69 @@ msgstr "Visibilidad"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:632
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr ""
+msgstr "El área de Visibilidad de la página Gestión de Recursos permite a los usuarios con derechos de administrador del recurso cambiar su estado de visibilidad. La visibilidad de un recurso determina quién podrá verlo, y si el recurso puede registrarse en GBIF. Por defecto, cada recurso es visible sólo para el usuario que lo creó y para cualquier otro usuario que tenga el rol de Administrador en el IPT donde se creó el recurso. Para obtener más detalles sobre cada estado de visibilidad, consulte la siguiente información."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
-msgstr ""
+msgstr "*Privado* - Un recurso privado sólo es visible para aquellos que lo crearon, o aquellos a los que se les ha concedido permiso para administrarlo dentro del IPT, o por un usuario que tenga el rol de Administrador. El objetivo principal es evitar la visibilidad pública del recurso hasta que se haya configurado completa y correctamente.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:636
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:639
 msgid "When the resource is ready for public visibility, click on the {threedots} menu and select the option labelled \"Change\". This will display a modal window with two options. You can make the resource public right away or at a set date"
-msgstr ""
+msgstr "Cuando el recurso esté listo para su visibilidad pública, haga clic en el menú {threedots} y seleccione la opción \"Cambiar\". Aparecerá una ventana emergente con dos opciones. Puede hacer público el recurso inmediatamente o en una fecha determinada"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:640
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:642
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:645
 msgid "After submitting the form a message will appear at the top of the page saying that the status has been changed to \"Public\"."
-msgstr ""
+msgstr "Tras enviar el formulario, aparecerá un mensaje en la parte superior de la página indicando que el estado se ha cambiado a \"Público\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:648
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
-msgstr ""
+msgstr "*Público* - Un recurso público es visible para cualquiera que utilice la instancia IPT en la que está alojado el recurso (en la tabla de recursos públicos de la página de inicio de IPT). En última instancia, el recurso es accesible a través de Internet para cualquiera que conozca la URL de su página de inicio. Sin embargo, el recurso no es accesible globalmente a través de la página web de GBIF hasta que haya sido registrado en el Registro de GBIF (véase <<Registration>>).\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:650
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:653
 msgid "One option appear in the {threedots} menu of the visibility area. Clicking on the option labelled \"Change\" will display a modal window"
-msgstr ""
+msgstr "Una opción aparece en el menú {threedots} del área de visibilidad. Al hacer clic en la opción \"Cambiar\" aparecerá una ventana emergente"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:654
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:657
 msgid "Clicking on button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
-msgstr ""
+msgstr "Al hacer clic en el botón \"Sí\", el recurso dejará de ser público y volverá a ser privado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:660
@@ -2504,7 +2504,7 @@ msgstr "*Registrado* - Un recurso que ha sido registrado en la red de GBIF es vi
 #: en/modules/ROOT/pages/manage-resources.adoc:662
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:665
@@ -2520,13 +2520,13 @@ msgstr "Registro"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:670
 msgid "The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry."
-msgstr ""
+msgstr "El recurso no es globalmente visible a través de la página web de GBIF hasta que haya sido registrado en el Registro de GBIF."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:671
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:674
@@ -2551,7 +2551,7 @@ msgstr "el usuario tiene el rol \"Editor con derechos de registro\" (ver explica
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:680
 msgid "Click on the {threedots} menu and select the option labelled \"Register\" to register the resource with the GBIF Registry."
-msgstr ""
+msgstr "Haga clic en el menú {threedots} y seleccione la opción \"Registrar\" para registrar el recurso en el Registro de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:682
@@ -2561,18 +2561,19 @@ msgstr "Si desea que este recurso actualice un recurso DiGIR, BioCASe o TAPIR ya
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 msgid "Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
-msgstr ""
+msgstr "Al hacer clic en esta opción se abrirá un cuadro de diálogo con el que podrá confirmar que ha leído y comprendido el acuerdo de publicación de datos de GBIF, al que se proporciona un enlace. Haga clic en la casilla para indicar que está de acuerdo con estos términos. Al hacerlo, aparecerá un botón \"Sí\" en la parte inferior del cuadro de diálogo. Haga clic en \"Sí\" para registrar el recurso, o haga clic en \"No\" para aplazar la decisión y cerrar el cuadro de diálogo.\n\n"
+"Traducción realizada con la versión gratuita del traductor DeepL.com"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:685
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:688
 msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\". Registration section when the resource is registered:"
-msgstr ""
+msgstr "Si el intento de registro tiene éxito, aparecerá un mensaje en la parte superior de la página indicando que el estado ha cambiado a \"Registrado\". Sección de registro cuando el recurso está registrado:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:689
@@ -2600,7 +2601,7 @@ msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:698
 msgid "To add the resource to a network, click on the {threedots} menu and select the \"Add\" option. To remove it, click the {threedots} menu on the network item and select \"Delete\"."
-msgstr ""
+msgstr "Para agregar el recurso a una red, haga clic en el menú {threedots} y seleccione la opción \"Agregar\". Para eliminarlo, haga clic en el menú {threedots} del elemento de red y seleccione la opción \"Eliminar\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
@@ -2617,18 +2618,18 @@ msgstr "Editores de Recursos"
 #: en/modules/ROOT/pages/manage-resources.adoc:703
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceManagers.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:706
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the {threedots} menu and selecting option labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the respective {threedots} menu and selecting the option labelled \"Delete\"."
-msgstr ""
+msgstr "Cada recurso tiene uno o varios administradores asignados explícitamente que pueden ver, modificar y eliminar el recurso. El usuario que crea un recurso tiene automáticamente estas capacidades. Se pueden asociar administradores adicionales a un recurso y otorgarles estas mismas capacidades seleccionándolos por su nombre en el cuadro de selección de esta área de la página de Vista general del recurso y, a continuación, haciendo clic en el menú {threedots} y seleccionando la opción etiquetada como \"Añadir\". Cualquier administrador asociado a un recurso y que tenga el rol \"Administrador con derechos de registro\" puede también registrar el recurso y actualizarlo en el registro de GBIF. Todos los usuarios que tengan el rol de Administrador tienen automáticamente roles de gestión completos para todos los recursos de la instancia IPT. El área muestra el nombre y la dirección de correo electrónico del creador del recurso. Si se han agregado administradores, sus nombres y direcciones de correo electrónico aparecerán debajo del creador. Cualquier administrador agregado puede eliminar la función de administrador del recurso haciendo clic en el menú {threedots} correspondiente y seleccionando la opción \"Eliminar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:707
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceManagerAdded.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:709
