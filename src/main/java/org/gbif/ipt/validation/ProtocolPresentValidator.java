@@ -22,7 +22,7 @@ public class ProtocolPresentValidator implements ConstraintValidator<ProtocolPre
   @Override
   public boolean isValid(URI value, ConstraintValidatorContext context) {
     // Check if the URL has a protocol
-    return value != null && value.getScheme() != null;
+    return value == null || value.getScheme() != null;
   }
 }
 
