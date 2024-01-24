@@ -42,7 +42,7 @@
 
                 subOptions.forEach(function (ii, index) {
                     var text = ii.innerText;
-                    if (text.indexOf("Interaction DP") !== -1 || text.indexOf("Material DP") !== -1) {
+                    if (text.indexOf("Beta") === -1 && (text.indexOf("Interaction DP") !== -1 || text.indexOf("Material DP") !== -1)) {
                         ii.innerHTML = text + ' <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary">Beta</span>';
                     }
                 });
