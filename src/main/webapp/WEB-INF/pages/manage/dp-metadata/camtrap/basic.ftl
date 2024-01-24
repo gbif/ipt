@@ -331,6 +331,16 @@
                     $lastName.show();
                     $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
 
+                    var names = $title.val().split(/\s+/);
+
+                    if (names.length > 0) {
+                        if (names.length === 1) {
+                            $lastName.val(names[0])
+                        } else {
+                            $firstName.val(names[0])
+                            $lastName.val(names.slice(1).join(" "))
+                        }
+                    }
 
                     $firstName.on('input', function() {
                         $title.val($(this).val() + " " + $lastName.val());
