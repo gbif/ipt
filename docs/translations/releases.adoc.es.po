@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 10:30+0000\n"
-"PO-Revision-Date: 2024-01-24 21:17\n"
+"PO-Revision-Date: 2024-01-24 22:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -665,7 +665,7 @@ msgstr "https://github.com/gbif/ipt/issues/1411[Una incidencia] permanece con DO
 #: en/modules/ROOT/pages/releases.adoc:252
 #, no-wrap
 msgid "*2.3.5* – October 2017"
-msgstr "*2.3.5* – Octubre de 2017"
+msgstr "*2.3.5* – Octubre 2017"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:255
@@ -687,7 +687,7 @@ msgstr "La versión 2.3.4 soluciona una https://struts.apache.org/docs/s2-045.ht
 #: en/modules/ROOT/pages/releases.adoc:261
 #, no-wrap
 msgid "*2.3.4* – March 2017"
-msgstr "*2.3.4* - Marzo de 2017"
+msgstr "*2.3.4* - Marzo 2017"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:264
@@ -703,7 +703,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/5[5 incidencias]: 6 Defe
 #: en/modules/ROOT/pages/releases.adoc:270
 #, no-wrap
 msgid "*2.3.3* – December 2016"
-msgstr "*2.3.3* - Diciembre de 2016"
+msgstr "*2.3.3* - Diciembre 2016"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:273
@@ -769,7 +769,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/1?closed=1[3 incidencias
 #: en/modules/ROOT/pages/releases.adoc:293
 #, no-wrap
 msgid "*2.3* – September 2015"
-msgstr "*2.3* - Septiembre de 2015"
+msgstr "*2.3* - Septiembre 2015"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:298
@@ -803,7 +803,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/19?closed=1[5 incidencia
 #: en/modules/ROOT/pages/releases.adoc:307
 #, no-wrap
 msgid "*2.2* – March 2015"
-msgstr "*2.2* - Marzo de 2015"
+msgstr "*2.2* - Marzo 2015"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:312
@@ -819,7 +819,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/18?closed=1[74 incidenci
 #: en/modules/ROOT/pages/releases.adoc:315
 #, no-wrap
 msgid "*2.1* – April 2014"
-msgstr "*2.1* - Abril de 2014"
+msgstr "*2.1* - Abril 2014"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:318
@@ -850,7 +850,7 @@ msgstr "Traducida a 6 idiomas (añadida traducción al japonés)"
 #: en/modules/ROOT/pages/releases.adoc:323
 #, no-wrap
 msgid "*2.0.5* – May 2013"
-msgstr "*2.0.5* - Mayo de 2013"
+msgstr "*2.0.5* - Mayo 2013"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:326
@@ -881,7 +881,7 @@ msgstr "Traducida a 5 idiomas (añadida traducción al portugués)"
 #: en/modules/ROOT/pages/releases.adoc:331
 #, no-wrap
 msgid "*2.0.4* – October 2012"
-msgstr "*2.0.4* - Octubre de 2012"
+msgstr "*2.0.4* - Octubre 2012"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:334
@@ -912,7 +912,7 @@ msgstr "Traducida a 4 idiomas (añadida traducción a chino tradicional)"
 #: en/modules/ROOT/pages/releases.adoc:339
 #, no-wrap
 msgid "*2.0.3* – November 2011"
-msgstr "*2.0.3* Noviembre de 2011"
+msgstr "*2.0.3* Noviembre 2011"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:342
