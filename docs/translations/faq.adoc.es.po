@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2024-01-24 20:17\n"
+"PO-Revision-Date: 2024-01-24 21:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -434,17 +434,17 @@ msgstr "Si el mapeo con el estándar es a la {latest-dwc-occurrence}[Extensión 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:170
 msgid "If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to \"checklist\"."
-msgstr "Si el mapeo con el estándar es a {latest-dwc-taxon}[Extensión del taxón], el tipo es igual a \"checklist\"."
+msgstr "Si el mapeo con el estándar es a la {latest-dwc-taxon}[Extensión Taxon], el tipo es igual a \"checklist\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:171
 msgid "If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to \"sampling-event\"."
-msgstr "Si el mapeo con el estándar es a la {latest-dwc-event}[Extensión de evento], el tipo es igual a \"sampling-event\"."
+msgstr "Si el mapeo con el estándar es a la {latest-dwc-event}[Extensión Event], el tipo es igual a \"sampling-event\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:172
 msgid "If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to \"other\"."
-msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
+msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados del IPT (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:174
@@ -480,7 +480,7 @@ msgstr "utilice la xref:manage-resources.adoc#citations[función de generación 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:182
 msgid "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon list feature] instead of supplying each taxon manually one at a time when entering the taxonomic coverage."
-msgstr "al ingresar la cobertura taxonómica utilice la importación por medio de la xref:manage-resources.adoc#taxonomic-coverage[función de lista de taxones] del IPT en lugar de proporcionar cada taxón manualmente, uno por uno."
+msgstr "al ingresar la cobertura taxonómica utilice la importación por medio de la xref:manage-resources.adoc#taxonomic-coverage[función de lista Taxon] del IPT en lugar de proporcionar cada taxón manualmente, uno por uno."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:183
@@ -620,7 +620,7 @@ msgstr "Si cree que GBIF no pudo indexar su conjunto de datos satisfactoriamente
 #: en/modules/ROOT/pages/faq.adoc:240
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
-msgstr "¿Por qué GBIF aún no ha (re)indexó mi conjunto de datos?"
+msgstr "¿Por qué GBIF aún no ha (re)indexado mi conjunto de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:243
