@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2024-01-18 00:18\n"
+"PO-Revision-Date: 2024-01-24 20:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -429,7 +429,7 @@ msgstr "El tipo de un recurso se deriva de su mapeo con el estándar:"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:169
 msgid "If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to \"occurrence\"."
-msgstr "Si el mapeo con el estándar es a la {latest-dwc-occurrence}[Extensión de registro biológico], el tipo es igual a \"occurrence\"."
+msgstr "Si el mapeo con el estándar es a la {latest-dwc-occurrence}[Extensión Occurrence], el tipo es igual a \"occurrence\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:170
