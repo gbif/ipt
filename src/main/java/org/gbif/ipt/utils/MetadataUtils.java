@@ -21,6 +21,7 @@ import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.INTERACTION_DP;
 import static org.gbif.ipt.config.Constants.MATERIAL_DP;
 
 public final class MetadataUtils {
@@ -39,6 +40,6 @@ public final class MetadataUtils {
   }
 
   public static boolean isDataPackageType(String type) {
-    return StringUtils.equalsAny(type, CAMTRAP_DP, COL_DP, MATERIAL_DP);
+    return StringUtils.equalsAny(type, CAMTRAP_DP, COL_DP, MATERIAL_DP, INTERACTION_DP);
   }
 }

@@ -589,7 +589,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource = createFromEml(shortname, archiveOrSingleFile, creator, alog);
           break;
         case "json":
-          resource = createFromPackageDescriptor(shortname, archiveOrSingleFile, creator, alog);
+          resource = createFromPackageDescriptor(shortname, type, archiveOrSingleFile, creator, alog);
           break;
         case "yml":
           resource = createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
@@ -1125,7 +1125,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  private Resource createFromPackageDescriptor(String shortname, File metadataFile, User creator, ActionLogger alog)
+  private Resource createFromPackageDescriptor(String shortname, String type, File metadataFile, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
@@ -1136,7 +1136,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     try {
       // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
-      metadata = copyDatapackageMetadata(shortname, metadataFile, CAMTRAP_DP);
+      metadata = copyDatapackageMetadata(shortname, metadataFile, type);
 
       if (metadata instanceof FrictionlessMetadata) {
         FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
@@ -1150,8 +1150,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.error("manage.resource.create.failed");
       throw e;
     }
-    // create resource of Frictionless (Camtrap) type, with metadata instance
-    Resource resource = create(shortname, CAMTRAP_DP, creator);
+    // create resource of Frictionless type, with metadata instance
+    Resource resource = create(shortname, type, creator);
     resource.setMetadataModified(new Date());
     resource.setDataPackageMetadata(metadata);
     return resource;
