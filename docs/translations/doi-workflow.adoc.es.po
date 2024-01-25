@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 14:05+0000\n"
-"PO-Revision-Date: 2024-01-24 23:42\n"
+"PO-Revision-Date: 2024-01-25 00:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -116,12 +116,12 @@ msgstr "*Version* - el número de versión que rastrea la `major_version.minor_v
 #: en/modules/ROOT/pages/doi-workflow.adoc:36
 #, no-wrap
 msgid "*DOI* - the DOI of the current/pending version. The DOI of the current version can never be changed. The DOI of the pending version can be reserved or deleted.\n"
-msgstr ""
+msgstr "*DOI* - el DOI de la versión actual/pendiente. El DOI de la versión actual no puede modificarse nunca. El DOI de la versión pendiente puede reservarse o borrarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:38
 msgid "When clicking \"Publish\", the usual dialog is extended to inform about the DOI, depending on whether the pending version is a major version change or minor version change:"
-msgstr ""
+msgstr "Al hacer clic en \"Publicar\", el diálogo habitual se amplía para informar sobre el DOI, dependiendo de si la versión pendiente es un cambio de versión mayor o menor:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:39
