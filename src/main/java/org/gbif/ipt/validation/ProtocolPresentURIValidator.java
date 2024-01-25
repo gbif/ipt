@@ -15,13 +15,13 @@ package org.gbif.ipt.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.net.URI;
 
-public class ProtocolPresentValidator implements ConstraintValidator<ProtocolPresent, CharSequence> {
+public class ProtocolPresentURIValidator implements ConstraintValidator<ProtocolPresentURI, URI> {
 
   @Override
-  public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-    // Check if the string has a protocol
-    return value == null || value.toString().matches("^\\w+://.*$");
+  public boolean isValid(URI value, ConstraintValidatorContext context) {
+    // Check if the URL has a protocol
+    return value == null || value.getScheme() != null;
   }
 }
-

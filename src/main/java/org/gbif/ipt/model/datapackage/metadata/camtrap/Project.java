@@ -14,6 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.ProjectMetadata;
+import org.gbif.ipt.validation.ProtocolPresent;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -74,6 +75,7 @@ public class Project implements Serializable {
    */
   @JsonProperty("path")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @ProtocolPresent(message = "validation.url.protocol", groups = ProjectMetadata.class)
   private String path;
 
   /**

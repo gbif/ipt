@@ -13,15 +13,20 @@
  */
 package org.gbif.ipt.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class ProtocolPresentValidator implements ConstraintValidator<ProtocolPresent, CharSequence> {
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = ProtocolPresentURIValidator.class)
+public @interface ProtocolPresentURI {
+  String message() default "URL must include a protocol (e.g., http:// or https://)";
 
-  @Override
-  public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-    // Check if the string has a protocol
-    return value == null || value.toString().matches("^\\w+://.*$");
-  }
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 }
-
