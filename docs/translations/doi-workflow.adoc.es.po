@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 14:05+0000\n"
-"PO-Revision-Date: 2024-01-25 00:49\n"
+"PO-Revision-Date: 2024-01-25 01:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -139,12 +139,12 @@ msgstr "ipt2/manage/IPTManageResourcePublishMinor.png"
 #: en/modules/ROOT/pages/doi-workflow.adoc:43
 #, no-wrap
 msgid "Managing DOIs of resources"
-msgstr ""
+msgstr "Gestión de los DOI de los recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:46
 msgid "Using the {doiicon} button, you can make changes to DOIs assigned to resources."
-msgstr ""
+msgstr "Con el botón {doiicon} puede realizar cambios en los DOI asignados a los recursos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:48
@@ -156,19 +156,19 @@ msgstr "*Reservar*: un DOI puede ser reservado para un recurso. Esta operación 
 #: en/modules/ROOT/pages/doi-workflow.adoc:49
 #, no-wrap
 msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the {doiicon} button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the {doiicon} button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
+msgstr "*Recurso sin DOI asignado*: - se puede reservar un DOI para un recurso después de haber ingresado los metadatos obligatorios. Para reservar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas. Para reutilizar un DOI existente, ingréselo en el campo del identificador de la cita en los metadatos del recurso y, a continuación, pulse el botón {doiicon} en la sección Versiones publicadas. Si un recurso es público y se ha reservado un DOI, la próxima publicación dará lugar a una nueva versión principal y se registrará el DOI. En caso contrario, si un recurso es privado y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión menor del recurso y el DOI NO se registrará. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:50
 #, no-wrap
 msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the {doiicon} button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
+msgstr "*Recurso al que se le asignó un DOI*: - Se puede reservar otro DOI para un recurso publicado al que ya se le asignó un DOI. Para reservar otro DOI, pulse el botón {doiicon} en la sección Versiones publicadas. El DOI se registrará la próxima vez que se publique el recurso, y se enlazará con la página de inicio de la nueva versión publicada. El DOI anterior seguirá remitiendo a la versión anterior, pero mostrará un aviso de que la nueva versión la ha sustituido. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:51
 #, no-wrap
 msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the {doiicon} button in the Published Versions section.\n"
-msgstr ""
+msgstr "*Borrar*: - un DOI que está reservado para el recurso puede ser borrado ya que nunca fue de acceso público. Para eliminar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:52
