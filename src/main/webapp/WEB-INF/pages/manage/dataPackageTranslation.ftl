@@ -233,7 +233,54 @@
                 <@s.text name="manage.translation.property"/> <em>${field.name}</em>
             </h5>
 
-            <span class="fst-italic">${field.description!}</span>
+            <#if field.description?has_content>
+                <@processDescription field.description />
+            <#else>
+                <@s.text name="basic.no.description"/>
+            </#if>
+            <#if field.type??>
+                <br/><br/>
+                <em><@s.text name="schema.field.type"/>:</em>
+                <span>${field.type!}</span>
+            </#if>
+            <#if field.constraints?? && (field.constraints.unique?? || field.constraints.maximum?? || field.constraints.minimum?? || field.constraints.pattern??)>
+                <br/><br/>
+                <em><@s.text name="schema.field.constraints"/>:</em>
+                <ul>
+                    <#if field.constraints.unique??>
+                        <li>unique <code>${field.constraints.unique?string}</code></li>
+                    </#if>
+                    <#if field.constraints.maximum??>
+                        <li>maximum <code>${field.constraints.maximum}</code></li>
+                    </#if>
+                    <#if field.constraints.minimum??>
+                        <li>minimum <code>${field.constraints.minimum}</code></li>
+                    </#if>
+                    <#if field.constraints.pattern??>
+                        <li>pattern <code>${field.constraints.pattern}</code></li>
+                    </#if>
+                </ul>
+                <#assign noBrakeForExamples = true />
+            <#else>
+                <#assign noBrakeForExamples = false />
+            </#if>
+            <#if (field.example)?has_content>
+                <#if !noBrakeForExamples>
+                    <br/><br/>
+                </#if>
+                <em><@s.text name="basic.examples"/></em>:
+                <#if field.example?is_collection>
+                    <#list field.example as ex>
+                        <code>${ex}</code><#sep>, </#sep>
+                    </#list>
+                <#else>
+                    <#if field.example?is_boolean>
+                        <code>${field.example?string("true", "false")}</code>
+                    <#else>
+                        <code>${field.example}</code>
+                    </#if>
+                </#if>
+            </#if>
         </div>
 
         <div class="my-3 p-3">
