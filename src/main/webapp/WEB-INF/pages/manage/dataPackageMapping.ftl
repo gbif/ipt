@@ -259,6 +259,11 @@
                     <#else>
                         <@s.text name="basic.no.description"/>
                     </#if>
+                    <#if field.field.type??>
+                        <br/><br/>
+                        <em><@s.text name="schema.field.type"/>:</em>
+                        <span>${field.field.type!}</span>
+                    </#if>
                     <#if field.field.constraints?? && (field.field.constraints.unique?? || field.field.constraints.maximum?? || field.field.constraints.minimum?? || field.field.constraints.pattern??)>
                         <br/><br/>
                         <em><@s.text name="schema.field.constraints"/>:</em>
