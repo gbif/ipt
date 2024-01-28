@@ -43,9 +43,11 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 import freemarker.ext.beans.SimpleMapModel;
+import lombok.Getter;
 
 public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
+  private static final long serialVersionUID = -5414310011336523439L;
   // logging
   private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
 
@@ -56,8 +58,10 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
     private String field;
 
+    @Getter
     private TreeMap<String, String> sourceValues;
 
+    @Getter
     private TreeMap<String, String> translatedValues;
 
     public Map<String, String> getPersistentMap() {
@@ -66,14 +70,6 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         m.put(sourceValues.get(translatedValueEntry.getKey()), StringUtils.trimToEmpty(translatedValueEntry.getValue()));
       }
       return m;
-    }
-
-    public TreeMap<String, String> getSourceValues() {
-      return sourceValues;
-    }
-
-    public TreeMap<String, String> getTranslatedValues() {
-      return translatedValues;
     }
 
     public boolean isLoaded(String tableSchema, DataPackageField field) {
@@ -93,17 +89,23 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     }
   }
 
-  private SourceManager sourceManager;
+  private final SourceManager sourceManager;
+  @Getter
   private Translation trans;
 
   protected static final String REQ_PARAM_MAPPINGID = "mid";
   protected static final String REQ_FIELD = "field";
   // config
+  @Getter
   private DataPackageFieldMapping fieldMapping;
+  @Getter
   private DataPackageField field;
+  @Getter
   private DataPackageMapping mapping;
 
+  @Getter
   private SimpleMapModel vocabTerms;
+  @Getter
   private Integer mid;
 
   @Inject
@@ -299,20 +301,12 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     return NONE;
   }
 
-  public Integer getMid() {
-    return mid;
-  }
-
   public Map<String, String> getSourceValuesMap() {
     return trans.getSourceValues();
   }
 
   public Map<String, String> getTmap() {
     return trans.getTranslatedValues();
-  }
-
-  public SimpleMapModel getVocabTerms() {
-    return vocabTerms;
   }
 
   public int getVocabTermsSize() {
@@ -331,21 +325,5 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    */
   public void setTmap(TreeMap<String, String> translatedValues) {
     this.trans.translatedValues = translatedValues;
-  }
-
-  public Translation getTrans() {
-    return trans;
-  }
-
-  public DataPackageMapping getMapping() {
-    return mapping;
-  }
-
-  public DataPackageFieldMapping getFieldMapping() {
-    return fieldMapping;
-  }
-
-  public DataPackageField getField() {
-    return field;
   }
 }

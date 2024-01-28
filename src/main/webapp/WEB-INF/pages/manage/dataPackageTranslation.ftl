@@ -84,7 +84,7 @@
                 // set value to input
                 $("#item-" + index + " .value").val(value);
                 // set name attribute of the translated input
-                $("#item-" + index + " .translated-value").attr("name", "tmap['" + index + "']");
+                $("#item-" + index + " .translatedValue").attr("name", "tmap['" + index + "']");
                 // remove this option from dropdown - translation already added
                 $("#option-" + index).remove();
 
@@ -145,11 +145,216 @@
                 dropdownCssClass: 'text-smaller',
                 theme: 'bootstrap4'
             });
+
+            var fieldType = "${field.type!}";
+            var isRequiredConstraint = false;
+            var minConstraint;
+            var maxConstraint;
+            var patternConstraint;
+
+            var numberExpectedMessage = "<@s.text name='validation.number.expected'/>";
+            var integerExpectedMessage = "<@s.text name='validation.integer.expected'/>";
+            var booleanExpectedMessage = "<@s.text name='validation.boolean.expected'/>";
+            var requiredConstraintViolatedMessage = "<@s.text name='validation.required.violated'/>";
+            var patternConstraintViolatedMessage = "<@s.text name='validation.pattern.violated'/>";
+            var minimumConstraintViolatedMessage = "<@s.text name='validation.minimum.violated'/>";
+            var maximumConstraintViolatedMessage = "<@s.text name='validation.maximum.violated'/>";
+
+            <#if (field.constraints.pattern)??>
+                // escape slashes to prevent issues with patterns
+                patternConstraint = "${field.constraints.pattern?replace('\\', '\\\\')}";
+            </#if>
+
+            <#if (field.constraints.minimum)??>
+                minConstraint = "${field.constraints.minimum}";
+            </#if>
+
+            <#if (field.constraints.maximum)??>
+                maxConstraint = "${field.constraints.maximum}";
+            </#if>
+
+            <#if (field.constraints.required)?? && field.constraints.required == true>
+                isRequiredConstraint = true;
+            </#if>
+
+
+            function isNumberType(value) {
+                return !isNaN(parseFloat(value)) && isFinite(value);
+            }
+
+            function isIntegerType(value) {
+                return /^-?\d+$/.test(value);
+            }
+
+            function isBooleanType(value) {
+                return value === "true" || value === "false";
+            }
+
+            var isDeleteOperation = false;
+
+            // intercept input submit - and store whether it's a delete operation
+            $('.dropdown-menu input[type=submit]').click(function () {
+                isDeleteOperation = ($(this)[0].id === "delete");
+            });
+
+            // validation
+            $("#translation-form").submit(function (e) {
+                // Ignore delete
+                if (isDeleteOperation) {
+                    isDeleteOperation = false;
+                    return;
+                }
+
+                e.preventDefault();
+                var isTypeValid = true;
+                var isConstrainsValid = true;
+
+                var translatedValues = $('#translation .translatedValue');
+
+                translatedValues.each(function(index, element) {
+                    if (fieldType === 'number') {
+                        isTypeValid = validateNumberField(element);
+                    } else if (fieldType === 'integer') {
+                        isTypeValid = validateIntegerField(element);
+                    } else if (fieldType === 'boolean') {
+                        isTypeValid = validateBooleanField(element);
+                    }
+
+                    if (isRequiredConstraint) {
+                        isConstrainsValid = validateRequiredConstraint(element);
+                    } else if (patternConstraint) {
+                        isConstrainsValid = validatePatternConstraint(element);
+                    } else if (minConstraint) {
+                        isConstrainsValid = validateMinimumConstraint(element);
+                    } else if (maxConstraint) {
+                        isConstrainsValid = validateMaximumConstraint(element);
+                    }
+                });
+
+                if (isTypeValid && isConstrainsValid) {
+                    $('#translation-form')[0].submit();
+                }
+            });
+
+            function validateRequiredConstraint(element) {
+                var isValid = true;
+                var value = $(element).val();
+
+                if (value === null || value === undefined || value === '') {
+                    isValid = false;
+                    addInputError(element, requiredConstraintViolatedMessage);
+                }
+
+                return isValid;
+            }
+
+            function validateNumberField(element) {
+                var isValidNumber = true;
+                var value = $(element).val();
+
+                if (!isNumberType(value)) {
+                    isValidNumber = false;
+                    addInputError(element, numberExpectedMessage);
+                } else {
+                    removeInputError(element);
+                }
+
+                return isValidNumber;
+            }
+
+            function validateIntegerField(element) {
+                var isValidNumber = true;
+                var value = $(element).val();
+
+                if (!isIntegerType(value)) {
+                    isValidNumber = false;
+                    addInputError(element, integerExpectedMessage);
+                }
+
+                return isValidNumber;
+            }
+
+            function validateBooleanField(element) {
+                var isValidBoolean = true;
+                var value = $(element).val();
+
+                if (!isBooleanType(value)) {
+                    isValidBoolean = false;
+                    addInputError(element, booleanExpectedMessage);
+                }
+
+                return isValidBoolean;
+            }
+
+            function validatePatternConstraint(element) {
+                var isValid = true;
+                var value = $(element).val();
+
+                var patternConstraintRegex;
+
+                try {
+                    patternConstraintRegex = new RegExp(patternConstraint);
+                    isValid = patternConstraintRegex.test(value);
+                } catch (e) {
+                    console.log("Invalid regex!")
+                }
+
+                if (!isValid) {
+                    addInputError(element, patternConstraintViolatedMessage);
+                }
+
+                return isValid;
+            }
+
+            function validateMaximumConstraint(element) {
+                var isValid = true;
+                var value = $(element).val();
+
+                if (value > maxConstraint) {
+                    isValid = false;
+                    addInputError(element, maximumConstraintViolatedMessage);
+                }
+
+                return isValid;
+            }
+
+            function validateMinimumConstraint(element) {
+                var isValid = true;
+                var value = $(element).val();
+
+                if (value < minConstraint) {
+                    isValid = false;
+                    addInputError(element, minimumConstraintViolatedMessage);
+                }
+
+                return isValid;
+            }
+
+            function addInputError(element, message) {
+                var errorWrongTypeUl = $('<ul class="invalid-feedback list-unstyled field-error my-1">');
+                errorWrongTypeUl.append('<li>')
+                errorWrongTypeUl.append('<span>' + message + '</span>')
+
+                $(element).next('.invalid-feedback').remove();
+                $(element).addClass("is-invalid");
+                $(element).after(errorWrongTypeUl);
+            }
+
+            function removeInputError(element) {
+                $(element).next('.invalid-feedback').remove();
+                $(element).removeClass("is-invalid");
+            }
         });
     </script>
     <#assign currentMenu = "manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+    <#macro processDescription description>
+        <#noescape>
+            ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
+        </#noescape>
+    </#macro>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -162,16 +367,20 @@
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
                          aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a>
+                            <li class="breadcrumb-item">
+                                <a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a>
                             </li>
-                            <li class="breadcrumb-item"><a
-                                        href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a>
+                            <li class="breadcrumb-item">
+                                <a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a>
                             </li>
-                            <li class="breadcrumb-item"><a
-                                        href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}"><@s.text name="breadcrumb.manage.overview.mapping"/></a>
+                            <li class="breadcrumb-item">
+                                <a href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}">
+                                    <@s.text name="breadcrumb.manage.overview.mapping"/>
+                                </a>
                             </li>
-                            <li class="breadcrumb-item active"
-                                aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping.translation"/></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <@s.text name="breadcrumb.manage.overview.mapping.translation"/>
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -189,7 +398,7 @@
 
                 <div class="mt-2 text-center">
                     <div>
-                        <@s.submit form="translation" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
+                        <@s.submit form="translation-form" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
 
                         <div class="btn-group btn-group-sm" role="group">
                             <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -209,7 +418,7 @@
                                     </li>
                                 </#if>
                                 <li>
-                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                    <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
                                 </li>
                             </ul>
                         </div>
@@ -242,6 +451,11 @@
                 <br/><br/>
                 <em><@s.text name="schema.field.type"/>:</em>
                 <span>${field.type!}</span>
+            </#if>
+            <#if field.format?? && field.format != 'default'>
+                <br><br/>
+                <em><@s.text name="schema.field.format"/></em>
+                <code>${field.format}</code>
             </#if>
             <#if field.constraints?? && (field.constraints.unique?? || field.constraints.maximum?? || field.constraints.minimum?? || field.constraints.pattern??)>
                 <br/><br/>
@@ -284,7 +498,7 @@
         </div>
 
         <div class="my-3 p-3">
-            <form id="translation" class="translation-form" action="dataPackageFieldTranslation.do" method="post">
+            <form id="translation-form" class="translation-form" action="dataPackageFieldTranslation.do" method="post">
                 <input type="hidden" name="r" value="${resource.shortname}"/>
                 <input type="hidden" name="mid" value="${mid}"/>
                 <input type="hidden" name="field" value="${field.name}"/>
@@ -380,7 +594,7 @@
 
         <#if (vocabTermsSize>0)>
             <div class="col-6">
-                <select name="tmap" class="translated-value form-select">
+                <select name="tmap" class="translatedValue form-select">
                     <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
                     <#list vocabTermsKeys as code>
                         <option value="${code?replace('"','\"')}">
@@ -392,7 +606,7 @@
         <#else>
             <div class="col-6">
                 <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>"
-                       class="translated-value form-control" name="tmap" value=""/>
+                       class="translatedValue form-control" name="tmap" value=""/>
             </div>
         </#if>
     </div>
