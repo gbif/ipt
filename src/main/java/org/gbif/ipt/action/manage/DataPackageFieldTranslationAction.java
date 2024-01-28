@@ -141,7 +141,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           }
         }
       }
-      addActionMessage(getText("manage.translation.mapped.terms", new String[] {String.valueOf(count)}));
+      addActionMessage(getText("manage.translation.mapped.fields", new String[] {String.valueOf(count)}));
     }
     return SUCCESS;
   }
@@ -163,7 +163,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
-      addActionMessage(getText("manage.translation.deleted", new String[] {field.getName()}));
+      addActionMessage(getText("manage.translation.field.deleted", new String[] {field.getName()}));
       // 5. reload source values, so they aren't empty on next page visit
       reloadSourceValues();
     } else {
@@ -271,13 +271,13 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
       // bring it to user's attention, that the source values have been reloaded
       if (!isHttpPost()) {
-        addActionMessage(getText("manage.translation.reloaded.values",
+        addActionMessage(getText("manage.translation.reloaded.field.values",
           new String[]{String.valueOf(getSourceValuesMap().size()), fieldMapping.getField().getName()}));
       }
 
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
-      addActionError(getText("manage.translation.reloaded.fail",
+      addActionError(getText("manage.translation.reloaded.field.fail",
         new String[] {fieldMapping.getField().getName(), e.getMessage()}));
     }
   }
@@ -294,7 +294,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getDataPackageTableSchemaName().getName();
-    addActionMessage(getText("manage.translation.saved", new String[] {fieldMapping.getField().getName()}));
+    addActionMessage(getText("manage.translation.field.saved", new String[] {fieldMapping.getField().getName()}));
 
     return NONE;
   }
