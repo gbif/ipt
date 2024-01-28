@@ -17,6 +17,9 @@
     <Logger name="org.hibernate.validator.internal" level="ERROR"/>
     <Logger name="org.hibernate.validator.messageinterpolation" level="ERROR"/>
 
+    <Logger name="org.apache.commons.beanutils" level="ERROR"/>
+    <Logger name="org.apache.http" level="ERROR"/>
+
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
     <Logger name="com.github.pjfanning.xlsx.impl.StreamingRowIterator" level="ERROR"/>
