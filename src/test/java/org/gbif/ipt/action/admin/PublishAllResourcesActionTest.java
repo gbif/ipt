@@ -29,6 +29,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.FileUtils;
@@ -93,7 +94,7 @@ public class PublishAllResourcesActionTest {
 
     // mock action
     action = new PublishAllResourcesAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
-      mockRegistrationManager, mockResourceManager, mock(RegistryManager.class));
+      mockRegistrationManager, mockResourceManager, mock(RegistryManager.class), mock(DataPackageMetadataValidator.class));
 
   }
 
