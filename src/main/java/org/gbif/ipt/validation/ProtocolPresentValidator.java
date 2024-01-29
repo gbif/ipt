@@ -16,12 +16,14 @@ package org.gbif.ipt.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ProtocolPresentValidator implements ConstraintValidator<ProtocolPresent, CharSequence> {
 
   @Override
   public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
     // Check if the string has a protocol
-    return value == null || value.toString().matches("^\\w+://.*$");
+    return StringUtils.isEmpty(value) || value.toString().matches("^\\w+://.*$");
   }
 }
 

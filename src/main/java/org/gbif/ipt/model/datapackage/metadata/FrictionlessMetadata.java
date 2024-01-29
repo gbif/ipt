@@ -15,7 +15,6 @@ package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.KeywordsMetadata;
-import org.gbif.ipt.validation.ProtocolPresent;
 import org.gbif.ipt.validation.ProtocolPresentURI;
 
 import java.io.Serializable;
@@ -147,7 +146,6 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    */
   @JsonProperty("image")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  @ProtocolPresent(message = "validation.url.protocol", groups = BasicMetadata.class)
   private String image;
 
   /**
