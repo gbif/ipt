@@ -15,13 +15,22 @@ package org.gbif.ipt.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.net.URI;
 
-public class ProtocolPresentURIValidator implements ConstraintValidator<ProtocolPresentURI, URI> {
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
+
+public class ValidUrlValidator implements ConstraintValidator<ValidUrl, String> {
+
+  private final UrlValidator urlValidator;
+
+  public ValidUrlValidator() {
+    String[] schemes = {"http", "https"};
+    this.urlValidator = new UrlValidator(schemes);
+  }
 
   @Override
-  public boolean isValid(URI value, ConstraintValidatorContext context) {
-    // Check if the URL has a protocol
-    return value == null || value.getScheme() != null;
+  public boolean isValid(String value, ConstraintValidatorContext context) {
+    return StringUtils.isEmpty(value) || urlValidator.isValid(value);
   }
 }
+

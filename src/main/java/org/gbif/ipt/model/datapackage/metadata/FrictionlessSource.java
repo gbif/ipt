@@ -14,7 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
-import org.gbif.ipt.validation.ProtocolPresent;
+import org.gbif.ipt.validation.ValidUrl;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -61,7 +61,7 @@ public class FrictionlessSource implements Source, Serializable {
    * A fully qualified URL, or a POSIX file path.
    */
   @JsonProperty("path")
-  @ProtocolPresent(message = "validation.url.protocol", groups = BasicMetadata.class)
+  @ValidUrl(message = "validation.url.fullyQualified", groups = BasicMetadata.class)
   @Pattern(regexp = "^(?=^[^./~])(^((?!\\.{2}).)*$).*$", groups = BasicMetadata.class)
   private String path;
 

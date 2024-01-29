@@ -22,12 +22,11 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ProtocolPresentValidator.class)
-public @interface ProtocolPresent {
-  String message() default "URL must include a protocol (e.g., http:// or https://)";
+@Constraint(validatedBy = ValidURIValidator.class)
+public @interface ValidURI {
+  String message() default "URL must be fully qualified";
 
   Class<?>[] groups() default {};
 
   Class<? extends Payload>[] payload() default {};
 }
-
