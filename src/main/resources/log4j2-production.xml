@@ -19,6 +19,7 @@
 
     <Logger name="org.apache.commons.beanutils" level="ERROR"/>
     <Logger name="org.apache.http" level="ERROR"/>
+    <Logger name="org.apache.commons.digester" level="ERROR"/>
 
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
 
