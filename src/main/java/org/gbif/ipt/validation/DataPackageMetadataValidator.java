@@ -153,15 +153,11 @@ public class DataPackageMetadataValidator {
           if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
             action.addActionError(action.getText(violation.getMessage()));
           } else {
-            if (violation.getMessage().equals("validation.datapackage.metadata.license.nameOrPath.required")) {
+            if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
               // remove all characters, we need the index
               String index = RegExUtils.removeAll(violation.getPropertyPath().toString(), "[a-zA-z.\\[\\]]*");
               action.addFieldError(
                   "metadata.licenses[" + index + "].name",
-                  action.getText(action.getText(violation.getMessage()))
-              );
-              action.addFieldError(
-                  "metadata.licenses[" + index + "].path",
                   action.getText(action.getText(violation.getMessage()))
               );
             } else {
@@ -259,15 +255,11 @@ public class DataPackageMetadataValidator {
         if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
           action.addActionError(action.getText(violation.getMessage()));
         } else {
-          if (violation.getMessage().equals("validation.datapackage.metadata.license.nameOrPath.required")) {
+          if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
             // remove all characters, we need the index
             String index = RegExUtils.removeAll(violation.getPropertyPath().toString(), "[a-zA-z.\\[\\]]*");
             action.addFieldError(
               "metadata.licenses[" + index + "].name",
-              action.getText(action.getText(violation.getMessage()))
-            );
-            action.addFieldError(
-              "metadata.licenses[" + index + "].path",
               action.getText(action.getText(violation.getMessage()))
             );
           } else {

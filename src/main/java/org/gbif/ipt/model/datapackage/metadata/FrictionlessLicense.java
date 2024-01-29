@@ -14,7 +14,6 @@
 package org.gbif.ipt.model.datapackage.metadata;
 
 import org.gbif.ipt.validation.BasicMetadata;
-import org.gbif.ipt.validation.NotNullIfAnotherFieldNull;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -40,11 +40,6 @@ import com.fasterxml.jackson.databind.JsonNode;
  * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@NotNullIfAnotherFieldNull(
-    fieldName = "name",
-    dependFieldName = "path",
-    message = "validation.datapackage.metadata.license.nameOrPath.required",
-    groups = BasicMetadata.class)
 public class FrictionlessLicense implements License, Serializable {
 
   private final static long serialVersionUID = 5529108333342991396L;
@@ -55,6 +50,7 @@ public class FrictionlessLicense implements License, Serializable {
    * MUST be an Open Definition license identifier, see <a href="http://licenses.opendefinition.org/">...</a>
    */
   @JsonProperty("name")
+  @NotNull(message = "validation.datapackage.metadata.license.name.required", groups = BasicMetadata.class)
   @Pattern(regexp = "^([-a-zA-Z0-9._])+$", groups = BasicMetadata.class)
   private String name;
 
