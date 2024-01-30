@@ -164,10 +164,10 @@
 
                 var sectionsContainer = $("#sections");
 
-                if (sectionsContainer.position().top - 50 > scrollPosition) {
+                if (sectionsContainer.position().top - 120 > scrollPosition) {
                     var removeActiveFromThisLink = $('.bd-toc nav a.active');
                     removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 50 <= scrollPosition
+                } else if (section.position().top - 120 <= scrollPosition
                     && section.position().top + section.height() > scrollPosition) {
                     if (!currentLink.hasClass("active")) {
                         var removeFromThisLink = $('.bd-toc nav a.active');
@@ -420,9 +420,9 @@
 
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout main-content-container">
+    <div class="container mb-md-4 bd-layout main-content-container">
         <main class="bd-main">
-            <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+            <div class="bd-toc mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
                         <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
@@ -478,7 +478,7 @@
 
             <div class="bd-content ps-lg-4">
                 <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                <div id="description" class="mt-5 section">
+                <div id="description" class="py-5 section">
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
@@ -510,7 +510,7 @@
 
                     <#if metadataOnly != true>
                         <span class="anchor anchor-home-resource-page" id="anchor-dataRecords"></span>
-                        <div id="dataRecords" class="mt-5 section">
+                        <div id="dataRecords" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.dataRecords'/>
                             </h4>
@@ -568,8 +568,8 @@
 
                     <!-- versions section -->
                     <#if resource.versionHistory??>
-                        <span class="anchor anchor-resource-page" id="anchor-versions"></span>
-                        <div id ="versions" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-versions"></span>
+                        <div id ="versions" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.versions'/>
                             </h4>
@@ -586,8 +586,8 @@
 
                     <!-- citation section -->
                     <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                        <span class="anchor anchor-resource-page" id="anchor-citation"></span>
-                        <div id="citation" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-citation"></span>
+                        <div id="citation" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.cite.howTo'/>
                             </h4>
@@ -606,8 +606,8 @@
 
                     <!-- rights section -->
                     <#if eml.intellectualRights?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-rights"></span>
-                        <div id="rights" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-rights"></span>
+                        <div id="rights" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='eml.intellectualRights.simple'/>
                             </h4>
@@ -632,8 +632,8 @@
                     </#if>
 
                     <!-- GBIF Registration section -->
-                    <span class="anchor anchor-resource-page" id="anchor-gbif"></span>
-                    <div id="gbif" class="mt-5 section">
+                    <span class="anchor anchor-home-resource-page" id="anchor-gbif"></span>
+                    <div id="gbif" class="pb-5 section">
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='portal.resource.organisation.key'/>
                         </h4>
@@ -651,8 +651,8 @@
 
                     <!-- Keywords section -->
                     <#if eml.subject?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-keywords"></span>
-                        <div id="keywords" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
+                        <div id="keywords" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.summary.keywords'/>
                             </h4>
@@ -669,8 +669,8 @@
 
                     <!-- External data section -->
                     <#if (eml.physicalData?size > 0 )>
-                        <span class="anchor anchor-resource-page" id="anchor-external"></span>
-                        <div id="external" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-external"></span>
+                        <div id="external" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.physical.alternativeTitle'/>
                             </h4>
@@ -698,8 +698,8 @@
 
                     <!-- Contacts section -->
                     <#if (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)>
-                        <span class="anchor anchor-resource-page" id="anchor-contacts"></span>
-                        <div id="contacts" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-contacts"></span>
+                        <div id="contacts" class="pb-5 section">
                             <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.contacts'/>
                             </h4>
@@ -716,8 +716,8 @@
 
                     <!-- Geo coverage section -->
                     <#if eml.geospatialCoverages[0]??>
-                        <span class="anchor anchor-resource-page" id="anchor-geospatial"></span>
-                        <div id="geospatial" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-geospatial"></span>
+                        <div id="geospatial" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.summary.geocoverage'/>
                             </h4>
@@ -743,8 +743,8 @@
 
                     <!-- Taxonomic coverage sections -->
                     <#if ((organizedCoverages?size > 0))>
-                        <span class="anchor anchor-resource-page" id="anchor-taxanomic"></span>
-                        <div id="taxanomic" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-taxanomic"></span>
+                        <div id="taxanomic" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.taxcoverage.title'/>
                             </h4>
@@ -788,8 +788,8 @@
 
                     <!-- Temporal coverages section -->
                     <#if ((eml.temporalCoverages?size > 0))>
-                        <span class="anchor anchor-resource-page" id="anchor-temporal"></span>
-                        <div id="temporal" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-temporal"></span>
+                        <div id="temporal" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.tempcoverage.title'/>
                             </h4>
@@ -826,8 +826,8 @@
 
                     <!-- Project section -->
                     <#if eml.project?? && eml.project.title?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-project"></span>
-                        <div id="project" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-project"></span>
+                        <div id="project" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.project.title'/>
                             </h4>
@@ -892,8 +892,8 @@
 
                     <!-- Sampling methods section -->
                     <#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content) >
-                        <span class="anchor anchor-resource-page" id="anchor-methods"></span>
-                        <div id="methods" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-methods"></span>
+                        <div id="methods" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.methods.title'/>
                             </h4>
@@ -943,8 +943,8 @@
 
                     <!-- Collections section -->
                     <#if eml.collections?? && (eml.collections?size > 0) && eml.collections[0].collectionName?has_content >
-                        <span class="anchor anchor-resource-page" id="anchor-collection"></span>
-                        <div id="collection" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-collection"></span>
+                        <div id="collection" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.collections.title'/>
                             </h4>
@@ -1017,8 +1017,8 @@
 
                     <!-- bibliographic citations section -->
                     <#if eml.bibliographicCitationSet?? && (eml.bibliographicCitationSet.bibliographicCitations?has_content)>
-                        <span class="anchor anchor-resource-page" id="anchor-reference"></span>
-                        <div id="reference" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-reference"></span>
+                        <div id="reference" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.citations.bibliography'/>
                             </h4>
@@ -1038,8 +1038,8 @@
 
                 <!-- Additional metadata section -->
                 <#if eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
-                    <span class="anchor anchor-resource-page" id="anchor-additional"></span>
-                    <div id="additional" class="mt-5 section">
+                    <span class="anchor anchor-home-resource-page" id="anchor-additional"></span>
+                    <div id="additional" class="pb-5 section">
 
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='manage.metadata.additional.title'/>

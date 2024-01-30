@@ -1,5 +1,5 @@
 <!-- Represents metadata section on resource overview page -->
-<span class="anchor anchor-home-resource-page" id="anchor-metadata"></span>
+<span class="anchor anchor-overview-page" id="anchor-metadata"></span>
 <div class="py-5 border-bottom section" id="metadata">
     <div class="d-flex justify-content-between">
         <div class="d-flex">

@@ -1936,9 +1936,14 @@ button.close {
     margin-top: -59px;
 }
 
-.anchor-home-resource-page {
+.anchor-overview-page {
     height: 104px;
     margin-top: -104px;
+}
+
+.anchor-home-resource-page {
+    height: 90px;
+    margin-top: -91px;
 }
 
 .logoImg>img {

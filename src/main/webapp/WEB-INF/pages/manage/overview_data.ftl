@@ -2,7 +2,7 @@
 <#assign lastModifiedNotSet><@s.text name='basic.lastModified.not.set'/></#assign>
 
 <!-- Represents source data section on resource overview page -->
-<span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
+<span class="anchor anchor-overview-page" id="anchor-sources"></span>
 <div class="py-5 border-bottom section" id="sources">
     <div class="titleOverview">
         <div class="d-flex justify-content-between">
@@ -170,7 +170,7 @@
 </div>
 
 <!-- Represents mapping data section on resource overview page -->
-<span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
+<span class="anchor anchor-overview-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
     <#if dataPackageResource>
         <div class="d-flex justify-content-between">

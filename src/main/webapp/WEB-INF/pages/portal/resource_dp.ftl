@@ -74,10 +74,10 @@
 
                     var sectionsContainer = $("#sections");
 
-                    if (sectionsContainer.position().top - 50 > scrollPosition) {
+                    if (sectionsContainer.position().top - 120 > scrollPosition) {
                         var removeActiveFromThisLink = $('.bd-toc nav a.active');
                         removeActiveFromThisLink.removeClass('active');
-                    } else if (section.position().top - 50 <= scrollPosition
+                    } else if (section.position().top - 120 <= scrollPosition
                         && section.position().top + section.height() > scrollPosition) {
                         if (!currentLink.hasClass("active")) {
                             var removeFromThisLink = $('.bd-toc nav a.active');
@@ -282,9 +282,9 @@
     </div>
 
     <div id="sections" class="container-fluid bg-body">
-        <div class="container my-md-4 bd-layout main-content-container">
+        <div class="container my-mb-4 bd-layout main-content-container">
             <main class="bd-main">
-                <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                <div class="bd-toc mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
                             <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
@@ -333,7 +333,7 @@
 
                 <div class="bd-content ps-lg-4">
                     <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                    <div id="description" class="mt-5 section">
+                    <div id="description" class="py-5 section">
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='portal.resource.description'/>
                         </h4>
@@ -350,7 +350,7 @@
 
                     <!-- Data records -->
                     <span class="anchor anchor-home-resource-page" id="anchor-dataRecords"></span>
-                    <div id="dataRecords" class="mt-5 section">
+                    <div id="dataRecords" class="pb-5 section">
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='portal.resource.dataRecords'/>
                         </h4>
@@ -382,8 +382,8 @@
                     <#if resource.lastPublished??>
                         <!-- versions section -->
                         <#if resource.versionHistory??>
-                            <span class="anchor anchor-resource-page" id="anchor-versions"></span>
-                            <div id ="versions" class="mt-5 section">
+                            <span class="anchor anchor-home-resource-page" id="anchor-versions"></span>
+                            <div id ="versions" class="pb-5 section">
                                 <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                     <@s.text name='portal.resource.versions'/>
                                 </h4>
@@ -402,7 +402,7 @@
                     <!-- Keywords section -->
                     <#if (dpMetadata.keywords)?has_content>
                         <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
-                        <div id="keywords" class="mt-5 section">
+                        <div id="keywords" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.keywords'/>
                             </h4>
@@ -417,8 +417,8 @@
 
                     <!-- Contributors section -->
                     <#if (dpMetadata.contributors)?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-contributors"></span>
-                        <div id="contributors" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-contributors"></span>
+                        <div id="contributors" class="pb-5 section">
                             <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.contributors'/>
                             </h4>
@@ -440,7 +440,7 @@
                     <!-- Sources section -->
                     <#if (dpMetadata.sources)?has_content>
                         <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
-                        <div id="sources" class="mt-5 section">
+                        <div id="sources" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.sources'/>
                             </h4>
@@ -477,7 +477,7 @@
                     <!-- Licenses section -->
                     <#if (dpMetadata.licenses)?has_content>
                         <span class="anchor anchor-home-resource-page" id="anchor-licenses"></span>
-                        <div id="licenses" class="mt-5 section">
+                        <div id="licenses" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.licenses'/>
                             </h4>
@@ -516,7 +516,7 @@
                     <!-- Geographic scope section -->
                     <#if (dpMetadata.spatial)??>
                         <span class="anchor anchor-home-resource-page" id="anchor-geographic"></span>
-                        <div id="geographic" class="mt-5 section">
+                        <div id="geographic" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.geographic'/>
                             </h4>
@@ -539,7 +539,7 @@
                     <!-- Taxonomic scope section -->
                     <#if (dpMetadata.taxonomic)??>
                         <span class="anchor anchor-home-resource-page" id="anchor-taxonomic"></span>
-                        <div id="taxonomic" class="mt-5 section">
+                        <div id="taxonomic" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.taxonomic'/>
                             </h4>
@@ -576,7 +576,7 @@
                     <!-- Temporal scope section -->
                     <#if (dpMetadata.temporal)??>
                         <span class="anchor anchor-home-resource-page" id="anchor-temporal"></span>
-                        <div id="temporal" class="mt-5 section">
+                        <div id="temporal" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.temporal'/>
                             </h4>
@@ -595,7 +595,7 @@
                     <!-- Project section -->
                     <#if (dpMetadata.project)??>
                         <span class="anchor anchor-home-resource-page" id="anchor-project"></span>
-                        <div id="project" class="mt-5 section">
+                        <div id="project" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.project'/>
                             </h4>
@@ -643,7 +643,7 @@
                     <#if dpMetadata.bibliographicCitation?has_content>
                         <!-- Bibliographic citation section -->
                         <span class="anchor anchor-home-resource-page" id="anchor-bibliographic"></span>
-                        <div id="bibliographic" class="mt-5 section">
+                        <div id="bibliographic" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.bibliographic'/>
                             </h4>
@@ -657,7 +657,7 @@
                     <#if dpMetadata.references?has_content>
                         <!-- References section -->
                         <span class="anchor anchor-home-resource-page" id="anchor-references"></span>
-                        <div id="references" class="mt-5 section">
+                        <div id="references" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.references'/>
                             </h4>
@@ -673,7 +673,7 @@
                     <#if dpMetadata.relatedIdentifiers?has_content>
                         <!-- Related identifiers section -->
                         <span class="anchor anchor-home-resource-page" id="anchor-relatedidentifiers"></span>
-                        <div id="relatedidentifiers" class="mt-5 section">
+                        <div id="relatedidentifiers" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.relatedIdentifiers'/>
                             </h4>

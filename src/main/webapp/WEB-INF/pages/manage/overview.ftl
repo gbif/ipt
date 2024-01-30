@@ -1320,7 +1320,7 @@
                         <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
                     </#if>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1390,7 +1390,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1724,7 +1724,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-registration"></span>
                     <div class="py-5 border-bottom section" id="registration">
 
                         <div class="d-flex justify-content-between">
@@ -1874,7 +1874,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-autopublish"></span>
                     <div class="py-5 border-bottom section" id="autopublish">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1917,7 +1917,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -2009,7 +2009,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-managers"></span>
                     <div class="py-5" id="managers">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
