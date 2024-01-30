@@ -18,7 +18,6 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
-import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
@@ -505,46 +504,68 @@ public class Resource implements Serializable, Comparable<Resource> {
    * is 1.0. If no new DOI has been reserved for the resource, the version is bumped by a minor resource version.
    * If a new DOI has been reserved for the resource, and the resource's visibility is public, the version is bumped by
    * a major resource version.
+   * <p>
+   * For Data Packages, versioning is simpler - it's only a major version present.
    *
    * @return next resource version
    */
   @NotNull
   public BigDecimal getNextVersion() {
-    if (dataPackageIdentifier != null) {
-      String versionAsString = getDataPackageMetadata().getVersion();
-      // first publication retrieve existing version
-      if (lastPublished == null) {
-        BigDecimal nextVersion;
-
-        try {
-          nextVersion = new BigDecimal(versionAsString);
-        } catch (NumberFormatException e) {
-          LOG.error("Invalid version number: {}. Setting version to 1.0", versionAsString);
-          nextVersion = new BigDecimal("1.0");
-        }
-
-        return nextVersion;
-      }
-      int majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
-      return new BigDecimal(majorVersion + 1 + ".0");
+    if (isDataPackage()) {
+      return getNextVersionForDataPackage();
     } else {
-      // first publication retrieve existing version
-      if (lastPublished == null) {
-        return getEml().getEmlVersion();
-      }
-      // There are two cases that warrant a new major version, provided a doi has been reserved for resource
-      // #1: no DOI has been assigned yet, and resource's visibility is public (or registered)
-      // #2: a DOI has been assigned already
-      if (doi != null && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-        if (!isAlreadyAssignedDoi() && (status == PublicationStatus.PUBLIC || status == PublicationStatus.REGISTERED)) {
-          return getEml().getNextEmlVersionAfterMajorVersionChange();
-        } else if (isAlreadyAssignedDoi()) {
-          return getEml().getNextEmlVersionAfterMajorVersionChange();
-        }
-      }
-      // all other cases warrant a minor version increment
-      return getEml().getNextEmlVersionAfterMinorVersionChange();
+      return getNextVersionForEml();
     }
+  }
+
+  private BigDecimal getNextVersionForDataPackage() {
+    String versionAsString = getDataPackageMetadata().getVersion();
+    boolean isVersionContainsDot = versionAsString.contains(".");
+
+    if (lastPublished == null) {
+      BigDecimal nextVersion;
+
+      try {
+        if (isVersionContainsDot) {
+          nextVersion = new BigDecimal(versionAsString.substring(0, versionAsString.indexOf(".")));
+        } else {
+          nextVersion = new BigDecimal(versionAsString);
+        }
+      } catch (NumberFormatException e) {
+        LOG.error("Invalid version number: {}. Setting version to 1", versionAsString);
+        nextVersion = new BigDecimal("1");
+      }
+
+      return nextVersion;
+    }
+
+    int majorVersion;
+    if (isVersionContainsDot) {
+      majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
+    } else {
+      majorVersion = Integer.parseInt(versionAsString);
+    }
+
+    return new BigDecimal(majorVersion + 1);
+  }
+
+  private BigDecimal getNextVersionForEml() {
+    // first publication retrieve existing version
+    if (lastPublished == null) {
+      return getEml().getEmlVersion();
+    }
+    // There are two cases that warrant a new major version, provided a doi has been reserved for resource
+    // #1: no DOI has been assigned yet, and resource's visibility is public (or registered)
+    // #2: a DOI has been assigned already
+    if (doi != null && identifierStatus == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+      if (!isAlreadyAssignedDoi() && (status == PublicationStatus.PUBLIC || status == PublicationStatus.REGISTERED)) {
+        return getEml().getNextEmlVersionAfterMajorVersionChange();
+      } else if (isAlreadyAssignedDoi()) {
+        return getEml().getNextEmlVersionAfterMajorVersionChange();
+      }
+    }
+    // all other cases warrant a minor version increment
+    return getEml().getNextEmlVersionAfterMinorVersionChange();
   }
 
   public String getNextVersionPlainString() {
@@ -1297,7 +1318,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public BigDecimal getReplacedDataPackageMetadataVersion() {
     return (replacedDataPackageMetadataVersion == null)
-        ? Constants.INITIAL_RESOURCE_VERSION
+        ? Constants.INITIAL_RESOURCE_VERSION_DATA_PACKAGE
         : replacedDataPackageMetadataVersion;
   }
 

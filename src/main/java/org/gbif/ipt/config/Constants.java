@@ -111,6 +111,7 @@ public final class Constants {
 
   // First published version number
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
+  public static final BigDecimal INITIAL_RESOURCE_VERSION_DATA_PACKAGE = new BigDecimal("1");
 
   public static final String CAMTRAP_DP = "camtrap-dp";
   public static final String MATERIAL_DP = "material-dp";
