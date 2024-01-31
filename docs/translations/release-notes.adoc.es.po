@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2023-12-13 20:31\n"
+"PO-Revision-Date: 2024-01-24 23:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -202,7 +202,7 @@ msgstr "Tras la actualización, puede aparecer un mensaje de advertencia indican
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:70
 msgid "New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations."
-msgstr "Una novedad en el IPT 2.3.x es la capacidad para publicar datos basados en muestras. Una vez que la actualización se ha completado, el administrador del IPT debe instalar el núcleo de Eventos Darwin Core. Tenga en cuenta que el núcleo de Eventos Darwin Core está instalado por defecto en las instalaciones nuevas."
+msgstr "Una novedad en el IPT 2.3.x es la capacidad para publicar datos basados en muestras. Una vez que la actualización se ha completado, el administrador del IPT debe instalar el core de Eventos Darwin Core. Tenga en cuenta que el core de Eventos Darwin Core está instalado por defecto en las instalaciones nuevas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:72
@@ -257,7 +257,7 @@ msgstr "La documentación se ha movido a esta nueva ubicación; se aportarán en
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:87
 msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
-msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la link:../../../en/ipt/2.4/release-notes[versión antigua]."
+msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la xref:2.4@release-notes.adoc[versión antigua]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:90
