@@ -340,7 +340,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   @Override
   public List<DataPackageSchema> getSupportedDataSchemas() throws RegistryException {
     List<DataPackageSchema> result = new ArrayList<>();
-    Map<String, String> schemasWithVersions = AppConfig.getSupportedDataSchemaNamesWithVersions();
+    Map<String, String> schemasWithVersions = baseAction.getCfg().getSupportedDataSchemaNamesWithVersions();
 
     for (Map.Entry<String, String> entrySchemaVersion : schemasWithVersions.entrySet()) {
       DataPackageSchema jsonDataSchema = gson
@@ -796,7 +796,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private ExtendedResponse requestHttpGetFromRegistry(String url) throws RegistryException {
     try {
       ExtendedResponse resp = http.get(url);
-      if (resp.getContent() != null) {
+      if (resp.getStatusCode() == 404) {
+        throw new RegistryException(Type.BAD_REQUEST, url,
+            "Please check the request URL: " + ((url != null) ? url : "empty URL used!"));
+      } else if (resp.getContent() != null) {
         return resp;
       } else {
         throw new RegistryException(Type.BAD_RESPONSE, url, "Response content is null");

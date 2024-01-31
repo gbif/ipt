@@ -178,9 +178,11 @@ public class AppConfig {
     return coreRowTypes;
   }
 
-  public static Map<String, String> getSupportedDataSchemaNamesWithVersions() {
+  public Map<String, String> getSupportedDataSchemaNamesWithVersions() {
+    // filter packages - some available only for dev!
     return Arrays.stream(SupportedDataPackageType.values())
-            .collect(Collectors.toMap(SupportedDataPackageType::getName, SupportedDataPackageType::getSupportedVersion));
+        .filter(dp -> type != REGISTRY_TYPE.PRODUCTION || dp.isProductionType())
+        .collect(Collectors.toMap(SupportedDataPackageType::getName, SupportedDataPackageType::getSupportedVersion));
   }
 
   /**
