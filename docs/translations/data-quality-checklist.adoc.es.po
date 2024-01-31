@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-02-06 19:42\n"
+"PO-Revision-Date: 2024-01-24 20:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,7 +30,7 @@ msgstr "Instrucciones"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr "Comprobación de la calidad de los datos"
+msgstr "Lista de verificación de la calidad de los datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
@@ -40,7 +40,7 @@ msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de d
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
 msgid "The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:"
-msgstr "El listado de especies ayudará a asegurar que los datos están completos, respondiendo a las siguientes preguntas:"
+msgstr "El listado de verificación ayudará a asegurar que los datos estén completos, es decir, que contengan respuestas válidas a las siguientes preguntas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
@@ -75,7 +75,7 @@ msgstr "Algunos ejemplos de eventos son la observación de una especie, la colec
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:16
 msgid "Additionally, the checklist ensures that the <<Dataset Metadata>> also contains answers to the five Ws in order to facilitate reuse of the data."
-msgstr "Adicionalmente, el listado de especies asegura que los <<Metadatos del conjunto de datos>> contienen también respuestas a las preguntas anteriores para facilitar la reutilización de los datos."
+msgstr "Adicionalmente, el listado de verificación asegura que los <<Metadatos del conjunto de datos>> contienen también respuestas a las cinco preguntas para facilitar la reutilización de los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:20
@@ -96,7 +96,7 @@ msgstr "A continuación, lea los metadatos del conjunto de datos para lograr un 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:26
 msgid "Next, load the data into https://openrefine.org/[OpenRefine]. This will allow https://docs.openrefine.org/manual/facets[faceted browsing] to get the big picture of the data."
-msgstr "Después, cargue los datos en https://openrefine.org/[OpenRefine]. Esto permitirá la https://docs.openrefine.org/manual/facets[navegación por temas] para obtener una visión de los datos a grandes rasgos."
+msgstr "Después, cargue los datos en https://openrefine.org/[OpenRefine]. Esto permitirá la https://docs.openrefine.org/manual/facets[navegación por secciones] para obtener una visión de los datos a grandes rasgos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:28
@@ -118,13 +118,13 @@ msgstr "Controles de calidad"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:33
 #, no-wrap
 msgid "What event happened?"
-msgstr "¿Qué evento tuvo lugar?"
+msgstr "¿Qué ha pasado?"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:35
 #, no-wrap
 msgid "What type of event was it?"
-msgstr "¿Qué tipo de evento fue?"
+msgstr "¿Qué tipo de acontecimiento fue?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:44
@@ -152,7 +152,7 @@ msgstr "Si fue un evento relacionado con registros biológicos de especies ¿cu�
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}[GBIF Occurrence Status Vocabulary].\n"
 msgstr "| Check-ID | Campos | Requisitos\n\n"
-"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utlice la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los tipos cuantitativos]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}[Vocabulario GBIF para el estado de los registros].\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utilice la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los Tipos de cantidad]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}[Vocabulario GBIF para el Estado del registro biológico].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:54
@@ -270,10 +270,10 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `eventTime`, `year`, `month`, `day`, `startDayOfYear` and `endDayOfYear` for date ranges as completely as possible. If there is a date range spanning days, `day` is left blank. If there is a date range spanning months, `month` is left blank. If there is a date range spanning years, `year` is left blank. If the start date resolution is specific to the day fill in `startDayOfYear`. If the end date resolution is specific to the day fill in `endDayOfYear`.\n"
 "| *when 5* | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks`\n"
 msgstr "| Check-ID | Campos | Requisitos\n\n"
-"| *when 1* | `eventDate` | La fecha, fecha-hora, rango de fecha o rango de fecha-hora durante la cual ocurrió el evento debería ser introducido en `eventDate` en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]. Las fechas parciales pueden ser proporcionadas si incluyen al menos un año y mes, p. ej., \"2007-03\".\n"
+"| *when 1* | `eventDate` | La fecha, fecha-hora, rango de fecha o rango de fecha-hora durante la cual ocurrió el evento debería ser documentado en `eventDate` en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]. Las fechas parciales pueden ser proporcionadas si incluyen al menos un año y mes, p. ej., \"2007-03\".\n"
 "| *when 2* | `verbatimEventDate` | Si hay que convertir el valor original en https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] `verbatimEventDate` debería ser completado con ese valor original.\n"
-"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Aunque parezca repetitivo, se recomienda intentar rellenar el `year`, `month`, `day`, `eventTime` y `startDayOfYear` para fechas/fechas-horas únicas. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`.\n"
-"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Aunque parezca repetitivo, se recomienda intentar llenar de la manera más completa posible el `year`, `month`, `day`, `startDayOfYear` y `endDayOfYear` en el caso de rangos de fechas. Si el rango de fechas abarca varios días, dejar en blanco el campo `day`. Si el rango de fechas abarca varios meses, dejar en blanco el campo `month`. Si el rango de fechas abarca varios años, dejar en blanco el campo `year`. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`. Si la resolución de la fecha de fin es específica para el día, llenar en `endDayOfYear`.\n"
+"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Aunque parezca repetitivo, se recomienda intentar documentar el `year`, `month`, `day`, `eventTime` y `startDayOfYear` para fechas/fechas-horas únicas. Si la resolución de la fecha de inicio es específica para el día, documentar en `startDayOfYear`.\n"
+"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Aunque parezca repetitivo, se recomienda intentar documentar de la manera más completa posible el `year`, `month`, `day`, `startDayOfYear` y `endDayOfYear` en el caso de rangos de fechas. Si el rango de fechas abarca varios días, dejar en blanco el campo `day`. Si el rango de fechas abarca varios meses, dejar en blanco el campo `month`. Si el rango de fechas abarca varios años, dejar en blanco el campo `year`. Si la resolución de la fecha de inicio es específica para el día, documentar en `startDayOfYear`. Si la resolución de la fecha de fin es específica para el día, documentar en `endDayOfYear`.\n"
 "| *when 5* | `eventRemarks` | Si no se puede llenar el campo `eventDate`, se debería al menos proporcionar una explicación en el campo `eventRemarks`\n"
 
 #. type: Title ====

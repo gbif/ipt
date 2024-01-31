@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2022-02-03 17:39\n"
+"PO-Revision-Date: 2024-01-24 23:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -116,7 +116,7 @@ msgid "license.text.<prefix>=Text\n"
 "license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
 msgstr "license.text.<prefix>=Texto\n"
 "# Por ejemplo:\n"
-"license.text.odcby=Este trabajo es licenciado bajo una <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Licencia de atribución Open Data Commons (ODC-By) 1.0</a>.\n"
+"license.text.odcby=Este trabajo es licenciado bajo una <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Licencia de Atribución Open Data Commons (ODC-By) 1.0</a>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
@@ -131,12 +131,12 @@ msgstr "el _prefijo_ de ambas llaves coincide,"
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:48
 msgid "an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable,"
-msgstr "un ancho de HTML define el nombre de la licencia y la URL es incluida en el texto ya que esto es lo que hace que sea legible por la máquina de licencias,"
+msgstr "se incluye en el texto un ancla HTML que define el nombre y la URL de la licencia, ya que esto hace que la licencia sea legible por un ordenador,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:49
 msgid "the name used in the HTML anchor is the same as name used in the name property above."
-msgstr "el nombre usado en el ancho HTML es el mismo nombre que es usado en la propiedad anterior."
+msgstr "el nombre utilizado en el ancla HTML es el mismo que el utilizado en el nombre de la propiedad anterior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50

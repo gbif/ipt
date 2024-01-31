@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:37\n"
+"PO-Revision-Date: 2024-01-24 17:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -125,18 +125,18 @@ msgstr "Ejemplo de cita para un conjunto de datos de registros biológicos, con 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:53
 msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
-msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
+msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Versión 2.1. Universidad de Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:55
 #, no-wrap
 msgid "Example citation for checklist dataset, with more than 9 creators, and DOI:"
-msgstr "Ejemplo de cita para un conjunto de datos de listado de especies, con más de 9 creadores y un DOI:"
+msgstr "Ejemplo de cita para un conjunto de datos de lista de chequeo, con más de 9 creadores y un DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:58
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
-msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
+msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Versión 3.1. Université de Montréal Biodiversity Centre. Conjunto de datos/Lista de chequeo. https://doi.org/10.5886/1bft7W5f"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:60
@@ -147,5 +147,5 @@ msgstr "Ejemplo de cita para un conjunto de datos de registro biológico, con 3 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:63
 msgid "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
-msgstr "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
+msgstr "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Versión 1.0. Wildlife Institute of India. Conjunto de datos/Registros biológicos. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
 

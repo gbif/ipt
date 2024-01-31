@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-08-14 14:05+0000\n"
-"PO-Revision-Date: 2023-08-14 14:19\n"
+"PO-Revision-Date: 2024-01-25 01:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,49 +25,49 @@ msgstr "Flujos de trabajo DOI"
 #. type: delimited block =
 #: en/modules/ROOT/pages/doi-workflow.adoc:6
 msgid "By default, GBIF assigns a DOI to all registered datasets.  These DOIs begin `10.15468` or `https://doi.org/10.15468`."
-msgstr ""
+msgstr "Por defecto, GBIF asigna un DOI a todos los conjuntos de datos registrados.  Estos DOI comienzan por `10.15468` o `https://doi.org/10.15468`."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/doi-workflow.adoc:8
 msgid "If a dataset already has a suitable DOI, for example from publication elsewhere, this DOI can be added to the metadata.  See xref:manage-resources#citations[Citations], specifically \"Bibliographic Citation Identifier\"."
-msgstr ""
+msgstr "Si un conjunto de datos ya tiene un DOI adecuado, por ejemplo de una publicación en otro lugar, este DOI puede añadirse a los metadatos.  Véase xref:manage-resources#citations[Citas], específicamente \"Identificador de citas bibliográficas\"."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/doi-workflow.adoc:10
 msgid "For almost all publishers, either the GBIF-assigned DOI or an external DOI is sufficient.  *This page is about using the IPT to assign DOIs directly, managed by you, the publisher.* This requires the publisher to have an account with DataCite."
-msgstr ""
+msgstr "Para casi todos los publicadores, el DOI asignado por GBIF o un DOI externo es suficiente.  *Esta página trata sobre el uso del IPT para asignar DOIs directamente, gestionados por usted, el publicador.* Esto requiere que el publicador tenga una cuenta con DataCite."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/doi-workflow.adoc:12
 #, no-wrap
 msgid "Background and setup"
-msgstr ""
+msgstr "Contexto y configuración"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:15
 msgid "The IPT can be configured to use a DataCite account to manage DOIs for datasets. Publishers have the option of assigning new DOIs to a dataset, or using the IPT to manage the publisher's existing DOI for a dataset."
-msgstr ""
+msgstr "El IPT puede configurarse para utilizar una cuenta DataCite para gestionar los DOI de los conjuntos de datos. Los publicadores tienen la opción de asignar nuevos DOI a un conjunto de datos o utilizar el IPT para gestionar el DOI existente del publicador para un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:17
 msgid "To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account, and configure the DataCite account to mint DOIs under the IPT's domain.  Then refer to the xref:administration#configure-organizations[\"Configure Organizations\"] section to add the account to the IPT. Until this is done the DOI buttons in the Publication section of the manage resources view are hidden. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below."
-msgstr ""
+msgstr "Para que el IPT pueda asignar DOIs a los recursos, el administrador del IPT debe primero configurar una organización asociada al IPT con una cuenta DataCite, y configurar la cuenta DataCite para acuñar DOIs bajo el dominio del IPT.  A continuación, consulte la sección xref:administration#configure-organizations[\"Configurar organizaciones\"] para añadir la cuenta al IPT. Hasta que no se haga esto, los botones DOI de la sección Publicación de la vista de administración de recursos estarán ocultos. Una vez activada una cuenta DataCite en el IPT, los administradores de recursos pueden reservar, eliminar, registrar, desactivar y reactivar DOIs para sus recursos utilizando esta cuenta. A continuación se explica detalladamente cada una de estas operaciones de DOI."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:19
 msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change.  See the xref:versioning.adoc[] for further recommendations."
-msgstr ""
+msgstr "La buena práctica consiste en asignar un nuevo DOI al recurso cada vez que experimente un cambio científicamente significativo.  Consulte xref:versioning.adoc[] para más recomendaciones."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/doi-workflow.adoc:20
 #, no-wrap
 msgid "Assigning a DOI to a resource"
-msgstr ""
+msgstr "Asignar un DOI a un recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:23
 msgid "On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs.  The {doiicon} button allows assigning a new DOI for a resource.  Assigning a new DOI also increases the major version of the resource."
-msgstr ""
+msgstr "En la página Gestión de recursos, en xref:manage-resources#publication[Publicación], la tabla que muestra la versión pendiente gana opciones adicionales para permitir la gestión de los DOI.  El botón {doiicon} permite asignar un nuevo DOI a un recurso.  La asignación de un nuevo DOI también aumenta la versión principal del recurso."
 
 #. type: Block title
 #: en/modules/ROOT/pages/doi-workflow.adoc:24
@@ -79,7 +79,7 @@ msgstr "Muestra un cambio de versión importante ya que a la versión pendiente 
 #: en/modules/ROOT/pages/doi-workflow.adoc:25
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishTable.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishTable.png"
 
 #. type: Block title
 #: en/modules/ROOT/pages/doi-workflow.adoc:27
@@ -94,57 +94,57 @@ msgstr "Muestra un cambio de versión menor ya que el DOI asignado a las version
 #: en/modules/ROOT/pages/manage-resources.adoc:575
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishTable2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishTable2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:31
 msgid "Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.  Once a resource with a DOI is made public, it can no longer be made private."
-msgstr ""
+msgstr "Tenga en cuenta que se puede reservar un DOI para un recurso privado, pero ese DOI no se puede registrar hasta que el recurso sea visible públicamente.  Una vez que un recurso con DOI se hace público, ya no puede hacerse privado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:33
 msgid "These fields are shown or have different meaning:"
-msgstr ""
+msgstr "Estos campos se muestran o tienen un significado diferente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:35
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. Click the {viewicon} button to see the current version's homepage. In the pending version item, click the {viewicon} button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr ""
+msgstr "*Version* - el número de versión que rastrea la `major_version.minor_version` de la versión actual/pendiente. Cada vez que el recurso sufre cambios científicamente significativos, el administrador del recurso debe asegurarse de que la versión pendiente tenga una nueva versión mayor, lo que se hace reservándole un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. Haga clic en el botón {viewicon} para ver la página principal de la versión actual. En el elemento de versión pendiente, haga clic en el botón {viewicon} para ver una vista previa de la página de inicio de la versión pendiente. La vista previa de la página de inicio es privada sólo para los administradores de recursos, y les permite asegurarse de que el recurso está listo para publicarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:36
 #, no-wrap
 msgid "*DOI* - the DOI of the current/pending version. The DOI of the current version can never be changed. The DOI of the pending version can be reserved or deleted.\n"
-msgstr ""
+msgstr "*DOI* - el DOI de la versión actual/pendiente. El DOI de la versión actual no puede modificarse nunca. El DOI de la versión pendiente puede reservarse o borrarse.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:38
 msgid "When clicking \"Publish\", the usual dialog is extended to inform about the DOI, depending on whether the pending version is a major version change or minor version change:"
-msgstr ""
+msgstr "Al hacer clic en \"Publicar\", el diálogo habitual se amplía para informar sobre el DOI, dependiendo de si la versión pendiente es un cambio de versión mayor o menor:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:39
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMajor.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishMajor.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:41
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMinor.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishMinor.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/doi-workflow.adoc:43
 #, no-wrap
 msgid "Managing DOIs of resources"
-msgstr ""
+msgstr "Gestión de los DOI de los recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:46
 msgid "Using the {doiicon} button, you can make changes to DOIs assigned to resources."
-msgstr ""
+msgstr "Con el botón {doiicon} puede realizar cambios en los DOI asignados a los recursos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:48
@@ -156,19 +156,19 @@ msgstr "*Reservar*: un DOI puede ser reservado para un recurso. Esta operación 
 #: en/modules/ROOT/pages/doi-workflow.adoc:49
 #, no-wrap
 msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the {doiicon} button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the {doiicon} button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
+msgstr "*Recurso sin DOI asignado*: - se puede reservar un DOI para un recurso después de haber ingresado los metadatos obligatorios. Para reservar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas. Para reutilizar un DOI existente, ingréselo en el campo del identificador de la cita en los metadatos del recurso y, a continuación, pulse el botón {doiicon} en la sección Versiones publicadas. Si un recurso es público y se ha reservado un DOI, la próxima publicación dará lugar a una nueva versión principal y se registrará el DOI. En caso contrario, si un recurso es privado y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión menor del recurso y el DOI NO se registrará. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:50
 #, no-wrap
 msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the {doiicon} button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr ""
+msgstr "*Recurso al que se le asignó un DOI*: - Se puede reservar otro DOI para un recurso publicado al que ya se le asignó un DOI. Para reservar otro DOI, pulse el botón {doiicon} en la sección Versiones publicadas. El DOI se registrará la próxima vez que se publique el recurso, y se enlazará con la página de inicio de la nueva versión publicada. El DOI anterior seguirá remitiendo a la versión anterior, pero mostrará un aviso de que la nueva versión la ha sustituido. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:51
 #, no-wrap
 msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the {doiicon} button in the Published Versions section.\n"
-msgstr ""
+msgstr "*Borrar*: - un DOI que está reservado para el recurso puede ser borrado ya que nunca fue de acceso público. Para eliminar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:52
