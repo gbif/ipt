@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-07-26 14:07+0000\n"
-"PO-Revision-Date: 2024-01-24 22:43\n"
+"PO-Revision-Date: 2024-02-01 19:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -286,7 +286,7 @@ msgstr "El texto *Negrita*, _cursiva_ y `monoespaciado` formateado con caractere
 #: en/modules/ROOT/pages/translations.adoc:111
 #, no-wrap
 msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port, Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you’ll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).\n"
-msgstr ""
+msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. *Llene la información para especificar *el puerto del conector, las credenciales de inicio de sesión del administrador de Tomcat* sin cambiar los Roles. Si olvida proporcionar la información de las credenciales, tendrá que editar el archivo `conf/tomcat-users.xml` del directorio de configuración de Tomcat, y luego reiniciar Tomcat para eliminar los privilegios. (Tenga en cuenta que al probar este escenario, la configuración por defecto sugerida de *puerto conector* funcionó).\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:113
