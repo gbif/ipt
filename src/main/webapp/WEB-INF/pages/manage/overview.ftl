@@ -1232,7 +1232,9 @@
                     </div>
 
                     <div class="mt-2">
-                        <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+                        <#if resource.published>
+                            <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+                        </#if>
 
                         <#if resource.status == "DELETED">
                             <div style="display: inline-block;">
