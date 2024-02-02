@@ -12,6 +12,7 @@ This page allows a user having the Admin role to make and change settings for th
 image::ipt2/administration/IPTAdminConfigIPT.png[]
 
 * *IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.
+* *Default language* - This shows the default IPT language. English by default.
 * *IPT administrator email* - This is the email shown on the login page to users who have forgotten their password.  If it is not set, the first administrator user's email is used.
 * [[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.
 +
@@ -50,21 +51,53 @@ A new user can be created by clicking on the button labelled "Create" below the 
 image::ipt2/administration/IPTAdminUserCreateUser.png[]
 
 * *Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.
-* *Note*: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.
++
+--
+[NOTE]
+====
+If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.
+====
+
+--
 * *First name* - The first name of the user.
 * *Last name* - The last name of the user.
 * *Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.
 * *Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.
-* *Note*: If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.
++
+--
+[NOTE]
+====
+If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.
+====
+
+--
 * *Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
+
+After creation, an email with credential can be sent to the user:
+
+image::ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png[]
 
 === Modify an existing user
 Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.
 
 image::ipt2/administration/IPTAdminUserEditUser.png[]
 
+The Options dropdown contains to buttons:
+
 * *Reset password* - If a user forgets a password, clicking on the button labelled "Reset Password" can generate a new one, after which a new password is given in an information message at the top of the page.
-* *Note*: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.
+* *Delete* - delete current user.
++
+--
+[NOTE]
+====
+The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.
+====
+
+--
+
+After password reset, an email with a new password can be sent to the user:
+
+image::ipt2/administration/IPTAdminUserEmailResetPassword.png[]
 
 === Delete a user
 Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labelled "Delete" to remove this user account. There are several conditions under which a user cannot be deleted:
@@ -109,11 +142,15 @@ Following are explanations of the specific information to select or enter:
 === Edit GBIF registration
 After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly.
 
-image::ipt2/administration/IPTAdminEditRegistration1.png[]
+image::ipt2/administration/IPTAdminEditRegistration.png[]
+
+Network view:
+
+image::ipt2/administration/IPTAdminEditRegistrationNetwork.png[]
 
 Edit organization's shared tokens view:
 
-image::ipt2/administration/IPTAdminEditRegistration2.png[]
+image::ipt2/administration/IPTAdminEditRegistrationTokens.png[]
 
 == Configure Organizations
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used.
@@ -182,6 +219,16 @@ For any extension that has already been installed in the IPT, it can be removed 
 For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
 
 image::ipt2/administration/IPTAdminExtensionsUpdate.png[]
+
+== Data Packages
+
+This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields) that support a specific purpose.
+
+image::ipt2/administration/IPTAdminDataPackages.png[]
+
+Details page:
+
+image::ipt2/administration/IPTAdminDataPackagesDetail.png[]
 
 == UI Management
 
