@@ -1474,7 +1474,7 @@
                                                     </span>
                                                     <span class="me-2 overview-version-title">
                                                         <#if isDataPackage>
-                                                            <strong><@s.text name="footer.version"/> ${resource.metadataVersion.toPlainString()}</strong>
+                                                            <strong><@s.text name="footer.version"/> ${resource.metadataVersion}</strong>
                                                         <#else>
                                                             <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
                                                         </#if>
