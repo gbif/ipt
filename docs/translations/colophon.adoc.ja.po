@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 10:21+0000\n"
-"PO-Revision-Date: 2023-12-11 11:25\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"PO-Revision-Date: 2024-02-05 12:40\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -44,7 +44,7 @@ msgstr "この link:https://ipt.gbif.org/manual/ja/[IPTユーザーマニュア�
 #.  English user manual citation
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:18
-msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
+msgid "Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
 msgstr ""
 
 #.  If not English
@@ -57,8 +57,8 @@ msgstr "このユーザーマニュアルの日本語訳は国立科学博物館
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:26
-msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
-msgstr "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (National Museum of Nature and Science, japan, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
+msgid "Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29
