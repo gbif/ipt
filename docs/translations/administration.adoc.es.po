@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-05 12:40\n"
+"PO-Revision-Date: 2024-02-05 22:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -66,7 +66,7 @@ msgstr "*Directorio de datos del IPT* - Muestra el directorio del servidor donde
 #: en/modules/ROOT/pages/administration.adoc:16
 #, no-wrap
 msgid "*Default language* - This shows the default IPT language. English by default.\n"
-msgstr ""
+msgstr "*Idioma por defecto* - Muestra el idioma por defecto del IPT. Inglés por defecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
@@ -206,7 +206,7 @@ msgstr "*Correo electrónico*: la dirección de correo electrónico del usuario,
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:59
 msgid "If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address."
-msgstr ""
+msgstr "Si el usuario requiere un cambio de dirección de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico y, a continuación, eliminar la cuenta de usuario que tiene la dirección de correo electrónico antigua."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:63
@@ -235,7 +235,7 @@ msgstr "*Contraseña*: la contraseña del usuario debe contener al menos 4 carac
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:71
 msgid "If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the \"Account\" link in the header in the upper right corner of every page after logging in."
-msgstr ""
+msgstr "Si se pierde la contraseña de un usuario, puede ser restablecida a un nuevo valor generado automáticamente por un usuario que tenga el rol de Admin. Es responsabilidad del usuario Administrador comunicar esta nueva contraseña al usuario para el que se restableció. A continuación, el usuario puede cambiar la contraseña por el valor deseado introduciéndola en la página Cuenta IPT, a la que se accede a través del enlace \"Cuenta\" que aparece en la parte superior derecha de cada página después de iniciar sesión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:75
@@ -246,13 +246,13 @@ msgstr "*Verificar contraseña*: una copia exacta de la contraseña que fue ingr
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "After creation, an email with credential can be sent to the user:"
-msgstr ""
+msgstr "Una vez creada, puede enviarse al usuario un correo electrónico con las credenciales:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:78
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:80
@@ -274,7 +274,7 @@ msgstr "ipt2/administration/IPTAdminUserEditUser.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:86
 msgid "The Options dropdown contains to buttons:"
-msgstr ""
+msgstr "El menú desplegable Opciones contiene dos botones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:88
@@ -286,23 +286,23 @@ msgstr "*Restablecer contraseña*: si un usuario olvida su contraseña, al hacer
 #: en/modules/ROOT/pages/administration.adoc:89
 #, no-wrap
 msgid "*Delete* - delete current user.\n"
-msgstr ""
+msgstr "*Eliminar* - elimina el usuario actual.\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:94
 msgid "The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one."
-msgstr ""
+msgstr "El IPT no informa al usuario afectado de este cambio, por lo que es responsabilidad del Administrador que restablece la contraseña informar al usuario de la nueva."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:99
 msgid "After password reset, an email with a new password can be sent to the user:"
-msgstr ""
+msgstr "Después de restablecer la contraseña, se puede enviar al usuario un correo electrónico con una nueva contraseña:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:100
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserEmailResetPassword.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminUserEmailResetPassword.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:102
@@ -484,18 +484,18 @@ msgstr "Una vez registrado el IPT, esta página permite al usuario actualizar la
 #: en/modules/ROOT/pages/administration.adoc:145
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistration.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistration.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:148
 msgid "Network view:"
-msgstr ""
+msgstr "Vista de la red:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:149
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationNetwork.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistrationNetwork.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:152
@@ -506,7 +506,7 @@ msgstr "Editar la vista de tokens compartidos de la organización:"
 #: en/modules/ROOT/pages/administration.adoc:153
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationTokens.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistrationTokens.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:155
