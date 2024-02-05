@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-05 12:40\n"
+"POT-Creation-Date: 2024-02-05 18:06+0000\n"
+"PO-Revision-Date: 2024-02-05 18:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cambios importantes en esta versión"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:77
+#: en/modules/ROOT/pages/release-notes.adoc:75
 #, no-wrap
 msgid "When all else fails"
 msgstr "Cuando todo lo demás falla"
@@ -209,12 +209,7 @@ msgid "IPT 3.0.0 requires Tomcat 9 or later."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:76
-msgid "If you are upgrading from a version before 3.0.0, please also refer to the notes from the xref:2.5@release-notes.adoc[older release]."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:79
+#: en/modules/ROOT/pages/release-notes.adoc:77
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr "Explore las xref:faq.adoc[preguntas frecuentes], que continúan siendo actualizadas con buenas preguntas o pregunte en la https://lists.gbif.org/mailman/listinfo/ipt/[lista de mailing del IPT]."
 
