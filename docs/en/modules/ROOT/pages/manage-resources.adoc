@@ -13,18 +13,18 @@ When the Manage Resources page is first opened, it shows a table of existing res
 * *Author* - the IPT user who created the resource.
 
 == Create a New Resource
-Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., "firstresource" or "first_resource", but not "first resource" or "première ressource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:
+Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., "firstresource" or "first_resource", but not "first resource" or "première ressource!"). Second, a resource type must be provided. Please note that when an optional Darwin Core archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe different types of archived resources from which a new resource can be derived:
 
-* <<Upload a Darwin Core Archive,Darwin Core Archive>>,
+* <<Upload a Darwin Core Archive,Darwin Core Archive>> or Camtrap Frictionless Data Package,
 * <<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,
-* <<Upload a metadata file,metadata file>>.
+* <<Upload a metadata file,metadata file>> (EML or Frictionless metadata)
 
-Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
+Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 10GB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
 
 Begin by entering a new resource shortname as described above, and then click on the button labelled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
 
 === Upload a Darwin Core Archive
-The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
+The IPT is able to import valid Darwin Core Archive files up to 10GB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
 
 image::ipt2/manage/IPTManageResourceUploadDwcA.png[]
 
@@ -75,7 +75,7 @@ WARNING: If the IPT detects the number of columns in a mapped data source has ch
 [NOTE#upload-limits]
 .Upload limits
 ====
-The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:
+The IPT has an upload size limit of 10GB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 10GB in size into the IPT, the following work-arounds are recommended:
 
 * compress the file with Zip or Gzip
 * load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]
@@ -87,7 +87,8 @@ This page shows the name of the resource along with a summary of the file charac
 
 image::ipt2/manage/IPTManageResourceSourceDataFormat.png[]
 
-* *Source Name* - the name of the file selected, without the file extension.
+* *Source Name* - header, the name of the file selected, without the file extension.
+* *Source type* - type of the source, Text file here.
 * *Readable* - this icon indicates whether data are accessible using the file format information provided on this page.
 * *File* - the full path to the location of the file to use as the data source.
 * *Columns* - the number of columns in the dataset as configured using the parameters on this page.
@@ -95,8 +96,8 @@ image::ipt2/manage/IPTManageResourceSourceDataFormat.png[]
 * *Size* - the file size.
 * *Modified* - the date stamp of the file indicating when it was last saved.
 * *Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
-* *Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.
-* *Preview* - click on this button to see an interpretation of the data within the file.
+* *Analyse* - (from Options dropdown) click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.
+* *Preview* - (from Options dropdown) click on this button to see an interpretation of the data within the file.
 * *Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.
 * *Field Delimiter* - the character or characters that signify a break between columns of data.
 * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., `'` or `"`). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (`\r`).
@@ -122,10 +123,11 @@ WARNING: If the IPT detects the number of columns in a mapped data source has ch
 
 image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 
-* *Source Name* - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
+* *Source Name* - header, the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
+* *Source type* - type of the source, SQL here.
 * *Readable* - this icon indicates whether data are accessible using the connection information provided on this page.
-* *Analyse* - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
-* *Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page.
+* *Analyse* - (from Options dropdown) click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
+* *Preview* - (from Options dropdown) click on this button to see an interpretation of the data based on the database connection settings on this page.
 * *Database System* - the relational database management system to which the IPT must connect to retrieve the data.
 * *Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.
 * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
@@ -139,7 +141,7 @@ image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labelled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labelled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
 
 ==== URL as data source
-The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Click the {threedots} menu and select "Add". Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
+The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the {threedots} menu and select "Add". Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
 
 image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
@@ -248,9 +250,9 @@ image::ipt2/manage/IPTManageResourceSourceTranslation.png[]
 Bounding the table above and below by the following set of buttons:
 
 * *Save* - click on this button to save all of the changes that have been made on this page and return to the Data Mapping page.
-* *Delete* - click on this button to remove all translations for this field and return to the Data Mapping page.
-* *Reload* - click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.
-* *Automap* - this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.
+* *Delete* - (from Options dropdown) click on this button to remove all translations for this field and return to the Data Mapping page.
+* *Reload* - (from Options dropdown) click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.
+* *Automap* - (from Options dropdown) this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.
 * *Cancel* - click on this button to close the Value Translation page without saving any of the changes that have been made.
 
 ==== Vocabulary detail page
@@ -686,7 +688,7 @@ image::ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png[]
 
 If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered". Registration section when the resource is registered:
 
-image::ipt2/manage/IPTManageResourceRegistration2.png[]
+image::ipt2/manage/IPTManageResourceVisibilityRegistered.png[]
 
 === Networks
 
@@ -708,12 +710,16 @@ image::ipt2/manage/IPTManageResourceManagerAdded.png[]
 
 === Delete a Resource
 
-Clicking on the button labelled "Delete" on the Resource Overview page will show two options.
+Clicking on the button labelled "Delete" on the Resource Overview page will display a modal confirmation window.
+
+image::ipt2/manage/IPTManageResourceDelete.png[]
+
+For registered with GBIF resources, it will display a modal window with two options.
+
+image::ipt2/manage/IPTManageResourceDeleteRegistered.png[]
 
 * *Delete from the IPT and GBIF.org*
 * *Delete from the IPT only (Orphan)*
-
-image::ipt2/manage/IPTManageResourceDelete.png[]
 
 Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org.
 
