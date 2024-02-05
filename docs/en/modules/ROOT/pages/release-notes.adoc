@@ -72,8 +72,6 @@ The full list of new features is documented on the xref:releases.adoc[releases p
 
 * IPT 3.0.0 requires Tomcat 9 or later.
 
-If you are upgrading from a version before 3.0.0, please also refer to the notes from the xref:2.5@release-notes.adoc[older release].
-
 == When all else fails
 
 See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list].
