@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -230,21 +229,21 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:38
-#: en/modules/ROOT/pages/release-notes.adoc:65
+#: en/modules/ROOT/pages/release-notes.adoc:63
 #, no-wrap
 msgid "Post-upgrade instructions"
 msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:39
-#: en/modules/ROOT/pages/release-notes.adoc:73
+#: en/modules/ROOT/pages/release-notes.adoc:69
 #, no-wrap
 msgid "Important changes in this release"
 msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:88
+#: en/modules/ROOT/pages/release-notes.adoc:77
 #, no-wrap
 msgid "When all else fails"
 msgstr ""

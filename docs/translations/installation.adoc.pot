@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-02-20 14:50+0000\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,16 +126,16 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid ""
-"Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being "
-"developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] "
-"if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
+"Packages for Red Hat 8/9, CentOS 8/9 Stream, Rocky Linux 8/9 or similar are "
+"being developed.  Please see https://github.com/gbif/ipt/issues/1646[this "
+"issue] if you can help with testing."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:35
 msgid ""
-"To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF "
-"package repository and install the IPT package:"
+"To install the IPT onto Red Hat 8–9, CentOS 8–9 or similar, first add the "
+"GBIF package repository and install the IPT package:"
 msgstr ""
 
 #. type: delimited block -
@@ -234,8 +234,8 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:72
 msgid ""
 "The most common servlet containers used to deploy the IPT are Tomcat, Jetty "
-"and Wildfly.  The servlet container must support Servlet Specification 3.0, "
-"3.1 or 4.0."
+"and Wildfly.  The servlet container must support Servlet Specification 4.0 "
+"or later."
 msgstr ""
 
 #. type: Title ===
@@ -247,9 +247,10 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:76
 msgid ""
-"The IPT has been tested and works well with recent releases of Tomcat 8.5 or "
-"9. The Apache Tomcat documentation can be found on https://tomcat.apache."
-"org/."
+"The IPT has been tested and works well with recent releases of Tomcat 8 and "
+"9.  Tomcat 10 and later versions are currently not supported. Minimum "
+"supported version is 8. The Apache Tomcat documentation can be found on "
+"https://tomcat.apache.org/."
 msgstr ""
 
 #. type: Plain text
@@ -275,7 +276,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:85
 #, no-wrap
-msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
+msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-9.0-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
 msgstr ""
 
 #. type: Plain text
@@ -410,9 +411,9 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:146
 msgid ""
 "GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/"
-"ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 8.5 / "
-"OpenJDK 8 / Debian stable image.  Tomcat is exposed on port 8080 and the IPT "
-"runs as the ROOT application."
+"ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 9 / "
+"OpenJDK 17 image.  Tomcat is exposed on port 8080 and the IPT runs as the "
+"ROOT application."
 msgstr ""
 
 #. type: Plain text
@@ -529,10 +530,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:190
+#: en/modules/ROOT/pages/installation.adoc:191
 msgid ""
 "For a new deployment, it is best to set up the webserver with TLS first, "
 "then install and set up the IPT.  Adding a certificate to a configured IPT "
 "requires changing the public URL.  See the note on xref:administration."
 "adoc#public-url[updating the public URL] in the administration section."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/installation.adoc:192
+msgid ""
+"Verify your setup is correct using https://whatsmychaincert.com/[What's My "
+"Chain Cert?].  The requirements for GBIF's servers to retrieve published "
+"data are stricter than those for normal web browsers, so ensure you receive "
+"a \"has the correct chain\" message from this test. (See also xref:faq."
+"adoc#why-is-gbif-unable-to-access-my-ipt-over-https[this FAQ entry].)"
 msgstr ""
