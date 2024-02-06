@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-06 08:33+0000\n"
-"PO-Revision-Date: 2024-02-06 09:24\n"
+"PO-Revision-Date: 2024-02-06 22:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -54,7 +54,7 @@ msgstr "Notas de la versión"
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
 msgid "*IPT Versions: pass:[3.0.*]*\n"
-msgstr ""
+msgstr "*Versiones del IPT: pass:[3.0.*]*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
@@ -120,7 +120,8 @@ msgstr "# Instalar la última versión testada:\n"
 #, no-wrap
 msgid "# Roll back to a previous, stable version:\n"
 "yum downgrade ipt-2.7.5\n"
-msgstr ""
+msgstr "# Regresar a una versión anterior estable:\n"
+"yum downgrade ipt-2.7.5\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/release-notes.adoc:40
@@ -206,7 +207,7 @@ msgstr "La lista completa de características nuevas está documentada en la xre
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:74
 msgid "IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore."
-msgstr ""
+msgstr "IPT 3.0.0 requiere Tomcat 8 o 9. Tomcat 7 ya no es compatible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:77
