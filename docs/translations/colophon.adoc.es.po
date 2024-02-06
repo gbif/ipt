@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-05 12:40\n"
+"PO-Revision-Date: 2024-02-06 00:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,7 +45,7 @@ msgstr "El link:../../../en/[manual de usuario original en inglés] se adapta y 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:18
 msgid "Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
-msgstr ""
+msgstr "Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
 
 #.  If not English
 #. type: Plain text
