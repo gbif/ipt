@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-06 20:53\n"
+"PO-Revision-Date: 2024-02-06 22:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -565,7 +565,7 @@ msgstr "*Analizar*: (en el menú desplegable Opciones) haga clic en este botón 
 #: en/modules/ROOT/pages/manage-resources.adoc:131
 #, no-wrap
 msgid "*Preview* - (from Options dropdown) click on this button to see an interpretation of the data based on the database connection settings on this page.\n"
-msgstr ""
+msgstr "*Vista previa* - (en el menú desplegable Opciones) haga clic en este botón para ver una interpretación de los datos basada en la configuración de la conexión a la base de datos en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:132
@@ -623,7 +623,7 @@ msgstr "URL como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:145
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the {threedots} menu and select \"Add\". Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, tab y archivos que utilizan cualquier otro delimitador) o archivos directamente desde una URL. Haga clic en el menú {threedots} y seleccione \"Agregar\". Luego seleccione \"URL\" de la lista desplegable del tipo de datos de origen, proporcione el nombre de la fuente y escriba o copie y pegue la URL completa (incluido `http://` o `https://`) en el cuadro a continuación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
@@ -977,19 +977,19 @@ msgstr "*Guardar*: haga clic en este botón para guardar todos los cambios que s
 #: en/modules/ROOT/pages/manage-resources.adoc:254
 #, no-wrap
 msgid "*Delete* - (from Options dropdown) click on this button to remove all translations for this field and return to the Data Mapping page.\n"
-msgstr ""
+msgstr "*Eliminar* - (en el menú desplegable Opciones) haga clic en este botón para eliminar todas las traducciones de este elemento y volver a la página de \"Mapeo del conjunto de datos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:255
 #, no-wrap
 msgid "*Reload* - (from Options dropdown) click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.\n"
-msgstr ""
+msgstr "*Recargar*: (en el menú desplegable Opciones) haga clic en este botón para volver a buscar valores distintos en el conjunto de datos. Las traducciones existentes se conservan y los nuevos valores del conjunto de datos aparecen en la lista sin traducción.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:256
 #, no-wrap
 msgid "*Automap* - (from Options dropdown) this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.\n"
-msgstr ""
+msgstr "*Mapeo automático*: (en el menú desplegable Opciones) este botón aparece sólo si el elemento se rige por un vocabulario controlado. Haga clic en este botón para completar los valores traducidos automáticamente con valores estándar basados en sinónimos conocidos. Los valores en el conjunto de datos para los que no hay sinónimos conocidos permanecerán en blanco.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:257
@@ -2647,7 +2647,7 @@ msgstr "Eliminar un recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:714
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will display a modal confirmation window."
-msgstr ""
+msgstr "Al hacer clic en el botón \"Eliminar\" de la página Vista General del Recurso, se mostrará una ventana de confirmación."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:715
@@ -2658,13 +2658,13 @@ msgstr "ipt2/manage/IPTManageResourceDelete.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:718
 msgid "For registered with GBIF resources, it will display a modal window with two options."
-msgstr ""
+msgstr "Para los recursos registrados en GBIF, se mostrará una ventana con dos opciones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:719
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDeleteRegistered.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:722
