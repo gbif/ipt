@@ -23,6 +23,10 @@
     {
       "matchPackageNames": ["com.google.guava:guava"],
       "automerge": false
+    },
+    {
+      "matchPackageNames": ["com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"],
+      "automerge": false
     }
   ],
   "ignorePaths": ["package/**", "docs/**"],
