@@ -398,7 +398,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Struts2,  2.3.x series -->
+    <!-- Struts2 -->
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
