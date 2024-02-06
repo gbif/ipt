@@ -70,7 +70,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
 
-* IPT 3.0.0 requires Tomcat 9 or later.
+* IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore.
 
 == When all else fails
 
