@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-7-7-november-2023,2.7.7>>.
+The current, stable release is version <<3-0-0-february-2024,3.0.0>>.
 
 You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -11,49 +11,28 @@ Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGU
 endif::[]
 ====
 
-== *3.0-RC1* – August 2023
+== *3.0.0* – February 2024
 
-*Release candidate.*
-
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0-RC1/ipt-3.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0-RC1 Release Notes]
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.0/ipt-3.0.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:release-notes.adoc[IPT v3.0.0 Release Notes]
 * xref:index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/38?closed=1[TBC issues].
+* Addressed https://github.com/gbif/ipt/milestone/38?closed=1[141 issues].
 * Translated into 7 languages
 
-Version 3.0.0 is a major version release as it brings in a new capability that goes beyond the Darwin Core Archive format. The IPT 3 will still provide all the functions of previous versions, but will additionally allow a user to map datasets to supported https://frictionlessdata.io[Frictionless Data] schemas. The first of these are the https://tdwg.github.io/camtrap-dp/[Camera Trap Data Package (Camtrap DP)] and https://github.com/CatalogueOfLife/coldp#name[Catalogue of Life Data Package (CoL DP)].
-
-This version also introduces a new core for Darwin Core Archives, for https://rs.gbif.org/sandbox/core/dwc_material_2023-04-29.xml[MaterialEntity], which is in preparation for the outputs of the Darwin Core Material task group.
-
-// Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-In particular, note this release now requires Tomcat 9 (Servlet 4.0) or later.
-
-*Please note that this is a release candidate and is intended for testing and preview purposes only. _It is not for production use_ — the IPT should be set up in test mode to register published datasets to the test system, gbif-uat.org.*
-
-Interested users may upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes], or create a new installation by following the xref:getting-started.adoc[Getting Started guide].
-
-Feedback is appreciated through issues on the https://github.com/gbif/ipt/issues[GitHub issue tracker] or by email.
-
-Documentation for the new features is still being prepared.
-
-//No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-//Minor issues and security issues will be addressed in patch releases.
-
-== *2.7.7* – November 2023
-
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.7.7/ipt-2.7.7.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* Addressed https://github.com/gbif/ipt/milestone/50?closed=1[10 issues].
-* Translated into 7 languages
+Version 3.0.0 is a major version release as it brings in a new capability that goes beyond the Darwin Core Archive format. The IPT 3 will still provide all the functions of previous versions, but will additionally allow a user to map datasets to supported https://frictionlessdata.io[Frictionless Data] schemas. The first of these is the https://tdwg.github.io/camtrap-dp/[Camera Trap Data Package (Camtrap DP)].
 
 Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-This minor release addresses issues with maps and resources visibility. It also allows configuration of the default language.
 
 No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
 
 Minor issues and security issues will be addressed in patch releases.
+
+== *2.7.7* – November 2023
+
+* Addressed https://github.com/gbif/ipt/milestone/50?closed=1[10 issues].
+* Translated into 7 languages
+
+This minor release addresses issues with maps and resources visibility. It also allows configuration of the default language.
 
 == *2.7.6* – September 2023
 
