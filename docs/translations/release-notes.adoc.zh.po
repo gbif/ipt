@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 18:06+0000\n"
-"PO-Revision-Date: 2024-02-05 18:52\n"
+"POT-Creation-Date: 2024-02-06 08:33+0000\n"
+"PO-Revision-Date: 2024-02-06 09:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -199,7 +199,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:74
-msgid "IPT 3.0.0 requires Tomcat 9 or later."
+msgid "IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore."
 msgstr ""
 
 #. type: Plain text
