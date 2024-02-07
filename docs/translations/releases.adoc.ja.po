@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-06 17:20+0000\n"
-"PO-Revision-Date: 2024-02-06 18:36\n"
+"PO-Revision-Date: 2024-02-07 06:11\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -31,7 +31,7 @@ msgstr "最新の安定版リリース"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-0-0-february-2024,3.0.0>>."
-msgstr ""
+msgstr "現在の安定版リリースは<<3-0-0-february-2024,3.0.0>>です。"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -42,17 +42,17 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:14
 #, no-wrap
 msgid "*3.0.0* – February 2024"
-msgstr ""
+msgstr "*3.0.0* – 2024年2月"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:17
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.0/ipt-3.0.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.0/ipt-3.0.0.war[WARをダウンロード], xref:installation.adoc#installation-from-linux-packages[Linuxパッケージ] or xref:installation.adoc#installation-from-docker[Dockerを使用]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:18
 msgid "xref:release-notes.adoc[IPT v3.0.0 Release Notes]"
-msgstr ""
+msgstr "xref:release-notes.adoc[IPT v3.0.0 リリースノート]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -62,7 +62,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/38?closed=1[141 issues]."
-msgstr ""
+msgstr "https://github.com/gbif/ipt/milestone/38?closed=1[141 課題]に対処"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
