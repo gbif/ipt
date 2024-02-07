@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-06 17:20+0000\n"
-"PO-Revision-Date: 2024-02-07 06:11\n"
+"PO-Revision-Date: 2024-02-07 07:49\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -57,7 +57,7 @@ msgstr "xref:release-notes.adoc[IPT v3.0.0 リリースノート]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
 msgid "xref:index.adoc[User Manual]"
-msgstr ""
+msgstr "xref:index.adoc[ユーザマニュアル]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
@@ -100,7 +100,7 @@ msgstr "7言語に翻訳"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
 msgid "Version 3.0.0 is a major version release as it brings in a new capability that goes beyond the Darwin Core Archive format. The IPT 3 will still provide all the functions of previous versions, but will additionally allow a user to map datasets to supported https://frictionlessdata.io[Frictionless Data] schemas. The first of these is the https://tdwg.github.io/camtrap-dp/[Camera Trap Data Package (Camtrap DP)]."
-msgstr ""
+msgstr "バージョン3.0.0はDarwin Core Archiveフォーマットを超える新機能を備えたメジャー・バージョンリリースです。IPT3は以前のバージョンのすべての機能を提供しますが、新たにサポートするhttps://frictionlessdata.io[フリクションレスデータ]のスキーマに沿ったデータセットをマッピングすることができます。最初にサポートするのは、https://tdwg.github.io/camtrap-dp/[カメラトラップデータ・パッケージ (Camtrap DP)]です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
