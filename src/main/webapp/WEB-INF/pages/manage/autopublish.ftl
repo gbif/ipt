@@ -118,10 +118,9 @@
 
             <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                    <ul class="fielderror">
-                        <li><span><@s.text name='manage.overview.autopublish.deprecated.warning.description'/></span></li>
-                    </ul>
-                    <br/>
+                    <div class="callout callout-warning text-smaller">
+                        <@s.text name='manage.overview.autopublish.deprecated.warning.description'/>
+                    </div>
                 </#if>
                 <input type="hidden" name="r" value="${resource.shortname}" />
 
