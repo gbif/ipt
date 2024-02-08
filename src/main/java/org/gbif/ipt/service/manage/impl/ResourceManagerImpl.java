@@ -3120,9 +3120,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlGeocoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlGeographicCoverage() != null
-        && inferredMetadata.getInferredEmlGeographicCoverage().getData() != null) {
-      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredEmlGeographicCoverage().getData();
+        && inferredMetadata.getInferredGeographicCoverage() != null
+        && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
+      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredGeographicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
@@ -3163,9 +3163,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlTaxonomicCoverage() != null
-        && inferredMetadata.getInferredEmlTaxonomicCoverage().getData() != null) {
-      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredEmlTaxonomicCoverage().getData();
+        && inferredMetadata.getInferredTaxonomicCoverage() != null
+        && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
+      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getTaxonomicCoverages().isEmpty()) {
@@ -3190,9 +3190,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlTemporalCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlTemporalCoverage() != null
-        && inferredMetadata.getInferredEmlTemporalCoverage().getData() != null) {
-      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredEmlTemporalCoverage().getData();
+        && inferredMetadata.getInferredTemporalCoverage() != null
+        && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
+      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
       resource.getEml().getTemporalCoverages().clear();
       resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
     }

@@ -161,7 +161,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlGeographicMetadataParams params) {
     InferredEmlGeographicCoverage inferredGeographicMetadata = new InferredEmlGeographicCoverage();
-    metadata.setInferredEmlGeographicCoverage(inferredGeographicMetadata);
+    metadata.setInferredGeographicCoverage(inferredGeographicMetadata);
 
     boolean errorOccurredWhileProcessingGeographicMetadata
         = handleEmlGeographicMetadataErrors(inferredGeographicMetadata, params);
@@ -179,7 +179,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTemporalMetadataParams params) {
     InferredEmlTemporalCoverage inferredTemporalMetadata = new InferredEmlTemporalCoverage();
-    metadata.setInferredEmlTemporalCoverage(inferredTemporalMetadata);
+    metadata.setInferredTemporalCoverage(inferredTemporalMetadata);
 
     boolean errorOccurredWhileProcessingGeographicMetadata
         = handleEmlTemporalMetadataErrors(inferredTemporalMetadata, params);
@@ -200,7 +200,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTaxonomicMetadataParams params) {
     InferredEmlTaxonomicCoverage inferredTaxonomicMetadata = new InferredEmlTaxonomicCoverage();
-    metadata.setInferredEmlTaxonomicCoverage(inferredTaxonomicMetadata);
+    metadata.setInferredTaxonomicCoverage(inferredTaxonomicMetadata);
 
     boolean errorOccurredWhileProcessingTaxonomicMetadata
         = handleEmlTaxonomicMetadataErrors(inferredTaxonomicMetadata, params);
