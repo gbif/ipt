@@ -54,6 +54,7 @@ import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -2105,9 +2106,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+        LOG.error("Cannot read inferred metadata file (Camtrap) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredCamtrapMetadata());
       }
     } else {
       if (!inferredMetadataFile.exists()) {
@@ -2120,9 +2120,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+        LOG.error("Cannot read inferred metadata file (EML) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredEmlMetadata());
       }
     }
   }
