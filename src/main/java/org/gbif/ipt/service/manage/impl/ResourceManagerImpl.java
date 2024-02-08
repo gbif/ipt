@@ -1182,10 +1182,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // aliases for inferred metadata
     xstream.alias("inferredMetadata", InferredEmlMetadata.class);
-    xstream.alias("inferredMetadata", InferredCamtrapMetadata.class);
+    xstream.alias("inferredMetadataCamtrap", InferredCamtrapMetadata.class);
     xstream.alias("inferredGeographicCoverage", InferredEmlGeographicCoverage.class);
+    xstream.alias("inferredGeographicScope", InferredCamtrapGeographicScope.class);
     xstream.alias("inferredTaxonomicCoverage", InferredEmlTaxonomicCoverage.class);
+    xstream.alias("inferredTaxonomicScope", InferredCamtrapTaxonomicScope.class);
     xstream.alias("inferredTemporalCoverage", InferredEmlTemporalCoverage.class);
+    xstream.alias("inferredTemporalScope", InferredCamtrapTemporalScope.class);
     xstream.alias("taxonKeyword", TaxonKeyword.class);
     xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
 
