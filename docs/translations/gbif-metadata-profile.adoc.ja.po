@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2023-12-11 09:50\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"PO-Revision-Date: 2024-02-05 18:51\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -22,7 +22,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -151,7 +150,7 @@ msgstr "IPTには計12種類のメタデータフォームがあり、メタデ�
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
-#: en/modules/ROOT/pages/manage-resources.adoc:274
+#: en/modules/ROOT/pages/manage-resources.adoc:276
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "基本のメタデータ"
@@ -160,7 +159,7 @@ msgstr "基本のメタデータ"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
-#: en/modules/ROOT/pages/manage-resources.adoc:318
+#: en/modules/ROOT/pages/manage-resources.adoc:320
 #, no-wrap
 msgid "Geographic Coverage"
 msgstr "地理的範囲"
@@ -169,7 +168,7 @@ msgstr "地理的範囲"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:331
+#: en/modules/ROOT/pages/manage-resources.adoc:333
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "生物分類学的範囲"
@@ -178,7 +177,7 @@ msgstr "生物分類学的範囲"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:357
+#: en/modules/ROOT/pages/manage-resources.adoc:359
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "時間的範囲"
@@ -190,35 +189,35 @@ msgstr "その他のキーワード"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:398
+#: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "Associated Parties"
 msgstr "アソーシエート"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:425
+#: en/modules/ROOT/pages/manage-resources.adoc:427
 #, no-wrap
 msgid "Project Data"
 msgstr "プロジェクトデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:444
+#: en/modules/ROOT/pages/manage-resources.adoc:446
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "収集方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:457
+#: en/modules/ROOT/pages/manage-resources.adoc:459
 #, no-wrap
 msgid "Citations"
 msgstr "引用論文"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:485
+#: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "Collection Data"
 msgstr "コレクションデータ"
@@ -230,7 +229,7 @@ msgstr "物理データ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:536
+#: en/modules/ROOT/pages/manage-resources.adoc:538
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "追加のメタデータ"
