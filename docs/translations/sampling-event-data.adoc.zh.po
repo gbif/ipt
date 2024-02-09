@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-06 20:38\n"
+"POT-Creation-Date: 2024-02-05 15:44+0000\n"
+"PO-Revision-Date: 2024-02-05 16:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -22,7 +22,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -99,7 +98,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:6
-msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
+msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer the absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
 msgstr ""
 
 #. type: Title ==
@@ -126,17 +125,17 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:16
-msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences."
+msgid "Alternatively, if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:18
-msgid "Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
+msgid "Each sampling event record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:20
-msgid "Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event."
+msgid "Similarly, each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example, if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise, when the location of individual occurrences isn't supplied, its location gets inherited from the event."
 msgstr ""
 
 #. type: Plain text
@@ -240,7 +239,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:64
 #, no-wrap
-msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
+msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be a globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
 msgstr ""
 
 #. type: Title ====
@@ -288,12 +287,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:81
 #, no-wrap
-msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
+msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data to be recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:83
-msgid "Instructions how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
+msgid "Instructions on how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
 msgstr ""
 
 #. type: Plain text

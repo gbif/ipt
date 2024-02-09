@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-20 14:50+0000\n"
-"PO-Revision-Date: 2024-01-24 23:42\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"PO-Revision-Date: 2024-02-06 18:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -101,13 +101,13 @@ msgstr "RPM (Red Hat, CentOS etc)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
-msgid "Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing, or use Red Hat 7 / CentOS 7 instead."
-msgstr "Se están desarrollando paquetes para Red Hat 8, CentOS 8 Stream, Rocky Linux 8 o similares.  Por favor, consulte https://github.com/gbif/ipt/issues/1646[este issue] si puede ayudar con las pruebas, o utilice Red Hat 7 / CentOS 7 en su lugar."
+msgid "Packages for Red Hat 8/9, CentOS 8/9 Stream, Rocky Linux 8/9 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing."
+msgstr "Se están desarrollando paquetes para Red Hat 8/9, CentOS 8/9 Stream, Rocky Linux 8/9 o similares.  Por favor, consulte https://github.com/gbif/ipt/issues/1646[este issue] si puede ayudar con las pruebas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:35
-msgid "To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:"
-msgstr "Para instalar IPT en Red Hat 7, CentOS 7 o similar, primero agregue el repositorio de paquetes GBIF e instale el paquete IPT:"
+msgid "To install the IPT onto Red Hat 8–9, CentOS 8–9 or similar, first add the GBIF package repository and install the IPT package:"
+msgstr "Para instalar el IPT en Red Hat 8-9, CentOS 8-9 o similares, primero agregue el repositorio de paquetes GBIF e instale el paquete IPT:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:41
@@ -184,8 +184,8 @@ msgstr "No es necesario usar un proxy inverso, pero en caso de que lo implemente
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:72
-msgid "The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 3.0, 3.1 or 4.0."
-msgstr "Los contenedores de servlets más utilizados para desplegar el IPT son Tomcat, Jetty y Wildfly.  El contenedor de servlets debe ser compatible con Servlet Specification 3.0, 3.1 o 4.0."
+msgid "The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 4.0 or later."
+msgstr "Los contenedores de servlets más utilizados para desplegar el IPT son Tomcat, Jetty y Wildfly.  El contenedor de servlets debe ser compatible con Servlet Specification 4.0 o posterior."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:73
@@ -195,8 +195,8 @@ msgstr "Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:76
-msgid "The IPT has been tested and works well with recent releases of Tomcat 8.5 or 9. The Apache Tomcat documentation can be found on https://tomcat.apache.org/."
-msgstr "El IPT ha sido probado y funciona bien con versiones recientes de Tomcat 8.5 o 9. La documentación de Apache Tomcat puede consultarse en https://tomcat.apache.org/."
+msgid "The IPT has been tested and works well with recent releases of Tomcat 8 and 9.  Tomcat 10 and later versions are currently not supported. Minimum supported version is 8. The Apache Tomcat documentation can be found on https://tomcat.apache.org/."
+msgstr "El IPT ha sido probado y funciona bien con las versiones recientes de Tomcat 8 y 9.  Tomcat 10 y versiones posteriores no son compatibles actualmente. La versión mínima compatible es la 8. La documentación de Apache Tomcat puede consultarse en https://tomcat.apache.org/."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:78
@@ -216,8 +216,8 @@ msgstr "Este paso es opcional, pero se recomienda para mejorar la seguridad y si
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:85
 #, no-wrap
-msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
-msgstr "Localice el directorio de configuración del Tomcat (normalmente `/etc/tomcat` o `/etc/tomcat9` en Linux, `C:\\gram FilesApache Software Foundation\\Tomcat X.Y\\conf` en Windows) y cree un archivo `Catalina/localhost/ipt.xml` (descrito en la https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[documentación del Tomcat \"Definiendo un contexto\"]).   Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/Catalina/localhost/ipt.xml`. El archivo debe ser legible por el proceso del Tomcat.\n"
+msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-9.0-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
+msgstr "Localice el directorio de configuración de Tomcat (normalmente `/etc/tomcat` o `/etc/tomcat9` en Linux, `C:\\Program FilesApache Software Foundation\\Tomcat X.Y\\conf` en Windows), y cree un archivo `Catalina/localhost/ipt.xml` (descrito en la https://tomcat.apache.org/tomcat-9.0-doc/config/context.html#Defining_a_context[Documentación de Tomcat \"Definir un contexto\"]).   Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/Catalina/localhost/ipt.xml`. El archivo debe ser legible por parte del proceso Tomcat.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:87
@@ -316,8 +316,8 @@ msgstr "Instalación usando Docker"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:146
-msgid "GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application."
-msgstr "GBIF mantiene una imagen de Docker, publicada en https://hub.docker.com/r/gbif/ipt/[Docker Hub]. La imagen se basa en la imagen estable Tomcat 8.5/OpenJDK 8/Debian de la comunidad Docker. Tomcat está publicado en el puerto 8080 y el IPT se ejecuta como la aplicación principal."
+msgid "GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 9 / OpenJDK 17 image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application."
+msgstr "GBIF mantiene una imagen Docker, publicada en https://hub.docker.com/r/gbif/ipt/[Docker Hub].  La imagen se basa en la imagen Tomcat 9 / OpenJDK 17 de la comunidad Docker.  Tomcat está publicado en el puerto 8080 y el IPT se ejecuta como la aplicación ROOT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:148
@@ -405,7 +405,12 @@ msgid "For production deployments of the IPT we recommend using a TLS certificat
 msgstr "Para los despliegues en producción del IPT recomendamos utilizar un certificado TLS para que la información, como los inicios de sesión, esté protegida al acceder al IPT.  El procedimiento para configurarlo a veces depende  de las políticas de su institución, pero el servicio gratuito https://letsencrypt.org/[LetsEncrypt] es una buena opción.  Se https://certbot.eff.org/instructions[ofrecen instrucciones] para añadir un certificado a Apache, Nginx y muchos otros servidores web que funcionan en Linux o Windows."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:190
+#: en/modules/ROOT/pages/installation.adoc:191
 msgid "For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section."
 msgstr "Para una nuevo despliegue, es mejor configurar primero el servidor web con TLS y luego instalar y configurar el IPT.  Añadir un certificado a un IPT configurado requiere cambiar la URL pública.  Consulte la nota sobre la xref:administration.adoc#public-url[actualización de la URL pública] en la sección de administración."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/installation.adoc:192
+msgid "Verify your setup is correct using https://whatsmychaincert.com/[What's My Chain Cert?].  The requirements for GBIF's servers to retrieve published data are stricter than those for normal web browsers, so ensure you receive a \"has the correct chain\" message from this test. (See also xref:faq.adoc#why-is-gbif-unable-to-access-my-ipt-over-https[this FAQ entry].)"
+msgstr "Verifique que su configuración es correcta usando https://whatsmychaincert.com/[What's My Chain Cert?].  Los requisitos para que los servidores de GBIF recuperen los datos publicados son más estrictos que los de los navegadores web normales, así que asegúrese de que recibe un mensaje de \"has the correct chain\" (tiene la cadena correcta) de esta prueba. (Véase también xref:faq.adoc#why-is-gbif-unable-to-access-my-ipt-over-https[esta entrada de Preguntas Frecuentes].)"
 

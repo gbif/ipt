@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2023-12-11 09:50\n"
+"POT-Creation-Date: 2024-02-06 08:33+0000\n"
+"PO-Revision-Date: 2024-02-07 07:49\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -25,21 +25,21 @@ msgstr "アップグレード方法"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:38
-#: en/modules/ROOT/pages/release-notes.adoc:65
+#: en/modules/ROOT/pages/release-notes.adoc:63
 #, no-wrap
 msgid "Post-upgrade instructions"
 msgstr "アップグレード後の注意事項"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:39
-#: en/modules/ROOT/pages/release-notes.adoc:73
+#: en/modules/ROOT/pages/release-notes.adoc:69
 #, no-wrap
 msgid "Important changes in this release"
 msgstr "本リリースにおける重要な変更点"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:88
+#: en/modules/ROOT/pages/release-notes.adoc:75
 #, no-wrap
 msgid "When all else fails"
 msgstr "他に方法がない場合"
@@ -53,8 +53,8 @@ msgstr "リリースノート"
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
-msgid "*IPT Versions: pass:[2.5.*, 2.6.*, 2.7.*]*\n"
-msgstr "*IPTバージョン: pass:[2.5.*, 2.6.*, 2.7.*]*\n"
+msgid "*IPT Versions: pass:[3.0.*]*\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
@@ -63,32 +63,27 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:10
-msgid "Once an IPT has been upgraded to 2.5.6 or later from 2.5.5 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files."
-msgstr "IPT を 2.5.5 以前から 2.5.6 以降にアップグレードすると、IPT の設定ファイルの変更により、以前のバージョンにダウングレードすることができなくなります。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:12
 msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release.  Ensure your operating system and any other installed software (such as Java, Tomcat and Apache HTTPD) is up-to-date with any security patches."
 msgstr "お使いのシステムがこのリリースのインストール要件を満たすことを確認すること。OSおよびその他のインストール済みソフトウェア（Java、Tomcat、Apache HTTPDなど）が、セキュリティパッチを適用した最新の状態であることを確認してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:14
+#: en/modules/ROOT/pages/release-notes.adoc:12
 msgid "The upgrade method depends on the original xref:installation.adoc#installation-method[installation method]."
 msgstr "アップグレードの方法は、元の xref:installation.adoc#installation-method[インストール方法] によって異なります。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/release-notes.adoc:15
+#: en/modules/ROOT/pages/release-notes.adoc:13
 #, no-wrap
 msgid "Upgrades using Linux packages"
 msgstr "Linuxパッケージによるアップグレード"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:18
+#: en/modules/ROOT/pages/release-notes.adoc:16
 msgid "Users of Linux packages on Red Hat, CentOS, Debian, Ubuntu etc. may upgrade using the system package manager."
 msgstr "Red Hat、CentOS、Debian、UbuntuなどのLinuxパッケージのユーザーは、システムのパッケージマネージャーを使用してアップグレードすることができます。"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/release-notes.adoc:25
+#: en/modules/ROOT/pages/release-notes.adoc:23
 #, no-wrap
 msgid "# Red Hat, CentOS etc:\n"
 "yum update ipt\n"
@@ -100,12 +95,12 @@ msgstr "# Red Hat, CentOS etc:\n"
 "apt install ipt\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:28
+#: en/modules/ROOT/pages/release-notes.adoc:26
 msgid "These commands can be used to test a pre-release version on Red Hat/CentOS:"
 msgstr "これらのコマンドは、Red Hat・CentOS 上でプレリリースバージョンをテストするために使用することができます。"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/release-notes.adoc:33
+#: en/modules/ROOT/pages/release-notes.adoc:31
 #, no-wrap
 msgid "# Ensure the GBIF repository configuration is up-to-date:\n"
 "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
@@ -113,7 +108,7 @@ msgstr "# Ensure the GBIF repository configuration is up-to-date:\n"
 "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/release-notes.adoc:36
+#: en/modules/ROOT/pages/release-notes.adoc:34
 #, no-wrap
 msgid "# Install the latest pre-release/testing version:\n"
 "yum install --enablerepo=gbif-testing ipt\n"
@@ -121,15 +116,14 @@ msgstr "# Install the latest pre-release/testing version:\n"
 "yum install --enablerepo=gbif-testing ipt\n"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/release-notes.adoc:39
+#: en/modules/ROOT/pages/release-notes.adoc:37
 #, no-wrap
 msgid "# Roll back to a previous, stable version:\n"
-"yum downgrade ipt-2.4.2\n"
-msgstr "# Roll back to a previous, stable version:\n"
-"yum downgrade ipt-2.4.2\n"
+"yum downgrade ipt-2.7.5\n"
+msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/release-notes.adoc:42
+#: en/modules/ROOT/pages/release-notes.adoc:40
 #, no-wrap
 msgid "# Show all available versions, testing and stable:\n"
 "yum --showduplicates list --enablerepo=gbif-testing ipt\n"
@@ -138,129 +132,84 @@ msgstr "# Show all available versions, testing and stable:\n"
 
 #.  #TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
 #. type: Title ===
-#: en/modules/ROOT/pages/release-notes.adoc:46
+#: en/modules/ROOT/pages/release-notes.adoc:44
 #, no-wrap
 msgid "Upgrades using a servlet container"
 msgstr "サーブレットコンテナを利用したアップグレード"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:49
+#: en/modules/ROOT/pages/release-notes.adoc:47
 msgid "When upgrading to version 2.5.0 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT."
 msgstr "バージョン2.5.0以降にアップグレードする場合、インストール手順の xref:installation.adoc#tomcat[ステップ2] に従って、データディレクトリの場所を設定してください。IPTをアップグレードするたびにデータディレクトリを設定しなおす必要がなくなります。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:51
+#: en/modules/ROOT/pages/release-notes.adoc:49
 msgid "An upgrade can be performed in 4 steps:"
 msgstr "アップグレードは、4ステップで行うことができます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:53
+#: en/modules/ROOT/pages/release-notes.adoc:51
 msgid "Backup the existing data directory and any xref:customization.adoc[custom styling] (images, stylesheets, etc) previously applied to your IPT."
 msgstr "既存のデータディレクトリと、以前にIPTに適用したカスタムスタイル（画像、スタイルシートなど）をバックアップします。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:54
+#: en/modules/ROOT/pages/release-notes.adoc:52
 msgid "Without shutting down Tomcat, replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`)."
 msgstr "Tomcatをシャットダウンせずに、以前の.warファイルを最新版に置き換えますが、名前は同じにします（例：`ipt.war`）。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:56
+#: en/modules/ROOT/pages/release-notes.adoc:54
 msgid "If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts."
 msgstr "Tomcatの停止中に.warファイルを置き換える場合、Tomcatの再起動時に更新されたWARファイルが再展開されるように、Tomcatの再起動前に関連する展開ディレクトリを必ず削除してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:58
+#: en/modules/ROOT/pages/release-notes.adoc:56
 msgid "(If the data directory is not configured within Tomcat.) Immediately open the IPT in a web browser, and reuse the existing data directory on the initial IPT setup page"
 msgstr "（Tomcat内にデータディレクトリが設定されていない場合）すぐにWebブラウザでIPTを開き、IPTの初期設定ページで既存のデータディレクトリを再利用してください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:59
+#: en/modules/ROOT/pages/release-notes.adoc:57
 msgid "To be sure the upgrade worked, try logging in and look for the new version number in the footer. (_Restart Tomcat if the previous version still appears._)"
 msgstr "アップグレードがうまくいったことを確認するために、ログインして、フッターに新しいバージョン番号が表示されていることを確認します。（_以前のバージョンがまだ表示されている場合は、Tomcatを再起動してください。_）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:60
+#: en/modules/ROOT/pages/release-notes.adoc:58
 msgid "Reapply your custom styling (if applicable)"
 msgstr "（必要であれば）カスタムスタイルを再適用します。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/release-notes.adoc:61
+#: en/modules/ROOT/pages/release-notes.adoc:59
 #, no-wrap
 msgid "Upgrades using Docker"
 msgstr "Dockerを使ったアップグレード"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:64
+#: en/modules/ROOT/pages/release-notes.adoc:62
 msgid "See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release."
 msgstr "xref:installation.adoc#installation-using-docker[Dockerを使用したインストール方法] をご覧ください。一般的に、``latest``タグは現在の安定したリリースを指します。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:68
+#: en/modules/ROOT/pages/release-notes.adoc:66
 msgid "Following the upgrade, a warning message may appear indicating that some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources."
 msgstr "アップグレード後、一部のリソースの読み込みに失敗したことを示す警告メッセージが表示されることがあります。これは、長い間再公開されなかった古いリソースに必要なメタデータが欠落している場合に発生します。リソース管理者は、該当するリソースを再公開することでこの問題を解決できます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:70
-msgid "New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations."
-msgstr "IPT 2.3.xの新機能は、サンプルベースのデータの公開です。アップグレードが完了したら、IPT管理者はダーウィンコア・イベントコアをインストールする必要があります。ダーウィンコア・イベントコアは、新しいインストールでデフォルトでインストールされることに注意してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:72
+#: en/modules/ROOT/pages/release-notes.adoc:68
 msgid "Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions."
 msgstr "さらに、IPT管理者はインストールされているすべてのコアと拡張機能を最新バージョンに更新する必要があります。これにより、公開者は最新バージョンに含まれる新しい用語や語彙を利用することができます。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:76
+#: en/modules/ROOT/pages/release-notes.adoc:72
 msgid "The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:"
 msgstr "新機能の全リストは、xref:releases.adoc[リリース] ページに記載されています。アップグレード後は、特に以下の点にご注意ください。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:78
-msgid "IPT 2.5.6 changes the way user passwords are stored to improve their security. Once the IPT has been upgraded to version 2.5.6 (or later), it is not possible to downgrade."
-msgstr "IPT 2.5.6 では、ユーザーパスワードの保存方法が変更され、セキュリティが向上しました。IPT をバージョン 2.5.6（またはそれ以降）にアップグレードした後は、ダウングレードすることはできません。"
+#: en/modules/ROOT/pages/release-notes.adoc:74
+msgid "IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore."
+msgstr "IPT 3.0.0はTomcat 8 または 9 が必要です。Tomcat 7 はサポート対象外です。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:79
-msgid "IPT 2.5.2 includes a bugfix for metadata editing. Use this version rather than 2.5.0 or 2.5.1."
-msgstr "IPT 2.5.2 には、メタデータ編集のバグ修正が含まれています。2.5.0や2.5.1ではなく、このバージョンを使用してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:80
-msgid "IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0."
-msgstr "IPT 2.5.1は、データベースソースへの接続に関するバグ修正を含みますが、それ以外はバージョン2.5.0と同じです。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:81
-msgid "IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work."
-msgstr "IPT 2.5.0には、MySQL、PostgreSQL、MS SQL Server、Sybase、Oracle 用のデータベースコネクタ（JDBC ライブラリ）のアップグレードが含まれています。お手持ちのデータベースが正常に動作することをご確認ください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:82
-msgid "IPT 2.5.0 now includes a troubleshooting page, with full details accessible only to administrators, accessible from the main menu."
-msgstr "IPT 2.5.0では、メインメニューからアクセスできる、管理責任者のみがアクセスできる完全な詳細を含むトラブルシューティングページが追加されました。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:83
-msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions."
-msgstr "IPT 2.5.0は、サーブレットコンテナからデータディレクトリの場所を読み取ることができるようになりました（インストール手順 xref:installation.adoc#tomcat[ステップ2]を参照）。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:84
-msgid "IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)"
-msgstr "IPT 2.5.0は、Microsoft Internet Explorerをサポートしなくなりました。（Microsoft社は、MS365オンラインサービスのために link: https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[MSIEをサポートしなくなりました]）。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:85
-msgid "The documentation has moved to this new location; links have been made from the old GitHub Wiki."
-msgstr "ドキュメントはこの新しい場所に移動しました。古いGitHub Wikiからリンクされています。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:87
-msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
-msgstr "2.4以前のバージョンからアップグレードする場合は、xref:2.4@release-notes.adoc[古いリリースノート]も参照してください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:90
+#: en/modules/ROOT/pages/release-notes.adoc:77
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr "有用な質問で更新されている xref:faq.adoc[FAQ] を見るか、link:https://lists.gbif.org/mailman/listinfo/ipt/[IPTメーリングリスト]に質問してみてください。"
 
