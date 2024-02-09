@@ -1925,6 +1925,7 @@ button.close {
 
 .bd-toc nav a.active {
     border-left: 2px solid rgb(var(--link-color));
+    font-weight: bold;
 }
 
 #additional, #managers, .section:last-of-type {
