@@ -857,6 +857,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-success a, .alert-success a:hover, .alert-success a:focus {
     color: rgb(var(--alert-success-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 
 .alert-orange-2 {
@@ -872,6 +873,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-warning a, .alert-warning a:hover, .alert-warning a:focus {
     color: rgb(var(--alert-warning-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 
 .alert-red-2 {
@@ -887,6 +889,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-danger a, .alert-danger a:hover, .alert-danger a:focus {
     color: rgb(var(--alert-danger-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 /* Custom alerts colors END */
 
