@@ -1399,7 +1399,23 @@
                                 </h5>
                             </div>
 
+                            <#assign doiActionName>
+                                <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
+                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
+                                <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
+                                <#else><@s.text name="button.reserve"/> DOI<#t>
+                                </#if>
+                            </#assign>
+
                             <div class="col-4 d-flex justify-content-end">
+                                <#if organisationWithPrimaryDoiAccount??>
+                                    <a title="${doiActionName}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
+                                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
+                                            <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
+                                        </svg>
+                                        ${doiActionName}
+                                    </a>
+                                </#if>
                                 <@publish resource/>
                             </div>
                         </div>
@@ -1614,27 +1630,11 @@
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <#assign doiActionName>
-                                                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
-                                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
-                                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
-                                                    <#else><@s.text name="button.reserve"/> DOI<#t>
-                                                    </#if>
-                                                </#assign>
-
                                                 <#if !missingMetadata>
                                                     <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                        </svg>
-                                                    </a>
-                                                </#if>
-
-                                                <#if organisationWithPrimaryDoiAccount??>
-                                                    <a title="${doiActionName}" id="reserve-doi" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
-                                                        <svg class="icon-button-svg" viewBox="0 0 24 24">
-                                                            <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
                                                         </svg>
                                                     </a>
                                                 </#if>
@@ -1658,14 +1658,6 @@
                                                                 </a>
                                                             </li>
                                                         </#if>
-                                                        <li>
-                                                            <a id="reserve-doi" class="dropdown-item action-link" type="button" href="#">
-                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
-                                                                </svg>
-                                                                ${doiActionName}
-                                                            </a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
