@@ -1100,6 +1100,11 @@
             dialogWindow.modal('show');
         });
 
+        $(".button-show-delete-resource-disabled-modal").on('click', function () {
+            var dialogWindow = $("#delete-resource-disabled-modal");
+            dialogWindow.modal('show');
+        });
+
 
         $("#publishingOrganizationKey").select2({
             placeholder: '',
@@ -1162,30 +1167,6 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-        <#if !currentUser.hasRegistrationRights()>
-            <#if resource.status == "DELETED">
-                <div class="alert alert-warning alert-dismissible fade show d-flex" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                <div class="alert alert-warning alert-dismissible fade show d-flex" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </#if>
-        </#if>
     </div>
 
     <div class="container-fluid border-bottom">
@@ -1243,7 +1224,7 @@
                                         <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
                                     </form>
                                 <#else>
-                                    <button class="btn btn-sm btn-outline-gbif-primary top-button" name="undelete" disabled><@s.text name="button.undelete"/></button>
+                                    <button class="btn btn-sm btn-outline-gbif-primary button-show-delete-resource-disabled-modal top-button" name="undelete"><@s.text name="button.undelete"/></button>
                                 </#if>
                             </div>
                         <#else>
@@ -1266,7 +1247,7 @@
                                     <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete"/></button>
                                 </#if>
                             <#else>
-                                <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="delete"><@s.text name="button.delete"/></button>
                             </#if>
                         </#if>
 
@@ -2155,21 +2136,25 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.visibility.warning.deleted"/>
-                        </div>
+                        <@s.text name="manage.overview.visibility.warning.deleted"/>
+                    <#elseif resource.status == "REGISTERED">
+                        <@s.text name="manage.overview.visibility.warning.registered"/>
                     </#if>
+                </div>
 
-                    <#if resource.status == "REGISTERED">
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.visibility.warning.registered"/>
-                        </div>
-                    </#if>
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2273,13 +2258,21 @@
     <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="mapping-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
+                <#assign numberOfPotentialCores=potentialCores?size />
+
                 <div class="modal-header flex-column">
+                    <#if numberOfPotentialCores==0>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="mapping-modal-title"><@s.text name="manage.mapping.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <div>
-                        <#if (potentialCores?size>0)>
+                        <#if (numberOfPotentialCores>0)>
                             <form action='mapping.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <select name="id" class="form-select my-1" id="rowType" size="1">
@@ -2304,17 +2297,21 @@
                             </form>
                         <#else>
                             <#if dataPackageResource>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.mappings.cantdo"/>
-                                </div>
+                                <@s.text name="manage.overview.mappings.cantdo"/>
                             <#else>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                                </div>
+                                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
                             </#if>
                         </#if>
                     </div>
                 </div>
+
+                <#if numberOfPotentialCores==0>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -2381,6 +2378,9 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="publication-modal-title"><@s.text name="manage.overview.published"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
@@ -2388,27 +2388,27 @@
                 <div class="modal-body">
                     <!-- resources cannot be published if it's deleted -->
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.published.deleted"/>
-                        </div>
+                        </p>
 
                         <!-- resources cannot be published if the mandatory metadata is missing -->
                     <#elseif missingMetadata>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.published.missing.metadata"/>
-                        </div>
+                        </p>
 
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
                     <#elseif dataPackageResource && dataPackageMappingsMissing>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.published.missing.mappings"/>
-                        </div>
+                        </p>
 
                         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
                     <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                        </div>
+                        </p>
 
                         <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
                     <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
@@ -2416,18 +2416,18 @@
                     || resource.status == "REGISTERED">
                         <!-- the user must have registration rights -->
                         <#if !currentUser.hasRegistrationRights()>
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.publication.forbidden"/>
                                 &nbsp;<@s.text name="manage.resource.role.change"/>
-                            </div>
+                            </p>
 
                             <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
                         <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
                         || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
                         && !organisationWithPrimaryDoiAccount??>
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                            </div>
+                            </p>
 
                             <!-- when a DOI is reserved.. -->
                         <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
@@ -2435,15 +2435,15 @@
                             <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                                 <!-- and the resource has never been published before, the first publication is a new major version -->
                                 <#if !resource.lastPublished??>
-                                    <div class="callout callout-warning text-smaller">
+                                    <p>
                                         <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                    </div>
+                                    </p>
 
                                     <!-- and the resource has been published before, the next publication is a new minor version -->
                                 <#else>
-                                    <div class="callout callout-warning text-smaller">
+                                    <p>
                                         <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                    </div>
+                                    </p>
                                 </#if>
 
                                 <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
@@ -2456,6 +2456,12 @@
                         </#if>
                     </#if>
                 </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -2464,18 +2470,24 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <#if resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="networks-modal-title"><@s.text name="manage.overview.networks.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.networks.deleted"/>
-                        </div>
+                        </p>
                     <#elseif (potentialNetworks?size==0)>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.networks.select.empty"/>
-                        </div>
+                        </p>
                     <#elseif resource.key?has_content>
                         <div>
                             <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
@@ -2493,11 +2505,19 @@
                             </form>
                         </div>
                     <#else>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.networks.not.registered"/>
-                        </div>
+                        </p>
                     </#if>
                 </div>
+
+                <#if resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -2506,64 +2526,74 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
-                    <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                        <div class="callout callout-warning text-smaller">
+                    <#if cfg.devMode() || cfg.getRegistryType()!='PRODUCTION'>
+                        <p class="fst-italic">
                             <@s.text name="manage.overview.published.testmode.warning"/>
-                        </div>
+                        </p>
                     </#if>
 
                     <#if resource.status=="DELETED">
                         <!-- Show warning: resource must not be deleted -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.deleted" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="REGISTERED">
                         <!-- Show warning: resource already registered -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.registered" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="PRIVATE">
                         <!-- Show warning: resource must be public -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.private" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="PUBLIC">
                         <#if !currentUser.hasRegistrationRights()>
                             <!-- Show warning: user must have registration rights -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                            </div>
+                            </p>
                         <#elseif resource.dataPackage && resource.coreType != "camtrap-dp">
                             <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
-                            </div>
+                            </p>
                         <#elseif missingValidPublishingOrganisation?string == "true">
                             <!-- Show warning: user must assign valid publishing organisation -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.visibility.missing.organisation"/>
-                            </div>
+                            </p>
                         <#elseif missingRegistrationMetadata?string == "true">
                             <!-- Show warning: user must fill in minimum registration metadata -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.visibility.missing.metadata" />
-                            </div>
+                            </p>
                         <#elseif !resource.isLastPublishedVersionPublic()>
                             <!-- Show warning: last published version must be publicly available to register -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                            </div>
+                            </p>
                         <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                             <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                            </div>
+                            </p>
                         </#if>
                     </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2572,12 +2602,20 @@
     <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="managers-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
+                <#assign numberOfPotentialManagers=potentialManagers?size />
+
                 <div class="modal-header flex-column">
+                    <#if (numberOfPotentialManagers==0)>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="managers-modal-title"><@s.text name="manage.overview.resource.managers"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
-                    <#if (potentialManagers?size>0)>
+                    <#if (numberOfPotentialManagers>0)>
                         <div>
                             <form action='resource-addManager.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -2591,11 +2629,19 @@
                             </form>
                         </div>
                     <#else>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.resource.managers.select.empty"/>
-                        </div>
+                        </p>
                     </#if>
                 </div>
+
+                <#if (numberOfPotentialManagers==0)>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -2604,34 +2650,40 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights()>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                        <div class="icon-box">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="reserve-doi-modal-title">DOI</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if !organisationWithPrimaryDoiAccount??>
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
                     <#elseif !currentUser.hasRegistrationRights()>
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                        </div>
+                        <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                     <#elseif resource.identifierStatus == "UNRESERVED">
-                        <div class="callout callout-info text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
                     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                        <div class="callout callout-danger text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
                     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-                        <div class="callout callout-info text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
                     </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
                     <#if organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
                         <@nextDoiButtonTD/>
                     </#if>
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2662,12 +2714,44 @@
                     <h5 class="modal-title w-100" id="delete-resource-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <@s.text name="manage.overview.resource.delete.description"/>
                 </div>
+
                 <div class="modal-footer justify-content-center">
                     <button class="btn btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete.fromIpt"/></button>
                     <button class="btn btn-outline-gbif-danger proxy-button-delete-from-gbif-and-ipt" name="delete"><@s.text name="button.delete.fromIptAndGbif"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-resource-disabled-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-disabled-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
+                    <h5 class="modal-title w-100" id="delete-resource-disabled-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <#if !currentUser.hasRegistrationRights()>
+                        <#if resource.status == "DELETED">
+                            <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
+                            <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        </#if>
+                    </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>

@@ -1719,11 +1719,19 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     border: 3px solid rgb(var(--color-gbif-danger));
 }
 
+.modal-confirm .icon-box-warning {
+    border: 3px solid rgb(var(--color-gbif-warning)) !important;
+}
+
 .modal-confirm .icon-box i {
     color: rgb(var(--color-gbif-danger));
     font-size: 46px;
     display: inline-block;
     margin-top: 13px;
+}
+
+.modal-confirm .icon-box-warning i {
+    color: rgb(var(--color-gbif-warning)) !important;
 }
 
 .confirm-danger-icon {
