@@ -173,6 +173,7 @@
                     <#if id?has_content>
                         <p>${organisation.description!}</p>
 
+                        <@s.hidden id="organisation.name" name="organisation.name" required="true" />
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
                         <@s.hidden name="id" id="id" required="true" />
                         <!-- preserve other fields not edited -->
