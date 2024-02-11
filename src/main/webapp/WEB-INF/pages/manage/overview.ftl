@@ -674,7 +674,6 @@
         });
 
         function showReserveDoiModal() {
-            e.preventDefault();
             var dialogWindow = $("#reserve-doi-modal");
             dialogWindow.modal('show');
         }
