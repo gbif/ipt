@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2023-08-14 14:18\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "よくある質問"
@@ -34,8 +34,8 @@ msgstr "{blank}"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:4
-msgid "Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk."
-msgstr "GBIF IPTに関するよくある質問と回答を掲載しています。GBIFヘルプデスクにお問い合わせいただく前に、このページの内容をご確認ください。"
+msgid "Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Help Desk."
+msgstr ""
 
 #. type: Title =
 #: en/modules/ROOT/pages/faq.adoc:5 en/modules/ROOT/pages/installation.adoc:1
@@ -387,8 +387,8 @@ msgstr "とはいっても、公開機関を変更する方法は2つありま�
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:154
-msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr "最も簡単な方法は、リソースを再パブリッシュし、目的の公開組織を再設定することです。プロセスを簡素化するために、圧縮されたIPTリソースフォルダからデータセットを再作成することができます。その方法については、xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[こちら]を参照してください。xref:manage-resources.adoc#migrate-a-resource[以下の手順]に従って、リソースを古い公開組織から新しい公開組織に移行する場合、手順5では、GBIFヘルプデスクにGBIFレジストリの更新を依頼する必要がありますので、十分に注意してください。"
+msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Help Desk to update the GBIF Registry."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:156
@@ -412,8 +412,8 @@ msgstr "公開をクリックしても、IPTにエラーメッセージが表示
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:162
-msgid "In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
-msgstr "さらに、*GBIFヘルプデスクに連絡し、GBIF Registryの組織を更新してもらうよう依頼してください*（この部分は非常に重要です）。"
+msgid "In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:164
@@ -613,8 +613,8 @@ msgstr "通常、GBIFがデータセットのインデックス作成を開始�
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:239
-msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
-msgstr "GBIFがデータセットのインデックス作成に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、GBIFヘルプデスク<helpdesk@gbif.org>にメールを送って、何が起こったかを調査してください。GBIFがあなたのデータセットに（再）インデックスを付けなかった理由を知りたい場合は、以下をご覧ください。"
+msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:240
@@ -629,8 +629,8 @@ msgstr "GBIFは、メンテナンスのためインデックス作成サービ�
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:245
-msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
-msgstr "GBIFがお客様のデータセットのインデックス化に失敗したと思われる場合は、GBIF.orgから直接フィードバックを送信するか、直接GBIFヘルプデスク<helpdesk@gbif.org>にメールを送り、何が起こったかを調査してください。"
+msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:246
