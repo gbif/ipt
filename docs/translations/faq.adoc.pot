@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid ""
 "Here you will find answers to the most frequently asked questions about the "
 "GBIF IPT. Please check the contents of this page before contacting the GBIF "
-"Helpdesk."
+"Help Desk."
 msgstr ""
 
 #. type: Title =
@@ -495,8 +495,8 @@ msgid ""
 "configuration-folder[here].  If you migrate the resource from the old "
 "publishing organization to the new publishing organization by following xref:"
 "manage-resources.adoc#migrate-a-resource[these instructions]: Please pay "
-"careful attention to step 5, where you will have to ask the GBIF Helpdesk to "
-"update the GBIF Registry."
+"careful attention to step 5, where you will have to ask the GBIF Help Desk "
+"to update the GBIF Registry."
 msgstr ""
 
 #. type: Plain text
@@ -528,7 +528,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:162
 msgid ""
-"In addition to that, *please contact the GBIF helpdesk and ask that the "
+"In addition to that, *please contact the GBIF Help Desk and ask that the "
 "organization be updated in the GBIF Registry* (this part is very important)."
 msgstr ""
 
@@ -793,7 +793,7 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:239
 msgid ""
 "If you believe GBIF failed to index your dataset successfully, please submit "
-"feedback directly via GBIF.org, or send an email to the GBIF Helpdesk "
+"feedback directly via GBIF.org, or send an email to the GBIF Help Desk "
 "<helpdesk@gbif.org> to investigate what happened. If you are interested in "
 "finding out why GBIF may not have (re)indexed your dataset, please see 2 "
 "below."
@@ -817,7 +817,7 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:245
 msgid ""
 "If you believe GBIF failed to index your dataset, please submit feedback "
-"directly via GBIF.org, or send an email directly to the GBIF Helpdesk "
+"directly via GBIF.org, or send an email directly to the GBIF Help Desk "
 "<helpdesk@gbif.org> to investigate what happened."
 msgstr ""
 
