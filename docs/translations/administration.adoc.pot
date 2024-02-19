@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -473,7 +473,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:121
 #, no-wrap
-msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).\n"
+msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF Help Desk (helpdesk@gbif.org).\n"
 msgstr ""
 
 #. type: Target for macro image
@@ -588,7 +588,7 @@ msgid ""
 "Administrators can also run an update in order to update the title, "
 "description, contact name, and contact email of the IPT instance. This page "
 "does not support changing the hosting organization. To do so, administrators "
-"must contact the GBIF Helpdesk (helpdesk@gbif.org) directly."
+"must contact the GBIF Help Desk (helpdesk@gbif.org) directly."
 msgstr ""
 
 #. type: Target for macro image
