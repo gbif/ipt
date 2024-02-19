@@ -269,9 +269,9 @@
                     <div class="<#if isLogoPresent>col-lg-3-5 col-md-10 col-sm-9 col-8<#else>col-lg-4</#if> text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
                         <dl class="inline mb-0">
                             <#if eml.distributionUrl?has_content>
-                                <div>
+                                <div class="text-truncate">
                                     <dt><@s.text name='eml.distributionUrl.short'/>:</dt>
-                                    <dd><a href="${eml.distributionUrl}"><@s.text name='basic.link'/></a></dd>
+                                    <dd><a href="${eml.distributionUrl}">${eml.distributionUrl}</a></dd>
                                 </div>
                             </#if>
 
