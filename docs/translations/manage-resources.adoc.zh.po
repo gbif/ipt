@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-05 12:40\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2611,7 +2611,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:702
-msgid "Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk."
+msgid "Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk."
 msgstr ""
 
 #. type: Title ===
