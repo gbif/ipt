@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 15:44+0000\n"
-"PO-Revision-Date: 2024-02-06 23:38\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -67,7 +67,7 @@ msgstr "Conjuntos de datos de ejemplo"
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
@@ -195,108 +195,103 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus], sól
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:50
-msgid "Israeli Butterfly Monitoring Scheme (BMS-IL): http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il[DwC-A] / http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[IPT homepage]"
-msgstr "Israeli Butterfly Monitoring Scheme (BMS-IL): http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il[DwC-A] / http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[IPT homepage]"
+msgid "http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:51
-msgid "Dutch Vegetation Database (LVD): http://cloud.gbif.org/eubon/archive.do?r=lvd[DwC-A] / http://cloud.gbif.org/eubon/resource?r=lvd[IPT homepage]"
-msgstr "Dutch Vegetation Database (LVD): http://cloud.gbif.org/eubon/archive.do?r=lvd[DwC-A] / http://cloud.gbif.org/eubon/resource?r=lvd[IPT homepage]"
+msgid "http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:52
-msgid "Reef Life Survey: Global reef fish dataset: http://ipt.ala.org.au/archive.do?r=global[DwC-A] / http://ipt.ala.org.au/resource?r=global[IPT homepage]"
-msgstr "Reef Life Survey: Conjunto de datos mundiales sobre peces de arrecife: http://ipt.ala.org.au/archive.do?r=global[DwC-A] / http://ipt.ala.org.au/resource?r=global[Página de inicio del IPT]"
+msgid "http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:53
-msgid "Lepidurus arcticus survey Northeast Greenland 2013: http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013[DwC-A] / http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[IPT homepage]"
-msgstr "Estudio sobre Lepidurus arcticus Noreste de Groenlandia 2013: http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013[DwC-A] / http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Página de inicio del  IPT]"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:54
-msgid "Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPT homepage]"
-msgstr "Insectos de una trampa de luz (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[página de inicio del IPT]"
+msgid "http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]"
+msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:57
+#: en/modules/ROOT/pages/sampling-event-data.adoc:56
 #, no-wrap
 msgid "Q. How do I indicate that a sampling event was part of a time series?"
 msgstr "P. ¿Cómo puedo indicar que un evento de muestreo forma parte de una serie temporal?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:60
+#: en/modules/ROOT/pages/sampling-event-data.adoc:59
 #, no-wrap
 msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 msgstr "*R.* Todos los eventos de muestreo en el mismo lugar deben compartir el mismo https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:61
+#: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
 msgid "Q. How do I publish a hierarchy of events (recursive data type) using parentEventID?"
 msgstr "R. ¿Cómo puedo publicar una jerarquía de eventos (tipo de datos recursivos) utilizando parentEventID?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:64
+#: en/modules/ROOT/pages/sampling-event-data.adoc:63
 #, no-wrap
 msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be a globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
 msgstr "*A.* El ejemplo clásico es el submuestreo de una parcela más grande. Para agrupar todos los eventos de submuestreo (hijo) bajo el evento de muestreo (padre), el parentEventID de todos los eventos de submuestreo debe establecerse en el eventID del evento de muestreo (padre). Para que sean válidos, todos los parentEventIDs deben hacer referencia a eventIDs de registros definidos en el mismo conjunto de datos. De lo contrario, el parentEventID debe ser un identificador único global (p. ej., DOI, HTTP URI, etc.) que haga referencia a un evento descrito en otro lugar. Lo ideal es que todos los eventos de submuestreo (hijos) compartan la misma fecha y ubicación que el evento (padre) al que hacen referencia.\n"
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:65
+#: en/modules/ROOT/pages/sampling-event-data.adoc:64
 #, no-wrap
 msgid "Q. How do I publish absence data?"
 msgstr "P. ¿Cómo puedo publicar datos de ausencia?"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:68
+#: en/modules/ROOT/pages/sampling-event-data.adoc:67
 #, no-wrap
 msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
 msgstr "*A.* *Paso 1*: Puede hacer explícitas las ausencias de especies añadiendo un registro biológico para cada especie que podría haber sido observada en el momento y lugar del muestreo, pero que no fue observada, estableciendo los siguientes campos:\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:70
+#: en/modules/ROOT/pages/sampling-event-data.adoc:69
 msgid "Mandatory:"
 msgstr "Obligatorio:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:72
+#: en/modules/ROOT/pages/sampling-event-data.adoc:71
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[absent]"
 msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[ausente]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:74
+#: en/modules/ROOT/pages/sampling-event-data.adoc:73
 msgid "Optional (provide one or both):"
 msgstr "Opcional (documente uno o ambos):"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:76
+#: en/modules/ROOT/pages/sampling-event-data.adoc:75
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:77
+#: en/modules/ROOT/pages/sampling-event-data.adoc:76
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: \"0\", \"individuals\""
 msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] y https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] conectan: \"0\", \"individuos\""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:79
+#: en/modules/ROOT/pages/sampling-event-data.adoc:78
 msgid "Alternatively, include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks."
 msgstr "Alternativamente, incluya registros de eventos de muestreo, incluso si el muestreo no produjo registros biológicos de especies derivadas. Esto permite inferir ausencias de especies. Este https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[este ejempo de conjunto de datos de eventos de muestreo de Noruega] (https://www.gbif.org/occurrence/search?dataset_key =78360224-5493-45fd-a9a0-c336557f09c3 [también en GBIF.org]) demuestra cómo se ve esto."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:81
+#: en/modules/ROOT/pages/sampling-event-data.adoc:80
 #, no-wrap
 msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data to be recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
 msgstr "*Paso 2*: Definir el alcance taxonómico de todos los eventos de muestreo incluidos en el conjunto de datos, se recomienda publicar una lista de chequeo con fechas junto con el conjunto de datos de eventos de muestreo, que represente la composición de especies que podría observarse en el momento y lugar del muestreo dado el protocolo de muestreo (y/o la cobertura taxonómica del estudio, y la experiencia del personal que realiza la identificación). Esto permitiría registrar datos precisos de presencia/ausencia. Además de la composición normal (esperada) de las especies, la lista de chequeo podría incluir especies invasoras (inesperadas). Sin embargo, por razones taxonómicas y biogeográficas/ecológicas, esta lista de chequeo existiría únicamente en el contexto del conjunto de datos del evento de muestreo.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:83
+#: en/modules/ROOT/pages/sampling-event-data.adoc:82
 msgid "Instructions on how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
 msgstr "Puede encontrar instrucciones para crear una lista de chequeo xref:checklist-data.adoc[aquí]. Con la lista de chequeo deben incluirse metadatos detallados que documenten a) las personas que realizaron las identificaciones y su experiencia taxonómica y b) cómo se decidió que estas especies eran detectables e identificables en el momento y lugar del muestreo."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:84
+#: en/modules/ROOT/pages/sampling-event-data.adoc:83
 msgid "To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section."
 msgstr "Para vincular el listado de especies al conjunto de datos del evento de muestreo, añada la lista de comprobación a los metadatos del conjunto de datos en la sección xref:manage-resources.adoc#external-links[Enlaces externos]."
 
