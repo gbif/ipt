@@ -67,9 +67,9 @@ $ sudo systemctl restart tomcat9
 
 === How can I change the IPT's default language?
 
-The IPT's default language is English, and there is no way to change the default language via the user interface.
+The IPT's default language is English, but it can be easily changed via the user interface (Administration->IPT Settings->Default Language).
 
-It can be changed easily by manual configuration though. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:
+For older IPT versions, it can be changed by manual configuration. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:
 
 ----
 struts.locale=pt
