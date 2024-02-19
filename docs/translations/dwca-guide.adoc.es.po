@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2024-01-24 20:18\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -593,8 +593,8 @@ msgstr "Repita el proceso hasta que el archivo haya sido validado satisfactoriam
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:183
-msgid "Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org)."
-msgstr "Si se bloquea, contacte con el Centro de ayuda de GBIF (helpdesk@gbif.org)."
+msgid "Contact the GBIF Help Desk if you get stuck (helpdesk@gbif.org)."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:184
@@ -644,8 +644,8 @@ msgstr "Recibirá un correo electrónico de confirmación y una URL de la entrad
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:199
-msgid "Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information."
-msgstr "Los usuarios avanzados pueden solicitar permiso para registrar conjuntos de datos en masa, integrando la API de GBIF en sus sistemas existentes. Se proporciona un https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[ejemplo básico] de un script de shell de Linux (Bash). Contacte al centro de ayuda para más información."
+msgid "Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the Help Desk for more information."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:200
