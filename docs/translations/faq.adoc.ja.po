@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 09:58+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"POT-Creation-Date: 2024-02-19 10:37+0000\n"
+"PO-Revision-Date: 2024-02-19 12:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -176,13 +176,13 @@ msgstr "IPTのデフォルト言語を変更するにはどうしたらいいで
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:71
-msgid "The IPT's default language is English, and there is no way to change the default language via the user interface."
-msgstr "IPTのデフォルト言語は英語で、ユーザーインターフェースからデフォルト言語を変更する方法はありません。"
+msgid "The IPT's default language is English, but it can be easily changed via the user interface (Administration->IPT Settings->Default Language)."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:73
-msgid "It can be changed easily by manual configuration though. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:"
-msgstr "しかし、手動で設定を行うことで簡単に変更することができます。例えば、デフォルトの言語を英語からポルトガル語に変更するには、まず、`struts.properties`ファイルを探します（例えば、IPTがTomcatで配備されている場合`tomcat/webapps/WEB-INF/classes`にあります）。そして、`struts.locale`のプロパティをこのように更新してください。"
+msgid "For older IPT versions, it can be changed by manual configuration. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:"
+msgstr ""
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:76
