@@ -46,11 +46,10 @@ Populate it and upload it to the IPT.
 
 === Exemplar datasets
 
-* Israeli Butterfly Monitoring Scheme (BMS-IL): http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il[DwC-A] / http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[IPT homepage]
-* Dutch Vegetation Database (LVD): http://cloud.gbif.org/eubon/archive.do?r=lvd[DwC-A] / http://cloud.gbif.org/eubon/resource?r=lvd[IPT homepage]
-* Reef Life Survey: Global reef fish dataset: http://ipt.ala.org.au/archive.do?r=global[DwC-A] / http://ipt.ala.org.au/resource?r=global[IPT homepage]
-* Lepidurus arcticus survey Northeast Greenland 2013: http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013[DwC-A] / http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[IPT homepage]
-* Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPT homepage]
+* http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]
+* http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]
+* http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]
+* http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]
 
 === FAQ
 

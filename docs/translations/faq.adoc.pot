@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr ""
