@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-08-14 13:55+0000\n"
-"PO-Revision-Date: 2024-01-24 21:17\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
@@ -34,8 +34,8 @@ msgstr "{blank}"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:4
-msgid "Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk."
-msgstr "Aquí encontrará respuestas a las preguntas más frecuentes sobre el IPT de GBIF. Por favor consulte el contenido de esta página antes de contactar al Centro de ayuda de GBIF."
+msgid "Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Help Desk."
+msgstr ""
 
 #. type: Title =
 #: en/modules/ROOT/pages/faq.adoc:5 en/modules/ROOT/pages/installation.adoc:1
@@ -387,8 +387,8 @@ msgstr "Dicho esto, hay dos formas de cambiar la organización publicadora."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:154
-msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr "La forma más sencilla es volver a publicar el recurso y, a continuación, ajustar la organización publicadora deseada. Para simplificar el proceso, puede volver a crear el conjunto de datos desde su carpeta de recursos IPT comprimida. Encontrará instrucciones sobre cómo hacerlo xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí].  Si migra el recurso de la antigua organización publicadora a la nueva organización publicadora siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]: Por favor, preste mucha atención al paso 5, donde tendrá que pedir al Helpdesk de GBIF que actualice el Registro de GBIF (GBIF Registry)."
+msgid "The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].  If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Help Desk to update the GBIF Registry."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:156
@@ -412,8 +412,8 @@ msgstr "Compruebe que no aparezca ningún mensaje de error en su IPT al hacer cl
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:162
-msgid "In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
-msgstr "Adicionalmente, *por favor contacte con el Helpdesk de GBIF y pida que la organización sea actualizada en el Registro de GBIF (GBIF Registry)* (esta parte es muy importante)."
+msgid "In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:164
@@ -613,8 +613,8 @@ msgstr "Normalmente GBIF tardará entre 5 y 60 minutos en comenzar la indexació
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:239
-msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
-msgstr "Si cree que GBIF no pudo indexar su conjunto de datos satisfactoriamente, envíe sus comentarios directamente a través de GBF.org o envíe un correo electrónico al Centro de ayuda de GBIF<helpdesk@gbif.org> para investigar qué sucedió. Si está interesado en saber por qué es posible que GBIF no haya (re)indexado su conjunto de datos, consulte lo siguiente."
+msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:240
@@ -629,8 +629,8 @@ msgstr "Eventualmente, GBIF apaga su servicio de indexación para realizar mante
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:245
-msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
-msgstr "Si cree que GBIF no pudo indexar su conjunto de datos, envíe sus comentarios directamente a través de GBF.org o envíe un correo electrónico al Centro de ayuda de GBIF <helpdesk@gbif.org> para investigar qué sucedió."
+msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:246
