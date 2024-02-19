@@ -1,6 +1,6 @@
 = FAQ
 
-Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
+Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Help Desk.
 
 == Installation
 
@@ -150,7 +150,7 @@ Ideally, the publishing organization should not be changed after the resource ha
 That being said, there are two ways to change the publishing organization.
 
 The easiest way is to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here].
-If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry.
+If you migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]: Please pay careful attention to step 5, where you will have to ask the GBIF Help Desk to update the GBIF Registry.
 
 The other way to proceed is to work directly in the IPT directory. Before you start anything, make a backup of your archives. Then, edit the resource.xml file of the dataset that you would like to work on (on your server in your IPT folder):
 
@@ -158,7 +158,7 @@ The other way to proceed is to work directly in the IPT directory. Before you st
 * Restart the IPT (restart Tomcat, restart the IPT service, etc),
 * Check that no error message appears in your IPT when you click publish.
 
-In addition to that, *please contact the GBIF helpdesk and ask that the organization be updated in the GBIF Registry* (this part is very important).
+In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important).
 
 
 === How do I change the type of an existing resource?
@@ -235,13 +235,13 @@ The answer depends on how long GBIF's indexing queue is, how big your dataset it
 
 Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor].
 
-If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below.
+If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below.
 
 === Why hasn't GBIF (re)indexed my dataset yet?
 
 Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected.
 
-If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened.
+If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Help Desk <helpdesk@gbif.org> to investigate what happened.
 
 === How often does GBIF reindex my dataset?
 
