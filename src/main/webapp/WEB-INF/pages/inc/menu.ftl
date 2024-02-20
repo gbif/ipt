@@ -102,7 +102,7 @@
                                 <a class="navbar-button btn btn-sm menu-link m-xl-auto" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.initials!"A"}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light text-light" aria-labelledby="accountDropdownLink">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light text-light fs-smaller" aria-labelledby="accountDropdownLink">
                                     <li>
                                         <a class="dropdown-item menu-link" href="${baseURL}/account.do">
                                             ${Session.curr_user.name}<br>
