@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"PO-Revision-Date: 2024-02-22 01:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -478,7 +478,7 @@ msgstr "Los eventos de muestreo proporcionan mejor documentación y mayor benefi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's Help Desk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr ""
+msgstr "Para hacerlo, debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico a la Mesa de ayuda de GBIF (helpdesk@gbif.org). En este correo electrónico, debe proporcionar los UUID del conjunto de datos de registros biológicos y del nuevo conjunto de datos. Entonces podremos enlazar el primer conjunto de datos con el nuevo antes de desindexarlo, evitando así la duplicación de registros biológicos y preservando las citas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
