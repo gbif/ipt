@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 09:58+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"PO-Revision-Date: 2024-02-22 01:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -196,22 +196,22 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus], sól
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:50
 msgid "http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]"
-msgstr ""
+msgstr "http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:51
 msgid "http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]"
-msgstr ""
+msgstr "http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:52
 msgid "http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]"
-msgstr ""
+msgstr "http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:53
 msgid "http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]"
-msgstr ""
+msgstr "http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/sampling-event-data.adoc:56
