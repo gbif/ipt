@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"PO-Revision-Date: 2024-02-22 01:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -109,7 +109,7 @@ msgstr "Sugerencia: puede instalar y mantener su propia instancia de IPT si tien
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:26
 msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Help Desk <helpdesk@gbif.org> for assistance."
-msgstr ""
+msgstr "Sugerencia: si no existe ningún centro de alojamiento de datos en su país, y usted o su organización no tienen los conocimientos técnicos y la capacidad para alojar un IPT, puede ponerse en contacto con la Mesa de ayuda de GBIF <helpdesk@gbif.org> para obtener asistencia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:27
@@ -124,7 +124,7 @@ msgstr "Sugerencia: para registrar su organización en GBIF, comience por comple
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:29
 msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Help Desk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
-msgstr ""
+msgstr "Sugerencia: si no está afiliado a ninguna organización, puede contactar a la Mesa de ayuda de GBIF <helpdesk@gbif.org> para que le proporcionen asistencia. Mientras tanto, puede proceder a publicar sus datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:33
