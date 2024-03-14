@@ -513,8 +513,13 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     public void addNewTaxon(String taxon, String type) {
       if (StringUtils.isNotEmpty(taxon)) {
+        int sizeBeforeAdding = taxa.size();
         taxa.add(new TaxonKeyword(taxon, type, null));
-        taxonItemsAdded++;
+        int sizeAfterAdding = taxa.size();
+
+        if (sizeAfterAdding > sizeBeforeAdding) {
+          taxonItemsAdded++;
+        }
       }
     }
 
