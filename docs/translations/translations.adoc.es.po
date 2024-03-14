@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-26 14:07+0000\n"
-"PO-Revision-Date: 2024-02-01 19:45\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-22 01:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,8 +45,8 @@ msgstr "Traduciendo la interfaz de usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:12
-msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
-msgstr "Las traducciones para la interfaz de usuario están contenidas en el archivo `ApplicationResources_en.properties`.  Puede pedir al mailto:helpdesk@gbif.org[Centro de ayuda] una cuenta en https://ipt.gbif-uat.org/[el desarrollo del IPT de GBIF], donde se aplicarán las nuevas traducciones."
+msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the Help Desk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
+msgstr "Las traducciones para la interfaz de usuario están contenidas en el fichero `ApplicationResources_en.properties`.  Puede pedir a mailto:helpdesk@gbif.org[la Mesa de ayuda] una cuenta en https://ipt.gbif-uat.org/[el IPT de desarrollo de GBIF], donde se aplicarán las nuevas traducciones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/translations.adoc:13
