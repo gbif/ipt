@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-06 22:35\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-22 01:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2612,8 +2612,8 @@ msgstr "Para agregar el recurso a una red, haga clic en el menú {threedots} y s
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:702
-msgid "Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk."
-msgstr "Por favor, sólo agregue su recurso a una red con la aprobación de los administradores de la red o de la mesa de ayuda de GBIF."
+msgid "Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk."
+msgstr "Por favor, sólo añada su recurso a una red con la aprobación de los administradores de la red o de la Mesa de ayuda de GBIF."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:703

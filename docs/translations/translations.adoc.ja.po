@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-07-26 14:07+0000\n"
-"PO-Revision-Date: 2023-07-26 14:28\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -45,8 +45,8 @@ msgstr "ユーザーインターフェースの翻訳"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:12
-msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
-msgstr "ユーザーインターフェースの翻訳は`ApplicationResources_en.properties`ファイルに含まれています。link:https://ipt.gbif-uat.org/[GBIF 開発用IPT]のアカウントをmailto:helpdesk@gbif.org[ヘルプデスク]に申請していただければ、新しい翻訳が適用されます。"
+msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the Help Desk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/translations.adoc:13
