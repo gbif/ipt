@@ -38,7 +38,7 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>1.48</dwc-api.version>
+    <dwc-api.version>1.49</dwc-api.version>
     <dwca-io.version>2.16</dwca-io.version>
     <gbif-api.version>1.14.2</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
@@ -94,7 +94,7 @@
     <mssql-jdbc.version>12.6.1.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
     <ojdbc.version>23.3.0.23.09</ojdbc.version>
-    <postgresql.version>42.7.2</postgresql.version>
+    <postgresql.version>42.7.3</postgresql.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
