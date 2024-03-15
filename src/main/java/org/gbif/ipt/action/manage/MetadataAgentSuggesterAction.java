@@ -66,7 +66,7 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
           .map(res -> getMetadataAgentsByType(res, agentType))
           .flatMap(Collection::stream)
           .filter(agent -> agent.getFullName() != null)
-          .collect(Collectors.toMap(Agent::getFullName, value -> value));
+          .collect(Collectors.toMap(Agent::getFullName, value -> value, (existing, newOne) -> existing));
     }
 
     return SUCCESS;
