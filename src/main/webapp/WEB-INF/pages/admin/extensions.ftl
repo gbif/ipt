@@ -179,6 +179,30 @@
 
         <div class="my-3 p-3">
             <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                <@s.text name="extension.synchronise.title"/>
+            </h5>
+
+            <p>
+                <@s.text name="admin.extensions.synchronise.help"/>
+            </p>
+
+            <form action='extensions.do' method='post'>
+                <div class="col-12 mt-2">
+                    <button id="synchronise" name="synchronise" type="submit" class="action-link-button action-link-button-primary">
+                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
+                            <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                        </svg>
+                        <@s.text name="button.synchronise"/>
+                    </button>
+                    <span class="fs-smaller">
+                        <@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string["d MMMM yyyy HH:mm"]}</@s.param></@s.text>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <div class="my-3 p-3">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="admin.extension.extensions"/>
             </h5>
 
@@ -203,30 +227,6 @@
                     </#list>
                 </div>
             </div>
-        </div>
-
-        <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                <@s.text name="extension.synchronise.title"/>
-            </h5>
-
-            <p>
-                <@s.text name="admin.extensions.synchronise.help"/>
-            </p>
-
-            <form action='extensions.do' method='post'>
-                <div class="col-12 mt-2">
-                    <button id="synchronise" name="synchronise" type="submit" class="action-link-button action-link-button-primary">
-                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
-                            <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                        </svg>
-                        <@s.text name="button.synchronise"/>
-                    </button>
-                    <span class="fs-smaller">
-                        <@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string["d MMMM yyyy HH:mm"]}</@s.param></@s.text>
-                    </span>
-                </div>
-            </form>
         </div>
 
         <div class="my-3 p-3">
