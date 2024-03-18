@@ -16,6 +16,8 @@ package org.gbif.ipt.action.portal;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * Class similar to TaxonomicCoverage, but the TaxonomicKeywords are OrganizedTaxonomicKeywords. This conveniently
  * stores all scientific names and common names for a rank together. Each display name is simply the concatenation
@@ -23,24 +25,9 @@ import java.util.List;
  * <p>
  * @see org.gbif.metadata.eml.ipt.model.TaxonKeyword in project gbif-metadata-profile
  */
+@Data
 public class OrganizedTaxonomicKeywords {
 
   private String rank;
   private List<String> displayNames = new ArrayList<>();
-
-  public String getRank() {
-    return rank;
-  }
-
-  public void setRank(String rank) {
-    this.rank = rank;
-  }
-
-  public List<String> getDisplayNames() {
-    return displayNames;
-  }
-
-  public void setDisplayNames(List<String> displayNames) {
-    this.displayNames = displayNames;
-  }
 }

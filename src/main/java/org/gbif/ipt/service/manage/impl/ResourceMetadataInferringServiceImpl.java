@@ -101,6 +101,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   public static final String CAMTRAP_DEPLOYMENTS_LONGITUDE = "longitude";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START = "deploymentStart";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END = "deploymentEnd";
+  public static final int TAXON_LIMIT = 100;
 
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
@@ -278,6 +279,26 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       errorsPresent = true;
     }
 
+    if (params.kingdomsLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(KINGDOM, "eml.warning.limitExceeded");
+    }
+
+    if (params.phylumsLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(PHYLUM, "eml.warning.limitExceeded");
+    }
+
+    if (params.classesLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(CLASS, "eml.warning.limitExceeded");
+    }
+
+    if (params.ordersLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(ORDER, "eml.warning.limitExceeded");
+    }
+
+    if (params.familiesLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(FAMILY, "eml.warning.limitExceeded");
+    }
+
     return errorsPresent;
   }
 
@@ -427,25 +448,50 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private void processLine(String[] in, InferredEmlTaxonomicMetadataParams params) {
-    if (params.isDataMapped() && params.isMaxItemsNumberNotExceeded()) {
-      if (params.isKingdomPropertyMapped() && params.isKingdomIndexWithingRange(in.length)) {
-        params.addNewTaxon(in[params.kingdomSourceColumnIndex], KINGDOM);
+    if (params.isDataMapped()) {
+      if (params.isMaxNumberOfKingdomsExceeded()) {
+        if (!params.kingdomsLimitExceeded) {
+          params.removeAllKingdoms();
+          params.kingdomsLimitExceeded = true;
+        }
+      } else if (params.isKingdomPropertyMapped() && params.isKingdomIndexWithingRange(in.length)) {
+        params.addNewKingdom(in[params.kingdomSourceColumnIndex]);
       }
 
-      if (params.isPhylumPropertyMapped() && params.isPhylumIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.phylumSourceColumnIndex], PHYLUM);
+      if (params.isMaxNumberOfPhylumsExceeded()) {
+        if (!params.phylumsLimitExceeded) {
+          params.removeAllPhylums();
+          params.phylumsLimitExceeded = true;
+        }
+      } else if (params.isPhylumPropertyMapped() && params.isPhylumIndexWithinRange(in.length)) {
+        params.addNewPhylum(in[params.phylumSourceColumnIndex]);
       }
 
-      if (params.isClassPropertyMapped() && params.isClassIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.classSourceColumnIndex], CLASS);
+      if (params.isMaxNumberOfClassesExceeded()) {
+        if (!params.classesLimitExceeded) {
+          params.removeAllClasses();
+          params.classesLimitExceeded = true;
+        }
+      } else if (params.isClassPropertyMapped() && params.isClassIndexWithinRange(in.length)) {
+        params.addNewClass(in[params.classSourceColumnIndex]);
       }
 
-      if (params.isOrderPropertyMapped() && params.isOrderIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.orderSourceColumnIndex], ORDER);
+      if (params.isMaxNumberOfOrdersExceeded()) {
+        if (!params.ordersLimitExceeded) {
+          params.removeAllOrders();
+          params.ordersLimitExceeded = true;
+        }
+      } else if (params.isOrderPropertyMapped() && params.isOrderIndexWithinRange(in.length)) {
+        params.addNewOrder(in[params.orderSourceColumnIndex]);
       }
 
-      if (params.isFamilyPropertyMapped() && params.isFamilyIndexWithingRange(in.length)) {
-        params.addNewTaxon(in[params.familySourceColumnIndex], FAMILY);
+      if (params.isMaxNumberOfFamiliesExceeded()) {
+        if (!params.familiesLimitExceeded) {
+          params.removeAllFamilies();
+          params.familiesLimitExceeded = true;
+        }
+      } else if (params.isFamilyPropertyMapped() && params.isFamilyIndexWithingRange(in.length)) {
+        params.addNewFamily(in[params.familySourceColumnIndex]);
       }
     }
   }
@@ -509,6 +555,17 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     private boolean mappingsExist;
     private boolean serverError;
     private int taxonItemsAdded = 0;
+    private int kingdomsAdded = 0;
+    private int phylumsAdded = 0;
+    private int classesAdded = 0;
+    private int ordersAdded = 0;
+    private int familiesAdded = 0;
+    private boolean kingdomsLimitExceeded = false;
+    private boolean phylumsLimitExceeded = false;
+    private boolean classesLimitExceeded = false;
+    private boolean ordersLimitExceeded = false;
+    private boolean familiesLimitExceeded = false;
+
     private final Set<TaxonKeyword> taxa = new HashSet<>();
 
     public void addNewTaxon(String taxon, String type) {
@@ -519,12 +576,87 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
         if (sizeAfterAdding > sizeBeforeAdding) {
           taxonItemsAdded++;
+
+          switch (type) {
+            case KINGDOM:
+              kingdomsAdded++;
+              break;
+            case PHYLUM:
+              phylumsAdded++;
+              break;
+            case CLASS:
+              classesAdded++;
+              break;
+            case ORDER:
+              ordersAdded++;
+              break;
+            case FAMILY:
+              familiesAdded++;
+              break;
+            default:
+          }
         }
       }
     }
 
-    public boolean isMaxItemsNumberNotExceeded() {
-      return taxonItemsAdded < 200;
+    public void addNewKingdom(String taxon) {
+      addNewTaxon(taxon, KINGDOM);
+    }
+
+    public void addNewPhylum(String taxon) {
+      addNewTaxon(taxon, PHYLUM);
+    }
+
+    public void addNewClass(String taxon) {
+      addNewTaxon(taxon, CLASS);
+    }
+
+    public void addNewOrder(String taxon) {
+      addNewTaxon(taxon, ORDER);
+    }
+
+    public void addNewFamily(String taxon) {
+      addNewTaxon(taxon, FAMILY);
+    }
+
+    public void removeAllKingdoms() {
+      taxa.removeIf(tk -> KINGDOM.equals(tk.getRank()));
+    }
+
+    public void removeAllPhylums() {
+      taxa.removeIf(tk -> PHYLUM.equals(tk.getRank()));
+    }
+
+    public void removeAllClasses() {
+      taxa.removeIf(tk -> CLASS.equals(tk.getRank()));
+    }
+
+    public void removeAllOrders() {
+      taxa.removeIf(tk -> ORDER.equals(tk.getRank()));
+    }
+
+    public void removeAllFamilies() {
+      taxa.removeIf(tk -> FAMILY.equals(tk.getRank()));
+    }
+
+    public boolean isMaxNumberOfKingdomsExceeded() {
+      return kingdomsAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfPhylumsExceeded() {
+      return phylumsAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfClassesExceeded() {
+      return classesAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfOrdersExceeded() {
+      return ordersAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfFamiliesExceeded() {
+      return familiesAdded > TAXON_LIMIT;
     }
 
     public boolean isDataMapped() {
