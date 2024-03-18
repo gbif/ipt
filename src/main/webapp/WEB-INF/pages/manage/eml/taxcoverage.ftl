@@ -385,7 +385,7 @@
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && ((k.displayNames?size > 0) || inferredMetadata.inferredTaxonomicCoverage.rankWarnings[k.rank?string]?has_content) >
                                                     <tr>
                                                         <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
                                                         <#if k.rank?lower_case == "class">
@@ -395,9 +395,19 @@
                                                         </#if>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
-                                                            <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
-                                                            </#list>
+                                                            <#if k.rank=="class">
+                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get("class")!""/>
+                                                            <#else>
+                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings[k.rank?string]!""/>
+                                                            </#if>
+
+                                                            <#if rankWarning?has_content>
+                                                                <code><@s.text name="${rankWarning}"/></code>
+                                                            <#else>
+                                                                <#list k.displayNames as name>
+                                                                    &nbsp;${name}<#if name_has_next>,</#if>
+                                                                </#list>
+                                                            </#if>
                                                         </td>
                                                     </tr>
                                                 </#if>
