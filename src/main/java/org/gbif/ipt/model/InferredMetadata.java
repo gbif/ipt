@@ -13,5 +13,9 @@
  */
 package org.gbif.ipt.model;
 
+import java.util.Date;
+
 public interface InferredMetadata {
+
+  Date getLastModified();
 }

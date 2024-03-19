@@ -308,8 +308,14 @@ public class MetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if absent or re-infer if requested
-    if (reinferMetadata || resource.getInferredMetadata() == null) {
+    boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
+        && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
+
+    // infer metadata if:
+    // 1) It was requested
+    // 2) It is absent
+    // 3) Mappings were changed
+    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
       InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredEmlMetadata) {

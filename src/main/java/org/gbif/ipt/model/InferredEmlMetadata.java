@@ -24,4 +24,9 @@ public class InferredEmlMetadata implements InferredMetadata {
   private InferredEmlTaxonomicCoverage inferredTaxonomicCoverage;
   private InferredEmlTemporalCoverage inferredTemporalCoverage;
   private Date lastModified;
+
+  @Override
+  public Date getLastModified() {
+    return lastModified;
+  }
 }
