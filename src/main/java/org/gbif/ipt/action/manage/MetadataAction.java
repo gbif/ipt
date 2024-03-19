@@ -23,7 +23,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -40,7 +39,6 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.ipt.model.Agent;
-import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
@@ -105,9 +103,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
   private InferredEmlMetadata inferredMetadata;
-  private BBox inferredGeocoverage;
-  private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
-  private KeyNamePair inferredTemporalCoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -993,14 +988,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   public InferredEmlMetadata getInferredMetadata() {
     return inferredMetadata;
-  }
-
-  public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
-    return inferredTaxonomicCoverage;
-  }
-
-  public KeyNamePair getInferredTemporalCoverage() {
-    return inferredTemporalCoverage;
   }
 
   public void setFile(File file) {
