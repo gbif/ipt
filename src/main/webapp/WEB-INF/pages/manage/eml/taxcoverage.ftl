@@ -380,6 +380,10 @@
 
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
+                                <div class="mt-2 mb-4">
+                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" />
+                                </div>
+
                                 <!-- Data is inferred, preview -->
                                 <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
                                     <div class="table-responsive">
