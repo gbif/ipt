@@ -309,6 +309,7 @@ public class MetadataAction extends ManagerBaseAction {
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
     boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
+        && resource.getInferredMetadata().getLastModified() != null
         && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
 
     // infer metadata if:
