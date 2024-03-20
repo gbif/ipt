@@ -37,6 +37,11 @@
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
 
+    <action name="fallback" class="org.gbif.ipt.action.portal.FallbackAction">
+      <result name="input">/WEB-INF/pages/portal/fallback.ftl</result>
+      <result>/WEB-INF/pages/portal/fallback.ftl</result>
+    </action>
+
     <!-- data dir files -->
     <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="metadata">
       <result name="success" type="stream">

@@ -17,6 +17,22 @@
         }
     }
 </script>
+<script>
+    // Check if the public URL is correct, otherwise display the fallback page
+    document.addEventListener("DOMContentLoaded", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "${baseURL}/styles/main.css");
+        xhr.onload = function() {
+            if (xhr.status !== 200) {
+                window.location.href = "/fallback.do";
+            }
+        };
+        xhr.onerror = function() {
+            window.location.href = "/fallback.do";
+        };
+        xhr.send();
+    });
+</script>
 
 <body class="bg-body d-flex flex-column h-100">
 
