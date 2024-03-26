@@ -86,7 +86,7 @@
 
             <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    IPT Public URL not available
+                    [@s.text name="error.fallback.title"/]
                 </h1>
             </div>
         </div>
@@ -96,12 +96,9 @@
 <main class="container main-content-container">
     <div class="my-3 p-3">
         <p class="text-center">
-            Failed to load IPT files from ${baseURL}. Please make sure the IPT public URL is properly configured.
-            See <a href="https://ipt.gbif.org/manual/en/ipt/latest/">IPT documentation</a>
+            [@s.text name="error.fallback.description"][@s.param]${baseURL}[/@s.param][@s.param]https://ipt.gbif.org/manual/en/ipt/latest/[/@s.param][/@s.text]
         </p>
     </div>
 </main>
 
 </body>
-
-[#--[#include "/WEB-INF/pages/inc/footer.ftl"/]--]
