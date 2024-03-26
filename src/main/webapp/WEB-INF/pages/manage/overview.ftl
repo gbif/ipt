@@ -1387,7 +1387,10 @@
                                             <@s.text name="manage.overview.published.description"/>
                                         </#if>
                                         <br/><br/>
-                                        <#if organisationWithPrimaryDoiAccount??>
+
+                                        <#assign displayDoiFunctionality = organisationWithPrimaryDoiAccount?has_content && currentUser.hasRegistrationRights()>
+
+                                        <#if displayDoiFunctionality>
                                             <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
                                         <#else>
                                             <@s.text name="manage.overview.published.description.noDoiAccount"/>
@@ -1399,16 +1402,18 @@
                                 </h5>
                             </div>
 
-                            <#assign doiActionName>
-                                <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
-                                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
-                                <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
-                                <#else><@s.text name="button.reserve"/> DOI<#t>
-                                </#if>
-                            </#assign>
+                            <#if displayDoiFunctionality>
+                                <#assign doiActionName>
+                                    <#if resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
+                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
+                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
+                                    <#else><@s.text name="button.reserve"/> DOI<#t>
+                                    </#if>
+                                </#assign>
+                            </#if>
 
                             <div class="col-4 d-flex justify-content-end">
-                                <#if organisationWithPrimaryDoiAccount??>
+                                <#if displayDoiFunctionality>
                                     <a title="${doiActionName}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                                         <svg class="overview-action-button-icon" viewBox="0 0 24 24">
                                             <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
