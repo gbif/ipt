@@ -150,10 +150,10 @@ public class SourceAction extends ManagerBaseAction {
         File tmpDir = dataDir.tmpDir();
         // override auto-generated name
         String unzippedFileName = fileFileName != null
-                ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
+            ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
 
         List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
-        addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
+        addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
 
         // import each file
         for (File f : files) {
@@ -161,13 +161,19 @@ public class SourceAction extends ManagerBaseAction {
         }
       } catch (IOException e) {
         LOG.error(e);
-        addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
+        addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
         return ERROR;
       } catch (UnsupportedCompressionType e) {
+        LOG.error(e);
         addActionError(getText("manage.source.unsupported.compression.format"));
         return ERROR;
       } catch (InvalidFilenameException e) {
+        LOG.error(e);
         addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     } else {
@@ -175,7 +181,12 @@ public class SourceAction extends ManagerBaseAction {
         // treat as is - hopefully a simple text or Excel file
         addDataFile(file, fileFileName);
       } catch (InvalidFilenameException e) {
+        LOG.error(e);
         addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     }
