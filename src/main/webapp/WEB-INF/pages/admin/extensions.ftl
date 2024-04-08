@@ -194,9 +194,11 @@
                         </svg>
                         <@s.text name="button.synchronise"/>
                     </button>
+                    <#if lastSynchronised??>
                     <span class="fs-smaller">
                         <@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string["d MMMM yyyy HH:mm"]}</@s.param></@s.text>
                     </span>
+                    </#if>
                 </div>
             </form>
         </div>
