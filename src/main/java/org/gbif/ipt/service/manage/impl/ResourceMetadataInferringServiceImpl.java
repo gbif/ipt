@@ -306,21 +306,69 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     // calculate column indexes for mapping
     for (PropertyMapping field : mapping.getFields()) {
       if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
-        params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.geographic.decimalLongitudeSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for decimalLongitude, something wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
-        params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.geographic.decimalLatitudeSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for decimalLatitude, something wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.kingdomSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for kingdom, something wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.phylumSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.taxonomic.phylumSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.phylumSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for phylum, something is wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.classSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.taxonomic.classSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.classSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for class, something is wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.orderSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.taxonomic.orderSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.orderSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for order, something is wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.familySourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.taxonomic.familySourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.familySourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for family, something is wrong with the mapping: {}", field);
+        }
       } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
-        params.temporal.eventDateSourceColumnIndex = field.getIndex();
+        if (field.getIndex() != null) {
+          params.temporal.eventDateSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for eventDate, something is wrong with the mapping: {}", field);
+        }
       }
     }
 
@@ -366,8 +414,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     if (params.isDecimalLongitudePropertyMapped()
         && params.isDecimalLatitudePropertyMapped()
         && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawLatitudeValue = in[params.decimalLatitudeSourceColumnIndex];
-      String rawLongitudeValue = in[params.decimalLongitudeSourceColumnIndex];
+      String rawLatitudeValue = params.decimalLatitudeSourceDefaultValue != null
+          ? params.decimalLatitudeSourceDefaultValue : in[params.decimalLatitudeSourceColumnIndex];
+      String rawLongitudeValue = params.decimalLongitudeSourceDefaultValue != null
+          ? params.decimalLongitudeSourceDefaultValue : in[params.decimalLongitudeSourceColumnIndex];
 
       OccurrenceParseResult<LatLng> latLngParseResult =
           CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
@@ -405,7 +455,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void processLine(String[] in, InferredEmlTemporalMetadataParams params) {
     if (params.isEventDatePropertyMapped() && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawEventDateValue = in[params.eventDateSourceColumnIndex];
+      String rawEventDateValue = params.eventDateSourceDefaultValue != null
+          ? params.eventDateSourceDefaultValue : in[params.eventDateSourceColumnIndex];
 
       TemporalParser temporalParser = DateParsers.defaultTemporalParser();
       ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
@@ -449,7 +500,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void processLine(String[] in, InferredEmlTaxonomicMetadataParams params) {
     if (params.isDataMapped()) {
-      if (params.isMaxNumberOfKingdomsExceeded()) {
+      // kingdom
+      if (params.kingdomSourceDefaultValue != null && !params.defaultKingdomValueAdded) {
+        params.addNewKingdom(params.kingdomSourceDefaultValue);
+        params.defaultKingdomValueAdded = true;
+      } else if (params.isMaxNumberOfKingdomsExceeded()) {
         if (!params.kingdomsLimitExceeded) {
           params.removeAllKingdoms();
           params.kingdomsLimitExceeded = true;
@@ -458,7 +513,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.addNewKingdom(in[params.kingdomSourceColumnIndex]);
       }
 
-      if (params.isMaxNumberOfPhylumsExceeded()) {
+      // phylum
+      if (params.phylumSourceDefaultValue != null && !params.defaultPhylumValueAdded) {
+        params.addNewPhylum(params.phylumSourceDefaultValue);
+        params.defaultPhylumValueAdded = true;
+      } else if (params.isMaxNumberOfPhylumsExceeded()) {
         if (!params.phylumsLimitExceeded) {
           params.removeAllPhylums();
           params.phylumsLimitExceeded = true;
@@ -467,7 +526,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.addNewPhylum(in[params.phylumSourceColumnIndex]);
       }
 
-      if (params.isMaxNumberOfClassesExceeded()) {
+      // class
+      if (params.classSourceDefaultValue != null && !params.defaultClassValueAdded) {
+        params.addNewClass(params.classSourceDefaultValue);
+        params.defaultClassValueAdded = true;
+      } else if (params.isMaxNumberOfClassesExceeded()) {
         if (!params.classesLimitExceeded) {
           params.removeAllClasses();
           params.classesLimitExceeded = true;
@@ -476,7 +539,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.addNewClass(in[params.classSourceColumnIndex]);
       }
 
-      if (params.isMaxNumberOfOrdersExceeded()) {
+      // order
+      if (params.orderSourceDefaultValue != null && !params.defaultOrderValueAdded) {
+        params.addNewOrder(params.orderSourceDefaultValue);
+        params.defaultOrderValueAdded = true;
+      } else if (params.isMaxNumberOfOrdersExceeded()) {
         if (!params.ordersLimitExceeded) {
           params.removeAllOrders();
           params.ordersLimitExceeded = true;
@@ -485,7 +552,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         params.addNewOrder(in[params.orderSourceColumnIndex]);
       }
 
-      if (params.isMaxNumberOfFamiliesExceeded()) {
+      // family
+      if (params.familySourceDefaultValue != null && !params.defaultFamilyValueAdded) {
+        params.addNewFamily(params.familySourceDefaultValue);
+        params.defaultFamilyValueAdded = true;
+      } else if (params.isMaxNumberOfFamiliesExceeded()) {
         if (!params.familiesLimitExceeded) {
           params.removeAllFamilies();
           params.familiesLimitExceeded = true;
@@ -504,7 +575,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   static class InferredEmlGeographicMetadataParams {
     private int decimalLongitudeSourceColumnIndex = -1;
+    private String decimalLongitudeSourceDefaultValue;
     private int decimalLatitudeSourceColumnIndex = -1;
+    private String decimalLatitudeSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     private boolean noValidDataGeo = true;
@@ -519,16 +592,17 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     public boolean isDecimalLongitudePropertyMapped() {
-      return decimalLongitudeSourceColumnIndex != -1;
+      return decimalLongitudeSourceColumnIndex != -1 || decimalLongitudeSourceDefaultValue != null;
     }
 
     public boolean isDecimalLatitudePropertyMapped() {
-      return decimalLatitudeSourceColumnIndex != -1;
+      return decimalLatitudeSourceColumnIndex != -1 || decimalLatitudeSourceDefaultValue != null;
     }
   }
 
   static class InferredEmlTemporalMetadataParams {
     private int eventDateSourceColumnIndex = -1;
+    private String eventDateSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     boolean noValidDataTemporal = true;
@@ -542,16 +616,21 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     public boolean isEventDatePropertyMapped() {
-      return eventDateSourceColumnIndex != -1;
+      return eventDateSourceColumnIndex != -1 || eventDateSourceDefaultValue != null;
     }
   }
 
   static class InferredEmlTaxonomicMetadataParams {
     private int kingdomSourceColumnIndex = -1;
+    private String kingdomSourceDefaultValue;
     private int phylumSourceColumnIndex = -1;
+    private String phylumSourceDefaultValue;
     private int classSourceColumnIndex = -1;
+    private String classSourceDefaultValue;
     private int orderSourceColumnIndex = -1;
+    private String orderSourceDefaultValue;
     private int familySourceColumnIndex = -1;
+    private String familySourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     private int taxonItemsAdded = 0;
@@ -560,6 +639,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     private int classesAdded = 0;
     private int ordersAdded = 0;
     private int familiesAdded = 0;
+    private boolean defaultKingdomValueAdded = false;
+    private boolean defaultPhylumValueAdded = false;
+    private boolean defaultClassValueAdded = false;
+    private boolean defaultOrderValueAdded = false;
+    private boolean defaultFamilyValueAdded = false;
     private boolean kingdomsLimitExceeded = false;
     private boolean phylumsLimitExceeded = false;
     private boolean classesLimitExceeded = false;
@@ -660,11 +744,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     public boolean isDataMapped() {
-      return kingdomSourceColumnIndex != -1
-          || phylumSourceColumnIndex != -1
-          || classSourceColumnIndex != -1
-          || orderSourceColumnIndex != -1
-          || familySourceColumnIndex != -1;
+      return kingdomSourceColumnIndex != -1 || kingdomSourceDefaultValue != null
+          || phylumSourceColumnIndex != -1 || phylumSourceDefaultValue != null
+          || classSourceColumnIndex != -1 || classSourceDefaultValue != null
+          || orderSourceColumnIndex != -1 || orderSourceDefaultValue != null
+          || familySourceColumnIndex != -1 || familySourceDefaultValue != null;
     }
 
     public boolean isKingdomPropertyMapped() {
