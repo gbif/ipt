@@ -389,21 +389,13 @@
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && ((k.displayNames?size > 0) || inferredMetadata.inferredTaxonomicCoverage.rankWarnings[k.rank?string]?has_content) >
+                                                <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content) >
                                                     <tr>
-                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                        <#if k.rank?lower_case == "class">
-                                                            <th class="col-4">Class</th>
-                                                        <#else>
-                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                        </#if>
+                                                        <#-- 1st col, write rank name once -->
+                                                        <th class="col-4">${ranks.get(k.rank?html)?cap_first!}</th>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
-                                                            <#if k.rank=="class">
-                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get("class")!""/>
-                                                            <#else>
-                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings[k.rank?string]!""/>
-                                                            </#if>
+                                                            <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
 
                                                             <#if rankWarning?has_content>
                                                                 <code><@s.text name="${rankWarning}"/></code>
