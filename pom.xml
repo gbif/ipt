@@ -51,7 +51,7 @@
     <apache-poi.version>5.2.5</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-io.version>2.16.0</commons-io.version>
+    <commons-io.version>2.16.1</commons-io.version>
     <commons-lang3.version>3.14.0</commons-lang3.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <commons-validator.version>1.8.0</commons-validator.version>
