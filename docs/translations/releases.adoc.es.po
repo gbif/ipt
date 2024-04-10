@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-04-10 11:04+0000\n"
-"PO-Revision-Date: 2024-04-10 13:40\n"
+"PO-Revision-Date: 2024-04-10 15:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-0-2-april-2024,3.0.2>>."
-msgstr "La versión estable actual es la <<3-0-1-april-2024,3.0.2>>."
+msgstr "La versión estable actual es la <<3-0-2-april-2024,3.0.2>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -63,7 +63,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/54?closed=1[11 issues]."
-msgstr "Abordadas https://github.com/gbif/ipt/milestone/52?closed=1[11 incidencias]."
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/54?closed=1[11 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
