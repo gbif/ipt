@@ -23,6 +23,9 @@ ENV IPT_DATA_DIR=/srv/ipt
 
 COPY --from=builder /usr/src/ipt/target/ipt /usr/local/tomcat/webapps/${IPT_NAME}
 
+# Modify maxParameterCount in server.xml
+RUN sed -i 's/maxParameterCount="1000"/maxParameterCount="10000"/g' /usr/local/tomcat/conf/server.xml
+
 VOLUME /srv/ipt
 
 EXPOSE 8080
