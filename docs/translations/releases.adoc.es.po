@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-04-10 11:04+0000\n"
-"PO-Revision-Date: 2024-04-10 12:27\n"
+"PO-Revision-Date: 2024-04-10 13:40\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-0-2-april-2024,3.0.2>>."
-msgstr ""
+msgstr "La versión estable actual es la <<3-0-1-april-2024,3.0.2>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -42,17 +42,17 @@ msgstr "Está leyendo la última versión del manual.  Puede leer versiones ante
 #: en/modules/ROOT/pages/releases.adoc:14
 #, no-wrap
 msgid "*3.0.2* – April 2024"
-msgstr ""
+msgstr "*3.0.2* - Abril 2014"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:17
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.2/ipt-3.0.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.2/ipt-3.0.2.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[Paquetes Linux] o xref:installation.adoc#installation-from-docker[uso de Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:18
 msgid "xref:release-notes.adoc[IPT v3.0.2 Release Notes]"
-msgstr ""
+msgstr "xref:release-notes.adoc[Notas de la versión IPT v3.0.2]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -63,7 +63,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/54?closed=1[11 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/52?closed=1[11 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -103,7 +103,7 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
 msgid "This minor release addresses issues with inferred metadata, DOI functionality, and setup."
-msgstr ""
+msgstr "Esta versión menor soluciona problemas con los metadatos inferidos, la funcionalidad DOI y la configuración."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
