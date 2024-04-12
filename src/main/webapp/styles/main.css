@@ -474,6 +474,11 @@ table {
     box-shadow: none;
 }
 
+/* Health page */
+.health-status-item {
+    box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
+}
+
 /* Health logo with red circle */
 /*.health-link::after {*/
 /*    content: ' ';*/

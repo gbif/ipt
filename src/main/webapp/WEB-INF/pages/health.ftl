@@ -28,7 +28,7 @@
 <main class="container main-content-container">
     <div class="row g-3 mt-1">
         <div class="col-lg-6">
-            <div class="card">
+            <div class="card health-status-item">
                 <div class="card-header">
                     <@s.text name="portal.health.network"/>
                 </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card h-100">
+            <div class="card h-100 health-status-item">
                 <div class="card-header">
                     <@s.text name="portal.health.disk.usage"/>
                 </div>
@@ -130,7 +130,7 @@
 
     <div class="row g-3 mt-1 mb-3">
         <div class="col-lg-6">
-            <div class="card">
+            <div class="card health-status-item">
                 <div class="card-header">
                     <@s.text name="portal.health.file.permissions"/>
                 </div>
@@ -193,7 +193,7 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card">
+            <div class="card health-status-item">
                 <div class="card-header">
                     <@s.text name="portal.health.system"/>
                 </div>
