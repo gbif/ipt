@@ -5,7 +5,7 @@
 
     <#macro installedSchemaItem ds>
         <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
-            <div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+            <div class="data-package-schema-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
                 <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
                     <div class="me-2">
                         <h4 class="d-flex fs-regular mt-1 mb-0">
