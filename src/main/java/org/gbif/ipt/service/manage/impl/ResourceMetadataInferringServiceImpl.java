@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,6 +77,9 @@ import com.google.inject.Singleton;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CLASS;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_EVENT;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_OCCURRENCE;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_TAXON;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
 import static org.gbif.ipt.config.Constants.ORDER;
@@ -303,7 +307,78 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private void processMapping(ExtensionMapping mapping, InferredEmlMetadataParams params) {
-    // calculate column indexes for mapping
+    BiConsumer<String[], InferredEmlMetadataParams> lineProcessor;
+
+    // skip unsuitable mapping, calculate column indexes
+    if (DWC_ROWTYPE_OCCURRENCE.equals(mapping.getExtension().getRowType())) {
+      findGeoAndTemporalFieldsIndexes(mapping, params);
+      findTaxaFieldsIndexes(mapping, params);
+      lineProcessor = this::occurrenceMappingLineProcessor;
+    } else if (DWC_ROWTYPE_EVENT.equals(mapping.getExtension().getRowType())) {
+      findGeoAndTemporalFieldsIndexes(mapping, params);
+      lineProcessor = this::eventMappingLineProcessor;
+    } else if (DWC_ROWTYPE_TAXON.equals(mapping.getExtension().getRowType())) {
+      findTaxaFieldsIndexes(mapping, params);
+      lineProcessor = this::taxonMappingLineProcessor;
+    } else {
+      return;
+    }
+
+    ClosableReportingIterator<String[]> iter = null;
+    try {
+      // get the source iterator
+      iter = sourceManager.rowIterator(mapping.getSource());
+
+      while (iter.hasNext()) {
+        String[] in = iter.next();
+        if (in == null || in.length == 0) {
+          continue;
+        }
+
+        // process line
+        lineProcessor.accept(in, params);
+      }
+      // Catch ParseException, occurs for Excel files. Find out why
+    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
+      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+    } catch (Exception e) {
+      LOG.error("Error while trying to infer metadata from source data", e);
+      params.geographic.serverError = true;
+      params.temporal.serverError = true;
+      params.taxonomic.serverError = true;
+    } finally {
+      if (iter != null) {
+        try {
+          iter.close();
+        } catch (Exception e) {
+          LOG.error("Error while closing iterator", e);
+          params.geographic.serverError = true;
+          params.temporal.serverError = true;
+          params.taxonomic.serverError = true;
+        }
+      }
+    }
+  }
+
+  private void occurrenceMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.geographic);
+    processLine(in, params.temporal);
+    processLine(in, params.taxonomic);
+  }
+
+  private void eventMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.geographic);
+    processLine(in, params.temporal);
+  }
+
+  private void taxonMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.taxonomic);
+  }
+
+  private void findGeoAndTemporalFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
+    params.geographic.resetIndexParams();
+    params.temporal.resetIndexParams();
+
     for (PropertyMapping field : mapping.getFields()) {
       if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
         if (field.getIndex() != null) {
@@ -321,7 +396,23 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         } else {
           LOG.error("There is no index nor default value for decimalLatitude, something wrong with the mapping: {}", field);
         }
-      } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
+      } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.temporal.eventDateSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for eventDate, something is wrong with the mapping: {}", field);
+        }
+      }
+    }
+  }
+
+  private void findTaxaFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
+    params.taxonomic.resetIndexParams();
+
+    for (PropertyMapping field : mapping.getFields()) {
+      if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
         if (field.getIndex() != null) {
           params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
         } else if (field.getDefaultValue() != null) {
@@ -360,51 +451,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
           params.taxonomic.familySourceDefaultValue = field.getDefaultValue();
         } else {
           LOG.error("There is no index or default value for family, something is wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.temporal.eventDateSourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for eventDate, something is wrong with the mapping: {}", field);
-        }
-      }
-    }
-
-    ClosableReportingIterator<String[]> iter = null;
-    try {
-      // get the source iterator
-      iter = sourceManager.rowIterator(mapping.getSource());
-      boolean initializeExtremeValues = true;
-
-      while (iter.hasNext()) {
-        String[] in = iter.next();
-        if (in == null || in.length == 0) {
-          continue;
-        }
-
-        processLine(in, params.geographic);
-        processLine(in, params.taxonomic);
-        processLine(in, params.temporal);
-      }
-      // Catch ParseException, occurs for Excel files. Find out why
-    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
-      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
-    } catch (Exception e) {
-      LOG.error("Error while trying to infer metadata from source data", e);
-      params.geographic.serverError = true;
-      params.temporal.serverError = true;
-      params.taxonomic.serverError = true;
-    } finally {
-      if (iter != null) {
-        try {
-          iter.close();
-        } catch (Exception e) {
-          LOG.error("Error while closing iterator", e);
-          params.geographic.serverError = true;
-          params.temporal.serverError = true;
-          params.taxonomic.serverError = true;
         }
       }
     }
@@ -598,6 +644,13 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     public boolean isDecimalLatitudePropertyMapped() {
       return decimalLatitudeSourceColumnIndex != -1 || decimalLatitudeSourceDefaultValue != null;
     }
+
+    public void resetIndexParams() {
+      decimalLongitudeSourceColumnIndex = -1;
+      decimalLongitudeSourceDefaultValue = null;
+      decimalLatitudeSourceColumnIndex = -1;
+      decimalLatitudeSourceDefaultValue = null;
+    }
   }
 
   static class InferredEmlTemporalMetadataParams {
@@ -617,6 +670,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     public boolean isEventDatePropertyMapped() {
       return eventDateSourceColumnIndex != -1 || eventDateSourceDefaultValue != null;
+    }
+
+    public void resetIndexParams() {
+      eventDateSourceColumnIndex = -1;
+      eventDateSourceDefaultValue = null;
     }
   }
 
@@ -789,6 +847,24 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     public boolean isFamilyIndexWithingRange(int range) {
       return familySourceColumnIndex < range;
+    }
+
+    public void resetIndexParams() {
+      kingdomSourceColumnIndex = -1;
+      kingdomSourceDefaultValue = null;
+      phylumSourceColumnIndex = -1;
+      phylumSourceDefaultValue = null;
+      classSourceColumnIndex = -1;
+      classSourceDefaultValue = null;
+      orderSourceColumnIndex = -1;
+      orderSourceDefaultValue = null;
+      familySourceColumnIndex = -1;
+      familySourceDefaultValue = null;
+      defaultKingdomValueAdded = false;
+      defaultPhylumValueAdded = false;
+      defaultClassValueAdded = false;
+      defaultOrderValueAdded = false;
+      defaultFamilyValueAdded = false;
     }
   }
 
