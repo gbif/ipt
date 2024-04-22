@@ -308,9 +308,17 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     super(cfg, dataDir);
   }
 
+  // TODO: 24/04/2023 implement
+  public static void copyArchiveFileProperties(File from, TextFileSource to) {
+    to.setEncoding("UTF-8");
+    to.setFieldsEnclosedBy(null);
+    to.setFieldsTerminatedBy(",");
+    to.setIgnoreHeaderLines(1);
+    to.setDateFormat("YYYY-MM-DD");
+  }
   public static void copyArchiveFileProperties(ArchiveFile from, TextFileSource to) {
     to.setEncoding(from.getEncoding());
-    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? "\"" : from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
     to.setDateFormat(from.getDateFormat());
@@ -318,7 +326,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   public static void copyArchiveFileProperties(ArchiveFile from, UrlSource to) {
     to.setEncoding(from.getEncoding());
-    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? "\"" : from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
     to.setDateFormat(from.getDateFormat());
@@ -429,7 +437,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     File file = new File(dataDir.tmpDir(), filename);
 
     try (InputStream in = url.toURL().openStream()) {
-      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      if (url.toString().endsWith("zip")) {
+        Files.copy(UrlSource.decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      } else {
+        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      }
       src.setFile(file);
       // analyze individual files using the dwca reader
       Archive arch = DwcFiles.fromLocation(file.toPath());
@@ -860,6 +872,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source == null) {
       return null;
     }
+
     try {
       if (source instanceof SqlSource) {
         return new SqlRowIterator((SqlSource) source);
@@ -867,7 +880,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // Excel, file and URL sources
         return ((RowIterable) source).rowIterator();
       }
-
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);
       throw new SourceException("Can't build iterator for source " + source.getName() + " :" + e.getMessage());

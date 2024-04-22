@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public final class Constants {
 
-  public static final String CANCEL_RESULTNAME = "cancel";
+  public static final String CANCEL = "cancel";
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
   public static final String SESSION_URL = "url";
@@ -36,6 +36,7 @@ public final class Constants {
   public static final String SESSION_FILE_NUMBER_COLUMNS = "numberColumns";
   public static final String REQ_PATH_RESOURCE = "resource";
   public static final String REQ_PATH_EML = "eml.do";
+  public static final String REQ_PATH_METADATA = "metadata.do";
   public static final String REQ_PATH_DWCA = "archive.do";
   public static final String REQ_PATH_LOGO = "logo.do";
   public static final String REQ_PARAM_RESOURCE = "r";
@@ -54,12 +55,17 @@ public final class Constants {
   public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
   public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
   public static final String DWC_ROWTYPE_EVENT = DwcTerm.Event.qualifiedName();
+  public static final String DWC_ROWTYPE_MATERIAL_ENTITY = "http://rs.tdwg.org/dwc/terms/MaterialEntity";
   public static final String DWC_OCCURRENCE_ID = "http://rs.tdwg.org/dwc/terms/occurrenceID";
   public static final String DWC_TAXON_ID = "http://rs.tdwg.org/dwc/terms/taxonID";
   public static final String DWC_EVENT_ID = "http://rs.tdwg.org/dwc/terms/eventID";
+  public static final String DWC_MATERIAL_ENTITY_ID = "http://rs.tdwg.org/dwc/terms/materialEntityID";
   public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
-  public static final String DATA_SCHEMA_CAMTRAP_DP = "http://rs.gbif.org/schemas/camtrap-dp";
+  public static final String DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/camtrap-dp";
+  public static final String DATA_PACKAGE_COLDP_IDENTIFIER = "http://rs.gbif.org/data-packages/coldp";
+  public static final String DATA_PACKAGE_MATERIAL_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/material-dp";
+  public static final String DATA_PACKAGE_INTERACTION_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/interaction-dp";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
@@ -105,9 +111,21 @@ public final class Constants {
 
   // First published version number
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
+  public static final BigDecimal INITIAL_RESOURCE_VERSION_DATA_PACKAGE = new BigDecimal("1");
+
+  public static final String CAMTRAP_DP = "camtrap-dp";
+  public static final String MATERIAL_DP = "material-dp";
+  public static final String INTERACTION_DP = "interaction-dp";
+  public static final String COL_DP = "coldp";
+  public static final String CAMTRAP_DP_OBSERVATIONS = "observations";
+  public static final String DWC_ARCHIVE_NAME = "dwca";
+  public static final String DWC_ARCHIVE_EXTENSION = ".zip";
+  public static final String DATA_PACKAGE_NAME = "datapackage";
+  public static final String DATA_PACKAGE_EXTENSION = ".zip";
 
   // Set of GBIF supported licenses
   public static final Set<String> GBIF_SUPPORTED_LICENSES;
+  public static final Set<String> GBIF_SUPPORTED_LICENSES_CODES;
 
   static {
     Set<String> licencesInternal = new HashSet<>();
@@ -117,6 +135,12 @@ public final class Constants {
     licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
     licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
     GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
+
+    Set<String> licenseCodesInternal = new HashSet<>();
+    licenseCodesInternal.add("CC0-1.0");
+    licenseCodesInternal.add("CC-BY-4.0");
+    licenseCodesInternal.add("CC-BY-NC-4.0");
+    GBIF_SUPPORTED_LICENSES_CODES = Collections.unmodifiableSet(licenseCodesInternal);
   }
 
   private Constants() {

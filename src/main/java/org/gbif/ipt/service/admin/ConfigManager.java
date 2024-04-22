@@ -112,12 +112,6 @@ public interface ConfigManager {
    */
   void setArchivalLimit(Integer archivalLimit) throws  InvalidConfigException;
 
-  /**
-   * Simple wrapper around AppConfig to en/disable google analytics for all IPTs monitored by gbif
-   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
-   */
-  void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException;
-
   void setIptLocation(Double lat, Double lon) throws InvalidConfigException;
 
   void setProxy(String proxy) throws InvalidConfigException;
@@ -132,4 +126,9 @@ public interface ConfigManager {
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
   void setAdminEmail(String adminEmail);
+
+  /**
+   * Sets default IPT language.
+   */
+  void setDefaultLocale(String defaultLanguage);
 }

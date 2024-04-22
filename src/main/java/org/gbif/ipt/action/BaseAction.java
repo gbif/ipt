@@ -48,7 +48,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 
-import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -139,32 +139,42 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public String getPrimaryColor() {
     String primaryColorHex = cfg.getColorSchemeConfig().getPrimaryColor();
-    return ""
-        + Integer.valueOf(primaryColorHex.substring(1, 3), 16) + ","
+    return Integer.valueOf(primaryColorHex.substring(1, 3), 16) + ","
         + Integer.valueOf(primaryColorHex.substring(3, 5), 16) + ","
         + Integer.valueOf(primaryColorHex.substring(5, 7), 16);
   }
 
   public String getNavbarColor() {
     String navbarColorHex = cfg.getColorSchemeConfig().getNavbarColor();
-    return ""
-        + Integer.valueOf(navbarColorHex.substring(1, 3), 16) + ","
+    return Integer.valueOf(navbarColorHex.substring(1, 3), 16) + ","
         + Integer.valueOf(navbarColorHex.substring(3, 5), 16) + ","
         + Integer.valueOf(navbarColorHex.substring(5, 7), 16);
   }
 
   public String getNavbarLinkColor() {
     String navbarLinkColorHex = cfg.getColorSchemeConfig().getNavbarLinkColor();
-    return ""
-        + Integer.valueOf(navbarLinkColorHex.substring(1, 3), 16) + ","
+    return Integer.valueOf(navbarLinkColorHex.substring(1, 3), 16) + ","
         + Integer.valueOf(navbarLinkColorHex.substring(3, 5), 16) + ","
         + Integer.valueOf(navbarLinkColorHex.substring(5, 7), 16);
   }
 
+  public String getNavbarGbifLogoColor() {
+    String navbarGbifLogoColorHex = cfg.getColorSchemeConfig().getNavbarGbifLogoColor();
+    return Integer.valueOf(navbarGbifLogoColorHex.substring(1, 3), 16) + ","
+            + Integer.valueOf(navbarGbifLogoColorHex.substring(3, 5), 16) + ","
+            + Integer.valueOf(navbarGbifLogoColorHex.substring(5, 7), 16);
+  }
+
+  public String getNavbarActiveTabColor() {
+    String navbarActiveTabColorHex = cfg.getColorSchemeConfig().getNavbarActiveTabColor();
+    return Integer.valueOf(navbarActiveTabColorHex.substring(1, 3), 16) + ","
+            + Integer.valueOf(navbarActiveTabColorHex.substring(3, 5), 16) + ","
+            + Integer.valueOf(navbarActiveTabColorHex.substring(5, 7), 16);
+  }
+
   public String getLinkColor() {
     String linkColorHex = cfg.getColorSchemeConfig().getLinkColor();
-    return ""
-        + Integer.valueOf(linkColorHex.substring(1, 3), 16) + ","
+    return Integer.valueOf(linkColorHex.substring(1, 3), 16) + ","
         + Integer.valueOf(linkColorHex.substring(3, 5), 16) + ","
         + Integer.valueOf(linkColorHex.substring(5, 7), 16);
   }
@@ -230,7 +240,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * Gets the provided locale. in ActionContext.
-   *
+   * <p>
    * fix #1449 NPE on none struts context.
    */
   @Override
@@ -373,7 +383,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * Override this method if you need to cancel action.
    */
   public String cancel() throws Exception {
-    return CANCEL_RESULTNAME;
+    return CANCEL;
   }
 
   public void setCancel(String cancel) {

@@ -14,14 +14,17 @@ RUN perl -pi -e 's(\${buildNumber})('${GIT_REVISION}')' src/main/resources/appli
     mvn -DskipTests install && \
     rm target/*.war && mv target/ipt-* target/ipt
 
-FROM tomcat:8.5-jdk8
-LABEL MAINTAINERS="Matthew Blissett <mblissett@gbif.org>"
+FROM tomcat:9.0-jdk17
+LABEL maintainers="Matthew Blissett <mblissett@gbif.org>"
 
 ARG IPT_NAME=ROOT
 
 ENV IPT_DATA_DIR=/srv/ipt
 
 COPY --from=builder /usr/src/ipt/target/ipt /usr/local/tomcat/webapps/${IPT_NAME}
+
+# Modify maxParameterCount in server.xml
+RUN sed -i 's/maxParameterCount="1000"/maxParameterCount="10000"/g' /usr/local/tomcat/conf/server.xml
 
 VOLUME /srv/ipt
 

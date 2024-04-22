@@ -10,6 +10,8 @@ versionsTable macro: Generates a data table that has pagination.
 <#macro versionsTable numVersionsShown sEmptyTable baseURL shortname>
     <script charset="utf-8">
 
+      <#assign isDataPackage = resource.isDataPackage() />
+
         /* version history list */
         var aDataSet = [
             <#list resource.getVersionHistory() as v>

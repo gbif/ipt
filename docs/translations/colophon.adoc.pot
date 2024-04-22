@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-26 08:47+0000\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,7 @@ msgstr ""
 msgid "Citation"
 msgstr ""
 
+#.  If English
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:8
 msgid ""
@@ -36,9 +37,10 @@ msgid ""
 "user manual is as follows:"
 msgstr ""
 
+#.  Else
 #.  Endif
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:13
+#: en/modules/ROOT/pages/colophon.adoc:12
 msgid ""
 "The link:../../../en/[English user manual] adapts and builds upon the "
 "previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The "
@@ -49,11 +51,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:18
 msgid ""
-"Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit "
-"User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. "
-"https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
+"Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF "
+"Integrated Publishing Toolkit User Manual, version {page-component-version}. "
+"Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-"
+"component-version}/"
 msgstr ""
 
+#.  If not English
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid ""
@@ -65,10 +69,10 @@ msgstr ""
 #.  Translated user manual citation
 #.  Endif
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:27
+#: en/modules/ROOT/pages/colophon.adoc:26
 msgid ""
-"Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit "
-"User Manual, version {page-component-version}. "
+"Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF "
+"Integrated Publishing Toolkit User Manual, version {page-component-version}. "
 "(TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. "
 "https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
 msgstr ""
@@ -107,52 +111,29 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:38
 msgid ""
-"This user manual is released under the Creative Commons Attribution-Non-"
-"commercial-Share Alike 3.0 Unported License. You may obtain a copy of this "
-"license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you "
-"should consult the actual license document for details, in general terms the "
-"license states that you are free to copy, distribute, transmit, remix and "
-"adapt the work, under the following conditions:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:40
-msgid ""
-"you must cite the work in the manner specified on this page (but not in a "
-"way that suggests that GBIF or the GBIF Secretariat endorses you or your use "
-"of the work);"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:41
-msgid "you may not use this work for commercial purposes;"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:42
-msgid ""
-"if you alter, transform, or build upon this work, you may distribute the "
-"resulting work only under the same or similar license to this one."
+"This user manual is released under the Creative Commons Attribution 4.0 "
+"International Licence. You may obtain a copy of this licence at https://"
+"creativecommons.org/licenses/by/4.0/."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/colophon.adoc:43
+#: en/modules/ROOT/pages/colophon.adoc:39
 #, no-wrap
 msgid "References"
 msgstr ""
 
 #.  GitHub and Google Code versions
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:47
+#: en/modules/ROOT/pages/colophon.adoc:43
 msgid ""
 "Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User "
-"Manual, version 2.3.4. Copenhagen: GBIF Secretariat. https://github.com/gbif/"
-"ipt/wiki/IPTManualNotes.wiki"
+"Manual, version 2.3.6. Copenhagen: GBIF Secretariat. https://github.com/gbif/"
+"ipt/wiki/IPTUserManualv23.wiki"
 msgstr ""
 
 #.  https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/gbif-providertoolkit/GBIF_IPT_User_Manual_1.0.pdf
 #. type: Plain text
-#: en/modules/ROOT/pages/colophon.adoc:49
+#: en/modules/ROOT/pages/colophon.adoc:45
 msgid ""
 "Réveillon A (2009) The GBIF Integrated Publishing Toolkit User Manual, "
 "version 1.0. Copenhagen: GBIF Secretariat. https://links.gbif.org/"

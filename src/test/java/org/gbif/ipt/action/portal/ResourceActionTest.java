@@ -26,6 +26,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.IptEmlWriter;
@@ -95,7 +96,7 @@ public class ResourceActionTest {
     // setup Resource with TaxonomicCoverage with 3 TaxonKeyword
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORT_NAME);
-    resource.setEmlVersion(LATEST_RESOURCE_VERSION);
+    resource.setMetadataVersion(LATEST_RESOURCE_VERSION);
 
     // setup manager as resource creator
     MANAGER = new User();
@@ -157,7 +158,7 @@ public class ResourceActionTest {
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
-      mockDataDir, mock(ExtensionManager.class));
+      mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class));
     action.setResource(resource);
     action.setContainer(container);
   }

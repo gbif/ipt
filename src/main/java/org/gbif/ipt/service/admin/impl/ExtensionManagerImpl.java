@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
@@ -84,6 +85,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final static String TAXON_KEYWORD = "dwc:taxon";
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private final static String EVENT_KEYWORD = "dwc:event";
+  private final static String MATERIAL_ENTITY_KEYWORD = "dwc:materialentity";
   private final static String RECORD_LEVEL_CLASS = "Record-level";
   private final Map<String, Extension> extensionsByRowtype = new HashMap<>();
   private final ExtensionFactory factory;
@@ -528,6 +530,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         return search(TAXON_KEYWORD, true, false);
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
         return search(EVENT_KEYWORD, true, false);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
+        Set<Extension> suitableExtensionsSet = new HashSet<>(search(MATERIAL_ENTITY_KEYWORD, true, false));
+        suitableExtensionsSet.addAll(search(OCCURRENCE_KEYWORD, true, false));
+        return new ArrayList<>(suitableExtensionsSet);
       } else {
         return search(coreRowType, true, false);
       }
@@ -544,6 +550,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         return search(TAXON_KEYWORD, false, true);
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
         return search(EVENT_KEYWORD, false, true);
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
+        return search(MATERIAL_ENTITY_KEYWORD, false, true);
       } else {
         return search(coreRowType, false, true);
       }

@@ -61,6 +61,18 @@ public interface VocabulariesManager {
   Vocabulary install(URL url);
 
   /**
+   * Download and install a vocabulary into local file. The final filename is based on the vocabulary's identifier.
+   * Similar to {@link VocabulariesManager#install(URL)}, but do not install the vocabulary if it's already installed.
+   *
+   * @param url the URL of the XML based vocabulary definition
+   *
+   * @return the installed vocabulary
+   *
+   * @throws InvalidConfigException if Vocabulary failed to be installed
+   */
+  Vocabulary installIfAbsentOrOutdated(URL url);
+
+  /**
    * Returns a regular map than can be used to populate html select drop downs with
    * keys=vocabulary concept identifiers and values=preferred term for the given language.
    * Defaults to english if no term for the requested language exists.

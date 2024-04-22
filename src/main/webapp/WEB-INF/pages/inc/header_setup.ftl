@@ -21,7 +21,14 @@
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
+            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
+            --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
+        }
+
+        #navbarNavDropdown {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
@@ -33,7 +40,7 @@
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script src="${baseURL}/js/modernizr.js"></script>
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
 </head>

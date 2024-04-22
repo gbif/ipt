@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"POT-Creation-Date: 2024-01-30 15:33+0000\n"
+"PO-Revision-Date: 2024-01-30 15:40\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,47 +20,47 @@ msgstr ""
 #: en/modules/ROOT/pages/datacite-mappings.adoc:1
 #, no-wrap
 msgid "DataCite to EML mappings"
-msgstr ""
+msgstr "DataCiteからEMLへのマッピング"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:4
 msgid "To understand how the IPT produces the DataCite metadata from the EML and IPT resource properties you can refer to the mappings below."
-msgstr ""
+msgstr "IPTがEMLとIPTのリソースプロパティからどのようにDataCiteメタデータを生成するかを理解するために、以下のマッピングを参照することができます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/datacite-mappings.adoc:5
 #, no-wrap
 msgid "Mappings"
-msgstr ""
+msgstr "マッピング"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:8
 msgid "Legend:"
-msgstr ""
+msgstr "凡例："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:10
 #, no-wrap
 msgid "*DataCite property*: lists the name of the DataCite metadata property\n"
-msgstr ""
+msgstr "*DataCiteプロパティ*：DataCiteメタデータプロパティの名前をリストアップします。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:11
 #, no-wrap
 msgid "*Obl.*: Obligation, the property is (M) mandatory, \\(R) recommended, and (O) optional\n"
-msgstr ""
+msgstr "*Obl.*：Obligation（義務）。プロパティは(M)：必須（mandatory）、(R)：推奨（recommended）、(O)：オプション（optional）を表します。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:12
 #, no-wrap
 msgid "*Occ*: Occurrence/cardinality, the property is (1-n) required and repeatable, (1) required but not repeatable, (0-n) optional and repeatable, (0-1) optional but not repeatable\n"
-msgstr ""
+msgstr "*Occ*：Occurrence/cardinality。プロパティは(1-n)：必須で再現性がある、(1)：必須だが再現性がない、(0-n)：オプションで再現性がある、(0-1)：オプションであるが再現性がない、となります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:13
 #, no-wrap
 msgid "*IPT/EML property*: IPT resource property, or EML property the DataCite property maps to\n"
-msgstr ""
+msgstr "*IPT/EMLプロパティ*：IPTリソースプロパティ、またはDataCiteプロパティがマッピングするEMLプロパティです。\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/datacite-mappings.adoc:60
@@ -75,7 +75,7 @@ msgid "| DataCite property | Obl. | Occ. | IPT/EML property\n\n"
 "|schemeURI              |O         |0-1       |http://www.orcid.org\n"
 "|contributor            |R         |0-n       |resource contact, metadataProvider, and associatedParties with various roles\n"
 "|contributorName        |R         |1         |resource contact name (mandatory if contributor is used)\n"
-"|contributorType        |R         |1         |“ContactPerson” - controlled value (mandatory if contributor is used). Other role to controlled value mappings: author→\"Other\", contentProvider → “DataCollector”, custodianSteward → “DataManager”, distributor → “Distributor”, editor → “Editor”, metadataProvider → “DataCurator”, owner → “RightsHolder”, principalInvestigator → “ProjectLeader”, processor → “Producer”, publisher → “Producer”, user → “Other”, programmer → “Producer”, curator → “DataCurator”\n"
+"|contributorType        |R         |1         |“ContactPerson” - controlled value (mandatory if contributor is used). Other role to controlled value mappings: author→\"Other\", contentProvider → “DataCollector”, custodianSteward → “DataManager”, distributor → “Distributor”, editor → “Editor”, metadataProvider → “DataCurator”, owner → “RightsHolder”, principalInvestigator → “ProjectLeader”, processor → “Producer”, publisher → “Editor”, user → “Other”, programmer → “Producer”, curator → “DataCurator”\n"
 "|nameIdentifier         |R         |0-1       |resource contact  ORCID\n"
 "|nameIdentifierScheme   |R         |1         |ORCID (mandatory if nameIdentifier is used)\n"
 "|schemeURI              |R         |0-1       |http://www.orcid.org\n"

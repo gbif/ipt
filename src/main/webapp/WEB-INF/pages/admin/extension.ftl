@@ -39,39 +39,53 @@
     ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
 </#macro>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
-
-    <div class="container my-3 p-3">
-        <div class="text-center">
-            <div class="text-uppercase fw-bold fs-smaller-2">
-                <span><@s.text name="admin.extension.title"/></span>
-            </div>
-
-            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                ${extension.title}
-            </h1>
-
-            <#if extension.link?has_content>
-                <div class="text-smaller mb-2">
-                    <a href="${extension.link}">${extension.link}</a>
+    <div class="container border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/extensions.do"><@s.text name="breadcrumb.admin.extensions"/></a></li>
+                            <li class="breadcrumb-item"><@s.text name="admin.extension.title"/></li>
+                        </ol>
+                    </nav>
                 </div>
-            </#if>
 
-            <#if extension.issued??>
-                <div class="text-smaller text-gbif-primary">
-                    <span>
-                        <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${extension.issued?date?string.long}
-                    </span>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    ${extension.title}
+                </h1>
+
+                <#if extension.link?has_content>
+                    <div class="text-smaller mb-2">
+                        <a href="${extension.link}">${extension.link}</a>
+                    </div>
+                </#if>
+
+                <#if extension.issued??>
+                    <div class="text-smaller">
+                        <#if extension.isLatest()>
+                            <span class="text-gbif-primary">
+                                <@s.text name="extension.version.issued.upToDate"><@s.param>${extension.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        <#else>
+                            <span class="text-gbif-danger">
+                                <@s.text name="extension.version.issued.outdated"><@s.param>${extension.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                            </span>
+                        </#if>
+                    </div>
+                </#if>
+
+                <div class="mt-2">
+                    <a href="extensions.do" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.back"/>
+                    </a>
                 </div>
-            </#if>
-
-            <div class="mt-2">
-                <a href="extensions.do" class="btn btn-sm btn-outline-secondary top-button">
-                    <@s.text name="button.back"/>
-                </a>
             </div>
         </div>
     </div>
@@ -80,7 +94,7 @@
 <#assign groups = propertiesByGroup?keys/>
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout">
+    <div class="container my-md-4 bd-layout main-content-container">
         <main class="bd-main">
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
@@ -108,11 +122,17 @@
             </div>
 
             <div class="bd-content ps-lg-4">
-                <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
+                <span class="anchor anchor-extension-page" id="anchor-description"></span>
                 <div class="mt-5 section">
                     <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name="basic.description"/>
                     </h5>
+
+                    <#if !extension.isLatest()>
+                        <div class="callout callout-danger mb-2">
+                            <@s.text name="admin.extension.version.warning"/>
+                        </div>
+                    </#if>
 
                     <div class="mb-3" id="description">
                         ${extension.description}
@@ -161,19 +181,19 @@
                 </div>
 
                 <#list propertiesByGroup as group, groupProperties>
-                    <span class="anchor anchor-home-resource-page" id="anchor-group_${group?replace(' ', '_')}"></span>
+                    <span class="anchor anchor-extension-page" id="anchor-group_${group?replace(' ', '_')}"></span>
                     <div id="group_${group?replace(' ', '_')}" class="mt-5 section">
                         <#if group?has_content>
                             <h6 class="pb-2 mb-2 pt-2 mt-3 text-gbif-header-2 fw-400 text-capitalize" style="font-size: 1.125rem;">
                                 ${group}
                             </h6>
                         </#if>
-                        <div class="mt-3 overflow-x-auto">
+                        <div class="mt-3">
                             <#list groupProperties as p>
                                 <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                     <div class="col-lg-3 mt-1">
                                         <div class="title">
-                                            <div class="head overflow-x-auto text-smaller">
+                                            <div class="head overflow-x-auto text-break text-smaller">
                                                 <#if p.link?has_content>
                                                     <a href="${p.link}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${p.name}</b></a>
                                                 <#else>
@@ -211,7 +231,7 @@
                                                     <table>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="basic.namespace"/></th><td>${p.namespace()}</td></tr>
-                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td><@dataBage p.type/></td></tr>
+                                                        <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td>${p.type!}</td></tr>
                                                         <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.required"/></th><td><#if p.required><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if></td></tr>
                                                     </table>
                                                 </div>

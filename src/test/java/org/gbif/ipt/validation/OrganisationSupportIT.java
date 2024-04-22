@@ -33,6 +33,8 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -113,14 +115,15 @@ public class OrganisationSupportIT {
     o5.setDoiPrefix("10.9999"); // wrong
 
     return Stream.of(
-        Arguments.of(o1, true),
-        Arguments.of(o3, false),
-        Arguments.of(o5, false)
+        Arguments.of(Named.of("organisation with valid DataCite account", o1), true),
+        Arguments.of(Named.of("organisation with DataCite account that does not authenticate (wrong password)", o3), false),
+        Arguments.of(Named.of("organisation with DataCite account that does not authenticate (wrong prefix)", o5), false)
     );
   }
 
-  @ParameterizedTest
-  @MethodSource("data")
+  @ParameterizedTest(name = "[{index}] {0}")
+  @DisplayName("Validate the fields entered for a new or edited Organisation")
+  @MethodSource(value = "data")
   public void testValidate(Organisation organisation, boolean isValid) {
     LOG.info("Testing " + organisation.getDoiRegistrationAgency() + "...");
     OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg);

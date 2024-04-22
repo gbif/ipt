@@ -15,6 +15,7 @@ package org.gbif.ipt.validation;
 
 import java.util.Date;
 
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
@@ -63,9 +64,26 @@ public abstract class BaseValidator {
         internetAddress.validate();
         return true;
       } catch (javax.mail.internet.AddressException e) {
-        LOG.debug("Email address was invalid: " + StringUtils.trimToEmpty(email));
+        LOG.error("Email address was invalid: {}. Reason: {}", StringUtils.trimToEmpty(email), e.getMessage());
       }
     }
     return false;
+  }
+
+  protected ValidationResult checkEmailValid(String email) {
+    ValidationResult result = new ValidationResult();
+    try {
+      if (email != null) {
+        InternetAddress internetAddress = new InternetAddress(email);
+        internetAddress.validate();
+        result.setValid(true);
+      }
+    } catch (AddressException e) {
+      LOG.error("Email address was invalid: {}. Reason: {}", StringUtils.trimToEmpty(email), e.getMessage());
+      result.setValid(false);
+      result.setMessage(e.getMessage());
+    }
+
+    return result;
   }
 }

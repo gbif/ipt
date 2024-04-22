@@ -1,6 +1,9 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <title><@s.text name='manage.metadata.parties.title'/></title>
     <script>
         $(document).ready(function () {
@@ -72,6 +75,83 @@
 
                 hideProcessing();
             }
+
+            var copyAgentModal = $('#copy-agent-modal');
+            $('#resource').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agentType').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agent').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+
+            $('[id^="eml.associatedParties"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".role"]').select2({
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <style>
@@ -88,36 +168,38 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
-            <div class="container pt-2">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-            </div>
+            <div class="container bg-body border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-            <div class="container my-3 p-3">
-                <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                        </ol>
-                    </nav>
-                </div>
+                    <div class="text-center">
+                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
+                            <@s.text name='manage.metadata.parties.title'/>
+                        </h1>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                        <@s.text name='manage.metadata.parties.title'/>
-                    </h1>
-                </div>
+                    <div class="text-center fs-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
 
-                <div class="text-center fs-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </div>
-
-                <div class="text-center mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    <div class="text-center mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,9 +207,8 @@
         <#include "metadata_section_select.ftl"/>
 
         <div class="container-fluid bg-body">
-            <div class="container bd-layout">
-
-                <main class="bd-main bd-main">
+            <div class="container bd-layout main-content-container">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "eml_sidebar.ftl"/>
                     </div>
@@ -148,14 +229,20 @@
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                         <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${copyLink?lower_case?cap_first}</span>
-                                                </a>
+                                                <div class="btn-group">
+                                                    <a id="dropdown-associatedParty-copy-${item_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${copyLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-associatedParty-copy-${item_index}">
+                                                        <li><a id="associatedParty-from-contact-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                        <li><a id="associatedParty-copy-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="text-end">
                                                 <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
@@ -243,14 +330,20 @@
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copy" href="" class="metadata-action-link">
+                                        <div class="btn-group">
+                                            <a id="dropdown-associatedParty-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span>
                                                 <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                 </svg>
                                             </span>
-                                            <span>${copyLink?lower_case?cap_first}</span>
-                                        </a>
+                                                <span>${copyLink?lower_case?cap_first}</span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="associatedParty-creator-copy">
+                                                <li><a id="associatedParty-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                <li><a id="associatedParty-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="text-end">
                                         <a id="associatedParty-removeLink" class="removeAssociatedPartyLink metadata-action-link" href="">
@@ -324,7 +417,7 @@
                     <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="text-align: left !important;">
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="resource" class="form-label">
@@ -355,7 +448,7 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div>
+                        <div class="text-center">
                             <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
                         </div>
                     </div>

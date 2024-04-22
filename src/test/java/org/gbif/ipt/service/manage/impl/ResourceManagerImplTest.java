@@ -39,6 +39,9 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataPackageFieldConverter;
+import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -54,16 +57,20 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
@@ -100,7 +107,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -227,6 +233,7 @@ public class ResourceManagerImplTest {
     Extension simpleImage = extensionFactory.build(simpleImageIs);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
@@ -238,26 +245,31 @@ public class ResourceManagerImplTest {
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
+        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
     return new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mockEmailConverter,
-        mockOrganisationKeyConverter,
-        extensionRowTypeConverter,
-        jdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         extensionManager,
+        mockSchemaManager,
         mockRegistryManager,
-        conceptTermConverter,
         mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
         passwordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManager);
+        mockRegistrationManager,
+        mock(MetadataReader.class),
+        mock(ResourceMetadataInferringService.class));
   }
 
   /**
@@ -854,7 +866,7 @@ public class ResourceManagerImplTest {
     resourceManager.create(shortName, DATASET_TYPE_OCCURRENCE_IDENTIFIER, creator);
     // get added resource.
     Resource addedResource = resourceManager.get(shortName);
-    addedResource.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+    addedResource.setMetadataVersion(Constants.INITIAL_RESOURCE_VERSION);
     // indicate it is a dataset subtype Specimen
     addedResource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
 
@@ -1003,23 +1015,28 @@ public class ResourceManagerImplTest {
     // mock changing the the baseURL now (returning a different public resource URL)
     when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://192.38.28.24:7001/ipt/resource?r=bees");
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionRowTypeConverter.class),
+        mock(ConceptTermConverter.class), mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), mockJdbcConverter);
+
     manager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mockEmailConverter,
-        mockOrganisationKeyConverter,
-        mock(ExtensionRowTypeConverter.class),
-        mockJdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         mock(ExtensionManager.class),
+        mock(DataPackageSchemaManager.class),
         mockRegistryManager,
-        mock(ConceptTermConverter.class),
         mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
         mockPasswordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManager);
+        mockRegistrationManager,
+        mock(MetadataReader.class),
+        mock(ResourceMetadataInferringService.class));
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
@@ -1568,7 +1585,7 @@ public class ResourceManagerImplTest {
 
     // create a new resource.
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
-    resource.setEmlVersion(BigDecimal.valueOf(3.0));
+    resource.setMetadataVersion(BigDecimal.valueOf(3.0));
     return resource;
   }
 
@@ -1626,7 +1643,7 @@ public class ResourceManagerImplTest {
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-1.1.xml");
     // reconstruct resource version 1.1
     Resource reconstructed = ResourceUtils
-      .reconstructVersion(version, shortname, resource.getCoreType(), doi, organisation, historyForVersionOnePointOne,
+      .reconstructVersion(version, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), doi, organisation, historyForVersionOnePointOne,
         emlXMLVersionOnePointOne, null);
 
     assertEquals(shortname, reconstructed.getShortname());
@@ -1687,7 +1704,7 @@ public class ResourceManagerImplTest {
     File emlXMLVersionOnePointOne = org.gbif.utils.file.FileUtils.getClasspathFile("resources/res1/eml-5.0.xml");
     // reconstruct resource version 5.0
     Resource reconstructed = ResourceUtils
-      .reconstructVersion(version, shortname, resource.getCoreType(), doi, organisation, historyForVersionFivePointZero,
+      .reconstructVersion(version, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), doi, organisation, historyForVersionFivePointZero,
         emlXMLVersionOnePointOne, key);
 
     assertEquals(shortname, reconstructed.getShortname());
@@ -1710,35 +1727,35 @@ public class ResourceManagerImplTest {
   @Test
   public void testConvertVersion() throws Exception {
     Resource r = new Resource();
-    r.setEmlVersion(BigDecimal.valueOf(4));
+    r.setMetadataVersion(BigDecimal.valueOf(4));
     assertEquals(0, r.getEmlVersion().scale());
     assertEquals(4, r.getEmlVersion().intValueExact());
     // do conversion 4 -> 4.0
     BigDecimal converted = getResourceManagerImpl().convertVersion(r);
     assertEquals(new BigDecimal("4.0"), converted);
     // ensure conversions aren't repeated
-    r.setEmlVersion(converted);
+    r.setMetadataVersion(converted);
     assertNull(getResourceManagerImpl().convertVersion(r));
   }
 
   @Test
   public void testConvertVersionZero() throws Exception {
     Resource r = new Resource();
-    r.setEmlVersion(BigDecimal.valueOf(0));
+    r.setMetadataVersion(BigDecimal.valueOf(0));
     assertEquals(0, r.getEmlVersion().scale());
     assertEquals(0, r.getEmlVersion().intValueExact());
     // do conversion 0 -> 1.0
     BigDecimal converted = getResourceManagerImpl().convertVersion(r);
     assertEquals(new BigDecimal("1.0"), converted);
     // ensure conversions aren't repeated
-    r.setEmlVersion(converted);
+    r.setMetadataVersion(converted);
     assertNull(getResourceManagerImpl().convertVersion(r));
   }
 
   @Test
   public void testConstructVersionHistoryForLastPublishedVersion() throws Exception {
     Resource r = new Resource();
-    r.setEmlVersion(new BigDecimal("4.0"));
+    r.setMetadataVersion(new BigDecimal("4.0"));
     r.setStatus(PublicationStatus.PUBLIC);
     r.setRecordsPublished(100);
     Date lastPublished = new Date();
@@ -1885,7 +1902,7 @@ public class ResourceManagerImplTest {
     resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     resource.setDoi(doi);
     resource.setStatus(PublicationStatus.PUBLIC);
-    resource.setEmlVersion(new BigDecimal("3.1"));
+    resource.setMetadataVersion(new BigDecimal("3.1"));
     resource.setLastPublished(released30);
     resource.setRecordsPublished(400);
 
@@ -1909,7 +1926,7 @@ public class ResourceManagerImplTest {
     assertEquals(200, resource.getRecordsPublished());
     assertEquals(new BigDecimal("3.0"), resource.getEmlVersion());
     assertEquals(released30, resource.getLastPublished());
-    assertEquals(new BigDecimal("2.0"), resource.getReplacedEmlVersion());
+    assertEquals(new BigDecimal("2.0"), resource.getReplacedMetadataVersion());
   }
 
   @Test

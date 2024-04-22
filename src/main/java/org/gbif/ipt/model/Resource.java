@@ -17,6 +17,11 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -44,6 +49,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -56,6 +62,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+
 /**
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
@@ -64,7 +72,7 @@ import org.apache.logging.log4j.Logger;
 public class Resource implements Serializable, Comparable<Resource> {
 
   public enum CoreRowType {
-    OCCURRENCE, CHECKLIST, SAMPLINGEVENT, METADATA, OTHER
+    OCCURRENCE, CHECKLIST, SAMPLINGEVENT, MATERIALENTITY, METADATA, OTHER
   }
 
   private static final Logger LOG = LogManager.getLogger(Resource.class);
@@ -74,6 +82,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private static final long serialVersionUID = 3832626162173352190L;
   private String shortname; // unique
   private Eml eml = new Eml();
+  private DataPackageMetadata dataPackageMetadata = new FrictionlessMetadata();
   private String coreType;
   private String subtype;
   // update frequency
@@ -98,11 +107,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   // automatically infer temporal coverage from source data
   private boolean inferTemporalCoverageAutomatically = false;
   // inferred metadata from source data
-  private InferredMetadata inferredMetadata = new InferredMetadata();
+  private InferredMetadata inferredMetadata = new InferredEmlMetadata();
   // resource version and eml version are the same
   private BigDecimal emlVersion;
+  private BigDecimal dataPackageMetadataVersion;
   // resource version replaced
   private BigDecimal replacedEmlVersion;
+  private BigDecimal replacedDataPackageMetadataVersion;
   // last time resource was successfully published
   private Date lastPublished;
   // next time resource is scheduled to be published
@@ -128,6 +139,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   // mapping configs
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
+  private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
+  private String dataPackageIdentifier;
 
   private String changeSummary;
   private List<VersionHistory> versionHistory = new ArrayList<>();
@@ -218,6 +231,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  /**
+   * Adds a new data package mapping to the resource.
+   * It returns the list index for this mapping according to getDataPackageMapping(identifier)
+   *
+   * @return list index corresponding to getDataPackageMapping(identifier) or null if the mapping couldn't be added
+   */
+  public Integer addDataPackageMapping(@Nullable DataPackageMapping mapping) {
+    if (mapping != null && mapping.getDataPackageSchema() != null) {
+      Integer index = getDataPackageMappings().size();
+      this.dataPackageMappings.add(mapping);
+      return index;
+    }
+    return null;
+  }
+
   public void addSource(Source src, boolean allowOverwrite) throws AlreadyExistingException {
     // make sure we talk about the same resource
     src.setResource(this);
@@ -284,16 +312,40 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  /**
+   * Delete a Resource's data package mapping.
+   *
+   * @param mapping DataPackageMapping
+   *
+   * @return if deletion was successful or not
+   */
+  public boolean deleteMapping(DataPackageMapping mapping) {
+    if (mapping != null && dataPackageMappings.contains(mapping)) {
+      return dataPackageMappings.remove(mapping);
+    } else {
+      LOG.debug("Data Package Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    }
+    return false;
+  }
+
   public boolean deleteSource(Source src) {
     boolean result = false;
     if (src != null) {
       result = sources.remove(src);
-      // also remove existing mappings
+      // remove existing DwC mappings
       List<ExtensionMapping> ems = new ArrayList<>(mappings);
       for (ExtensionMapping em : ems) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
           LOG.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
+        }
+      }
+      // remove data package mappings
+      List<DataPackageMapping> dpms = new ArrayList<>(dataPackageMappings);
+      for (DataPackageMapping dpm : dpms) {
+        if (dpm.getSource() != null && src.equals(dpm.getSource())) {
+          deleteMapping(dpm);
+          LOG.debug("Cascading source delete to data package mapping " + dpm.getDataPackageSchema().getName());
         }
       }
     }
@@ -355,6 +407,18 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
+   * @return the identifier of the data package
+   */
+  @Nullable
+  public String getDataPackageIdentifier() {
+    return dataPackageIdentifier;
+  }
+
+  public void setDataPackageIdentifier(String dataPackageIdentifier) {
+    this.dataPackageIdentifier = dataPackageIdentifier;
+  }
+
+  /**
    * At first the core type can be set during resource creation or on the basic metadata page. But once
    * a core mapping has been done, it is derived from the core mapping.
    *
@@ -370,6 +434,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         coreType = StringUtils.capitalize(CoreRowType.OCCURRENCE.toString());
       } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
         coreType = StringUtils.capitalize(CoreRowType.SAMPLINGEVENT.toString());
+      } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
+        coreType = StringUtils.capitalize(CoreRowType.MATERIALENTITY.toString());
       } else {
         coreType = StringUtils.capitalize(CoreRowType.OTHER.toString());
       }
@@ -385,6 +451,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public String getDataPackageType() {
+    return coreType;
+  }
+
   public Date getCreated() {
     return created;
   }
@@ -398,6 +468,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     return eml;
   }
 
+  public DataPackageMetadata getDataPackageMetadata() {
+    return dataPackageMetadata;
+  }
+
   /**
    * Get resource version. Same as EML version.
    *
@@ -408,16 +482,74 @@ public class Resource implements Serializable, Comparable<Resource> {
     return (emlVersion == null) ? eml.getEmlVersion() : emlVersion;
   }
 
+  @NotNull
+  public BigDecimal getDataPackageMetadataVersion() {
+    try {
+      return (dataPackageMetadataVersion == null || dataPackageMetadata.getVersion() != null)
+        ? new BigDecimal(dataPackageMetadata.getVersion())
+        : dataPackageMetadataVersion;
+    } catch (NumberFormatException e) {
+      LOG.error("Failed to parse version: {}", dataPackageMetadata.getVersion());
+      return new BigDecimal("1.0");
+    }
+  }
+
+  @NotNull
+  public BigDecimal getMetadataVersion() {
+    return dataPackageIdentifier != null ? getDataPackageMetadataVersion() : getEmlVersion();
+  }
+
   /**
    * Get the next resource version. If the resource has never been published, the next resource version
    * is 1.0. If no new DOI has been reserved for the resource, the version is bumped by a minor resource version.
    * If a new DOI has been reserved for the resource, and the resource's visibility is public, the version is bumped by
    * a major resource version.
+   * <p>
+   * For Data Packages, versioning is simpler - it's only a major version present.
    *
    * @return next resource version
    */
   @NotNull
   public BigDecimal getNextVersion() {
+    if (isDataPackage()) {
+      return getNextVersionForDataPackage();
+    } else {
+      return getNextVersionForEml();
+    }
+  }
+
+  private BigDecimal getNextVersionForDataPackage() {
+    String versionAsString = getDataPackageMetadata().getVersion();
+    boolean isVersionContainsDot = versionAsString.contains(".");
+
+    if (lastPublished == null) {
+      BigDecimal nextVersion;
+
+      try {
+        if (isVersionContainsDot) {
+          nextVersion = new BigDecimal(versionAsString.substring(0, versionAsString.indexOf(".")));
+        } else {
+          nextVersion = new BigDecimal(versionAsString);
+        }
+      } catch (NumberFormatException e) {
+        LOG.error("Invalid version number: {}. Setting version to 1", versionAsString);
+        nextVersion = new BigDecimal("1");
+      }
+
+      return nextVersion;
+    }
+
+    int majorVersion;
+    if (isVersionContainsDot) {
+      majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
+    } else {
+      majorVersion = Integer.parseInt(versionAsString);
+    }
+
+    return new BigDecimal(majorVersion + 1);
+  }
+
+  private BigDecimal getNextVersionForEml() {
     // first publication retrieve existing version
     if (lastPublished == null) {
       return getEml().getEmlVersion();
@@ -434,6 +566,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
     // all other cases warrant a minor version increment
     return getEml().getNextEmlVersionAfterMinorVersionChange();
+  }
+
+  public String getNextVersionPlainString() {
+    return getNextVersion().toPlainString();
   }
 
   /**
@@ -581,6 +717,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public DataPackageMapping getDataPackageMapping(Integer index) {
+    if (index != null) {
+      List<DataPackageMapping> maps = getDataPackageMappings();
+      if (maps.size() >= index) {
+        return maps.get(index);
+      }
+    }
+    return null;
+  }
+
   public List<ExtensionMapping> getMappings() {
     return mappings;
   }
@@ -599,6 +745,30 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (rowType != null) {
       for (ExtensionMapping m : mappings) {
         if (rowType.equals(m.getExtension().getRowType())) {
+          maps.add(m);
+        }
+      }
+    }
+    return maps;
+  }
+
+  /**
+   * Get the list of data package mappings for its data schema identifier.
+   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
+   * list.
+   *
+   * @return the list of mappings for the requested data schema identifier
+   */
+  public List<DataPackageMapping> getDataPackageMappings() {
+    List<DataPackageMapping> maps = new ArrayList<>();
+
+    if (dataPackageMappings == null) {
+      dataPackageMappings = new ArrayList<>();
+    }
+
+    if (dataPackageIdentifier != null) {
+      for (DataPackageMapping m : dataPackageMappings) {
+        if (dataPackageIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
           maps.add(m);
         }
       }
@@ -750,9 +920,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getTitle() {
-    if (eml != null) {
+    if (dataPackageIdentifier != null && dataPackageMetadata != null) {
+      return dataPackageMetadata.getTitle();
+    } else if (eml != null) {
       return eml.getTitle();
     }
+
     return null;
   }
 
@@ -764,7 +937,12 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public String getTitleAndShortname() {
     StringBuilder sb = new StringBuilder();
-    if (eml != null) {
+    if (dataPackageIdentifier != null && dataPackageMetadata != null) {
+      sb.append(dataPackageMetadata.getTitle());
+      if (!shortname.equalsIgnoreCase(dataPackageMetadata.getTitle())) {
+        sb.append(" (").append(shortname).append(")");
+      }
+    } else if (eml != null) {
       sb.append(eml.getTitle());
       if (!shortname.equalsIgnoreCase(eml.getTitle())) {
         sb.append(" (").append(shortname).append(")");
@@ -774,9 +952,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getLogoUrl() {
-    if (eml != null) {
+    if (isDataPackage() && dataPackageMetadata != null) {
+      return dataPackageMetadata.getImage();
+    } else if (eml != null) {
       return eml.getLogoUrl();
     }
+
     return null;
   }
 
@@ -830,6 +1011,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  public boolean hasSchemaMappedData() {
+    for (DataPackageMapping dpm : getDataPackageMappings()) {
+      if (!dpm.getFields().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public boolean hasPublishedData() {
     return recordsPublished > 0;
   }
@@ -855,7 +1045,22 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource has been assigned a GBIF-supported license, false otherwise
    */
   public boolean isAssignedGBIFSupportedLicense() {
-    return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+    if (isDataPackage()) {
+      if (CAMTRAP_DP.equals(coreType)) {
+        CamtrapMetadata camtrapMetadata = (CamtrapMetadata) dataPackageMetadata;
+        Optional<CamtrapLicense> dataLicenseWrapped = camtrapMetadata.getLicenses()
+            .stream()
+            .map(license -> (CamtrapLicense) license)
+            .filter(license -> license.getScope() == CamtrapLicense.Scope.DATA)
+            .findFirst();
+
+        return dataLicenseWrapped.isPresent() && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(dataLicenseWrapped.get().getName());
+      } else {
+        return false;
+      }
+    } else {
+      return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+    }
   }
 
   public boolean isRegistered() {
@@ -884,6 +1089,10 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.eml = eml;
   }
 
+  public void setDataPackageMetadata(DataPackageMetadata dataPackageMetadata) {
+    this.dataPackageMetadata = dataPackageMetadata;
+  }
+
   /**
    * Set the new eml (resource) version. If the new version is greater than the existing version, the previous version
    * is stored.
@@ -898,6 +1107,22 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
     emlVersion = v;
     eml.setEmlVersion(v);
+  }
+
+  public void setDataPackageMetadataVersion(BigDecimal v) {
+    if (ResourceUtils.assertVersionOrder(v, dataPackageMetadataVersion)) {
+      setReplacedDataPackageMetadataVersion(new BigDecimal(dataPackageMetadataVersion.toPlainString()));
+    }
+    dataPackageMetadataVersion = v;
+    dataPackageMetadata.setVersion(v.toPlainString());
+  }
+
+  public void setMetadataVersion(BigDecimal v) {
+    if (isDataPackage()) {
+      setDataPackageMetadataVersion(v);
+    } else {
+      setEmlVersion(v);
+    }
   }
 
   public void setKey(UUID key) {
@@ -1091,6 +1316,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return (replacedEmlVersion == null) ? Constants.INITIAL_RESOURCE_VERSION : replacedEmlVersion;
   }
 
+  public BigDecimal getReplacedDataPackageMetadataVersion() {
+    return (replacedDataPackageMetadataVersion == null)
+        ? Constants.INITIAL_RESOURCE_VERSION_DATA_PACKAGE
+        : replacedDataPackageMetadataVersion;
+  }
+
+  public BigDecimal getReplacedMetadataVersion() {
+    return dataPackageIdentifier != null ? getReplacedDataPackageMetadataVersion() : getReplacedEmlVersion();
+  }
+
   /**
    * Set the replacedEmlVersion, only if that version exists in VersionHistory.
    *
@@ -1102,6 +1337,15 @@ public class Resource implements Serializable, Comparable<Resource> {
       LOG.error("Replaced version (" + replacedEmlVersion.toPlainString() + ") does not exist in version history!");
     } else {
       this.replacedEmlVersion = replacedEmlVersion;
+    }
+  }
+
+  public void setReplacedDataPackageMetadataVersion(BigDecimal replacedDataPackageMetadataVersion) {
+    VersionHistory vh = findVersionHistory(replacedDataPackageMetadataVersion);
+    if (vh == null) {
+      LOG.error("Replaced version (" + replacedDataPackageMetadataVersion.toPlainString() + ") does not exist in version history!");
+    } else {
+      this.replacedDataPackageMetadataVersion = replacedDataPackageMetadataVersion;
     }
   }
 
@@ -1195,6 +1439,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public String generateDataPackageResourceCitation(String version, String homepage) {
+    try {
+      return generateDataPackageResourceCitation(new BigDecimal(version), new URI(homepage));
+    } catch (URISyntaxException e) {
+      LOG.error("Failed to generate URI for homepage string: " + homepage, e);
+    }
+    return null;
+  }
+
   /**
    * Construct the resource citation from various parts for the version specified.
    * </br>
@@ -1251,7 +1504,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(". ");
     }
 
-    // add ResourceTypeGeneral/ResourceType, e.g. Dataset/Occurrence, Dataset/Checklist
+    // add ResourceType ResourceTypeGeneral, e.g. Occurrence Dataset, Checklist Dataset
     if (getCoreType() != null) {
       sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
       sb.append(" dataset");
@@ -1271,6 +1524,86 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(homepage.toString());
     }
     return sb.toString();
+  }
+
+  public String generateDataPackageResourceCitation(@NotNull BigDecimal version, @NotNull URI homepage) {
+    StringBuilder sb = new StringBuilder();
+
+    if (dataPackageMetadata instanceof CamtrapMetadata) {
+      // make a list of contributors
+      Set<String> contributorList = new LinkedHashSet<>();
+
+      CamtrapMetadata metadata = (CamtrapMetadata) dataPackageMetadata;
+
+      Stream.of(metadata.getContributors())
+          .flatMap(Collection::stream)
+          .map(contributor -> (CamtrapContributor) contributor)
+          .filter(Objects::nonNull)
+          .filter(this::hasCitationRole)
+          .map(this::getCitationCamtrapContributorName)
+          .filter(StringUtils::isNotEmpty)
+          .forEach(contributorList::add);
+
+      // add comma separated agents
+      Iterator<String> iter = contributorList.iterator();
+      while (iter.hasNext()) {
+        sb.append(iter.next());
+        if (iter.hasNext()) {
+          sb.append(", ");
+        }
+      }
+
+      // add year the resource was most recently published
+      Date pubDate = metadata.getCreated() != null ? metadata.getCreated() : new Date();
+      int publicationYear = getPublicationYear(pubDate);
+      if (publicationYear > 0) {
+        sb.append(" (");
+        sb.append(publicationYear);
+        sb.append("). ");
+      }
+
+      // add title
+      sb.append((StringUtils.trimToNull(getTitle()) == null) ? getShortname() : StringUtils.trim(getTitle()));
+      sb.append(". ");
+
+      // add version
+      sb.append("Version ");
+      sb.append(version.toPlainString());
+      sb.append(". ");
+
+      // add publisher
+      String publisher = (getOrganisation() == null) ? null : StringUtils.trimToNull(getOrganisation().getName());
+      if (publisher != null) {
+        sb.append(publisher);
+        sb.append(". ");
+      }
+
+      // add ResourceTypeGeneral/ResourceType
+      if (CAMTRAP_DP.equals(getCoreType())) {
+        sb.append("Camtrap DP dataset");
+      } else if (getCoreType() != null) {
+        sb.append(StringUtils.capitalize(getCoreType().toLowerCase()));
+        sb.append(" dataset");
+      }
+      sb.append(". ");
+
+      // TODO citation identifier if DOI is null?
+      // add DOI as the identifier. DataCite recommends using linkable, permanent URL
+      if (getDoi() != null) {
+        sb.append(getDoi().getUrl());
+      }
+      // otherwise, use its IPT homepage as the identifier
+      else {
+        sb.append(homepage.toString());
+      }
+
+    }
+
+    return sb.toString();
+  }
+
+  private boolean hasCitationRole(CamtrapContributor contributor) {
+    return CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole());
   }
 
   /**
@@ -1302,6 +1635,29 @@ public class Resource implements Serializable, Comparable<Resource> {
     } else if (firstNames == null && organisation != null) {
       sb.append(organisation);
     }
+    return sb.toString();
+  }
+
+  protected String getCitationCamtrapContributorName(CamtrapContributor contributor) {
+    StringBuilder sb = new StringBuilder();
+    String lastNameTrimmed = StringUtils.trimToNull(contributor.getLastName());
+    String firstNamesTrimmed = StringUtils.trimToNull(contributor.getFirstName());
+
+    if (lastNameTrimmed != null) {
+      sb.append(lastNameTrimmed);
+      if (firstNamesTrimmed != null) {
+        sb.append(" ");
+        // add first initial of each first name, capitalized
+        String[] names = firstNamesTrimmed.split("\\s+", -1);
+        for (int i = 0; i < names.length; i++) {
+          sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
+          if (i < names.length - 1) {
+            sb.append(" ");
+          }
+        }
+      }
+    }
+
     return sb.toString();
   }
 
@@ -1473,5 +1829,15 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setMakePublicDate(Date makePublicDate) {
     this.makePublicDate = makePublicDate;
+  }
+
+  public boolean isDataPackage() {
+    return dataPackageIdentifier != null;
+  }
+
+  public void inferCoverageMetadataAutomatically(boolean param) {
+    setInferGeocoverageAutomatically(param);
+    setInferTaxonomicCoverageAutomatically(param);
+    setInferTemporalCoverageAutomatically(param);
   }
 }

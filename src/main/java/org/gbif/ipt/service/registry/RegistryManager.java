@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.registry;
 
 import org.gbif.api.model.registry.Network;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -48,6 +49,47 @@ public interface RegistryManager {
    * @throws RegistryException if the list of extensions couldn't be populated
    */
   List<Extension> getExtensions() throws RegistryException;
+
+  /**
+   * Gets a list of all registered data package schemas from the Registry.
+   *
+   * @return list of data package schemas, or an empty list if none were retrieved from valid response
+   *
+   * @throws RegistryException if the list of data package schemas couldn't be populated
+   */
+  List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException;
+
+  /**
+   * Get the latest compatible version with the provided one
+   *
+   * @param schemaName schema name
+   * @param schemaVersion schema version
+   * @return the latest compatible version with the provided one
+   *
+   * @throws RegistryException if the data couldn't be populated
+   */
+  String getLatestCompatibleSchemaVersion(String schemaName, String schemaVersion) throws RegistryException;
+
+  /**
+   * Get the schema by schema name and version
+   *
+   * @param schemaName schema name
+   * @param schemaVersion schema version
+   * @return the schema
+   *
+   * @throws RegistryException if the data couldn't be populated
+   */
+  DataPackageSchema getSchema(String schemaName, String schemaVersion) throws RegistryException;
+
+  /**
+   * Gets list of all registered data schemas from the Registry.
+   * Similar to {@link this#getLatestDataPackageSchemas()} but returns schemas with versions supported by the IPT.
+   *
+   * @return list of data schemas, or an empty list if none were retrieved from valid response
+   *
+   * @throws RegistryException if the list of data schemas couldn't be populated
+   */
+  List<DataPackageSchema> getSupportedDataSchemas() throws RegistryException;
 
   /**
    * Retrieves a list of Organisation from the Registry.

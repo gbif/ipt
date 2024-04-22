@@ -29,6 +29,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataPackageFieldConverter;
+import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -37,14 +40,18 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
@@ -106,6 +113,7 @@ public class ResourceManagerImplIT {
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     ExtensionRowTypeConverter mockExtensionRowTypeConverter = mock(ExtensionRowTypeConverter.class);
     ExtensionManager mockExtensionManager = mock(ExtensionManager.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
     JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
@@ -149,24 +157,29 @@ public class ResourceManagerImplIT {
     DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter,
+        mockConceptTermConverter, mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), mockJdbcConverter);
+
     // mock ResourceManagerImpl for DataCite
     ResourceManagerImpl managerDataCite = new ResourceManagerImpl(
         mockAppConfig,
         MOCK_DATA_DIR,
-        mockEmailConverter,
-        new OrganisationKeyConverter(mockRegistrationManagerDataCite),
-        mockExtensionRowTypeConverter,
-        mockJdbcConverter,
+        mockResourceConvertersManager,
         mockSourceManager,
         mockExtensionManager,
+        mockSchemaManager,
         mockRegistryManager,
-        mockConceptTermConverter,
         mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
         mockPasswordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManagerDataCite);
+        mockRegistrationManagerDataCite,
+        mock(MetadataReader.class),
+        mock(ResourceMetadataInferringService.class));
 
     return Stream.of(
         Arguments.of(managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite)
@@ -206,7 +219,7 @@ public class ResourceManagerImplIT {
     o.setKey(UUID.randomUUID().toString());
     resource.setOrganisation(o);
 
-    resource.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+    resource.setMetadataVersion(Constants.INITIAL_RESOURCE_VERSION);
     resource.setStatus(PublicationStatus.PUBLIC);
     assertNull(resource.getLastPublished());
   }
@@ -276,9 +289,9 @@ public class ResourceManagerImplIT {
 
     // update DOI for next published version
     BigDecimal nextVersion = resource.getNextVersion();
-    resource.setEmlVersion(nextVersion);
+    resource.setMetadataVersion(nextVersion);
     assertEquals("1.1", resource.getEmlVersion().toPlainString());
-    assertEquals("1.0", resource.getReplacedEmlVersion().toPlainString());
+    assertEquals("1.0", resource.getReplacedMetadataVersion().toPlainString());
     manager.doUpdateDoi(resource);
     LOG.info("DOI was updated successfully, DOI=" + doi.getDoiName());
 
@@ -318,11 +331,11 @@ public class ResourceManagerImplIT {
     // replace DOI with new DOI, and publish version 2.0
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
     nextVersion = resource.getNextVersion(); // new major version
-    resource.setEmlVersion(nextVersion);
+    resource.setMetadataVersion(nextVersion);
     assertEquals("2.0", resource.getEmlVersion().toPlainString());
     assertNotNull(resource.getAssignedDoi());
-    assertEquals("1.1", resource.getReplacedEmlVersion().toPlainString());
-    manager.doReplaceDoi(resource, resource.getEmlVersion(), resource.getReplacedEmlVersion());
+    assertEquals("1.1", resource.getReplacedMetadataVersion().toPlainString());
+    manager.doReplaceDoi(resource, resource.getEmlVersion(), resource.getReplacedMetadataVersion());
 
     // check new DOI is registered now, and its target is equal to resource URI
     doiData = registrationManager.getDoiService().resolve(newDoi);

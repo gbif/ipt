@@ -2,7 +2,7 @@
 
 == Introduction
 
-In accordance with the http://www.gbif.org/terms/licences[GBIF licensing policy], a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that:
+In accordance with the http://www.gbif.org/terms/licences[GBIF licensing policy], a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which is 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that:
 
 [quote]
 You should always use the latest version of the Creative Commons licenses in order to take advantage of the many improvements described on the https://wiki.creativecommons.org/wiki/License_Versions[license versions page]. In particular, 4.0 is meant to be better suited to international use, and use in many different contexts, including https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/[sharing data].

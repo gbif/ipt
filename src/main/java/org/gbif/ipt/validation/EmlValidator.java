@@ -53,6 +53,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.validation.EmailValidationMessageTranslator.EMAIL_ERROR_TRANSLATIONS;
+
 public class EmlValidator extends BaseValidator {
 
   protected static Pattern phonePattern = Pattern.compile("[\\w ()/+-\\.]+");
@@ -281,9 +283,12 @@ public class EmlValidator extends BaseValidator {
               }
 
             /* email is optional. But if it exists, should be a valid email address */
-              if (exists(c.getEmail()) && !isValidEmail(c.getEmail())) {
-                action.addFieldError("eml.contacts[" + index + "].email",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.contact.email")}));
+              ValidationResult emailValidationResult = checkEmailValid(c.getEmail());
+              if (exists(c.getEmail()) && !emailValidationResult.isValid()) {
+                action.addFieldError(
+                        "eml.contacts[" + index + "].email",
+                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                );
               }
 
             /* phone is optional. But if it exists, should match the pattern */
@@ -342,9 +347,12 @@ public class EmlValidator extends BaseValidator {
               }
 
             /* email is optional. But if it exists, should be a valid email address */
-              if (exists(c.getEmail()) && !isValidEmail(c.getEmail())) {
-                action.addFieldError("eml.creators[" + index + "].email",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.email")}));
+              ValidationResult emailValidationResult = checkEmailValid(c.getEmail());
+              if (exists(c.getEmail()) && !emailValidationResult.isValid()) {
+                action.addFieldError(
+                        "eml.creators[" + index + "].email",
+                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                );
               }
 
             /* phone is optional. But if it exists, should match the pattern */
@@ -400,9 +408,12 @@ public class EmlValidator extends BaseValidator {
               }
 
             /* email is optional. But if it exists, should be a valid email address */
-              if (exists(c.getEmail()) && !isValidEmail(c.getEmail())) {
-                action.addFieldError("eml.metadataProviders[" + index + "].email",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.email")}));
+              ValidationResult emailValidationResult = checkEmailValid(c.getEmail());
+              if (exists(c.getEmail()) && !emailValidationResult.isValid()) {
+                action.addFieldError(
+                        "eml.metadataProviders[" + index + "].email",
+                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                );
               }
 
             /* phone is optional. But if it exists, should match the pattern */
@@ -550,36 +561,38 @@ public class EmlValidator extends BaseValidator {
           if (!isTemporalPageEmpty(eml)) {
             int index = 0;
             for (TemporalCoverage tc : eml.getTemporalCoverages()) {
-              if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
-                action
-                  .addFieldError("eml.temporalCoverages[" + index + "].startDate",
-                    action.getText("validation.required",
-                      new String[] {action.getText("eml.temporalCoverages.startDate")}));
-              }
-              if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
-                if (!exists(tc.getStartDate())) {
-                  action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
-                    .getText("validation.required", new String[] {action.getText("eml.temporalCoverages.startDate")}));
-                }
-                if (!exists(tc.getEndDate())) {
+              if (tc != null) {
+                if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
                   action
-                    .addFieldError("eml.temporalCoverages[" + index + "].endDate",
-                      action.getText("validation.required",
-                        new String[] {action.getText("eml.temporalCoverages.endDate")}));
+                          .addFieldError("eml.temporalCoverages[" + index + "].startDate",
+                                  action.getText("validation.required",
+                                          new String[]{action.getText("eml.temporalCoverages.startDate")}));
                 }
-              }
-              if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
-                action
-                  .addFieldError(
-                    "eml.temporalCoverages[" + index + "].formationPeriod",
+                if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
+                  if (!exists(tc.getStartDate())) {
+                    action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
+                            .getText("validation.required", new String[]{action.getText("eml.temporalCoverages.startDate")}));
+                  }
+                  if (!exists(tc.getEndDate())) {
                     action
-                      .getText("validation.required",
-                        new String[] {action.getText("eml.temporalCoverages.formationPeriod")}));
-              }
-              if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
-                action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
-                  .getText("validation.required",
-                    new String[] {action.getText("eml.temporalCoverages.livingTimePeriod")}));
+                            .addFieldError("eml.temporalCoverages[" + index + "].endDate",
+                                    action.getText("validation.required",
+                                            new String[]{action.getText("eml.temporalCoverages.endDate")}));
+                  }
+                }
+                if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
+                  action
+                          .addFieldError(
+                                  "eml.temporalCoverages[" + index + "].formationPeriod",
+                                  action
+                                          .getText("validation.required",
+                                                  new String[]{action.getText("eml.temporalCoverages.formationPeriod")}));
+                }
+                if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
+                  action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
+                          .getText("validation.required",
+                                  new String[]{action.getText("eml.temporalCoverages.livingTimePeriod")}));
+                }
               }
               index++;
             }
@@ -641,9 +654,12 @@ public class EmlValidator extends BaseValidator {
               }
 
             /* email is optional. But if it exists, should be a valid email address */
-              if (exists(ap.getEmail()) && !isValidEmail(ap.getEmail())) {
-                action.addFieldError("eml.associatedParties[" + index + "].email",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.email")}));
+              ValidationResult emailValidationResult = checkEmailValid(ap.getEmail());
+              if (exists(ap.getEmail()) && !emailValidationResult.isValid()) {
+                action.addFieldError(
+                        "eml.associatedParties[" + index + "].email",
+                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                );
               }
 
             /* phone is optional. But if it exists, should match the pattern */

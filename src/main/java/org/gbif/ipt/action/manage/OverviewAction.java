@@ -35,6 +35,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -43,6 +46,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.UndeletNotAllowedException;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -50,6 +54,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -60,6 +65,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
@@ -89,10 +95,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
@@ -102,6 +110,8 @@ import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
@@ -124,7 +134,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
   private Organisation doiAccount;
+  private String publishingOrganizationKey;
   private final EmlValidator emlValidator;
+  private final DataPackageMetadataValidator dataPackageMetadataValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
   private boolean missingValidPublishingOrganisation;
@@ -135,17 +147,23 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private StatusReport report;
   private Date now;
   private File emlFile;
+  private File datapackageMetadataFile;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
   private boolean validateEml = false;
+
+  private boolean validateDatapackageMetadata = false;
   private String summary;
   private String makePublicDateTime;
+  private long usableSpace;
+  private String freeDiscSpaceReadable;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
+  private GenerateDataPackageFactory dataPackageFactory;
   private List<String> columns;
   private List<String[]> peek;
   private Integer mid;
@@ -155,20 +173,24 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final RegistryManager registryManager;
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
+  private final DataPackageSchemaManager schemaManager;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager,
-    RegistryManager registryManager) {
+    GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
+    RegistryManager registryManager, DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
+    this.dataPackageMetadataValidator = new DataPackageMetadataValidator();
     this.dwcaFactory = dwcaFactory;
+    this.dataPackageFactory = dataPackageFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
+    this.schemaManager = schemaManager;
   }
 
   /**
@@ -216,6 +238,26 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
+   * Triggered by change publishing organization button on overview page
+   */
+  public String changePublishingOrganization() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    if (publishingOrganizationKey != null) {
+      for (Organisation org : organisations) {
+        if (org.getKey().toString().equals(publishingOrganizationKey)) {
+          resource.setOrganisation(org);
+          break;
+        }
+      }
+    }
+
+    return execute();
+  }
+
+  /**
    * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
    * must be rolled back.
    *
@@ -230,7 +272,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (cancelled) {
 
       // final logging
-      BigDecimal version = resource.getEmlVersion();
+      BigDecimal version = resource.getMetadataVersion();
       String msg = getText("publishing.cancelled", new String[] {version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
       addActionError(msg);
@@ -466,7 +508,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
           UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
-          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), doi, organisation,
+          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), doi, organisation,
             resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
@@ -488,7 +530,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 File formerVersionToUndeleteEmlFile =
                   cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
-                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), formerDoi, organisation,
+                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), formerDoi, organisation,
                     resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
@@ -622,22 +664,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     return SUCCESS;
-  }
-
-  /**
-   * Validate whether to show a confirmation message to overwrite the file(s) recently uploaded.
-   *
-   * @return true if a file or a URL exist in the user session. False otherwise.
-   */
-  public boolean getConfirmOverwrite() {
-    return session.get(Constants.SESSION_FILE) != null || session.get(Constants.SESSION_URL) != null;
-  }
-
-  /**
-   * Get a message to display in a modal window.
-   */
-  public String getOverwriteMessage() {
-    return (String) session.get(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
   }
 
   /**
@@ -1183,8 +1209,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
 
-      // check EML
-      missingMetadata = !emlValidator.isValid(resource, null);
+      // check metadata
+      if (!isDataPackageResource()) {
+        missingMetadata = !emlValidator.isValid(resource, null);
+      } else {
+        missingMetadata = !dataPackageMetadataValidator.isValid(resource);
+      }
+
       // check resource has been assigned a valid publishing organisation
       missingValidPublishingOrganisation = !hasValidPublishingOrganisation(resource);
       // check resource meets all the conditions required in order to be registered
@@ -1203,6 +1234,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
       MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
       autoPublishFrequencies.putAll(filteredFrequencies);
+
+      usableSpace = cfg.getDataDir().getDataDirUsableSpace();
+      freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
     }
   }
 
@@ -1243,8 +1277,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     if (publish) {
-      // prevent publishing if resource is registered but it hasn't been assigned a GBIF-supported license
-      if (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()) {
+      // prevent publishing if resource is registered, but it hasn't been assigned a GBIF-supported license
+      if (resource.isRegistered() && !resource.isDataPackage() && !resource.isAssignedGBIFSupportedLicense()) {
         String msg = getText("manage.overview.prevented.resource.publishing.noGBIFLicense");
         addActionError(msg);
         LOG.error(msg);
@@ -1307,9 +1341,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
           if (resource.getCoreType() != null
+              && resource.getDataPackageIdentifier() == null // not a data schema base resource
               && !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
+
+          if (resource.getDataPackageIdentifier() != null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
+            addActionWarning(getText("manage.overview.data.missing"));
+          }
+
           missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
           metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
           mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
@@ -1318,6 +1358,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           return SUCCESS;
         }
       } catch (PublicationException e) {
+        LOG.error("Exception while publishing", e);
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
           addActionError(getText("manage.overview.resource.being.published",
@@ -1348,10 +1389,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return ERROR;
   }
 
-  public String registerResource() throws Exception {
+  public synchronized String registerResource() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+
+    // prevent registration if resource already registered
+    if (resource.isRegistered()) {
+      String msg = getText("manage.overview.failed.resource.registration.alreadyRegistered");
+      addActionError(msg);
+      LOG.error(msg);
+      return INPUT;
+    }
+
     // prevent registration if last published version was not public (at the time of publishing)
     if (!resource.isLastPublishedVersionPublic()) {
       String msg = getText("manage.overview.failed.resource.registration.notPublic");
@@ -1359,14 +1409,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error(msg);
       return INPUT;
     }
+
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
-    if (resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+    // not applicable for data packages
+    if (resource.getDataPackageIdentifier() == null && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
       String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
       addActionError(msg);
       LOG.error(msg);
       return INPUT;
     }
+
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
@@ -1390,6 +1443,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
             // perform registration
             resourceManager.register(resource, org, registrationManager.getIpt(), this);
+
+            // associate resource with the default IPT network
+            org.gbif.ipt.model.Network defaultIptNetwork = registrationManager.getNetwork();
+            if (defaultIptNetwork != null && defaultIptNetwork.getKey() != null) {
+              registryManager.addResourceToNetwork(resource, defaultIptNetwork.getKey().toString());
+            }
           } catch (InvalidConfigException e) {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
               String msg = getText("manage.resource.migrate.failed");
@@ -1438,20 +1497,37 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (!history.isEmpty()) {
       VersionHistory latestVersionHistory = history.get(0);
       BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
-      File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
-      if (emlFile.exists()) {
-        try {
-          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
-          InputStream in = new FileInputStream(emlFile);
-          Eml eml = EmlFactory.build(in);
-          if (eml.parseLicenseUrl() != null) {
-            LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
-            return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+
+      if (resource.isDataPackage()) {
+        if (CAMTRAP_DP.equals(resource.getCoreType())) {
+          CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+
+          Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
+              .map(license -> (CamtrapLicense) license)
+              .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
+              .findFirst();
+
+          return dataLicenceWrapped
+              .map(FrictionlessLicense::getName)
+              .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+              .orElse(false);
+        }
+      } else {
+        File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
+        if (emlFile.exists()) {
+          try {
+            LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+            InputStream in = new FileInputStream(emlFile);
+            Eml eml = EmlFactory.build(in);
+            if (eml.parseLicenseUrl() != null) {
+              LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
+              return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+            }
+          } catch (Exception e) {
+            LOG.error(
+                "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
+                    .getMessage(), e);
           }
-        } catch (Exception e) {
-          LOG.error(
-            "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
-              .getMessage(), e);
         }
       }
     }
@@ -1536,8 +1612,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.validateEml = validateEml;
   }
 
+  public boolean isValidateDatapackageMetadata() {
+    return validateDatapackageMetadata;
+  }
+
+  public void setValidateDatapackageMetadata(boolean validateDatapackageMetadata) {
+    this.validateDatapackageMetadata = validateDatapackageMetadata;
+  }
+
   public void setEmlFile(File emlFile) {
     this.emlFile = emlFile;
+  }
+
+  public void setDatapackageMetadataFile(File datapackageMetadataFile) {
+    this.datapackageMetadataFile = datapackageMetadataFile;
   }
 
   public String replaceEml() {
@@ -1560,6 +1648,26 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     } catch (InvalidEmlException e) {
       LOG.error("Validation failed for EML document", e);
       addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
+      return ERROR;
+    }
+  }
+
+  public String replaceDatapackageMetadata() {
+    try {
+      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata);
+      addActionMessage(getText("manage.overview.success.replace.metadata"));
+      return SUCCESS;
+    } catch (ImportException e) {
+      LOG.error("Failed to replace data package metadata", e);
+      addActionError(getText("manage.overview.failed.replace.metadata"));
+      return ERROR;
+    } catch (IOException e) {
+      LOG.error("Failed to read data package metadata from file", e);
+      addActionError(getText("manage.overview.failed.replace.metadata.read"));
+      return ERROR;
+    } catch (org.gbif.ipt.service.InvalidMetadataException e) {
+      LOG.error("Validation failed for metadata file", e);
+      addActionError(getText("manage.overview.failed.replace.metadata.validation"));
       return ERROR;
     }
   }
@@ -1644,49 +1752,54 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       rowType = TERM_FACTORY.findTerm(id);
     }
 
-    if (rowType != null && mid != null) {
-      ExtensionMapping mapping = resource.getMappings(id).get(mid);
-      if (mapping != null) {
-        try {
-          GenerateDwca worker = dwcaFactory.create(resource, this);
-          worker.report();
-          File tmpDir = FileUtils.createTempDir();
-          worker.setDwcaFolder(tmpDir);
-          Archive archive = new Archive();
-          worker.setArchive(archive);
-          // create the data file inside the temp directory
-          List<ExtensionMapping> mappings = new ArrayList<>();
-          mappings.add(mapping);
-          worker.addDataFile(mappings, PEEK_ROWS);
-          // preview the data file, by writing header and rows
-          File[] files = tmpDir.listFiles();
-          if (files != null && files.length > 0) {
-            // file either represents a core file or an extension
-            ArchiveFile core = archive.getCore();
-            ArchiveFile ext = archive.getExtension(rowType);
-            String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
-            Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
-            int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
+    if (resource.getDataPackageIdentifier() != null) {
+      // TODO: 06/04/2022 implement for schema resources?
+      // There are many files inside, how to display that?
+    } else {
+      if (rowType != null && mid != null) {
+        ExtensionMapping mapping = resource.getMappings(id).get(mid);
+        if (mapping != null) {
+          try {
+            GenerateDwca worker = dwcaFactory.create(resource, this);
+            worker.report();
+            File tmpDir = FileUtils.createTempDir();
+            worker.setDwcaFolder(tmpDir);
+            Archive archive = new Archive();
+            worker.setArchive(archive);
+            // create the data file inside the temp directory
+            List<ExtensionMapping> mappings = new ArrayList<>();
+            mappings.add(mapping);
+            worker.addDataFile(mappings, PEEK_ROWS);
+            // preview the data file, by writing header and rows
+            File[] files = tmpDir.listFiles();
+            if (files != null && files.length > 0) {
+              // file either represents a core file or an extension
+              ArchiveFile core = archive.getCore();
+              ArchiveFile ext = archive.getExtension(rowType);
+              String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
+              Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
+              int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
 
-            CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
-            while (reader.hasNext()) {
-              peek.add(reader.next());
-              if (columns.isEmpty()) {
-                columns = Arrays.asList(reader.header);
+              CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
+              while (reader.hasNext()) {
+                peek.add(reader.next());
+                if (columns.isEmpty()) {
+                  columns = Arrays.asList(reader.header);
+                }
               }
+            } else {
+              messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
             }
-          } else {
-            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
+          } catch (Exception e) {
+            exception = e;
+            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[]{e.getMessage()})));
           }
-        } catch (Exception e) {
-          exception = e;
-          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[]{e.getMessage()})));
+        } else {
+          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
         }
       } else {
-        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
+        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
       }
-    } else {
-      messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
     }
 
     // add messages to those collected while generating preview
@@ -1751,5 +1864,29 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public void setMakePublicDateTime(String makePublicDateTime) {
     this.makePublicDateTime = makePublicDateTime;
+  }
+
+  public long getUsableSpace() {
+    return usableSpace;
+  }
+
+  public String getFreeDiscSpaceReadable() {
+    return freeDiscSpaceReadable;
+  }
+
+  public boolean isDataPackageResource() {
+    return resource.getDataPackageIdentifier() != null;
+  }
+
+  public boolean isDataPackageMappingsMissing() {
+    return resource.getDataPackageMappings().size() == 0;
+  }
+
+  public String getPublishingOrganizationKey() {
+    return publishingOrganizationKey;
+  }
+
+  public void setPublishingOrganizationKey(String publishingOrganizationKey) {
+    this.publishingOrganizationKey = publishingOrganizationKey;
   }
 }

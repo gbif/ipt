@@ -148,6 +148,12 @@ public class ExtensionManagerImplTest {
     File tmpEventCore = new File(myTmpDir, "dwc_event_2015-04-24.xml");
     assertTrue(tmpEventCore.exists());
 
+    // copy latest version of material entity core extension to temporary directory
+    File materialEntityCore = FileUtils.getClasspathFile("extensions/dwc_material_2023-04-29.xml");
+    org.apache.commons.io.FileUtils.copyFileToDirectory(materialEntityCore, myTmpDir);
+    File tmpMaterialEntityCore = new File(myTmpDir, "dwc_material_2023-04-29.xml");
+    assertTrue(tmpMaterialEntityCore.exists());
+
     // mock returning temporary files when looked up by their 'safe' filenames
     when(mockDataDir.tmpFile("http_rs_gbif_org_core_dwc_occurrence_xml.xml")).thenReturn(tmpOccCore);
     when(mockDataDir.tmpFile("http_rs_gbif_org_sandbox_core_dwc_occurrence_2015-04-24_xml.xml"))
@@ -156,6 +162,8 @@ public class ExtensionManagerImplTest {
       .thenReturn(tmpTaxonCore);
     when(mockDataDir.tmpFile("http_rs_gbif_org_sandbox_core_dwc_event_2015-04-24_xml.xml"))
       .thenReturn(tmpEventCore);
+    when(mockDataDir.tmpFile("http_rs_gbif_org_sandbox_core_dwc_material_2023-04-29_xml.xml"))
+      .thenReturn(tmpMaterialEntityCore);
 
     // Mock downloading extension into tmpFile - we're cheating by handling the actual file already as if it
     // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
@@ -177,6 +185,11 @@ public class ExtensionManagerImplTest {
     File eventCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_Event.xml");
     when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_Event.xml"))
       .thenReturn(eventCoreExtension);
+
+    // mock returning newly created material entity core extension file
+    File materialEntityCoreExtension = new File(myTmpDir, "http_rs_tdwg_org_dwc_terms_MaterialEntity.xml");
+    when(mockDataDir.configFile(ExtensionManagerImpl.CONFIG_FOLDER + "/http_rs_tdwg_org_dwc_terms_MaterialEntity.xml"))
+      .thenReturn(materialEntityCoreExtension);
 
     // create instance
     extensionManager =

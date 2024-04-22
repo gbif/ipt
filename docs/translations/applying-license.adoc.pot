@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"POT-Creation-Date: 2023-12-11 10:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -43,7 +42,7 @@ msgid ""
 "In accordance with the http://www.gbif.org/terms/licences[GBIF licensing "
 "policy], a dataset should be made available for use under CC0, CC-BY, or CC-"
 "BY-NC. GBIF's recommended best practice is to use the most recent version, "
-"which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' "
+"which is 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' "
 "recommendation that:"
 msgstr ""
 

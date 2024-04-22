@@ -17,12 +17,14 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -63,17 +65,21 @@ public class CreateResourceAction extends POSTAction {
   private String shortname;
   private String resourceType;
   private Map<String, String> types;
+  private Map<String, String> dataPackageTypes;
   private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
+  private final DataPackageSchemaManager schemaManager;
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
   public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                              ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager) {
+                              ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager,
+                              DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;
     this.vocabManager = vocabManager;
+    this.schemaManager = schemaManager;
   }
 
   public String getShortname() {
@@ -109,7 +115,7 @@ public class CreateResourceAction extends POSTAction {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     } catch (ImportException e) {
-      LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
+      LOG.error("Error importing the archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
       // remove resource and its resource folder from data directory
       cleanupResourceFolder(shortname, startTimeInMs);
@@ -193,7 +199,7 @@ public class CreateResourceAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      validator.validateShortname(this, shortname);
+      validator.validateCreateNew(this, shortname, resourceType);
     }
   }
 
@@ -219,11 +225,21 @@ public class CreateResourceAction extends POSTAction {
    */
   public Map<String, String> getTypes() {
     types = new LinkedHashMap<>();
-    types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     return types;
+  }
+
+  public Map<String, String> getDataPackageTypes() {
+    dataPackageTypes = new LinkedHashMap<>();
+    List<DataPackageSchema> installedDataPackageSchemas = schemaManager.list();
+    for (DataPackageSchema installedDataPackageSchema : installedDataPackageSchemas) {
+      dataPackageTypes.put(installedDataPackageSchema.getName(), installedDataPackageSchema.getTitle());
+    }
+    dataPackageTypes = MapUtils.getMapWithLowercaseKeys(dataPackageTypes);
+
+    return dataPackageTypes;
   }
 
   /**

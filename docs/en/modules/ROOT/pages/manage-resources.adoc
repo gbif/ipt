@@ -13,18 +13,18 @@ When the Manage Resources page is first opened, it shows a table of existing res
 * *Author* - the IPT user who created the resource.
 
 == Create a New Resource
-Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., "firstresource" or "first_resource", but not "first resource" or "première ressource!"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:
+Below the Manage Resource table is a form that can be used to create a new resource. First, a unique "shortname" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., "firstresource" or "first_resource", but not "first resource" or "première ressource!"). Second, a resource type must be provided. Please note that when an optional Darwin Core archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe different types of archived resources from which a new resource can be derived:
 
-* <<Upload a Darwin Core Archive,Darwin Core Archive>>,
+* <<Upload a Darwin Core Archive,Darwin Core Archive>> or Camtrap Frictionless Data Package,
 * <<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,
-* <<Upload a metadata file,metadata file>>.
+* <<Upload a metadata file,metadata file>> (EML or Frictionless metadata)
 
-Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
+Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 10GB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
 
 Begin by entering a new resource shortname as described above, and then click on the button labelled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
 
 === Upload a Darwin Core Archive
-The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
+The IPT is able to import valid Darwin Core Archive files up to 10GB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
 
 image::ipt2/manage/IPTManageResourceUploadDwcA.png[]
 
@@ -58,6 +58,7 @@ The table of existing resources shows only those resources that can be edited by
 This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections.
 
 image::ipt2/manage/IPTManageResourceOverview.png[]
+image::ipt2/manage/IPTManageResourceOverview-2.png[]
 
 === Source Data
 This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:
@@ -74,7 +75,7 @@ WARNING: If the IPT detects the number of columns in a mapped data source has ch
 [NOTE#upload-limits]
 .Upload limits
 ====
-The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:
+The IPT has an upload size limit of 10GB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 10GB in size into the IPT, the following work-arounds are recommended:
 
 * compress the file with Zip or Gzip
 * load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]
@@ -86,7 +87,8 @@ This page shows the name of the resource along with a summary of the file charac
 
 image::ipt2/manage/IPTManageResourceSourceDataFormat.png[]
 
-* *Source Name* - the name of the file selected, without the file extension.
+* *Source Name* - header, the name of the file selected, without the file extension.
+* *Source type* - type of the source, Text file here.
 * *Readable* - this icon indicates whether data are accessible using the file format information provided on this page.
 * *File* - the full path to the location of the file to use as the data source.
 * *Columns* - the number of columns in the dataset as configured using the parameters on this page.
@@ -94,8 +96,8 @@ image::ipt2/manage/IPTManageResourceSourceDataFormat.png[]
 * *Size* - the file size.
 * *Modified* - the date stamp of the file indicating when it was last saved.
 * *Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.
-* *Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.
-* *Preview* - click on this button to see an interpretation of the data within the file.
+* *Analyse* - (from Options dropdown) click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.
+* *Preview* - (from Options dropdown) click on this button to see an interpretation of the data within the file.
 * *Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.
 * *Field Delimiter* - the character or characters that signify a break between columns of data.
 * *Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., `'` or `"`). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (`\r`).
@@ -121,10 +123,11 @@ WARNING: If the IPT detects the number of columns in a mapped data source has ch
 
 image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 
-* *Source Name* - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
+* *Source Name* - header, the name of the data source. Unlike a file data source, this can be edited and given any name by the user.
+* *Source type* - type of the source, SQL here.
 * *Readable* - this icon indicates whether data are accessible using the connection information provided on this page.
-* *Analyse* - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
-* *Preview* - click on this button to see an interpretation of the data based on the database connection settings on this page.
+* *Analyse* - (from Options dropdown) click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
+* *Preview* - (from Options dropdown) click on this button to see an interpretation of the data based on the database connection settings on this page.
 * *Database System* - the relational database management system to which the IPT must connect to retrieve the data.
 * *Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.
 * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
@@ -138,7 +141,7 @@ image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labelled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labelled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
 
 ==== URL as data source
-The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Click the {threedots} menu and select "Add". Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
+The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the {threedots} menu and select "Add". Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
 
 image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
@@ -247,9 +250,9 @@ image::ipt2/manage/IPTManageResourceSourceTranslation.png[]
 Bounding the table above and below by the following set of buttons:
 
 * *Save* - click on this button to save all of the changes that have been made on this page and return to the Data Mapping page.
-* *Delete* - click on this button to remove all translations for this field and return to the Data Mapping page.
-* *Reload* - click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.
-* *Automap* - this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.
+* *Delete* - (from Options dropdown) click on this button to remove all translations for this field and return to the Data Mapping page.
+* *Reload* - (from Options dropdown) click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.
+* *Automap* - (from Options dropdown) this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.
 * *Cancel* - click on this button to close the Value Translation page without saving any of the changes that have been made.
 
 ==== Vocabulary detail page
@@ -258,7 +261,7 @@ This page shows a list of concepts within the vocabulary. In the context of mapp
 image::ipt2/manage/IPTManageResourceVocabularyDetail.png[]
 
 === Metadata
-This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite and be assigned a DOI. If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
 
 image::ipt2/manage/IPTManageResourceMetadataMissing.png[]
 
@@ -471,7 +474,7 @@ Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2
 Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f
 
 * *Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.
-* *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.
+* *Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.
 * *Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.
 * *Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.
 ** *Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.
@@ -544,7 +547,7 @@ image::ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png[]
 * *Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.
 * *Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
 * *Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.
-* *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.
+* *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.
 ** *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.
 ** *Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).
 ** *Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.
@@ -559,30 +562,25 @@ Click on the {threedots} menu and select the "Publish" option to trigger publish
 . the required metadata for the resource are complete, and
 . the user has the role "Manager with/without registration rights".
 
-When the resource is registered or the resource has been assigned a DOI, however, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:
+Once the resource is registered only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear:
 
-image::ipt2/manage/IPTManageResourcePublishMajor.png[]
-
-image::ipt2/manage/IPTManageResourcePublishMinor.png[]
+image::ipt2/manage/IPTManageResourcePublishConfirm.png[]
 
 The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing "Publish" is explained in the "Publishing steps" section below.
 
-On the right is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. For explanations of the rows of information in the table, refer to the information below.
+.A pending publication:
+image::ipt2/manage/IPTManageResourcePublish.png[]
 
-.This demonstrates a major version change since the pending version has been reserved a new DOI:
-image::ipt2/manage/IPTManageResourcePublishTable.png[]
+Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:
 
-.This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
-image::ipt2/manage/IPTManageResourcePublishTable2.png[]
-
-* *Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the {threedots} menu, click the "View" option to see the current version's homepage. In the pending version item, click the "Preview" option to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.
+* *Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].
 * *Current* - current already published version.
 * *Pending* - next version.
 * *License* - resource license (e.g. CC0 1.0).
-* *DOI* - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.
-* *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.
+* *DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.
+* *Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.
 * *Published on* - to date the current version was published on / the date the pending version will be published on.
-* *Publication log* - option in the {threedots} menu. Click that to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
+* *Publication log* - button. Click to retrieve the "publication.log" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.
 
 ==== Publishing steps
 
@@ -603,18 +601,6 @@ After writing, the IPT also validates their content in the following ways:
 
 * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
 * The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary].
-
-==== Assigning DOIs to Resources
-
-Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the "Configure Organizations" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki.
-
-* *Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.
-** *Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the "Reserve" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the "Reserve" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.
-** *Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the "Reserve new" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.
-* *Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the "Delete" button in the Published Versions section.
-* *Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.
-* *Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.
-* *Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.
 
 ==== Publishing Status page
 
@@ -644,9 +630,9 @@ When automated publishing is on, the publishing interval and next published date
 In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
 === Visibility
-The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
+The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
-* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.
+* *Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.
 +
 --
 image::ipt2/manage/IPTManageResourceVisibilityPrivate.png[]
@@ -660,7 +646,7 @@ image::ipt2/manage/IPTManageResourceVisibilityMakePublic2.png[]
 After submitting the form a message will appear at the top of the page saying that the status has been changed to "Public".
 --
 
-* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>). Be aware the visibility of a resource assigned a DOI cannot be changed to private.
+* *Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).
 +
 --
 image::ipt2/manage/IPTManageResourceVisibilityPublic.png[]
@@ -702,7 +688,7 @@ image::ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png[]
 
 If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to "Registered". Registration section when the resource is registered:
 
-image::ipt2/manage/IPTManageResourceRegistration2.png[]
+image::ipt2/manage/IPTManageResourceVisibilityRegistered.png[]
 
 === Networks
 
@@ -712,7 +698,7 @@ image::ipt2/manage/IPTManageResourceNetworks.png[]
 
 To add the resource to a network, click on the {threedots} menu and select the "Add" option. To remove it, click the {threedots} menu on the network item and select "Delete".
 
-IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk.
+IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk.
 
 === Resource Managers
 
@@ -724,12 +710,16 @@ image::ipt2/manage/IPTManageResourceManagerAdded.png[]
 
 === Delete a Resource
 
-Clicking on the button labelled "Delete" on the Resource Overview page will show two options.
+Clicking on the button labelled "Delete" on the Resource Overview page will display a modal confirmation window.
+
+image::ipt2/manage/IPTManageResourceDelete.png[]
+
+For registered with GBIF resources, it will display a modal window with two options.
+
+image::ipt2/manage/IPTManageResourceDeleteRegistered.png[]
 
 * *Delete from the IPT and GBIF.org*
 * *Delete from the IPT only (Orphan)*
-
-image::ipt2/manage/IPTManageResourceDelete.png[]
 
 Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org.
 

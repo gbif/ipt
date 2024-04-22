@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-10 07:52\n"
+"POT-Creation-Date: 2023-11-21 10:29+0000\n"
+"PO-Revision-Date: 2023-11-21 11:08\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -268,7 +268,7 @@ msgstr "| 学名\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:85
 msgid "The *dwc:scientificName* field stores the full scientific name of a taxon including authorship. This field should always be populated with data even if the names are split into component parts (as in C. below). Databases that do not provide a clean separation between the name part and the authorship part of the name should use this field for the entire concatenated name string. This may be needed for hybrid formulas, *sensu strictu* names, autonyms and other non-trivial binomials. This field is generally used in combination with the *dwc:taxonRank* field to store the scientific name parts of a full taxonomic list including the higher taxa."
-msgstr "*dwc:scientificName*フィールドには、著者を含む分類群の完全な学名が格納されます。このフィールドは、名前が構成要素に分割されている場合でも（下記C.のように）常にデータが入力されている必要があります。名前の部分と著者名の部分をきれいに分離できないデータベースでは、連結された名前文字列全体に対してこのフィールドを使用する必要があります。これはハイブリッド式、*sensu strictu*名、autonyms、その他の非自明な二項対立に必要となる場合があります。このフィールドは一般的に*dwc:taxonRank*フィールドと組み合わせて、上位分類を含む完全な分類リストの学名部分を格納するために使用されます。"
+msgstr "*dwc:scientificName*フィールドには、著者を含む分類群の完全な学名が格納されます。このフィールドは、名前が構成要素に分割されている場合でも（下記C.のように）常にデータが入力されている必要があります。名前の部分と著者名の部分をきれいに分離できないデータベースでは、連結された名前文字列全体に対してこのフィールドを使用する必要があります。これはハイブリッド式、*sensu strictu*名、オートニム、その他の非自明な二項対立に必要となる場合があります。このフィールドは一般的に*dwc:taxonRank*フィールドと組み合わせて、上位分類を含む完全な分類リストの学名部分を格納するために使用されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:86
@@ -359,7 +359,7 @@ msgstr "参照する分類群の*dwc:taxonRank*。例：「種」"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:122
 msgid "A reference to the taxon identifier of the immediate parent taxon stored in the *dwc:parentNameUsageID*. In the example below, the parent of record 7, for “*Panthera tigris* (Linnaeus)” is record 6, the genus “*Panthera*.”"
-msgstr "*dwc:parentNameUsageID*に格納されている、直系の親タクソンのタクソン識別子への参照です。以下の例では、レコード7の「*Panthera tigris* (Linnaeus)」の親はレコード6の「*Panthera*」属です。"
+msgstr "**dwc:parentNameUsageID**に格納されている、直系の親タクソンのタクソン識別子への参照です。以下の例では、レコード7の「**Panthera tigris** (Linnaeus)」の親はレコード6の「**Panthera**」属です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:124
@@ -611,8 +611,8 @@ msgstr "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomencla
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:234
-msgid "A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
-msgstr "シノニムレコードには、個別の*dwc:taxonID*を含めることをお勧めします。でなければ、*dwc:taxonID*がまったく含まれない場合があります。 受け入れられたタクソンレコードと同じ*dwc:taxonID*を使用してはなりません。 シノニムの最も簡潔な表現は、上記の例で提供されているとおりです。シノニムは個別のレコードとしてリストされ、*dwc:acceptedNameUsageID*を使用して受け入れられたタクソンレコードを「ポイント」します。 この簡潔なシノニムは、コア分類群クラス要素に限定されたシノニムの詳細を含む基本的なタクソンチェックリストの公開をサポートします。*dwc:taxonomicStatus*フィールドは、レコードのステータスを確認します。 この分野の推奨語彙が {latest-taxonomic-status}[利用可能]です。 シノニムの背後にある理論的根拠をサポートする可能性のある追加の命名法の詳細は、*dwc:nomenclaturalStatus*フィールドと{latest-nomenclatural-status}[対応語彙]を使用して含めることができます。"
+msgid "A synonym record is recommended to contain a distinct *dwc:taxonID*. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:236
@@ -954,7 +954,7 @@ msgstr "方言名（地方名）の共有"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
-msgstr "分類学的チェックリストの分類群に関連する方言名データの共有に対応しています。方言名は、{latest-vernacularname}[Vernacular Names extension]を使用した、別の関連ファイルとして共有されます。この拡張子は、地域的および形態的な修飾子を含む、方言名の使用方法を説明するための豊富なプロパティセットをサポートしています。"
+msgstr "分類学的チェックリストの分類群に関連する方言名データの共有に対応しています。方言名は、link:{latest-vernacularname}[Vernacular Names extension]を使用した、別の関連ファイルとして共有されます。この拡張子は、地域的および形態的な修飾子を含む、方言名の使用方法を説明するための豊富なプロパティセットをサポートしています。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:356
@@ -976,7 +976,7 @@ msgstr "種の解説を共有する"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
-msgstr "分類群に関連する記述情報の共有に対応しています。説明文データは、{latest-description}[Taxon Description extension]を用いて、関連する別のファイルとして共有されます。記述データは個別の記述タイプに割り当てることができ、拡張機能でデータを公開すると、1 つの分類群に複数の記述レコードをリンクすることができ、分類群ごとに比較的豊富なデータセットをサポートします。説明情報を記述するために、{latest-description-type}[description type vocabulary]を使用することが推奨されます。"
+msgstr "分類群に関連する記述情報の共有に対応しています。説明文データは、link:{latest-description}[Taxon Description extension]を用いて、関連する別のファイルとして共有されます。記述データは個別の記述タイプに割り当てることができ、拡張機能でデータを公開すると、1 つの分類群に複数の記述レコードをリンクすることができ、分類群ごとに比較的豊富なデータセットをサポートします。説明情報を記述するために、link:{latest-description-type}[description type vocabulary]を使用することが推奨されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:364
@@ -998,7 +998,7 @@ msgstr "種の分布を共有する"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:371
 msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
-msgstr "配布データの共有がサポートされています。 配布データは、{latest-species-distribution}[Species Distribution extension]を使用して、別個の関連ファイルとして共有されます。 これにより、分類群ごとに複数の配布レコードを公開できます。 分布拡張は、国または地域の分布の説明を指定するために使用されるだけでなく、分類群の脅威ステータス、導入されているかどうか、ネイティブなど、およびその他のプロパティに関する参照された分布の認定も対応します。 特定の定義された領域に関連付けられています。"
+msgstr "配布データの共有がサポートされています。 配布データは、link:{latest-species-distribution}[Species Distribution extension]を使用して、別個の関連ファイルとして共有されます。 これにより、分類群ごとに複数の配布レコードを公開できます。 分布拡張は、国または地域の分布の説明を指定するために使用されるだけでなく、分類群の脅威ステータス、導入されているかどうか、ネイティブなど、およびその他のプロパティに関する参照された分布の認定も対応します。 特定の定義された領域に関連付けられています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:373
@@ -1019,7 +1019,7 @@ msgstr "リファレンスを共有する"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr "書誌引用の共有がサポートされています。 書誌データは、{latest-references}[References extension]を使用して別個の関連ファイルとして共有されます。{latest-references}[References extension]は、モノグラフおよび注釈付きチェックリストでのシノニム情報の共有に使用するために推奨および設計されています。 解析された引用の共有をサポートしているため、*dwc:namePublishedIn*などのコアデータファイル内の引用を保存するデータ要素の一部よりも詳細な引用形式を提供します。 この拡張機能は、{latest-reference-type}[the Reference Type vocabulary]プロパティを介した参照の分類学的および命名上の修飾をサポートします。これは、{latest-reference-type}[the Reference Type vocabulary]とともに使用すると、分類群に関連する一連の参照を区別するために使用できます。"
+msgstr "書誌引用の共有がサポートされています。 書誌データは、link:{latest-references}[リファレンス拡張]を使用して別個の関連ファイルとして共有されます。link:{latest-references}[リファレンス拡張]は、モノグラフおよび注釈付きチェックリストでのシノニム情報の共有に使用するために推奨および設計されています。 解析された引用の共有をサポートしているため、*dwc:namePublishedIn*などのコアデータファイル内の引用を保存するデータ要素の一部よりも詳細な引用形式を提供します。 この拡張機能は、link:{latest-reference-type}[リファレンスタイプ語彙]プロパティを介した参照の分類学的および命名上の修飾をサポートします。これは、link:{latest-reference-type}[リファレンスタイプ語彙]とともに使用すると、分類群に関連する一連の参照を区別するために使用できます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:380
@@ -1030,7 +1030,7 @@ msgstr "タイプ情報の共有"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:383
 msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
-msgstr "タイプと標本に関する情報の共有がサポートされています。これらのデータは、タイプと標本の拡張を使用して、別個の関連ファイルとして共有されます。タイプ標本、タイプ種、属に関する基本情報の共有をサポートします。"
+msgstr "タイプと標本に関する情報の共有がサポートされています。これらのデータは、link:{latest-typesandspecimen}[タイプと標本の拡張]を使用して、別個の関連ファイルとして共有されます。タイプ標本、タイプ種、属に関する基本情報の共有をサポートします。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:384
@@ -1041,7 +1041,7 @@ msgstr "リンクと識別子の共有"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here]."
-msgstr "{latest-identifier}[Alternate Identifier Extension]を使用して、関連する外部リソースへの複数のリンクを共有および説明することができます。 これにより、データ発行者は、解決可能な識別子を介してソースデータベースまたはドキュメントにリンクを埋め込むことができます。 おそらくWebページとより機械可読なWebサービス応答の両方にリンクする複数の識別子が、単一の分類群に提供される場合があります。 識別子が解決可能である場合にユーザーが応答情報を解釈する方法を知ることができるように、各レコードにフォーマットを含めることをお勧めします。 これは通常、このフィールドに*MIME type*（または*MIME type*）を含めることによって行われます。 メディアタイプの完全なリストは、link:https://www.iana.org/assignments/media-types/media-types.xhtml[こちら]から入手できます。"
+msgstr "link:{latest-identifier}[Alternate Identifier Extension]を使用して、関連する外部リソースへの複数のリンクを共有および説明することができます。 これにより、データ発行者は、解決可能な識別子を介してソースデータベースまたはドキュメントにリンクを埋め込むことができます。 おそらくWebページとより機械可読なWebサービス応答の両方にリンクする複数の識別子が、単一の分類群に提供される場合があります。 識別子が解決可能である場合にユーザーが応答情報を解釈する方法を知ることができるように、各レコードにフォーマットを含めることをお勧めします。 これは通常、このフィールドに*MIME type*（または*MIME type*）を含めることによって行われます。 メディアタイプの完全なリストは、link:https://www.iana.org/assignments/media-types/media-types.xhtml[こちら]から入手できます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:388
@@ -1142,7 +1142,7 @@ msgstr "分類群（コア）拡張"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:434
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
-msgstr "最新版発行日：{latest-dwc-taxon}[{date-dwc-taxon}]"
+msgstr "最新版発行日：link:{latest-dwc-taxon}[{date-dwc-taxon}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:436
@@ -1158,7 +1158,7 @@ msgstr "通俗名の拡張"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:440
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
-msgstr "最新版発行日：{latest-vernacularname}[{date-vernacularname}]"
+msgstr "最新版発行日：link:{latest-vernacularname}[{date-vernacularname}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:442
@@ -1174,7 +1174,7 @@ msgstr "リファレンス拡張"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:446
 msgid "Latest version issued: {latest-references}[{date-references}]"
-msgstr "最新版発行日：{latest-references}[{date-references}]"
+msgstr "最新版発行日：link:{latest-references}[{date-references}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:448
@@ -1190,7 +1190,7 @@ msgstr "種の説明の拡張"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:452
 msgid "Latest version issued: {latest-species-distribution}[{date-species-distribution}]"
-msgstr "最新版発行日：{latest-species-distribution}[{date-species-distribution}]"
+msgstr "最新版発行日：link:{latest-species-distribution}[{date-species-distribution}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:455
@@ -1206,7 +1206,7 @@ msgstr "種の解説を共有する"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:459
 msgid "Latest version issued: {latest-description}[{date-description}]"
-msgstr "最新版発行日：{latest-description}[{date-description}]"
+msgstr "最新版発行日：link:{latest-description}[{date-description}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:462
@@ -1222,7 +1222,7 @@ msgstr "代替識別子"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:466
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
-msgstr "最新版発行日：{latest-identifier}[{date-identifier}]"
+msgstr "最新版発行日：link:{latest-identifier}[{date-identifier}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:468
@@ -1238,7 +1238,7 @@ msgstr "タイプと標本数の拡張機能"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:472
 msgid "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
-msgstr "最新版発行日：{latest-typesandspecimen}[{date-typesandspecimen}]"
+msgstr "最新版発行日：link:{latest-typesandspecimen}[{date-typesandspecimen}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:474
@@ -1254,7 +1254,7 @@ msgstr "リソース関係拡張機能"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:478
 msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
-msgstr "最新版発行日：{latest-resource-relation}[{date-resource-relation}]"
+msgstr "最新版発行日：link:{latest-resource-relation}[{date-resource-relation}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:479

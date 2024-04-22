@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -369,9 +369,9 @@ msgstr ""
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:83
 msgid ""
 "The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT "
-"installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & "
-"http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. "
-"Publishers of marine data should refer to the section <<Marine data>>."
+"installations for http://www.vliz.be[VLIZ], https://obis.org[OBIS] & http://"
+"www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of "
+"marine data should refer to the section <<Marine data>>."
 msgstr ""
 
 #. type: Title ==
@@ -417,15 +417,14 @@ msgstr ""
 msgid ""
 "The http://www.sibcolombia.net/[Colombian Biodiversity Information System "
 "(SiB Colombia)] provides helpdesk support to new publishers in Colombia, and "
-"hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB "
-"Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for "
-"assistance."
+"hosting support for datasets on their https://biodiversidad.co/recursos/ipt/"
+"[IPTs]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:97
 msgid ""
-"The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a "
+"The http://ipt.biodiversidad.co/sib/[SiB Colombia IPT] is recognized as a "
 "repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An "
 "increasing number of journals refer authors to an appropriate repository in "
 "FAIRSharing.org in order to ensure data underlying scientific publications "
@@ -751,12 +750,11 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:173
 msgid ""
-"http://www.iobis.org[OBIS] provides data hosting and helpdesk support to "
+"https://obis.org[OBIS] provides data hosting and helpdesk support to "
 "publishers of marine data around the globe. EurOBIS/Flanders Marine "
 "Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt."
-"vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than "
-"http://www.iobis.org/about/[20 OBIS Nodes] around the world connecting 500 "
-"institutions from 56 countries."
+"vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than 30 "
+"OBIS Nodes around the world connecting 2000 institutions from 86 countries."
 msgstr ""
 
 #. type: Title ==

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-10-14 17:06+0000\n"
-"PO-Revision-Date: 2022-10-14 20:14\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"PO-Revision-Date: 2024-02-05 12:40\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,62 +20,63 @@ msgstr ""
 #: en/modules/ROOT/pages/requirements.adoc:1
 #, no-wrap
 msgid "Requirements"
-msgstr ""
+msgstr "動作環境"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:3
 #, no-wrap
 msgid "Internet Connectivity"
-msgstr ""
+msgstr "インターネット接続環境"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:5
 msgid "The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets."
-msgstr ""
+msgstr "IPTは、実行されるサーバーが一貫してインターネットに接続されていることを前提に設計されています。IPTの多くの機能はオフラインでも動作しますが、IPTの一部の機能（GBIF登録、拡張機能インストール、統制語彙、ソースデータ用外部データベースなど）は、外部のインターネットリソースとの通信を必要とします。IPTの管理・運用の観点からは、インターネット接続の速度はこのような通信にのみ影響します。ローカルイントラネットの外からIPTウェブアプリケーションとそのサービスにアクセスするには、常に安定した接続も必要であり、接続性の低下は、（特に大きなデータセットを転送する場合）これらの側面に悪影響を与える可能性があります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:6
 #, no-wrap
 msgid "Stable URL"
-msgstr ""
+msgstr "安定したURL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:8
 msgid "Though it can be used simply as a tool to generate http://rs.tdwg.org/dwc/terms/guides/text/[Darwin Core Archives], the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL."
-msgstr ""
+msgstr "単にlink:http://rs.tdwg.org/dwc/terms/guides/text/[ダーウィンコア・アーカイブ]\n"
+"を生成するツールとして使用することもできますが、IPTは発見しやすくアクセスしやすいインターネットベースのアプリケーションおよびサービスであることを意図しています。この機能をサポートするために、IPTがインストールされているサーバーは、安定したURLを介してアプリケーションとサービスへのアクセスをサポートできなければなりません。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:9
 #, no-wrap
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:11
 msgid "Although not required by the IPT, GBIF recommends to run the IPT over secure HTTPS (TLS, which replaced SSL) if possible."
-msgstr ""
+msgstr "IPTでは必須ではありませんが、可能であれば安全なHTTPS（SSLに代わるTLS）でIPTを実行することをGBIFでは推奨しています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:12
 #, no-wrap
 msgid "Memory"
-msgstr ""
+msgstr "メモリ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:14
 msgid "The server hosting the IPT installation must make at least 256 MB RAM memory available to the application."
-msgstr ""
+msgstr "IPTのインストールをホストするサーバーは、少なくとも256MBのRAMメモリをアプリケーションで利用できるようにする必要があります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:15
 #, no-wrap
 msgid "Disc space"
-msgstr ""
+msgstr "ディスク容量"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
 msgid "The space required by the IPT application is around 100MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
-msgstr ""
+msgstr "IPTアプリケーションに必要な容量は100MB程度です。インストール後のIPTデータ・ディレクトリの内容は、IPTによって書き込み可能な1MB未満のディスク・ストレージを必要とします。しかし、データディレクトリの内容は、リソースが作成されるにつれて大きくなり、インポートされたデータセットを含むファイルまたはテーブルのサイズとほぼ同じスペースを必要とします。比較的豊富なオカレンスデータセットの推定サイズは、1レコードあたり1キロバイトです。IPTの通常の使用では、ログファイルに情報が追加され、これは時間とともに大きくなりますが、ふつう最小限のディスクスペースのみを必要とします。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:18
@@ -85,22 +86,22 @@ msgstr "Java バージョン"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
-msgid "The current version of the IPT is tested to run on Java 8 or 9. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
+msgid "The current version of the IPT is tested to run on Java 11 and 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "See the installation instructions for notes on operating system and servlet container versions."
-msgstr ""
+msgstr "OSやサーブレットコンテナのバージョンに関する注意点は、インストール手順を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:24
 #, no-wrap
 msgid "Technical support"
-msgstr ""
+msgstr "テクニカルサポート"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:25
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
-msgstr ""
+msgstr "IPTの運用はコミットメントです。データは定期的にバックアップし、（OSやIPTの）セキュリティアップデートは、利用できるようになったらすぐに適用しなければなりません。"
 

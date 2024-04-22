@@ -28,8 +28,11 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,8 +71,15 @@ public class FileUtils {
   }
 
   public static String formatSize(long longSize, int decimalPos, boolean inseparableDelimiter) {
+    return formatSize(longSize, decimalPos, Locale.UK.toString(), inseparableDelimiter);
+  }
+
+  public static String formatSize(long longSize, int decimalPos, String strLocale, boolean inseparableDelimiter) {
     String delimiter = inseparableDelimiter ? "&nbsp;" : " ";
-    NumberFormat fmt = NumberFormat.getNumberInstance();
+
+    Locale locale = Optional.ofNullable(strLocale).map(LocaleUtils::toLocale).orElse(Locale.UK);
+
+    NumberFormat fmt = NumberFormat.getNumberInstance(locale);
     if (decimalPos >= 0) {
       fmt.setMaximumFractionDigits(decimalPos);
     }
@@ -159,5 +169,20 @@ public class FileUtils {
             + baseName
             + (TEMP_DIR_ATTEMPTS - 1)
             + ')');
+  }
+
+  /**
+   * Returns file extension.
+   *
+   * @param file file
+   * @return extension of the file
+   */
+  public static String getFileExtension(File file) {
+    String fileName = file.getName();
+    int lastIndexOfDot = fileName.lastIndexOf(".");
+    if (lastIndexOfDot == -1) {
+      return "";
+    }
+    return fileName.substring(lastIndexOfDot + 1);
   }
 }

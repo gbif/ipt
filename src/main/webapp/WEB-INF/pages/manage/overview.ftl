@@ -62,18 +62,22 @@
 <title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+
+<#assign currentLocale = .vars["locale"]!"en"/>
 
 <script>
     $(document).ready(function(){
-        <#if confirmOverwrite>
-        showConfirmOverwrite();
-        </#if>
-        var $registered = false;
-
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+        try {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        } catch (err) {
+            console.log("Failed to initialize tooltips")
+        }
 
         $(".source-item-link").click(function (e) {
             e.preventDefault();
@@ -97,6 +101,19 @@
             var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
             var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
             location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
+        }
+
+        $(".schema-mapping-item-link").click(function (e) {
+            e.preventDefault();
+            displayProcessing();
+            openSchemaMappingDetails(e);
+        });
+
+        function openSchemaMappingDetails(e) {
+            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
+            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
+            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
+            location.href = 'dataPackageMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
         $(".network-item-link").click(function (e) {
@@ -138,20 +155,27 @@
             location.href = '${baseURL}/resource/preview?r=${resource.shortname}';
         }
 
+        <#if resource.status=="PRIVATE">
+            <#assign resourceVisibility="private" />
+        <#elseif resource.status=="PUBLIC" || resource.status=="REGISTERED" || resource.status=="DELETED">
+            <#assign resourceVisibility="public" />
+        </#if>
 
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true});
         $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
         $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
         $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
 
         $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDeleteDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary"});
-        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary"});
+        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary"});
+        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary"});
+        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary"});
 
         $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
         $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
@@ -168,10 +192,10 @@
 
                 var sectionsContainer = $("#sections");
 
-                if (sectionsContainer.position().top - 50 > scrollPosition) {
+                if (sectionsContainer.position().top - 120 > scrollPosition) {
                     var removeActiveFromThisLink = $('.bd-toc nav a.active');
                     removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 50 <= scrollPosition
+                } else if (section.position().top - 120 <= scrollPosition
                     && section.position().top + section.height() > scrollPosition) {
                     if (!currentLink.hasClass("active")) {
                         var removeFromThisLink = $('.bd-toc nav a.active');
@@ -215,6 +239,25 @@
             }
         });
 
+        $("#datapackageMetadataFile").change(function() {
+            var usedFileName = $("#datapackageMetadataFile").prop("value");
+            if (usedFileName !== "") {
+                $("#datapackageMetadataReplace").show();
+                $("#datapackageMetadataCancel").show();
+                $("#datapackage-metadata-validate").show();
+                $("#datapackage-metadata-preserve-scope-metadata").show();
+            }
+        });
+
+        $("#datapackageMetadataCancel").click(function (e) {
+            e.preventDefault();
+            $("#datapackageMetadataFile").prop("value", "");
+            $("#datapackageMetadataReplace").hide();
+            $("#datapackageMetadataCancel").hide();
+            $("#datapackage-metadata-validate").hide();
+            $("#datapackage-metadata-preserve-scope-metadata").hide();
+        });
+
         $("#emlCancel").click(function(event) {
             event.preventDefault();
             $("#emlFile").prop("value", "");
@@ -223,36 +266,157 @@
             $("#eml-validate").hide();
         });
 
-        $("#sourceType").change(function (e) {
-            var sourceType = this.options[e.target.selectedIndex].value;
+        var sourceNames = [
+            <#list resource.sources as source>
+            "${source.name}"<#if source_has_next>,</#if>
+            </#list>
+        ];
+        var confirmedFiles = [];
 
-            if (sourceType === 'source-file') {
-                $("#url").hide();
-                $("#sourceName").hide();
-                $("#url").prop("value", "");
-                $("#file").show();
-                $("#clear").show();
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-                $("#add").hide();
-            } else if (sourceType === 'source-url') {
-                $("#url").show();
-                $("#sourceName").show();
-                $("#file").hide();
-                $("#file").prop("value", "");
-                $("#clear").show();
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-                $("#add").show();
+        // add new source tabs
+        $(".sources-tab-root").click(function (event) {
+            var selectedTab = $(this);
+            var selectedTabId = selectedTab[0].id;
+
+            var fileItems = document.querySelectorAll('.fileItem');
+
+            // inputs
+            var sourceNameInput = $("#sourceName");
+            var sourceTypeInput = $("#sourceType");
+            var urlInput = $("#url");
+            var fileInput = $("#fileInput");
+
+            // buttons
+            var addButton = $("#add");
+            var clearButton = $("#clear");
+            var sendButton = $("#sendButton");
+            var chooseFilesButton = $("#chooseFilesButton");
+
+            // values
+            var sourceNameValue = sourceNameInput.val();
+
+            // remove "selected" from all tabs
+            $(".sources-tab-root").removeClass("tab-selected");
+            // hide all indicators
+            $(".tabs-indicator").hide();
+            // add "selected" to clicked tab
+            selectedTab.addClass("tab-selected");
+            // show indicator for this tab
+            $("#" + selectedTabId + " .tabs-indicator").show();
+
+            if (selectedTabId === 'tab-source-file') {
+                sourceTypeInput.attr("value", "source-file");
+                urlInput.hide();
+                sourceNameInput.hide();
+                urlInput.prop("value", "");
+                chooseFilesButton.show();
+                sendButton.hide();
+                $(".progress-bar-container").show();
+                clearButton.hide();
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.hide();
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+                $("#callout-source-exists").hide();
+            } else if (selectedTabId === 'tab-source-url') {
+                sourceTypeInput.attr("value", "source-url");
+                urlInput.show();
+                sourceNameInput.show();
+                chooseFilesButton.hide();
+                sendButton.hide();
+                $(".progress-bar-container").hide();
+                fileInput.prop("value", "");
+                clearButton.show();
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.show();
+
+                fileItems.forEach(function(item) {
+                    item.remove();
+                });
+                selectedFiles = [];
+                confirmedFiles = []
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+
+                if (sourceNames.includes(sourceNameValue)) {
+                    $("#callout-source-exists").show();
+                    addButton.hide();
+                } else {
+                    $("#callout-source-exists").hide();
+                    addButton.show();
+                }
+
+                // set timeout - otherwise the callout remains. find out why
+                setTimeout(function () {
+                    $("#callout-not-enough-space").hide();
+                }, 100);
             } else {
-                $("#file").hide();
-                $("#sourceName").hide();
-                $("#file").prop("value", "");
-                $("#url").hide();
-                $("#url").prop("value", "");
-                $("#clear").hide();
-                $("#add").attr("value", '<@s.text name="button.connect"/>');
+                sourceTypeInput.attr("value", "source-sql");
+                chooseFilesButton.hide();
+                $(".progress-bar-container").hide();
+                sourceNameInput.show();
+                sendButton.hide();
+                fileInput.prop("value", "");
+                urlInput.hide();
+                urlInput.prop("value", "");
+                clearButton.hide();
+                addButton.attr("value", '<@s.text name="button.connect"/>');
+                addButton.show();
+
+                fileItems.forEach(function(item) {
+                    item.remove();
+                });
+                selectedFiles = [];
+                confirmedFiles = [];
+                sourceNameInput.removeClass("is-invalid");
+                urlInput.removeClass("is-invalid");
+
+                if (sourceNames.includes(sourceNameValue)) {
+                    $("#callout-source-exists").show();
+                    addButton.hide();
+                } else {
+                    $("#callout-source-exists").hide();
+                    addButton.show();
+                }
+                // set timeout - otherwise the callout remains. find out why
+                setTimeout(function () {
+                    $("#callout-not-enough-space").hide();
+                }, 100);
+            }
+        });
+
+        $("#btn-confirm-source-overwrite").on("click", function (e) {
+            e.preventDefault();
+            $("#callout-source-exists").hide();
+            $("#add").show();
+        });
+
+        $("#url").on("input", function() {
+            var urlValue = $(this).val();
+
+            if (urlValue) {
+                $(this).removeClass("is-invalid");
+            }
+        });
+
+
+        $("#sourceName").on("input", function() {
+            var sourceNameValue = $(this).val();
+
+            if (sourceNameValue) {
+                $(this).removeClass("is-invalid");
+            }
+
+            if (sourceNames.includes(sourceNameValue)) {
+                $("#callout-source-exists").show();
+                $("#add").hide();
+            } else {
+                $("#callout-source-exists").hide();
                 $("#add").show();
             }
-        })
+        });
+
+        var sendButton = $("#sendButton");
 
         $("#manager").change(function (e) {
             var manager = this.options[e.target.selectedIndex].value;
@@ -280,84 +444,31 @@
             }
         });
 
-        $("#file").change(function() {
-            var usedFileName = $("#file").prop("value");
-            var currentFileSize = this.files[0].size;
-
-            // validate size
-            if (currentFileSize > 209715200) {
-                $("#file").addClass("is-invalid");
-                return;
-            }
-
-            if (usedFileName !== "") {
-                var addButton = $('#add');
-                addButton.attr("value", '<@s.text name="button.add"/>');
-                addButton.show();
-            }
-        });
-
         $("#clear").click(function(event) {
             event.preventDefault();
-            $("#file").prop("value", "");
-            $("#file").removeClass("is-invalid");
-            $("#url").prop("value", "");
-            if ($("#file").is(":visible")) {
-                $("#add").hide();
+
+            var progressBars = document.getElementsByClassName("progress-bar");
+            var progressStatuses = document.getElementsByClassName("progress-bar-status");
+
+            for (var i = 0; i < progressBars.length; i++) {
+              var progressBar = progressBars[i];
+              progressBar.style.width = "0%";
             }
+
+            for (var j = 0; j < progressStatuses.length; j++) {
+              var progressStatus = progressStatuses[j];
+              progressStatus.innerText = "";
+            }
+
+            $("#url").prop("value", "");
+            $("#sourceName").prop("value", "");
+            $("#callout-source-exists").hide();
+            $("#add").show();
         });
 
         $(function() {
             $('.icon-validate').tooltip({track: true});
         });
-
-        function showConfirmOverwrite() {
-            var dialogWindow = $("#dialog");
-            var titleQuestion = '<@s.text name="basic.confirm"/>';
-
-            var question = <#if overwriteMessage?has_content>"${overwriteMessage}"<#else>"<@s.text name="manage.resource.addSource.sameName.confirm"/>"</#if>
-
-            var yesButtonText = '<@s.text name="basic.yes"/>';
-            var cancelButtonText = '<@s.text name="basic.no"/>';
-
-            // prepare html content for modal window
-            var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
-            content += '<div class="modal-content">';
-
-            // header
-            content += '<div class="modal-header flex-column">';
-            content += '<div class="icon-box"><i class="confirm-danger-icon">!</i></div>'
-            content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + titleQuestion + '</h5>';
-            content += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>'
-            content += '</div>';
-
-            // body
-            content += '<div class="modal-body">';
-            content += '<p>' + question + '</p>';
-            content += '</div>'
-
-            // footer
-            content += '<div class="modal-footer justify-content-center">'
-            content += '<button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + cancelButtonText + '</button>';
-            content += '<button id="yes-button" type="button" class="btn btn-outline-gbif-primary">' + yesButtonText + '</button>';
-            content += '</div>';
-
-            content += '</div>';
-            content += '</div>';
-
-            // add content to window
-            dialogWindow.html(content);
-
-            $("#yes-button").on("click", function () {
-                $("#add").click()
-            });
-
-            $("#cancel-button").on("click", function () {
-                $("#canceloverwrite").click();
-            });
-
-            dialogWindow.modal('show');
-        }
 
         // load a preview of the mapping in the modal window
         $(".peekBtn").click(function(e) {
@@ -434,12 +545,45 @@
             $(this).submit();
         });
 
-        // show spinner file upload
-        $("#add").on("click", function () {
-            $('#source-data-modal').modal('hide');
-            displayProcessing();
-        });
+        // validate add source form (for URL and SQL) and submit data
+        $("#add").on("click", function (e) {
+            e.preventDefault();
 
+            var sourceType = $("#sourceType").val();
+            var sourceNameInput = $("#sourceName");
+            var urlInput = $("#url");
+            var sourceNameValue = sourceNameInput.val();
+            var form = $("#addSourceForm")[0];
+
+            if (sourceType === 'source-sql') {
+                if (!sourceNameValue) {
+                    sourceNameInput.addClass("is-invalid");
+                } else {
+                    $('#source-data-modal').modal('hide');
+                    displayProcessing();
+                    form.submit();
+                }
+            } else if (sourceType === 'source-url') {
+                var urlValue = urlInput.val();
+                var invalid = false;
+
+                if (!sourceNameValue) {
+                    sourceNameInput.addClass("is-invalid");
+                    invalid = true;
+                }
+
+                if (!urlValue) {
+                    urlInput.addClass("is-invalid");
+                    invalid = true;
+                }
+
+                if (!invalid) {
+                    $('#source-data-modal').modal('hide');
+                    displayProcessing();
+                    form.submit();
+                }
+            }
+        });
 
         // Action modals
         function showAddSourceModal() {
@@ -526,24 +670,487 @@
         });
 
         $("#reserve-doi").on("click", function (e) {
-            showReserveDoiModal(e);
+            showReserveDoiModal();
         });
 
-        function showReserveDoiModal(e) {
-            e.preventDefault();
+        function showReserveDoiModal() {
             var dialogWindow = $("#reserve-doi-modal");
             dialogWindow.modal('show');
+        }
+
+        var selectedFiles = [];
+
+        document.getElementById("chooseFilesButton").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+
+        document.getElementById("fileInput").addEventListener("change", function () {
+            var newlySelectedFiles = Array.from(document.getElementById("fileInput").files);
+            selectedFiles = selectedFiles.concat(newlySelectedFiles);
+            refreshFileList();
+
+            if (selectedFiles.length > 0) {
+                sendButton.show();
+            } else {
+                sendButton.hide();
+            }
+        });
+
+        document.getElementById("sendButton").addEventListener("click", async function () {
+            var uploadButton = $("#sendButton");
+            uploadButton.addClass("clicked")
+            uploadButton.hide();
+
+            var fileItems = document.querySelectorAll(".fileItem");
+            var promises = [];
+
+            // hide remove buttons - already submitted
+            var removeButtons = document.querySelectorAll(".removeButton");
+            removeButtons.forEach(function(button) {
+                button.style.display = "none";
+            });
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+                var file = selectedFiles[i];
+                var fileItem = fileItems[i];
+                var progressBar = fileItem.querySelector(".progressBar-value");
+                var fileStatus = fileItem.querySelector(".fileStatus");
+
+                promises.push(uploadFile(file, i, progressBar, fileStatus));
+            }
+
+            try {
+                await Promise.all(promises);
+                closeModal();
+                window.location.reload();
+            } catch (error) {
+                console.log(error)
+            }
+        });
+
+        function refreshFileList() {
+            var fileListContainer = document.getElementById("fileList");
+            fileListContainer.innerHTML = "";
+
+            totalFilesSize = 0;
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+                var file = selectedFiles[i];
+                totalFilesSize += file.size;
+                addFileItem(file, i);
+            }
+        }
+
+        var totalFreeSpace = ${usableSpace?c};
+        var totalFilesSize = 0;
+
+        function addFileItem(file, index) {
+            // create file item div with index attribute
+            var fileItem = document.createElement("div");
+            fileItem.className = "fileItem";
+            fileItem.setAttribute("data-file-index", index)
+
+            // create file inner div
+            var fileItemInner = document.createElement("div");
+            fileItemInner.className = "fileItem-inner"
+            fileItem.appendChild(fileItemInner);
+
+            // create additional divs: info, meta, name
+            var fileInfo = document.createElement("div");
+            fileInfo.className = "fileInfo";
+            var fileMeta = document.createElement("div");
+            fileMeta.className = "fileMeta";
+            var fileName = document.createElement("div");
+            fileName.className = "fileName";
+
+            // extract file name without extension - check source already exist
+            var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.'));
+            var fileNameWithoutSpaces = fileNameWithoutExtension.replace(/\s/g, "");
+
+            // file error div
+            var fileError = document.createElement("div");
+            fileError.className = "fileError";
+            fileError.setAttribute('data-index', index)
+
+            // file status div
+            var fileStatus = document.createElement("div");
+            fileStatus.className = "fileStatus";
+
+            // set file name and file size
+            fileName.innerText = file.name;
+            fileStatus.innerText = formatFileSize(file.size);
+
+            totalFilesSize = totalFilesSize + file.size;
+
+            // make sure source with the name does not exist (case-insensitive check)
+            var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutSpaces.toLowerCase());
+
+            if (file.size > 10000000000) {
+                fileError.innerText = `<@s.text name='manage.overview.source.file.too.big'/>`;
+            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+                fileError.innerText = `<@s.text name='manage.resource.addSource.sameName.confirm'/>`;
+
+                var confirmOverwriteLink = document.createElement("a");
+                confirmOverwriteLink.id = 'confirmOverwriteSourceFileLink-' + index;
+                confirmOverwriteLink.className = 'confirmOverwriteSourceFileLink custom-link';
+                confirmOverwriteLink.href = '#';
+                confirmOverwriteLink.textContent = 'Confirm';
+                confirmOverwriteLink.setAttribute('data-index', index)
+                fileError.appendChild(confirmOverwriteLink);
+            }
+
+            // create "done" icon
+            var fileDoneIcon = document.createElement("div");
+            fileDoneIcon.className = "fileDoneIcon";
+            fileDoneIcon.innerHTML = '<i class="bi bi-check2 text-gbif-primary"></i>';
+
+            // create "error/warning" icon
+            var fileWarningIcon = document.createElement("div");
+            fileWarningIcon.className = "fileWarningIcon";
+            fileWarningIcon.innerHTML = '<i class="bi bi-exclamation-circle text-gbif-danger"></i>';
+
+            // link divs
+            fileMeta.appendChild(fileName);
+            fileMeta.appendChild(fileStatus);
+            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+                fileMeta.appendChild(fileError);
+                fileDoneIcon.style.visibility = "hidden";
+                fileDoneIcon.style.display = "none";
+                fileWarningIcon.style.visibility = "visible";
+                fileWarningIcon.style.display = "block";
+            }
+            fileInfo.appendChild(fileDoneIcon);
+            fileInfo.appendChild(fileWarningIcon);
+            fileInfo.appendChild(fileMeta);
+
+            // create progress bar divs
+            var progressBar = document.createElement("div");
+            progressBar.className = "progressBar";
+            var progressBarValue = document.createElement("div");
+            progressBarValue.className = "progressBar-value";
+            progressBar.appendChild(progressBarValue);
+
+            // create remove button and its icon
+            var removeButton = document.createElement("button");
+            removeButton.className = "removeButton";
+
+            removeButton.addEventListener("click", function () {
+                var index = selectedFiles.indexOf(file);
+                if (index > -1) {
+                    selectedFiles.splice(index, 1);
+
+                    var fileNameWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.')).replace(/\s/g, "");
+                    var fileNameIndex = confirmedFiles.indexOf(fileNameWithoutExtension.toLowerCase());
+                    if (fileNameIndex > -1) {
+                        confirmedFiles.splice(fileNameIndex, 1);
+                    }
+
+                    refreshFileList();
+                }
+            });
+
+            // icon for the remove button
+            var xIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            var xIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            xIcon.setAttribute("class", "icon-button-svg");
+            xIcon.setAttribute("focusable", "false");
+            xIcon.setAttribute("aria-hidden", "true");
+            xIcon.setAttribute("viewBox", "0 0 24 24");
+            xIconPath.setAttribute("d", "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
+            xIcon.appendChild(xIconPath);
+
+            removeButton.appendChild(xIcon);
+
+            removeButton.addEventListener("click", function () {
+                fileItem.remove();
+            });
+
+            var fileCommands = document.createElement("div");
+            fileCommands.className = "fileCommands";
+            fileCommands.appendChild(removeButton);
+
+            fileItemInner.appendChild(fileInfo);
+            fileItem.appendChild(progressBar);
+            fileItemInner.appendChild(fileCommands);
+
+            document.getElementById("fileList").appendChild(fileItem);
+        }
+
+        async function uploadFile(file, fileIndex, progressBar, fileStatus) {
+            return new Promise(function (resolve, reject) {
+                var formData = new FormData();
+                formData.append("r", "${resource.shortname}");
+                formData.append("sourceType", "source-file");
+                formData.append("validate", false);
+                formData.append("add", "Add");
+                formData.append("file", file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "addsource.do", true);
+
+                xhr.onload = function () {
+                    var redirectUrl = xhr.getResponseHeader("Location");
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    }
+                    resolve();
+                };
+
+                xhr.onerror = function() {
+                    console.error('An error occurred during the request:', xhr.status, xhr.statusText);
+                    reject(new Error('An error occurred during the request:' + xhr.status + "" + xhr.statusText));
+                };
+
+                xhr.upload.onprogress = function (event) {
+                    if (event.lengthComputable) {
+                        var percent = Math.round((event.loaded / event.total) * 100);
+                        progressBar.style.width = percent + "%";
+                        fileStatus.innerText =
+                            percent +
+                            "% (" +
+                            formatFileSize(event.loaded) +
+                            " / " +
+                            formatFileSize(event.total) +
+                            ")";
+
+                        if (percent === 100) {
+                            fileStatus.innerText = `<@s.text name='manage.resource.addSource.processingFile'/>`;
+                            progressBar.classList.add("progressBar-loader");
+                        } else {
+                            progressBar.classList.remove("progressBar-loader");
+                        }
+                    }
+                };
+
+                xhr.onloadend = function () {
+                    progressBar.style.width = "100%"; // Set progress to 100%
+
+                    // hide progress bar
+                    var fileProgressBarWrapper = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .progressBar');
+                    fileProgressBarWrapper.classList.add("d-none")
+
+                    // and display done icon
+                    var fileDoneIcon = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .fileDoneIcon');
+                    fileDoneIcon.style.visibility = "visible";
+
+                    // "Upload Complete", set to empty
+                    fileStatus.innerText = "";
+
+                    resolve(); // Resolve the promise once the request has completed
+                };
+
+                xhr.send(formData);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return "0 Bytes";
+            var k = 1000;
+            var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+            var i = Math.floor(Math.log(bytes) / Math.log(k));
+            var parsed = parseFloat((bytes / Math.pow(k, i)).toFixed(1));
+            var locale = '${currentLocale}';
+            var formatted;
+
+            try {
+                formatted = parsed.toLocaleString(locale.replace("_", "-"), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+            } catch (e) {
+                formatted = parsed.toLocaleString("en", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+            }
+
+            return formatted + " " + sizes[i];
+        }
+
+        function closeModal() {
+            // Get the modal element
+            var modal = document.getElementById("source-data-modal");
+
+            // Add the "hide" class to hide the modal
+            modal.classList.add("hide");
+
+            // Remove the "show" class to ensure the modal is no longer displayed
+            modal.classList.remove("show");
+
+            // Reset the inline style to hide the modal
+            modal.style.display = "none";
+
+            // Remove the modal from the DOM to clean up
+            modal.parentNode.removeChild(modal);
+        }
+
+        // Spy confirm overwrite warnings and enable/disable submit button
+        const fileListDiv = document.getElementById('fileList');
+
+        const observer = new MutationObserver(function() {
+            var fileErrors = $(".fileError");
+            var fileOutOfSpaceCallout = $("#callout-not-enough-space");
+            var fileItems = $(".fileItem");
+
+            if (totalFreeSpace - totalFilesSize < 0) {
+                fileOutOfSpaceCallout.show();
+            } else {
+                fileOutOfSpaceCallout.hide();
+            }
+
+            var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
+
+            if (fileErrors.length > 0 || outOfSpaceDisplayed) {
+                sendButton.hide();
+            } else if (!sendButton.hasClass("clicked")) {
+                sendButton.show();
+            }
+
+            if (fileItems.length === 0) {
+                sendButton.hide();
+            }
+        });
+
+        const config = { attributes: true, childList: true, subtree: true };
+
+        observer.observe(fileListDiv, config);
+
+        // remove error classes/icons if confirmed
+        $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function() {
+            var fileIndex = $(this).data('index');
+
+            var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
+            fileItemElement.find('.fileError').remove();
+
+            var fileNameWithExtension = fileItemElement.find('.fileName').text();
+            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'));
+
+            confirmedFiles.push(fileNameWithoutExtension);
+
+            var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
+            var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
+
+            fileWarningIconElement.css({
+                'display': 'none',
+                'visibility': 'hidden'
+            });
+
+            fileDoneIconElement.css({'display': 'block'});
+
+            // Prevent the default link behavior
+            return false;
+        });
+
+        $("#rowType").select2({
+            placeholder: '',
+            dropdownParent: $('#mapping-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+        $("#manager").select2({
+            placeholder: '${action.getText("manage.overview.resource.managers.select")?js_string}',
+            dropdownParent: $('#managers-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+        $("#network").select2({
+            placeholder: '${action.getText("manage.overview.networks.select")?js_string}',
+            dropdownParent: $('#networks-modal'),
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+
+
+        $(".proxy-button-delete-from-ipt").on('click', function () {
+            $("#delete-resource-modal").modal('hide');
+            $(".confirmDeletionFromIptOnly").click();
+        });
+
+        $(".proxy-button-delete-from-gbif-and-ipt").on('click', function () {
+            $("#delete-resource-modal").modal('hide');
+            $(".confirmDeletionFromIptAndGbif").click();
+        });
+
+        $(".proxy-button-view-resource").on('click', function () {
+            $("#top-button-view-resource")[0].click();
+        });
+
+        $(".proxy-button-cancel").on('click', function () {
+            $("#top-button-cancel")[0].click();
+        });
+
+        $(".proxy-button-undelete-resource").on('click', function () {
+            $(".confirmUndeletion").click();
+        });
+
+        $(".button-show-delete-resource-modal").on('click', function () {
+            var dialogWindow = $("#delete-resource-modal");
+            dialogWindow.modal('show');
+        });
+
+        $(".button-show-delete-resource-disabled-modal").on('click', function () {
+            var dialogWindow = $("#delete-resource-disabled-modal");
+            dialogWindow.modal('show');
+        });
+
+
+        $("#publishingOrganizationKey").select2({
+            placeholder: '',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            dropdownParent: $('#change-publishing-organization-modal'),
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
+
+        $("#change-publishing-organization").on('click', function (e) {
+            e.preventDefault();
+            showChangePublishingOrganizationModal();
+        });
+
+        function showChangePublishingOrganizationModal() {
+            var dialogWindow = $("#change-publishing-organization-modal");
+            dialogWindow.modal('show');
+        }
+
+        var resourceNav = document.getElementById("resource-nav");
+        window.onscroll = function() {
+            displayHideSecondNavOnScroll();
+        };
+
+        function displayHideSecondNavOnScroll() {
+            if ($(document).scrollTop() > 220) {
+                resourceNav.style.display = "block";
+            } else {
+                resourceNav.style.display = "none";
+            }
+        }
+
+        var scrollPosition = $(document).scrollTop();
+        if (scrollPosition > 220) {
+            resourceNav.style.display = "block";
         }
     });
 </script>
 
 <#assign currentMenu = "manage"/>
-<#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
-<#include "/WEB-INF/pages/macros/popover.ftl"/>
-<#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
-<#assign metadataType = "metadata"/>
-
+<#assign currentPage = "overview"/>
 <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
     <#assign disableRegistrationRights="false"/>
 <#elseif currentUser.hasRegistrationRights()?string == "true">
@@ -551,121 +1158,130 @@
 <#else>
     <#assign disableRegistrationRights="true"/>
 </#if>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
+<#include "/WEB-INF/pages/macros/popover.ftl"/>
+<#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
+<#assign metadataType = "metadata"/>
+<#assign isDataPackage = resource.isDataPackage()/>
 
-    <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
 
-            <#if !currentUser.hasRegistrationRights()>
-                <#if resource.status == "DELETED">
-                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
-                        <div class="me-3">
-                            <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                        </div>
-                        <div class="overflow-x-hidden pt-1">
-                            <span><@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
-                        <div class="me-3">
-                            <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                        </div>
-                        <div class="overflow-x-hidden pt-1">
-                            <span><@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></span>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </#if>
-            </#if>
-        </div>
-
-        <div class="container my-3 p-3">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
-                    </ol>
-                </nav>
-            </div>
-
-            <div class="text-center mt-1">
-                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if resource.title?has_content>
-                        ${resource.title}
-                    <#else>
-                        ${resource.shortname}
-                    </#if>
-                </h1>
-
-                <div class="mt-2">
-                    <#if resource.status == "DELETED">
-                        <div style="display: inline-block;">
-                            <#if disableRegistrationRights == "false">
-                                <form action='resource-undelete.do' method='post'>
-                                    <input name="r" type="hidden" value="${resource.shortname}" />
-                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
-                                </form>
-                            <#else>
-                                <button class="btn btn-sm btn-outline-gbif-primary top-button" name="undelete" disabled><@s.text name="button.undelete"/></button>
-                            </#if>
-                        </div>
-                    <#else>
-                        <#if disableRegistrationRights == "false">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <@s.text name="button.delete"/>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                    <li>
-                                        <form action="resource-delete.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="resource-deleteFromIpt.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        <#else>
-                            <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
-                        </#if>
-                    </#if>
-
-                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+    <div class="container-fluid border-bottom">
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
+                        </ol>
+                    </nav>
                 </div>
 
-                <p class="mt-3 mb-0 text-smaller fst-italic">
-                    <#if resource.coreType?has_content && resource.coreType==metadataType>
-                        <@s.text name="manage.overview.description.metadataOnly"/>
-                    <#else>
-                        <@s.text name="manage.overview.description"/>
-                    </#if>
-                </p>
+                <div class="text-center mt-1">
+                    <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <#if resource.title?has_content>
+                            ${resource.title}
+                        <#else>
+                            ${resource.shortname}
+                        </#if>
+                    </h1>
 
-                <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+                    <div>
+                        <div class="my-auto me-3">
+                            <#if typesVocabulary[resourceTypeLowerCase]??>
+                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                            </#if>
+                            <#if resource.status??>
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
+                                    <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
+                                        <i class="bi bi-circle fs-smaller-2"></i>
+                                    <#else>
+                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                    </#if>
+                                    <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
+                                </span>
+                            </#if>
+                        </div>
+                        <div>
+                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <#if resource.published>
+                            <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
+                        </#if>
+
+                        <#if resource.status == "DELETED">
+                            <div style="display: inline-block;">
+                                <#if disableRegistrationRights == "false">
+                                    <form action='resource-undelete.do' method='post'>
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
+                                    </form>
+                                <#else>
+                                    <button class="btn btn-sm btn-outline-gbif-primary button-show-delete-resource-disabled-modal top-button" name="undelete"><@s.text name="button.undelete"/></button>
+                                </#if>
+                            </div>
+                        <#else>
+                            <#if disableRegistrationRights == "false">
+                                <#if resource.key?? && resource.status == "REGISTERED">
+                                    <form action="resource-delete.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                    </form>
+                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="delete"><@s.text name="button.delete"/></button>
+                                <#else>
+                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
+                                        <input name="r" type="hidden" value="${resource.shortname}" />
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="delete" key="button.delete.fromIpt"/>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete"/></button>
+                                </#if>
+                            <#else>
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="delete"><@s.text name="button.delete"/></button>
+                            </#if>
+                        </#if>
+
+                        <a href="${baseURL}/manage/" id="top-button-cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+                    </div>
+
+                    <p class="mt-3 mb-0 text-smaller fst-italic">
+                        <#if dataPackageResource>
+                            <@s.text name="manage.overview.dataPackageSchema.description"/>
+                        <#elseif resource.coreType?has_content && resource.coreType==metadataType>
+                            <@s.text name="manage.overview.description.metadataOnly"/>
+                        <#else>
+                            <@s.text name="manage.overview.description"/>
+                        </#if>
+                    </p>
+
+                    <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="sections" class="container-fluid bg-body">
-        <div class="container my-md-4 bd-layout">
+        <div class="container main-content-container mb-md-4 bd-layout">
 
             <main class="bd-main">
-                <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                <div class="bd-toc bd-toc-overview mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                     <nav id="sidebar-content">
                         <ul>
                             <#if resource.coreType?has_content && resource.coreType==metadataType>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><@s.text name='manage.overview.DwC.Mappings'/></a></li>
+                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if dataPackageResource><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
@@ -687,7 +1303,7 @@
                         <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
                     </#if>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-visibility"></span>
                     <div class="py-5 border-bottom section" id="visibility">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -757,7 +1373,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-publish"></span>
                     <div class="py-5 border-bottom section" id="publish">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -765,11 +1381,16 @@
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
+                                        <#elseif resource.dataPackage??>
+                                            <@s.text name="manage.overview.published.description.dp"/>
                                         <#else>
                                             <@s.text name="manage.overview.published.description"/>
                                         </#if>
                                         <br/><br/>
-                                        <#if organisationWithPrimaryDoiAccount??>
+
+                                        <#assign displayDoiFunctionality = (organisationWithPrimaryDoiAccount.key)?has_content && (resource.organisation.key)?has_content && (organisationWithPrimaryDoiAccount.key == resource.organisation.key || currentUser.role == "Admin" || resource.organisation.associatedWithDoiRegistrationAgency) && currentUser.hasRegistrationRights()>
+
+                                        <#if displayDoiFunctionality>
                                             <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
                                         <#else>
                                             <@s.text name="manage.overview.published.description.noDoiAccount"/>
@@ -781,12 +1402,40 @@
                                 </h5>
                             </div>
 
+                            <#if displayDoiFunctionality>
+                                <#assign doiActionName>
+                                    <#if resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
+                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
+                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
+                                    <#else><@s.text name="button.reserve"/> DOI<#t>
+                                    </#if>
+                                </#assign>
+                            </#if>
+
                             <div class="col-4 d-flex justify-content-end">
+                                <#if displayDoiFunctionality>
+                                    <a title="${doiActionName}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
+                                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
+                                            <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
+                                        </svg>
+                                        ${doiActionName}
+                                    </a>
+                                </#if>
                                 <@publish resource/>
                             </div>
                         </div>
 
                         <div class="mt-4">
+                            <div class="mb-2">
+                                <@s.text name="eml.publishingOrganisation"/>: <i>${(resource.organisation.name)!""}</i>
+                                <a id="change-publishing-organization" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
+                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.change"/>
+                                </a>
+                            </div>
+
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
                             </p>
@@ -808,35 +1457,53 @@
 
                                 <div class="row g-2">
                                     <#if resource.lastPublished??>
-                                        <div class="col-xl-6" style="height: 100%">
-                                            <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
+                                        <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
 
+                                        <div class="col-xl-6" style="height: 100%">
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                                 <div class="ps-2 published-version-item-link">
-                                                    <span class="me-2 overview-version-title">
-                                                        <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
-                                                    </span>
-                                                    <span class="fs-smaller-2 status-${lastPublishedVersionStatus}">
+                                                    <span>
                                                         <#if lastPublishedVersionStatus == "registered">
-                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
+                                                            <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
                                                         <#elseif lastPublishedVersionStatus == "public">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
+                                                            <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
                                                         <#elseif lastPublishedVersionStatus == "private">
-                                                            <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                            <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
                                                         <#elseif lastPublishedVersionStatus == "deleted">
-                                                            <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
+                                                            <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
+                                                        </#if>
+                                                    </span>
+                                                    <span class="me-2 overview-version-title">
+                                                        <#if isDataPackage>
+                                                            <strong><@s.text name="footer.version"/> ${resource.metadataVersion}</strong>
+                                                        <#else>
+                                                            <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
                                                         </#if>
                                                     </span><br>
-                                                    <#if resource.isAlreadyAssignedDoi()>
-                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
-                                                    </#if>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <span class="fs-smaller-2">
                                                         <small>
-                                                            ${lastPublishedTitle?cap_first} |
                                                             ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
                                                         </small>
-                                                    </span>
+                                                    </span><br>
+                                                    <span class="fs-smaller-2 text-nowrap version-pill version-current mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
+                                                    <#if resource.isAlreadyAssignedDoi()>
+                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-current mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
+                                                    </#if>
+                                                    <#if !resource.isDataPackage()>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                    <#else>
+                                                        <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                        <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
+                                                            <#list resource.dataPackageMetadata.licenses as license>
+                                                                <#if license.scope?? && license.scope == "data">
+                                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(license.name)!}</span><br>
+                                                                </#if>
+                                                            </#list>
+                                                        <#elseif resource.coreType?? && resource.coreType == "coldp">
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
+                                                        </#if>
+                                                    </#if>
                                                 </div>
 
                                                 <div class="d-flex justify-content-end my-auto version-item-actions">
@@ -917,47 +1584,57 @@
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                             <div class="ps-2 next-version-item-link">
-                                                <span class="me-2 overview-version-title"><strong><@s.text name="footer.version"/> ${resource.getNextVersion().toPlainString()}</strong></span>
-                                                <span class="fs-smaller-2 status-${nextVersionStatus}">
+                                                <span>
                                                     <#if nextVersionStatus == "registered">
-                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.registered"/>
+                                                        <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
                                                     <#elseif nextVersionStatus == "public">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.public"/>
+                                                        <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
                                                     <#elseif nextVersionStatus == "private">
-                                                        <i class="bi bi-circle"></i> <@s.text name="resource.status.private"/>
+                                                        <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
                                                     <#elseif nextVersionStatus == "deleted">
-                                                        <i class="bi bi-circle-fill"></i> <@s.text name="resource.status.deleted"/>
+                                                        <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
                                                     </#if>
+                                                </span>
+                                                <span class="me-2 overview-version-title">
+                                                    <strong><@s.text name="footer.version"/> ${resource.nextVersionPlainString}</strong>
                                                 </span><br>
-                                                <#if resource.isAlreadyAssignedDoi()>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
-                                                </#if>
-                                                <#if resource.getEml().parseLicenseUrl()?has_content>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
-                                                <#else>
-                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
-                                                </#if>
                                                 <span class="fs-smaller-2">
                                                     <small>
-                                                        ${nextPublishedTitle?cap_first} |
                                                         <#if resource.nextPublished??>
                                                             ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                         <#else>
                                                             <@s.text name="manage.overview.published.date.not.set"/>
                                                         </#if>
                                                     </small>
+                                                </span><br>
+                                                <span class="fs-smaller-2 text-nowrap version-pill version-next mt-2 mb-1">
+                                                    ${nextPublishedTitle?upper_case}
                                                 </span>
+                                                <#if resource.doi??>
+                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.doi!}</span>
+                                                </#if>
+                                                <#if (resource.eml)?has_content && !resource.isDataPackage()>
+                                                    <#if resource.getEml().parseLicenseUrl()?has_content>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
+                                                    <#else>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                    </#if>
+                                                <#elseif resource.isDataPackage()>
+                                                    <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                    <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
+                                                        <#list resource.dataPackageMetadata.licenses as license>
+                                                            <#if license.scope?? && license.scope == "data">
+                                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(license.name)!}</span><br>
+                                                            </#if>
+                                                        </#list>
+                                                    <#elseif resource.coreType?? && resource.coreType == "coldp">
+                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
+                                                    </#if>
+                                                </#if>
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <#assign doiActionName>
-                                                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() ||  resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
-                                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
-                                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
-                                                    <#else><@s.text name="button.reserve"/> DOI<#t>
-                                                    </#if>
-                                                </#assign>
-
                                                 <#if !missingMetadata>
                                                     <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -966,12 +1643,6 @@
                                                         </svg>
                                                     </a>
                                                 </#if>
-
-                                                <a title="${doiActionName}" id="reserve-doi" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
-                                                    <svg class="icon-button-svg" viewBox="0 0 24 24">
-                                                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
-                                                    </svg>
-                                                </a>
 
                                                 <div class="dropdown d-sm-none">
                                                     <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-pending" data-bs-toggle="dropdown" aria-expanded="false">
@@ -992,14 +1663,6 @@
                                                                 </a>
                                                             </li>
                                                         </#if>
-                                                        <li>
-                                                            <a id="reserve-doi" class="dropdown-item action-link" type="button" href="#">
-                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
-                                                                </svg>
-                                                                ${doiActionName}
-                                                            </a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -1041,7 +1704,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-registration"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-registration"></span>
                     <div class="py-5 border-bottom section" id="registration">
 
                         <div class="d-flex justify-content-between">
@@ -1049,8 +1712,7 @@
                                 <h5 class="my-auto text-gbif-header-2 fw-400">
                                     <#assign registrationTitleInfo>
                                         <@s.text name="manage.resource.status.intro.registration"/>
-                                        <br><br>
-                                        <@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text>
+                                        <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></#if>
                                         <br><br>
                                         <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
                                     </#assign>
@@ -1135,9 +1797,16 @@
 
                                 <div class="details mt-3">
                                     <div class="row g-2">
-                                        <div class="col-12">
-                                            <div class="fs-smaller-2 d-flex justify-content-between registration-item border rounded-2 mx-1 p-1 py-2 text-smaller">
-                                                <div class="my-auto ps-2 registration-item-link">
+                                        <div class="col-xl-6">
+                                            <div class="d-flex registration-item border rounded-2 mx-1 p-1 py-2 text-smaller">
+                                                <div class="my-auto ps-2 d-flex">
+                                                    <svg class="gbif-logo-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="display: inline-block;" xml:space="preserve">
+                                                        <path class="ipt-icon-piece" d="M230.7,255.5c0-102.2,49.9-190.7,198.4-190.7C429.1,167.2,361.7,255.5,230.7,255.5"></path>
+                                                        <path class="ipt-icon-piece" d="M468.6,523.9c27.8,0,49.2-4,71.1-12c0-80.9-48.3-138.7-133.5-180.4c-65.2-32.7-145.5-49.7-218.8-49.7C219.5,185.4,196.1,65.7,165,0c-34.5,68.8-56,186.8-22.9,282.8C77,287.6,25.4,315.9,3.6,353.3c-1.6,2.8-5,8.9-3,10c1.6,0.8,4.1-1.7,5.6-3.1c23.5-21.8,54.6-32.4,84.5-32.4c69.1,0,117.8,57.3,152.3,91.7C317.1,493.5,389.4,524.1,468.6,523.9"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="my-auto ps-2 text-truncate registration-item-link fs-smaller-2 me-auto">
                                                     <strong class="overview-registered-title fs-smaller">${resource.title!resource.shortname}</strong>
                                                     <br>
                                                     <small>${resource.key}</small>
@@ -1185,7 +1854,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-autopublish"></span>
                     <div class="py-5 border-bottom section" id="autopublish">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1228,7 +1897,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1257,8 +1926,12 @@
                                     <div class="row g-2">
                                         <#list resourceNetworks as n>
                                             <div class="col-xl-6">
-                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 network-item" data-ipt-network-key="${(n.key)!}">
-                                                    <div class="my-auto ps-2 network-item-link">
+                                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 network-item" data-ipt-network-key="${(n.key)!}">
+                                                    <div class="my-auto ps-2 d-flex">
+                                                        <i class="bi bi-globe2 me-1 text-gbif-primary"></i>
+                                                    </div>
+
+                                                    <div class="my-auto ps-2 text-truncate network-item-link fs-smaller-2 me-auto">
                                                         <strong class="fs-smaller">${n.title!""}</strong><br>
                                                         <small>${(n.key)!}</small>
                                                     </div>
@@ -1316,7 +1989,7 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
+                    <span class="anchor anchor-overview-page" id="anchor-managers"></span>
                     <div class="py-5" id="managers">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
@@ -1344,8 +2017,11 @@
                             <div class="details mt-3">
                                 <div class="row g-2">
                                     <div class="col-xl-6">
-                                        <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item">
-                                            <div class="my-auto ps-2">
+                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 manager-item">
+                                            <div class="my-auto ps-2 d-flex">
+                                                <i class="bi bi-person me-1 text-gbif-primary"></i>
+                                            </div>
+                                            <div class="my-auto text-truncate ps-2 fs-smaller-2">
                                                 <strong class="fs-smaller">${resource.creator.name!}</strong><br>
                                                 <small><@s.text name="manage.overview.resource.managers.creator"/>
                                                     | ${resource.creator.email}</small>
@@ -1357,8 +2033,11 @@
                                     <#if (resource.managers?size>0)>
                                         <#list resource.managers as u>
                                             <div class="col-xl-6">
-                                                <div class="fs-smaller-2 d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 manager-item">
-                                                    <div class="my-auto ps-2">
+                                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 manager-item">
+                                                    <div class="my-auto ps-2 d-flex">
+                                                        <i class="bi bi-person me-1 text-gbif-primary"></i>
+                                                    </div>
+                                                    <div class="my-auto text-truncate ps-2 fs-smaller-2 me-auto">
                                                         <strong class="fs-smaller">${u.name}</strong><br>
                                                         <small><@s.text name="manage.overview.resource.managers.manager"/>
                                                             | ${u.email}</small>
@@ -1454,21 +2133,25 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.visibility.warning.deleted"/>
-                        </div>
+                        <@s.text name="manage.overview.visibility.warning.deleted"/>
+                    <#elseif resource.status == "REGISTERED">
+                        <@s.text name="manage.overview.visibility.warning.registered"/>
                     </#if>
+                </div>
 
-                    <#if resource.status == "REGISTERED">
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.visibility.warning.registered"/>
-                        </div>
-                    </#if>
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1483,30 +2166,76 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <form action='addsource.do' method='post' enctype="multipart/form-data">
+                        <form id="addSourceForm" action='addsource.do' method='post' enctype="multipart/form-data">
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <input name="validate" type="hidden" value="false"/>
 
                             <div class="row">
                                 <div class="col-12">
-                                    <select id="sourceType" name="sourceType" class="form-select my-1">
-                                        <option value="" disabled selected><@s.text name='manage.source.select.type'/></option>
-                                        <option value="source-sql"><@s.text name='manage.source.database'/></option>
-                                        <option value="source-file"><@s.text name='manage.source.file'/></option>
-                                        <option value="source-url"><@s.text name='manage.source.url'/></option>
-                                    </select>
+                                    <div class="tabs-root">
+                                        <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
+                                            <div class="tabs-flexContainer tabs-centered" role="tablist">
+                                                <button id="tab-source-file" class="sources-tab-root tab-selected" type="button" role="tab">
+                                                    <@s.text name="manage.source.file"/>
+                                                    <span id="tab-indicator-source-file" class="tabs-indicator"></span>
+                                                </button>
+                                                <button id="tab-source-url" class="sources-tab-root" type="button" role="tab">
+                                                    URL
+                                                    <span id="tab-indicator-source-url" class="tabs-indicator" style="display: none;"></span>
+                                                </button>
+                                                <button id="tab-source-sql" class="sources-tab-root" type="button" role="tab">
+                                                    SQL
+                                                    <span id="tab-indicator-source-sql" class="tabs-indicator" style="display: none;"></span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    <@s.file name="file" cssClass="form-control my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
+                                    <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
+
+                                    <div id="callout-source-exists" class="callout callout-danger text-smaller" style="display: none;">
+                                        <@s.text name="manage.resource.addSource.sameName.confirm"/>
+                                        <br>
+                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3"><@s.text name="button.confirm"/></button>
+                                    </div>
+
+                                    <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
+                                        <@s.text name="manage.resource.addSource.notEnoughSpace"><@s.param>${freeDiscSpaceReadable}</@s.param></@s.text>
+                                    </div>
+
+                                    <input id="fileInput" type="file" multiple style="display: none;" />
+                                    <div id="fileList"></div>
+                                    <a id="sendButton" href="#" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.upload"/></a>
+
                                     <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
-                                        <li>
+                                        <li class="text-start">
                                             <span><@s.text name="manage.overview.source.file.too.big"/></span>
                                         </li>
                                     </ul>
-                                    <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
-                                    <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+
+                                    <div>
+                                        <input type="text" id="sourceName" name="sourceName" class="form-control my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
+                                        <ul id="field-error-sourceName" class="invalid-feedback list-unstyled field-error my-1">
+                                            <li class="text-start">
+                                                <span><@s.text name="manage.source.name.empty"/></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <input type="url" id="url" name="url" class="form-control my-1" placeholder="URL" style="display: none">
+                                        <ul id="field-error-url" class="invalid-feedback list-unstyled field-error my-1">
+                                            <li class="text-start">
+                                                <@s.text name="validation.required"><@s.param><@s.text name="manage.source.url"/></@s.param></@s.text>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>
                                 </div>
-                                <div class="col-12 mt-3">
+                                <div class="col-12">
                                     <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-1" cssStyle="display: none" key="button.connect"/>
                                     <@s.submit name="clear" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
                                 </div>
@@ -1526,13 +2255,21 @@
     <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="mapping-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
+                <#assign numberOfPotentialCores=potentialCores?size />
+
                 <div class="modal-header flex-column">
+                    <#if numberOfPotentialCores==0>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="mapping-modal-title"><@s.text name="manage.mapping.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <div>
-                        <#if (potentialCores?size>0)>
+                        <#if (numberOfPotentialCores>0)>
                             <form action='mapping.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <select name="id" class="form-select my-1" id="rowType" size="1">
@@ -1556,12 +2293,22 @@
                                 <@s.submit name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add"/>
                             </form>
                         <#else>
-                            <div class="callout callout-warning text-smaller">
+                            <#if dataPackageResource>
+                                <@s.text name="manage.overview.mappings.cantdo"/>
+                            <#else>
                                 <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                            </div>
+                            </#if>
                         </#if>
                     </div>
                 </div>
+
+                <#if numberOfPotentialCores==0>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -1575,21 +2322,49 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <div class="row">
-                                <div class="col-12">
-                                    <@s.file name="emlFile" cssClass="form-control my-1"/>
+                        <#if dataPackageResource>
+                            <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <div class="row">
+                                    <#if resource.citationAutoGenerated>
+                                        <div class="fs-smaller">
+                                            <div class="callout callout-warning mt-0 mb-2">
+                                                <@s.text name="manage.overview.metadata.citation.overridden"/>
+                                            </div>
+                                        </div>
+                                    </#if>
+
+                                    <div class="col-12">
+                                        <@s.file name="datapackageMetadataFile" cssClass="form-control my-1"/>
+                                    </div>
+
+                                    <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
+                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <@s.submit name="datapackageMetadataReplace" cssClass="btn btn-sm btn-outline-gbif-primary my-1 confirmDatapackageMetadataReplace" cssStyle="display: none" key="button.replace"/>
+                                        <@s.submit name="datapackageMetadataCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                                    </div>
                                 </div>
-                                <div id="eml-validate" class="col-12" style="display: none;">
-                                    <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                            </form>
+                        <#else>
+                            <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
+                                <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <@s.file name="emlFile" cssClass="form-control my-1"/>
+                                    </div>
+                                    <div id="eml-validate" class="col-12" style="display: none;">
+                                        <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                                    </div>
+                                    <div class="col-12">
+                                        <@s.submit name="emlReplace" cssClass="btn btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
+                                        <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                                    </div>
                                 </div>
-                                <div class="col-12">
-                                    <@s.submit name="emlReplace" cssClass="btn btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
-                                    <@s.submit name="emlCancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </#if>
                     </div>
                 </div>
             </div>
@@ -1600,27 +2375,37 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="publication-modal-title"><@s.text name="manage.overview.published"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <!-- resources cannot be published if it's deleted -->
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.published.deleted"/>
-                        </div>
+                        </p>
 
                         <!-- resources cannot be published if the mandatory metadata is missing -->
                     <#elseif missingMetadata>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.published.missing.metadata"/>
-                        </div>
+                        </p>
+
+                      <!-- resources cannot be published if mappings are missing (for DPs) -->
+                    <#elseif dataPackageResource && dataPackageMappingsMissing>
+                        <p>
+                            <@s.text name="manage.overview.published.missing.mappings"/>
+                        </p>
 
                         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
                     <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                        </div>
+                        </p>
 
                         <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
                     <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
@@ -1628,18 +2413,18 @@
                     || resource.status == "REGISTERED">
                         <!-- the user must have registration rights -->
                         <#if !currentUser.hasRegistrationRights()>
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.publication.forbidden"/>
                                 &nbsp;<@s.text name="manage.resource.role.change"/>
-                            </div>
+                            </p>
 
                             <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
                         <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
                         || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
                         && !organisationWithPrimaryDoiAccount??>
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                            </div>
+                            </p>
 
                             <!-- when a DOI is reserved.. -->
                         <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
@@ -1647,15 +2432,15 @@
                             <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                                 <!-- and the resource has never been published before, the first publication is a new major version -->
                                 <#if !resource.lastPublished??>
-                                    <div class="callout callout-warning text-smaller">
+                                    <p>
                                         <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                    </div>
+                                    </p>
 
                                     <!-- and the resource has been published before, the next publication is a new minor version -->
                                 <#else>
-                                    <div class="callout callout-warning text-smaller">
+                                    <p>
                                         <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                    </div>
+                                    </p>
                                 </#if>
 
                                 <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
@@ -1668,6 +2453,12 @@
                         </#if>
                     </#if>
                 </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1676,15 +2467,25 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <#if resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="networks-modal-title"><@s.text name="manage.overview.networks.title"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if resource.status == "DELETED">
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.networks.deleted"/>
-                        </div>
-                    <#elseif resource.key?has_content && (potentialNetworks?size>0)>
+                        </p>
+                    <#elseif (potentialNetworks?size==0)>
+                        <p>
+                            <@s.text name="manage.overview.networks.select.empty"/>
+                        </p>
+                    <#elseif resource.key?has_content>
                         <div>
                             <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
                                 <@s.text name="manage.overview.networks.obis.notification"/>
@@ -1701,11 +2502,19 @@
                             </form>
                         </div>
                     <#else>
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.networks.not.registered"/>
-                        </div>
+                        </p>
                     </#if>
                 </div>
+
+                <#if resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -1714,59 +2523,74 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
                     <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
-                    <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                        <div class="callout callout-warning text-smaller">
+                    <#if cfg.devMode() || cfg.getRegistryType()!='PRODUCTION'>
+                        <p class="fst-italic">
                             <@s.text name="manage.overview.published.testmode.warning"/>
-                        </div>
+                        </p>
                     </#if>
 
                     <#if resource.status=="DELETED">
                         <!-- Show warning: resource must not be deleted -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.deleted" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="REGISTERED">
                         <!-- Show warning: resource already registered -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.registered" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="PRIVATE">
                         <!-- Show warning: resource must be public -->
-                        <div class="callout callout-warning text-smaller">
+                        <p>
                             <@s.text name="manage.overview.registration.private" />
-                        </div>
+                        </p>
                     <#elseif resource.status=="PUBLIC">
                         <#if !currentUser.hasRegistrationRights()>
                             <!-- Show warning: user must have registration rights -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                            </div>
+                            </p>
+                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp">
+                            <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
+                            <p>
+                                <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
+                            </p>
                         <#elseif missingValidPublishingOrganisation?string == "true">
                             <!-- Show warning: user must assign valid publishing organisation -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.visibility.missing.organisation"/>
-                            </div>
+                            </p>
                         <#elseif missingRegistrationMetadata?string == "true">
                             <!-- Show warning: user must fill in minimum registration metadata -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.visibility.missing.metadata" />
-                            </div>
+                            </p>
                         <#elseif !resource.isLastPublishedVersionPublic()>
                             <!-- Show warning: last published version must be publicly available to register -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                            </div>
+                            </p>
                         <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                             <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                            <div class="callout callout-warning text-smaller">
+                            <p>
                                 <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                            </div>
+                            </p>
                         </#if>
                     </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1775,12 +2599,20 @@
     <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="managers-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
+                <#assign numberOfPotentialManagers=potentialManagers?size />
+
                 <div class="modal-header flex-column">
+                    <#if (numberOfPotentialManagers==0)>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="managers-modal-title"><@s.text name="manage.overview.resource.managers"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
-                    <#if (potentialManagers?size>0)>
+                    <#if (numberOfPotentialManagers>0)>
                         <div>
                             <form action='resource-addManager.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -1793,8 +2625,20 @@
                                 <@s.submit id="add-manager" name="add" cssClass="btn btn-outline-gbif-primary my-3" key="button.add" cssStyle="display: none"/>
                             </form>
                         </div>
+                    <#else>
+                        <p>
+                            <@s.text name="manage.overview.resource.managers.select.empty"/>
+                        </p>
                     </#if>
                 </div>
+
+                <#if (numberOfPotentialManagers==0)>
+                    <div class="modal-footer justify-content-center">
+                        <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <@s.text name="button.cancel"/>
+                        </button>
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
@@ -1803,34 +2647,111 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
+                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights()>
+                        <div class="icon-box icon-box-warning">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                        <div class="icon-box">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    </#if>
                     <h5 class="modal-title w-100" id="reserve-doi-modal-title">DOI</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 </div>
+
                 <div class="modal-body">
                     <#if !organisationWithPrimaryDoiAccount??>
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
                     <#elseif !currentUser.hasRegistrationRights()>
-                        <div class="callout callout-warning text-smaller">
-                            <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                        </div>
+                        <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                     <#elseif resource.identifierStatus == "UNRESERVED">
-                        <div class="callout callout-info text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
                     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                        <div class="callout callout-danger text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
                     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-                        <div class="callout callout-info text-smaller">
-                            <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
-                        </div>
+                        <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
                     </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
                     <#if organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
                         <@nextDoiButtonTD/>
                     </#if>
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="change-publishing-organization-modal" class="modal fade" tabindex="-1" aria-labelledby="change-publishing-organization-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="change-publishing-organization-modal-title"><@s.text name="eml.publishingOrganisation"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action='resource-changePublishingOrganization.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
+                        <@s.submit id="changePublishingOrganization-submit" name="change" cssClass="btn btn-outline-gbif-primary my-3" key="button.change"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-resource-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
+                    <h5 class="modal-title w-100" id="delete-resource-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <@s.text name="manage.overview.resource.delete.description"/>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete.fromIpt"/></button>
+                    <button class="btn btn-outline-gbif-danger proxy-button-delete-from-gbif-and-ipt" name="delete"><@s.text name="button.delete.fromIptAndGbif"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-resource-disabled-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-disabled-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box icon-box-warning">
+                        <i class="confirm-danger-icon">!</i>
+                    </div>
+                    <h5 class="modal-title w-100" id="delete-resource-disabled-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <#if !currentUser.hasRegistrationRights()>
+                        <#if resource.status == "DELETED">
+                            <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
+                            <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        </#if>
+                    </#if>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>

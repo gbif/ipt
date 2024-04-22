@@ -51,7 +51,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
-import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
@@ -191,7 +191,7 @@ public class MappingAction extends ManagerBaseAction {
       // save resource
       saveResource();
     }
-    return CANCEL_RESULTNAME;
+    return CANCEL;
   }
 
   @Override
@@ -424,11 +424,9 @@ public class MappingAction extends ManagerBaseAction {
           fields.add(pm);
 
           // also store PropertyMapping by group/class
-          String group = ep.getGroup();
-          if (group != null) {
-            fieldsByGroup.computeIfAbsent(group, k -> new ArrayList<>());
-            fieldsByGroup.get(group).add(pm);
-          }
+          String group = StringUtils.trimToEmpty(ep.getGroup());
+          fieldsByGroup.computeIfAbsent(group, k -> new ArrayList<>());
+          fieldsByGroup.get(group).add(pm);
 
           // for easy retrieval of PropertyMapping index by qualifiedName...
           fieldsTermIndices.put(ep.getQualname(), fields.lastIndexOf(pm));
@@ -542,7 +540,7 @@ public class MappingAction extends ManagerBaseAction {
     validateAndReport();
     LOG.debug("mapping saved..");
 
-    return defaultResult;
+    return "save";
   }
 
   public String saveSetSource() {

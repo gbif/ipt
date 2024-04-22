@@ -15,12 +15,6 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
-import org.gbif.common.parsers.core.OccurrenceParseResult;
-import org.gbif.common.parsers.core.ParseResult;
-import org.gbif.common.parsers.date.DateParsers;
-import org.gbif.common.parsers.date.TemporalParser;
-import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
-import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -34,20 +28,33 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageFieldConstraints;
+import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageFieldReference;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredCamtrapGeographicScope;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
+import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
+import org.gbif.ipt.model.InferredCamtrapTemporalScope;
+import org.gbif.ipt.model.InferredEmlGeographicCoverage;
+import org.gbif.ipt.model.InferredEmlMetadata;
+import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
+import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.InferredGeographicCoverage;
-import org.gbif.ipt.model.InferredTaxonomicCoverage;
-import org.gbif.ipt.model.InferredTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -60,12 +67,15 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
-import org.gbif.ipt.model.converter.JdbcInfoConverter;
-import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
-import org.gbif.ipt.model.converter.UserEmailConverter;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -81,15 +91,20 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackage;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.GeneratorException;
@@ -100,29 +115,31 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
-import org.gbif.metadata.eml.ipt.model.BBox;
+import org.gbif.metadata.eml.ipt.model.Citation;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
-import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
 import org.gbif.metadata.eml.parse.DatasetEmlParser;
-import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,13 +149,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
-import java.time.chrono.ChronoLocalDate;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -146,11 +159,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -167,6 +180,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
@@ -179,19 +193,14 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
-import static org.gbif.ipt.config.Constants.CLASS;
-import static org.gbif.ipt.config.Constants.FAMILY;
-import static org.gbif.ipt.config.Constants.KINGDOM;
-import static org.gbif.ipt.config.Constants.ORDER;
-import static org.gbif.ipt.config.Constants.PHYLUM;
-import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
-import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
-import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
-import static org.gbif.ipt.config.Constants.VOCAB_EVENT_DATE;
-import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
-import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
-import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
-import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
+import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
+import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
+import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
+import static org.gbif.ipt.utils.FileUtils.getFileExtension;
+import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -205,9 +214,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
+  private DataPackageSchemaManager schemaManager;
   private RegistryManager registryManager;
+  private ResourceMetadataInferringService resourceMetadataInferringService;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
+  private GenerateDataPackageFactory dataPackageFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
@@ -215,45 +227,72 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
   private RegistrationManager registrationManager;
+  private final MetadataReader metadataReader;
 
   private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
   private static final Comparator<Date> nullSafeDateComparator = Comparator.nullsFirst(Date::compareTo);
   private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   @Inject
-  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-                             OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-                             JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager,
-                             ExtensionManager extensionManager,
-                             RegistryManager registryManager, ConceptTermConverter conceptTermConverter,
-                             GenerateDwcaFactory dwcaFactory,
+  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
+                             SourceManager sourceManager, ExtensionManager extensionManager,
+                             DataPackageSchemaManager schemaManager, RegistryManager registryManager,
+                             GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
-                             SimpleTextProvider textProvider, RegistrationManager registrationManager) {
+                             SimpleTextProvider textProvider, RegistrationManager registrationManager,
+                             MetadataReader metadataReader, ResourceMetadataInferringService resourceMetadataInferringService) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
+    this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
+    this.dataPackageFactory = dataPackageFactory;
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
-      passwordEncrypter);
+    defineXstreamMapping(resourceConvertersManager, passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
+    this.metadataReader = metadataReader;
+    this.resourceMetadataInferringService = resourceMetadataInferringService;
   }
 
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
     // add only public/registered resources with at least one published version
-    if (!res.getVersionHistory().isEmpty()) {
-      VersionHistory latestVersion = res.getVersionHistory().get(0);
-      if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-          !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
-          latestVersion.getReleased() != null) {
-        publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+    try {
+      if (!res.getVersionHistory().isEmpty()) {
+        VersionHistory latestVersion = res.getVersionHistory().get(0);
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+                !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+                latestVersion.getReleased() != null) {
+          publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+        }
       }
+    } catch (Exception e) {
+      LOG.error("Failed to reconstruct resource's last published version", e);
     }
+  }
+
+  @Override
+  public void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias) {
+    resources.values().stream()
+            .filter(r -> r.getOrganisation() != null)
+            .filter(r -> r.getOrganisation().getKey() != null)
+            .filter(r -> r.getOrganisation().getKey().equals(organisationKey))
+            .forEach(r -> {
+              r.getOrganisation().setAlias(organisationAlias);
+              r.getOrganisation().setName(organisationName);
+            });
+    publishedPublicVersionsSimplified.values().stream()
+            .filter(r -> r.getOrganisationKey() != null)
+            .filter(r -> r.getOrganisationKey().equals(organisationKey))
+            .forEach(r -> {
+              r.setOrganisationName(organisationName);
+              r.setOrganisationAlias(organisationAlias);
+            });
   }
 
   /**
@@ -266,10 +305,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
-    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+
+    File versionMetadataFile = resource.isDataPackage()
+        ? cfg.getDataDir().resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v)
+        : cfg.getDataDir().resourceEmlFile(shortname, v);
+
     Resource publishedPublicVersion = ResourceUtils
-        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
-            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+        .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
+            resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
 
     SimplifiedResource result = new SimplifiedResource();
     result.setShortname(publishedPublicVersion.getShortname());
@@ -279,6 +322,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLogoUrl(publishedPublicVersion.getLogoUrl());
     result.setSubject(publishedPublicVersion.getSubject());
     if (publishedPublicVersion.getOrganisation() != null) {
+      result.setOrganisationKey(publishedPublicVersion.getOrganisation().getKey());
       result.setOrganisationName(publishedPublicVersion.getOrganisationName());
       result.setOrganisationAlias(publishedPublicVersion.getOrganisationAlias());
     }
@@ -289,6 +333,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLastPublished(publishedPublicVersion.getLastPublished());
     result.setNextPublished(resource.getNextPublished());
     result.setCreatorName(resource.getCreatorName());
+    result.setDataPackage(resource.isDataPackage());
 
     // was last published version later registered but never republished? Fix for issue #1319
     if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
@@ -315,6 +360,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLogoUrl(resource.getLogoUrl());
     result.setSubject(resource.getSubject());
     if (resource.getOrganisation() != null) {
+      result.setOrganisationKey(resource.getOrganisation().getKey());
       result.setOrganisationName(resource.getOrganisationName());
       result.setOrganisationAlias(resource.getOrganisationAlias());
     }
@@ -325,6 +371,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setLastPublished(resource.getLastPublished());
     result.setNextPublished(resource.getNextPublished());
     result.setCreatorName(resource.getCreatorName());
+    result.setDataPackage(resource.isDataPackage());
 
     return result;
   }
@@ -412,9 +459,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws InvalidEmlException if EML is invalid
    */
   private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
-      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_1);
+      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_2);
       String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
       emlValidator.validate(emlString);
+  }
+
+  private void validateDatapackageMetadataFile(BaseAction action, File metadataFile, Class<? extends DataPackageMetadata> metadataClass) throws IOException, org.gbif.ipt.service.InvalidMetadataException {
+    DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
+    DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
+    validator.validate(action, metadata);
+
+    // additional ColDP metadata validation
+    if (FrictionlessColMetadata.class.equals(metadataClass)) {
+      ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
+      validator.validateColMetadata(action, colMetadata);
+    }
   }
 
   /**
@@ -453,6 +512,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return eml;
   }
 
+  private DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType) throws ImportException {
+    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, datapackageType);
+    try {
+      FileUtils.copyFile(metadataFile, dataDirMetadataFile);
+    } catch (IOException e) {
+      LOG.error("Unable to copy datapackage metadata file");
+    }
+
+    DataPackageMetadata metadata;
+    try {
+      metadata = metadataReader.readValue(dataDirMetadataFile, metadataClassForType(datapackageType));
+    } catch (Exception e) {
+      deleteDirectoryContainingSingleFile(dataDirMetadataFile);
+      throw new ImportException("Invalid metadata document", e);
+    }
+
+    return metadata;
+  }
+
   /**
    * Method deletes entire directory if it exclusively contains a single file. This method can be to cleanup
    * a resource directory containing an invalid eml.xml.
@@ -473,7 +551,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
+  public Resource create(String shortname, String type, File archiveOrSingleFile, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
@@ -484,9 +562,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Resource resource;
     // decompress archive
     List<File> decompressed = null;
-    File dwcaDir = dataDir.tmpDir();
+    File archiveDir = dataDir.tmpDir();
     try {
-      decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
+      decompressed = CompressionUtil.decompressFile(archiveDir, archiveOrSingleFile, true);
     } catch (UnsupportedCompressionType e) {
       LOG.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
     } catch (Exception e) {
@@ -496,21 +574,43 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (CollectionUtils.isEmpty(decompressed)) {
       // try again as single gzip file
       try {
-        decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
+        decompressed = CompressionUtil.ungzipFile(archiveDir, archiveOrSingleFile, false);
       } catch (Exception e2) {
         LOG.debug("2nd attempt to decompress file failed: " + e2.getMessage(), e2);
       }
     }
 
     // create resource:
-    // if decompression failed, create resource from single eml file
+    // if decompression failed, create resource from single file: eml.xml, datapackage.json or metadata.yml
     if (CollectionUtils.isEmpty(decompressed)) {
-      resource = createFromEml(shortname, dwca, creator, alog);
+      String fileExtension = getFileExtension(archiveOrSingleFile);
+
+      switch (fileExtension) {
+        case "xml":
+          resource = createFromEml(shortname, archiveOrSingleFile, creator, alog);
+          break;
+        case "json":
+          resource = createFromPackageDescriptor(shortname, type, archiveOrSingleFile, creator, alog);
+          break;
+        case "yml":
+          resource = createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
+          break;
+        default:
+          throw new ImportException("Invalid file extension: " + fileExtension);
+      }
     }
-    // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
+    // if decompression succeeded and archive is 'IPT Resource Folder'
+    else if (isIPTResourceFolder(archiveDir)) {
+      resource = createFromIPTResourceFolder(shortname, archiveDir, creator, alog);
+    }
+    // if decompression succeeded, create resource depending on whether file was a 'DwC-A',
+    // a frictionless package (Camtrap DP) or a ColDP
     else {
-      resource = isIPTResourceFolder(dwcaDir) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
-        : createFromArchive(shortname, dwcaDir, creator, alog);
+      if (MetadataUtils.isDataPackageType(type)) {
+        resource = createFromFrictionlessDataPackage(shortname, type, decompressed, creator, alog);
+      } else {
+        resource = createFromDwcArchive(shortname, archiveDir, creator, alog);
+      }
     }
 
     // set resource type, if it hasn't been set already
@@ -578,7 +678,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // set number of records published to 0
         res.setRecordsPublished(0);
         // reset version number
-        res.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+        res.setMetadataVersion(Constants.INITIAL_RESOURCE_VERSION);
         // reset DOI
         res.setDoi(null);
         res.setIdentifierStatus(IdentifierStatus.UNRESERVED);
@@ -598,10 +698,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setSourcesModified(lastModifiedDate);
         res.getSources().forEach(s -> s.setLastModified(lastModifiedDate));
         res.getMappings().forEach(m -> m.setLastModified(lastModifiedDate));
+        res.getDataPackageMappings().forEach(m -> m.setLastModified(lastModifiedDate));
 
-        // reset first and last published dates
-        res.getEml().setDateStamp((Date) null);
-        res.getEml().setPubDate(null);
+        if (!res.isDataPackage()) {
+          // reset first and last published dates
+          res.getEml().setDateStamp((Date) null);
+          res.getEml().setPubDate(null);
+        }
+
         // add resource to IPT
         save(res);
       }
@@ -619,7 +723,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
-   * at least a resource.xml and eml.xml file.
+   * resource.xml file and one of the metadata files: eml.xml/datapackage.json/metadata.yml
    *
    * @param dir directory where compressed file was decompressed
    *
@@ -628,8 +732,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private boolean isIPTResourceFolder(File dir) {
     if (dir.exists() && dir.isDirectory()) {
       File persistenceFile = new File(dir, DataDir.PERSISTENCE_FILENAME);
-      File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
-      return persistenceFile.isFile() && emlFile.isFile();
+      File emlFile = new File(dir, EML_XML_FILENAME);
+      File datapackageDescriptorFile = new File(dir, FRICTIONLESS_METADATA_FILENAME);
+      File colDpMetadataFile = new File(dir, COL_DP_METADATA_FILENAME);
+
+      return persistenceFile.isFile() &&
+        (emlFile.isFile() || datapackageDescriptorFile.isFile() || colDpMetadataFile.isFile());
     }
     return false;
   }
@@ -656,6 +764,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setShortname(shortname.toLowerCase());
     res.setCreated(new Date());
     res.setCreator(creator);
+
+    // make sure the correct metadata class is set
+    if (CAMTRAP_DP.equals(type)) {
+      res.setDataPackageMetadata(new CamtrapMetadata());
+      res.inferCoverageMetadataAutomatically(true);
+    } else if (COL_DP.equals(type)) {
+      res.setDataPackageMetadata(new FrictionlessColMetadata());
+    }
+
+    String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
+    if (schemaIdentifier != null) {
+      res.setDataPackageIdentifier(schemaIdentifier);
+    }
+
     res.setCoreType(type);
     // first and last published dates are nulls
     res.getEml().setDateStamp(((Date) null));
@@ -671,7 +793,90 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return res;
   }
 
-  private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
+  private Resource createFromFrictionlessDataPackage(String shortname, String packageType, List<File> packageFiles, User creator,
+                                                     ActionLogger alog)
+    throws AlreadyExistingException, ImportException, InvalidFilenameException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    Resource resource;
+    try {
+      // keep track of source files as a package might refer to the same source file multiple times
+      Map<String, TextFileSource> sources = new HashMap<>();
+
+      // create new resource
+      resource = create(shortname, packageType, creator);
+      Date lastModifiedDate = new Date();
+
+      File metadataFile = null;
+
+      for (File packageFile : packageFiles) {
+        if ("csv".equals(getFileExtension(packageFile))) {
+          TextFileSource s = importSource(resource, packageFile);
+          // set default property
+          s.setFieldsEnclosedBy("\"");
+          String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
+          sources.put(filenameWithoutExtension, s);
+
+          DataPackageMapping map = importDataPackageMappings(alog, packageType, packageFile, s);
+          map.setLastModified(lastModifiedDate);
+          resource.addDataPackageMapping(map);
+        } else if (packageFile.getName().equals(FRICTIONLESS_METADATA_FILENAME) && metadataFile == null) {
+          metadataFile = packageFile;
+        } else if (packageFile.getName().equals(COL_DP_METADATA_FILENAME)) {
+          metadataFile = packageFile;
+        }
+      }
+
+      resource.setSourcesModified(lastModifiedDate);
+      resource.setMappingsModified(lastModifiedDate);
+
+      // try to read metadata
+      if (metadataFile != null) {
+        DataPackageMetadata metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
+
+        if (metadata instanceof FrictionlessMetadata) {
+          FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+          // set name, erase some internal fields
+          frictionlessMetadata.setName(resource.getShortname());
+          frictionlessMetadata.setId(null);
+          frictionlessMetadata.setCreated(null);
+          frictionlessMetadata.getAdditionalProperties().clear();
+        }
+
+        if (metadata instanceof CamtrapMetadata) {
+          CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
+
+          camtrapMetadata.getContributors().stream()
+              .map(contributor -> (CamtrapContributor) contributor)
+              .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
+              .forEach(this::inferNameFieldsForCamtrapContributor);
+        }
+
+        resource.setDataPackageMetadata(metadata);
+        resource.setMetadataModified(lastModifiedDate);
+        // do not automatically infer metadata
+        resource.setInferGeocoverageAutomatically(false);
+        resource.setInferTaxonomicCoverageAutomatically(false);
+        resource.setInferTemporalCoverageAutomatically(false);
+      }
+
+      // finally persist the whole thing
+      save(resource);
+      saveDatapackageMetadata(resource);
+
+      alog.info("manage.resource.dp.create.success",
+        new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataPackageMappings().size())});
+    } catch (UnsupportedArchiveException | InvalidConfigException e) {
+      alog.warn(e.getMessage(), e);
+      throw new ImportException(e);
+    }
+
+    return resource;
+  }
+  private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
@@ -793,6 +998,68 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     saveEml(resource, true);
   }
 
+  @Override
+  public void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate)
+      throws IOException, ImportException, org.gbif.ipt.service.InvalidMetadataException {
+    if (validate) {
+      validateDatapackageMetadataFile(action, metadataFile, metadataClassForType(resource.getCoreType()));
+    }
+    DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
+
+    if (metadata instanceof FrictionlessMetadata) {
+      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+      // set name, erase some internal fields
+      frictionlessMetadata.setName(resource.getShortname());
+      frictionlessMetadata.setId(null);
+      frictionlessMetadata.setCreated(null);
+      frictionlessMetadata.getAdditionalProperties().clear();
+      frictionlessMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
+    }
+
+    if (metadata instanceof CamtrapMetadata) {
+      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
+
+      camtrapMetadata.getContributors().stream()
+          .map(contributor -> (CamtrapContributor) contributor)
+          .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
+          .forEach(this::inferNameFieldsForCamtrapContributor);
+    }
+
+    resource.setDataPackageMetadata(metadata);
+    // do not automatically infer scope metadata
+    resource.setInferGeocoverageAutomatically(false);
+    resource.setInferTaxonomicCoverageAutomatically(false);
+    resource.setInferTemporalCoverageAutomatically(false);
+    resource.setMetadataModified(new Date());
+    save(resource);
+    saveDatapackageMetadata(resource);
+  }
+
+  /**
+   * Infer firstName/lastName fields from the title field and set them.
+   *
+   * @param contributor camtrap contributor
+   */
+  protected void inferNameFieldsForCamtrapContributor(CamtrapContributor contributor) {
+    String title = StringUtils.trimToNull(contributor.getTitle());
+
+    if (StringUtils.isNotEmpty(title)) {
+      String[] names = title.split("\\s+");
+
+      if (names.length > 0) {
+        if (names.length == 1) {
+          contributor.setLastName(names[0]);
+        } else {
+          String firstName = names[0];
+          String lastName = String.join(" ", Arrays.copyOfRange(names, 1, names.length));
+
+          contributor.setFirstName(firstName);
+          contributor.setLastName(lastName);
+        }
+      }
+    }
+  }
+
   /**
    * Method ensures an Extension's mapping:
    * a) always contains the coreId term mapping (if it doesn't exist yet)
@@ -853,20 +1120,76 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
-  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-                                    ExtensionRowTypeConverter extensionConverter,
-                                    ConceptTermConverter conceptTermConverter, JdbcInfoConverter jdbcInfoConverter,
-                                    PasswordEncrypter passwordEncrypter) {
+  private Resource createFromPackageDescriptor(String shortname, String type, File metadataFile, User creator, ActionLogger alog)
+    throws AlreadyExistingException, ImportException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    DataPackageMetadata metadata;
+
+    try {
+      // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
+      metadata = copyDatapackageMetadata(shortname, metadataFile, type);
+
+      if (metadata instanceof FrictionlessMetadata) {
+        FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+        // set name, erase some internal fields
+        frictionlessMetadata.setName(shortname);
+        frictionlessMetadata.setId(null);
+        frictionlessMetadata.setCreated(null);
+        frictionlessMetadata.getAdditionalProperties().clear();
+      }
+    } catch (ImportException e) {
+      alog.error("manage.resource.create.failed");
+      throw e;
+    }
+    // create resource of Frictionless type, with metadata instance
+    Resource resource = create(shortname, type, creator);
+    resource.setMetadataModified(new Date());
+    resource.setDataPackageMetadata(metadata);
+    return resource;
+  }
+
+  private Resource createFromColDpMetadata(String shortname, File metadataFile, User creator, ActionLogger alog)
+    throws AlreadyExistingException, ImportException {
+    Objects.requireNonNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    DataPackageMetadata metadata;
+
+    try {
+      // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
+      metadata = copyDatapackageMetadata(shortname, metadataFile, COL_DP);
+    } catch (ImportException e) {
+      alog.error("manage.resource.create.failed");
+      throw e;
+    }
+    // create resource of ColDP type, with metadata instance
+    Resource resource = create(shortname, COL_DP, creator);
+    resource.setMetadataModified(new Date());
+    resource.setDataPackageMetadata(metadata);
+    return resource;
+  }
+
+  private void defineXstreamMapping(ResourceConvertersManager resourceConvertersManager, PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
 
     // aliases for inferred metadata
-    xstream.alias("inferredMetadata", InferredMetadata.class);
-    xstream.alias("inferredGeographicCoverage", InferredGeographicCoverage.class);
-    xstream.alias("inferredTaxonomicCoverage", InferredTaxonomicCoverage.class);
-    xstream.alias("inferredTemporalCoverage", InferredTemporalCoverage.class);
+    xstream.alias("inferredMetadata", InferredEmlMetadata.class);
+    xstream.alias("inferredMetadataCamtrap", InferredCamtrapMetadata.class);
+    xstream.alias("inferredGeographicCoverage", InferredEmlGeographicCoverage.class);
+    xstream.alias("inferredGeographicScope", InferredCamtrapGeographicScope.class);
+    xstream.alias("inferredTaxonomicCoverage", InferredEmlTaxonomicCoverage.class);
+    xstream.alias("inferredTaxonomicScope", InferredCamtrapTaxonomicScope.class);
+    xstream.alias("inferredTemporalCoverage", InferredEmlTemporalCoverage.class);
+    xstream.alias("inferredTemporalScope", InferredCamtrapTemporalScope.class);
     xstream.alias("taxonKeyword", TaxonKeyword.class);
     xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
 
@@ -876,12 +1199,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
+    xstream.alias("dataPackageMapping", DataPackageMapping.class);
+    xstream.alias("dataPackageFieldMapping", DataPackageFieldMapping.class);
+    xstream.alias("tableSchema", DataPackageTableSchema.class);
+    xstream.alias("dataPackageField", DataPackageField.class);
+    xstream.alias("dataPackageForeignKey", DataPackageTableSchemaForeignKey.class);
+    xstream.alias("dataPackageFieldReference", DataPackageFieldReference.class);
+    xstream.alias("constraints", DataPackageFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
 
     // transient properties
     xstream.omitField(Resource.class, "shortname");
     xstream.omitField(Resource.class, "eml");
+    xstream.omitField(Resource.class, "dataPackageMetadata");
     xstream.omitField(Resource.class, "type");
     // inferred metadata in the separate file
     xstream.omitField(Resource.class, "inferredMetadata");
@@ -889,17 +1220,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.omitField(TextFileSource.class, "file");
 
     // persist only emails for users
-    xstream.registerConverter(userConverter);
+    xstream.registerConverter(resourceConvertersManager.getUserConverter());
     // persist only rowtype
-    xstream.registerConverter(extensionConverter);
+    xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
-    xstream.registerConverter(conceptTermConverter);
+    xstream.registerConverter(resourceConvertersManager.getConceptTermConverter());
+    // persist only schema identifier, table schema name and field name
+    xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
+    xstream.registerConverter(resourceConvertersManager.getTableSchemaNameConverter());
+    xstream.registerConverter(resourceConvertersManager.getDataSchemaFieldConverter());
     // encrypt passwords
     xstream.registerConverter(passwordEncrypter);
 
     xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
-    xstream.registerConverter(orgConverter);
-    xstream.registerConverter(jdbcInfoConverter);
+    xstream.registerConverter(resourceConvertersManager.getOrgConverter());
+    xstream.registerConverter(resourceConvertersManager.getJdbcInfoConverter());
   }
 
   @Override
@@ -936,6 +1271,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
+    Future<Map<String, Integer>> f = executor.submit(worker);
+    processFutures.put(resource.getShortname(), f);
+    // make sure we have at least a first report for this resource
+    worker.report();
+  }
+
+  private void generateDataPackage(Resource resource) {
+    // use threads to run in the background as sql sources might take a long time
+    GenerateDataPackage worker = dataPackageFactory.create(resource, this);
     Future<Map<String, Integer>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
@@ -1003,6 +1347,71 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
+  private DataPackageMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
+    DataPackageMapping map = new DataPackageMapping();
+    DataPackageSchema dataPackageSchema = schemaManager.get(packageType);
+    String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
+
+    if (dataPackageSchema == null) {
+      // cleanup source file immediately
+      if (source.isFileSource()) {
+        boolean deleted = FileUtils.deleteQuietly(file);
+        // to bypass "Unable to delete file" error on Windows, run garbage collector to clean up file i/o mapping
+        if (!deleted) {
+          System.gc();
+          FileUtils.deleteQuietly(file);
+        }
+      }
+      alog.warn("manage.resource.create.schema.null", new String[] {packageType});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
+    }
+
+    DataPackageTableSchema tableSchema = dataPackageSchema.getTableSchemas().stream()
+      .filter(s -> s.getName().equals(filenameWithoutExtension))
+      .findAny()
+      .orElse(null);
+
+    if (tableSchema == null) {
+      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+    }
+
+    map.setDataPackageSchema(dataPackageSchema);
+    map.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchema.getName()));
+    map.setSource(source);
+
+    // extract column names from file's first row
+    String[] columnNames;
+    try (BufferedReader brTest = new BufferedReader(new FileReader(file))) {
+      String fileHeaderRow = brTest.readLine();
+      columnNames = StringUtils.split(fileHeaderRow, ",");
+    } catch (IOException e) {
+      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+    }
+
+    List<DataPackageFieldMapping> fields = new ArrayList<>();
+    Map<String, DataPackageField> schemaFieldsMap = tableSchema.getFields().stream()
+      .collect(Collectors.toMap(DataPackageField::getName, p -> p));
+
+    // iterate over each field to make sure its part of the extension we know
+    for (int i = 0; i < columnNames.length; i++) {
+      String unwrappedColumnName = StringUtils.unwrap(columnNames[i], '"');
+      DataPackageField dataPackageField = schemaFieldsMap.get(unwrappedColumnName);
+      if (dataPackageField != null) {
+        fields.add(new DataPackageFieldMapping(i, dataPackageField));
+      } else {
+        alog.warn("manage.resource.create.mapping.field.skip",
+          new String[] {columnNames[i], dataPackageSchema.getName() + "/" + tableSchema.getName()});
+      }
+    }
+
+    map.setFieldsMapped(columnNames.length);
+    map.setLastModified(new Date());
+    map.setFields(fields);
+
+    return map;
+  }
   private TextFileSource importSource(Resource config, ArchiveFile af)
     throws ImportException, InvalidFilenameException {
     File extFile = af.getLocationFiles().get(0);
@@ -1020,6 +1429,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return s;
   }
 
+  private TextFileSource importSource(Resource config, File file)
+    throws ImportException, InvalidFilenameException {
+    TextFileSource s = (TextFileSource) sourceManager.add(config, file, FilenameUtils.removeExtension(file.getName()));
+    SourceManagerImpl.copyArchiveFileProperties(file, s);
+
+    // the number of rows was calculated using the standard file importer
+    // make an adjustment now that the exact number of header rows are known
+    if (s.getIgnoreHeaderLines() != 1) {
+      LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
+        + " since header count is declared as " + s.getIgnoreHeaderLines());
+    }
+    s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
+
+    return s;
+  }
+
   @Override
   public boolean isEmlExisting(String shortName) {
     File emlFile = dataDir.resourceEmlFile(shortName);
@@ -1030,7 +1455,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
       Resource resource = get(shortname);
-      BigDecimal version = resource.getEmlVersion();
+      BigDecimal version = resource.getMetadataVersion();
 
       // is listed as locked but task might be finished, check
       Future<Map<String, Integer>> f = processFutures.get(shortname);
@@ -1045,7 +1470,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // store record counts by extension
           resource.setRecordsByExtension(f.get());
           // populate core record count
-          Integer recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+          Integer recordCount = null;
+
+          if (resource.isDataPackage()) {
+            if (CAMTRAP_DP.equals(resource.getCoreType())) {
+              // take number of observations as number of records
+              recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+            }
+          } else {
+            recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+          }
+
           resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
           // finish publication (update registration, persist resource changes)
           publishEnd(resource, action, version);
@@ -1142,6 +1577,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public List<Resource> list(String type) {
+    return resources.values().stream()
+        .filter(res -> type.equals(res.getCoreType()))
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public List<Resource> list(PublicationStatus status) {
     List<Resource> result = new ArrayList<>();
     for (Resource r : resources.values()) {
@@ -1182,6 +1624,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    // add data packages
+    List<DataPackageSchema> installedSchemas = schemaManager.list();
+    for (DataPackageSchema installedSchema : installedSchemas) {
+      datasetTypes.put(
+        installedSchema.getName(),
+        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
+    }
+
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
@@ -1476,7 +1926,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
     }
-    return "<span class=\"text-nowrap status-" + status.name().toLowerCase() + "\">" +
+    return "<span class=\"text-nowrap status-pill status-" + status.name().toLowerCase() + "\">" +
         icon +
         "<span>" +
         localizedStatus +
@@ -1497,6 +1947,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Map<String, String> datasetTypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    // add data packages
+    List<DataPackageSchema> installedSchemas = schemaManager.list();
+    for (DataPackageSchema installedSchema : installedSchemas) {
+      datasetTypes.put(
+        installedSchema.getName(),
+        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
+    }
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
@@ -1579,6 +2036,50 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Loads a resource's metadata from its datapackage.json (for frictionless) or metadata.yaml (for ColDP) file located
+   * inside its resource directory.
+   * If no file was found, the resource is loaded with an empty metadata class instance.
+   *
+   * @param resource resource
+   */
+  private void loadDatapackageMetadata(Resource resource) {
+    DataPackageMetadata metadata;
+
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      metadata = new CamtrapMetadata();
+    } else if (COL_DP.equals(resource.getCoreType())) {
+      metadata = new ColMetadata();
+    } else {
+      metadata = new FrictionlessMetadata();
+    }
+
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    if (metadataFile.exists() && !metadataFile.isDirectory()) {
+      try {
+        metadata = metadataReader.readValue(metadataFile, metadataClassForType(resource.getCoreType()));
+      } catch (IOException e) {
+        LOG.error("Failed to read resource metadata {}", resource.getShortname());
+        LOG.error(e);
+        throw new RuntimeException(e);
+      }
+    } else {
+      if (metadata instanceof FrictionlessMetadata) {
+        ((FrictionlessMetadata) metadata).setName(resource.getShortname());
+      }
+    }
+
+    resource.setDataPackageMetadata(metadata);
+  }
+
+  private void loadMetadata(Resource resource) {
+    if (resource.isDataPackage()) {
+      loadDatapackageMetadata(resource);
+    } else {
+      loadEml(resource);
+    }
+  }
+
+  /**
    * Loads a resource's inferred metadata from the xml file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
    *
@@ -1586,19 +2087,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private void loadInferredMetadata(Resource resource) {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
-    if (!inferredMetadataFile.exists()) {
-      resource.setInferredMetadata(new InferredMetadata());
-      return;
-    }
 
-    try {
-      InputStream input = new FileInputStream(inferredMetadataFile);
-      InferredMetadata inferredMetadata = (InferredMetadata) xstream.fromXML(input);
-      resource.setInferredMetadata(inferredMetadata);
-    } catch (Exception e) {
-      LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-          "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+    if (resource.isDataPackage()) {
+      // skip non-camtrap resources
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        return;
+      }
+
+      // no metadata file found - initialize with an empty object
+      if (!inferredMetadataFile.exists()) {
+        resource.setInferredMetadata(new InferredCamtrapMetadata());
+        return;
+      }
+
+      // otherwise read the metadata file
+      try {
+        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
+        InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
+        resource.setInferredMetadata(inferredMetadata);
+      } catch (Exception e) {
+        LOG.error("Cannot read inferred metadata file (Camtrap) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredCamtrapMetadata());
+      }
+    } else {
+      if (!inferredMetadataFile.exists()) {
+        resource.setInferredMetadata(new InferredEmlMetadata());
+        return;
+      }
+
+      try {
+        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
+        InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
+        resource.setInferredMetadata(inferredMetadata);
+      } catch (Exception e) {
+        LOG.error("Cannot read inferred metadata file (EML) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredEmlMetadata());
+      }
     }
   }
 
@@ -1659,7 +2183,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           }
         }
 
-        // shortname persists as folder name, so xstream doesnt handle this:
+        // shortname persists as folder name, so xstream doesn't handle this:
         resource.setShortname(shortname);
 
         // infer coreType if null
@@ -1686,8 +2210,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
         }
 
-        // load eml (this must be done before trying to convert version below)
-        loadEml(resource);
+        // load metadata (this must be done before trying to convert version below)
+        loadMetadata(resource);
 
         // load inferred metadata
         loadInferredMetadata(resource);
@@ -1696,7 +2220,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // also convert/rename eml, rtf, and dwca versioned files also
         BigDecimal converted = convertVersion(resource);
         if (converted != null) {
-          updateResourceVersion(resource, resource.getEmlVersion(), converted);
+          updateResourceVersion(resource, resource.getMetadataVersion(), converted);
         }
 
         // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
@@ -1705,13 +2229,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
-        // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
-        if (resource.getLastPublishedVersionsVersion() != null) {
-          renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
-        }
+        if (resource.getDataPackageIdentifier() == null) {
+          // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
+          if (resource.getLastPublishedVersionsVersion() != null) {
+            renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
+          }
 
-        // update EML with the latest resource basics (version and GUID)
-        syncEmlWithResource(resource);
+          // update EML with the latest resource basics (version and GUID)
+          syncEmlWithResource(resource);
+        }
 
         LOG.debug("Read resource configuration for " + shortname);
         return resource;
@@ -1734,8 +2260,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @SuppressWarnings("BigDecimalEquals")
   protected BigDecimal convertVersion(Resource resource) {
-    if (resource.getEmlVersion() != null) {
-      BigDecimal version = resource.getEmlVersion();
+    if (resource.getMetadataVersion() != null) {
+      BigDecimal version = resource.getMetadataVersion();
       // special conversion: 0 -> 1.0
       if (version.equals(BigDecimal.ZERO)) {
         return Constants.INITIAL_RESOURCE_VERSION;
@@ -1787,7 +2313,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // if all renames were successful (didn't throw an exception), set new version
-        resource.setEmlVersion(newVersion);
+        resource.setMetadataVersion(newVersion);
       } catch (IOException e) {
         LOG.error("Failed to update version number for " + resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
@@ -1832,7 +2358,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
     if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
       VersionHistory vh =
-        new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
+        new VersionHistory(resource.getMetadataVersion(), resource.getLastPublished(), resource.getStatus());
       vh.setRecordsPublished(resource.getRecordsPublished());
       return vh;
     }
@@ -1904,11 +2430,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add new version history
     addOrUpdateVersionHistory(resource, version, false, action);
 
-    // publish EML
-    publishEml(resource, version);
+    if (resource.isDataPackage()) {
+      publishMetadata(resource, version);
+    } else {
+      // publish EML
+      publishEml(resource, version);
 
-    // publish RTF
-    publishRtf(resource, version);
+      // publish RTF
+      publishRtf(resource, version);
+    }
 
     // remove StatusReport from previous publishing round
     StatusReport report = status(resource.getShortname());
@@ -1916,18 +2446,32 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       processReports.remove(resource.getShortname());
     }
 
-    // (re)generate dwca asynchronously
-    boolean dwca = false;
-    if (resource.hasMappedData()) {
-      generateDwca(resource);
-      dwca = true;
-    } else {
-      // set number of records published
-      resource.setRecordsPublished(0);
-      // finish publication now
-      publishEnd(resource, action, version);
+    if (!resource.isDataPackage()) { // DwC archive
+      // (re)generate dwca asynchronously
+      boolean dwca = false;
+      if (resource.hasMappedData()) {
+        generateDwca(resource);
+        dwca = true;
+      } else {
+        // set number of records published
+        resource.setRecordsPublished(0);
+        // finish publication now
+        publishEnd(resource, action, version);
+      }
+      return dwca;
+    } else { // Data Package archive
+      boolean dataPackage = false;
+      if (resource.hasSchemaMappedData()) {
+        generateDataPackage(resource);
+        dataPackage = true;
+      } else {
+        // set number of records published
+        resource.setRecordsPublished(0);
+        // finish publication now
+        publishEnd(resource, action, version);
+      }
+      return dataPackage;
     }
-    return dwca;
   }
 
   /**
@@ -1949,21 +2493,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
+    BigDecimal replacedMetadataVersion = resource.getReplacedMetadataVersion();
+
     // update the resource's registration (if registered), even if it is a metadata-only resource.
     updateRegistration(resource, action);
-    // set last published date
+    // set the last published date
     resource.setLastPublished(new Date());
-    // set next published date (if resource configured for auto-publishing)
+    // set the next published date (if resource configured for auto-publishing)
     updateNextPublishedDate(new Date(), resource);
     // register/update DOI
-    executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
+    executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
     // finalise/update version history
     addOrUpdateVersionHistory(resource, version, true, action);
+    // remove resource from the list if it's private
+    if (resource.getStatus() == PublicationStatus.PRIVATE) {
+      publishedPublicVersionsSimplified.remove(resource.getShortname());
+    }
     // persist resource object changes
     save(resource);
     // if archival mode is NOT turned on, don't keep former archive version (version replaced)
-    if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
-      removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
+    if (!cfg.isArchivalMode() && version.compareTo(replacedMetadataVersion) != 0) {
+      removeArchiveVersion(resource.getShortname(), replacedMetadataVersion);
     }
     // clean archive versions
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
@@ -1971,7 +2521,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // final logging
     String msg = action
-      .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
+      .getText("publishing.success", new String[] {String.valueOf(resource.getMetadataVersion()), resource.getShortname()});
     action.addActionMessage(msg);
     LOG.info(msg);
   }
@@ -2116,7 +2666,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     DOI doiToReplace = resource.getAssignedDoi();
 
     if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
-        && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
+        && resource.getMetadataVersion() != null && resource.getMetadataVersion().compareTo(version) == 0
         && replacedVersion != null && resource.findVersionHistory(replacedVersion) != null) {
 
       // register new DOI first, indicating it replaces former DOI
@@ -2127,7 +2677,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // reconstruct last published version (version being replaced)
         File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
         Resource lastPublishedVersion = ResourceUtils
-          .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), doiToReplace, resource.getOrganisation(),
+          .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), doiToReplace, resource.getOrganisation(),
             resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
 
         DataCiteMetadata assignedDoiMetadata =
@@ -2189,6 +2739,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
 
+    if (resource.isDataPackage()) {
+      restoreDataPackageResourceVersion(resource, rollingBack, action);
+    } else {
+      restoreDarwinCoreResourceVersion(resource, rollingBack, action);
+    }
+  }
+
+  private void restoreDarwinCoreResourceVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
     // determine version to restore (looking at version history)
     BigDecimal toRestore = getVersionToRestore(resource, rollingBack);
 
@@ -2225,7 +2783,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // update version
-        resource.setEmlVersion(toRestore);
+        resource.setMetadataVersion(toRestore);
 
         // update replaced version with next last version
         if (resource.getVersionHistory().size() > 1) {
@@ -2263,6 +2821,76 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       String msg = action
           .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
+      LOG.error(msg);
+      action.addActionError(msg);
+    }
+  }
+
+  private void restoreDataPackageResourceVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
+    // determine version to restore (looking at version history)
+    BigDecimal toRestore = getVersionToRestore(resource, rollingBack);
+
+    if (toRestore != null) {
+      String shortname = resource.getShortname();
+      LOG.info(
+              "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
+                      + " of resource " + shortname);
+
+      try {
+        // delete versioned metadata file if exists (datapackage.json must remain)
+        File versionedCamtrapMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, CAMTRAP_DP, rollingBack);
+        if (versionedCamtrapMetadataFile.exists()) {
+          FileUtils.forceDelete(versionedCamtrapMetadataFile);
+        }
+
+        File versionedColMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, COL_DP, rollingBack);
+        if (versionedColMetadataFile.exists()) {
+          FileUtils.forceDelete(versionedColMetadataFile);
+        }
+
+        // delete versioned data package archive if exists
+        File versionedDataPackageFile = dataDir.resourceDataPackageFile(shortname, rollingBack);
+        if (versionedDataPackageFile.exists()) {
+          FileUtils.forceDelete(versionedDataPackageFile);
+        }
+
+        // remove VersionHistory of version being rolled back
+        resource.removeVersionHistory(rollingBack);
+
+        // update version
+        resource.setMetadataVersion(toRestore);
+
+        // update replaced version with next last version
+        if (resource.getVersionHistory().size() > 1) {
+          BigDecimal replacedVersion = new BigDecimal(resource.getVersionHistory().get(1).getVersion());
+          resource.setReplacedDataPackageMetadataVersion(replacedVersion);
+        }
+
+        // persist resource.xml changes
+        save(resource);
+
+        // persist EML changes
+        saveDatapackageMetadata(resource);
+
+      } catch (IOException e) {
+        String msg = action
+                .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
+        LOG.error(msg, e);
+        action.addActionError(msg);
+      }
+      // alert user version rollback was successful
+      String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
+      LOG.info(msg);
+      action.addActionMessage(msg);
+      // update StatusReport on publishing page
+      // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
+      StatusReport report = processReports.get(shortname);
+      if (report != null) {
+        report.getMessages().add(new TaskMessage(Level.INFO, msg));
+      }
+    } else {
+      String msg = action
+              .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
       LOG.error(msg);
       action.addActionError(msg);
     }
@@ -2383,7 +3011,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // ensure alternate identifier for IPT URL to resource is set - if resource is public
     updateAlternateIdentifierForIPTURLToResource(resource);
     // update eml version
-    resource.setEmlVersion(version);
+    resource.setMetadataVersion(version);
     // update eml pubDate (represents date when the resource was last published)
     resource.getEml().setPubDate(new Date());
     // set eml dateStamp (represents date when the resource was published for the first time). Do only once
@@ -2394,27 +3022,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (resource.isCitationAutoGenerated()) {
       URI homepage = cfg.getResourceVersionUri(resource.getShortname(), version); // potential citation identifier
       String citation = resource.generateResourceCitation(version, homepage);
-      resource.getEml().getCitation().setCitation(citation);
+      if (resource.getEml().getCitation() != null) {
+        resource.getEml().getCitation().setCitation(citation);
+      } else {
+        Citation c = new Citation();
+        c.setCitation(citation);
+        resource.getEml().setCitation(c);
+      }
     }
     // update eml with inferred data (if infer automatically is turned on)
     if (resource.isInferGeocoverageAutomatically()
         || resource.isInferTaxonomicCoverageAutomatically()
         || resource.isInferTemporalCoverageAutomatically()) {
-      InferredMetadata inferredMetadata = inferMetadata(resource);
+      InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) resourceMetadataInferringService.inferMetadata(resource);
       // save inferred metadata
       resource.setInferredMetadata(inferredMetadata);
       saveInferredMetadata(resource);
 
       if (resource.isInferGeocoverageAutomatically()) {
-        updateGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
 
       if (resource.isInferTaxonomicCoverageAutomatically()) {
-        updateTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlTaxonomicCoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
 
       if (resource.isInferTemporalCoverageAutomatically()) {
-        updateTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
+        updateEmlTemporalCoverageWithInferredFromSourceData(resource, inferredMetadata);
       }
     }
 
@@ -2432,78 +3066,61 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
-    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
-    for (TaxonomicCoverage coverage : coverages) {
-      OrganizedTaxonomicCoverage organizedCoverage = constructOrganizedTaxonomicCoverage(coverage);
-      organizedTaxonomicCoverages.add(organizedCoverage);
+  public void publishMetadata(Resource resource, BigDecimal version) {
+    // check if publishing task is already running
+    if (isLocked(resource.getShortname())) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+          "Resource " + resource.getShortname() + " is currently locked by another process");
     }
-    return organizedTaxonomicCoverages;
-  }
 
-  public OrganizedTaxonomicCoverage constructOrganizedTaxonomicCoverage(TaxonomicCoverage coverage) {
-    OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
-    organizedCoverage.setDescription(coverage.getDescription());
-    organizedCoverage.setKeywords(setOrganizedTaxonomicKeywords(coverage.getTaxonKeywords()));
-    return organizedCoverage;
-  }
+    // update metadata version
+    resource.setMetadataVersion(version);
+    if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata) {
+      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
+      frictionlessMetadata.setCreated(new Date());
+    }
 
-  private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
-    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
+    // update metadata created (represents date when the resource was last published)
+    resource.getDataPackageMetadata().setVersion(version.toPlainString());
 
-    // also, we want a unique set of names corresponding to empty rank
-    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
+    // update metadata with inferred data (if infer automatically is turned on)
+    if (CAMTRAP_DP.equals(resource.getCoreType())
+        && (resource.isInferGeocoverageAutomatically()
+        || resource.isInferTaxonomicCoverageAutomatically()
+        || resource.isInferTemporalCoverageAutomatically())) {
+      InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) resourceMetadataInferringService.inferMetadata(resource);
+      // save inferred metadata
+      resource.setInferredMetadata(inferredMetadata);
+      saveInferredMetadata(resource);
 
-    Map<String, String> ranks = new LinkedHashMap<>(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.ENGLISH.getLanguage(), false));
-
-    for (String rank : ranks.keySet()) {
-      OrganizedTaxonomicKeywords organizedKeywords = new OrganizedTaxonomicKeywords();
-      // set rank
-      organizedKeywords.setRank(rank);
-      // construct display name for each TaxonKeyword, and add display name to organized keywords list
-      for (TaxonKeyword keyword : keywords) {
-        // add display name to appropriate list if it isn't null
-        String displayName = createKeywordDisplayName(keyword);
-        if (displayName != null) {
-          if (rank.equalsIgnoreCase(keyword.getRank())) {
-            organizedKeywords.getDisplayNames().add(displayName);
-          } else if (StringUtils.trimToNull(keyword.getRank()) == null) {
-            uniqueNamesForEmptyRank.add(displayName);
-          }
-        }
+      if (resource.isInferGeocoverageAutomatically()) {
+        updateCamtrapGeographicScopeWithInferredFromSourceData(resource, inferredMetadata);
       }
-      // add to list
-      organizedTaxonomicKeywordsList.add(organizedKeywords);
-    }
-    // if there were actually some names with empty ranks, add the special OrganizedTaxonomicKeywords for empty rank
-    if (!uniqueNamesForEmptyRank.isEmpty()) {
-      // create special OrganizedTaxonomicKeywords for empty rank
-      OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
-      emptyRankKeywords.setRank("Unranked");
-      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
-      organizedTaxonomicKeywordsList.add(emptyRankKeywords);
-    }
-    // return list
-    return organizedTaxonomicKeywordsList;
-  }
 
-  private String createKeywordDisplayName(TaxonKeyword keyword) {
-    String combined = null;
-    if (keyword != null) {
-      String scientificName = StringUtils.trimToNull(keyword.getScientificName());
-      String commonName = StringUtils.trimToNull(keyword.getCommonName());
-      if (scientificName != null && commonName != null) {
-        combined = scientificName + " (" + commonName + ")";
-      } else if (scientificName != null) {
-        combined = scientificName;
-      } else if (commonName != null) {
-        combined = commonName;
+      if (resource.isInferTaxonomicCoverageAutomatically()) {
+        updateCamtrapTaxonomicScopeWithInferredFromSourceData(resource, inferredMetadata);
+      }
+
+      if (resource.isInferTemporalCoverageAutomatically()) {
+        updateCamtrapTemporalScopeWithInferredFromSourceData(resource, inferredMetadata);
       }
     }
-    return combined;
+
+    // save all changes to metadata
+    saveDatapackageMetadata(resource);
+
+    // create versioned metadata file
+    File trunkFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    File versionedFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+    try {
+      FileUtils.copyFile(trunkFile, versionedFile);
+    } catch (IOException e) {
+      throw new PublicationException(PublicationException.TYPE.EML,
+          "Can't publish metadata file for resource " + resource.getShortname(), e);
+    }
   }
 
-  private void updateGeocoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateEmlGeocoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
         && inferredMetadata.getInferredGeographicCoverage() != null
         && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
@@ -2520,7 +3137,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private void updateTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateCamtrapGeographicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataPackageMappings().isEmpty()
+        && inferredMetadata.getInferredGeographicScope() != null
+        && inferredMetadata.getInferredGeographicScope().isInferred()) {
+
+      Geojson geojson = new Geojson();
+      geojson.setType(Geojson.Type.POLYGON);
+      List<List<List<Double>>> coordinates = new ArrayList<>();
+      InferredCamtrapGeographicScope inferredScope = inferredMetadata.getInferredGeographicScope();
+
+      coordinates.add(
+          Arrays.asList(
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude()),
+              Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMinLatitude()),
+              Arrays.asList(inferredScope.getMaxLongitude(), inferredScope.getMaxLatitude()),
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMaxLatitude()),
+              Arrays.asList(inferredScope.getMinLongitude(), inferredScope.getMinLatitude())
+          )
+      );
+
+      geojson.setCoordinates(coordinates);
+
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setSpatial(geojson);
+    }
+  }
+
+  private void updateEmlTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
         && inferredMetadata.getInferredTaxonomicCoverage() != null
         && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
@@ -2537,7 +3180,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  private void updateTemporalCoverageWithInferredFromSourceData(Resource resource, InferredMetadata inferredMetadata) {
+  private void updateCamtrapTaxonomicScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataPackageMappings().isEmpty()
+        && inferredMetadata.getInferredTaxonomicScope() != null
+        && inferredMetadata.getInferredTaxonomicScope().isInferred()) {
+
+      InferredCamtrapTaxonomicScope inferredTaxonomicScope = inferredMetadata.getInferredTaxonomicScope();
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setTaxonomic(inferredTaxonomicScope.getData());
+    }
+  }
+
+  private void updateEmlTemporalCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
         && inferredMetadata.getInferredTemporalCoverage() != null
         && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
@@ -2547,305 +3200,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  @Override
-  public InferredMetadata inferMetadata(Resource resource) {
-    InferredMetadata inferredMetadata = new InferredMetadata();
+  private void updateCamtrapTemporalScopeWithInferredFromSourceData(Resource resource, InferredCamtrapMetadata inferredMetadata) {
+    if (!resource.getDataPackageMappings().isEmpty()
+        && inferredMetadata.getInferredTemporalScope() != null
+        && inferredMetadata.getInferredTemporalScope().isInferred()) {
 
-    boolean serverError = false;
+      InferredCamtrapTemporalScope inferredTemporalScope = inferredMetadata.getInferredTemporalScope();
 
-    // geo coverage column indexes
-    int decimalLongitudeSourceColumnIndex = -1;
-    int decimalLatitudeSourceColumnIndex = -1;
+      Temporal temporal = new Temporal();
+      temporal.setStart(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getStartDate()));
+      temporal.setEnd(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getEndDate()));
 
-    // tax coverage column indexes
-    int kingdomSourceColumnIndex = -1;
-    int phylumSourceColumnIndex = -1;
-    int classSourceColumnIndex = -1;
-    int orderSourceColumnIndex = -1;
-    int familySourceColumnIndex = -1;
-
-    // temp coverage column indexes
-    int eventDataSourceColumnIndex = -1;
-
-    // geo coverage variables
-    boolean geoDataMappedForAtLeastOneMapping = false;
-    boolean geoDataMappedForThisMapping;
-    boolean noValidDataGeo = true;
-    Double minDecimalLongitude = -180.0D;
-    Double maxDecimalLongitude = 180.0D;
-    Double minDecimalLatitude = -90.0D;
-    Double maxDecimalLatitude = 90.0D;
-
-    // tax coverage variables
-    boolean taxDataMappedForAtLeastOneMapping = false;
-    boolean taxDataMappedForThisMapping;
-    int taxonItemsAdded = 0;
-    final int maxNumberOfTaxonItems = 200;
-    Set<TaxonKeyword> taxa = new HashSet<>();
-
-    // temp coverage variables
-    boolean tempDataMappedForAtLeastOneMapping = false;
-    boolean tempDataMappedForThisMapping;
-    boolean noValidDataTemporal = true;
-    String startDateStr = null;
-    TemporalAccessor startDateTA = null;
-    String endDateStr = null;
-    TemporalAccessor endDateTA = null;
-
-    boolean isNoMappings = resource.getMappings().isEmpty();
-
-    if (!isNoMappings) {
-      for (ExtensionMapping mapping : resource.getMappings()) {
-
-        // calculate column indexes for mapping
-        for (PropertyMapping field : mapping.getFields()) {
-          if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
-            decimalLongitudeSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
-            decimalLatitudeSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
-            kingdomSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
-            phylumSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
-            classSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
-            orderSourceColumnIndex = field.getIndex();
-          } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
-            familySourceColumnIndex = field.getIndex();
-          } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
-            eventDataSourceColumnIndex = field.getIndex();
-          }
-        }
-
-        // both fields should be present
-        if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
-          geoDataMappedForThisMapping = true;
-          geoDataMappedForAtLeastOneMapping = true;
-        } else {
-          geoDataMappedForThisMapping = false;
-        }
-
-        // at least one field should be present
-        if (kingdomSourceColumnIndex != -1
-            || phylumSourceColumnIndex != -1
-            || classSourceColumnIndex != -1
-            || orderSourceColumnIndex != -1
-            || familySourceColumnIndex != -1) {
-          taxDataMappedForThisMapping = true;
-          taxDataMappedForAtLeastOneMapping = true;
-        } else {
-          taxDataMappedForThisMapping = false;
-        }
-
-        // field should be present
-        if (eventDataSourceColumnIndex != -1) {
-          tempDataMappedForThisMapping = true;
-          tempDataMappedForAtLeastOneMapping = true;
-        } else {
-          tempDataMappedForThisMapping = false;
-        }
-
-        ClosableReportingIterator<String[]> iter = null;
-        try {
-          // get the source iterator
-          iter = sourceManager.rowIterator(mapping.getSource());
-          boolean initializeExtremeValues = true;
-
-          while (iter.hasNext()) {
-            String[] in = iter.next();
-            if (in == null || in.length == 0) {
-              continue;
-            }
-
-            // geographic coverage section
-            if (geoDataMappedForThisMapping) {
-              String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
-              String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
-
-              OccurrenceParseResult<LatLng> latLngParseResult =
-                  CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
-              LatLng latLng = latLngParseResult.getPayload();
-
-              // skip erratic records
-              if (latLng != null && latLngParseResult.isSuccessful()) {
-                noValidDataGeo = false;
-
-                // initialize min and max values
-                if (initializeExtremeValues) {
-                  minDecimalLatitude = latLng.getLat();
-                  maxDecimalLatitude = latLng.getLat();
-                  minDecimalLongitude = latLng.getLng();
-                  maxDecimalLongitude = latLng.getLng();
-                  initializeExtremeValues = false;
-                }
-
-                if (latLng.getLat() > maxDecimalLatitude) {
-                  maxDecimalLatitude = latLng.getLat();
-                }
-                if (latLng.getLat() < minDecimalLatitude) {
-                  minDecimalLatitude = latLng.getLat();
-                }
-
-                if (latLng.getLng() > maxDecimalLongitude) {
-                  maxDecimalLongitude = latLng.getLng();
-                }
-                if (latLng.getLng() < minDecimalLongitude) {
-                  minDecimalLongitude = latLng.getLng();
-                }
-              }
-            }
-
-            // taxonomic coverage section
-            if (taxDataMappedForThisMapping && taxonItemsAdded < maxNumberOfTaxonItems) {
-              if (kingdomSourceColumnIndex != -1
-                  && StringUtils.isNotEmpty(in[kingdomSourceColumnIndex])) {
-                taxa.add(new TaxonKeyword(in[kingdomSourceColumnIndex], KINGDOM, null));
-                taxonItemsAdded++;
-              }
-              if (phylumSourceColumnIndex != -1
-                  && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
-                taxa.add(new TaxonKeyword(in[phylumSourceColumnIndex], PHYLUM, null));
-                taxonItemsAdded++;
-              }
-              if (classSourceColumnIndex != -1
-                  && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
-                taxa.add(new TaxonKeyword(in[classSourceColumnIndex], CLASS, null));
-                taxonItemsAdded++;
-              }
-              if (orderSourceColumnIndex != -1
-                  && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
-                taxa.add(new TaxonKeyword(in[orderSourceColumnIndex], ORDER, null));
-                taxonItemsAdded++;
-              }
-              if (familySourceColumnIndex != -1
-                  && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
-                taxa.add(new TaxonKeyword(in[familySourceColumnIndex], FAMILY, null));
-                taxonItemsAdded++;
-              }
-            }
-
-            // temporal coverage section
-            if (tempDataMappedForThisMapping) {
-              String rawEventDateValue = in[eventDataSourceColumnIndex];
-
-              TemporalParser temporalParser = DateParsers.defaultTemporalParser();
-              ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
-              TemporalAccessor parsedEventDateTA = parsedEventDateResult.getPayload();
-
-              // skip erratic records
-              if (!parsedEventDateResult.isSuccessful() || parsedEventDateTA == null || !parsedEventDateTA.isSupported(ChronoField.YEAR)) {
-                continue;
-              } else {
-                noValidDataTemporal = false;
-              }
-
-              if (startDateTA == null) {
-                startDateTA = parsedEventDateTA;
-                startDateStr = rawEventDateValue;
-              }
-              if (endDateTA == null) {
-                endDateTA = parsedEventDateTA;
-                endDateStr = rawEventDateValue;
-              }
-
-              if (parsedEventDateTA instanceof YearMonth) {
-                parsedEventDateTA = ((YearMonth) parsedEventDateTA).atEndOfMonth();
-              }
-
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
-                startDateTA = parsedEventDateTA;
-                startDateStr = rawEventDateValue;
-              }
-
-              if (parsedEventDateTA instanceof ChronoLocalDate && ((ChronoLocalDate) endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
-                endDateTA = parsedEventDateTA;
-                endDateStr = rawEventDateValue;
-              }
-            }
-
-          }
-        } catch (Exception e) {
-          LOG.error("Error while trying to infer metadata from source data", e);
-          serverError = true;
-        } finally {
-          if (iter != null) {
-            try {
-              iter.close();
-            } catch (Exception e) {
-              LOG.error("Error while closing iterator", e);
-              serverError = true;
-            }
-          }
-        }
-      }
+      ((CamtrapMetadata) resource.getDataPackageMetadata()).setTemporal(temporal);
     }
-
-    // finalize geocoverage
-    InferredGeographicCoverage inferredGeographicCoverage = new InferredGeographicCoverage();
-    inferredMetadata.setInferredGeographicCoverage(inferredGeographicCoverage);
-    if (serverError) {
-      inferredGeographicCoverage.addError("eml.error.serverError");
-    } else if (isNoMappings) {
-      inferredGeographicCoverage.addError("eml.error.noMappings");
-    } else if (!geoDataMappedForAtLeastOneMapping) {
-      inferredGeographicCoverage.addError("eml.geospatialCoverages.error.fieldsNotMapped");
-    } else if (noValidDataGeo) {
-      inferredGeographicCoverage.addError("eml.error.noValidData");
-    } else {
-      inferredGeographicCoverage.setInferred(true);
-      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-      geospatialCoverage.setBoundingCoordinates(new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude)));
-      inferredGeographicCoverage.setData(geospatialCoverage);
-    }
-
-    // finalize taxcoverage
-    InferredTaxonomicCoverage inferredTaxonomicCoverage = new InferredTaxonomicCoverage();
-    inferredMetadata.setInferredTaxonomicCoverage(inferredTaxonomicCoverage);
-    if (serverError) {
-      inferredTaxonomicCoverage.addError("eml.error.serverError");
-    } else if (isNoMappings) {
-      inferredTaxonomicCoverage.addError("eml.error.noMappings");
-    } else if (!taxDataMappedForAtLeastOneMapping) {
-      inferredTaxonomicCoverage.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
-    } else if (taxonItemsAdded == 0) {
-      inferredTaxonomicCoverage.addError("eml.error.noValidData");
-    } else {
-      TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
-      taxCoverage.setTaxonKeywords(new ArrayList<>(taxa));
-      OrganizedTaxonomicCoverage organizedTaxCoverage = constructOrganizedTaxonomicCoverage(taxCoverage);
-      inferredTaxonomicCoverage.setInferred(true);
-      inferredTaxonomicCoverage.setData(taxCoverage);
-      inferredTaxonomicCoverage.setOrganizedData(organizedTaxCoverage);
-    }
-
-    // finalize tempcoverage
-    InferredTemporalCoverage inferredTemporalCoverage = new InferredTemporalCoverage();
-    inferredMetadata.setInferredTemporalCoverage(inferredTemporalCoverage);
-    if (serverError) {
-      inferredTemporalCoverage.addError("eml.error.serverError");
-    } else if (isNoMappings) {
-      inferredTemporalCoverage.addError("eml.error.noMappings");
-    } else if (!tempDataMappedForAtLeastOneMapping) {
-      inferredTemporalCoverage.addError("eml.temporalCoverages.error.fieldsNotMapped");
-    } else if (noValidDataTemporal) {
-      inferredTemporalCoverage.addError("eml.error.noValidData");
-    } else {
-      TemporalCoverage tempCoverage = new TemporalCoverage();
-      try {
-        tempCoverage.setStart(startDateStr);
-        tempCoverage.setEnd(endDateStr);
-        inferredTemporalCoverage.setInferred(true);
-        inferredTemporalCoverage.setData(tempCoverage);
-      } catch (ParseException e) {
-        LOG.error("Failed to parse date for temporal coverage", e);
-        inferredTemporalCoverage.addError("eml.temporalCoverages.error.dateParseException");
-      }
-    }
-
-    inferredMetadata.setLastModified(new Date());
-
-    return inferredMetadata;
   }
 
   /**
@@ -2907,7 +3274,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (emlFile == null || !emlFile.exists()) {
         // some archives dont indicate the name of the eml metadata file
         // so we also try with the default eml.xml name
-        emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
+        emlFile = new File(archive.getLocation(), EML_XML_FILENAME);
       }
       if (emlFile.exists()) {
         // read metadata and populate Eml instance
@@ -2936,6 +3303,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.warn("Cant read basic archive metadata: " + e.getMessage());
     }
+    alog.warn("manage.resource.read.problem");
+    return null;
+  }
+
+  private DataPackageMetadata readDataPackageMetadata(String shortname, String dataPackageType, File file, ActionLogger alog) {
+    DataPackageMetadata metadata;
+
+    try {
+      metadata = copyDatapackageMetadata(shortname, file, dataPackageType);
+      alog.info("manage.resource.read.datapackage.metadata");
+      return metadata;
+    } catch (ImportException e) {
+      String msg = "Cant read data package metadata: " + e.getMessage();
+      LOG.warn(msg);
+      alog.warn(msg);
+      return null;
+    } catch (Exception e) {
+      LOG.warn("Cant read data package metadata", e);
+    }
+
     alog.warn("manage.resource.read.problem");
     return null;
   }
@@ -3236,6 +3623,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public synchronized void saveDatapackageMetadata(Resource resource) {
+    // set modified date
+    resource.setModified(new Date());
+    // save into data dir
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    try {
+      metadataReader.writeValue(metadataFile, resource.getDataPackageMetadata());
+    } catch (IOException e) {
+      LOG.error("Failed to save datapackage metadata!", e);
+      throw new RuntimeException(e);
+    }
+
+    LOG.debug("Updated metadata file for " + resource);
+  }
+
+  @Override
   public StatusReport status(String shortname) {
     isLocked(shortname);
     return processReports.get(shortname);
@@ -3315,11 +3718,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
         "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      // update visibility to public
+      // update visibility to private
       resource.setStatus(PublicationStatus.PRIVATE);
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // not applicable for data packages
+      if (resource.getDataPackageIdentifier() == null) {
+        updateAlternateIdentifierForIPTURLToResource(resource);
+      }
 
       // save all changes to resource
       save(resource);
@@ -3339,7 +3745,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setMakePublicDate(null);
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
+      // not applicable for data packages
+      if (resource.getDataPackageIdentifier() == null) {
+        updateAlternateIdentifierForIPTURLToResource(resource);
+      }
 
       // save all changes to resource
       save(resource);
@@ -3572,7 +3981,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
-    if ((version != null) && !version.equals(resource.getEmlVersion())) {
+    if ((version != null) && !version.equals(resource.getMetadataVersion())) {
       LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
       try {
         removeVersion(resource.getShortname(), version);

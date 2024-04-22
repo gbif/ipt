@@ -53,6 +53,9 @@
       <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
       <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
 
+      <!-- Default locale interceptor -->
+      <interceptor name="defaultLocale" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor"/>
+
       <!-- extended i18n default interceptor to support other Locales not supported by the Java runtime environment, e.g. Persian (fa) -->
       <interceptor name="i18n" class="org.gbif.ipt.struts2.IptI18nInterceptor"/>
 
@@ -60,6 +63,7 @@
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
+        <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
         <interceptor-ref name="basicStack"/>
         <interceptor-ref name="validation">
@@ -123,7 +127,7 @@
         <param name="status">500</param>
         <param name="location">/WEB-INF/pages/error/error.ftl</param>
       </result>
-      <result name="setupIncomplete" type="redirect">/setup.do</result>
+      <result name="setupIncomplete" type="redirect">/setupDataDirectory.do</result>
       <result name="login" type="redirect">${baseURL}/login.do</result>
       <result name="home" type="redirect">${baseURL}/home.do</result>
 
@@ -134,17 +138,28 @@
       <exception-mapping result="error" exception="org.gbif.ipt.service.InvalidConfigException"/>
     </global-exception-mappings>
 
-    <action name="setup" class="org.gbif.ipt.config.SetupAction" method="setup">
-      <result name="input">/WEB-INF/pages/admin/setup.ftl</result>
-      <result type="redirect">/setup2.do</result>
+    <action name="setupDataDirectory" class="org.gbif.ipt.config.SetupAction" method="setupDataDirectory">
+      <result name="input">/WEB-INF/pages/admin/setup_1_data_directory.ftl</result>
+      <result type="redirect">${baseURL}/setupDefaultAdministrator.do</result>
     </action>
-    <action name="setup2" class="org.gbif.ipt.config.SetupAction" method="setup2">
-      <result name="input">/WEB-INF/pages/admin/setup2.ftl</result>
-      <result name="error" type="redirect">/setup.do</result>
-      <result type="redirect">${baseURL}/setup3.do</result>
+    <action name="setupDefaultAdministrator" class="org.gbif.ipt.config.SetupAction" method="setupDefaultAdministrator">
+      <result name="input">/WEB-INF/pages/admin/setup_2_default_administrator.ftl</result>
+      <result name="error" type="redirect">/setupDataDirectory.do</result>
+      <result type="redirect">${baseURL}/setupMode.do</result>
     </action>
-    <action name="setup3" class="org.gbif.ipt.config.SetupAction" method="setup3">
-      <result name="input">/WEB-INF/pages/admin/setup3.ftl</result>
+    <action name="setupMode" class="org.gbif.ipt.config.SetupAction" method="setupMode">
+      <result name="input">/WEB-INF/pages/admin/setup_3_mode.ftl</result>
+      <result name="error" type="redirect">/setupDefaultAdministrator.do</result>
+      <result type="redirect">${baseURL}/setupPublicUrl.do</result>
+    </action>
+    <action name="setupPublicUrl" class="org.gbif.ipt.config.SetupAction" method="setupPublicUrl">
+      <result name="input">/WEB-INF/pages/admin/setup_4_public_url.ftl</result>
+      <result name="error" type="redirect">/setupMode.do</result>
+      <result type="redirect">${baseURL}/setupInstallationComplete.do</result>
+    </action>
+    <action name="setupInstallationComplete" class="org.gbif.ipt.config.SetupAction" method="setupInstallationComplete">
+      <result name="input">/WEB-INF/pages/admin/setup_5_complete.ftl</result>
+      <result name="error" type="redirect">/setupPublicUrl.do</result>
     </action>
     <action name="setupComplete">
       <result type="redirect">${baseURL}/admin/</result>

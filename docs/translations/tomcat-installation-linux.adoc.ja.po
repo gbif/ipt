@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"PO-Revision-Date: 2023-07-26 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,30 +20,30 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:1
 #, no-wrap
 msgid "Install Tomcat on Linux"
-msgstr ""
+msgstr "LinuxにTomcatをインストールする"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:4
 msgid "Tomcat is usually installed using distribution packages."
-msgstr ""
+msgstr "Tomcatは通常、ディストリビューションパッケージを使用してインストールします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:6
 msgid "For example, on CentOS or Red Hat systems, `yum install tomcat`."
-msgstr ""
+msgstr "例えば、CentOSやRed Hatの場合、``yum install tomcat``です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:8
 msgid "Or on Debian or Ubuntu systems, `apt install tomcat9`."
-msgstr ""
+msgstr "DebianやUbuntuの場合は、``apt install tomcat9``です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:10
 msgid "You can set Tomcat to start up automatically with `systemctl enable tomcat` or similar."
-msgstr ""
+msgstr "`systemctl enable tomcat` などで，Tomcatが自動的に起動するように設定することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:11
 msgid "Most Linux users seem not to need any additional advice; if you do please ask on the xref:resources.adoc#ipt-mailing-list[mailing list]."
-msgstr ""
+msgstr "ほとんどのLinuxユーザーはこれ以上のアドバイスを必要としないようですが、もしそうでなければ、xref:resources.adoc#ipt-mailing-list[メーリングリスト]までご質問ください。"
 

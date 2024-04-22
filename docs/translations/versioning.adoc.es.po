@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-02-03 18:05\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2024-01-24 23:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -95,8 +95,8 @@ msgstr "La página de destino de la anterior versión principal apunta (tiene un
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
-msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted."
-msgstr "Los conjuntos de datos eliminados tienen una página IPT que explica que el conjunto de datos se eliminó. Si el conjunto de datos eliminado tenía un DOI asignado, todas sus versiones son almacenadas, de lo contrario es eliminado permanentemente."
+msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI by the IPT, all its versions are archived otherwise its permanently deleted."
+msgstr "Los conjuntos de datos eliminados tienen una página de inicio en el IPT que explica que el conjunto de datos ha sido eliminado. Si el IPT ha asignado un DOI al conjunto de datos eliminado, todas sus versiones se archivan; de lo contrario, se elimina permanentemente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22

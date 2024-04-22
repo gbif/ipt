@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2023-02-13 07:23\n"
+"PO-Revision-Date: 2023-03-14 02:16\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -34,194 +34,194 @@ msgstr "リソースメタデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:4
 msgid "Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation."
-msgstr ""
+msgstr "現在デジタルデータを共有できない生物多様性情報資源の説明と連絡先。GBIFの他の全てのクラスのデータもこの基本情報を含んでいます。このようなメタデータは、研究者がまだオンラインで利用できない資源を発見するための貴重なツールになるかもしれません。また、将来のデジタル化に向けて、非デジタル資源の重要性や価値を評価する上でも有効な方法です。GBIFは、引用を容易にするために、すべてのデータセットにデジタルオブジェクト識別子（DOI）を関連付けることを保証しています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resource-metadata.adoc:5
 #, no-wrap
 msgid "How to write resource metadata"
-msgstr ""
+msgstr "リソースメタデータの書き方"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/resource-metadata.adoc:7
 #, no-wrap
 msgid "ipt2/flow-rm.png"
-msgstr ""
+msgstr "ipt2/flow-rm.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:10
 msgid "Ultimately your metadata needs to be transformed into an XML metadata document. The XML must conform to the GBIF Metadata Profile, which is based on the Ecological Metadata Language (EML)."
-msgstr ""
+msgstr "最終的にメタデータはXMLメタデータドキュメントに変換される必要があります。このXMLは、EML（Ecological Metadata Language）をベースとするGBIFメタデータプロファイルに準拠する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:12
 msgid "No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata. The IPT makes sure it's in the proper valid XML format."
-msgstr ""
+msgstr "リソースメタデータのためのExcelテンプレートは存在しません。IPTに内蔵されたメタデータエディタを使用して、メタデータを入力するだけです。IPTは、データが適切で有効なXML形式であることを確認します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:14
 msgid "Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources.adoc#upload-a-metadata-file[here]."
-msgstr ""
+msgstr "メタデータがすでにEMLまたダブリンコアになっている場合は、これらのフォーマットでIPTにアップロードすることもできます。その方法についてのガイダンスは、xref:manage-resources.adoc#upload-a-metadata-file[こちら]でご覧になれます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:16
 msgid "For extra guidance, you can look at the <<Exemplar datasets>>."
-msgstr ""
+msgstr "さらに詳しいガイダンスは、link:https://ipt.gbif.org/manual/ja/ipt/latest/resource-metadata#exemplar-datasets[サンプルデータセット]を参照してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:17
 #, no-wrap
 msgid "Template"
-msgstr ""
+msgstr "テンプレート"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:20
 msgid "No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata."
-msgstr ""
+msgstr "リソースメタデータのExcelテンプレートは存在しません。IPTに内蔵されているメタデータエディタを使用して、メタデータを入力してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:21
 #, no-wrap
 msgid "Required metadata fields"
-msgstr ""
+msgstr "必須メタデータフィールド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:24
 msgid "title"
-msgstr ""
+msgstr "タイトル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:25
 msgid "description"
-msgstr ""
+msgstr "説明"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:26
 msgid "publishing organization"
-msgstr ""
+msgstr "公開機関"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:27
 msgid "type"
-msgstr ""
+msgstr "タイプ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:28
 msgid "license"
-msgstr ""
+msgstr "ライセンス"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:29
 msgid "contact(s)"
-msgstr ""
+msgstr "連絡先"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:30
 msgid "creator(s)"
-msgstr ""
+msgstr "作成者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:31
 msgid "metadata provider(s)"
-msgstr ""
+msgstr "メタデータ提供者"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:32
 #, no-wrap
 msgid "Recommended metadata fields"
-msgstr ""
+msgstr "推奨メタデータフィールド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:35
 msgid "sampling methodology - in situations where data comes from a sampling event"
-msgstr ""
+msgstr "サンプリング方法 - データがサンプリングイベントで得られたものである場合"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:36
 msgid "citation - to ensure your dataset gets cited the way you want"
-msgstr ""
+msgstr "引用 - データセットが、あなたが希望する方法で引用されるようにします"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:40
 msgid "Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: https://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1.0[EML] / https://ipt.biodiversity.aq/resource.do?r=ictar_ivscs[IPT homepage]"
-msgstr ""
+msgstr "マクマードドライバレーの谷間土壌比較調査：link:https://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1.0[EML] / link:https://ipt.biodiversity.aq/resource.do?r=ictar_ivscs[IPT ホームページ]"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resource-metadata.adoc:41
 #, no-wrap
 msgid "FAQ:"
-msgstr ""
+msgstr "FAQ："
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:43
 #, no-wrap
 msgid "Q. What should I do if my data cannot be made freely available?"
-msgstr ""
+msgstr "Q. 自分のデータが自由に利用できない場合はどうすればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:46
 #, no-wrap
 msgid "*A.* You should publicize its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis.\n"
-msgstr ""
+msgstr "*A.* そのメタデータを公開して、その存在を公表するとよいでしょう。将来の共同研究やメタアナリシスを促進するために、リクエストがあればデータが利用可能であると示すことができます。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:47
 #, no-wrap
 msgid "Q. How can I apply a license to my dataset?"
-msgstr ""
+msgstr "Q. どうやってデータセットにライセンスを適用すればよいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:50
 #, no-wrap
 msgid "*A.* Simply use the IPT's built-in metadata editor following xref:applying-license.adoc#dataset-level[these instructions].\n"
-msgstr ""
+msgstr "*A.* xref:applying-license.adoc#dataset-level[これらの指示]に従ってIPTの組み込みメタデータエディタを使用するだけです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:52
 msgid "Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following xref:applying-license.adoc#supplementary-information[these instructions]."
-msgstr ""
+msgstr "また、メタデータがすでにEMLになっている場合は、xref:applying-license.adoc#supplementary-information[こちらの手順]に従って、IPTにアップロードする前にデータセットに機械読み取り可能なライセンスを割り当ててください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:53
 #, no-wrap
 msgid "Q. Can I add a link to the dataset's related data paper?"
-msgstr ""
+msgstr "Q. データセットに関連論文へのリンクを追加することはできますか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:56
 #, no-wrap
 msgid "*A.* Yes. To do so, add a citation to the data paper to the bibliographic citations list. Take special care to include the data paper's DOI as part of the citation. It should be written as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). This will make it possible to discover the data paper when reading the resource metadata.\n"
-msgstr ""
+msgstr "*A.* はい、できます。書誌引用リストに、論文への引用を追加してください。その際、データペーパーのDOIを引用文の一部として含めるよう、特に注意してください。DOIはリンク可能なURL（例：https://doi.org/10.1038/sdata.2017.16）として記述する必要があります。これにより、リソースメタデータを読む際に論文にアクセスできるようになります。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:57
 #, no-wrap
 msgid "Q. GBIF assigned my dataset a DOI - can I add this to my metadata?"
-msgstr ""
+msgstr "Q. GBIFが私のデータセットにDOIを付与しました。これを私のメタデータに追加することはできますか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:60
 #, no-wrap
 msgid "*A.* Yes. To do so, add the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) in the following places:\n"
-msgstr ""
+msgstr "*A.* はい、できます。GBIFのDOIをリンク可能なURL（例：https://doi.org/10.15468/nc6rxy）として、以下の場所に追加してください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:62
 msgid "Citation DOI (remember to turn on citation xref:manage-resources.adoc#citations[auto-generation], to ensure your dataset's citation complies with the xref:citation.adoc[best-practice format])."
-msgstr ""
+msgstr "引用DOI（データセットの引用がxref:citation.adoc[ベストプラクティス フォーマット]に準拠していることを確認するため、xref:manage-resources.adoc#citations[自動生成]をオンにすることを忘れないでください）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:63
 msgid "Alternate identifiers list"
-msgstr ""
+msgstr "代替識別子リスト"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:65
 msgid "Note GBIF only assigns a DOI to a dataset during registration if no DOI was previously assigned to it."
-msgstr ""
+msgstr "GBIFがデータセットにDOIを付与するのは、登録時にDOIが付与されていない場合のみであることに留意してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:66
 msgid "Also note that using the GBIF DOI in the citation may mislead users, as it resolves to the GBIF dataset page - not the online dataset. A DOI is preferred to using a URL to the online dataset, however, because it guarantees persistent access."
-msgstr ""
+msgstr "また、引用の際にGBIF DOIを使用すると、オンラインデータセットではなくGBIFデータセットのページにリンクされるため、ユーザーに誤解を与える可能性がありますのでご注意ください。ただし、オンラインデータセットへのURLよりもDOIの方が永続的なアクセスが保証され、好ましいです。"
 

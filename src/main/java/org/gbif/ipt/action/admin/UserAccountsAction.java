@@ -52,6 +52,31 @@ public class UserAccountsAction extends POSTAction {
       new RandomStringGenerator.Builder()
           .selectFrom(PASSWORD_ALLOWED_CHARS.toCharArray())
           .build();
+  private static final String EMAIL_NEW_ACCOUNT = "<a href=\"mailto:%s" +
+          "?subject=IPT account" +
+          "&amp;body=Dear %s," +
+          "%%0d%%0dWe would like to inform you that we have created an IPT account for you." +
+          "%%0d%%0dAccount information:" +
+          "%%0d%%0dIPT: %s" +
+          "%%0dEmail: %s" +
+          "%%0dPassword: %s" +
+          "%%0dRole: %s" +
+          "%%0d%%0dThank you for your attention.\">" +
+          "Click here" +
+          "</a> " +
+          "to share the credentials with the user";
+  private static final String EMAIL_PASSWORD_CHANGE = "<a href=\"mailto:%s" +
+          "?subject=IPT password change" +
+          "&amp;body=Dear %s," +
+          "%%0d%%0dWe would like to inform you that your IPT account's password has been successfully changed." +
+          "%%0d%%0dAccount information:" +
+          "%%0d%%0dIPT: %s" +
+          "%%0dEmail: %s" +
+          "%%0dPassword: %s" +
+          "%%0d%%0dThank you for your attention.\">" +
+          "Click here" +
+          "</a> " +
+          "to share the new password with the user";
 
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
@@ -158,14 +183,17 @@ public class UserAccountsAction extends POSTAction {
   public String save() {
     try {
       if (id == null) {
+        String passwordBeforeSaving = user.getPassword();
         userManager.create(user);
-        addActionMessage(getText("admin.user.added"));
+        String emailLink = String.format(EMAIL_NEW_ACCOUNT, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), passwordBeforeSaving, user.getRole());
+        addActionMessage(getText("admin.user.added", new String[] {emailLink}));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
         String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         user.setPassword(hash);
         userManager.save(user);
-        addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
+        String emailLink = String.format(EMAIL_PASSWORD_CHANGE, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), newPassword);
+        addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword, emailLink}));
       } else {
         if (userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin
           && userManager.list(Role.Admin).size() < 2) {

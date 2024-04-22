@@ -18,6 +18,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 /**
  * Simplified IPT resource view for main and manage pages.
@@ -27,6 +28,7 @@ public class SimplifiedResource {
 
   private String logoUrl;
   private String title;
+  private UUID organisationKey;
   private String organisationName;
   private String coreType;
   private String subtype;
@@ -41,6 +43,7 @@ public class SimplifiedResource {
 
   private String organisationAlias;
   private boolean published;
+  private boolean dataPackage;
 
   public String getShortname() {
     return shortname;
@@ -92,6 +95,14 @@ public class SimplifiedResource {
 
   public void setSubject(String subject) {
     this.subject = subject;
+  }
+
+  public UUID getOrganisationKey() {
+    return organisationKey;
+  }
+
+  public void setOrganisationKey(UUID organisationKey) {
+    this.organisationKey = organisationKey;
   }
 
   public String getOrganisationAlias() {
@@ -170,6 +181,14 @@ public class SimplifiedResource {
     this.creatorName = creatorName;
   }
 
+  public boolean isDataPackage() {
+    return dataPackage;
+  }
+
+  public void setDataPackage(boolean dataPackage) {
+    this.dataPackage = dataPackage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -182,6 +201,7 @@ public class SimplifiedResource {
         && recordsPublished == that.recordsPublished
         && Objects.equals(logoUrl, that.logoUrl)
         && Objects.equals(subject, that.subject)
+        && Objects.equals(organisationKey, that.organisationKey)
         && Objects.equals(organisationAlias, that.organisationAlias)
         && Objects.equals(organisationName, that.organisationName)
         && Objects.equals(coreType, that.coreType)
@@ -189,32 +209,38 @@ public class SimplifiedResource {
         && Objects.equals(modified, that.modified)
         && Objects.equals(lastPublished, that.lastPublished)
         && Objects.equals(nextPublished, that.nextPublished)
-        && Objects.equals(creatorName, that.creatorName);
+        && Objects.equals(creatorName, that.creatorName)
+        && Objects.equals(dataPackage, that.dataPackage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationAlias, organisationName, coreType, subtype, modified, published, lastPublished, nextPublished, creatorName);
+    return Objects.hash(shortname, title, status, recordsPublished, logoUrl, subject, organisationKey,
+            organisationAlias, organisationName, coreType, subtype, modified, published, lastPublished, nextPublished,
+            creatorName, dataPackage);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", SimplifiedResource.class.getSimpleName() + "[", "]")
-        .add("shortname='" + shortname + "'")
-        .add("title='" + title + "'")
-        .add("status=" + status)
-        .add("recordsPublished=" + recordsPublished)
         .add("logoUrl='" + logoUrl + "'")
-        .add("subject='" + subject + "'")
-        .add("organisationAlias='" + organisationAlias + "'")
+        .add("title='" + title + "'")
         .add("organisationName='" + organisationName + "'")
         .add("coreType='" + coreType + "'")
         .add("subtype='" + subtype + "'")
+        .add("recordsPublished=" + recordsPublished)
         .add("modified=" + modified)
-        .add("published=" + published)
         .add("lastPublished=" + lastPublished)
         .add("nextPublished=" + nextPublished)
+        .add("status=" + status)
         .add("creatorName='" + creatorName + "'")
+        .add("shortname='" + shortname + "'")
+        .add("subject='" + subject + "'")
+        .add("organisationKey='" + organisationKey + "'")
+        .add("organisationAlias='" + organisationAlias + "'")
+        .add("organisationAlias='" + organisationAlias + "'")
+        .add("published=" + published)
+        .add("dataPackage=" + dataPackage)
         .toString();
   }
 }

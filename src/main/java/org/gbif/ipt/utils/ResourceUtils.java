@@ -17,9 +17,14 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Objects;
@@ -31,9 +36,20 @@ import javax.validation.constraints.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
+
 public class ResourceUtils {
 
   protected static final Logger LOG = LogManager.getLogger(ResourceUtils.class);
+
+  private static final ObjectMapper jsonMapper = new ObjectMapper();
+  private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
 
   /*
    * Empty constructor.
@@ -46,31 +62,45 @@ public class ResourceUtils {
    *
    * @param version version to assign to reconstructed resource
    * @param shortname shortname to assign to reconstructed resource
-   * @param coreType coreType
+   * @param coreTypeOrPackageType coreType or packageType
+   * @param dataPackageIdentifier data package identifier (optional)
    * @param doi DOI to assign to reconstructed resource
    * @param organisation organisation to assign to reconstructed resource
    * @param versionHistory VersionHistory corresponding to resource version being reconstructed
-   * @param versionEmlFile eml file corresponding to version of resource being reconstructed
+   * @param versionMetadataFile eml file ord metadata file corresponding to version of resource being reconstructed
    * @param key GBIF UUID to assign to reconstructed resource
    *
    * @return published version reconstructed
    */
-  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreType, @Nullable DOI doi,
-    @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
-    @Nullable UUID key) {
+  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreTypeOrPackageType,
+    @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
+    @Nullable VersionHistory versionHistory, @Nullable File versionMetadataFile, @Nullable UUID key) {
     Objects.requireNonNull(version);
     Objects.requireNonNull(shortname);
 
-    if (organisation == null || versionHistory == null || versionEmlFile == null) {
+    boolean isDataPackageResource = dataPackageIdentifier != null;
+
+    if (organisation == null && !isDataPackageResource) {
       throw new IllegalArgumentException(
-        "Failed to reconstruct resource version because not all of organisation, version history, or version eml file were provided");
+              "Failed to reconstruct resource version: organisation is null");
+    }
+
+    if (versionHistory == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version history is null");
+    }
+
+    if (versionMetadataFile == null) {
+      throw new IllegalArgumentException(
+              "Failed to reconstruct resource version: version eml file is null");
     }
 
     // initiate new version, and set properties
     Resource resource = new Resource();
-    resource.setCoreType(coreType);
+    resource.setCoreType(coreTypeOrPackageType);
+    resource.setDataPackageIdentifier(dataPackageIdentifier);
     resource.setShortname(shortname);
-    resource.setEmlVersion(version);
+    resource.setMetadataVersion(version);
     resource.setDoi(doi);
     resource.setOrganisation(organisation);
     resource.setKey(key);
@@ -80,14 +110,47 @@ public class ResourceUtils {
     resource.setLastPublished(versionHistory.getReleased());
     resource.setRecordsByExtension(versionHistory.getRecordsByExtension());
 
-    if (versionEmlFile.exists()) {
-      Eml eml = EmlUtils.loadWithLocale(versionEmlFile, Locale.US);
-      resource.setEml(eml);
+    if (versionMetadataFile.exists()) {
+      if (isDataPackageResource) {
+        if (COL_DP.equals(coreTypeOrPackageType)) {
+          ColMetadata metadata;
+          try {
+            metadata = yamlMapper.readValue(versionMetadataFile, ColMetadata.class);
+            resource.setDataPackageMetadata(metadata);
+          } catch (IOException e) {
+            LOG.error("Failed to produce ColDP metadata for the resource {}", shortname);
+            LOG.error(e);
+            throw new RuntimeException(e);
+          }
+        } else {
+          DataPackageMetadata metadata;
+          try {
+            metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(dataPackageIdentifier));
+            resource.setDataPackageMetadata(metadata);
+          } catch (IOException e) {
+            LOG.error("Failed to produce metadata for the data package resource {}", shortname);
+            LOG.error(e);
+            throw new RuntimeException(e);
+          }
+        }
+      } else {
+        Eml eml = EmlUtils.loadWithLocale(versionMetadataFile, Locale.US);
+        resource.setEml(eml);
+      }
     } else {
+      LOG.error("Failed to reconstruct resource: {} not found!", versionMetadataFile.getAbsolutePath());
       throw new IllegalArgumentException(
-        "Failed to reconstruct resource: " + versionEmlFile.getAbsolutePath() + " not found!");
+        "Failed to reconstruct resource: " + versionMetadataFile.getAbsolutePath() + " not found!");
     }
     return resource;
+  }
+
+  private static Class<? extends DataPackageMetadata> getDataPackageClass(String dataPackageIdentifier) {
+    if (dataPackageIdentifier.contains(CAMTRAP_DP)) {
+      return CamtrapMetadata.class;
+    } else {
+      return FrictionlessColMetadata.class;
+    }
   }
 
   /**

@@ -16,10 +16,12 @@ package org.gbif.ipt.service.registry.impl;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Network;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
@@ -27,6 +29,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
@@ -88,9 +91,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
+  private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
+  private static final String SERVICE_TYPE_MATERIAL_ENTITY = "DWC-ARCHIVE-MATERIAL-ENTITY";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
   private static final String SERVICE_TYPE_SAMPLING_EVENT = "DWC-ARCHIVE-SAMPLING-EVENT";
+
+  private static final String SERVICE_SUBTYPE_SPECIMEN = "";
+  private static final String SERVICE_SUBTYPE_OBSERVATION = "";
+  private static final String SERVICE_SUBTYPE_TAXONOMIC_AUTHORITY = "";
+  private static final String SERVICE_SUBTYPE_NOMENCLATOR_AUTHORITY = "";
+  private static final String SERVICE_SUBTYPE_INVENTORY_THEMATIC = "";
+  private static final String SERVICE_SUBTYPE_INVENTORY_REGIONAL = "";
+  private static final String SERVICE_SUBTYPE_GLOBAL_SPECIES_DATASET = "";
+  private static final String SERVICE_SUBTYPE_DERIVED_FROM_OCCURRENCE = "";
+
   private static final String SERVICE_TYPE_RSS = "RSS";
   private static final String CONTACT_TYPE_TECHNICAL = "technical";
   private static final String CONTACT_TYPE_ADMINISTRATIVE = "administrative";
@@ -172,6 +187,35 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
+    if (resource.getSubtype() != null) {
+      data.add(new BasicNameValuePair("subtype", resource.getSubtype()));
+    }
+
+    return data;
+  }
+
+  private List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
+    List<NameValuePair> data = new ArrayList<>();
+
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+
+    // TODO: 01/11/2022 DOI
+
+    data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+        : StringUtils.trimToEmpty(resource.getShortname())));
+
+    data.add(new BasicNameValuePair("description", metadata.getDescription()));
+    // TODO: 01/11/2022 logo and homepage
+
+    // Use resource creator as primary contact. May use one of the contributors in the future.
+    data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
+    data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
+    data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
+
+    // service type and url
+    data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_CAMTRAP_DP));
+    data.add(new BasicNameValuePair("serviceUrls", cfg.getResourceArchiveUrl(resource.getShortname())));
+
     return data;
   }
 
@@ -191,21 +235,27 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
 
     // check are there any other services: DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, or DWC-ARCHIVE-SAMPLING-EVENT
-    if (resource.hasPublishedData() && resource.getCoreTypeTerm() != null) {
-      if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
+    Term resourceCoreTypeTerm = resource.getCoreTypeTerm();
+    String resourceShortname = resource.getShortname();
+    if (resource.hasPublishedData() && resourceCoreTypeTerm != null) {
+      if (DwcTerm.Occurrence == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Occurrence Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
-      } else if (DwcTerm.Taxon == resource.getCoreTypeTerm()) {
+      } else if (DwcTerm.MaterialEntity == resourceCoreTypeTerm) {
+        LOG.debug("Registering EML & DwC-A Material Entity Service");
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
+        rs.serviceTypes += "|" + SERVICE_TYPE_MATERIAL_ENTITY;
+      } else if (DwcTerm.Taxon == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Checklist Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
-      } else if (DwcTerm.Event == resource.getCoreTypeTerm()) {
+      } else if (DwcTerm.Event == resourceCoreTypeTerm) {
         LOG.debug("Registering EML & DwC-A Sampling Event Service");
-        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+        rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_SAMPLING_EVENT;
       } else {
-        LOG.warn("Unknown core resource type " + resource.getCoreTypeTerm());
+        LOG.warn("Unknown core resource type " + resourceCoreTypeTerm);
         LOG.debug("Registering EML service only");
       }
     } else {
@@ -260,6 +310,49 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
   }
 
+  @Override
+  public List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException {
+    Map<String, List<DataPackageSchema>> jSONDataSchemas = gson
+        .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
+            new TypeToken<Map<String, List<DataPackageSchema>>>() {
+            }.getType());
+    return (jSONDataSchemas.get("dataPackages") == null) ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
+  }
+
+  @Override
+  public String getLatestCompatibleSchemaVersion(String schemaName, String schemaVersion) throws RegistryException {
+    Map<String, String> jSON = gson
+        .fromJson(requestHttpGetFromRegistry(getDataSchemaVersionURL(schemaName, schemaVersion)).getContent(),
+            new TypeToken<Map<String, String>>() {
+            }.getType());
+
+    return jSON.get("latestCompatibleVersion");
+  }
+
+  @Override
+  public DataPackageSchema getSchema(String schemaName, String schemaVersion) throws RegistryException {
+    return gson
+        .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(schemaName, schemaVersion)).getContent(),
+            new TypeToken<DataPackageSchema>() {
+            }.getType());
+  }
+
+  @Override
+  public List<DataPackageSchema> getSupportedDataSchemas() throws RegistryException {
+    List<DataPackageSchema> result = new ArrayList<>();
+    Map<String, String> schemasWithVersions = baseAction.getCfg().getSupportedDataSchemaNamesWithVersions();
+
+    for (Map.Entry<String, String> entrySchemaVersion : schemasWithVersions.entrySet()) {
+      DataPackageSchema jsonDataSchema = gson
+              .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(entrySchemaVersion.getKey(), entrySchemaVersion.getValue())).getContent(),
+                      new TypeToken<DataPackageSchema>() {
+                      }.getType());
+      result.add(jsonDataSchema);
+    }
+
+    return result;
+  }
+
   /**
    * Returns the Extensions url.
    */
@@ -271,7 +364,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schemas url.
    */
   private String getDataSchemasURL() {
-    return cfg.getRegistryUrl() + "/registry/schemas.json";
+    return cfg.getRegistryUrl() + "/registry/dataPackages.json";
+  }
+
+  /**
+   * Returns the Data schema url by name and version.
+   */
+  private String getDataSchemaURL(String schemaName, String schemaVersion) {
+    return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion;
+  }
+
+  /**
+   * Returns the Data schema version url by name and version.
+   */
+  private String getDataSchemaVersionURL(String schemaName, String schemaVersion) {
+    return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion + "/version.json";
   }
 
   /**
@@ -747,7 +854,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     // populate params for ws call to register resource
-    List<NameValuePair> data = buildRegistryParameters(resource);
+    List<NameValuePair> data;
+    if (resource.isDataPackage()) {
+      data = buildRegistryParametersForDataPackage(resource);
+    } else {
+      data = buildRegistryParameters(resource);
+    }
+
     // add additional ipt and organisation parameters
     data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(org.getKey().toString())));
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
@@ -948,7 +1061,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     LOG.info("Update resource registration... [key=" + resource.getKey().toString() + "]");
     // populate params for ws call to update registered resource
-    List<NameValuePair> data = buildRegistryParameters(resource);
+    List<NameValuePair> data;
+    if (resource.isDataPackage()) {
+      data = buildRegistryParametersForDataPackage(resource);
+    } else {
+      data = buildRegistryParameters(resource);
+    }
+
     // ensure IPT serves relationship always gets created/updated
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(iptKey)));
 

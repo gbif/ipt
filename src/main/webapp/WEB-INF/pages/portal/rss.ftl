@@ -36,6 +36,22 @@
       </geo:Point>
     </#if>
  	<#list resources as res>
+      <#assign isDataPackage = res.isDataPackage()/>
+
+      <#if isDataPackage>
+      <item>
+        <title>${res.title!}<#if res.dataPackageMetadataVersion?has_content> - Version ${res.dataPackageMetadataVersion.toPlainString()}</#if></title>
+        <link>${cfg.getResourceUrl(res.shortname)}</link>
+        <!-- shows what changed in this version, or shows the resource description if change summary was empty -->
+        <description><#if res.getLastPublishedVersionsChangeSummary()?has_content>${res.getLastPublishedVersionsChangeSummary()}<#else>${res.dataPackageMetadata.description!}</#if></description>
+        <author>${res.creator.email} (${res.creator.getName()!})</author>
+        <#if res.lastPublished??>
+          <ipt:metadata>${cfg.getResourceDataPackageMetadataUrl(res.shortname)}</ipt:metadata>
+          <ipt:archive>${cfg.getResourceArchiveUrl(res.shortname)}</ipt:archive>
+          <pubDate>${res.lastPublished?string(dateTimeFormat)}</pubDate>
+        </#if>
+      </item>
+      <#else>
       <item>
         <title>${res.title!}<#if res.emlVersion?has_content> - Version ${res.emlVersion.toPlainString()}</#if></title>
         <link>${cfg.getResourceUrl(res.shortname)}</link>
@@ -43,11 +59,11 @@
         <description><#if res.getLastPublishedVersionsChangeSummary()?has_content>${res.getLastPublishedVersionsChangeSummary()}<#else>${res.eml.description!}</#if></description>
         <author>${res.creator.email} (${res.creator.getName()!})</author>
         <#if res.lastPublished??>
-        <ipt:eml>${cfg.getResourceEmlUrl(res.shortname)}</ipt:eml>
-        <#if (res.recordsPublished>0)>
-        <ipt:dwca>${cfg.getResourceArchiveUrl(res.shortname)}</ipt:dwca>
-        </#if>
-        <pubDate>${res.lastPublished?string(dateTimeFormat)}</pubDate>
+          <ipt:eml>${cfg.getResourceEmlUrl(res.shortname)}</ipt:eml>
+            <#if (res.recordsPublished>0)>
+              <ipt:dwca>${cfg.getResourceArchiveUrl(res.shortname)}</ipt:dwca>
+            </#if>
+          <pubDate>${res.lastPublished?string(dateTimeFormat)}</pubDate>
         </#if>
         <#-- guid is a string that uniquely identifies the RSS item. For RSS readers to detect that a resource was
         republished, news about the new resource version must become a new RSS item, uniquely determined via the EML packageId. -->
@@ -55,6 +71,7 @@
         <guid isPermaLink="false">${res.eml.packageId}</guid>
         </#if>
       </item>
+      </#if>
  	  </#list>
   </channel>
 </#escape>

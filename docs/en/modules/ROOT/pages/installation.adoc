@@ -29,9 +29,9 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
-NOTE: Packages for Red Hat 8, CentOS 8 Stream, Rocky Linux 8 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing, or use Red Hat 7 / CentOS 7 instead.
+NOTE: Packages for Red Hat 8/9, CentOS 8/9 Stream, Rocky Linux 8/9 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing.
 
-To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
+To install the IPT onto Red Hat 8–9, CentOS 8–9 or similar, first add the GBIF package repository and install the IPT package:
 
 [source,shell]
 ----
@@ -68,11 +68,11 @@ This section explains how to install different types of servlet containers on yo
 
 It isn't necessary to use an reverse proxy, but in case you do, the following section explains how to configure an Apache HTTPD virtual host declaration for the IPT.
 
-The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 3.0, 3.1 or 4.0.
+The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly.  The servlet container must support Servlet Specification 4.0 or later.
 
 === Tomcat
 
-The IPT has been tested and works well with recent releases of Tomcat 8.5 or 9. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
+The IPT has been tested and works well with recent releases of Tomcat 8 and 9.  Tomcat 10 and later versions are currently not supported. Minimum supported version is 8. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
 
 . Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
 
@@ -81,7 +81,7 @@ The IPT has been tested and works well with recent releases of Tomcat 8.5 or 9. 
 --
 TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
 
-Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-9.0-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
 
 Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
 
@@ -142,7 +142,7 @@ Then continue to <<Opening the IPT to the Internet>>.
 
 == Installation using Docker
 
-GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application.
+GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 9 / OpenJDK 17 image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application.
 
 To run a new Docker container, startup Tomcat and expose the Tomcat port run like this:
 
@@ -188,3 +188,5 @@ include::partial$nginx-configuration-example.conf[]
 For production deployments of the IPT we recommend using a TLS certificate, so information such as logins are secured when accessing the IPT.  The procedure to set this up sometimes depends on your institution's policies, but the free https://letsencrypt.org/[LetsEncrypt] service is a good choice.  They https://certbot.eff.org/instructions[provide instructions] for adding a certificate to Apache, Nginx and many other webservers running on Linux or Windows.
 
 For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section.
+
+Verify your setup is correct using https://whatsmychaincert.com/[What's My Chain Cert?].  The requirements for GBIF's servers to retrieve published data are stricter than those for normal web browsers, so ensure you receive a "has the correct chain" message from this test. (See also xref:faq.adoc#why-is-gbif-unable-to-access-my-ipt-over-https[this FAQ entry].)

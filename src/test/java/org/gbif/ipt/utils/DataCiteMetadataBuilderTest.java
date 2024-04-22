@@ -60,7 +60,7 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testBuilder() throws InvalidMetadataException {
     Resource resource = new Resource();
-    resource.setEmlVersion(new BigDecimal("2.0"));
+    resource.setMetadataVersion(new BigDecimal("2.0"));
 
     DOI doi = new DOI("10.5072/ipt12");
     resource.setDoi(doi);

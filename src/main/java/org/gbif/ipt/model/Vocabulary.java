@@ -28,11 +28,12 @@ import java.util.Objects;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Class represents a Vocabulary.
  */
-public class Vocabulary implements Comparable, Serializable {
+public class Vocabulary implements Comparable<Object>, Serializable {
 
   private static final long serialVersionUID = 22000013267L;
   @SerializedName("identifier")
@@ -68,7 +69,7 @@ public class Vocabulary implements Comparable, Serializable {
   }
 
   @Override
-  public int compareTo(Object object) {
+  public int compareTo(@NotNull Object object) {
     Vocabulary myClass = (Vocabulary) object;
     return new CompareToBuilder().append(this.uriString, myClass.uriString).toComparison();
   }
@@ -179,6 +180,7 @@ public class Vocabulary implements Comparable, Serializable {
    *
    * @return identifier for Vocabulary
    */
+  @SuppressWarnings("JavadocLinkAsPlainText")
   public String getUriString() {
     return uriString;
   }
@@ -192,6 +194,7 @@ public class Vocabulary implements Comparable, Serializable {
    *
    * @return resolvable URL to Vocabulary
    */
+  @SuppressWarnings("JavadocLinkAsPlainText")
   public URI getUriResolvable() {
     return uriResolvable;
   }

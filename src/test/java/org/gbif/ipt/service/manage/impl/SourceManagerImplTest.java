@@ -133,7 +133,7 @@ public class SourceManagerImplTest {
     assertEquals(76, fileSource.getRows());
     assertEquals(2018, fileSource.getFileSize());
     assertTrue(fileSource.isReadable());
-    assertNull(fileSource.getFieldsEnclosedBy());
+    assertEquals("\"", fileSource.getFieldsEnclosedBy());
     assertEquals("\t", fileSource.getFieldsTerminatedBy());
   }
 

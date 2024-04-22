@@ -1,10 +1,52 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
+            function updateQueryParam(param, value) {
+                const url = new URL(window.location.href);
+                url.searchParams.set(param, value);
+                history.replaceState(null, '', url);
+            }
+
+            function deleteQueryParam(param) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete(param)
+                history.replaceState(null, '', url);
+            }
+
+            // Function to check if query param exists and update checkbox accordingly
+            function checkUrlParams() {
+                // if "inferAutomatically" present and true, tick the inferTaxonomicCoverageAutomatically checkbox
+                const urlParams = new URLSearchParams(window.location.search);
+                const checkboxParam = urlParams.get('inferAutomatically');
+                if (checkboxParam === 'true') {
+                    $('#inferTaxonomicCoverageAutomatically').prop('checked', true);
+                }
+
+                // remove "reinferMetadata" param on load
+                const reInferParam = urlParams.get('reinferMetadata');
+                if (reInferParam === 'true') {
+                    deleteQueryParam("reinferMetadata")
+                }
+            }
+
+            // add/remove "inferAutomatically" param when clicking checkbox
+            $('#inferTaxonomicCoverageAutomatically').change(function() {
+                if ($(this).is(':checked')) {
+                    updateQueryParam('inferAutomatically', 'true');
+                } else {
+                    deleteQueryParam('inferAutomatically');
+                }
+            });
+
+            // Check query params on page load
+            checkUrlParams();
+
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -89,8 +131,6 @@
                     var elementId = $(this)[0].id;
 
                     $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
-                    console.log("div#" + elementId + " input[id^='add-button']");
-                    console.log($("div#" + elementId + " input[id^='add-button']"));
                     $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
 
                     var scientificNames = $("#" + elementId + " input[id$='scientificName']");
@@ -111,33 +151,45 @@
 
                 hideProcessing();
             }
+
+            $("#re-infer-link").on('click', displayProcessing);
+
+            $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({
+                placeholder: '${action.getText("eml.rank.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
     <#assign currentMetadataPage = "taxcoverage"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container pt-2">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-                <div id="taxcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="eml.warning.reinfer"/></span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+        <div id="taxcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+            <div class="me-3">
+                <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1">
+                <span><@s.text name="eml.warning.reinfer"/></span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
                 <#if (inferredMetadata.inferredTaxonomicCoverage)??>
                     <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
-                        <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                        <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
                             </div>
@@ -150,30 +202,34 @@
                 </#if>
             </div>
 
-            <div class="container my-3 p-3">
-                <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                        </ol>
-                    </nav>
-                </div>
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container bg-body border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                        <@s.text name='manage.metadata.taxcoverage.title'/>
-                    </h1>
-                </div>
+                    <div class="text-center">
+                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
+                            <@s.text name='manage.metadata.taxcoverage.title'/>
+                        </h1>
+                    </div>
 
-                <div class="text-center fs-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </div>
+                    <div class="text-center fs-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
 
-                <div class="text-center mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    <div class="text-center mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,9 +237,8 @@
         <#include "metadata_section_select.ftl"/>
 
         <div class="container-fluid bg-body">
-            <div class="container bd-layout">
-
-                <main class="bd-main bd-main">
+            <div class="container bd-layout main-content-container">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "eml_sidebar.ftl"/>
                     </div>
@@ -208,13 +263,13 @@
                                         </a>
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
-                                        <a href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true">
-                                        <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
+                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                        <a id="re-infer-link" href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
+                                            <span>
+                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                    <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.reinfer"/></span>
                                         </a>
                                     </div>
@@ -266,7 +321,7 @@
                                                 <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
                                             </div>
                                         </div>
-                                        <div id="subItems-${item_index}" class="mt-2">
+                                        <div id="subItems-${item_index}" class="mt-2 subItems">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
@@ -325,24 +380,30 @@
 
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
+                                <div class="mt-2 mb-4">
+                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" />
+                                </div>
+
                                 <!-- Data is inferred, preview -->
                                 <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content) >
                                                     <tr>
-                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                        <#if k.rank?lower_case == "class">
-                                                            <th class="col-4">Class</th>
-                                                        <#else>
-                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                        </#if>
+                                                        <#-- 1st col, write rank name once -->
+                                                        <th class="col-4">${ranks.get(k.rank?html)?cap_first!}</th>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
-                                                            <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
-                                                            </#list>
+                                                            <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
+
+                                                            <#if rankWarning?has_content>
+                                                                <code><@s.text name="${rankWarning}"/></code>
+                                                            <#else>
+                                                                <#list k.displayNames as name>
+                                                                    &nbsp;${name}<#if name_has_next>,</#if>
+                                                                </#list>
+                                                            </#if>
                                                         </td>
                                                     </tr>
                                                 </#if>
@@ -402,7 +463,7 @@
                                         <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
                                     </div>
                                 </div>
-                                <div id="subItems" class="my-2"></div>
+                                <div id="subItems" class="my-2 subItems"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
                                     <a id="plus-subItem" href="" class="metadata-action-link">
                                         <span>

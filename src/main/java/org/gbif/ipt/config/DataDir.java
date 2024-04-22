@@ -36,6 +36,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Singleton;
 
+import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
+import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_EXTENSION;
+import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_NAME;
+
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
  * path for that directory and make it available to the entire application.
@@ -50,6 +56,8 @@ public class DataDir {
   public static final String PERSISTENCE_FILENAME = "resource.xml";
   public static final String INFERRED_METADATA_FILENAME = "inferredMetadata.xml";
   public static final String EML_XML_FILENAME = "eml.xml";
+  public static final String FRICTIONLESS_METADATA_FILENAME = "datapackage.json";
+  public static final String COL_DP_METADATA_FILENAME = "metadata.yaml";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
@@ -238,7 +246,20 @@ public class DataDir {
    * @return DwC-A file having specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
-    String fn = "dwca-" + version.toPlainString() + ".zip";
+    String fn = DWC_ARCHIVE_NAME + "-" + version.toPlainString() + DWC_ARCHIVE_EXTENSION;
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
+   * Retrieves published data package file for a specific version of a resource.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return data package file having specific version
+   */
+  public File resourceDataPackageFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = DATA_PACKAGE_NAME + "-" + version.toPlainString() + DATA_PACKAGE_EXTENSION;
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
@@ -266,6 +287,15 @@ public class DataDir {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
 
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type, @NotNull BigDecimal version) {
+    if (COL_DP.equals(type)) {
+      String fn = "metadata-" + version.toPlainString() + ".yaml";
+      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+    }
+    String fn = "datapackage-" + version.toPlainString() + ".json";
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
   /**
    * Retrieves EML file for a resource.
    *
@@ -275,6 +305,13 @@ public class DataDir {
    */
   public File resourceEmlFile(@NotNull String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + EML_XML_FILENAME);
+  }
+
+  public File resourceDatapackageMetadataFile(@NotNull String resourceName, String type) {
+    if (COL_DP.equals(type)) {
+      return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + COL_DP_METADATA_FILENAME);
+    }
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + FRICTIONLESS_METADATA_FILENAME);
   }
 
   public File resourceFile(Resource resource, String path) {

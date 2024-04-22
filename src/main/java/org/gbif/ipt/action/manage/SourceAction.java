@@ -18,7 +18,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.SourceBase;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
@@ -40,7 +39,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -52,8 +50,6 @@ public class SourceAction extends ManagerBaseAction {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
-
-  private static final String SOURCE_URL = "source-url";
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
@@ -91,158 +87,137 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String add() throws IOException {
-    String sessionUrl = (String) session.get(Constants.SESSION_URL);
-    String sessionSourceName = (String) session.get(Constants.SESSION_SOURCE_NAME);
+    if (UiSourceType.SOURCE_URL.value.equals(sourceType)) {
+      return addUrlSource();
+    } else if (UiSourceType.SOURCE_FILE.value.equals(sourceType)) {
+      return addFileSource();
+    } else if (UiSourceType.SOURCE_SQL.value.equals(sourceType)) {
+      return addSqlSource();
+    } else {
+      addActionError(getText("manage.source.type.nullOrUnknown"));
+      return ERROR;
+    }
+  }
 
-    if (SOURCE_URL.equals(sourceType) || sessionUrl != null) {
-      if (SOURCE_URL.equals(sourceType) && StringUtils.isEmpty(url)) {
-        addActionError(getText("manage.source.url.empty"));
+  private String addUrlSource() {
+    if (StringUtils.isEmpty(url)) {
+      addActionError(getText("manage.source.url.empty"));
+      return ERROR;
+    }
+
+    if (StringUtils.isEmpty(sourceName)) {
+      addActionError(getText("manage.source.name.empty"));
+      return ERROR;
+    }
+
+    // prepare a new, empty URL source
+    source = new UrlSource();
+    source.setResource(resource);
+    URI urlWrapped = URI.create(url);
+
+    // check URL is fine otherwise throw an exception
+    try {
+      HttpURLConnection connection = (HttpURLConnection) urlWrapped.toURL().openConnection();
+      int responseCode = connection.getResponseCode();
+
+      // check not found
+      if (responseCode == 404) {
+        addActionError(getText("manage.source.url.notFound", new String[] {url}));
         return ERROR;
       }
 
-      // prepare a new, empty url source
-      source = new UrlSource();
-      source.setResource(resource);
-      sourceType = SOURCE_URL;
-      URI urlWrapped = URI.create(url);
-
-      boolean replaceUrl = false;
-
-      // check session URL
-      // if present do not check sources with the same name, already overwriting
-      if (sessionUrl != null) {
-        url = sessionUrl;
-        sourceName = sessionSourceName;
-        urlWrapped = URI.create(url);
-        replaceUrl = true;
+      // check text file (or no extension)
+      String extension = FilenameUtils.getExtension(url);
+      if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension)) {
+        addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
+        return ERROR;
       }
+    } catch (IOException e) {
+      addActionError(getText("manage.source.url.invalid", new String[] {url}));
+      return ERROR;
+    }
 
-      // check if source with the same URL exists
-      // check if source with the same name already exists
-      // if so store url and name in the session, and return to ask about overwriting
-      if (!replaceUrl) {
-        for (Source resourceSource : resource.getSources()) {
-          if (resourceSource instanceof UrlSource) {
-            UrlSource resourceUrlSource = (UrlSource) resourceSource;
-            if (resourceUrlSource.getUrl().toString().equals(url)) {
-              urlToOverwrite(getText("manage.resource.addSource.sameUrl.confirm"));
-              return INPUT;
-            }
-          }
-        }
+    addUrl(urlWrapped);
 
-        // source name is optional and may be empty
-        if ((StringUtils.isEmpty(sourceName) && resource.getSource(FilenameUtils.getBaseName(url)) != null) ||
-                resource.getSource(sourceName) != null) {
-          urlToOverwrite(getText("manage.resource.addSource.sameName.confirm"));
-          return INPUT;
-        }
-      }
+    return SUCCESS;
+  }
 
-      // check URL is fine otherwise throw an exception
+  private String addFileSource() {
+    // uploaded a new file. Is it compressed?
+    // application/zip, application/x-gzip
+    if (StringUtils.endsWithAny(fileContentType.toLowerCase(), "zip", "gzip", "compressed")) {
       try {
-        HttpURLConnection connection = (HttpURLConnection) urlWrapped.toURL().openConnection();
-        int responseCode = connection.getResponseCode();
+        File tmpDir = dataDir.tmpDir();
+        // override auto-generated name
+        String unzippedFileName = fileFileName != null
+            ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
 
-        // check not found
-        if (responseCode == 404) {
-          addActionError(getText("manage.source.url.notFound", new String[] {url}));
-          removeSessionData();
-          return ERROR;
-        }
+        List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
+        addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
 
-        // check text file (or no extension)
-        String extension = FilenameUtils.getExtension(url);
-        if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension)) {
-          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
-          removeSessionData();
-          return ERROR;
+        // import each file
+        for (File f : files) {
+          addDataFile(f, f.getName());
         }
       } catch (IOException e) {
-        addActionError(getText("manage.source.url.invalid", new String[] {url}));
-        removeSessionData();
+        LOG.error(e);
+        addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
+        return ERROR;
+      } catch (UnsupportedCompressionType e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.unsupported.compression.format"));
+        return ERROR;
+      } catch (InvalidFilenameException e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
-
-      addUrl(urlWrapped);
-      // manually remove any previous data in session
-      removeSessionData();
-    }
-
-    boolean replace = false;
-    // Are we going to overwrite any source file?
-    File sessionFile = (File) session.get(Constants.SESSION_FILE);
-    if (sessionFile != null) {
-      file = sessionFile;
-      fileFileName = (String) session.get(Constants.SESSION_FILE_NAME);
-      fileContentType = (String) session.get(Constants.SESSION_FILE_CONTENT_TYPE);
-      replace = true;
-    }
-    // new one
-    if (file != null) {
-      // uploaded a new file. Is it compressed?
-      if (StringUtils.endsWithIgnoreCase(fileContentType, "zip") // application/zip
-          || StringUtils.endsWithIgnoreCase(fileContentType, "gzip") || StringUtils
-        .endsWithIgnoreCase(fileContentType, "compressed")) { // application/x-gzip
-        try {
-          File tmpDir = dataDir.tmpDir();
-          // in case of a file to override auto-generated name
-          String unzippedFileName = fileFileName != null
-              ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
-
-          List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
-          addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
-
-          // validate if at least one file already exists to ask confirmation
-          if (!replace) {
-            for (File f : files) {
-              if (resource.getSource(f.getName()) != null) {
-                // Since FileUploadInterceptor removes the file once this action is executed,
-                // the file need to be copied in the same directory.
-                copyFileToOverwrite();
-                return INPUT;
-              }
-            }
-          }
-
-          // import each file. The last file will become the id parameter,
-          // so the new page opens with that source
-          for (File f : files) {
-            addDataFile(f, f.getName());
-          }
-          // manually remove any previous file in session and in temporal directory path
-          removeSessionData();
-        } catch (IOException e) {
-          LOG.error(e);
-          addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
-          return ERROR;
-        } catch (UnsupportedCompressionType e) {
-          addActionError(getText("manage.source.unsupported.compression.format"));
-          return ERROR;
-        } catch (InvalidFilenameException e) {
-          addActionError(getText("manage.source.invalidFileName"));
-          return ERROR;
-        }
-      } else {
-        // validate if file already exists to ask confirmation
-        if (!replace && resource.getSource(fileFileName) != null) {
-          // Since FileUploadInterceptor removes the file once this action is executed,
-          // the file need to be copied in the same directory.
-          copyFileToOverwrite();
-          return INPUT;
-        }
-        try {
-          // treat as is - hopefully a simple text or Excel file
-          addDataFile(file, fileFileName);
-        } catch (InvalidFilenameException e) {
-          addActionError(getText("manage.source.invalidFileName"));
-          return ERROR;
-        }
-
-        // manually remove any previous file in session and in temporal directory path
-        removeSessionData();
+    } else {
+      try {
+        // treat as is - hopefully a simple text or Excel file
+        addDataFile(file, fileFileName);
+      } catch (InvalidFilenameException e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
+        return ERROR;
       }
     }
+
+    return SUCCESS;
+  }
+
+  private String addSqlSource() {
+    if (StringUtils.isEmpty(sourceName)) {
+      addActionError(getText("manage.source.name.empty"));
+      return ERROR;
+    }
+
+    source = new SqlSource();
+    source.setResource(resource);
+    source.setName(sourceName);
+    ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
+
+    try {
+      resource.addSource(source, true);
+    } catch (AlreadyExistingException e) {
+      addActionError(getText("manage.source.existing"));
+      return ERROR;
+    }
+
+    // set sources modified date
+    resource.setSourcesModified(new Date());
+    // save resource
+    saveResource();
+    id = source.getName();
+
     return SUCCESS;
   }
 
@@ -303,7 +278,6 @@ public class SourceAction extends ManagerBaseAction {
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     } catch (InvalidFilenameException e) {
       // clean session variables used for confirming file overwrite
-      removeSessionData();
       throw e;
     }
   }
@@ -326,31 +300,6 @@ public class SourceAction extends ManagerBaseAction {
       }
     }
     return false;
-  }
-
-  public String cancelOverwrite() {
-    removeSessionData();
-    return SUCCESS;
-  }
-
-  /**
-   * Copy current file to same directory with different name and insert some temporal session variables.
-   */
-  private void copyFileToOverwrite() throws IOException {
-    File fileNew = new File(file.getParent(), SourceBase.normaliseName(file.getName()) + "-copied.tmp");
-    FileUtils.copyFile(file, fileNew);
-    session.put(Constants.SESSION_FILE, fileNew);
-    session.put(Constants.SESSION_FILE_NAME, fileFileName);
-    session.put(Constants.SESSION_FILE_CONTENT_TYPE, fileContentType);
-  }
-
-  /**
-   * Insert temporal session variables related to URL sources.
-   */
-  private void urlToOverwrite(String message) {
-    session.put(Constants.SESSION_URL, url);
-    session.put(Constants.SESSION_SOURCE_NAME, sourceName);
-    session.put(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE, message);
   }
 
   @Override
@@ -458,23 +407,6 @@ public class SourceAction extends ManagerBaseAction {
     }
   }
 
-  /**
-   * Remove any previous uploaded file in temporal directory.
-   * And clean some session variables used to confirm overwrite action.
-   */
-  private void removeSessionData() {
-    File fileNew = (File) session.get(Constants.SESSION_FILE);
-    if (fileNew != null && fileNew.exists()) {
-      fileNew.delete();
-    }
-    session.remove(Constants.SESSION_FILE);
-    session.remove(Constants.SESSION_FILE_NAME);
-    session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
-    session.remove(Constants.SESSION_URL);
-    session.remove(Constants.SESSION_SOURCE_NAME);
-    session.remove(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
-  }
-
   @Override
   public String save() throws IOException {
     if (source != null) {
@@ -485,7 +417,7 @@ public class SourceAction extends ManagerBaseAction {
     if (source != null && rdbms != null) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
     }
-    // existing source
+
     String result = INPUT;
     if (id != null && source != null) {
       if (this.analyze || !source.isReadable()) {
@@ -493,38 +425,6 @@ public class SourceAction extends ManagerBaseAction {
       } else {
         result = SUCCESS;
       }
-    } else { // new one
-      if (file == null) {
-        try {
-          resource.addSource(source, false);
-          id = source.getName();
-          if (this.analyze || !source.isReadable()) {
-            problem = sourceManager.analyze(source);
-          }
-        } catch (AlreadyExistingException e) {
-          // shouldn't really happen as we validate this beforehand - still catching it here to be safe
-          addActionError(getText("manage.source.existing"));
-        }
-      } else {
-        // uploaded a new file
-        // create a new file source
-        try {
-          source = sourceManager.add(resource, file, fileFileName);
-          if (resource.getSource(source.getName()) != null) {
-            addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
-          } else {
-            addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
-          }
-        } catch (ImportException e) {
-          // even though we have problems with this source we'll keep it for manual corrections
-          LOG.error("SourceBase error: " + e.getMessage(), e);
-          addActionError(getText("manage.source.error", new String[] {e.getMessage()}));
-        } catch (InvalidFilenameException e) {
-          addActionError(getText("manage.source.invalidFileName"));
-          return ERROR;
-        }
-      }
-      id = source.getName();
     }
     resource.setSourcesModified(new Date());
     // save resource
@@ -589,28 +489,6 @@ public class SourceAction extends ManagerBaseAction {
     this.source = source;
   }
 
-  public String uploadLogo() {
-    if (file != null) {
-      // remove any previous logo file
-      for (String suffix : Constants.IMAGE_TYPES) {
-        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-      }
-      // inspect file type
-      String type = "jpeg";
-      if (fileContentType != null) {
-        type = StringUtils.substringAfterLast(fileContentType, "/");
-      }
-      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
-      try {
-        FileUtils.copyFile(file, logoFile);
-      } catch (IOException e) {
-        LOG.warn(e.getMessage());
-      }
-      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
-    }
-    return INPUT;
-  }
-
   @Override
   public void validateHttpPostOnly() {
     if (source != null) {
@@ -652,6 +530,18 @@ public class SourceAction extends ManagerBaseAction {
         alertColumnNumberChange(resource.hasMappedSource(source), sourceManager.columns(source).size(),
           originalNumberColumns);
       }
+    }
+  }
+
+  enum UiSourceType {
+    SOURCE_FILE("source-file"),
+    SOURCE_URL("source-url"),
+    SOURCE_SQL("source-sql");
+
+    final String value;
+
+    UiSourceType(String value) {
+      this.value = value;
     }
   }
 }

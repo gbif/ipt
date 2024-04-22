@@ -17,7 +17,7 @@ The space required by the IPT application is around 100MB. The contents of the I
 
 == Java version
 
-The current version of the IPT is tested to run on Java 8 or 9. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported.
+The current version of the IPT is tested to run on Java 11 and 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported.
 
 See the installation instructions for notes on operating system and servlet container versions.
 

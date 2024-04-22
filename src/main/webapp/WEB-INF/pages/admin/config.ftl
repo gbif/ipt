@@ -4,54 +4,90 @@
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
 <script src="${baseURL}/js/leaflet/leaflet.js"></script>
-<script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 
-<#if latitude?? && longitude??>
-    <script>
-        $(document).ready(function(){
-            var map = L.map('locationMap').setView([${latitude}, ${longitude}], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
-            var layer = new L.StamenTileLayer("terrain");
-            map.addLayer(layer, {
-                detectRetina: true
-            });
-            L.Icon.Default.imagePath = '${baseURL}/images/leaflet';
-            var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
+<script>
+    $(document).ready(function(){
+        <#if latitude?? && longitude??>
+        var pixel_ratio = parseInt(window.devicePixelRatio) || 1;
+        var max_zoom = 16;
+        var tile_size = 512;
+
+        var map = L.map('locationMap').setView([${latitude}, ${longitude}], 5).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
+
+        L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
+            minZoom: 1,
+            maxZoom: max_zoom + 1,
+            zoomOffset: -1,
+            tileSize: tile_size
+        }).addTo(map);
+
+        L.Icon.Default.imagePath = '${baseURL}/images/leaflet';
+        var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
+        </#if>
+
+        $("#defaultLocale").select2({
+            placeholder: '',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 'Infinity',
+            theme: 'bootstrap4'
         });
-    </script>
-</#if>
+    });
+</script>
+
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <form class="topForm half needs-validation" action="config.do" method="post" >
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                                <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.settings"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-uppercase fw-bold fs-smaller-2">
-                    <span><@s.text name="menu.admin"/></span>
-                </div>
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <@s.text name="admin.home.editConfig"/>
+                    </h1>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="admin.home.editConfig"/>
-                </h1>
-
-                <div class="mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                    <div class="mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container main-content-container">
         <div class="my-3 p-3 ">
             <div class="row g-3">
                 <div class="col-lg-6">
                     <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
+                </div>
+
+                <div class="col-lg-6">
+                    <@select name="defaultLocale" value="${defaultLocale!'en'}" options=defaultLocales help="i18n" i18nkey="admin.config.defaultLocale" includeEmpty=false />
                 </div>
 
                 <div class="col-lg-6">
@@ -68,10 +104,6 @@
 
                 <div class="col-lg-6">
                     <@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
-                </div>
-
-                <div class="col-12">
-                    <@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" value="${analyticsGbif?c}" help="i18n"/>
                 </div>
 
                 <div class="col-12">

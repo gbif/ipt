@@ -58,15 +58,15 @@ public class ResourceFileAction extends PortalBaseAction {
 
   /**
    * Handles DwC-A file download request.
-   *
+   * <p>
    * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
    * requested the latest published version is used.
-   *
+   * <p>
    * Conditional (If-Modified-Since) requests are handled in execute().
    *
    * @return Struts2 result string
    */
-  public String dwca() {
+  public String archive() {
     if (resource == null) {
       return NOT_FOUND;
     }
@@ -81,12 +81,19 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    // serve file
-    data = dataDir.resourceDwcaFile(resource.getShortname(), version);
-
+    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
     // construct download filename
     StringBuilder sb = new StringBuilder();
-    sb.append("dwca-").append(resource.getShortname());
+
+    // serve file
+    if (isDataPackageResource) {
+      data = dataDir.resourceDataPackageFile(resource.getShortname(), version);
+      sb.append(Constants.DATA_PACKAGE_NAME + "-").append(resource.getShortname());
+    } else {
+      data = dataDir.resourceDwcaFile(resource.getShortname(), version);
+      sb.append(Constants.DWC_ARCHIVE_NAME + "-").append(resource.getShortname());
+    }
+
     if (version != null) {
       sb.append("-v").append(version.toPlainString());
     }
@@ -98,12 +105,12 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   /**
-   * Handles EML file download request. Specific versions can also be resolved depending on the optional parameter
+   * Handles metadata file download request. Specific versions can also be resolved depending on the optional parameter
    * "version". If no specific version is requested the latest published version is used.
    *
    * @return Struts2 result string
    */
-  public String eml() {
+  public String metadata() {
     if (resource == null) {
       return NOT_FOUND;
     }
@@ -118,16 +125,39 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    data = dataDir.resourceEmlFile(resource.getShortname(), version);
-    mimeType = "text/xml";
-
+    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
     // construct download filename
     StringBuilder sb = new StringBuilder();
-    sb.append("eml-").append(resource.getShortname());
-    if (version != null) {
-      sb.append("-v").append(version.toPlainString());
+
+    // serve file
+    if (isDataPackageResource) {
+      if (Constants.COL_DP.equals(resource.getCoreType())) {
+        data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+        mimeType = "text/yaml";
+        sb.append("metadata-").append(resource.getShortname());
+        if (version != null) {
+          sb.append("-v").append(version.toPlainString());
+        }
+        sb.append(".yaml");
+      } else {
+        data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+        mimeType = "application/json";
+        sb.append("datapackage-").append(resource.getShortname());
+        if (version != null) {
+          sb.append("-v").append(version.toPlainString());
+        }
+        sb.append(".json");
+      }
+    } else {
+      data = dataDir.resourceEmlFile(resource.getShortname(), version);
+      mimeType = "text/xml";
+      sb.append("eml-").append(resource.getShortname());
+      if (version != null) {
+        sb.append("-v").append(version.toPlainString());
+      }
+      sb.append(".xml");
     }
-    sb.append(".xml");
+
     filename = sb.toString();
     return execute();
   }

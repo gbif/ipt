@@ -73,7 +73,7 @@ public class HomeActionTest {
     p.setModified(new Date()); // different from version 1.34
     p.setNextPublished(NEXT_PUBLISHED);
     p.setLastPublished(LAST_PUBLISHED);
-    p.setEmlVersion(VERSION_ONE_THREE_FOUR);
+    p.setMetadataVersion(VERSION_ONE_THREE_FOUR);
     p.setStatus(PublicationStatus.PUBLIC);
     VersionHistory vh = new VersionHistory(VERSION_ONE_THREE_FOUR, LAST_PUBLISHED, PublicationStatus.PUBLIC);
     vh.setRecordsPublished(RECORDS_PUBLISHED);

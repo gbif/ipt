@@ -30,95 +30,68 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ooxml.POIXMLException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.github.pjfanning.xlsx.SharedStringsImplementationType;
+import com.github.pjfanning.xlsx.StreamingReader;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
  * A single file can have multiple sheets which each act as a separate source.
  * The same file can therefore be used for multiple ExcelFileSource instances.
- * POI usage example, see http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/ss/examples/ToCSV.java
+ * <p>
+ * To avoid extensive memory usage we use stream reading approach with the library excel-streaming-reader.
+ *
  */
 public class ExcelFileSource extends SourceBase implements FileSource {
+
+  private static final long serialVersionUID = 1457018220676830122L;
 
   private static final Logger LOG = LogManager.getLogger(ExcelFileSource.class);
   private static final String SUFFIX = ".xls";
 
+  @Setter
+  @Getter
   private int sheetIdx = 0;
+  @Setter
   private int ignoreHeaderLines = 0;
   private File file;
+  @Setter
   private long fileSize;
+  @Setter
   private int rows;
   protected Date lastModified;
 
-  @Override
-  public File getFile() {
-    return file;
+  public String formattedFileSize(String locale) {
+    return FileUtils.formatSize(fileSize, 1, locale, true);
   }
 
-  @Override
-  public long getFileSize() {
-    return fileSize;
-  }
-
-  public String getFileSizeFormatted() {
-    return FileUtils.formatSize(fileSize, 1, true);
-  }
-
-  @Override
-  public int getIgnoreHeaderLines() {
-    return ignoreHeaderLines;
-  }
-
-  public void setIgnoreHeaderLines(int ignoreHeaderLines) {
-    this.ignoreHeaderLines = ignoreHeaderLines;
-  }
-
-  @Override
-  public Date getLastModified() {
-    return lastModified;
-  }
-
-  public int getSheetIdx() {
-    return sheetIdx;
-  }
-
-  public void setSheetIdx(int sheetIdx) {
-    this.sheetIdx = sheetIdx;
-  }
-
-  private Workbook openBook() throws IOException {
+  private Workbook openBook() {
     LOG.info("Opening excel workbook [" + file.getName() + "]");
-    try {
-      return WorkbookFactory.create(file);
-    } catch (POIXMLException e) {
-      throw new IOException(e);
-    }
+
+    return StreamingReader.builder()
+      .rowCacheSize(100)
+      .bufferSize(4096)
+      .setSharedStringsImplementationType(SharedStringsImplementationType.TEMP_FILE_BACKED)
+      .setReadSharedFormulas(true)
+      .setEncryptSstTempFile(true)
+      .open(file);
   }
 
   private Sheet getSheet(Workbook book) {
     return book.getSheetAt(sheetIdx);
   }
 
-  @Override
-  public int getRows() {
-    return rows;
-  }
-
   private class RowIterator implements ClosableReportingIterator<String[]> {
 
-    private final Sheet sheet;  // 0 based
+    private final Workbook book;
+    private final String sourceName;
     private final Iterator<Row> iter;
     private final int rowSize;
     // DataFormatter displays data exactly as it appears in Excel
@@ -126,21 +99,17 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     private boolean rowError;
     private String errorMessage;
     private Exception exception;
-    // FormulaEvaluator evaluate any formula in Excel cell and returns result
-    private FormulaEvaluator formulaEvaluator;
 
-    RowIterator(ExcelFileSource source) throws IOException {
-      try (Workbook book = openBook()) {
-        sheet = getSheet(book);
-        // instantiate the appropriate FormulaEvaluator, depending on whether workbook is .xls or .xlsx
-        formulaEvaluator = (book instanceof XSSFWorkbook) ? new XSSFFormulaEvaluator((XSSFWorkbook) book)
-            : new HSSFFormulaEvaluator((HSSFWorkbook) book);
-        iter = sheet.rowIterator();
-        rowSize = source.getColumns();
-      }
+    RowIterator(ExcelFileSource source) {
+      book = openBook();
+      Sheet sheet = getSheet(book);
+      iter = sheet.rowIterator();
+      rowSize = source.getColumns();
+      sourceName = source.getName();
+      dataFormatter.setUseCachedValuesForFormulaCells(true);
     }
 
-    RowIterator(ExcelFileSource source, int skipRows) throws IOException, InvalidFormatException {
+    RowIterator(ExcelFileSource source, int skipRows) {
       this(source);
       while (skipRows > 0) {
         iter.next();
@@ -150,7 +119,11 @@ public class ExcelFileSource extends SourceBase implements FileSource {
 
     @Override
     public void close() {
-      // nothing to do
+      try {
+        book.close();
+      } catch (IOException e) {
+        LOG.error("Failed to close workbook for the source " + sourceName, e);
+      }
     }
 
     @Override
@@ -168,8 +141,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
           Row row = iter.next();
           for (int i = 0; i < rowSize; i++) {
             Cell c = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-            formulaEvaluator.evaluate(c);
-            val[i] = dataFormatter.formatCellValue(c, formulaEvaluator);
+            val[i] = dataFormatter.formatCellValue(c);
           }
         } catch (Exception e) {
           LOG.debug("Exception caught: " + e.getMessage(), e);
@@ -221,7 +193,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   }
 
   /**
-   * @return list of available sheets, keyed on sheet index
+   * @return map of available sheets, keyed on sheet index
    */
   public Map<Integer, String> sheets() {
     Map<Integer, String> sheets = new HashMap<>();
@@ -239,9 +211,9 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   @Override
   public List<String> columns() {
     if (rows > 0) {
-      try {
+      try (RowIterator iter = new RowIterator(this, ignoreHeaderLines - 1)) {
         if (ignoreHeaderLines > 0) {
-          return new ArrayList<>(Arrays.asList(new RowIterator(this, ignoreHeaderLines - 1).next()));
+          return new ArrayList<>(Arrays.asList(iter.next()));
 
         } else {
           List<String> columnList = new ArrayList<>();
@@ -261,48 +233,29 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   }
 
   @Override
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  public void setFileSize(long fileSize) {
-    this.fileSize = fileSize;
-  }
-
-  public void setIgnoreHeaderLines(Integer ignoreHeaderLines) {
-    this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
-  }
-
-  @Override
-  public void setLastModified(Date lastModified) {
-    this.lastModified = lastModified;
-  }
-
-  @Override
-  public String getPreferredFileSuffix() {
-    return SUFFIX;
-  }
-
-  public void setRows(int rows) {
-    this.rows = rows;
-  }
-
-  @Override
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
     // find row size
     try (Workbook book = openBook()) {
       Sheet sheet = getSheet(book);
-      setRows(sheet.getPhysicalNumberOfRows());
+      int physicalNumberOfRows = 0;
 
       Iterator<Row> iter = sheet.rowIterator();
       if (iter.hasNext()) {
+        physicalNumberOfRows++;
         setColumns(iter.next().getLastCellNum());
         setReadable(true);
       } else {
         setColumns(0);
         setReadable(false);
       }
+
+      while (iter.hasNext()) {
+        physicalNumberOfRows++;
+        iter.next();
+      }
+
+      setRows(physicalNumberOfRows);
     }
 
     //TODO: report empty or irregular rows
@@ -312,5 +265,45 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   @Override
   public SourceType getSourceType() {
     return SourceType.EXCEL_FILE;
+  }
+
+  @Override
+  public String getPreferredFileSuffix() {
+    return SUFFIX;
+  }
+
+  @Override
+  public File getFile() {
+    return file;
+  }
+
+  @Override
+  public long getFileSize() {
+    return fileSize;
+  }
+
+  @Override
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  @Override
+  public void setLastModified(Date lastModified) {
+    this.lastModified = lastModified;
+  }
+
+  @Override
+  public int getRows() {
+    return rows;
+  }
+
+  @Override
+  public int getIgnoreHeaderLines() {
+    return ignoreHeaderLines;
+  }
+
+  @Override
+  public Date getLastModified() {
+    return lastModified;
   }
 }

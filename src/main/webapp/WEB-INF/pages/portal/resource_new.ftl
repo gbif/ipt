@@ -26,7 +26,7 @@
             <div class="contactType fst-italic">
                 <#if viewType == "standard">
                     <#if con.role?? && con.role?has_content && roles[con.role]??>
-                        ${roles[con.role]?cap_first!}
+                        ${roles[con.role]!?cap_first}
                     <#elseif type?has_content>
                         ${type}
                     </#if>
@@ -54,7 +54,7 @@
                 </div>
             </#if>
             <div class="address">
-                <#if con.organisation?has_content>
+                <#if con.organisation?has_content && (con.firstName?has_content || con.lastName?has_content) >
                     <div>${con.organisation}</div>
                 </#if>
 
@@ -148,8 +148,8 @@
     }
 </style>
 
-<script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.1.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
 <script>
     $(document).ready(function() {
         // spy scroll and manage sidebar menu
@@ -164,10 +164,10 @@
 
                 var sectionsContainer = $("#sections");
 
-                if (sectionsContainer.position().top - 50 > scrollPosition) {
+                if (sectionsContainer.position().top - 120 > scrollPosition) {
                     var removeActiveFromThisLink = $('.bd-toc nav a.active');
                     removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 50 <= scrollPosition
+                } else if (section.position().top - 120 <= scrollPosition
                     && section.position().top + section.height() > scrollPosition) {
                     if (!currentLink.hasClass("active")) {
                         var removeFromThisLink = $('.bd-toc nav a.active');
@@ -180,11 +180,11 @@
     })
 </script>
 
-<div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
 
+<div class="container-fluid bg-body border-bottom">
     <#-- display watermark for preview pages -->
     <#if isPreviewPage>
         <div id="watermark" class="text-center text-uppercase fs-1 mb-2">
@@ -192,59 +192,68 @@
         </div>
     </#if>
 
-    <div class="container my-3 p-3">
-        <div class="text-center text-uppercase fw-bold fs-smaller-2">
-            <span>${coreType}</span>
-        </div>
+    <div class="container border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center fs-smaller">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="${baseURL}"><@s.text name="breadcrumb.home"/></a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.resource"/></li>
+                    </ol>
+                </nav>
+            </div>
 
-        <div class="text-center">
-            <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                ${eml.title!resource.shortname}
-            </h1>
+            <div class="text-center">
+                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    ${eml.title!resource.shortname}
+                </h1>
 
-            <#if resource.lastPublished?? && resource.organisation??>
-                <div class="text-gbif-primary text-smaller">
-                    <span>
-                        <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                            <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                        <#else>
-                            <@s.text name='portal.resource.latest.version'/>
-                        </#if>
+                <#if typesVocabulary[resourceTypeLowerCase]??>
+                    <div class="text-center">
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                    </div>
+                </#if>
 
-                        <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                            ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.long}</span>
-                            <br>
-                            <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
-                        <#else>
-                            <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.long_short}</span>
-                            <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
-                        </#if>
-                    </span>
-                </div>
-            <#else>
-                <div class="text-gbif-danger text-smaller">
-                    <@s.text name='portal.resource.published.never.long'/>
-                </div>
-            </#if>
+                <#if resource.lastPublished?? && resource.organisation??>
+                    <div class="text-gbif-primary fs-smaller-2 mt-2">
+                        <span>
+                            <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                            <#else>
+                                <@s.text name='portal.resource.latest.version'/>
+                            </#if>
 
-            <#if eml.distributionUrl?has_content || resource.lastPublished??>
-                <div class="mt-2">
+                            <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.long}</span>
+                            <#else>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string("MMM d, yyyy")}</span>
+                                <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
+                            </#if>
+                        </span>
+                    </div>
+                <#else>
+                    <div class="text-gbif-danger text-smaller">
+                        <@s.text name='portal.resource.published.never.long'/>
+                    </div>
+                </#if>
 
-                    <#if managerRights>
-                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
-                            <@s.text name='button.edit'/>
-                        </a>
-                    </#if>
-                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                        <#if adminRights>
-                            <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
-                                <@s.text name='button.delete.version'/>
+                <#if eml.distributionUrl?has_content || resource.lastPublished??>
+                    <div class="mt-2">
+
+                        <#if managerRights>
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
+                                <@s.text name='button.edit'/>
                             </a>
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                    <@s.text name='button.delete.version'/>
+                                </a>
+                            </#if>
                         </#if>
-                    </#if>
-                </div>
-            </#if>
+                    </div>
+                </#if>
+            </div>
         </div>
     </div>
 </div>
@@ -252,7 +261,7 @@
 <#assign isLogoPresent=eml.logoUrl?has_content/>
 
 <div class="container-fluid bg-light border-bottom">
-    <div class="container">
+    <div class="container px-0">
         <div class="my-4 px-4 py-4 bg-body border rounded shadow-sm">
             <span class="anchor anchor-home-resource-page-2 mb-3" id="anchor-downloads"></span>
             <div class="mx-md-4 mx-2">
@@ -260,9 +269,9 @@
                     <div class="<#if isLogoPresent>col-lg-3-5 col-md-10 col-sm-9 col-8<#else>col-lg-4</#if> text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
                         <dl class="inline mb-0">
                             <#if eml.distributionUrl?has_content>
-                                <div>
+                                <div class="text-truncate">
                                     <dt><@s.text name='eml.distributionUrl.short'/>:</dt>
-                                    <dd><a href="${eml.distributionUrl}"><@s.text name='basic.link'/></a></dd>
+                                    <dd><a href="${eml.distributionUrl}">${eml.distributionUrl}</a></dd>
                                 </div>
                             </#if>
 
@@ -340,6 +349,8 @@
                     <div class="<#if isLogoPresent>col-lg-7<#else>col-lg-8</#if> text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
                         <#if metadataOnly == true>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
+                        <#elseif resource.dataPackageIdentifier??>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.dataPackageSchema.verbose'/></p>
                         <#else>
                             <p class="mb-1"><@s.text name='portal.resource.downloads.verbose'/></p>
                         </#if>
@@ -352,7 +363,11 @@
                                 <#if metadataOnly == false>
                                     <tr>
                                         <th class="col-4 p-0">
-                                            <@s.text name='portal.resource.dwca.verbose'/>
+                                            <#if resource.dataPackageIdentifier??>
+                                                <@s.text name='portal.resource.dataPackage.verbose'/>
+                                            <#else>
+                                                <@s.text name='portal.resource.dwca.verbose'/>
+                                            </#if>
                                         </th>
                                         <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
                                             <td class="p-0">
@@ -360,7 +375,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                ${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         <#else>
                                             <td class="p-0">
@@ -368,7 +383,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                ${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         </#if>
                                     </tr>
@@ -380,7 +395,7 @@
                                             <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                             <@s.text name='portal.resource.download'/>
                                         </a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]!?cap_first}</@s.param></@s.text></#if> (${emlSizeForVersion})
                                     </td>
                                 </tr>
 
@@ -391,7 +406,7 @@
                                             <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                             <@s.text name='portal.resource.download'/>
                                         </a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]!?cap_first}</@s.param></@s.text></#if> (${rtfSizeForVersion})
                                     </td>
                                 </tr>
                             </table>
@@ -405,10 +420,9 @@
 
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout">
-
+    <div class="container mb-md-4 bd-layout main-content-container">
         <main class="bd-main">
-            <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+            <div class="bd-toc mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
                         <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
@@ -464,7 +478,7 @@
 
             <div class="bd-content ps-lg-4">
                 <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                <div id="description" class="mt-5 section">
+                <div id="description" class="py-5 section">
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
@@ -496,13 +510,17 @@
 
                     <#if metadataOnly != true>
                         <span class="anchor anchor-home-resource-page" id="anchor-dataRecords"></span>
-                        <div id="dataRecords" class="mt-5 section">
+                        <div id="dataRecords" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.dataRecords'/>
                             </h4>
 
                             <p>
-                                <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
+                                <#if resource.dataPackageIdentifier??>
+                                    <@s.text name='portal.resource.dataRecords.dataPackageSchema.intro'/>
+                                <#else>
+                                    <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
+                                </#if>
                                 <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
                                     <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount}</@s.param></@s.text>
                                 </#if>
@@ -550,8 +568,8 @@
 
                     <!-- versions section -->
                     <#if resource.versionHistory??>
-                        <span class="anchor anchor-resource-page" id="anchor-versions"></span>
-                        <div id ="versions" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-versions"></span>
+                        <div id ="versions" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.versions'/>
                             </h4>
@@ -568,8 +586,8 @@
 
                     <!-- citation section -->
                     <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                        <span class="anchor anchor-resource-page" id="anchor-citation"></span>
-                        <div id="citation" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-citation"></span>
+                        <div id="citation" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.cite.howTo'/>
                             </h4>
@@ -588,8 +606,8 @@
 
                     <!-- rights section -->
                     <#if eml.intellectualRights?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-rights"></span>
-                        <div id="rights" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-rights"></span>
+                        <div id="rights" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='eml.intellectualRights.simple'/>
                             </h4>
@@ -614,8 +632,8 @@
                     </#if>
 
                     <!-- GBIF Registration section -->
-                    <span class="anchor anchor-resource-page" id="anchor-gbif"></span>
-                    <div id="gbif" class="mt-5 section">
+                    <span class="anchor anchor-home-resource-page" id="anchor-gbif"></span>
+                    <div id="gbif" class="pb-5 section">
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='portal.resource.organisation.key'/>
                         </h4>
@@ -633,8 +651,8 @@
 
                     <!-- Keywords section -->
                     <#if eml.subject?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-keywords"></span>
-                        <div id="keywords" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
+                        <div id="keywords" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.summary.keywords'/>
                             </h4>
@@ -651,8 +669,8 @@
 
                     <!-- External data section -->
                     <#if (eml.physicalData?size > 0 )>
-                        <span class="anchor anchor-resource-page" id="anchor-external"></span>
-                        <div id="external" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-external"></span>
+                        <div id="external" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.physical.alternativeTitle'/>
                             </h4>
@@ -680,8 +698,8 @@
 
                     <!-- Contacts section -->
                     <#if (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)>
-                        <span class="anchor anchor-resource-page" id="anchor-contacts"></span>
-                        <div id="contacts" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-contacts"></span>
+                        <div id="contacts" class="pb-5 section">
                             <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.contacts'/>
                             </h4>
@@ -698,8 +716,8 @@
 
                     <!-- Geo coverage section -->
                     <#if eml.geospatialCoverages[0]??>
-                        <span class="anchor anchor-resource-page" id="anchor-geospatial"></span>
-                        <div id="geospatial" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-geospatial"></span>
+                        <div id="geospatial" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='portal.resource.summary.geocoverage'/>
                             </h4>
@@ -725,8 +743,8 @@
 
                     <!-- Taxonomic coverage sections -->
                     <#if ((organizedCoverages?size > 0))>
-                        <span class="anchor anchor-resource-page" id="anchor-taxanomic"></span>
-                        <div id="taxanomic" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-taxanomic"></span>
+                        <div id="taxanomic" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.taxcoverage.title'/>
                             </h4>
@@ -749,7 +767,7 @@
                                                     <#if k.rank?lower_case == "class">
                                                         <th class="col-4">Class</th>
                                                     <#else>
-                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                        <th class="col-4">${ranks[k.rank?html]!?cap_first}</th>
                                                     </#if>
                                                     <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                     <td>
@@ -770,8 +788,8 @@
 
                     <!-- Temporal coverages section -->
                     <#if ((eml.temporalCoverages?size > 0))>
-                        <span class="anchor anchor-resource-page" id="anchor-temporal"></span>
-                        <div id="temporal" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-temporal"></span>
+                        <div id="temporal" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.tempcoverage.title'/>
                             </h4>
@@ -808,8 +826,8 @@
 
                     <!-- Project section -->
                     <#if eml.project?? && eml.project.title?has_content>
-                        <span class="anchor anchor-resource-page" id="anchor-project"></span>
-                        <div id="project" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-project"></span>
+                        <div id="project" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.project.title'/>
                             </h4>
@@ -874,8 +892,8 @@
 
                     <!-- Sampling methods section -->
                     <#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content) >
-                        <span class="anchor anchor-resource-page" id="anchor-methods"></span>
-                        <div id="methods" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-methods"></span>
+                        <div id="methods" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.methods.title'/>
                             </h4>
@@ -925,8 +943,8 @@
 
                     <!-- Collections section -->
                     <#if eml.collections?? && (eml.collections?size > 0) && eml.collections[0].collectionName?has_content >
-                        <span class="anchor anchor-resource-page" id="anchor-collection"></span>
-                        <div id="collection" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-collection"></span>
+                        <div id="collection" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.collections.title'/>
                             </h4>
@@ -963,7 +981,7 @@
                                                 <th class="col-4"><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                                 <td>
                                                     <#list eml.specimenPreservationMethods as item>
-                                                        ${preservationMethods[item]?cap_first!}<#if item_has_next>,&nbsp;</#if>
+                                                        ${(preservationMethods[item])!?cap_first}<#if item_has_next>,&nbsp;</#if>
                                                     </#list>
                                                 </td>
                                             </tr>
@@ -999,8 +1017,8 @@
 
                     <!-- bibliographic citations section -->
                     <#if eml.bibliographicCitationSet?? && (eml.bibliographicCitationSet.bibliographicCitations?has_content)>
-                        <span class="anchor anchor-resource-page" id="anchor-reference"></span>
-                        <div id="reference" class="mt-5 section">
+                        <span class="anchor anchor-home-resource-page" id="anchor-reference"></span>
+                        <div id="reference" class="pb-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                                 <@s.text name='manage.metadata.citations.bibliography'/>
                             </h4>
@@ -1020,8 +1038,8 @@
 
                 <!-- Additional metadata section -->
                 <#if eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
-                    <span class="anchor anchor-resource-page" id="anchor-additional"></span>
-                    <div id="additional" class="mt-5 section">
+                    <span class="anchor anchor-home-resource-page" id="anchor-additional"></span>
+                    <div id="additional" class="pb-5 section">
 
                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                             <@s.text name='manage.metadata.additional.title'/>

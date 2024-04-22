@@ -22,13 +22,23 @@
     <!-- Avoid the terrible:
          "Developer Notification (set struts.devMode to false to disable this message):"
     -->
+    <Logger name="org.hibernate.validator.internal" level="ERROR"/>
+    <Logger name="org.hibernate.validator.messageinterpolation" level="ERROR"/>
     <Logger name="com.opensymphony.xwork2.interceptor.ParametersInterceptor" level="FATAL"/>
     <Logger name="freemarker" level="WARN"/>
+    <Logger name="org.apache.commons.beanutils" level="ERROR"/>
+    <Logger name="org.apache.http" level="ERROR"/>
+    <Logger name="org.apache.commons.digester" level="ERROR"/>
+    <Logger name="org.apache.commons.digester3" level="ERROR"/>
 
     <!-- This logger is referred to in LoggingConfiguration.java, don't remove it. -->
     <Logger name="org.gbif" level="DEBUG"/>
 
     <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
+
+    <Logger name="com.github.pjfanning.xlsx.impl.StreamingRowIterator" level="ERROR"/>
+
+    <Logger name="com.networknt.schema" level="ERROR" />
 
     <Root level="DEBUG">
       <AppenderRef ref="CONSOLE"/>

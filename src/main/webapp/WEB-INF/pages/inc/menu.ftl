@@ -17,12 +17,50 @@
         }
     }
 </script>
+<script>
+    // Check if the public URL is correct, otherwise display the fallback page
+    document.addEventListener("DOMContentLoaded", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "${baseURL}/styles/main.css");
+        xhr.onload = function() {
+            if (xhr.status !== 200) {
+                window.location.href = "/fallback.do";
+            }
+        };
+        xhr.onerror = function() {
+            window.location.href = "/fallback.do";
+        };
+        xhr.send();
+    });
+</script>
 
 <body class="bg-body d-flex flex-column h-100">
 
+[#assign currentLocale = .vars["locale"]!"en"/]
+[#if currentLocale == "en"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "es"]
+    [#assign typesVocabulary = {"occurrence": "Registros biológicos", "checklist": "Lista de chequeo", "samplingevent": "Evento de muestreo", "metadata": "Solamente metadatos", "other": "Otro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "pt"]
+    [#assign typesVocabulary = {"occurrence": "Ocorrência", "checklist": "Checklist", "samplingevent": "Evento de amostragem", "metadata": "Somente metadatos", "other": "Outro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "fr"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Données d'échantillonnage", "metadata": "Métadonnées uniquement", "other": "Autre", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "zh"]
+    [#assign typesVocabulary = {"occurrence": "出現紀錄", "checklist": "名錄", "samplingevent": "Sampling event", "metadata": "元數據", "other": "其它", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "ja"]
+    [#assign typesVocabulary = {"occurrence": "オカレンス（観察データと標本)", "checklist": "チェックリスト", "samplingevent": "サンプリング イベント", "metadata": "メタデータ", "other": "その他", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#elseif currentLocale == "ru"]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[#else]
+    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
+[/#if]
+
+[#assign resourceTypeLowerCase = (resource.coreType?lower_case)!"other"]
+
+
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 border-bottom">
-        <div class="container">
+    <nav class="main-nav navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
+        <div class="container-fluid">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <svg id="gbif-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="enable-background:new 0 0 539.7 523.9;" xml:space="preserve">
                     <path class="ipt-icon-piece" d="M230.7,255.5c0-102.2,49.9-190.7,198.4-190.7C429.1,167.2,361.7,255.5,230.7,255.5"/>
@@ -34,97 +72,27 @@
                     <span class="test-mode-banner">TEST MODE</span>
                 [/#if]
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <svg class="navbar-toggler-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path stroke="rgba(var(--navbar-link-color), 0.75)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/></svg>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="collapse navbar-collapse ps-2" id="navbarCollapse">
                 <!-- Navbar -->
-                <ul class="navbar-nav me-auto mb-md-0">
+                <ul class="navbar-nav mx-auto mb-md-0">
                     <li class="nav-item nav-item-border-bottom">
-                        <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
+                        <a class="nav-link custom-nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
                     </li>
                     [#if managerRights]
                         <li class="nav-item nav-item-border-bottom">
-                            <a class="nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
+                            <a class="nav-link custom-nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
                         </li>
                     [/#if]
                     [#if adminRights]
-                        <ul class="navbar-nav nav-item-border-bottom">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="#" id="adminDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    [@s.text name="menu.admin"/]
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-admin dropdown-menu-light text-light" aria-labelledby="adminDropdownLink">
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/config.do">
-                                            <span>
-                                                <i class="bi bi-gear-fill text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.editConfig"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/bulk-publication.do">
-                                            <span>
-                                                <i class="bi bi-stack text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.bulkPublication"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/users.do">
-                                            <span>
-                                                <i class="bi bi-person-lines-fill text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.manageUsers"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/registration.do">
-                                            <span>
-                                                <i class="bi bi-cloud-arrow-up-fill text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.editRegistration"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/organisations.do">
-                                            <span>
-                                                <i class="bi bi-building text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.organisations"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/extensions.do">
-                                            <span>
-                                                <i class="bi bi-collection-fill text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.manageExtensions"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/uiManagement.do">
-                                            <span>
-                                                <i class="bi bi-tv text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.manageUI"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item-admin menu-link" href="${baseURL}/admin/logs.do">
-                                            <span>
-                                                <i class="bi bi-journal-text text-gbif-primary admin-icon-menu"></i>
-                                                [@s.text name="admin.home.manageLogs"/]
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <li class="nav-item nav-item-border-bottom">
+                            <a class="nav-link custom-nav-link [#if currentMenu=='admin']active[/#if]" href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a>
+                        </li>
                     [/#if]
                     <li class="nav-item nav-item-border-bottom">
-                        <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
+                        <a class="nav-link custom-nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
                 </ul>
 
@@ -150,7 +118,7 @@
                                 <a class="navbar-button btn btn-sm menu-link m-xl-auto" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.initials!"A"}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light text-light" aria-labelledby="accountDropdownLink">
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-light text-light fs-smaller" aria-labelledby="accountDropdownLink">
                                     <li>
                                         <a class="dropdown-item menu-link" href="${baseURL}/account.do">
                                             ${Session.curr_user.name}<br>
@@ -201,6 +169,61 @@
             </div>
         </div>
     </nav>
+
+    [#if currentPage?? && currentPage == "overview"]
+    <nav id="resource-nav" class="resource-nav bg-body border-bottom" style="display: none;">
+        <div class="container mx-auto">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex py-2 fs-smaller">
+                    [#if typesVocabulary[resourceTypeLowerCase]??]
+                        <div class="py-2 me-3">
+                            <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+
+                            [#if resource.status??]
+                            <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
+                                [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
+                                    <i class="bi bi-circle fs-smaller-2"></i>
+                                [#else]
+                                    <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                [/#if]
+                                <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
+                            </span>
+                            [/#if]
+                        </div>
+                    [/#if]
+
+                    <div>
+                        <span class="fw-500">${resource.title!resource.shortname}</span><br>
+                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.name)!}[/@s.param][@s.param]${resource.created?date?string("MMM d, yyyy")}[/@s.param][/@s.text]</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-1 my-auto">
+                    <button class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource" name="view">[@s.text name="button.view"/]</button>
+
+                    [#if resource.status == "DELETED"]
+                        [#if disableRegistrationRights == "false"]
+                            <button class="btn btn-sm btn-outline-gbif-primary proxy-button-undelete-resource" name="undelete">[@s.text name="button.undelete"/]</button>
+                        [#else]
+                            <button class="btn btn-sm btn-outline-gbif-primary" name="undelete" disabled>[@s.text name="button.undelete"/]</button>
+                        [/#if]
+                    [#else]
+                        [#if disableRegistrationRights == "false"]
+                            [#if resource.key?? && resource.status == "REGISTERED"]
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-modal" name="delete">[@s.text name="button.delete"/]</button>
+                            [#else]
+                                <button class="btn btn-sm btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete">[@s.text name="button.delete"/]</button>
+                            [/#if]
+                        [#else]
+                            <button class="btn btn-sm btn-outline-gbif-danger" name="delete" disabled>[@s.text name="button.delete"/]</button>
+                        [/#if]
+                    [/#if]
+
+                    <button class="btn btn-sm btn-outline-secondary proxy-button-cancel" name="cancel">[@s.text name="button.cancel"/]</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    [/#if]
 </header>
 
 <div id="dialog-confirm" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>

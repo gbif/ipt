@@ -33,6 +33,9 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataPackageFieldConverter;
+import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -41,12 +44,16 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -124,7 +131,7 @@ public class GenerateDwcaTest {
     // create resource, version 3.0
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
-    resource.setEmlVersion(new BigDecimal("3.0"));
+    resource.setMetadataVersion(new BigDecimal("3.0"));
 
     // create user
     creator = new User();
@@ -459,6 +466,8 @@ public class GenerateDwcaTest {
     PasswordEncrypter passwordEncrypter = injector.getInstance(PasswordEncrypter.class);
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
+
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(
       "/extensions/dwc_occurrence_2015-04-24.xml");
@@ -498,25 +507,30 @@ public class GenerateDwcaTest {
     // create SourceManagerImpl
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
 
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
+        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
       new ResourceManagerImpl(
           mockAppConfig,
           mockDataDir,
-          mockEmailConverter,
-          mockOrganisationKeyConverter,
-          extensionRowTypeConverter,
-          jdbcConverter,
+          mockResourceConvertersManager,
           mockSourceManager,
           extensionManager,
+          mockSchemaManager,
           mockRegistryManager,
-          conceptTermConverter,
           mockDwcaFactory,
+          mock(GenerateDataPackageFactory.class),
           passwordEncrypter,
           mockEml2Rtf,
           mockVocabulariesManager,
           mockSimpleTextProvider,
-          mockRegistrationManager);
+          mockRegistrationManager,
+          mock(MetadataReader.class),
+          mock(ResourceMetadataInferringService.class));
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);

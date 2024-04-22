@@ -1,7 +1,7 @@
 name: ipt
 title: Integrated Publishing Toolkit
-version: 2.5
-display_version: 2.5–2.7
+version: "3.0"
+display_version: "3.0"
 start_page: ROOT:index.adoc
 nav:
   - modules/ROOT/nav.adoc
@@ -11,6 +11,8 @@ asciidoc:
     idseparator: '-@'
     threedots: '┇'
     threelines: '☰'
+    doiicon: '🏛️'
+    viewicon: image:ipt2/controls/Control-ViewIcon.png[]
     # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
     eml-location: https://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores

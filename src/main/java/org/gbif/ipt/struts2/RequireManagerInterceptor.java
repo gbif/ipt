@@ -117,23 +117,23 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
     // user is logged in, check if user has manager rights
     if (user.hasManagerRights()) {
-        // now also check if we have rights for a specific resource requested
-        // lets see if we are about to manage a new resource
-        String requestedResource = getResourceParam(invocation);
-        if (requestedResource != null) {
-          // does resource exist at all?
-          Resource resource = resourceManager.get(requestedResource);
-          if (resource == null) {
-            return BaseAction.NOT_FOUND;
-          }
-          // authorized?
-          if (!isAuthorized(user, resource)) {
-            return BaseAction.NOT_ALLOWED;
-          }
-          // locked?
-          if (resourceManager.isLocked(requestedResource)) {
-            return BaseAction.LOCKED;
-          }
+      // now also check if we have rights for a specific resource requested
+      // lets see if we are about to manage a new resource
+      String requestedResource = getResourceParam(invocation);
+      if (requestedResource != null) {
+        // does resource exist at all?
+        Resource resource = resourceManager.get(requestedResource);
+        if (resource == null) {
+          return BaseAction.NOT_FOUND;
+        }
+        // authorized?
+        if (!isAuthorized(user, resource)) {
+          return BaseAction.NOT_ALLOWED;
+        }
+        // locked?
+        if (resourceManager.isLocked(requestedResource)) {
+          return BaseAction.LOCKED;
+        }
       }
       return invocation.invoke();
     }

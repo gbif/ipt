@@ -14,6 +14,48 @@
         // a function called when adding new temporal coverages
         // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
+            function updateQueryParam(param, value) {
+                const url = new URL(window.location.href);
+                url.searchParams.set(param, value);
+                history.replaceState(null, '', url);
+            }
+
+            function deleteQueryParam(param) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete(param)
+                history.replaceState(null, '', url);
+            }
+
+            // Function to check if query param exists and update checkbox accordingly
+            function checkUrlParams() {
+                // if "inferAutomatically" present and true, tick the inferTemporalCoverageAutomatically checkbox
+                const urlParams = new URLSearchParams(window.location.search);
+                const checkboxParam = urlParams.get('inferAutomatically');
+                if (checkboxParam === 'true') {
+                    $('#inferTemporalCoverageAutomatically').prop('checked', true);
+                }
+
+                // remove "reinferMetadata" param on load
+                const reInferParam = urlParams.get('reinferMetadata');
+                if (reInferParam === 'true') {
+                    deleteQueryParam("reinferMetadata")
+                }
+            }
+
+            // add/remove "inferAutomatically" param when clicking checkbox
+            $('#inferTemporalCoverageAutomatically').change(function() {
+                if ($(this).is(':checked')) {
+                    updateQueryParam('inferAutomatically', 'true');
+                } else {
+                    deleteQueryParam('inferAutomatically');
+                }
+            });
+
+            // Check query params on page load
+            checkUrlParams();
+
+            $("#re-infer-link").on('click', displayProcessing);
+
             calculateCount();
 
             function calculateCount() {
@@ -70,6 +112,8 @@
 
             $("#preview-inferred-temporal").click(function(event) {
                 event.preventDefault();
+
+                $("#dateInferred").show();
 
                 <#if (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size gt 0>
                 $(".metadata-error-alert").show();
@@ -319,25 +363,22 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container pt-2">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-                <div id="tempcoverage-no-available-data-warning" class="alert alert-warning mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="eml.warning.reinfer"/></span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+        <div id="tempcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+            <div class="me-3">
+                <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1">
+                <span><@s.text name="eml.warning.reinfer"/></span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
                 <#if (inferredMetadata.inferredTemporalCoverage)??>
                     <#list inferredMetadata.inferredTemporalCoverage.errors as error>
-                        <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+                        <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
                             </div>
@@ -350,30 +391,34 @@
                 </#if>
             </div>
 
-            <div class="container my-3 p-3">
-                <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                        </ol>
-                    </nav>
-                </div>
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container bg-body border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                        <@s.text name='manage.metadata.tempcoverage.title'/>
-                    </h1>
-                </div>
+                    <div class="text-center">
+                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
+                            <@s.text name='manage.metadata.tempcoverage.title'/>
+                        </h1>
+                    </div>
 
-                <div class="text-center fs-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </div>
+                    <div class="text-center fs-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
 
-                <div class="text-center mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    <div class="text-center mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -381,9 +426,8 @@
         <#include "metadata_section_select.ftl"/>
 
         <div class="container-fluid bg-body">
-            <div class="container bd-layout">
-
-                <main class="bd-main bd-main">
+            <div class="container bd-layout main-content-container">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "eml_sidebar.ftl"/>
                     </div>
@@ -407,8 +451,8 @@
                                         </a>
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                        ${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;
-                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                        <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                        <a id="re-infer-link" href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
                                             <span>
                                                 <svg class="link-icon" viewBox="0 0 24 24">
                                                     <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
@@ -460,7 +504,11 @@
                                         <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    <#if eml.temporalCoverages[temporalCoverage_index].startDate?has_content>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate!?date!?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    <#else>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                    </#if>
                                                 </div>
 
                                             </div>

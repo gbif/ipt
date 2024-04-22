@@ -1,38 +1,44 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
-    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script>
         $(document).ready(function(){
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)
-            var resourceType="${resource.coreType!}";
-            if(resourceType != "") {
-                if(resourceType.toLowerCase() == "occurrence") {
+            var resourceType = "${resource.coreType!}";
+            if (resourceType !== "") {
+                if (resourceType.toLowerCase() === "occurrence") {
                     $("#resource\\.coreType").val('occurrence');
-                } else if (resourceType.toLowerCase() == "checklist") {
+                } else if (resourceType.toLowerCase() === "checklist") {
                     $("#resource\\.coreType").val('checklist');
-                } else if (resourceType.toLowerCase() == "samplingevent") {
+                } else if (resourceType.toLowerCase() === "samplingevent") {
                     $("#resource\\.coreType").val('samplingevent');
-                } else if (resourceType.toLowerCase() == "other") {
+                } else if (resourceType.toLowerCase() === "materialentity") {
+                    $("#resource\\.coreType").val('materialentity');
+                } else if (resourceType.toLowerCase() === "other") {
                     $("#resource\\.coreType").val('other');
                 }
             }
 
             // core type selection is only disabled, if resource has core
             var hasCore="${resourceHasCore!}";
-            if (hasCore == "true") {
+            if (hasCore === "true") {
                 $("#resource\\.coreType").attr('disabled','disabled');
             }
 
             // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
             var isRegisteredWithGBIF="${resource.key!}";
             var isAssignedDOI="${resource.doi!}";
-            if (isRegisteredWithGBIF != "") {
+            if (isRegisteredWithGBIF !== "") {
                 $("#id").attr('disabled','disabled');
-            } else if (isAssignedDOI != "") {
+            } else if (isAssignedDOI !== "") {
                 $("#id").attr('disabled','disabled');
             }
 
@@ -69,7 +75,10 @@
                         break;
                     case 'samplingevent':
                         $('#resource\\.subtype >option').remove();
-                        $('#resource\\.subtype').append('<option value="">No subtype</option>');
+                        var list=getList("${samplingEventSubtypesMap}");
+                        $.each(list, function(key, value) {
+                          $('#resource\\.subtype').append('<option value="'+key+'">'+value+'</option>');
+                        });
                         break;
                     case 'other':
                         $('#resource\\.subtype >option').remove();
@@ -186,6 +195,153 @@
                 }
             }
 
+            $('select#eml\\.metadataLanguage').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                theme: 'bootstrap4'
+            });
+            $('select#resource\\.coreType').select2({
+                placeholder: '${action.getText("resource.coreType.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#id').select2({
+                placeholder: '${action.getText("admin.organisation.name.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 15,
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.language').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                theme: 'bootstrap4'});
+            $('select#resource\\.subtype').select2({
+                placeholder: '${action.getText("resource.subtype.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.updateFrequency').select2({
+                placeholder: '',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+            $('select#eml\\.intellectualRights\\.license').select2({
+                placeholder: '${action.getText("eml.intellectualRights.nolicenses")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                minimumResultsForSearch: 'Infinity',
+                theme: 'bootstrap4'
+            });
+
+            $('[id^="eml.contacts"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.contacts"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.creators"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.creators"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.metadataProviders"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+
             function changeAgentInputNamesAfterDragging(e) {
                 displayProcessing();
                 var contactItems = $("#contact-items div.item");
@@ -201,16 +357,59 @@
                     $("div#" + elementId + " input[id$='city']").attr("name", "eml.contacts[" + index + "].address.city");
                     $("div#" + elementId + " input[id$='province']").attr("name", "eml.contacts[" + index + "].address.province");
                     $("div#" + elementId + " select[id$='country']").attr("name", "eml.contacts[" + index + "].address.country");
+                    $("div#" + elementId + " select[id$='country']").trigger("change");
                     $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.contacts[" + index + "].address.postalCode");
                     $("div#" + elementId + " input[id$='phone']").attr("name", "eml.contacts[" + index + "].phone");
                     $("div#" + elementId + " input[id$='email']").attr("name", "eml.contacts[" + index + "].email");
                     $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.contacts[" + index + "].homepage");
                     $("div#" + elementId + " select[id$='directory']").attr("name", "eml.contacts[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " select[id$='directory']").trigger("change");
                     $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.contacts[" + index + "].userIds[0].identifier");
                 });
 
                 hideProcessing();
             }
+
+            var copyAgentModal = $('#copy-agent-modal');
+            $('#resource').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agentType').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agent').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
         });
 
     </script>
@@ -219,44 +418,46 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
-        <div class="container pt-2">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
-
-        <div class="container my-3 p-3">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                        </ol>
-                    </nav>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center fs-smaller">
+                    <div class="text-center fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
-            </div>
 
-            <div class="text-center">
-                <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                    <@s.text name='manage.metadata.basic.title'/>
-                </h1>
-            </div>
+                <div class="text-center">
+                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
+                        <@s.text name='manage.metadata.basic.title'/>
+                    </h1>
+                </div>
 
-            <div class="text-center fs-smaller">
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">
-                    <#if resource.title?has_content>
-                        ${resource.title}
-                    <#else>
-                        ${resource.shortname}
-                    </#if>
-                </a>
-            </div>
+                <div class="text-center fs-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">
+                        <#if resource.title?has_content>
+                            ${resource.title}
+                        <#else>
+                            ${resource.shortname}
+                        </#if>
+                    </a>
+                </div>
 
-            <div class="text-center mt-2">
-                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                </div>
             </div>
         </div>
     </div>
@@ -264,9 +465,8 @@
     <#include "metadata_section_select.ftl"/>
 
     <div class="container-fluid bg-body">
-        <div class="container bd-layout">
-
-            <main class="bd-main bd-main">
+        <div class="container bd-layout main-content-container">
+            <main class="bd-main">
                 <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                     <#include "eml_sidebar.ftl"/>
                 </div>
@@ -393,6 +593,7 @@
 
                         <!-- retrieve some link names one time -->
                         <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
+                        <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
                         <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
                         <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
                         <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
@@ -415,7 +616,7 @@
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
-                                                <span>${copyLink?lower_case?cap_first}</span>
+                                                <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                         <div>
@@ -503,7 +704,7 @@
                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                             </svg>
                                         </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
+                                        <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                                 <div class="text-end">
@@ -570,14 +771,21 @@
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="creator-copy-${creator_index}" href="" class="metadata-action-link">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${copyLink?lower_case?cap_first}</span>
-                                            </a>
+                                            <div class="btn-group">
+                                                <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${copyLink?lower_case?cap_first}</span>
+                                                </a>
+
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy-${creator_index}">
+                                                    <li><a id="creator-from-contact-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                    <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="text-end">
                                             <a id="creator-removeLink-${creator_index}" class="removeCreatorLink metadata-action-link" href="">
@@ -658,14 +866,20 @@
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="creator-copy" href="" class="metadata-action-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
-                                    </a>
+                                    <div class="btn-group">
+                                        <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${copyLink?lower_case?cap_first}</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy">
+                                            <li><a id="creator-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                            <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="text-end">
                                     <a id="creator-removeLink" class="removeCreatorLink metadata-action-link" href="">
@@ -731,14 +945,20 @@
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
-                                            <a id="metadataProvider-copy-${metadataProvider_index}" href="" class="metadata-action-link">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span><@s.text name="eml.metadataAgent.copyLink" /></span>
-                                            </a>
+                                            <div class="btn-group">
+                                                <a id="dropdown-metadataProvider-copy-${metadataProvider_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${copyLink?lower_case?cap_first}</span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-metadataProvider-copy-${metadataProvider_index}">
+                                                    <li><a id="metadataProvider-from-contact-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                    <li><a id="metadataProvider-copy-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="text-end">
                                             <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink metadata-action-link" href="">
@@ -819,14 +1039,20 @@
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
-                                    <a id="metadataProvider-copy" href="" class="metadata-action-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${copyLink?lower_case?cap_first}</span>
-                                    </a>
+                                    <div class="btn-group">
+                                        <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${copyLink?lower_case?cap_first}</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="metadataProvider-creator-copy">
+                                            <li><a id="metadataProvider-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                            <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="text-end">
                                     <a id="metadataProvider-removeLink" class="removeMetadataProviderLink metadata-action-link" href="">
@@ -894,7 +1120,7 @@
 
     <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content" style="text-align: left !important;">
                 <div class="modal-header flex-column">
                     <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
@@ -930,7 +1156,7 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div>
+                        <div class="text-center">
                             <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
                         </div>
                     </div>

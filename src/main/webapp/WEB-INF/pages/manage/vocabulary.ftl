@@ -4,44 +4,46 @@
     <#assign currentMenu = "manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
+
 <div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
+    <div class="container bg-body border rounded-2 mb-4">
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.vocabulary"/></li>
+                        </ol>
+                    </nav>
+                </div>
 
-    <div class="container my-3 p-3">
-        <div class="text-center">
-            <div class="text-uppercase fw-bold fs-smaller-2">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.vocabulary"/></li>
-                    </ol>
-                </nav>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    ${vocabulary.title}
+                </h1>
+
+                <#if vocabulary.link?has_content>
+                    <div class="text-smaller mb-2">
+                        <a href="${vocabulary.link}">${vocabulary.link}</a>
+                    </div>
+                </#if>
+
+                <#if vocabulary.issued??>
+                    <div class="text-smaller text-gbif-primary">
+                    <span>
+                        <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}
+                    </span>
+                    </div>
+                </#if>
             </div>
-
-            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                ${vocabulary.title}
-            </h1>
-
-            <#if vocabulary.link?has_content>
-                <div class="text-smaller mb-2">
-                    <a href="${vocabulary.link}">${vocabulary.link}</a>
-                </div>
-            </#if>
-
-            <#if vocabulary.issued??>
-                <div class="text-smaller text-gbif-primary">
-                <span>
-                    <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}
-                </span>
-                </div>
-            </#if>
         </div>
     </div>
 </div>
 
-<main class="container">
+<main class="container main-content-container">
     <div class="my-3 p-3">
         <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
             <@s.text name="basic.description"/>
@@ -52,6 +54,21 @@
                 ${vocabulary.description}
             </div>
         </#if>
+
+      <div class="row pb-2 text-smaller">
+        <div class="col-lg-3">
+          <strong><@s.text name="basic.latest"/></strong>
+        </div>
+        <div class="col-lg-9">
+            <#if vocabulary.latest>
+              <i class="bi bi-circle-fill text-gbif-primary"></i>
+              <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
+            <#else>
+              <i class="bi bi-circle-fill text-gbif-danger"></i>
+              <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
+            </#if>
+        </div>
+      </div>
 
         <div class="row pb-2 text-smaller">
             <div class="col-lg-3">

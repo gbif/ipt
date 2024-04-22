@@ -2,6 +2,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.source.title'/></title>
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script>
     $(document).ready(function(){
         $('.confirm').jConfirmAction({
@@ -57,70 +60,121 @@
 
             $('#' + inputName).val(inputValue)
         });
+
+        $("#rdbms").select2({
+            placeholder: '',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 15,
+            theme: 'bootstrap4'
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
+<#assign currentLocale = .vars["locale"]/>
+<#if source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE' || source.sourceType == 'URL'>
+    <#assign formattedFileSize><@source.formattedFileSize(currentLocale)?interpret /></#assign>
+</#if>
 
     <form class="topForm needs-validation" action="source.do" method="post" novalidate>
+        <div class="container px-0">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
+
         <div class="container-fluid bg-body border-bottom">
-            <div class="container my-3">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-            </div>
+            <div class="container border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center">
+                        <div class="text-center fs-smaller">
+                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center mb-0">
+                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                    <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.source"/></li>
+                                </ol>
+                            </nav>
+                        </div>
 
-            <div class="container my-3 p-3">
-                <div class="text-center">
-                    <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center mb-0">
-                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.source"/></li>
-                            </ol>
-                        </nav>
-                    </div>
-
-                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
-                        <@popoverPropertyInfo "manage.source.intro"/>
-                        <@s.text name='manage.source.title'/>
-                    </h5>
-
-                    <div class="text-smaller">
-                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                    </div>
-
-                    <div class="mt-2">
-                        <#if source??>
-                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="analyze" key="button.analyze"/>
-                            <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary top-button">
-                                <@s.text name="button.preview"/>
-                            </a>
-                            <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+                        <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
+                            <#if source.name?has_content>
+                                ${source.name}
+                            <#else>
+                                <@s.text name='manage.source.title'/>
                             </#if>
-                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
-                        <#else>
-                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                        </#if>
+                        </h5>
+
+                        <div class="text-smaller">
+                            <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                        </div>
+
+                        <div class="mt-2">
+                            <#if source??>
+                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <@s.text name="button.options"/>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete" style="">
+                                      <li>
+                                          <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
+                                      </li>
+                                      <li>
+                                        <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                            <@s.text name="button.preview"/>
+                                        </a>
+                                      </li>
+                                        <#if id?has_content>
+                                      <li>
+                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                      </li>
+                                        </#if>
+                                    </ul>
+                                </div>
+
+                                <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                            <#else>
+                                <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                            </#if>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container-fluid bg-body">
-            <main class="container">
-                <div class="my-3 p-3">
+            <main class="container px-0">
+                <div class="my-3 p-2">
                     <div class="row g-3">
                         <input type="hidden" name="r" value="${resource.shortname}" />
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
-                            <div class="col-12">
+                            <div class="col-12 border rounded px-lg-5 px-md-4 px-3 py-lg-4 py-3 mb-3">
                                 <div class="table-responsive">
-                                    <table id="source-properties" class="table table-sm table-borderless text-smaller">
+                                    <table id="source-properties" class="table table-sm text-smaller">
+                                        <tr>
+                                            <th class="col-lg-2 col-md-3"><@s.text name="manage.overview.source.sourceType"/></th>
+                                            <td>
+                                                <#if source.sourceType == 'EXCEL_FILE'>
+                                                    <@s.text name="manage.overview.source.excel"/>
+                                                <#elseif source.sourceType == 'TEXT_FILE'>
+                                                    <@s.text name="manage.overview.source.file"/>
+                                                <#elseif source.sourceType == 'URL'>
+                                                    <@s.text name="manage.overview.source.url"/>
+                                                <#elseif source.sourceType == 'SQL'>
+                                                    <@s.text name="manage.overview.source.sql"/>
+                                                </#if>
+                                          </td>
+                                        </tr>
+
                                         <tr>
                                             <th class="col-lg-2 col-md-3"><@s.text name='manage.source.readable'/></th>
                                             <td>
@@ -153,11 +207,11 @@
                                                 <tr>
                                                     <th><@s.text name='manage.source.size'/></th>
                                                     <td>
-                                                        <#if (source.fileSizeFormatted)??>
-                                                            <@source.fileSizeFormatted?interpret />
-                                                        <#else>
+                                                        <#attempt>
+                                                            <@source.formattedFileSize(currentLocale)?interpret />
+                                                        <#recover>
                                                             -
-                                                        </#if>
+                                                        </#attempt>
                                                     </td>
                                                 </tr>
                                             </#if>
@@ -167,7 +221,7 @@
                                                     <td>${(source.lastModified?datetime?string.long_medium)!}</td>
                                                 </tr>
                                             </#if>
-                                        <#elseif source.sourceType == 'TEXT_FILE'>
+                                        <#elseif source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE'>
                                             <tr>
                                                 <th><@s.text name='manage.source.file'/></th>
                                                 <td>${(source.file.getAbsolutePath())!}</td>
@@ -182,11 +236,13 @@
                                             </tr>
                                             <tr>
                                                 <th><@s.text name='manage.source.size'/></th>
-                                                <td><#if (source.fileSizeFormatted)??>
-                                                        <@source.fileSizeFormatted?interpret />
-                                                    <#else>
+                                                <td>
+                                                    <#attempt>
+                                                        <@source.formattedFileSize(currentLocale)?interpret />
+                                                    <#recover>
                                                         -
-                                                    </#if></td>
+                                                    </#attempt>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th><@s.text name='manage.source.modified'/></th>
@@ -207,9 +263,11 @@
                                 <#if problem??><div class="callout callout-danger my-0">${problem!}</div></#if>
                             </div>
 
-                            <div class="col-lg-6">
-                                <@input name="source.name" help="i18n" disabled=id?has_content/>
-                            </div>
+                            <#if !id?has_content>
+                                <div class="col-lg-6">
+                                    <@input name="source.name" help="i18n"/>
+                                </div>
+                            </#if>
 
                             <#-- inputs used by multiple source types -->
                             <#macro multivalue>
@@ -265,7 +323,6 @@
 
                             <#-- excel source -->
                             <#elseif source.isExcelSource()>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
@@ -278,7 +335,6 @@
 
                             <#-- file source -->
                             <#elseif source.isFileSource()>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
@@ -298,7 +354,6 @@
                                     <@dateFormat/>
                                 </div>
                             <#else>
-                                <div class="col-lg-6"></div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>

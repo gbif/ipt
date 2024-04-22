@@ -20,8 +20,9 @@ import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -31,18 +32,19 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.ipt.model.Agent;
-import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,16 +53,20 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.dispatcher.Parameter;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.opensymphony.xwork2.ActionContext;
 
 public class MetadataAction extends ManagerBaseAction {
 
@@ -69,6 +75,7 @@ public class MetadataAction extends ManagerBaseAction {
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
+  private final ResourceMetadataInferringService resourceMetadataInferringService;
   private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
   private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
   private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
@@ -89,15 +96,13 @@ public class MetadataAction extends ManagerBaseAction {
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
   private List<String> occurrenceSubtypeKeys;
+  private List<String> samplingEventSubtypeKeys;
 
   private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
-  private InferredMetadata inferredMetadata;
-  private BBox inferredGeocoverage;
-  private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
-  private KeyNamePair inferredTemporalCoverage;
+  private InferredEmlMetadata inferredMetadata;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -105,13 +110,19 @@ public class MetadataAction extends ManagerBaseAction {
   private static Map<String, String> licenseTexts;
   private static Map<String, String> userIdDirectories;
 
+  private DataDir dataDir;
+  private File file;
+
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings configWarnings) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager,
+    ResourceMetadataInferringService resourceMetadataInferringService, ConfigWarnings configWarnings, DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.resourceMetadataInferringService = resourceMetadataInferringService;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.configWarnings = configWarnings;
+    this.dataDir = dataDir;
   }
 
   /**
@@ -224,7 +235,7 @@ public class MetadataAction extends ManagerBaseAction {
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.OCCURRENCE.toString())) {
         return getOccurrenceSubtypesMap();
       } else if (resource.getCoreType().equalsIgnoreCase(CoreRowType.SAMPLINGEVENT.toString())) {
-        return getEmptySubtypeMap(); // because there are currently no dataset subtypes for sampling event datasets
+        return getSamplingEventSubtypesMap();
       } else if (CoreRowType.OTHER.toString().equalsIgnoreCase(resource.getCoreType())) {
         return getEmptySubtypeMap();
       }
@@ -287,16 +298,44 @@ public class MetadataAction extends ManagerBaseAction {
     }
 
     // take the section parameter from the requested url
+    String requestURI = req.getRequestURI();
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
+
+    // uploadlogo - redirect to additional metadata section
+    if (requestURI.contains("uploadlogo")) {
+      section = MetadataSection.ADDITIONAL_SECTION;
+    }
+
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if absent or re-infer if requested
-    if (reinferMetadata || resource.getInferredMetadata() == null) {
-      inferredMetadata = resourceManager.inferMetadata(resource);
+    boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
+        && resource.getInferredMetadata().getLastModified() != null
+        && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
+
+    // infer metadata if:
+    // 1) It was requested
+    // 2) It is absent
+    // 3) Mappings were changed
+    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
+      InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
+
+      if (inferredMetadataRaw instanceof InferredEmlMetadata) {
+        inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;
+      } else {
+        LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
+                InferredEmlMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+        inferredMetadata = new InferredEmlMetadata();
+      }
       resource.setInferredMetadata(inferredMetadata);
       resourceManager.saveInferredMetadata(resource);
     } else {
-      inferredMetadata = resource.getInferredMetadata();
+      if (resource.getInferredMetadata() instanceof InferredEmlMetadata) {
+        inferredMetadata = (InferredEmlMetadata) resource.getInferredMetadata();
+      } else {
+        LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
+                InferredEmlMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+        inferredMetadata = new InferredEmlMetadata();
+      }
     }
 
     switch (section) {
@@ -556,6 +595,15 @@ public class MetadataAction extends ManagerBaseAction {
     return datasetSubtypesCopy;
   }
 
+  public Map<String, String> getSamplingEventSubtypesMap() {
+    // exclude subtypes known to relate to Checklist type
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
+    for (String key : checklistSubtypeKeys) {
+      datasetSubtypesCopy.remove(key);
+    }
+    return datasetSubtypesCopy;
+  }
+
   /**
    * Exclude all known Occurrence subtypes from the complete Map of Checklist dataset subtypes, and return it. To
    * exclude a newly added Occurrence subtype, just extend the static list above. Called from Struts, so must be
@@ -605,6 +653,12 @@ public class MetadataAction extends ManagerBaseAction {
       checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
     checklistSubtypeKeys = Collections.unmodifiableList(checklistKeys);
+
+    List<String> samplingEventKeys = new ArrayList<>();
+    for (DatasetSubtype type : DatasetSubtype.SAMPLING_EVENT_DATASET_SUBTYPES) {
+      samplingEventKeys.add(type.name().replaceAll("_", "").toLowerCase());
+    }
+    samplingEventSubtypeKeys = Collections.unmodifiableList(samplingEventKeys);
   }
 
   void setDatasetSubtypes(Map<String, String> datasetSubtypes) {
@@ -617,6 +671,10 @@ public class MetadataAction extends ManagerBaseAction {
 
   List<String> getOccurrenceSubtypeKeys() {
     return occurrenceSubtypeKeys;
+  }
+
+  List<String> getSamplingEventSubtypeKeys() {
+    return samplingEventSubtypeKeys;
   }
 
   /**
@@ -939,16 +997,40 @@ public class MetadataAction extends ManagerBaseAction {
     return s;
   }
 
-  public InferredMetadata getInferredMetadata() {
+  public InferredEmlMetadata getInferredMetadata() {
     return inferredMetadata;
   }
 
-  public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
-    return inferredTaxonomicCoverage;
+  public void setFile(File file) {
+    this.file = file;
   }
 
-  public KeyNamePair getInferredTemporalCoverage() {
-    return inferredTemporalCoverage;
+  public String uploadLogo() {
+    if (file != null) {
+      // remove any previous logo file
+      for (String suffix : Constants.IMAGE_TYPES) {
+        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
+      }
+      // inspect file type
+      String type = "jpeg";
+      String fileContentType = Optional.ofNullable(ActionContext.getContext())
+        .map(ActionContext::getParameters)
+        .map(p -> p.get("fileContentType"))
+        .map(Parameter::getValue)
+        .orElse(null);
+
+      if (fileContentType != null) {
+        type = StringUtils.substringAfterLast(fileContentType, "/");
+      }
+      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
+      try {
+        FileUtils.copyFile(file, logoFile);
+      } catch (IOException e) {
+        LOG.warn(e.getMessage());
+      }
+      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+    }
+    return INPUT;
   }
 
   /**

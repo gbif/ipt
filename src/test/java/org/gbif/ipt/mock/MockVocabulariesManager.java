@@ -66,6 +66,11 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return null;
   }
 
+  @Override
+  public Vocabulary installIfAbsentOrOutdated(URL url) {
+    return null;
+  }
+
   public Vocabulary get(URI uri) {
     return new Vocabulary();
   }

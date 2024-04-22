@@ -9,9 +9,10 @@
 <head>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-borders.css" />
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/jquery.dataTables-1.13.1.min.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/jquery.dataTables-1.13.6.min.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/responsive.dataTables-2.5.0.min.css" />
 
     <!-- Bootstrap icons -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
@@ -30,6 +31,8 @@
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
+            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
+            --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
             --link-color: ${linkColor!"75, 162, 206"};
         }
     </style>
@@ -44,28 +47,32 @@
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script src="${baseURL}/js/modernizr.js"></script>
-    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
+    <script>
+        window.addEventListener("scroll", () => {
+            const header = document.querySelector("header");
+            const scrollY = window.scrollY;
 
-    [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
-    [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1]
+            if (scrollY > 100) { // Adjust the scroll position where the header should shrink
+                header.classList.add("shrink");
+            } else {
+                header.classList.remove("shrink");
+            }
+        });
+    </script>
+
+
+    [#-- GOOGLE ANALYTICS - asynchroneous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
+    [#if (cfg.analyticsKey!"")?length>1]
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${cfg.analyticsKey}"></script>
         <script>
-            var _gaq = _gaq || [];
-            [#if (cfg.analyticsKey!"")?length>1]
-            _gaq.push(['_setAccount', '${cfg.analyticsKey}']);
-            _gaq.push(['_trackPageview']);
-            [/#if]
-            [#if cfg.gbifAnalytics]
-            _gaq.push(['gbif._setAccount', '${cfg.getProperty("dev.analytics.gbif")}']);
-            _gaq.push(['gbif._trackPageview']);
-            [/#if]
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${cfg.analyticsKey}');
         </script>
     [/#if]
 
@@ -102,3 +109,4 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     [#assign currentMenu = "home"]
+    [#assign selectNoResultsFound][@s.text name="select.noResults"/][/#assign]

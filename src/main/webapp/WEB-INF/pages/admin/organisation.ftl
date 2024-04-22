@@ -15,7 +15,17 @@
                 buttonType: "danger"
             });
 
-            $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"100%", allowClear: true, theme: 'bootstrap4'});
+            $('select#organisation\\.key').select2({
+                placeholder: '${action.getText("admin.organisation.name.select")}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
 
             $('#organisation\\.key').change(function() {
 
@@ -94,13 +104,15 @@
                 }
             });
 
-            $("#doiRegistrationAgencyAssociation").change(function () {
-                if (!$('#doiRegistrationAgencyAssociation').is(':checked')) {
+            <#if !organisationWithDoiRegistrationAgencyPresent>
+            $("#organisation\\.associatedWithDoiRegistrationAgency").change(function () {
+                if (!$('#organisation\\.associatedWithDoiRegistrationAgency').is(':checked')) {
                     hideDoiRegistrationFields();
                 } else {
                     showDoiRegistrationFields();
                 }
             });
+            </#if>
 
             $("#save").on("click", displayProcessing);
         });
@@ -112,57 +124,58 @@
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/popover.ftl">
 
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3">
+                <div class="text-center fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.organisations.organisation"/></li>
+                        </ol>
+                    </nav>
+                </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                        <li class="breadcrumb-item"><a href="${baseURL}/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.organisations.organisation"/></li>
-                    </ol>
-                </nav>
-            </div>
+                <div class="text-center">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                        <#if id?has_content>
+                            ${organisation.name!}
+                        <#else>
+                            <@s.text name="admin.organisation.add.title"/>
+                        </#if>
+                    </h1>
 
-            <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if id?has_content>
-                        ${organisation.name!}
-                    <#else>
-                        <@s.text name="admin.organisation.add.title"/>
+                    <#if organisation.key?has_content>
+                        <div class="text-smaller">
+                            <a href="${portalUrl}/publisher/${organisation.key}" target="_blank"><@s.text name="about.link"/></a>
+                        </div>
                     </#if>
-                </h1>
 
-                <#if organisation.key?has_content>
-                    <div class="text-smaller">
-                        <a href="${portalUrl}/publisher/${organisation.key}" target="_blank"><@s.text name="about.link"/></a>
+                    <div class="mt-2">
+                        <@s.submit name="save" form="organisationsForm" key="button.save" cssClass="button btn btn-sm btn-outline-gbif-primary top-button"/>
+                        <#if id?has_content>
+                            <@s.submit name="delete" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
+                        </#if>
+                        <@s.submit name="cancel" form="organisationsForm" key="button.cancel" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
                     </div>
-                </#if>
-
-                <div class="mt-2">
-                    <@s.submit name="save" form="organisationsForm" key="button.save" cssClass="button btn btn-sm btn-outline-gbif-primary top-button"/>
-                    <#if id?has_content>
-                        <@s.submit name="delete" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
-                    </#if>
-                    <@s.submit name="cancel" form="organisationsForm" key="button.cancel" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container main-content-container">
         <div class="my-3 p-3">
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
-                <div class="row g-3">
+                <div class="row g-3 mt-1">
                     <#if id?has_content>
-                        <div class="col-lg-4">
-                            <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true requiredField=true/>
-                        </div>
+                        <p>${organisation.description!}</p>
 
+                        <@s.hidden id="organisation.name" name="organisation.name" required="true" />
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
                         <@s.hidden name="id" id="id" required="true" />
                         <!-- preserve other fields not edited -->
@@ -190,7 +203,7 @@
                         <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
@@ -215,14 +228,18 @@
                         </div>
                     </#if>
 
-                    <div class="col-lg-4">
-                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
-                    </div>
-
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
                     </div>
+                </div>
 
+                <div class="row g-3 mt-1">
+                    <div class="col-lg-6">
+                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-1">
                     <div class="col-12">
                         <#if id?has_content>
                             <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="organisation.canHost" help="i18n"/>
@@ -231,14 +248,10 @@
                         </#if>
                     </div>
 
-                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content />
+                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content || organisation.associatedWithDoiRegistrationAgency />
 
                     <div class="col-12">
-                        <#if id?has_content>
-                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?string}" help="i18n"/>
-                        <#else>
-                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="false" help="i18n"/>
-                        </#if>
+                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?c}" help="i18n"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>

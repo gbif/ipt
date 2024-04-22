@@ -111,7 +111,7 @@ A more detailed discussion of these three options follows.
 
 The xref:index.adoc[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As.
 
-The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
+The simplest way to begin using the IPT is to request a free account on a https://www.gbif.org/data-hosting-centres[trusted data hosting centre^] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
 Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point.
 
@@ -132,7 +132,7 @@ GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that ser
 
 Each template provides inline help and instructions in the worksheets.
 
-To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country.
+To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a https://www.gbif.org/data-hosting-centres[trusted data hosting centre^] located in your country or community.
 
 === Publishing DwC-A manually
 
@@ -179,7 +179,7 @@ To use the validator:
 . Validate
 . Review the response that and address any validation errors
 . Repeat the process until the file is successfully validated.
-. Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
+. Contact the GBIF Help Desk if you get stuck (helpdesk@gbif.org).
 
 == Registration of DwC-As with GBIF
 
@@ -195,7 +195,7 @@ Fortunately, the IPT and GBIF API support automatic registration for datasets. O
 
 You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
-Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information.
+Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the Help Desk for more information.
 
 == Annex: Preparing Your Data
 

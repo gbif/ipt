@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-01-13 12:19\n"
+"POT-Creation-Date: 2023-08-14 13:55+0000\n"
+"PO-Revision-Date: 2023-08-14 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -20,91 +20,91 @@ msgstr ""
 #: en/modules/ROOT/pages/versioning.adoc:1
 #, no-wrap
 msgid "Dataset Versioning Policy"
-msgstr ""
+msgstr "データセットのバージョン管理ポリシー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:4
 msgid "The IPT carefully tracks the major and minor version changes for a dataset so that each published version can be unambiguously identified, and users can easily see when significant changes to the dataset occurred. The relationship between all versions is visible in the version history table (on its homepage) and also gets documented in the DOI metadata."
-msgstr ""
+msgstr "IPTはデータセットのメジャーバージョンとマイナーバージョンの変更を注意深く追跡し、公開された各バージョンを明確に識別できるようにして、ユーザーはデータセットにいつ重要な変更があったかを簡単に知ることができるようにしています。すべてのバージョン間の関係は、バージョン履歴表（ホームページ上）で見ることができ、DOIメタデータにも記録されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:6
 msgid "The versioning policy that the IPT uses is described below. It is important to note that the IPT’s versioning policy is based on http://schema.datacite.org/[DataCite's recommendations], which are based on the work of the http://wiki.esipfed.org/index.php/Interagency_Data_Stewardship/Citations/provider_guidelines#Note_on_Versioning_and_Locators[Earth Science Information Partners (ESIP)]."
-msgstr ""
+msgstr "IPTが採用しているバージョン管理ポリシーは以下で説明されています。IPTのバージョン管理ポリシーは、Earth Science Information Partners（ESIP）の活動に基づくDataCiteの推奨事項に基づいていることに留意することが重要です。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/versioning.adoc:7
 #, no-wrap
 msgid "Versioning Policy"
-msgstr ""
+msgstr "バージョン管理ポリシー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:10
 msgid "Major and minor versions are used to track a dataset's changes through time."
-msgstr ""
+msgstr "メジャーバージョンとマイナーバージョンは、データセットの時間的な変化を追跡するために使用されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:11
 msgid "The version number uses the syntax major_version.minor_version."
-msgstr ""
+msgstr "バージョン番号は、major_version.minor_versionという構文で表されます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:12
 msgid "A new major version is assigned to the dataset (a) the first time it’s published, or (b) after it has been republished following one or more scientifically significant changes to the dataset. The publisher must decide what constitutes a scientifically significant change (see definition below for help)."
-msgstr ""
+msgstr "新しいメジャーバージョンは、a）データセットが最初に公開されたとき、またはb）データセットに科学的に重要な変更が一つ以上加えられた後に再公開されたときに割り当てられます。何をもって科学的に重要な変更とするかは、公開者が決めなければなりません（以下の定義を参考にしてください）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:13
 msgid "A scientifically significant change (a) typically affects the majority of records in the dataset, and (b) could change the results of a scientific analysis using the dataset."
-msgstr ""
+msgstr "科学的に重要な変更とは、a）通常、データセット中の大半のレコードに影響を与え、b）そのデータセットを使った科学的分析の結果を変更しうるものです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:14
 msgid "A new major version leads to the creation of a new DOI, whereas a new minor version does not."
-msgstr ""
+msgstr "新しいメジャーバージョンは新しいDOIの作成につながりますが、新しいマイナーバージョンはそうではありません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:15
 msgid "A new minor version is assigned to the dataset every time the dataset is published, and it isn’t appropriate to assign it a new major version."
-msgstr ""
+msgstr "新しいマイナーバージョンは、データセットが公開されるたびに割り当てられ、これに新しいメジャーバージョンを割り当てるのは適切ではありません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:16
 msgid "For continuously updated datasets (e.g. time series datasets), a new minor version is assigned to the dataset each time it is republished, so long as ongoing additions don’t change pre-existing records in a scientifically significant way. This decision must be made by the publisher."
-msgstr ""
+msgstr "継続的に更新されるデータセット（時系列データセットなど） については、継続的な追加によって既存の記録に科学的に重大な変化を与えない限り、再公開のたびに新しいマイナーバージョンを割り当てることができます。この決定は公開者によってなされなければなりません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:17
 msgid "A detailed summary of what has changed since the last publication should ideally be entered by the publisher before any new major or minor version of the dataset can be published."
-msgstr ""
+msgstr "前回の公開から何が変わったかについての詳しい要約は、そのデータセットの新しいメジャーバージョンやマイナーバージョンを公開する前に、公開者が入力するのが理想的です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:18
 msgid "Every major and minor version of a dataset has its own IPT landing page, making the archived version of the dataset (DwC-A, EML) freely available for download. Of course only landing pages of publicly available versions will be freely accessible on the Internet."
-msgstr ""
+msgstr "データセットのメジャーバージョンとマイナーバージョンには、それぞれIPTのランディングページがあり、データセットのアーカイブバージョン（DwC-A、EML）が自由にダウンロードできるようになっています。もちろん、一般に公開されているバージョンのランディングページだけが、インターネット上で自由にアクセスできるようになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:19
 msgid "All IPT landing pages will comprise a comprehensive metadata record describing the datasets, and provide direct access to the data or information about how to access it."
-msgstr ""
+msgstr "すべてのIPTランディングページは、データセットを説明する包括的なメタデータレコードで構成され、データへの直接アクセスまたはアクセス方法に関する情報を提供します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:20
 msgid "The landing page of the old major version points (has a link) to the new version, with an explanation of the status of the old version."
-msgstr ""
+msgstr "旧メジャーバージョンのランディングページは、旧バージョンの状態の説明とともに、新バージョン（のリンク）を示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
-msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted."
+msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI by the IPT, all its versions are archived otherwise its permanently deleted."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
 msgid "The DOI metadata should be as rich as possible, including where possible (a) alternate identifiers for the dataset, (b) relationships to other versions, (c) relationships to articles the dataset cites, (d) ORCID where contacts are listed, etc."
-msgstr ""
+msgstr "DOIのメタデータはできるだけ豊富であるべきで、可能な限り、a）データセットの代替識別子、b）他のバージョンとの関係、c）データセットが引用している論文との関係、d）連絡先の記載があるORCIDなどを含めるべきです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
 msgid "The dataset citation, should always include the version number, replacing the need to use an Access Date and Time for citing time series datasets, for example."
-msgstr ""
+msgstr "データセットの引用には、常にバージョン番号を含めるべきであり、例えば時系列データセットを引用する際に、アクセス日時を用いる必要がなくなります。"
 

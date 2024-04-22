@@ -18,6 +18,7 @@ import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
 import org.gbif.ipt.model.Resource;
@@ -102,6 +103,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
       LOG.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
+
+      resourceManager.updateOrganisationNameForResources(organisation.getKey(), organisation.getName(), organisation.getAlias());
     }
     return organisation;
   }
@@ -295,6 +298,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
+  public Network getNetwork() {
+    return registration.getNetwork();
+  }
+
+  @Override
   public Ipt getIpt() {
     return registration.getIpt();
   }
@@ -356,7 +364,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
-    updateAssociatedOrganisationsMetadata();
+    try {
+      updateAssociatedOrganisationsMetadata();
+    } catch (IOException e) {
+      LOG.error("Failed to update associated organisations", e);
+    }
   }
 
   @Override
@@ -453,27 +465,24 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Update the metadata of each organization that has been added to the IPT with the latest version coming from the
    * Registry.
    */
-  private void updateAssociatedOrganisationsMetadata() {
-    try {
-      // 1. update associated organisations' metadata
-      for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
-        Organisation o = entry.getValue();
-        updateOrganisationMetadata(o);
-        // replace organisation in list of associated organisations now
-        registration.getAssociatedOrganisations().put(entry.getKey(), o);
-      }
-
-      // 2. update hosting organisation's metadata
-      Organisation hostingOrganisation = registration.getHostingOrganisation();
-      if (hostingOrganisation != null) {
-        updateOrganisationMetadata(hostingOrganisation);
-      }
-
-      // ensure changes are persisted to registration2.xml
-      save();
-    } catch (IOException e) {
-      LOG.error("A problem occurred saving ");
+  @Override
+  public void updateAssociatedOrganisationsMetadata() throws IOException {
+    // 1. update associated organisations' metadata
+    for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
+      Organisation o = entry.getValue();
+      updateOrganisationMetadata(o);
+      // replace organisation in list of associated organisations now
+      registration.getAssociatedOrganisations().put(entry.getKey(), o);
     }
+
+    // 2. update hosting organisation's metadata
+    Organisation hostingOrganisation = registration.getHostingOrganisation();
+    if (hostingOrganisation != null) {
+      updateOrganisationMetadata(hostingOrganisation);
+    }
+
+    // ensure changes are persisted to registration2.xml
+    save();
   }
 
   /**
@@ -523,6 +532,36 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
     } else {
       LOG.debug("Update of organisation failed: organisation was null");
+    }
+  }
+
+  @Override
+  public void associateWithNetwork(String networkKey, String networkName) {
+    try {
+      Network network = registration.getNetwork();
+      if (network != null) {
+        network.setKey(networkKey);
+        network.setName(networkName);
+      } else {
+        Network n = new Network();
+        n.setName(networkName);
+        n.setKey(networkKey);
+        registration.setNetwork(n);
+      }
+
+      save();
+    } catch (IOException e) {
+      LOG.error("Failed to associate with the network");
+    }
+  }
+
+  @Override
+  public void removeAssociationWithNetwork() {
+    try {
+      registration.setNetwork(null);
+      save();
+    } catch (IOException e) {
+      LOG.error("Failed to remove association with the network");
     }
   }
 

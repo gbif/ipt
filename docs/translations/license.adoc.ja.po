@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2023-02-13 08:56\n"
+"PO-Revision-Date: 2023-03-07 07:41\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -31,67 +31,67 @@ msgstr "手順"
 #: en/modules/ROOT/pages/license.adoc:1
 #, no-wrap
 msgid "Adding a new License"
-msgstr ""
+msgstr "新規ライセンスの追加"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:6
 msgid "This page contains configuration instructions for advanced IPT users only.  Datasets published with a different license to those included by GBIF cannot be published to GBIF, or registered to GBIF."
-msgstr ""
+msgstr "このページは、IPT上級者向けの設定方法です。GBIFに含まれるライセンスと異なるライセンスで公開されたデータセットは、GBIFへの公開、およびGBIFへの登録はできません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:8
 msgid "We recommend publishing a metadata-only dataset instead."
-msgstr ""
+msgstr "メタデータのみのデータセットを公開することをお勧めします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:11
 msgid "Since IPT v2.2 the IPT offers 3 machine readable licenses to choose from when applying a license to your resource:"
-msgstr ""
+msgstr "IPT v2.2以降、IPTは3種類の機械可読ライセンスを提供し、リソースにライセンスを適用する際に選択することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:13
 msgid "Public Domain (CC0 1.0, technically a waiver)"
-msgstr ""
+msgstr "パブリックドメイン（CC0 1.0、厳密には権利放棄）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:14
 msgid "Creative Commons Attribution (CC-BY 4.0)"
-msgstr ""
+msgstr "クリエイティブ・コモンズ　表示（CC-BY 4.0）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:15
 msgid "Creative Commons Attribution Non Commercial (CC-BY-NC 4.0)"
-msgstr ""
+msgstr "クリエイティブ・コモンズ　表示 - 非営利（CC-BY-NC 4.0）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:17
 msgid "Each license has a default rights statement associated to it that gets shown to users. For example, if the publisher chooses to apply CC-BY to their resource, this rights statement shown to users is:"
-msgstr ""
+msgstr "各ライセンスには、ユーザーに表示されるデフォルトの権利声明が関連付けられています。たとえば、出版者がリソースにCC-BYを適用することを選択した場合、利用者に表示されるこの権利声明は次のようになります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:20
 msgid "This work is licensed under a https://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License]."
-msgstr ""
+msgstr "この作品は、link:https://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License]の下に提供されています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:22
 msgid "The list of licenses and their rights statements can be modified, however, which is useful for communities that need to apply different licenses to their resources, or that want to include additional usage instructions."
-msgstr ""
+msgstr "ただし、ライセンスのリストとその権利表記は変更することができます。これは、自分たちのリソースに異なるライセンスを適用する必要があるコミュニティや、追加の使用方法を含めたいコミュニティにとって便利です。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:24
 msgid "The steps below explain how to configure the IPT with another license to choose from."
-msgstr ""
+msgstr "以下の手順は、別のライセンスを選択してIPTを設定する方法を説明します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:28
 msgid "Locate the licenses.properties file e.g. `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:"
-msgstr ""
+msgstr "licenses.propertiesファイル（例：`/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`）を探します。テキストエディタでファイルを開き、以下のようにします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:30
 msgid "Add a new property defining the license name using the following format:"
-msgstr ""
+msgstr "次のフォーマットを使用して、ライセンス名を定義する新しいプロパティを追加します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:35
@@ -99,12 +99,14 @@ msgstr ""
 msgid "license.name.<prefix>=Name\n"
 "# For example:\n"
 "license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0\n"
-msgstr ""
+msgstr "license.name.<prefix>=Name\n"
+"# For example:\n"
+"license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:38
 msgid "Add a new property defining the license rights statement using the following format:"
-msgstr ""
+msgstr "次のフォーマットを利用して、権利声明を定義する新しいプロパティを追加します。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:43
@@ -112,35 +114,37 @@ msgstr ""
 msgid "license.text.<prefix>=Text\n"
 "# For example:\n"
 "license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
-msgstr ""
+msgstr "license.text.<prefix>=Text\n"
+"# For example:\n"
+"license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
 msgid "Double check"
-msgstr ""
+msgstr "再確認"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:47
 msgid "the _prefix_ of both keys matches,"
-msgstr ""
+msgstr "両方のキーの_prefix_が一致し"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:48
 msgid "an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable,"
-msgstr ""
+msgstr "（ライセンスマシンを読み取り可能にするために）ライセンス名とURLを定義するHTMLアンカーがテキストに含まれていて、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:49
 msgid "the name used in the HTML anchor is the same as name used in the name property above."
-msgstr ""
+msgstr "HTMLアンカーで使用される名前が上記のnameプロパティで使用される名前と同じであること。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50
 msgid "Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT"
-msgstr ""
+msgstr "次に、IPTをアップグレードすると上書きされるため、licenses.propertiesファイルをバックアップします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
-msgstr ""
+msgstr "サーブレットコンテナ（Tomcatなど）を再起動して、新しい設定を有効にします。"
 

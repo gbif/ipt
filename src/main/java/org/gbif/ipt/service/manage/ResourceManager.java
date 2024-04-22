@@ -14,7 +14,6 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -27,6 +26,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
@@ -38,6 +38,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -172,6 +173,13 @@ public interface ResourceManager {
   List<Resource> list();
 
   /**
+   * list all resources in the IPT by the type.
+   *
+   * @return list of resources, or an empty list if none were found
+   */
+  List<Resource> list(String type);
+
+  /**
    * list all resources in the IPT having a certain publication status.
    *
    * @param status PublicationStatus
@@ -271,6 +279,13 @@ public interface ResourceManager {
    * @param resource Resource
    */
   void saveEml(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Save the metadata file of a resource only. Complementary method to {@link #save(Resource)}.
+   *
+   * @param resource Resource
+   */
+  void saveDatapackageMetadata(Resource resource) throws InvalidConfigException;
 
   /**
    * Save the inferred metadata file of a resource. Complementary method to {@link #save(Resource)}
@@ -409,11 +424,12 @@ public interface ResourceManager {
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
 
   /**
-   * Method for inferring metadata from sources (geographic, taxonomic, temporal coverages).
-   *
-   * @param resource resource
-   *
-   * @return inferred metadata
+   * Replace the datapackage metadata file in a resource by the provided file
    */
-  InferredMetadata inferMetadata(Resource resource);
+  void replaceDatapackageMetadata(BaseAction action, Resource resource, File metadataFile, boolean validate) throws IOException, ImportException, InvalidMetadataException;
+
+  /**
+   * Update organisation name and alias for published resources.
+   */
+  void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias);
 }

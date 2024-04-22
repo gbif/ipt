@@ -35,7 +35,7 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 === Exemplar datasets
 
-* Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]
+* https://doi.org/10.5886/zw3aqw[Database of Vascular Plants of Canada (VASCAN)]
 
 === FAQ
 

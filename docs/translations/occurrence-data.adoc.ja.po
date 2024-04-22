@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-13 07:23\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -22,14 +22,13 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "導入"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:10
@@ -69,7 +68,7 @@ msgstr "DwCの必須項目"
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -83,7 +82,7 @@ msgstr "DwCの推奨フィールド"
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
 msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - 可能であればほかの上位分類も"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -98,7 +97,7 @@ msgstr "サンプルデータセット"
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "よくある質問"
@@ -107,162 +106,164 @@ msgstr "よくある質問"
 #: en/modules/ROOT/pages/occurrence-data.adoc:1
 #, no-wrap
 msgid "Occurrence Data"
-msgstr ""
+msgstr "オカレンスデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:5
 msgid "Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as xref:sampling-event-data.adoc[Sampling Event Data].  These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata]."
-msgstr ""
+msgstr "通常、ある種が特定の場所で、特定の日に発生したという証拠を提示する資料。これらのデータセットは、種の歴史的または現在の分布のマッピングに貢献するため、ほとんどのチェックリストデータを拡張するものです。データは細かい地図作成に必要な座標と座標精度を含んでいるのが理想的ですが、このようなデータセットには一般的な地域情報（国の識別子に限定されることもある）しかないことがほとんどです。またこれらのデータセットには同じ種の複数の個体が別々に記録されていることが多々あり、自然史コレクションの標本データベース、市民科学の観察、種の地図帳プロジェクトのデータなどが例に挙げられます。もし十分な情報が元のデータセットに存在するのであれば（あるいはデータセット内のすべてのオカレンスに一貫して当てはめられるのであれば）、これらのデータセットは xref:sampling-event-data.adoc[サンプリングイベントデータ] として提示することが推奨されています。これらのデータセットには、xref:resource-metadata.adoc[リソースメタデータ]に含まれるのと同じ基本的な記述情報が含まれます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/occurrence-data.adoc:6
 #, no-wrap
 msgid "How to transform your data into occurrence data"
-msgstr ""
+msgstr "データをオカレンスデータに変換する方法"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/occurrence-data.adoc:8
 #, no-wrap
 msgid "ipt2/flow-od.png"
-msgstr ""
+msgstr "ipt2/flow-od.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:17
 msgid "For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>."
-msgstr ""
+msgstr "さらなるガイダンスとして、<<Exemplar datasets,サンプルデータセット>>を見ることもできます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
 msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]."
-msgstr ""
+msgstr "DwCカラムを追加してテーブルを拡張することもできますが、利用できるのはlink:{latest-dwc-occurrence}[リスト]にあるDwC用語のみです。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:24
 msgid "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr ""
+msgstr "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excelテンプレート]]\n"
+"link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excelテンプレート（サンプルデータ含）]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:26
 msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can."
-msgstr ""
+msgstr "それを入力し、IPTにアップロードしてください。できるだけ多くのlink:http://rs.tdwg.org/dwc/terms/[DwC用語]を追加してみてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:30
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:31
 msgid "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
 msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:37
 msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - scientificNameを裏付けるため"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - 地点情報を与えるため"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
 msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - 種のオカレンス量を記録するため"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
-msgid "CUMV Amphibian Collection (Arctos): http://ipt.vertnet.org:8080/ipt/archive.do?r=cumv_amph[DwC-A] / http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[IPT homepage]"
+msgid "http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)]"
 msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:48
 #, no-wrap
 msgid "Q. How do I indicate a species was absent?"
-msgstr ""
+msgstr "Q. 種が存在しないことを示すにはどうすればいいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
 msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr ""
+msgstr "*A.* link:https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]に設定してください。さらに、link:https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]とlink:https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity]は0としてください。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
 #, no-wrap
 msgid "Q. How can I generalize sensitive species occurrence data?"
-msgstr ""
+msgstr "Q. センシティブな種のオカレンスデータを一般化するにはどうすればいいですか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:55
 #, no-wrap
 msgid "*A.* How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Where there is low risk of perverse outcomes, unrestricted publication of sensitive species data remains appropriate. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this https://www.gbif.org/resource/80512[best-practice guide]. You could refer to this http://science.sciencemag.org/content/356/6340/800[recent essay in Science], which presents a simplified assessment scheme that can be used to help assess the risks from publishing sensitive species data.\n"
-msgstr ""
+msgstr "*A.* センシティブな種のデータをどのように一般化するか（例えば、データの解像度を制限するなど）は、種のセンシティブさのカテゴリーによります。逆効果のリスクが低い場合、センシティブな種データを制限なしに公表することは依然として適切です。センシティブな種のオカレンスデータを保護することは、公開者の責任であることに留意してください。ガイドとしては、このlink:https://www.gbif.org/resource/80512[ベストプラクティスガイド]を参照してください。また、link:http://science.sciencemag.org/content/356/6340/800[Science誌の最近の論文]を参照することもできます。この論文では、センシティブな種のデータを公開することによるリスクを評価するために使用できる簡略化した評価スキームを紹介しています。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
 msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
-msgstr ""
+msgstr "データを一般化する際は分析に必要なデータの価値を下げないようにし、ダーウィンコア用語 link:https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld] を使用して、元の記録がなぜ、どのように変更されたかをユーザーに知らせる必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:59
 msgid "As indicated in the http://www.gbif.org/resource/80512[best-practice guide], you should also publish a checklist of the sensitive species being generalized. For each species you should explain:"
-msgstr ""
+msgstr "link:http://www.gbif.org/resource/80512[ベストプラクティスガイド]に示されているように、一般化されるセンシティブな種のチェックリストも公表する必要があります。またそれぞれの種に対し、以下の事項を説明する必要があります。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:61
 msgid "the rationale for inclusion in the list"
-msgstr ""
+msgstr "リスト掲載の根拠"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:62
 msgid "the geographic coverage of sensitivity"
-msgstr ""
+msgstr "センシティブな種の地理的範囲"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:63
 msgid "its sensitivity category"
-msgstr ""
+msgstr "センシティブのカテゴリー"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:64
 msgid "the date to review its sensitivity"
-msgstr ""
+msgstr "センシティブかどうか見直しを行う日付"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:66
 msgid "This will help alert other data custodians that these species are regarded as potentially sensitive in a certain area and that they should take the sensitivity into account when publishing the results of their analyses, etc."
-msgstr ""
+msgstr "これにより、他のデータ管理者に、これらの種が特定の地域で潜在的にセンシティブであるとみなされ、分析結果などを公表する際にセンシティブな状態を考慮する必要があることを伝えることができます。"
 
 #. type: Title =====
 #: en/modules/ROOT/pages/occurrence-data.adoc:67
 #, no-wrap
 msgid "Helpful formulas for generalizing point location"
-msgstr ""
+msgstr "地点の位置を一般化するための便利な計算式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:70
 msgid "The following formula obscures a latitude/longitude point by a factor of 5000m. Note pointX and pointY must be provided in 'length in meters' and TRUNC truncates the number to an integer by removing the decimal part:"
-msgstr ""
+msgstr "次の式は、緯度・経度の点を5000m単位で隠蔽します。注：pointXとpointYは「長さ（m）」で指定し、TRUNCは小数点以下を切り捨てて整数にします。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/occurrence-data.adoc:74
 #, no-wrap
 msgid "pointX = TRUNC(pointX / 5000) * 5000\n"
 "pointY = TRUNC(pointY / 5000) * 5000\n"
-msgstr ""
+msgstr "pointX = TRUNC(pointX / 5000) * 5000\n"
+"pointY = TRUNC(pointY / 5000) * 5000\n"
 

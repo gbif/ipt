@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-02-13 08:55\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"PO-Revision-Date: 2024-02-05 18:51\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -22,14 +22,13 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "はじめに"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -55,24 +54,24 @@ msgstr "手順"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Document Control"
-msgstr ""
+msgstr "文書管理"
 
 #. type: Title =
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
 #, no-wrap
 msgid "GBIF Metadata Profile – How-to Guide"
-msgstr ""
+msgstr "GBIFメタデータプロファイル - ハウツーガイド"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
 msgid "Version 2.1."
-msgstr ""
+msgstr "バージョン 2.1."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
 #, no-wrap
 msgid "figures/cover_art_adiatum.png"
-msgstr ""
+msgstr "figures/cover_art_adiatum.png"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:15
@@ -81,74 +80,77 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| バージョン | 説明                  | リリース日 | 作成者\n\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | 関連文書の整合性チェック、製品サイトへのリンクの更新、現在の機能を反映したテキストと画像の更新 | 2011年3月1日     | KB, BK, MR\n"
+"| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | wikiに移行、大幅な編集  | 2017年6月19日      | Kyle Braak\n"
+"| xref:gbif-metadata-profile.adoc[2.1]     | AsciiDoctorドキュメントに移行 | 2021年5月25日      | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr ""
+msgstr "_カバーアート：John Giez, Maidenhair fern sporophyte, Adiatum sp._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:27
 msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
-msgstr ""
+msgstr "GBIFネットワークを通じてデータを公開するためには、データセットの出所と範囲を文書化することが必要です。データセットの文書化は「リソースメタデータ」と呼ばれ、利用者がデータセットの利用適性を評価できるようにします。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:29
 msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
-msgstr ""
+msgstr "GBIFメタデータプロファイル（GMP）に準拠したメタデータ文書を作成するには、さまざまな方法があります。このハウツーガイドでは、GBIF Integrated Publishing Toolkit（IPT）のメタデータエディタ、GBIFリソースメタデータテンプレート（保留）の使用、またはメタデータドキュメントの手動生成など、最も一般的な方法を説明します。また、本ガイドは、GBIFメタデータプロファイル自体のリファレンスガイドとしても機能します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:31
 msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
-msgstr ""
+msgstr "データセットを説明するメタデータもダーウィンコア・アーカイブ（DwC-A）を使って公開されている場合、メタデータファイルは、それが説明するデータ（ダーウィンコア用語に基づく）と一緒に束ねられたDwC-Aファイルに含まれることになります。完全なDwC-Aを作成するためのヘルプは、xref:dwca-guide.adoc[ダーウィンコア・アーカイブ - ハウツーガイドを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:33
 msgid "Once the metadata document has been written and validated, it is ready to be published."
-msgstr ""
+msgstr "メタデータ文書が作成され、検証されると、公開の準備が整います。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:35
 msgid "Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable."
-msgstr ""
+msgstr "記述されたデータリソースが完全に文書化され、GBIFレジストリに登録されることが、メタデータを公開する最終的な目的です。そうすることで、データリソースはグローバルに発見できるようになります。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:36
 #, no-wrap
 msgid "Metadata Publishing Solutions"
-msgstr ""
+msgstr "メタデータ・パブリッシング・ソリューション"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
 msgid "If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies."
-msgstr ""
+msgstr "IPTを使用してサンプリングイベントデータ、オカレンスデータ、チェックリストデータを公開する場合、メタデータ作成機能が組み込まれており、これを使用してGMPに準拠したメタデータドキュメントを添付して作成することが可能です。特に複数のメタデータ文書を作成・管理する必要がある場合は、データを公開していなくてもこのツールでメタデータを作成すると便利です。一方、数個のメタデータ文書しか必要としない場合は、サンプル文書を修正するなどして手動で生成するのが最も簡単かもしれません。それぞれの方法について以下で説明します。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:40
 #, no-wrap
 msgid "Publishing metadata using the IPT"
-msgstr ""
+msgstr "IPTによるメタデータの公開"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:43
-msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation."
+msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an https://www.gbif.org/data-hosting-centres[IPT data hosting centre^] instead of installing and maintaining their own installation."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:45
 msgid "In total, the IPT has 12 different metadata forms that logically organize metadata entry:"
-msgstr ""
+msgstr "IPTには計12種類のメタデータフォームがあり、メタデータの入力を論理的に整理しています。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
-#: en/modules/ROOT/pages/manage-resources.adoc:273
+#: en/modules/ROOT/pages/manage-resources.adoc:276
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "基本のメタデータ"
@@ -157,7 +159,7 @@ msgstr "基本のメタデータ"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
-#: en/modules/ROOT/pages/manage-resources.adoc:317
+#: en/modules/ROOT/pages/manage-resources.adoc:320
 #, no-wrap
 msgid "Geographic Coverage"
 msgstr "地理的範囲"
@@ -166,7 +168,7 @@ msgstr "地理的範囲"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:330
+#: en/modules/ROOT/pages/manage-resources.adoc:333
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "生物分類学的範囲"
@@ -175,7 +177,7 @@ msgstr "生物分類学的範囲"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:356
+#: en/modules/ROOT/pages/manage-resources.adoc:359
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "時間的範囲"
@@ -183,39 +185,39 @@ msgstr "時間的範囲"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
 msgid "Other Keywords"
-msgstr ""
+msgstr "その他のキーワード"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:397
+#: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "Associated Parties"
 msgstr "アソーシエート"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:424
+#: en/modules/ROOT/pages/manage-resources.adoc:427
 #, no-wrap
 msgid "Project Data"
 msgstr "プロジェクトデータ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:443
+#: en/modules/ROOT/pages/manage-resources.adoc:446
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "収集方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:456
+#: en/modules/ROOT/pages/manage-resources.adoc:459
 #, no-wrap
 msgid "Citations"
 msgstr "引用論文"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
-#: en/modules/ROOT/pages/manage-resources.adoc:484
+#: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "Collection Data"
 msgstr "コレクションデータ"
@@ -223,11 +225,11 @@ msgstr "コレクションデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
 msgid "Physical Data"
-msgstr ""
+msgstr "物理データ"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
-#: en/modules/ROOT/pages/manage-resources.adoc:535
+#: en/modules/ROOT/pages/manage-resources.adoc:538
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "追加のメタデータ"
@@ -235,276 +237,276 @@ msgstr "追加のメタデータ"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:60
 msgid "The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
-msgstr ""
+msgstr "xref:manage-resources.adoc#metadata[IPTユーザーマニュアル]では、各フォームとそのフィールドについて詳しく説明しています。フォームには、ユーザーが要素の意味を理解するためのヘルプダイアログが用意されています（図1）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:61
 #, no-wrap
 msgid "Screenshot of a help dialog for the term “Personnel Identifier"
-msgstr ""
+msgstr "\"Personnel Identifier\"という用語のヘルプダイアログのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:62
 #, no-wrap
 msgid "figures/ipt_help_dialog.png"
-msgstr ""
+msgstr "figures/ipt_help_dialog.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
 msgid "To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2)."
-msgstr ""
+msgstr "適切なデータが入力されていることを確認するため、フィールドは検証され、記入を補助する情報メッセージがユーザーに返されます（図2）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
 #, no-wrap
 msgid "Screenshot of the field validation message displayed when an email field is submitted with an irregular email address."
-msgstr ""
+msgstr "Eメールフィールドに正しくないEメールアドレスが記入された場合に表示されるフィールド検証メッセージのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
 #, no-wrap
 msgid "figures/ipt_field_validation.png"
-msgstr ""
+msgstr "figures/ipt_field_validation.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
 msgid "For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example."
-msgstr ""
+msgstr "参考までに、GBIFメタデータプロファイルの各要素の説明と、その例を以下に示します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:72
 msgid "The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation."
-msgstr ""
+msgstr "IPTはメタデータ文書を公開し、GBIFメタデータプロファイルに照らして検証されるようにするので、ユーザーは検証を気にする必要はありません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
 msgid "If at any time the metadata are modified, the user only has to update the document and click “Publish” on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr ""
+msgstr "メタデータが変更されたら、ユーザーはドキュメントを更新し、リソース管理ページの「公開」ボタンをクリックするだけで、新しいバージョンのドキュメント（リソース）を公開することができます（図3）。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
 #, no-wrap
 msgid "Screenshot of the Published Versions section of the Manage Resource page of the IPT."
-msgstr ""
+msgstr "IPTのリソース管理ページの「公開済みバージョン」セクションのイメージ"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
 #, no-wrap
 msgid "figures/ipt_published_versions.png"
-msgstr ""
+msgstr "figures/ipt_published_versions.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79
 msgid "At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable."
-msgstr ""
+msgstr "リソース管理者は、いつでもインターネット上でリソースを公開し、その後GBIFに登録することで、グローバルに発見できるようにすることを選択することができます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:80
 #, no-wrap
 msgid "Publishing metadata using the GBIF Metadata Template"
-msgstr ""
+msgstr "GBIFメタデータテンプレートを用いたメタデータの公開"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
 msgid "The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template → 2. IPT metadata editor) can be used to generate a valid resource metadata document."
-msgstr ""
+msgstr "GBIFメタデータテンプレートは、原稿のテンプレートと同様に、リソースのメタデータを簡単に記入するためのものです。メタデータ作成者は、テンプレートにデータを入力した後、メタデータエディタを介してIPTにデータを入力する必要があります。必須項目はすべてはっきり表示されます。IPTのメタデータエディタは、すべての必須フィールドが入力されていること、および国名フィールドなど統制語彙を使用するフィールドが正しく入力されていることを確認します。また、IPTは生成されたメタデータドキュメントが有効なXMLであることを確認し、GBIFメタデータプロファイルに照らして検証を行います。最終的には、この2段階のプロセス（1. メタデータテンプレート → 2. IPTメタデータエディタ）を用いて、有効なリソースメタデータ・ドキュメントを生成することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:85
 msgid "Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example."
-msgstr ""
+msgstr "フィールドの意味について疑問がある場合は、このガイドを参照して、対応する要素の説明とその例を調べてみてください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:86
 #, no-wrap
 msgid "Publishing metadata manually"
-msgstr ""
+msgstr "メタデータを手動で公開する"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
 msgid "Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: *1.1*.  Refer to the following list to ensure it is completed properly:"
-msgstr ""
+msgstr "GBIFメタデータプロファイルの最新バージョン（*1.1*）に準拠した独自のEML XMLファイルを作成したい非IPTユーザー向けの簡単な手順です。以下のリストを参照し、正しく完成させてください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:93
 msgid "Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>`."
-msgstr ""
+msgstr "`<eml:eml>`ルート要素には、GBIFメタデータプロファイル バージョン1.1向けのスキーマロケーションを使用します。<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:94
 msgid "Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1st version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2nd version, and so on."
-msgstr ""
+msgstr "`<eml:eml>`ルート要素内に`packageId`属性を設定します。`packageId`は、そのドキュメントで固定されているグローバルにユニークなIDである必要があります。文書が変更されるたびに、新しい`packageId`が割り当てられなければなりません。例えば、最初のバージョンのドキュメントには`packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'、2番目には`packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'のように指定します。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
 msgid "Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version."
-msgstr ""
+msgstr "スキーマで指定されたすべての必須メタデータ要素と、必要な追加メタデータ要素を記入します。GBIFメタデータプロファイルの旧バージョンを使用している既存のEMLファイルを更新する場合、本バージョンの新機能のリストについては、以下のセクションを参照してください。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:96
 msgid "Ensure the EML file is valid XML. For assistance, refer to <<Validation of metadata,this section>>."
-msgstr ""
+msgstr "EMLファイルが有効な XMLであることを確認します。<<Validation of metadata,このセクション>>を参照してください。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:97
 #, no-wrap
 msgid "Validation of metadata"
-msgstr ""
+msgstr "メタデータのバリデーション"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:100
 msgid "It is essential the XML metadata document is valid, both as an XML document and as validating against the GML schema. There are several options for how to do this. The https://www.oxygenxml.com/[Oxygen XML Editor] is an excellent tool with built-in validator you can use to do this. Java programmers could also do this for example by using the https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator.java] from the GBIF registry-metadata project."
-msgstr ""
+msgstr "XMLメタデータ文書は、XML文書として、またGMLスキーマに対する検証として有効であることが不可欠です。XMLメタデータ文書がこれを満たす方法として、link:https://www.oxygenxml.com/[Oxygen XML Editor]は優れたツールで、バリデーターを内蔵しており、有用です。またJavaプログラマーは、例えばGBIFレジストリ-メタデータ・プロジェクトのlink:https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator.java]を使用して、これを行うこともできます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:101
 #, no-wrap
 msgid "What changed in version 1.1 of the GMP since 1.0.2?"
-msgstr ""
+msgstr "GMPのバージョン1.1では、1.0.2から何が変わったのでしょうか？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:104
 #, no-wrap
 msgid "*Support for a machine readable license.* Note instructions on how to provide a machine readable license can be found xref:license.adoc[here].\n"
-msgstr ""
+msgstr "*機械可読ライセンスへの対応。*機械可読ライセンスを提供する方法については、xref:license.adoc[こちら]をご覧ください。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:105
 #, no-wrap
 msgid "Support for multiple contacts, creators, metadataProvider and project personnel\n"
-msgstr ""
+msgstr "複数のcontacts、creators、metadataProvider、project personnelに対応。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:106
 #, no-wrap
 msgid "Support for userIds for any agent (e.g. ORCID)\n"
-msgstr ""
+msgstr "あらゆる代理人のuserIdsをサポート（例：ORCID）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:107
 #, no-wrap
 msgid "Support for providing information about the frequency with which changes are made to the dataset\n"
-msgstr ""
+msgstr "データセットに変更が加えられた頻度に関する情報提供のサポート。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:108
 #, no-wrap
 msgid "Support for providing a project identifier (e.g. to associate datasets under a common project)\n"
-msgstr ""
+msgstr "プロジェクト識別子の提供（例：同じプロジェクトの下で作られたデータセットを関連付ける）に対応。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:109
 #, no-wrap
 msgid "The description can be broken into separate paragraphs versus all lumped into one\n"
-msgstr ""
+msgstr "説明文は、1つの段落にまとめるのではなく、別々の段落に分けることができます。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:110
 #, no-wrap
 msgid "Support for providing information about multiple collections\n"
-msgstr ""
+msgstr "複数のコレクションに関する情報提供に対応。\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:111
 #, no-wrap
 msgid "Example files"
-msgstr ""
+msgstr "サンプルファイル"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:114
 msgid "An example EML complying with v1.1 of the GBIF Metadata Profile can be found https://cloud.gbif.org/griis/eml.do?r=global&v=2.0[here]. Note this file has been generated by the https://cloud.gbif.org/griis/[GRIIS IPT]."
-msgstr ""
+msgstr "GBIFメタデータプロファイルv1.1に準拠したEMLの例はlink:https://cloud.gbif.org/griis/eml.do?r=global&v=2.0[こちら]です。このファイルはlink:https://cloud.gbif.org/griis/[GRIIS IPT]によって生成されています。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:115
 #, no-wrap
 msgid "Annex"
-msgstr ""
+msgstr "付録"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:117
 #, no-wrap
 msgid "Background to the GBIF Metadata Profile"
-msgstr ""
+msgstr "GBIFメタデータプロファイルの背景"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:120
 msgid "Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:"
-msgstr ""
+msgstr "メタデータは文字通り「データに関するデータ」であり、データ管理システムにとって不可欠な要素です。GBIFの文脈では、リソースはデータセットであり、関連するデータの集まりとして緩やかに定義され、その粒度はデータカストディアンによって決定されます。メタデータは、いくつかの完全性のレベルで存在します。一般に、メタデータはデータのエンドユーザーに対して以下のことを可能にするものでなければなりません。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:122
 msgid "Identify/discover its existence,"
-msgstr ""
+msgstr "データの存在を識別・確認でき、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:123
 msgid "Learn how to access or acquire the data,"
-msgstr ""
+msgstr "データへのアクセス方法、取得方法を知ることができて、"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:124
 msgid "Understand its fitness-for-use, and"
-msgstr ""
+msgstr "使用目的への適合性を理解し、そして"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:125
 msgid "Learn how to transfer (obtain a copy of) the data."
-msgstr ""
+msgstr "データの転送（コピーの取得）方法を知ることができる。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:127
 msgid "The GBIF Metadata Profile (GMP) was developed in order to standardize how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile]."
-msgstr ""
+msgstr "GBIFメタデータプロファイル（GMP）は、GBIFlink:http://www.gbif.org[データポータル]におけるデータセットレベルのリソースの記述方法を標準化するために開発されました。このプロファイルは、link:http://marinemetadata.org/references/iso19139[ISO 19139メタデータプロファイル]など、他の一般的なメタデータ形式に変換することができます。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:129
 msgid "In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible."
-msgstr ""
+msgstr "GMPでは、識別に必要な最小限の必須要素を定めていますが、メタデータができるだけ記述的で完全なものとなるように、できるだけ多くの要素を使用することが推奨されます。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:130
 #, no-wrap
 msgid "Metadata Elements"
-msgstr ""
+msgstr "メタデータの要素"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:133
 msgid "The GBIF Metadata Profile is primarily based on the {eml-location}/index.html[Ecological Metadata Language (EML)]. The GBIF profile utilizes a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorized as follows:"
-msgstr ""
+msgstr "GBIFメタデータプロファイルは、主にlink:{eml-location}/index.html[Ecological Metadata Language (EML)]をベースにしています。GBIFプロファイルは、EMLのサブセットを利用し、EML仕様では対応できない追加要件を含むように拡張しています。以下の表は、プロファイルの要素の簡単な説明と、関連する場合、詳細なEMLの説明へのリンクを提供します。要素は次のように分類されます。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:135
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:146
 #, no-wrap
 msgid "Dataset (Resource)"
-msgstr ""
+msgstr "データセット（リソース）"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:136
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:176
 #, no-wrap
 msgid "Project"
-msgstr ""
+msgstr "プロジェクト"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:137
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:194
 #, no-wrap
 msgid "People and Organizations"
-msgstr ""
+msgstr "人物・機関"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:138
 msgid "Keyword Set (General Keywords)"
-msgstr ""
+msgstr "キーワードセット（一般的なキーワード）"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:139
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:239
 #, no-wrap
 msgid "Coverage"
-msgstr ""
+msgstr "範囲"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:143
@@ -518,17 +520,17 @@ msgstr "Methods"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:311
 #, no-wrap
 msgid "Intellectual Property Rights"
-msgstr ""
+msgstr "知的財産権"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:145
 msgid "Additional Metadata + NCD (Natural Collections Descriptions Data) Related"
-msgstr ""
+msgstr "追加メタデータ + 関連するNCD（Natural Collections Descriptions Data）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:149
 msgid "The dataset field has elements relating to a single dataset (resource)."
-msgstr ""
+msgstr "データセットフィールドは、1つのデータセット（リソース）に関する要素を持ちます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:174
@@ -545,12 +547,23 @@ msgid "| Term name | Description\n\n"
 "| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields.\n\n"
 "| {eml-location}/eml-resource.html#url[url] | The URL of the resource that is available online.\n\n"
 "| {eml-location}/eml-resource.html#abstract[abstract] | A brief overview of the resource that is being documented.\n"
-msgstr ""
+msgstr "| 用語名 | 説明\n\n"
+"| {eml-location}/eml-resource.html#alternateIdentifier[alternateIdentifier] | これはEML文書のUUID（Universally Unique Identifier）であり、データセットのUUIDではありません。この用語はオプションです。異なる識別子のリストを供給することができます。例：619a4b95-1a82-4006-be6a-7dbe3c9b33c5\n\n"
+"| {eml-location}/eml-resource.html#title[title] | リソースを他の似たリソースと区別するのに十分なテキストでの説明。特にタイトルを複数の言語で表現しようとする場合、複数のタイトルを提供することができます（English/enでない場合、言語を示すために「xml:lang」属性を使用します）。例： Vernal pool amphibian density data, Isla Vista, 1990-1996.\n\n"
+"| {eml-location}/eml-resource.html#creator[creator] | リソース作成者は、リソース自体の作成に責任を持つ個人または組織です。詳しくは「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#metadataProvider[metadataProvider] | metadataProviderは、リソースのドキュメントを提供する責任を負う人または組織です。詳細は「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#associatedParty[associatedParty] | associatedPartyは、リソースに関連する他の個人または組織です。これらの関係者は、リソースの作成または維持において様々な役割を担うことがあり、これらの役割は「role」要素で示す必要があります。詳細は「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#contact[contact] | 連絡先フィールドには、このデータセットの連絡先情報が含まれています。これは、データセットの使用や解釈について質問がある場合に連絡する個人または機関です。詳しくは「人と組織」の項を参照してください。\n\n"
+"| {eml-location}/eml-resource.html#pubDate[pubDate] | リソースが公開された日付です。CCYY（4桁の年）、またはCCYY-MM-DD（完全な年、月、日）の形式で表現する必要があります。月と日はオプションであることに注意してください。フォーマットはISO 8601に準拠する必要があります。例：2010-09-20\n\n"
+"| {eml-location}/eml-resource.html#language[language] | リソース（メタデータではない）の記述に用いられている言語。これはよく知られた言語名でもよいし、より正確にISO言語コードを用いて記述しても構いません。GBIFはISO言語コード（https://api.gbif.org/v1/enumeration/language）を使用することを推奨しています。例：English\n\n"
+"| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | リソース管理者がデータセットに含めることを希望する、省略・指示・その他の注意事項に関する情報。基本的には、他のリソースメタデータのフィールドで特徴付けられないあらゆる情報です。\n\n"
+"| {eml-location}/eml-resource.html#url[url] | オンラインで公開されているリソースのURLです。\n\n"
+"| {eml-location}/eml-resource.html#abstract[abstract] | ドキュメント化されているリソースの簡単な概要。オンラインで利用可能なリソースのURLです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:179
 msgid "The project field contains information on the project in which this dataset was collected. It includes information such as project personnel, funding, study area, project design and related projects."
-msgstr ""
+msgstr "プロジェクトフィールドは、このデータセットが収集されたプロジェクトに関する情報を含みます。プロジェクト担当者、資金、調査地域、プロジェクト設計、関連プロジェクトなどの情報が含まれます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:192
@@ -561,12 +574,17 @@ msgid "| Term | Definition\n\n"
 "| {eml-location}/eml-project.html#funding[funding] | The funding field is used to provide information about funding sources for the project such as: grant and contract numbers; names and addresses of funding sources.\n\n"
 "| {eml-location}/eml-project.html#studyAreaDescription[studyAreaDescription] | The studyAreaDescription field documents the physical area associated with the research project. It can include descriptions of the geographic, temporal, and taxonomic coverage of the research location and descriptions of domains (themes) of interest such as climate, geology, soils or disturbances.\n\n"
 "| {eml-location}/eml-project.html#designDescription[designDescription] | The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.\n"
-msgstr ""
+msgstr "| Term | Definition\n\n"
+"| {eml-location}/eml-project.html#title[title]  | 研究プロジェクトの説明的なタイトル。例：Species diversity in Tennessee riparian habitats\n\n"
+"| {eml-location}/eml-project.html#personnel[personnel] | 人事欄は、連絡先やプロジェクトでの役割など、研究プロジェクトに関わる人々を記録するために使用されます。\n\n"
+"| {eml-location}/eml-project.html#funding[funding] | 資金提供欄は、プロジェクトの資金源に関する情報を提供するために使用されます。例えば、助成金および契約番号、資金提供者の名前と住所など。\n\n"
+"| {eml-location}/eml-project.html#studyAreaDescription[studyAreaDescription] | studyAreaDescription フィールドは、研究プロジェクトに関連する物理的な領域を記録します。調査地の地理的、時間的、分類学的な範囲や、気候、地質、土壌、撹乱など関心のある領域（テーマ）についての記述を含めることができます。\n\n"
+"| {eml-location}/eml-project.html#designDescription[designDescription] | designDescriptionフィールドには、研究デザインに関する一般的なテキスト記述が含まれます。目標、動機、理論、仮説、戦略、統計設計、実際の作業に関する詳細な説明を含むことができます。また、文献の引用も研究デザインの記述に使用されることがあります。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:197
 msgid "There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization."
-msgstr ""
+msgstr "人または組織のいずれかを表すことができるいくつかのフィールドがあります。以下は、人または組織を表すために使用されるさまざまなフィールドのリストです。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:225
@@ -585,18 +603,31 @@ msgid "| Term | Definition\n\n"
 "| {eml-location}/eml-party.html#administrativeArea[administrativeArea] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The administrative area field is the equivalent of a 'state' in the U.S., or Province in Canada. This field is intended to accommodate the many types of international administrative areas. E.g. Colorado\n\n"
 "| {eml-location}/eml-party.html#country[country] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The country field is used for the name of the contact's country. The country name is most often derived from the ISO 3166 country code list. E.g., Japan.\n\n"
 "| {eml-location}/eml-party.html#onlineUrl[onlineUrl] | A link to associated online information, usually a web site. When the party represents an organization, this is the URL to a website or other online information about the organization. If the party is an individual, it might be their personal web site or other related online information about the party. E.g., https://www.example.edu/botany.\n"
-msgstr ""
+msgstr "| 用語 | 定義\n\n"
+"| {eml-location}/eml-party.html#givenName[givenName] | individualNameフィールドのサブフィールド。givenNameフィールドは、リソースに関連する個人のファーストネームで、（必要に応じて）アルファベット表記を意図していない、その他の名前に使用することができます。例：Jonny\n\n"
+"| {eml-location}/eml-party.html#surName[surName] | individualNameフィールドのサブフィールド。surnameフィールドは、リソースに関連する個人の姓に使用されます。これはふつう個人の姓で、例えば、文献の引用時に言及される名前です。例：Carson\n\n"
+"| {eml-location}/eml-party.html#organizationName[organizationName] | リソースに関連する組織のフルネーム。このフィールドは、記述されるリソースに関連する機関または組織全体を記述することを意図しています。例：National Center for Ecological Analysis and Synthesis\n\n"
+"| {eml-location}/eml-party.html#positionName[positionName]| このフィールドは、特定の人物や完全な組織名の代わりに使用されることを意図しています。その役割を担う人物が頻繁に変わるのであれば、一貫性を保つために役職名を使用するのがよいでしょう。このフィールドは、'organizationName'および'individualName'と共に使用され、1つの論理的なオリジネーターを構成することに注意してください。このため、individualNameが「Joe Smith」だけのオリジネーターは、nameが「Joe Smith」でorganizationNameが「NSF」のオリジネーターと同じではありません。また、positionNameは、その地位の個人のみがデータパッケージのオリジネーターとみなされる場合を除き、individualNameと組み合わせて使用されるべきではありません。positionNameがorganizationNameと共に使用される場合、organizationNameにおいて、そのpositionNameに就いているすべての人がデータパッケージのオリジネーターであることを意味します。例：HAST herbarium data manager\n\n"
+"| {eml-location}/eml-party.html#electronicMailAddress[electronicMailAddress] | Eメールアドレスは、その団体のEメールアドレスである。インターネットSMTPメールアドレスを想定しており、ユーザー名の後に@記号、その後にメールサーバーのドメイン名アドレスで構成される必要があります。例：jcuadra@gbif.org\n\n"
+"| {eml-location}/eml-party.html#deliveryPoint[deliveryPoint] | addressフィールドのサブフィールドで、リソースの責任者の実際の住所または電子アドレスを記述します。配送先フィールドは、郵便通信のための物理的な住所に使用されます。例：GBIF Secretariat, Universitetsparken 15\n\n"
+"| {eml-location}/eml-party.html#role[role] | このフィールドで、当事者がリソースに関して果たした役割を記述します。例：技術者、査読者、研究責任者等\n\n"
+"| {eml-location}/eml-party.html#phone[phone] | 電話番号欄には、責任者の電話番号（音声電話、FAX）についての情報を記述します。例：+4530102040\n\n"
+"| {eml-location}/eml-party.html#postalCode[postalCode] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。郵便番号は米国のZIPコードに相当し、国際的な住所へのルーティングに使用される番号です。 例：52000.\n\n"
+"| {eml-location}/eml-party.html#city[city] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。cityフィールドは、特定のリソースに関連する連絡先の都市名として使用される。例：San Diego\n\n"
+"| {eml-location}/eml-party.html#administrativeArea[administrativeArea] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。行政区域フィールドは、米国では「state」、カナダでは「Province」に相当します。このフィールドは、多くの種類の国際的な行政区域に対応することを意図しています。例：Colorado\n\n"
+"| {eml-location}/eml-party.html#country[country] | リソースの責任者の実際の住所または電子アドレスを記述する、アドレスフィールドのサブフィールド。国名フィールドは、連絡先の国名に使用されます。国名は、ほとんどの場合、ISO 3166の国名コードリストに由来しています。例：Japan\n\n"
+"| {eml-location}/eml-party.html#onlineUrl[onlineUrl] | 関連するオンライン情報（通常はWebサイト）へのリンクです。当事者が組織を代表している場合、これはウェブサイトまたはその組織に関する他のオンライン情報のURLです。当事者が個人の場合は、個人のウェブサイトや、当事者に関するその他の関連するオンライン情報である場合があります。例：https://www.example.edu/botany\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:227
 #, no-wrap
 msgid "KeywordSet (General Keywords)"
-msgstr ""
+msgstr "KeywordSet（一般的なキーワード）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:230
 msgid "The keywordSet field is a wrapper for the keyword and keywordThesaurus elements, both of which are required together."
-msgstr ""
+msgstr "keywordSetフィールドはkeywordとkeywordThesaurus要素のラッパーであり、両方とも同時に必要です。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:237
@@ -604,17 +635,19 @@ msgstr ""
 msgid "| Term         | Definition\n\n"
 "| {eml-location}/eml-resource.html#keyword[keyword] | A keyword or key phrase that concisely describes the resource or is related to the resource. Each keyword field should contain one and only one keyword (i.e., keywords should not be separated by commas or other delimiters). E.g., biodiversity.\n\n"
 "| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| The name of the official keyword thesaurus from which keyword was derived. If an official thesaurus name does not exist, please keep a placeholder value such as “N/A” instead of removing this element as it is required together with the keyword element to constitute a keywordSet. E.g., IRIS keyword thesaurus.\n"
-msgstr ""
+msgstr "| 用語         | 定義\n\n"
+"| {eml-location}/eml-resource.html#keyword[keyword] | リソースを簡潔に説明する、またはリソースに関連するキーワード・キーフレーズ。各キーワードフィールドは、1つのキーワードのみを含むべきです（つまり、キーワードは、カンマや他の区切り文字で分離してはなりません）。例：biodiversity\n\n"
+"| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| キーワードの元となった公式キーワードシソーラスの名前。これはkeyword要素とともにkeywordSetを構成するために必要なので、公式シソーラス名が存在しない場合はこの要素を削除せずに、\"N/A\"などのプレースホルダ値を保持しておいてください。例：IRIS keyword thesaurus\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
 msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
-msgstr ""
+msgstr "リソースのカバー範囲を、*空間的*な範囲、*時間的*な範囲、*分類学的*な範囲の観点から記述しています。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
 msgid "A container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. Please note the taxonomic classifications should not be nested, just listed one after the other."
-msgstr ""
+msgstr "リソースに関する分類学的情報のためのコンテナ。1つまたは複数の分類体系の種名（または上位のランク）のリストが含まれます。分類は入れ子にせず、1つずつ順番に並べることに注意してください。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:259
@@ -625,12 +658,17 @@ msgid "| Term                 | Definition\n\n"
 "| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| The name of the taxonomic rank for which the Taxon rank value is provided. E.g., phylum, class, genus, species.\n\n"
 "| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | The name representing the taxonomic rank of the taxon being described. E.g. Acer would be an example of a genus rank value, and rubrum would be an example of a species rank value, together indicating the common name of red maple. It is recommended to start with Kingdom and include ranks down to the most detailed level possible.\n\n"
 "| {eml-location}/eml-coverage.html#commonName[commonName]              | Applicable common names; these common names may be general descriptions of a group of organisms if appropriate. E.g., invertebrates, waterfowl.\n"
-msgstr ""
+msgstr "| 用語                 | 定義\n\n"
+"| {eml-location}/eml-coverage.html#generalTaxonomicCoverage[generalTaxonomicCoverage] | 分類学的範囲は、リソースに関する分類学的情報のためのコンテナです。これには、1つまたは複数の分類体系からの種名（または上位のランク）のリストが含まれます。データセットまたはコレクションで扱われる分類群の範囲についての説明。コンマで区切られた単純な分類群のリストを使用します。例：「すべての維管束植物は科または種まで同定され、コケと地衣類はコケまたは地衣類として同定された。」\n\n"
+"| {eml-location}/eml-coverage.html#taxonomicClassification[taxonomicClassification] | データセットまたはコレクションで扱われる分類群の範囲に関する情報。\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| Taxon rank値が提供される分類階級の名前。例：phylum、class、genus、species\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | 記載される分類群の分類階級を表す名称。例：Acerは属のランク値、rubrumは種のランク値の例で、合わせて赤カエデの通称を示します。Kingdomから始めて、可能な限り詳細なレベルまでランクを含めることが推奨されます。\n\n"
+"| {eml-location}/eml-coverage.html#commonName[commonName]              | 該当する一般名；これらの一般名は、適切であれば生物群の一般的な説明でも構いません。例：無脊椎動物、水鳥\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
 msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
-msgstr ""
+msgstr "リソースに関する空間情報を格納するコンテナで、全体のカバー範囲を示す境界ボックス（緯度経度）を設定できるほか、任意のポリゴンを除外して記述することも可能です。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
@@ -641,12 +679,17 @@ msgid "| Term                | Definition\n\n"
 "| {eml-location}/eml-coverage.html#eastBoundingCoordinate[eastBoundingCoordinate]| Subfield of boundingCoordinates field covering the E margin of a bounding box. The longitude in decimal degrees of the eastern-most point of the bounding box that is being described.   E.g., -18.25, +25, 45.24755.\n\n"
 "| {eml-location}/eml-coverage.html#northBoundingCoordinate[northBoundingCoordinate] | Subfield of boundingCoordinates field covering the N margin of a bounding box.  The longitude in decimal degrees of the northern-most point of the bounding box that is being described. E.g., -18.25, +25, 65.24755.\n\n"
 "| {eml-location}/eml-coverage.html#northBoundingCoordinate[southBoundingCoordinate] | Subfield of boundingCoordinates field covering the S margin of a bounding box. The longitude in decimal degrees of the southern-most point of the bounding box that is being described. E.g., -118.25, +25, 84.24755.\n"
-msgstr ""
+msgstr "| 用語                | 定義\n\n"
+"| {eml-location}/eml-coverage.html#geographicDescription[geographicDescription] | データセットの地理的な領域に関する短いテキスト記述。テキスト記述は、データセットの範囲が\"boundingCoordinates\"でうまく記述できない場合に、地理的な設定を提供するために特に重要です。例：\"Manistee River watershed\", \"extent of 7 1/2 minute quads including any property belonging to Yellowstone National Park\"など。\n\n"
+"| {eml-location}/eml-coverage.html#westBoundingCoordinate[westBoundingCoordinate]| バウンディングボックスのWマージンを記述する、boundingCoordinatesフィールドのサブフィールドです。記述されているバウンディングボックスの最西端の経度（10進数）を示します。例：-18.25, +25, 45.24755.\n\n"
+"| {eml-location}/eml-coverage.html#eastBoundingCoordinate[eastBoundingCoordinate]| バウンディングボックスのEマージンを記述する、boundingCoordinatesフィールドのサブフィールドです。記述されているバウンディングボックスの最東端の経度（10進法）を示します。例：-18.25, +25, 45.24755.\n\n"
+"| {eml-location}/eml-coverage.html#northBoundingCoordinate[northBoundingCoordinate] | バウンディングボックスのNマージンを記述する、boundingCoordinatesフィールドのサブフィールドです。記述されているバウンディングボックスの最北端の緯度（10進法）を示します。例：-18.25, +25, 65.24755.\n\n"
+"| {eml-location}/eml-coverage.html#northBoundingCoordinate[southBoundingCoordinate] | バウンディングボックスのSマージンを記述する、boundingCoordinatesフィールドのサブフィールドです。記述されているバウンディングボックスの最南端の緯度（10進法）を示します。例：-118.25, +25, 84.24755.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:282
 msgid "This container allows coverage to be a single point in time, multiple points in time, or a range of dates."
-msgstr ""
+msgstr "このコンテナでは、範囲を単一時点、複数時点、または日付の範囲にすることができます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:291
@@ -655,12 +698,15 @@ msgid "| Term       | Definition\n\n"
 "| {eml-location}/eml-coverage.html#beginDate[beginDate] | Subfield of rangeOfDates field: It may be used multiple times with a endDate field to document multiple date ranges.   A single time stamp signifying the beginning of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date.  E.g. 2010-09-20\n\n"
 "| {eml-location}/eml-coverage.html#endDate[endDate]| Subfield of rangeOfDates field: It may be used multiple times with a beginDate field to document multiple date ranges.  A single time stamp signifying the end of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date. E.g. 2010-09-20.\n\n"
 "| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | The SingleDateTime field is intended to describe a single date and time for an event.\n"
-msgstr ""
+msgstr "| 用語       | 定義\n\n"
+"| {eml-location}/eml-coverage.html#beginDate[beginDate] | rangeOfDatesフィールドのサブフィールドです。これは、複数の日付範囲を記録するためにendDateフィールドと複数回使用することができる、ある期間の開始を意味する単一のタイムスタンプです。カレンダー日付フィールドは、年、月、日を与え、日付を表現するために使用されます。書式はISO 8601に準拠したものでなければなりません。EMLで推奨される書式はYYYY-MM-DDで、Yは4桁の年、Mは2桁の月コード（01〜12、1月＝01）、Dは2桁の月日（01〜31）です。このフィールドは、日付の年の部分のみを入力する場合にも使用できます。例：2010-09-20\n\n"
+"| {eml-location}/eml-coverage.html#endDate[endDate]| rangeOfDatesフィールドのサブフィールドです。これは、複数の日付範囲を記録するためにbeginDateフィールドと複数回使用することができる、ある期間の終了を意味する単一のタイムスタンプです。カレンダー日付フィールドは、年、月、日を与え、日付を表現するために使用されます。書式は、国際標準化機構の規格8601に準拠したものでなければなりません。EMLで推奨される書式はYYYY-MM-DDで、Yは4桁の年、Mは2桁の月コード（01〜12、1月は01）、Dは2桁の月日（01〜31）です。このフィールドは、日付の年の部分のみを入力する場合にも使用できます。例：2010-09-20\n\n"
+"| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | SingleDateTimeフィールドは、イベントの単一の日時を記述するためのものです。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
 msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
-msgstr ""
+msgstr "このフィールドは、リソースの収集に使用された科学的方法を記録します。ツール、機器の校正、ソフトウェアなどの項目に関する情報も含まれます。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
@@ -671,12 +717,17 @@ msgid "| Term            | Definition\n\n"
 "| {eml-location}/eml-methods.html#sampling[sampling]  | Description of sampling procedures including the geographic, temporal and taxonomic coverage of the study.\n\n"
 "| {eml-location}/eml-methods.html#studyExtent[studyExtent] | Subfield of the sampling field. The coverage field allows for a textual description of the specific sampling area, the sampling frequency (temporal boundaries, frequency of occurrence), and groups of living organisms sampled (taxonomic coverage). The field studyExtent represents both a specific sampling area and the sampling frequency (temporal boundaries, frequency of occurrence). The geographic studyExtent is usually a surrogate (representative area of) for the larger area documented in the \"studyAreaDescription\".\n\n"
 "| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | Subfield of the sampling field. The samplingDescription field allows for a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
-msgstr ""
+msgstr "| 用語            | 定義\n\n"
+"| {eml-location}/eml-methods.html#methodStep[methodStep] | methodStepフィールドは、データオブジェクトを生成するために行われた一連の手順を記録する要素のセットを繰り返し使用できます。これには、手順のテキスト記述、関連文献、ソフトウェア、計測器、ソースデータ、および実施された品質管理措置が含まれます。\n"
+"| {eml-location}/eml-methods.html#qualityControl[qualityControl] | qualityControlフィールドには、関連するメソッドステップから得られるデータの品質を管理、または評価するために取られた措置を記述することができます。\n\n"
+"| {eml-location}/eml-methods.html#sampling[sampling]  | 調査の地理的、時間的、分類学的範囲を含むサンプリング手順の説明です。\n\n"
+"| {eml-location}/eml-methods.html#studyExtent[studyExtent] | サンプリングフィールドのサブフィールドです。coverageフィールドは、特定のサンプリングエリア、サンプリング頻度（時間的境界、出現頻度）、およびサンプリングされた生物群（分類学的範囲）をテキストで記述することができます。フィールドstudyExtentは、特定のサンプリングエリアとサンプリング頻度（時間的境界、出現頻度）の両方を表します。geographic studyExtentは通常、\"studyAreaDescription\"に記載されたより広い範囲の代用（代表的な地域）である。\n\n"
+"| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | サンプリングフィールドのサブフィールドです。samplingDescriptionフィールドは、研究プロジェクトで使用されたサンプリング手順について、テキストベース・人間可読な説明を記入できます。この要素の内容は、ジャーナル論文のメソッドセクションに見られるサンプリング手順の記述と同様です。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
 msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
-msgstr ""
+msgstr "リソースの権利管理に関する声明文、またはそのような情報を提供するサービスへのリファレンスが含まれています。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
@@ -684,18 +735,20 @@ msgstr ""
 msgid "| Term           | Definition\n\n"
 "| {eml-location}/eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n\n"
 "| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
-msgstr ""
+msgstr "| 用語          | 定義\n\n"
+"| {eml-location}/eml-dataset.html#purpose[purpose] | このデータセットの目的についての説明。\n\n"
+"| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | リソースの権利管理に関する記述、またはその情報を提供するサービスのリファレンス。権利情報には、知的財産権（IPR）、著作権、各種財産権などが含まれます。データセットの場合、この権利には使用に関する要件、帰属に関する要件、または所有者が課したいその他の要件が含まれる場合があります。例：© 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
 #, no-wrap
 msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
-msgstr ""
+msgstr "追加メタデータ + 関連するlink:http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
 msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
-msgstr ""
+msgstr "追加メタデータ + 関連ナチュラルコレクション記述データ（NCD）追加メタデータフィールドは、記述されるリソースに関連する他のあらゆるメタデータを格納するコンテナです。このフィールドにより、EMLはXMLベースのあらゆるメタデータをこの要素に含めることができ、拡張性があります。GMPでは、ISO 19139に準拠するために必要な要素と、NCD（ナチュラルコレクション記述）要素のサブセット を提供します。"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
@@ -716,18 +769,34 @@ msgid "| Term                   | Definition\n\n"
 "| specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde.\n\n"
 "| jgtiCuratorialUnit\n"
 "a| A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by\n\n"
-msgstr ""
+msgstr "| 用語                 | 定義\n\n"
+"| dateStamp | メタデータ文書が作成または変更された日付と時刻。例：2002-10-23T18:13:51.235+01:00\n\n"
+"| metadataLanguage | メタデータ文書（メタデータで記述されるリソースとは異なる）が記述されている言語。ISO 639-2/Tの3文字の言語コードとISO 3166-1の3文字の国コードで構成される。例：en_GB\n\n"
+"| hierarchyLevel | メタデータが適用されるデータセットレベル。デフォルトは\"dataset\"になっています。例：dataset\n\n"
+"| {eml-location}/eml-literature.html#citation[citation] |作品自体の引用です。See {eml-location}/eml-literature.html#citation[eml]\n\n"
+"| bibliography | データセットに関連した、または使用された文献のリスト（下記参照）。\n\n"
+"| physical |  データオブジェクトの内部・外部の特性や分布を記述させるすべての要素のコンテナ要素（例：dataObject、dataFormat、distribution）。繰り返すことができます。\n\n"
+"| resourceLogoUrl | リソースに関連するロゴのURL。例：http://www.gbif.org/logo.jpg\n\n"
+"| parentCollectionIdentifier | コレクションフィールドのサブフィールドです（オプション）。このサブコレクションの親コレクションに与えられる識別子で、コレクションとサブコレクションの階層を構築することができます。\n\n"
+"| collectionName | コレクションフィールドのサブフィールドです（オプション）。ローカル言語でのコレクションの正式名称です。\n\n"
+"| collectionIdentifier | コレクションフィールドのサブフィールドです（オプション）。コレクションのURI（LSIDまたはURL）です。RDFでは、コレクションリソースのURIとして使用されます。\n\n"
+"| formationPeriod | コレクションが収集された期間についてのテキスト記述。例：\"Victorian\", or \"1922 - 1932\", or \"c. 1750\".\n\n"
+"| livingTimePeriod | 生物試料が生きていた期間（古生物学的コレクションの場合）。\n\n"
+"| specimenPreservationMethod | 非生物コレクションの物理的な劣化を防ぐために使用されたプロセスまたは技法を示すピックリストキーワード。Specimen Preservation Method Type Term語彙からのインスタンスが含まれることが期待されます。例：formaldehyde\n\n"
+"| jgtiCuratorialUnit\n"
+"a| 定量的な記述子（検体数、サンプル数、バッチ数）。実際の定量化は、以下の方法でカバーできます。\n\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:360
 #, no-wrap
 msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
-msgstr ""
+msgstr "実際の定量化は、コレクション内の「JGI-units」の正確な数と不確かさの尺度（±x）でカバーできます； \n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:363
 #, no-wrap
 msgid "a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n\n"
 "The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
-msgstr ""
+msgstr "数値の範囲（x～x）で、最大値が省略された場合、最小値が正確な数を表します。\n\n"
+"議論の結果、定量化は、まだデジタル化されていない標本だけでなく、すべての標本を包含する必要があるとの結論に達しました。これは、あまり頻繁に数を更新する必要がないようにするためです。非公開データ（デジタル化されていない、またはアクセスできない）の数は、JGTI-dataとは対照的に、GBIFの数から計算することができます。\n"
 

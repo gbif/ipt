@@ -39,10 +39,11 @@ import com.google.inject.Inject;
 public class LoginAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
+  private static final Logger LOG = LogManager.getLogger(LoginAction.class);
+
+  private static final long serialVersionUID = -863287752175768744L;
 
   private final UserAccountManager userManager;
-  private final PBEEncrypt encrypter;
 
   private String redirectUrl;
   private String email;
@@ -52,10 +53,9 @@ public class LoginAction extends POSTAction {
 
   @Inject
   public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                     UserAccountManager userManager, PBEEncrypt encrypter) {
+                     UserAccountManager userManager) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
-    this.encrypter = encrypter;
   }
 
   @Override
@@ -80,7 +80,7 @@ public class LoginAction extends POSTAction {
       // prevent login CSRF
       // Make sure the token from the login form is the same as in the cookie
         if (csrfToken.equals(csrfCookie.getValue())){
-          User authUser = userManager.authenticate(email, password);
+          User authUser = userManager.authenticate(email.trim(), password.trim());
           if (authUser == null) {
             addActionError(getText("admin.user.wrong.email.password.combination"));
             LOG.info("User " + email + " failed to log in");
@@ -89,7 +89,11 @@ public class LoginAction extends POSTAction {
             authUser.setLastLoginToNow();
             userManager.save();
             session.put(Constants.SESSION_USER, authUser);
-            req.getSession().setMaxInactiveInterval(cfg.getSessionTimeout());
+
+            int sessionTimeout = cfg.getSessionTimeout();
+            LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
+            req.getSession().setMaxInactiveInterval(sessionTimeout);
+
             // remember previous URL to redirect back to
             setRedirectUrl();
             return SUCCESS;
@@ -113,7 +117,7 @@ public class LoginAction extends POSTAction {
     String referer = (String) session.get(Constants.SESSION_REFERER);
     LOG.debug("Session's referer: {}", referer);
 
-    if (referer != null && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
+    if (StringUtils.isNotEmpty(referer) && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
       redirectUrl = getBase() + referer;
     }
 

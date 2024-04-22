@@ -30,7 +30,7 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-import static org.gbif.ipt.config.Constants.CANCEL_RESULTNAME;
+import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * An Interceptor that checks if the basic IPT setup is complete and redirects to the respective setup page otherwise.
@@ -64,14 +64,14 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     }
 
     // check if any non empty content exists in cancel request parameter
-    Parameter cancel = invocation.getInvocationContext().getParameters().get(CANCEL_RESULTNAME);
+    Parameter cancel = invocation.getInvocationContext().getParameters().get(CANCEL);
     if (cancel.isDefined()) {
       Object action = invocation.getAction();
       if (action instanceof BaseAction) {
         BaseAction ba = (BaseAction) action;
         ba.setCancel("true");
       } else {
-        return CANCEL_RESULTNAME;
+        return CANCEL;
       }
     }
 

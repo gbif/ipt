@@ -64,7 +64,7 @@
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
@@ -72,6 +72,17 @@
     </action>
 
     <action name="replace-eml" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceEml">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">209715200</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="replace-datapackage-metadata" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceDatapackageMetadata">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">209715200</param>
       </interceptor-ref>
@@ -103,7 +114,7 @@
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelMakePublic,registerResource,reserveDoi,undelete</allowed-methods>
+      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelMakePublic,registerResource,reserveDoi,undelete,changePublishingOrganization</allowed-methods>
     </action>
 
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
@@ -125,6 +136,16 @@
       <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=${resource.shortname}</result>
     </action>
 
+    <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+      <result name="input">/WEB-INF/pages/manage/dp-metadata/camtrap/{1}.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="datapackage-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+      <result name="input">/WEB-INF/pages/manage/dp-metadata/frictionless/{1}.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
@@ -133,10 +154,12 @@
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
+        <param name="maximumSize">10000000000</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
-      <result name="success">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="success" type="redirect">
+        <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
+      </result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
@@ -166,7 +189,12 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
-    <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
+    <action name="deleteDataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">2097152</param>
         <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
@@ -184,9 +212,29 @@
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
+      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
+      <result name="source">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="dataPackageMappingSourceNew" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="source">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="dataPackageMappingSourceCreate" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="create">
+      <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
@@ -205,6 +253,7 @@
 
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/translation.ftl</result>
       <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
     </action>
 
@@ -214,6 +263,20 @@
 
     <action name="translationAutomap" class="org.gbif.ipt.action.manage.TranslationAction" method="automap">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
+    </action>
+
+    <action name="dataPackageFieldTranslation" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction">
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
+      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+    </action>
+
+    <action name="dataPackageFieldTranslationReload" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="reload">
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
+    </action>
+
+    <action name="dataPackageFieldTranslationAutomap" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="automap">
+      <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
     </action>
 
     <!-- ajaxy status report about background processes kicked off by the current user -->

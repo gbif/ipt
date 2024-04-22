@@ -71,12 +71,21 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             // converted from page to start param (1, 2, 3 etc. -> 0, 10, 20, 30 etc.)
             var start = rawPageParam && rawPageParam > 0 ? (urlParams.get(PAGE_PARAM) - 1) * 10 : 0;
 
+            $.fn.dataTable.Responsive.breakpoints.push(
+                { name: 'desktop',  width: Infinity },
+                { name: 'tablet-l', width: 1200 },
+                { name: 'tablet-p', width: 992 },
+                { name: 'mobile-l', width: 768 },
+                { name: 'mobile-p', width: 320 }
+            );
+
             $('#tableContainer').html('<table  class="display dataTable resourcesTable" id="rtable"></table>');
             var dt = $('#rtable').DataTable({
                 ajax: {
                     url: <#if shownPublicly>'${baseURL}/api/resources'<#else>'${baseURL}/manager-api/resources'</#if>,
                     type: 'POST'
                 },
+                responsive: true,
                 "bProcessing": true,
                 "bServerSide": true,
                 "displayStart": start,
@@ -95,17 +104,17 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     }
                 },
                 "aoColumns": [
-                    {"sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bSortable": false, "bVisible": <#if shownPublicly>true<#else>false</#if>},
-                    {"sTitle": "<@s.text name="manage.home.name"/>"},
-                    {"sTitle": "<@s.text name="manage.home.organisation"/>"},
-                    {"sTitle": "<@s.text name="manage.home.type"/>"},
-                    {"sTitle": "<@s.text name="manage.home.subtype"/>"},
-                    {"sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false, "sType": "number", className: "text-end"},
-                    {"sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false, className: "text-end"},
-                    {"sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false, className: "text-end"},
-                    {"sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false, className: "text-end"},
-                    {"sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    {"sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>},
+                    {"sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bSortable": false, "sClass": "desktop", "bVisible": <#if shownPublicly>true<#else>false</#if>},
+                    {"sTitle": "<@s.text name="manage.home.name"/>", "sClass": "all text-break"},
+                    {"sTitle": "<@s.text name="manage.home.organisation"/>", "sClass": "desktop tablet-l"},
+                    {"sTitle": "<@s.text name="manage.home.type"/>", "sClass": "desktop tablet-l tablet-p"},
+                    {"sTitle": "<@s.text name="manage.home.subtype"/>", "sClass": "desktop"},
+                    {"sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false, "sType": "number", "sClass": "text-xl-end desktop"},
+                    {"sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false, "sClass": "text-xl-end desktop"},
+                    {"sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false, orderSequence: ["desc", "asc"], "sClass": "text-xl-end desktop tablet-l tablet-p"},
+                    {"sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false, "sClass": "text-xl-end desktop"},
+                    {"sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "sClass": "desktop tablet-l", "bVisible": <#if shownPublicly>false<#else>true</#if>},
+                    {"sTitle": "<@s.text name="portal.home.author"/>", "sClass": "desktop tablet-l", "bVisible": <#if shownPublicly>false<#else>true</#if>},
                     {"sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false},
                     {"sTitle": "<@s.text name="portal.resource.summary.keywords"/>", "bVisible": false}
                 ],
