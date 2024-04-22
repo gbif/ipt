@@ -1388,7 +1388,7 @@
                                         </#if>
                                         <br/><br/>
 
-                                        <#assign displayDoiFunctionality = (organisationWithPrimaryDoiAccount.key)?has_content && (resource.organisation.key)?has_content && (organisationWithPrimaryDoiAccount.key == resource.organisation.key || currentUser.role == "Admin") && currentUser.hasRegistrationRights()>
+                                        <#assign displayDoiFunctionality = (organisationWithPrimaryDoiAccount.key)?has_content && (resource.organisation.key)?has_content && (organisationWithPrimaryDoiAccount.key == resource.organisation.key || currentUser.role == "Admin" || resource.organisation.associatedWithDoiRegistrationAgency) && currentUser.hasRegistrationRights()>
 
                                         <#if displayDoiFunctionality>
                                             <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
