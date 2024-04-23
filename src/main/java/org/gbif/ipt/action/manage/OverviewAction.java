@@ -1889,4 +1889,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   public void setPublishingOrganizationKey(String publishingOrganizationKey) {
     this.publishingOrganizationKey = publishingOrganizationKey;
   }
+
+  /**
+  * Resource's organisation is not synchronized, use this method to make sure use actual data.
+  */
+  public boolean isResourceOrganisationAssociatedWithDoiAgency() {
+    if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
+      Optional<Organisation> firstOrganisationMatch = organisations.stream()
+          .filter(org -> resource.getOrganisation().getKey().equals(org.getKey()))
+          .findFirst();
+
+      if (firstOrganisationMatch.isPresent()) {
+        return firstOrganisationMatch.get().isAssociatedWithDoiRegistrationAgency();
+      }
+    }
+
+    return false;
+  }
 }
