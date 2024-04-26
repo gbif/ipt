@@ -26,8 +26,8 @@ public class AgentValidator extends BaseValidator {
    * @return true if name (at least lastname) and email exist. Otherwise, return false.
    */
   public static boolean hasCompleteContactInfo(Agent agent) {
-    return agent != null && agent.getFullName() != null && !(agent.getFullName().length() == 0)
-      && agent.getEmail() != null && !(agent.getEmail().length() == 0);
+    return agent != null && agent.getFullName() != null && !(agent.getFullName().isEmpty())
+      && agent.getEmail() != null && !agent.getEmail().isEmpty() && !agent.getEmail().get(0).isEmpty();
 
   }
 }

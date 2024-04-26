@@ -859,7 +859,7 @@ public class MetadataAction extends ManagerBaseAction {
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
-      current.setEmail(getCurrentUser().getEmail());
+      current.setEmail(Collections.singletonList(getCurrentUser().getEmail()));
 
       // contacts list
       Agent firstContact = null;

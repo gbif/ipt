@@ -59,6 +59,7 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -164,7 +165,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     // if primaryContact is null, use resource creator as primary contact.
     if (primaryContact == null) {
       primaryContact = new Agent();
-      primaryContact.setEmail(resource.getCreator().getEmail());
+      primaryContact.setEmail(Collections.singletonList(resource.getCreator().getEmail()));
       primaryContact.setFirstName(resource.getCreator().getFirstname());
       primaryContact.setLastName(resource.getCreator().getLastname());
       primaryContact.setRole(null);
@@ -175,12 +176,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     primaryContact.setRole(null);
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
+    data.add(new BasicNameValuePair("primaryContactEmail", !primaryContact.getEmail().isEmpty() ? StringUtils.trimToEmpty(primaryContact.getEmail().get(0)) : ""));
     data.add(new BasicNameValuePair("primaryContactName",
       StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFullName()))));
     data.add(new BasicNameValuePair("primaryContactAddress",
       StringUtils.trimToEmpty(primaryContact.getAddress().toFormattedString())));
-    data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(primaryContact.getPhone())));
+    data.add(new BasicNameValuePair("primaryContactPhone", !primaryContact.getPhone().isEmpty() ? StringUtils.trimToEmpty(primaryContact.getPhone().get(0)) : ""));
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);

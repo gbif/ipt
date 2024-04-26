@@ -362,7 +362,7 @@ public class GenerateDCATTest {
     Agent agent = new Agent();
     agent.setFirstName("Eric");
     agent.setLastName("Stienen");
-    agent.setEmail("eric.stienen@inbo.be");
+    agent.addEmail("eric.stienen@inbo.be");
     resource.getEml().addCreator(agent);
     resource.getEml().addContact(agent);
     resource.getEml().addMetadataProvider(agent);
