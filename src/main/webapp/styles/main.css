@@ -1366,7 +1366,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 .select2-container--bootstrap4.select2-container--focus .select2-selection {
-    border-color: rgba(var(--color-gbif-primary), 0.5) !important;
+    border-color: rgb(var(--color-gbif-primary)) !important;
     box-shadow: none !important;
 }
 
