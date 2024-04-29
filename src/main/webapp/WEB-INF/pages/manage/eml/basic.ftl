@@ -756,7 +756,7 @@
                                         <@input name="eml.contacts[${contact_index}].lastName" i18nkey="eml.contact.lastName" requiredField=true/>
                                     </div>
                                     <div class="col-md-2">
-                                        <@input name="eml.contact[${contact_index}].salutation" i18nkey="eml.contact.salutation"/>
+                                        <@input name="eml.contacts[${contact_index}].salutation" i18nkey="eml.contact.salutation"/>
                                     </div>
                                     <div class="col-md-6">
                                         <@input name="eml.contacts[${contact_index}].position" i18nkey="eml.contact.position" requiredField=true />
