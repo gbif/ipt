@@ -1093,11 +1093,14 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.creators[${creator_index}].firstName" i18nkey="eml.resourceCreator.firstName"/>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.creators[${creator_index}].lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <@input name="eml.creators[${creator_index}].salutation" i18nkey="eml.resourceCreator.salutation"/>
                                     </div>
                                     <div class="col-md-6">
                                         <@input name="eml.creators[${creator_index}].position" i18nkey="eml.resourceCreator.position" requiredField=true />
@@ -1111,23 +1114,134 @@
                                     <div class="col-md-6">
                                         <@input name="eml.creators[${creator_index}].address.city" i18nkey="eml.resourceCreator.address.city" />
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
                                     </div>
-                                    <div class="countryList col-md-6">
+                                    <div class="countryList col-md-5">
                                         <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                         <@input name="eml.creators[${creator_index}].address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].phone[0]" i18nkey="eml.resourceCreator.phone" />
+                                    <div class="col-12">
+                                        <div class="creator-${creator_index}-phones">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.creators.phone" class="form-label mb-0">
+                                                    Phone
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].phone as phone>
+                                                <div id="creator-${creator_index}-phone-${phone_index}" class="creator-phone-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.creators[${creator_index}].phone[${phone_index}]" i18nkey="eml.creator.phone" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeCreatorPhoneLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this phone</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-phone-${creator_index}" href="" class="metadata-action-link add-creator-phone">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new phone</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].email[0]" i18nkey="eml.resourceCreator.email" />
+                                    <div class="col-12">
+                                        <div class="creator-${creator_index}-emails">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.creators.email" class="form-label mb-0">
+                                                    Email
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].email as email>
+                                                <div id="creator-${creator_index}-phone-${email_index}" class="creator-email-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.creators[${creator_index}].email[${email_index}]" i18nkey="eml.resourceCreator.email" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="creator-email-remove-${creator_index}-${email_index}" class="removeCreatorEmailLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this email</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-phone-${creator_index}" href="" class="metadata-action-link add-creator-phone">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new phone</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].homepage[0]" i18nkey="eml.resourceCreator.homepage" type="url" />
+                                    <div class="col-12">
+                                        <div class="creator-${creator_index}-homepages">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.creators.homepage" class="form-label mb-0">
+                                                    Homepage
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].homepage as homepage>
+                                                <div id="creator-${creator_index}-homepage-${homepage_index}" class="creator-homepage-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" i18nkey="eml.resourceCreator.homepage" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeCreatorHomepageLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this homepage</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-phone-${creator_index}" href="" class="metadata-action-link add-creator-phone">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new phone</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.creators[creator_index].userIds[0]??>
@@ -1187,11 +1301,14 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.creator.firstName" i18nkey="eml.resourceCreator.firstName"/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+                            </div>
+                            <div class="col-md-2">
+                                <@input name="eml.creator.salutation" i18nkey="eml.resourceCreator.salutation"/>
                             </div>
                             <div class="col-md-6">
                                 <@input name="eml.creator.position" i18nkey="eml.resourceCreator.position" requiredField=true />
@@ -1205,23 +1322,77 @@
                             <div class="col-md-6">
                                 <@input name="eml.creator.address.city" i18nkey="eml.resourceCreator.address.city" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.creator.address.province" i18nkey="eml.resourceCreator.address.province" />
                             </div>
-                            <div class="countryList col-md-6">
+                            <div class="countryList col-md-5">
                                 <@select name="country" options=countries help="i18n" i18nkey="eml.resourceCreator.address.country" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <@input name="eml.creator.address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.phone" i18nkey="eml.resourceCreator.phone" />
+                            <div class="col-12">
+                                <div id="creator-phones">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.creators.phone" class="form-label mb-0">
+                                            Phone
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-phone" href="" class="metadata-action-link add-creator-phone">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new phone</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.email" i18nkey="eml.resourceCreator.email" />
+                            <div class="col-12">
+                                <div id="creator-emails">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.creators.email" class="form-label mb-0">
+                                            Email
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-email" href="" class="metadata-action-link add-creator-email">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new email</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.homepage" i18nkey="eml.resourceCreator.homepage" type="url" />
+                            <div class="col-12">
+                                <div id="creator-homepages">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.creators.homepage" class="form-label mb-0">
+                                            Homepage
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-homepage" href="" class="metadata-action-link add-creator-homepage">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new homepage</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <@select name="eml.creator.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
@@ -1266,11 +1437,14 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].firstName" i18nkey="eml.metadataProvider.firstName"/>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" i18nkey="eml.metadataProvider.salutation" requiredField=true/>
                                     </div>
                                     <div class="col-md-6">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].position" i18nkey="eml.metadataProvider.position" requiredField=true />
@@ -1284,23 +1458,134 @@
                                     <div class="col-md-6">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" i18nkey="eml.metadataProvider.address.city" />
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" i18nkey="eml.metadataProvider.address.province" />
                                     </div>
-                                    <div class="countryList col-md-6">
+                                    <div class="countryList col-md-5">
                                         <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].phone[0]" i18nkey="eml.metadataProvider.phone" />
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-phones">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.metadataProviders.phone" class="form-label mb-0">
+                                                    Phone
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].phone as phone>
+                                                <div id="metadataProvider-${metadataProvider_index}-phone-${phone_index}" class="metadataProvider-phone-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].phone[${phone_index}]" i18nkey="eml.metadataProvider.phone" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeMetadataProviderPhoneLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this phone</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-phone-${metadataProvider_index}" href="" class="metadata-action-link add-metadataProvider-phone">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new phone</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].email[0]" i18nkey="eml.metadataProvider.email" />
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-emails">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.metadataProviders.email" class="form-label mb-0">
+                                                    Email
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].email as email>
+                                                <div id="metadataProvider-${metadataProvider_index}-email-${email_index}" class="metadataProvider-email-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].email[${email_index}]" i18nkey="eml.metadataProvider.email" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeMetadataProviderEmailLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this email</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-email-${metadataProvider_index}" href="" class="metadata-action-link add-metadataProvider-email">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new email</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[0]" i18nkey="eml.metadataProvider.homepage" type="url" />
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-homepages">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.metadataProviders.homepage" class="form-label mb-0">
+                                                    Homepage
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].homepage as homepage>
+                                                <div id="metadataProvider-${metadataProvider_index}-homepage-${homepage_index}" class="metadataProvider-homepage-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[${homepage_index}]" i18nkey="eml.metadataProvider.homepage" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeMetadataProviderHomepageLink metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this homepage</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-homepage-${metadataProvider_index}" href="" class="metadata-action-link add-metadataProvider-homepage">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new homepage</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
@@ -1360,11 +1645,14 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.metadataProvider.firstName" i18nkey="eml.metadataProvider.firstName"/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.metadataProvider.lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+                            </div>
+                            <div class="col-md-2">
+                                <@input name="eml.metadataProvider.salutation" i18nkey="eml.metadataProvider.salutation" requiredField=true/>
                             </div>
                             <div class="col-md-6">
                                 <@input name="eml.metadataProvider.position" i18nkey="eml.metadataProvider.position" requiredField=true />
@@ -1378,23 +1666,77 @@
                             <div class="col-md-6">
                                 <@input name="eml.metadataProvider.address.city" i18nkey="eml.metadataProvider.address.city" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <@input name="eml.metadataProvider.address.province" i18nkey="eml.metadataProvider.address.province" />
                             </div>
-                            <div class="countryList col-md-6">
+                            <div class="countryList col-md-5">
                                 <@select name="country" options=countries help="i18n" i18nkey="eml.metadataProvider.address.country" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <@input name="eml.metadataProvider.address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.phone" i18nkey="eml.metadataProvider.phone" />
+                            <div class="col-12">
+                                <div id="metadataProvider-phones">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.metadataProviders.phone" class="form-label mb-0">
+                                            Phone
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-phone" href="" class="metadata-action-link add-metadataProvider-phone">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new phone</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.email" i18nkey="eml.metadataProvider.email" />
+                            <div class="col-12">
+                                <div id="metadataProvider-emails">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.metadataProviders.email" class="form-label mb-0">
+                                            Email
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-email" href="" class="metadata-action-link add-metadataProvider-email">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new email</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.homepage" i18nkey="eml.metadataProvider.homepage" type="url" />
+                            <div class="col-12">
+                                <div id="metadataProvider-homepages">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.metadataProviders.homepage" class="form-label mb-0">
+                                            Homepage
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-homepage" href="" class="metadata-action-link add-metadataProvider-homepage">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new homepage</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <@select name="eml.metadataProvider.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
