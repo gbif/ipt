@@ -424,7 +424,7 @@
                 createNewSubEntityForAgent(event, "contact", "homepage");
             });
 
-            function createNewSubEntityForAgent(event, entityName, subeEntityName) {
+            function createNewSubEntityForAgent(event, entityName, subEntityName) {
                 event.preventDefault();
                 var $target = $(event.target);
                 if (!$target.is('a')) {
@@ -432,22 +432,22 @@
                 }
 
                 var entityIndex = getEntityIndexFromId($target.attr("id"));
-                var newItem = $('#baseItem-' + subeEntityName).clone();
+                var newItem = $('#baseItem-' + subEntityName).clone();
                 newItem.hide();
-                newItem.appendTo('#' + entityName + '-' + entityIndex + '-' + subeEntityName + 's');
+                newItem.appendTo('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's');
                 newItem.slideDown('slow');
 
                 // set correct indexes, names, ids
-                var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subeEntityName + "s ." + entityName + "-" + subeEntityName + "-item").length;
+                var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + entityName + "-" + subEntityName + "-item").length;
                 var subEntityIndex = parseInt(numberOfSubEntities) - 1;
 
-                newItem.attr("id", entityName + "-" + entityIndex + "-" + subeEntityName + "-" + subEntityIndex);
-                var $input = newItem.find("#eml\\." + entityName + "s\\." + subeEntityName);
-                var $deleteLink = newItem.find("#" + entityName + "-" + subeEntityName + "-remove");
-                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "]." + subeEntityName + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
-                $deleteLink.attr("id", entityName + "-" + subeEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
-                $("#" + entityName + "-" + subeEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
-                    removeSubEntityFromAgent(event, entityName, subeEntityName);
+                newItem.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
+                var $input = newItem.find("#baseItem-" + subEntityName + "-input");
+                var $deleteLink = newItem.find("#" + entityName + "-" + subEntityName + "-remove");
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "]." + subEntityName + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+                $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
+                $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
+                    removeSubEntityFromAgent(event, entityName, subEntityName);
                 });
             }
 
@@ -997,11 +997,11 @@
                                 <div class="row">
                                     <div class="col mt-auto py-1">
                                         <a id="plus-contact-phone" href="" class="metadata-action-link add-contact-phone">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
                                             <span>Add new phone</span>
                                         </a>
                                     </div>
@@ -1407,7 +1407,7 @@
                         <div id="baseItem-phone" class="contact-phone-item" style="display: none;">
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@input name="eml.contacts.phone" i18nkey="eml.contact.phone" withLabel=false />
+                                    <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" withLabel=false />
                                 </div>
                                 <div class="col-md-6 mt-auto py-1">
                                     <a id="contact-phone-remove" class="removeContactPhoneLink metadata-action-link" href="">
@@ -1425,7 +1425,7 @@
                         <div id="baseItem-email" class="contact-email-item" style="display: none;">
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@input name="eml.contacts.email" i18nkey="eml.contact.email" withLabel=false />
+                                    <@input name="baseItem-email-input" i18nkey="eml.contact.email" withLabel=false />
                                 </div>
                                 <div class="col-md-6 mt-auto py-1">
                                     <a id="contact-email-remove" class="removeContactEmailLink metadata-action-link" href="">
@@ -1443,7 +1443,7 @@
                         <div id="baseItem-homepage" class="contact-homepage-item" style="display: none;">
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@input name="eml.contacts.homepage" i18nkey="eml.contact.homepage" withLabel=false />
+                                    <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" withLabel=false />
                                 </div>
                                 <div class="col-md-6 mt-auto py-1">
                                     <a id="contact-homepage-remove" class="removeContactHomepageLink metadata-action-link" href="">
