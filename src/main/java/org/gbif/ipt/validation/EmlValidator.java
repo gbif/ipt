@@ -300,7 +300,7 @@ public class EmlValidator extends BaseValidator {
             /* phone(s) are optional. But if they exist, should match the pattern */
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
+                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
                     action.addFieldError("eml.contacts[" + index + "].phone[" + phoneIndex + "]",
                         action.getText("validation.invalid", new String[] {action.getText("eml.contact.phone")}));
                   }
@@ -375,7 +375,7 @@ public class EmlValidator extends BaseValidator {
               /* phone(s) are optional. But if they exist, should match the pattern */
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
+                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
                     action.addFieldError("eml.creators[" + index + "].phone[" + phoneIndex + "]",
                         action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.phone")}));
                   }
@@ -447,7 +447,7 @@ public class EmlValidator extends BaseValidator {
               /* phone(s) are optional. But if they exist, should match the pattern */
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
+                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
                     action.addFieldError("eml.metadataProviders[" + index + "].phone[" + phoneIndex + "]",
                         action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.phone")}));
                   }
@@ -704,7 +704,7 @@ public class EmlValidator extends BaseValidator {
               /* phone(s) are optional. But if they exist, should match the pattern */
               if (!ap.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
-                  if (isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
+                  if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
                     action.addFieldError("eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
                         action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
                   }
