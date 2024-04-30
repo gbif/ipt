@@ -1272,7 +1272,7 @@
                             </a>
                         </div>
 
-                        <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
+                        <div id="baseItem-creator" class="item row g-2 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <div class="btn-group">
@@ -1408,7 +1408,7 @@
                         <@textinline name="eml.metadataProvider.plural" help="i18n"/>
                         <div id="metadataProvider-items">
                             <#list eml.metadataProviders as metadataProvider>
-                                <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
+                                <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-2 pb-4 border-bottom">
                                     <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <div class="btn-group">
@@ -1444,7 +1444,7 @@
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
                                     </div>
                                     <div class="col-md-2">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" i18nkey="eml.metadataProvider.salutation" requiredField=true/>
+                                        <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" i18nkey="eml.metadataProvider.salutation"/>
                                     </div>
                                     <div class="col-md-6">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].position" i18nkey="eml.metadataProvider.position" requiredField=true />
@@ -1616,7 +1616,7 @@
                             </a>
                         </div>
 
-                        <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
+                        <div id="baseItem-metadataProvider" class="item row g-2 pb-4 border-bottom" style="display:none;">
                             <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <div class="btn-group">
@@ -1652,7 +1652,7 @@
                                 <@input name="eml.metadataProvider.lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
                             </div>
                             <div class="col-md-2">
-                                <@input name="eml.metadataProvider.salutation" i18nkey="eml.metadataProvider.salutation" requiredField=true/>
+                                <@input name="eml.metadataProvider.salutation" i18nkey="eml.metadataProvider.salutation"/>
                             </div>
                             <div class="col-md-6">
                                 <@input name="eml.metadataProvider.position" i18nkey="eml.metadataProvider.position" requiredField=true />
