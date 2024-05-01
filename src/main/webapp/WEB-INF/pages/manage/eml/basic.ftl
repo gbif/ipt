@@ -413,19 +413,19 @@
 
             $(".add-agent-contact-info").click(function (event) {
                 event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
+
+            $(".add-identifier").click(function (event) {
+                event.preventDefault();
+                createNewIdentifierForAgent(event);
+            });
+
+            function createNewSubEntityForAgent(event) {
                 var $target = getTargetLink(event);
                 var id = $target.attr("id");
                 var entityName = getEntityNameFromAddNewLinkId(id);
                 var subEntityName = getSubEntityNameFromAddNewLinkId(id);
-                createNewSubEntityForAgent(event, entityName, subEntityName);
-            });
-
-            function createNewSubEntityForAgent(event, entityName, subEntityName) {
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-
                 var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
                 var newItem = $('#baseItem-' + subEntityName).clone();
                 newItem.hide();
@@ -443,6 +443,34 @@
                 $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
                 $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
                     removeSubEntityFromAgent(event, entityName, subEntityName);
+                });
+            }
+
+            function createNewIdentifierForAgent(event) {
+                var $target = getTargetLink(event);
+                var id = $target.attr("id");
+                var entityName = getEntityNameFromAddNewLinkId(id);
+                var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
+
+                var newItem = $('#baseItem-identifier').clone();
+                newItem.hide();
+                newItem.appendTo('#' + entityName + '-' + entityIndex + '-identifiers');
+                newItem.slideDown('slow');
+
+                // set correct indexes, names, ids
+                var numberOfSubIdentifiers = $("#" + entityName + "-" + entityIndex + "-identifiers .identifier-item").length;
+                var identifierIndex = parseInt(numberOfSubIdentifiers) - 1;
+
+                newItem.attr("id", entityName + "-" + entityIndex + "-identifier-" + identifierIndex);
+                var $select = newItem.find("#baseItem-directory-select")
+                var $input = newItem.find("#baseItem-identifier-input");
+                var $deleteLink = newItem.find("#baseItem-identifier-remove");
+
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
+                $select.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
+                $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
+                $("#" + entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex).click(function (event) {
+                    removeIdentifierFromAgent(event);
                 });
             }
 
@@ -485,25 +513,23 @@
             }
 
             $(".removeSubEntity").click(function (event) {
-                var $target = getTargetLink(event);
-                var id = $target.attr("id");
-                var entityName = getEntityNameFromRemoveLinkId(id);
-                var subEntityName = getSubEntityNameFromRemoveLinkId(id);
+                event.preventDefault();
+                removeSubEntityFromAgent(event);
+            });
 
-                removeSubEntityFromAgent(event, entityName, subEntityName);
+            $(".removeIdentifier").click(function (event) {
+                event.preventDefault();
+                removeIdentifierFromAgent(event);
             });
 
             // entity: contact, creator, metadataProvider
             // subEntity: phone, email, homepage
-            function removeSubEntityFromAgent(event, entityName, subEntityName) {
+            function removeSubEntityFromAgent(event) {
                 event.preventDefault();
-
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-
+                var $target = getTargetLink(event);
                 var id = $target.attr("id");
+                var entityName = getEntityNameFromRemoveLinkId(id);
+                var subEntityName = getSubEntityNameFromRemoveLinkId(id);
                 var entityIndex = getEntityIndexFromRemoveLinkId(id);
                 var subEntityIndex = getSubEntityIndexFromRemoveLinkId(id);
 
@@ -511,6 +537,22 @@
                     $(this).remove();
                     $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + entityName + "-" + subEntityName + "-item").each(function (index) {
                         setSubEntityIndexes($(this), entityName, subEntityName, entityIndex, index);
+                    });
+                });
+            }
+
+            function removeIdentifierFromAgent(event) {
+                event.preventDefault();
+                var $target = getTargetLink(event);
+                var id = $target.attr("id");
+                var entityName = getEntityNameFromRemoveLinkId(id);
+                var entityIndex = getEntityIndexFromRemoveLinkId(id);
+                var identifierIndex = getSubEntityIndexFromRemoveLinkId(id);
+
+                $('#' + entityName + '-' + entityIndex + '-identifier-' + identifierIndex).slideUp('slow', function () {
+                    $(this).remove();
+                    $("#" + entityName + "-" + entityIndex + "-identifiers .identifier-item").each(function (index) {
+                        setIdentifiersIndexes($(this), entityName, entityIndex, index);
                     });
                 });
             }
@@ -524,10 +566,24 @@
                 });
                 $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
             }
+
+            function setIdentifiersIndexes(item, entityName, entityIndex, identifierIndex) {
+                item.attr("id", entityName + "-" + entityIndex + "-identifier-" + identifierIndex);
+                var $input = item.find("input");
+                var $select = item.find("select");
+                var $deleteLink = item.find("a");
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "]").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $select.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "]").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
+            }
         });
     </script>
     <style>
-        .form-control {
+        .form-control, .form-select {
             min-height: calc(1.5em + .5rem + 2px);
             padding: .25rem .5rem;
             font-size: .875rem;
@@ -563,6 +619,8 @@
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
+
+<#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
 
 <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
@@ -923,23 +981,57 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <#list eml.contacts[contact_index].userIds as userId>
-                                        <div class="col-md-6">
-                                            <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[(eml.contacts[contact_index].userIds[0].directory)!]!}"/>
+                                    <div class="col-12">
+                                        <div id="contact-${contact_index}-identifiers">
+                                            <div class="d-flex text-smaller">
+                                                <a tabindex="0" role="button"
+                                                   class="popover-link"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-trigger="focus"
+                                                   data-bs-html="true"
+                                                   data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                                </a>
+                                                <label for="eml.contacts.userIds" class="form-label mb-0">
+                                                    Personnel Identifiers
+                                                </label>
+                                            </div>
+                                            <#list eml.contacts[contact_index].userIds as userId>
+                                                <div id="contact-${contact_index}-identifier-${userId_index}" class="identifier-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-4">
+                                                            <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.contacts[contact_index].userIds[0].directory)!]!}"/>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.contacts[contact_index].userIds[0].identifier)!}"/>
+                                                        </div>
+
+                                                        <div class="col-md-4 mt-auto py-1">
+                                                            <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this identifier</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
                                         </div>
-                                        <div class="col-md-6">
-                                            <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${(eml.contacts[contact_index].userIds[0].identifier)!}"/>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-contact-identifier-${contact_index}" href="" class="metadata-action-link add-identifier">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new identifier</span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </#list>
-                                    <div class="col mt-auto py-1">
-                                        <a id="plus-contact-identifier" href="" class="metadata-action-link">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>Add new identifier</span>
-                                        </a>
                                     </div>
                                 </div>
                             </#list>
@@ -1266,19 +1358,57 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <#if eml.creators[creator_index].userIds[0]??>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.creators[creator_index].userIds[0].directory!]!}"/>
-                                        <#else>
-                                            <@select name="eml.creators[${creator_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
-                                        </#if>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <#if eml.creators[creator_index].userIds[0]??>
-                                            <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.creators[creator_index].userIds[0].identifier!}"/>
-                                        <#else>
-                                            <@input name="eml.creators[${creator_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
-                                        </#if>
+                                    <div class="col-12">
+                                        <div id="creator-${creator_index}-identifiers">
+                                            <div class="d-flex text-smaller">
+                                                <a tabindex="0" role="button"
+                                                   class="popover-link"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-trigger="focus"
+                                                   data-bs-html="true"
+                                                   data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                                </a>
+                                                <label for="eml.creators.userIds" class="form-label mb-0">
+                                                    Personnel Identifiers
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].userIds as userId>
+                                                <div id="creator-${creator_index}-identifier-${userId_index}" class="identifier-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-4">
+                                                            <@select name="eml.contacts[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.creators[creator_index].userIds[0].directory)!]!}"/>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.creators[creator_index].userIds[0].identifier)!}"/>
+                                                        </div>
+
+                                                        <div class="col-md-4 mt-auto py-1">
+                                                            <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this identifier</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-identifier-${creator_index}" href="" class="metadata-action-link add-identifier">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new identifier</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </#list>
@@ -1610,19 +1740,56 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.metadataProviders[metadataProvider_index].userIds[0].directory!]!}"/>
-                                        <#else>
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
-                                        </#if>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value="${eml.metadataProviders[metadataProvider_index].userIds[0].identifier!}"/>
-                                        <#else>
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" value=""/>
-                                        </#if>
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-identifiers">
+                                            <div class="d-flex text-smaller">
+                                                <a tabindex="0" role="button"
+                                                   class="popover-link"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-trigger="focus"
+                                                   data-bs-html="true"
+                                                   data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                                </a>
+                                                <label for="eml.contacts.userIds" class="form-label mb-0">
+                                                    Personnel Identifiers
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].userIds as userId>
+                                                <div id="metadataProvider-${metadataProvider_index}-identifier-${userId_index}" class="identifier-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-4">
+                                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.metadataProviders[metadataProvider_index].userIds[0].directory)!]!}"/>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.metadataProviders[metadataProvider_index].userIds[0].identifier)!}"/>
+                                                        </div>
+                                                        <div class="col-md-4 mt-auto py-1">
+                                                            <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this identifier</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-identifier-${metadataProvider_index}" href="" class="metadata-action-link add-identifier">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new identifier</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </#list>
@@ -1818,6 +1985,27 @@
                                             </svg>
                                         </span>
                                         <span>Remove this homepage</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="baseItem-identifier" class="identifier-item" style="display: none;">
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-4">
+                                    <@select name="baseItem-directory-select" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="" withLabel=false/>
+                                </div>
+                                <div class="col-md-4">
+                                    <@input name="baseItem-identifier-input" help="i18n" i18nkey="eml.contact.identifier" value="" withLabel=false placeholder="${inputIdentifierPlaceholder}"/>
+                                </div>
+                                <div class="col-md-4 mt-auto py-1">
+                                    <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>Remove this identifier</span>
                                     </a>
                                 </div>
                             </div>
