@@ -283,18 +283,6 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
-            $('[id^="eml.contacts"][id$=".directory"]').select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 'Infinity',
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
             $('[id^="eml.creators"][id$=".address.country"]').select2({
                 placeholder: '${action.getText("eml.country.selection")?js_string}',
                 language: {
@@ -306,18 +294,6 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
-            $('[id^="eml.creators"][id$=".directory"]').select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 'Infinity',
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
             $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({
                 placeholder: '${action.getText("eml.country.selection")?js_string}',
                 language: {
@@ -326,18 +302,6 @@
                     }
                 },
                 width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.metadataProviders"][id$=".directory"]').select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 'Infinity',
                 allowClear: true,
                 theme: 'bootstrap4'
             });
