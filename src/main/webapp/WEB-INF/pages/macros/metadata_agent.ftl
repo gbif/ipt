@@ -308,6 +308,8 @@
             $("#contact-item-" + index + " #plus-contact-email").attr("id", "plus-contact-email-" + index);
             $("#contact-item-" + index + " #contact-homepages").attr("id", "contact-" + index + "-homepages");
             $("#contact-item-" + index + " #plus-contact-homepage").attr("id", "plus-contact-homepage-" + index);
+            $("#contact-item-" + index + " #contact-identifiers").attr("id", "contact-" + index + "-identifiers");
+            $("#contact-item-" + index + " #plus-contact-identifier").attr("id", "plus-contact-identifier-" + index);
             $("#contact-item-" + index + " [id$='directory']").attr("id", "eml.contacts[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='directory']").attr("for", "eml.contacts[" + index + "].userIds[0].directory");
             $("#contact-item-" + index + " [id$='directory']").select2({
@@ -385,6 +387,8 @@
             $("#creator-item-" + index + " #plus-creator-email").attr("id", "plus-creator-email-" + index);
             $("#creator-item-" + index + " #creator-homepages").attr("id", "creator-" + index + "-homepages");
             $("#creator-item-" + index + " #plus-creator-homepage").attr("id", "plus-creator-homepage-" + index);
+            $("#creator-item-" + index + " #creator-identifiers").attr("id", "creator-" + index + "-identifiers");
+            $("#creator-item-" + index + " #plus-creator-identifier").attr("id", "plus-creator-identifier-" + index);
             $("#creator-item-" + index + " [id$='directory']").attr("id", "eml.creators[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='directory']").attr("for", "eml.creators[" + index + "].userIds[0].directory");
             $("#creator-item-" + index + " [id$='directory']").select2({
@@ -462,6 +466,8 @@
             $("#metadataProvider-item-" + index + " #plus-metadataProvider-email").attr("id", "plus-metadataProvider-email-" + index);
             $("#metadataProvider-item-" + index + " #metadataProvider-homepages").attr("id", "metadataProvider-" + index + "-homepages");
             $("#metadataProvider-item-" + index + " #plus-metadataProvider-homepage").attr("id", "plus-metadataProvider-homepage-" + index);
+            $("#metadataProvider-item-" + index + " #metadataProvider-identifiers").attr("id", "metadataProvider-" + index + "-identifiers");
+            $("#metadataProvider-item-" + index + " #plus-metadataProvider-identifier").attr("id", "plus-metadataProvider-identifier-" + index);
             $("#metadataProvider-item-" + index + " [id$='directory']").attr("id", "eml.metadataProviders[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='directory']").attr("for", "eml.metadataProviders[" + index + "].userIds[0].directory");
             $("#metadataProvider-item-" + index + " [id$='directory']").select2({

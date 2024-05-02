@@ -1128,11 +1128,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <@select name="eml.contact.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.contact.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                            <div class="col-12">
+                                <div id="contact-identifiers">
+                                    <div class="d-flex text-smaller">
+                                        <a tabindex="0" role="button"
+                                           class="popover-link"
+                                           data-bs-toggle="popover"
+                                           data-bs-trigger="focus"
+                                           data-bs-html="true"
+                                           data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                        </a>
+                                        <label for="eml.contacts.userIds" class="form-label mb-0">
+                                            Personnel Identifiers
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-contact-identifier" href="" class="metadata-action-link add-identifier">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new identifier</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1511,11 +1534,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <@select name="eml.creator.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                            <div class="col-12">
+                                <div id="creator-identifiers">
+                                    <div class="d-flex text-smaller">
+                                        <a tabindex="0" role="button"
+                                           class="popover-link"
+                                           data-bs-toggle="popover"
+                                           data-bs-trigger="focus"
+                                           data-bs-html="true"
+                                           data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                        </a>
+                                        <label for="eml.creators.userIds" class="form-label mb-0">
+                                            Personnel Identifiers
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-identifier" href="" class="metadata-action-link add-identifier">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new identifier</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1892,11 +1938,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <@select name="eml.metadataProvider.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.userId.identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                            <div class="col-12">
+                                <div id="metadataProvider-identifiers">
+                                    <div class="d-flex text-smaller">
+                                        <a tabindex="0" role="button"
+                                           class="popover-link"
+                                           data-bs-toggle="popover"
+                                           data-bs-trigger="focus"
+                                           data-bs-html="true"
+                                           data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                        </a>
+                                        <label for="eml.metadataProviders.userIds" class="form-label mb-0">
+                                            Personnel Identifiers
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-identifier" href="" class="metadata-action-link add-identifier">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new identifier</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
