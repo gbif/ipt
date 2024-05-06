@@ -120,7 +120,7 @@
             createNewIdentifierForAgent(event);
         });
 
-        // remove phone/email/homepage from contact/creator/metadataProvider
+        // remove phone/email/homepage/position/address from contact/creator/metadataProvider
         $(".removeSubEntity").click(function (event) {
             event.preventDefault();
             removeSubEntityFromAgent(event);
@@ -239,7 +239,7 @@
 
             $('#' + entityName + '-' + entityIndex + '-' + subEntityName + '-' + subEntityIndex).slideUp('slow', function () {
                 $(this).remove();
-                $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + entityName + "-" + subEntityName + "-item").each(function (index) {
+                $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + subEntityName + "-item").each(function (index) {
                     setSubEntityIndexes($(this), entityName, subEntityName, entityIndex, index);
                 });
             });

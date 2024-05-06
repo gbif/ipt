@@ -689,7 +689,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div id="contact-${contact_index}-adresss">
+                                        <div id="contact-${contact_index}-addresss">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.address" class="form-label mb-0">
                                                     <@s.text name="eml.contact.address.address"/>
@@ -1110,7 +1110,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>r
+                    </div>
 
                     <div class="my-3 p-3">
                         <!-- Resource Creators -->
