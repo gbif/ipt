@@ -594,6 +594,18 @@
                         <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
                         <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
                         <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
+                        <#assign addNewPosition><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.position'/></#assign>
+                        <#assign removePosition><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.position'/></#assign>
+                        <#assign addNewAddress><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.address.address'/></#assign>
+                        <#assign removeAddress><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.address.address'/></#assign>
+                        <#assign addNewPhone><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.phone'/></#assign>
+                        <#assign removePhone><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.phone'/></#assign>
+                        <#assign addNewEmail><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.email'/></#assign>
+                        <#assign removeEmail><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.email'/></#assign>
+                        <#assign addNewHomepage><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.homepage'/></#assign>
+                        <#assign removeHomepage><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.homepage'/></#assign>
+                        <#assign addNewIdentifier><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.identifier'/></#assign>
+                        <#assign removeIdentifier><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.identifier'/></#assign>
                     </div>
 
                     <div class="my-3 p-3">
@@ -640,7 +652,7 @@
                                         <div id="contact-${contact_index}-positions">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.position" class="form-label mb-0">
-                                                    Position
+                                                    <@s.text name="eml.contact.position"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].position as position>
@@ -656,7 +668,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this position</span>
+                                                                <span>${removePosition?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -671,7 +683,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new position</span>
+                                                    <span>${addNewPosition?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -680,7 +692,7 @@
                                         <div id="contact-${contact_index}-adresss">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.address" class="form-label mb-0">
-                                                    Address
+                                                    <@s.text name="eml.contact.address.address"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].address.address as address>
@@ -696,7 +708,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this address</span>
+                                                                <span>${removeAddress?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -711,7 +723,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new address</span>
+                                                    <span>${addNewAddress?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -732,7 +744,7 @@
                                         <div id="contact-${contact_index}-phones">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.phone" class="form-label mb-0">
-                                                    Phone
+                                                    <@s.text name="eml.contact.phone"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].phone as phone>
@@ -748,7 +760,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this phone</span>
+                                                                <span>${removePhone?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -763,7 +775,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new phone</span>
+                                                    <span>${addNewPhone?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -772,7 +784,7 @@
                                         <div id="contact-${contact_index}-emails">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.email" class="form-label mb-0">
-                                                    Email
+                                                    <@s.text name="eml.contact.email"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].email as email>
@@ -788,7 +800,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this email</span>
+                                                                <span>${removeEmail?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -803,7 +815,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new email</span>
+                                                    <span>${addNewEmail?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -812,7 +824,7 @@
                                         <div id="contact-${contact_index}-homepages">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.homepage" class="form-label mb-0">
-                                                    Homepage
+                                                    <@s.text name="eml.contact.homepage"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].homepage as homepage>
@@ -828,7 +840,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this phone</span>
+                                                                <span>${removeHomepage?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -844,7 +856,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new homepage</span>
+                                                    <span>${addNewHomepage?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -861,7 +873,7 @@
                                                     <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                                 </a>
                                                 <label for="eml.contacts.userIds" class="form-label mb-0">
-                                                    Personnel Identifiers
+                                                    <@s.text name="eml.contact.identifier"/>
                                                 </label>
                                             </div>
                                             <#list eml.contacts[contact_index].userIds as userId>
@@ -881,7 +893,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this identifier</span>
+                                                                <span>${removeIdentifier?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -896,7 +908,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new identifier</span>
+                                                    <span>${addNewIdentifier?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -955,7 +967,7 @@
                                 <div id="contact-positions">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.contacts.position" class="form-label mb-0">
-                                            Position
+                                            <@s.text name="eml.contact.position"/>
                                         </label>
                                     </div>
                                 </div>
@@ -967,7 +979,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new position</span>
+                                            <span>${addNewPosition?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -976,7 +988,7 @@
                                 <div id="contact-addresss">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.contacts.address" class="form-label mb-0">
-                                            Address
+                                            <@s.text name="eml.contact.address.address"/>
                                         </label>
                                     </div>
                                 </div>
@@ -988,7 +1000,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new address</span>
+                                            <span>${addNewAddress?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1009,7 +1021,7 @@
                                 <div id="contact-phones">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.contacts.phone" class="form-label mb-0">
-                                            Phone
+                                            <@s.text name="eml.contact.phone"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1021,7 +1033,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new phone</span>
+                                            <span>${addNewPhone?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1030,7 +1042,7 @@
                                 <div id="contact-emails">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.contacts.email" class="form-label mb-0">
-                                            Email
+                                            <@s.text name="eml.contact.email"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1042,7 +1054,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new email</span>
+                                            <span>${addNewEmail?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1051,7 +1063,7 @@
                                 <div id="contact-homepages">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.contacts.homepage" class="form-label mb-0">
-                                            Homepage
+                                            <@s.text name="eml.contact.homepage"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1063,7 +1075,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new homepage</span>
+                                            <span>${addNewHomepage?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1080,7 +1092,7 @@
                                             <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                         </a>
                                         <label for="eml.contacts.userIds" class="form-label mb-0">
-                                            Personnel Identifiers
+                                            <@s.text name="eml.contact.identifier"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1092,13 +1104,13 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new identifier</span>
+                                            <span>${addNewIdentifier?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>r
 
                     <div class="my-3 p-3">
                         <!-- Resource Creators -->
@@ -1151,7 +1163,7 @@
                                         <div id="creator-${creator_index}-positions">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.position" class="form-label mb-0">
-                                                    Position
+                                                    <@s.text name="eml.contact.position"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].position as position>
@@ -1167,7 +1179,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this position</span>
+                                                                <span>${removePosition?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1182,7 +1194,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new position</span>
+                                                    <span>${addNewPosition?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1191,7 +1203,7 @@
                                         <div id="creator-${creator_index}-addresss">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.creators.address" class="form-label mb-0">
-                                                    Address
+                                                    <@s.text name="eml.contact.address.address"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].address.address as address>
@@ -1207,7 +1219,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this address</span>
+                                                                <span>${removeAddress?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1222,7 +1234,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new address</span>
+                                                    <span>${addNewAddress?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1243,7 +1255,7 @@
                                         <div id="creator-${creator_index}-phones">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.creators.phone" class="form-label mb-0">
-                                                    Phone
+                                                    <@s.text name="eml.contact.phone"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].phone as phone>
@@ -1259,7 +1271,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this phone</span>
+                                                                <span>${removePhone?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1274,7 +1286,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new phone</span>
+                                                    <span>${addNewPhone?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1283,7 +1295,7 @@
                                         <div id="creator-${creator_index}-emails">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.creators.email" class="form-label mb-0">
-                                                    Email
+                                                    <@s.text name="eml.contact.email"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].email as email>
@@ -1299,7 +1311,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this email</span>
+                                                                <span>${removeEmail?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1314,7 +1326,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new email</span>
+                                                    <span>${addNewEmail?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1323,7 +1335,7 @@
                                         <div id="creator-${creator_index}-homepages">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.creators.homepage" class="form-label mb-0">
-                                                    Homepage
+                                                    <@s.text name="eml.contact.homepage"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].homepage as homepage>
@@ -1339,7 +1351,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this homepage</span>
+                                                                <span>${removeHomepage?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1354,7 +1366,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new homepage</span>
+                                                    <span>${addNewHomepage?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1371,7 +1383,7 @@
                                                     <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                                 </a>
                                                 <label for="eml.creators.userIds" class="form-label mb-0">
-                                                    Personnel Identifiers
+                                                    <@s.text name="eml.contact.identifier"/>
                                                 </label>
                                             </div>
                                             <#list eml.creators[creator_index].userIds as userId>
@@ -1391,7 +1403,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this identifier</span>
+                                                                <span>${removeIdentifier?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1406,7 +1418,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new identifier</span>
+                                                    <span>${addNewIdentifier?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1468,7 +1480,7 @@
                                 <div id="creator-positions">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.creators.position" class="form-label mb-0">
-                                            Position
+                                            <@s.text name="eml.contact.position"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1480,7 +1492,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add position</span>
+                                            <span>${addNewPosition?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1492,7 +1504,7 @@
                                 <div id="creator-addresss">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.creators.address" class="form-label mb-0">
-                                            Address
+                                            <@s.text name="eml.contact.address.address"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1504,7 +1516,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new address</span>
+                                            <span>${addNewAddress?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1525,7 +1537,7 @@
                                 <div id="creator-phones">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.creators.phone" class="form-label mb-0">
-                                            Phone
+                                            <@s.text name="eml.contact.phone"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1537,7 +1549,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new phone</span>
+                                            <span>${addNewPhone?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1546,7 +1558,7 @@
                                 <div id="creator-emails">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.creators.email" class="form-label mb-0">
-                                            Email
+                                            <@s.text name="eml.contact.email"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1558,7 +1570,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new email</span>
+                                            <span>${addNewEmail?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1567,7 +1579,7 @@
                                 <div id="creator-homepages">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.creators.homepage" class="form-label mb-0">
-                                            Homepage
+                                            <@s.text name="eml.contact.homepage"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1579,7 +1591,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new homepage</span>
+                                            <span>${addNewHomepage?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1596,7 +1608,7 @@
                                             <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                         </a>
                                         <label for="eml.creators.userIds" class="form-label mb-0">
-                                            Personnel Identifiers
+                                            <@s.text name="eml.contact.identifier"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1608,7 +1620,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new identifier</span>
+                                            <span>${addNewIdentifier?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -1666,7 +1678,7 @@
                                         <div id="metadataProvider-${metadataProvider_index}-positions">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.position" class="form-label mb-0">
-                                                    Position
+                                                    <@s.text name="eml.contact.position"/>
                                                 </label>
                                             </div>
                                             <#list eml.metadataProviders[metadataProvider_index].position as position>
@@ -1682,7 +1694,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this position</span>
+                                                                <span>${removePosition?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1697,7 +1709,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new position</span>
+                                                    <span>${addNewPosition?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1706,7 +1718,7 @@
                                         <div id="metadataProvider-${metadataProvider_index}-addresss">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.contacts.address" class="form-label mb-0">
-                                                    Address
+                                                    <@s.text name="eml.contact.address.address"/>
                                                 </label>
                                             </div>
                                             <#list eml.metadataProviders[metadataProvider_index].address.address as address>
@@ -1722,7 +1734,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this address</span>
+                                                                <span>${removeAddress?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1737,7 +1749,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new address</span>
+                                                    <span>${addNewAddress?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1758,7 +1770,7 @@
                                         <div id="metadataProvider-${metadataProvider_index}-phones">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.metadataProviders.phone" class="form-label mb-0">
-                                                    Phone
+                                                    <@s.text name="eml.contact.phone"/>
                                                 </label>
                                             </div>
                                             <#list eml.metadataProviders[metadataProvider_index].phone as phone>
@@ -1774,7 +1786,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this phone</span>
+                                                                <span>${removePhone?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1789,7 +1801,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new phone</span>
+                                                    <span>${addNewPhone?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1814,7 +1826,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this email</span>
+                                                                <span>${removeEmail?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1829,7 +1841,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new email</span>
+                                                    <span>${addNewEmail?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1838,7 +1850,7 @@
                                         <div id="metadataProvider-${metadataProvider_index}-homepages">
                                             <div class="d-flex text-smaller">
                                                 <label for="eml.metadataProviders.homepage" class="form-label mb-0">
-                                                    Homepage
+                                                    <@s.text name="eml.contact.homepage"/>
                                                 </label>
                                             </div>
                                             <#list eml.metadataProviders[metadataProvider_index].homepage as homepage>
@@ -1854,7 +1866,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this homepage</span>
+                                                                <span>${removeHomepage?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1869,7 +1881,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new homepage</span>
+                                                    <span>${addNewHomepage?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1886,7 +1898,7 @@
                                                     <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                                 </a>
                                                 <label for="eml.contacts.userIds" class="form-label mb-0">
-                                                    Personnel Identifiers
+                                                    <@s.text name="eml.contact.identifier"/>
                                                 </label>
                                             </div>
                                             <#list eml.metadataProviders[metadataProvider_index].userIds as userId>
@@ -1905,7 +1917,7 @@
                                                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span>Remove this identifier</span>
+                                                                <span>${removeIdentifier?lower_case?cap_first}</span>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1920,7 +1932,7 @@
                                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                         </svg>
                                                     </span>
-                                                    <span>Add new identifier</span>
+                                                    <span>${addNewIdentifier?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -1985,7 +1997,7 @@
                                 <div id="metadataProvider-positions">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.metadataProviders.position" class="form-label mb-0">
-                                            Position
+                                            <@s.text name="eml.contact.position"/>
                                         </label>
                                     </div>
                                 </div>
@@ -1997,7 +2009,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new position</span>
+                                            <span>${addNewPosition?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2006,7 +2018,7 @@
                                 <div id="metadataProvider-addresss">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.metadataProviders.address" class="form-label mb-0">
-                                            Address
+                                            <@s.text name="eml.contact.address.address"/>
                                         </label>
                                     </div>
                                 </div>
@@ -2018,7 +2030,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new address</span>
+                                            <span>${addNewAddress?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2039,7 +2051,7 @@
                                 <div id="metadataProvider-phones">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.metadataProviders.phone" class="form-label mb-0">
-                                            Phone
+                                            <@s.text name="eml.contact.phone"/>
                                         </label>
                                     </div>
                                 </div>
@@ -2051,7 +2063,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new phone</span>
+                                            <span>${addNewPhone?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2060,7 +2072,7 @@
                                 <div id="metadataProvider-emails">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.metadataProviders.email" class="form-label mb-0">
-                                            Email
+                                            <@s.text name="eml.contact.email"/>
                                         </label>
                                     </div>
                                 </div>
@@ -2072,7 +2084,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new email</span>
+                                            <span>${addNewEmail?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2081,7 +2093,7 @@
                                 <div id="metadataProvider-homepages">
                                     <div class="d-flex text-smaller">
                                         <label for="eml.metadataProviders.homepage" class="form-label mb-0">
-                                            Homepage
+                                            <@s.text name="eml.contact.homepage"/>
                                         </label>
                                     </div>
                                 </div>
@@ -2093,7 +2105,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new homepage</span>
+                                            <span>${addNewHomepage?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2110,7 +2122,7 @@
                                             <i class="bi bi-info-circle text-gbif-primary px-1"></i>
                                         </a>
                                         <label for="eml.metadataProviders.userIds" class="form-label mb-0">
-                                            Personnel Identifiers
+                                            <@s.text name="eml.contact.identifier"/>
                                         </label>
                                     </div>
                                 </div>
@@ -2122,7 +2134,7 @@
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                 </svg>
                                             </span>
-                                            <span>Add new identifier</span>
+                                            <span>${addNewIdentifier?lower_case?cap_first}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -2141,7 +2153,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this address</span>
+                                        <span>${removeAddress?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -2159,7 +2171,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this position</span>
+                                        <span>${removePosition?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -2177,7 +2189,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this phone</span>
+                                        <span>${removePhone?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -2195,7 +2207,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this email</span>
+                                        <span>${removeEmail?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -2213,7 +2225,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this homepage</span>
+                                        <span>${removeHomepage?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
@@ -2234,7 +2246,7 @@
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
-                                        <span>Remove this identifier</span>
+                                        <span>${removeIdentifier?lower_case?cap_first}</span>
                                     </a>
                                 </div>
                             </div>
