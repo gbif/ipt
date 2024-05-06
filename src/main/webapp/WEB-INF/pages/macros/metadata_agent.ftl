@@ -145,12 +145,17 @@
 
             // set correct indexes, names, ids
             var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + subEntityName + "-item").length;
-            var subEntityIndex = parseInt(numberOfSubEntities) - 1;
+            var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
+            var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt - 1;
 
             newItem.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
             var $input = newItem.find("#baseItem-" + subEntityName + "-input");
             var $deleteLink = newItem.find("#baseItem-" + subEntityName + "-remove");
-            $input.attr("id", "eml." + entityName + "s[" + entityIndex + "]." + subEntityName + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            if (subEntityName === "address") {
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].address.address[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            } else {
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "]." + subEntityName + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            }
             $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
             $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
                 removeSubEntityFromAgent(event, entityName, subEntityName);
@@ -446,12 +451,20 @@
             $("#contact-item-" + index + " [for$='lastName']").attr("for", "eml.contacts[" + index + "].lastName");
             $("#contact-item-" + index + " [id$='salutation']").attr("id", "eml.contacts[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='salutation']").attr("for", "eml.contacts[" + index + "].salutation");
-            $("#contact-item-" + index + " [id$='position']").attr("id", "eml.contacts[" + index + "].position").attr("name", function () {return $(this).attr("id");});
-            $("#contact-item-" + index + " [for$='position']").attr("for", "eml.contacts[" + index + "].position");
+            $("#contact-item-" + index + " #contact-positions").attr("id", "contact-" + index + "-positions");
+            $("#contact-item-" + index + " #plus-contact-position").attr("id", "plus-contact-position-" + index);
+            $("#plus-contact-position-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#contact-item-" + index + " [id$='organisation']").attr("id", "eml.contacts[" + index + "].organisation").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='organisation']").attr("for", "eml.contacts[" + index + "].organisation");
-            $("#contact-item-" + index + " [id$='address']").attr("id", "eml.contacts[" + index + "].address.address").attr("name", function () {return $(this).attr("id");});
-            $("#contact-item-" + index + " [for$='address']").attr("for", "eml.contacts[" + index + "].address.address");
+            $("#contact-item-" + index + " #contact-addresss").attr("id", "contact-" + index + "-addresss");
+            $("#contact-item-" + index + " #plus-contact-address").attr("id", "plus-contact-address-" + index);
+            $("#plus-contact-address-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#contact-item-" + index + " [id$='postalCode']").attr("id", "eml.contacts[" + index + "].address.postalCode").attr("name", function () {return $(this).attr("id");});
             $("#contact-item-" + index + " [for$='postalCode']").attr("for", "eml.contacts[" + index + "].address.postalCode");
             $("#contact-item-" + index + " [id$='city']").attr("id", "eml.contacts[" + index + "].address.city").attr("name", function () {return $(this).attr("id");});
@@ -541,12 +554,20 @@
             $("#creator-item-" + index + " [for$='lastName']").attr("for", "eml.creators[" + index + "].lastName");
             $("#creator-item-" + index + " [id$='salutation']").attr("id", "eml.creators[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='salutation']").attr("for", "eml.creators[" + index + "].salutation");
-            $("#creator-item-" + index + " [id$='position']").attr("id", "eml.creators[" + index + "].position").attr("name", function () {return $(this).attr("id");});
-            $("#creator-item-" + index + " [for$='position']").attr("for", "eml.creators[" + index + "].position");
+            $("#creator-item-" + index + " #creator-positions").attr("id", "creator-" + index + "-positions");
+            $("#creator-item-" + index + " #plus-creator-position").attr("id", "plus-creator-position-" + index);
+            $("#plus-creator-position-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#creator-item-" + index + " [id$='organisation']").attr("id", "eml.creators[" + index + "].organisation").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='organisation']").attr("for", "eml.creators[" + index + "].organisation");
-            $("#creator-item-" + index + " [id$='address']").attr("id", "eml.creators[" + index + "].address.address").attr("name", function () {return $(this).attr("id");});
-            $("#creator-item-" + index + " [for$='address']").attr("for", "eml.creators[" + index + "].address.address");
+            $("#creator-item-" + index + " #creator-addresss").attr("id", "creator-" + index + "-addresss");
+            $("#creator-item-" + index + " #plus-creator-address").attr("id", "plus-creator-address-" + index);
+            $("#plus-creator-address-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#creator-item-" + index + " [id$='postalCode']").attr("id", "eml.creators[" + index + "].address.postalCode").attr("name", function () {return $(this).attr("id");});
             $("#creator-item-" + index + " [for$='postalCode']").attr("for", "eml.creators[" + index + "].address.postalCode");
             $("#creator-item-" + index + " [id$='city']").attr("id", "eml.creators[" + index + "].address.city").attr("name", function () {return $(this).attr("id");});
@@ -636,12 +657,20 @@
             $("#metadataProvider-item-" + index + " [for$='lastName']").attr("for", "eml.metadataProviders[" + index + "].lastName");
             $("#metadataProvider-item-" + index + " [id$='salutation']").attr("id", "eml.metadataProviders[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='salutation']").attr("for", "eml.metadataProviders[" + index + "].salutation");
-            $("#metadataProvider-item-" + index + " [id$='position']").attr("id", "eml.metadataProviders[" + index + "].position").attr("name", function () {return $(this).attr("id");});
-            $("#metadataProvider-item-" + index + " [for$='position']").attr("for", "eml.metadataProviders[" + index + "].position");
+            $("#metadataProvider-item-" + index + " #metadataProvider-positions").attr("id", "metadataProvider-" + index + "-positions");
+            $("#metadataProvider-item-" + index + " #plus-metadataProvider-position").attr("id", "plus-metadataProvider-position-" + index);
+            $("#plus-metadataProvider-position-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#metadataProvider-item-" + index + " [id$='organisation']").attr("id", "eml.metadataProviders[" + index + "].organisation").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='organisation']").attr("for", "eml.metadataProviders[" + index + "].organisation");
-            $("#metadataProvider-item-" + index + " [id$='address']").attr("id", "eml.metadataProviders[" + index + "].address.address").attr("name", function () {return $(this).attr("id");});
-            $("#metadataProvider-item-" + index + " [for$='address']").attr("for", "eml.metadataProviders[" + index + "].address.address");
+            $("#metadataProvider-item-" + index + " #metadataProvider-addresss").attr("id", "metadataProvider-" + index + "-addresss");
+            $("#metadataProvider-item-" + index + " #plus-metadataProvider-address").attr("id", "plus-metadataProvider-address-" + index);
+            $("#plus-metadataProvider-address-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#metadataProvider-item-" + index + " [id$='postalCode']").attr("id", "eml.metadataProviders[" + index + "].address.postalCode").attr("name", function () {return $(this).attr("id");});
             $("#metadataProvider-item-" + index + " [for$='postalCode']").attr("for", "eml.metadataProviders[" + index + "].address.postalCode");
             $("#metadataProvider-item-" + index + " [id$='city']").attr("id", "eml.metadataProviders[" + index + "].address.city").attr("name", function () {return $(this).attr("id");});

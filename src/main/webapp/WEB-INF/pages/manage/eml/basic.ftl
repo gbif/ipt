@@ -628,27 +628,101 @@
                                         <@input name="eml.contacts[${contact_index}].firstName" i18nkey="eml.contact.firstName"/>
                                     </div>
                                     <div class="col-md-5">
-                                        <@input name="eml.contacts[${contact_index}].lastName" i18nkey="eml.contact.lastName" requiredField=true/>
+                                        <@input name="eml.contacts[${contact_index}].lastName" i18nkey="eml.contact.lastName" />
                                     </div>
                                     <div class="col-md-2">
                                         <@input name="eml.contacts[${contact_index}].salutation" i18nkey="eml.contact.salutation"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.contacts[${contact_index}].position" i18nkey="eml.contact.position" requiredField=true />
+                                        <@input name="eml.contacts[${contact_index}].organisation" i18nkey="eml.contact.organisation"  />
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.contacts[${contact_index}].organisation" i18nkey="eml.contact.organisation" requiredField=true />
+                                    <div class="col-12">
+                                        <div id="contact-${contact_index}-positions">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.contacts.position" class="form-label mb-0">
+                                                    Position
+                                                </label>
+                                            </div>
+                                            <#list eml.contacts[contact_index].position as position>
+                                                <div id="contact-${contact_index}-position-${position_index}" class="position-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.contacts[${contact_index}].position[${position_index}]" i18nkey="eml.contact.position" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this position</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-contact-position-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new position</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.contacts[${contact_index}].address.address[0]" i18nkey="eml.contact.address.address" />
+                                    <div class="col-12">
+                                        <div id="contact-${contact_index}-adresss">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.contacts.address" class="form-label mb-0">
+                                                    Address
+                                                </label>
+                                            </div>
+                                            <#list eml.contacts[contact_index].address.address as address>
+                                                <div id="contact-${contact_index}-address-${address_index}" class="address-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.contacts[${contact_index}].address.address[${address_index}]" i18nkey="eml.contact.address.address" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this address</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-contact-address-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new address</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <@input name="eml.contacts[${contact_index}].address.city" i18nkey="eml.contact.address.city" />
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <@input name="eml.contacts[${contact_index}].address.province" i18nkey="eml.contact.address.province" />
                                     </div>
-                                    <div class="countryList col-md-5">
+                                    <div class="countryList col-md-3">
                                         <@select name="eml.contacts[${contact_index}].address.country" help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.contacts[contact_index].address.country!}"/>
                                     </div>
                                     <div class="col-md-2">
@@ -869,27 +943,63 @@
                                 <@input name="eml.contact.firstName" i18nkey="eml.contact.firstName"/>
                             </div>
                             <div class="col-md-5">
-                                <@input name="eml.contact.lastName" i18nkey="eml.contact.lastName" requiredField=true/>
+                                <@input name="eml.contact.lastName" i18nkey="eml.contact.lastName" />
                             </div>
                             <div class="col-md-2">
                                 <@input name="eml.contact.salutation" i18nkey="eml.contact.salutation"/>
                             </div>
                             <div class="col-md-6">
-                                <@input name="eml.contact.position" i18nkey="eml.contact.position" requiredField=true />
+                                <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation"  />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation" requiredField=true />
+                            <div class="col-12">
+                                <div id="contact-positions">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.contacts.position" class="form-label mb-0">
+                                            Position
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-contact-position" href="" class="metadata-action-link add-contact-position">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new position</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.contact.address.address" i18nkey="eml.contact.address.address" />
+                            <div class="col-12">
+                                <div id="contact-addresss">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.contacts.address" class="form-label mb-0">
+                                            Address
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-contact-address" href="" class="metadata-action-link add-contact-address">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new address</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <@input name="eml.contact.address.city" i18nkey="eml.contact.address.city" />
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <@input name="eml.contact.address.province" i18nkey="eml.contact.address.province" />
                             </div>
-                            <div class="countryList col-md-5">
+                            <div class="countryList col-md-3">
                                 <@select name="country" options=countries help="i18n" i18nkey="eml.contact.address.country" />
                             </div>
                             <div class="col-md-2">
@@ -1029,27 +1139,101 @@
                                         <@input name="eml.creators[${creator_index}].firstName" i18nkey="eml.resourceCreator.firstName"/>
                                     </div>
                                     <div class="col-md-5">
-                                        <@input name="eml.creators[${creator_index}].lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+                                        <@input name="eml.creators[${creator_index}].lastName" i18nkey="eml.resourceCreator.lastName" />
                                     </div>
                                     <div class="col-md-2">
                                         <@input name="eml.creators[${creator_index}].salutation" i18nkey="eml.resourceCreator.salutation"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].position" i18nkey="eml.resourceCreator.position" requiredField=true />
+                                        <@input name="eml.creators[${creator_index}].organisation" i18nkey="eml.resourceCreator.organisation"  />
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].organisation" i18nkey="eml.resourceCreator.organisation" requiredField=true />
+                                    <div class="col-12">
+                                        <div id="creator-${creator_index}-positions">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.contacts.position" class="form-label mb-0">
+                                                    Position
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].position as position>
+                                                <div id="creator-${creator_index}-position-${position_index}" class="position-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.creators[${creator_index}].position[${position_index}]" i18nkey="eml.resourceCreator.position" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this position</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-position-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new position</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.creators[${creator_index}].address.address[0]" i18nkey="eml.resourceCreator.address.address" />
+                                    <div class="col-12">
+                                        <div id="creator-${creator_index}-addresss">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.creators.address" class="form-label mb-0">
+                                                    Address
+                                                </label>
+                                            </div>
+                                            <#list eml.creators[creator_index].address.address as address>
+                                                <div id="creator-${creator_index}-address-${address_index}" class="address-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.creators[${creator_index}].address.address[${address_index}]" i18nkey="eml.creator.address.address" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this address</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-creator-address-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new address</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <@input name="eml.creators[${creator_index}].address.city" i18nkey="eml.resourceCreator.address.city" />
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
                                     </div>
-                                    <div class="countryList col-md-5">
+                                    <div class="countryList col-md-3">
                                         <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
                                     </div>
                                     <div class="col-md-2">
@@ -1275,27 +1459,63 @@
                                 <@input name="eml.creator.firstName" i18nkey="eml.resourceCreator.firstName"/>
                             </div>
                             <div class="col-md-5">
-                                <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName" requiredField=true/>
+                                <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName"/>
                             </div>
                             <div class="col-md-2">
                                 <@input name="eml.creator.salutation" i18nkey="eml.resourceCreator.salutation"/>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.position" i18nkey="eml.resourceCreator.position" requiredField=true />
+                            <div class="col-12">
+                                <div id="creator-positions">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.creators.position" class="form-label mb-0">
+                                            Position
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-position" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add position</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" requiredField=true />
+                                <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.address.address" i18nkey="eml.resourceCreator.address.address" />
+                            <div class="col-12">
+                                <div id="creator-addresss">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.creators.address" class="form-label mb-0">
+                                            Address
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-creator-address" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new address</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <@input name="eml.creator.address.city" i18nkey="eml.resourceCreator.address.city" />
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <@input name="eml.creator.address.province" i18nkey="eml.resourceCreator.address.province" />
                             </div>
-                            <div class="countryList col-md-5">
+                            <div class="countryList col-md-3">
                                 <@select name="country" options=countries help="i18n" i18nkey="eml.resourceCreator.address.country" />
                             </div>
                             <div class="col-md-2">
@@ -1434,27 +1654,101 @@
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].firstName" i18nkey="eml.metadataProvider.firstName"/>
                                     </div>
                                     <div class="col-md-5">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+                                        <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" />
                                     </div>
                                     <div class="col-md-2">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" i18nkey="eml.metadataProvider.salutation"/>
                                     </div>
                                     <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].position" i18nkey="eml.metadataProvider.position" requiredField=true />
+                                        <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" i18nkey="eml.metadataProvider.organisation" />
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" i18nkey="eml.metadataProvider.organisation" requiredField=true />
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-positions">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.contacts.position" class="form-label mb-0">
+                                                    Position
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].position as position>
+                                                <div id="metadataProvider-${metadataProvider_index}-position-${position_index}" class="position-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].position[${position_index}]" i18nkey="eml.metadataProvider.position" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this position</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-position-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new position</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[0]" i18nkey="eml.metadataProvider.address.address" />
+                                    <div class="col-12">
+                                        <div id="metadataProvider-${metadataProvider_index}-addresss">
+                                            <div class="d-flex text-smaller">
+                                                <label for="eml.contacts.address" class="form-label mb-0">
+                                                    Address
+                                                </label>
+                                            </div>
+                                            <#list eml.metadataProviders[metadataProvider_index].address.address as address>
+                                                <div id="metadataProvider-${metadataProvider_index}-address-${address_index}" class="address-item">
+                                                    <div class="row g-2 mt-0">
+                                                        <div class="col-md-6">
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[${address_index}]" i18nkey="eml.metadataProvider.address" withLabel=false />
+                                                        </div>
+                                                        <div class="col-md-6 mt-auto py-1">
+                                                            <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span>Remove this address</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </#list>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-auto py-1">
+                                                <a id="plus-metadataProvider-address-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Add new address</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" i18nkey="eml.metadataProvider.address.city" />
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" i18nkey="eml.metadataProvider.address.province" />
                                     </div>
-                                    <div class="countryList col-md-5">
+                                    <div class="countryList col-md-3">
                                         <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
                                     </div>
                                     <div class="col-md-2">
@@ -1679,27 +1973,63 @@
                                 <@input name="eml.metadataProvider.firstName" i18nkey="eml.metadataProvider.firstName"/>
                             </div>
                             <div class="col-md-5">
-                                <@input name="eml.metadataProvider.lastName" i18nkey="eml.metadataProvider.lastName" requiredField=true/>
+                                <@input name="eml.metadataProvider.lastName" i18nkey="eml.metadataProvider.lastName" />
                             </div>
                             <div class="col-md-2">
                                 <@input name="eml.metadataProvider.salutation" i18nkey="eml.metadataProvider.salutation"/>
                             </div>
                             <div class="col-md-6">
-                                <@input name="eml.metadataProvider.position" i18nkey="eml.metadataProvider.position" requiredField=true />
+                                <@input name="eml.metadataProvider.organisation" i18nkey="eml.metadataProvider.organisation"  />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.organisation" i18nkey="eml.metadataProvider.organisation" requiredField=true />
+                            <div class="col-12">
+                                <div id="metadataProvider-positions">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.metadataProviders.position" class="form-label mb-0">
+                                            Position
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-position" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new position</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.metadataProvider.address.address" i18nkey="eml.metadataProvider.address.address" />
+                            <div class="col-12">
+                                <div id="metadataProvider-addresss">
+                                    <div class="d-flex text-smaller">
+                                        <label for="eml.metadataProviders.address" class="form-label mb-0">
+                                            Address
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-auto py-1">
+                                        <a id="plus-metadataProvider-address" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>Add new address</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <@input name="eml.metadataProvider.address.city" i18nkey="eml.metadataProvider.address.city" />
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <@input name="eml.metadataProvider.address.province" i18nkey="eml.metadataProvider.address.province" />
                             </div>
-                            <div class="countryList col-md-5">
+                            <div class="countryList col-md-3">
                                 <@select name="country" options=countries help="i18n" i18nkey="eml.metadataProvider.address.country" />
                             </div>
                             <div class="col-md-2">
@@ -1795,6 +2125,42 @@
                                             <span>Add new identifier</span>
                                         </a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="baseItem-address" class="address-item" style="display: none;">
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-6">
+                                    <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
+                                </div>
+                                <div class="col-md-6 mt-auto py-1">
+                                    <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>Remove this address</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="baseItem-position" class="position-item" style="display: none;">
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-6">
+                                    <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
+                                </div>
+                                <div class="col-md-6 mt-auto py-1">
+                                    <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                        <span>Remove this position</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
