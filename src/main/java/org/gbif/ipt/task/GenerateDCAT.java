@@ -576,8 +576,8 @@ public class GenerateDCAT {
     for (Agent contact : eml.getContacts()) {
       addPredicateToBuilder(datasetBuilder, "dcat:contactPoint");
       String agent = " a vcard:Individual ; vcard:fn \"" + contact.getFullName() + "\"";
-      if (contact.getEmail() != null) {
-        agent += "; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
+      if (contact.getEmail() != null && !contact.getEmail().isEmpty()) {
+        agent += "; vcard:hasEmail <mailto:" + contact.getEmail().get(0) + "> ";
       }
       addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
     }
