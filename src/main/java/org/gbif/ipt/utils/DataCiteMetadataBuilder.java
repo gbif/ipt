@@ -532,9 +532,9 @@ public class DataCiteMetadataBuilder {
         contributor.setContributorName(contributorName);
       }
       // 3. try position name
-      else if (StringUtils.isNotBlank(agent.getPosition())) {
+      else if (!agent.getPosition().isEmpty() && StringUtils.isNotBlank(agent.getPosition().get(0))) {
         final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
-        contributorName.setValue(agent.getPosition());
+        contributorName.setValue(agent.getPosition().get(0));
         contributor.setContributorName(contributorName);
         // affiliation is optional
         if (StringUtils.isNotBlank(agent.getOrganisation())) {

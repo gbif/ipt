@@ -273,7 +273,7 @@ public class EmlValidator extends BaseValidator {
               }
 
               // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !exists(c.getPosition())) {
+              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !c.getPosition().isEmpty() && !exists(c.getPosition().get(0))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.contacts[" + index + "].organisation", action
                   .getText("validation.required", new String[] {action.getText("eml.contact.organisation")}));
@@ -348,7 +348,7 @@ public class EmlValidator extends BaseValidator {
               }
 
               // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !exists(c.getPosition())) {
+              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !c.getPosition().isEmpty() && !exists(c.getPosition().get(0))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.creators[" + index + "].organisation", action
                   .getText("validation.required", new String[] {action.getText("eml.resourceCreator.organisation")}));
@@ -420,7 +420,7 @@ public class EmlValidator extends BaseValidator {
               }
 
               // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !exists(c.getPosition())) {
+              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && !c.getPosition().isEmpty() && !exists(c.getPosition().get(0))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.metadataProviders[" + index + "].organisation", action
                   .getText("validation.required", new String[] {action.getText("eml.metadataProvider.organisation")}));
@@ -677,7 +677,7 @@ public class EmlValidator extends BaseValidator {
               }
 
               // At least one of organisation, position, or a lastName have to exist
-              if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && !exists(ap.getPosition())) {
+              if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && !ap.getPosition().isEmpty() && !exists(ap.getPosition().get(0))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.associatedParties[" + index + "].organisation", action
                   .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
@@ -1400,7 +1400,7 @@ public class EmlValidator extends BaseValidator {
       List<String> home = agent.getHomepage();
       String org = agent.getOrganisation();
       List<String> phone = agent.getPhone();
-      String position = agent.getPosition();
+      List<String> position = agent.getPosition();
 
       String city = null;
       List<String> street = null;
@@ -1437,7 +1437,7 @@ public class EmlValidator extends BaseValidator {
               CollectionUtils.isEmpty(home) &&
               StringUtils.isBlank(org) &&
               CollectionUtils.isEmpty(phone) &&
-              StringUtils.isBlank(position) &&
+              CollectionUtils.isEmpty(position) &&
               StringUtils.isBlank(directory) &&
               StringUtils.isBlank(identifier));
     }

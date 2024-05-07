@@ -124,14 +124,14 @@ public class DataCiteMetadataBuilderTest {
 
     // associatedProvider = contributor
     Agent contributor3 = new Agent();
-    contributor3.setPosition("Insects Curator");
+    contributor3.addPosition("Insects Curator");
     contributor3.setRole("curator");
     List<UserId> contributorUserIds3 = new ArrayList<>();
     contributor3.setUserIds(contributorUserIds3);
     eml.addAssociatedParty(contributor3);
 
     Agent contributor4 = new Agent();
-    contributor4.setPosition("Programmer");
+    contributor4.addPosition("Programmer");
     contributor4.setRole("programmer");
     eml.addAssociatedParty(contributor4);
     // TODO add more associatedParties covering all roles
@@ -444,7 +444,7 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testConvertEmlCreatorsWithPositionName() {
     Agent creator1 = new Agent();
-    creator1.setPosition("President");
+    creator1.addPosition("President");
     List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
