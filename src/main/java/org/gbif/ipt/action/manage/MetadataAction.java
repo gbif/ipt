@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
@@ -67,6 +66,8 @@ import org.apache.struts2.dispatcher.Parameter;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.opensymphony.xwork2.ActionContext;
+
+import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
 
 public class MetadataAction extends ManagerBaseAction {
 
@@ -308,9 +309,12 @@ public class MetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
-        && resource.getInferredMetadata().getLastModified() != null
-        && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
+    boolean mappingsChangedAfterLastTry =
+        !DATASET_TYPE_METADATA_IDENTIFIER.equals(resource.getCoreType())
+            && resource.getInferredMetadata() != null
+            && resource.getInferredMetadata().getLastModified() != null
+            && resource.getMappingsModified() != null
+            && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
 
     // infer metadata if:
     // 1) It was requested
