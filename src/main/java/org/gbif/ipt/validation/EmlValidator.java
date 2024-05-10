@@ -466,17 +466,6 @@ public class EmlValidator extends BaseValidator {
                       new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
                 }
 
-                if (coord1 != null && coord2 != null && coord1 > coord2) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
-                      .getText("validation.coordinates.swapped.less",
-                          new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude"),
-                              action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action
-                      .getText("validation.coordinates.swapped.greater",
-                          new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude"),
-                              action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
-                }
-
                 coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
                 if (coord1 == null) {
                   action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
