@@ -389,13 +389,15 @@
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                                <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content) >
+                                                <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || (inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content && inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content)) >
                                                     <tr>
                                                         <#-- 1st col, write rank name once -->
                                                         <th class="col-4">${ranks.get(k.rank?html)?cap_first!}</th>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
-                                                            <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
+                                                            <#if inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content>
+                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
+                                                            </#if>
 
                                                             <#if rankWarning?has_content>
                                                                 <code><@s.text name="${rankWarning}"/></code>

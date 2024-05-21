@@ -97,13 +97,35 @@
             var minLatVal = isNaN(parseFloat(minLatInputValue)) ? MIN_LAT_VAL_LIMIT : parseFloat(minLatInputValue.replace(",", "."));
             var maxLatVal = isNaN(parseFloat(maxLatInputValue)) ? MAX_LAT_VAL_LIMIT : parseFloat(maxLatInputValue.replace(",", "."));
 
+            var adjustedBounds = adjustBoundsForDateLine(minLngVal, maxLngVal);
+
+            var bounds = L.latLngBounds(
+                L.latLng(minLatVal, adjustedBounds.west),  // Southwest corner
+                L.latLng(maxLatVal, adjustedBounds.east)   // Northeast corner
+            );
+
             // make the location filter: a draggable/resizable rectangle
             var locationFilter = new L.LocationFilter({
                 enable: true,
                 enableButton: false,
                 adjustButton: false,
-                bounds:  L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal))
+                bounds:  bounds
             }).addTo(map);
+
+            // Function to adjust the longitude values if they cross the international date line
+            function adjustBoundsForDateLine(minLng, maxLng) {
+                if (minLng > maxLng) {
+                    return {
+                        west: minLng,
+                        east: maxLng + 360
+                    };
+                } else {
+                    return {
+                        west: minLng,
+                        east: maxLng
+                    };
+                }
+            }
 
             // checks if global coverage is set. If on, coordinate input fields are hidden and the map disabled
             if (maxLatVal === MAX_LAT_VAL_LIMIT && minLatVal === MIN_LAT_VAL_LIMIT && maxLngVal === MAX_LNG_VAL_LIMIT && minLngVal === MIN_LNG_VAL_LIMIT) {
@@ -228,6 +250,10 @@
                 }
             });
 
+            function normalizeLongitude(lng) {
+                // Normalize longitude to the range of -180 to 180
+                return ((lng + 180) % 360 + 360) % 360 - 180;
+            }
 
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
@@ -240,17 +266,17 @@
                     $('#preview-inferred-geo').show();
                     $('.intro').show();
 
-                    var minLatVal = locationFilter.getBounds()._southWest.lat
-                    var minLngVal = locationFilter.getBounds()._southWest.lng
-                    var maxLatVal = locationFilter.getBounds()._northEast.lat
-                    var maxLngVal = locationFilter.getBounds()._northEast.lng
+                    var minLatVal = locationFilter.getBounds()._southWest.lat;
+                    var minLngVal = normalizeLongitude(locationFilter.getBounds()._southWest.lng);
+                    var maxLatVal = locationFilter.getBounds()._northEast.lat;
+                    var maxLngVal = normalizeLongitude(locationFilter.getBounds()._northEast.lng);
 
                     // only language
                     var localeLanguageCode = "${currentLocale}".split("_")[0];
 
                     var minLatValFormatted = minLatVal.toLocaleString(localeLanguageCode);
-                    var minLngValFormatted  = minLngVal.toLocaleString(localeLanguageCode);
-                    var maxLatValFormatted  = maxLatVal.toLocaleString(localeLanguageCode);
+                    var minLngValFormatted = minLngVal.toLocaleString(localeLanguageCode);
+                    var maxLatValFormatted = maxLatVal.toLocaleString(localeLanguageCode);
                     var maxLngValFormatted = maxLngVal.toLocaleString(localeLanguageCode);
 
                     $("#" + minLatId).val(minLatValFormatted);
@@ -297,7 +323,10 @@
                 if (isNaN(maxLatVal)) {
                     maxLatVal = MAX_LAT_VAL_LIMIT;
                 }
-                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)), true);
+
+                var adjustedLongitude = adjustBoundsForDateLine(minLngVal, maxLngVal);
+
+                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, adjustedLongitude.west), L.latLng(maxLatVal, adjustedLongitude.east)), true);
             });
 
             $('#metadata-section').change(function () {

@@ -3,13 +3,39 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<3-0-2-april-2024,3.0.2>>.
+The current, stable release is version <<3-0-4-may-2024,3.0.4>>.
 
 You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
 Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE.
 endif::[]
 ====
+
+== *3.0.4* – May 2024
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.4/ipt-3.0.4.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:release-notes.adoc[IPT v3.0.4 Release Notes]
+* xref:index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/56?closed=1[2 issues].
+* Translated into 7 languages
+
+This minor release addresses issues with metadata.
+
+Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
+
+== *3.0.3* – April 2024
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.3/ipt-3.0.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:release-notes.adoc[IPT v3.0.3 Release Notes]
+* xref:index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/55?closed=1[4 issues].
+* Translated into 7 languages
+
+This minor release addresses issues with metadata and DOI issuing.
 
 == *3.0.2* – April 2024
 
@@ -20,12 +46,6 @@ endif::[]
 * Translated into 7 languages
 
 This minor release addresses issues with inferred metadata, DOI functionality, and setup.
-
-Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *3.0.1* – February 2024
 
