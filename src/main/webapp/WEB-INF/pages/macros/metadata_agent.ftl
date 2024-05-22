@@ -120,7 +120,7 @@
             createNewIdentifierForAgent(event);
         });
 
-        // remove phone/email/homepage/position/address from contact/creator/metadataProvider
+        // remove phone/email/homepage/position/address from contact/creator/metadataProvider/associatedParty
         $(".removeSubEntity").click(function (event) {
             event.preventDefault();
             removeSubEntityFromAgent(event);
@@ -758,12 +758,22 @@
             $("#associatedParty-item-" + index + " [for$='firstName']").attr("for", "eml.associatedParties[" + index + "].firstName");
             $("#associatedParty-item-" + index + " [id$='lastName']").attr("id", "eml.associatedParties[" + index + "].lastName").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='lastName']").attr("for", "eml.associatedParties[" + index + "].lastName");
-            $("#associatedParty-item-" + index + " [id$='position']").attr("id", "eml.associatedParties[" + index + "].position").attr("name", function () {return $(this).attr("id");});
-            $("#associatedParty-item-" + index + " [for$='position']").attr("for", "eml.associatedParties[" + index + "].position");
+            $("#associatedParty-item-" + index + " [id$='salutation']").attr("id", "eml.associatedParties[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
+            $("#associatedParty-item-" + index + " [for$='salutation']").attr("for", "eml.associatedParties[" + index + "].salutation");
+            $("#associatedParty-item-" + index + " #associatedParty-positions").attr("id", "associatedParty-" + index + "-positions");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-position").attr("id", "plus-associatedParty-position-" + index);
+            $("#plus-associatedParty-position-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#associatedParty-item-" + index + " [id$='organisation']").attr("id", "eml.associatedParties[" + index + "].organisation").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='organisation']").attr("for", "eml.associatedParties[" + index + "].organisation");
-            $("#associatedParty-item-" + index + " [id$='address']").attr("id", "eml.associatedParties[" + index + "].address.address").attr("name", function () {return $(this).attr("id");});
-            $("#associatedParty-item-" + index + " [for$='address']").attr("for", "eml.associatedParties[" + index + "].address.address");
+            $("#associatedParty-item-" + index + " #associatedParty-addresss").attr("id", "associatedParty-" + index + "-addresss");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-address").attr("id", "plus-associatedParty-address-" + index);
+            $("#plus-associatedParty-address-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#associatedParty-item-" + index + " [id$='postalCode']").attr("id", "eml.associatedParties[" + index + "].address.postalCode").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='postalCode']").attr("for", "eml.associatedParties[" + index + "].address.postalCode");
             $("#associatedParty-item-" + index + " [id$='city']").attr("id", "eml.associatedParties[" + index + "].address.city").attr("name", function () {return $(this).attr("id");});
@@ -783,12 +793,24 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
-            $("#associatedParty-item-" + index + " [id$='phone']").attr("id", "eml.associatedParties[" + index + "].phone").attr("name", function () {return $(this).attr("id");});
-            $("#associatedParty-item-" + index + " [for$='phone']").attr("for", "eml.associatedParties[" + index + "].phone");
-            $("#associatedParty-item-" + index + " [id$='email']").attr("id", "eml.associatedParties[" + index + "].email").attr("name", function () {return $(this).attr("id");});
-            $("#associatedParty-item-" + index + " [for$='email']").attr("for", "eml.associatedParties[" + index + "].email");
-            $("#associatedParty-item-" + index + " [id$='homepage']").attr("id", "eml.associatedParties[" + index + "].homepage").attr("name", function () {return $(this).attr("id");});
-            $("#associatedParty-item-" + index + " [for$='homepage']").attr("for", "eml.associatedParties[" + index + "].homepage");
+            $("#associatedParty-item-" + index + " #associatedParty-phones").attr("id", "associatedParty-" + index + "-phones");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-phone").attr("id", "plus-associatedParty-phone-" + index);
+            $("#plus-associatedParty-phone-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
+            $("#associatedParty-item-" + index + " #associatedParty-emails").attr("id", "associatedParty-" + index + "-emails");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-email").attr("id", "plus-associatedParty-email-" + index);
+            $("#plus-associatedParty-email-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
+            $("#associatedParty-item-" + index + " #associatedParty-homepages").attr("id", "associatedParty-" + index + "-homepages");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-homepage").attr("id", "plus-associatedParty-homepage-" + index);
+            $("#plus-associatedParty-homepage-" + index).click(function (event) {
+                event.preventDefault();
+                createNewSubEntityForAgent(event);
+            });
             $("#associatedParty-item-" + index + " [id$='role']").attr("id", "eml.associatedParties[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='role']").attr("for", "eml.associatedParties[" + index + "].role");
             $("#associatedParty-item-" + index + " [id$='role']").select2({
@@ -802,6 +824,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+            $("#associatedParty-item-" + index + " #associatedParty-identifiers").attr("id", "associatedParty-" + index + "-identifiers");
+            $("#associatedParty-item-" + index + " #plus-associatedParty-identifier").attr("id", "plus-associatedParty-identifier-" + index);
             $("#associatedParty-item-" + index + " [id$='directory']").attr("id", "eml.associatedParties[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='directory']").attr("for", "eml.associatedParties[" + index + "].userIds[0].directory");
             $("#associatedParty-item-" + index + " [id$='directory']").select2({
@@ -818,6 +842,10 @@
             });
             $("#associatedParty-item-" + index + " [id$='identifier']").attr("id", "eml.associatedParties[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#associatedParty-item-" + index + " [for$='identifier']").attr("for", "eml.associatedParties[" + index + "].userIds[0].identifier");
+            $("#plus-associatedParty-identifier-" + index).click(function (event) {
+                event.preventDefault();
+                createNewIdentifierForAgent(event);
+            });
         }
 
         function setPersonnelItemIndex(item, index) {
