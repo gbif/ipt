@@ -248,11 +248,14 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-5">
                                                 <@input name="eml.project.personnel[${item_index}].firstName" i18nkey="eml.project.personnel.firstName"/>
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-5">
                                                 <@input name="eml.project.personnel[${item_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true/>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <@input name="eml.project.personnel[${item_index}].salutation" i18nkey="eml.project.personnel.salutation" requiredField=true/>
                                             </div>
                                             <div class="col-lg-6">
                                                 <#if eml.project.personnel[item_index]?? && eml.project.personnel[item_index].userIds[0]??>
@@ -315,11 +318,14 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-5">
                                     <@input name="firstName" i18nkey="eml.project.personnel.firstName" />
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-5">
                                     <@input name="lastName" i18nkey="eml.project.personnel.lastName" requiredField=true />
+                                </div>
+                                <div class="col-lg-2">
+                                    <@input name="salutation" i18nkey="eml.project.personnel.salutation" />
                                 </div>
                                 <div class="col-lg-6">
                                     <@select name="directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />

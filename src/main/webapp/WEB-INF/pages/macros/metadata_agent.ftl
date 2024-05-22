@@ -872,6 +872,8 @@
             $("#personnel-item-" + index + " [for$='firstName']").attr("for", "eml.project.personnel[" + index + "].firstName");
             $("#personnel-item-" + index + " [id$='lastName']").attr("id", "eml.project.personnel[" + index + "].lastName").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='lastName']").attr("for", "eml.project.personnel[" + index + "].lastName");
+            $("#personnel-item-" + index + " [id$='salutation']").attr("id", "eml.project.personnel[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
+            $("#personnel-item-" + index + " [for$='salutation']").attr("for", "eml.project.personnel[" + index + "].salutation");
             $("#personnel-item-" + index + " [id$='role']").attr("id", "eml.project.personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='role']").attr("for", "eml.project.personnel[" + index + "].role");
             $("#personnel-item-" + index + " [id$='role']").select2({
