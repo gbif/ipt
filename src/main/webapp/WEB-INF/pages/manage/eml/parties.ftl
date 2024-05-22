@@ -159,6 +159,34 @@
             width: 50%;
             max-width: 600px;
         }
+
+        .form-control, .form-select {
+            min-height: calc(1.5em + .5rem + 2px);
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            border-radius: .2rem;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single {
+            height: calc(1.5em + .5rem + 2px) !important;
+            font-size: .875rem !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
+            line-height: calc(1.5em + .5rem) !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
+            line-height: calc(1.5em + .5rem) !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection__clear {
+            margin-top: .625em !important;
+        }
+
+        .select2-results__option, .select2-search__field {
+            font-size: .875rem;
+        }
     </style>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
@@ -274,6 +302,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation"  />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${(eml.associatedParties[item_index].role)!}" options=roles />
                                         </div>
                                         <div class="col-12">
                                             <div id="associatedParty-${item_index}-positions">
@@ -541,90 +572,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                        <div class="handle columnLinks mt-2 d-flex justify-content-between">
-                                            <div>
-                                                <div class="btn-group">
-                                                    <a id="dropdown-associatedParty-copy-${item_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${copyLink?lower_case?cap_first}</span>
-                                                    </a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-associatedParty-copy-${item_index}">
-                                                        <li><a id="associatedParty-from-associatedParty-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                        <li><a id="associatedParty-copy-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" requiredField=true/>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].position" i18nkey="eml.associatedParties.position" requiredField=true />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation" requiredField=true />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].address.address" i18nkey="eml.associatedParties.address.address" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
-                                        </div>
-                                        <div class="col-lg-6 countryList">
-                                            <@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].phone" i18nkey="eml.associatedParties.phone" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" type="url" />
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <#if (eml.associatedParties[item_index].userIds[0].directory)??>
-                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" value="${userIdDirecotriesExtended[eml.associatedParties[item_index].userIds[0].directory!]!}"/>
-                                            <#else>
-                                                <@select name="eml.associatedParties[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" value=""/>
-                                            </#if>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <#if eml.associatedParties[item_index].userIds[0]??>
-                                                <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" value="${eml.associatedParties[item_index].userIds[0].identifier}"/>
-                                            <#else>
-                                                <@input name="eml.associatedParties[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" value=""/>
-                                            </#if>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.associatedParties[item_index].role!}" options=roles />
-                                        </div>
-                                    </div>
                                 </#list>
                             </div>
 
@@ -676,6 +623,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <@input name="eml.associatedParties.organisation" i18nkey="eml.associatedParties.organisation"  />
+                                </div>
+                                <div class="col-md-6">
+                                    <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
                                 </div>
                                 <div class="col-12">
                                     <div id="associatedParty-positions">
@@ -935,88 +885,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
-
-<#--                            <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">-->
-<#--                                <div class="handle columnLinks mt-2 d-flex justify-content-between">-->
-<#--                                    <div>-->
-<#--                                        <div class="btn-group">-->
-<#--                                            <a id="dropdown-associatedParty-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<#--                                            <span>-->
-<#--                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">-->
-<#--                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>-->
-<#--                                                </svg>-->
-<#--                                            </span>-->
-<#--                                                <span>${copyLink?lower_case?cap_first}</span>-->
-<#--                                            </a>-->
-<#--                                            <ul class="dropdown-menu" aria-labelledby="associatedParty-creator-copy">-->
-<#--                                                <li><a id="associatedParty-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>-->
-<#--                                                <li><a id="associatedParty-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>-->
-<#--                                            </ul>-->
-<#--                                        </div>-->
-<#--                                    </div>-->
-<#--                                    <div class="text-end">-->
-<#--                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink metadata-action-link" href="">-->
-<#--                                            <span>-->
-<#--                                                <svg viewBox="0 0 24 24" class="link-icon">-->
-<#--                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>-->
-<#--                                                </svg>-->
-<#--                                            </span>-->
-<#--                                            <span>${removeLink?lower_case?cap_first}</span>-->
-<#--                                        </a>-->
-<#--                                    </div>-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="firstName" i18nkey="eml.associatedParties.firstName" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="lastName" i18nkey="eml.associatedParties.lastName" requiredField=true />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="position" i18nkey="eml.associatedParties.position" requiredField=true />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="organisation" i18nkey="eml.associatedParties.organisation" requiredField=true />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="address" i18nkey="eml.associatedParties.address.address" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="city" i18nkey="eml.associatedParties.address.city" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="province" i18nkey="eml.associatedParties.address.province" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6 countryList">-->
-<#--                                    <@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="postalCode" i18nkey="eml.associatedParties.address.postalCode" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="phone" i18nkey="eml.associatedParties.phone" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="email" i18nkey="eml.associatedParties.email" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="homepage" i18nkey="eml.associatedParties.homepage" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@select name="directory" options=userIdDirectories help="i18n" i18nkey="eml.associatedParties.directory" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@input name="identifier" help="i18n" i18nkey="eml.associatedParties.identifier" />-->
-<#--                                </div>-->
-<#--                                <div class="col-lg-6">-->
-<#--                                    <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />-->
-<#--                                </div>-->
-<#--                            </div>-->
-
                         </div>
                     </div>
                 </main>
