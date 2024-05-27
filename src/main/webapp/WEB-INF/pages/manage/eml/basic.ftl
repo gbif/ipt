@@ -880,10 +880,10 @@
                                                 <div id="contact-${contact_index}-identifier-${userId_index}" class="identifier-item">
                                                     <div class="row g-2 mt-0">
                                                         <div class="col-md-4">
-                                                            <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.contacts[contact_index].userIds[0].directory)!]!}"/>
+                                                            <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.contacts[contact_index].userIds[userId_index].directory)!]!}"/>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.contacts[contact_index].userIds[0].identifier)!}"/>
+                                                            <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.contacts[contact_index].userIds[userId_index].identifier)!}"/>
                                                         </div>
 
                                                         <div class="col-md-4 mt-auto py-1">
@@ -1390,10 +1390,10 @@
                                                 <div id="creator-${creator_index}-identifier-${userId_index}" class="identifier-item">
                                                     <div class="row g-2 mt-0">
                                                         <div class="col-md-4">
-                                                            <@select name="eml.creators[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.creators[creator_index].userIds[0].directory)!]!}"/>
+                                                            <@select name="eml.creators[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.creators[creator_index].userIds[userId_index].directory)!]!}"/>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.creators[creator_index].userIds[0].identifier)!}"/>
+                                                            <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.creators[creator_index].userIds[userId_index].identifier)!}"/>
                                                         </div>
 
                                                         <div class="col-md-4 mt-auto py-1">
@@ -1905,10 +1905,10 @@
                                                 <div id="metadataProvider-${metadataProvider_index}-identifier-${userId_index}" class="identifier-item">
                                                     <div class="row g-2 mt-0">
                                                         <div class="col-md-4">
-                                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.metadataProviders[metadataProvider_index].userIds[0].directory)!]!}"/>
+                                                            <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.metadataProviders[metadataProvider_index].userIds[userId_index].directory)!]!}"/>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.metadataProviders[metadataProvider_index].userIds[0].identifier)!}"/>
+                                                            <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.metadataProviders[metadataProvider_index].userIds[userId_index].identifier)!}"/>
                                                         </div>
                                                         <div class="col-md-4 mt-auto py-1">
                                                             <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">

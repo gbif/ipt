@@ -219,6 +219,34 @@
             });
         }
 
+        function createNewIdentifierForAgentDirectly(entityName, entityIndex, directoryValue, identifierValue) {
+            var newItem = $('#baseItem-identifier').clone();
+            newItem.hide();
+            newItem.appendTo('#' + entityName + '-' + entityIndex + '-identifiers');
+            newItem.slideDown('slow');
+
+            // set correct indexes, names, ids
+            var numberOfSubIdentifiers = $("#" + entityName + "-" + entityIndex + "-identifiers .identifier-item").length;
+            var identifierIndex = parseInt(numberOfSubIdentifiers) - 1;
+
+            newItem.attr("id", entityName + "-" + entityIndex + "-identifier-" + identifierIndex);
+            var $select = newItem.find("#baseItem-directory-select")
+            var $input = newItem.find("#baseItem-identifier-input");
+            var $deleteLink = newItem.find("#baseItem-identifier-remove");
+
+            $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
+            $select.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
+            $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
+            $("#" + entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex).click(function (event) {
+                removeIdentifierFromAgent(event);
+            });
+
+            if (directoryValue && identifierValue) {
+                $select.val(directoryValue);
+                $input.val(identifierValue);
+            }
+        }
+
         // example ID expected: creator-phone-remove-0-0
         function getEntityNameFromRemoveLinkId(id) {
             return id.split("-")[0];
@@ -1061,12 +1089,7 @@
             copyAllSubEntitiesFromAnother("email");
             copyAllSubEntitiesFromAnother("homepage");
 
-            var selectedAgenUserIds = selectedAgent['userIds'];
-
-            var directories={<#list userIdDirecotriesExtended! as directory, identifier>"${directory}" : "${identifier}"<#sep>,</#sep></#list>};
-            $("#" + targetItemId + " select[id$='directory']").val(selectedAgenUserIds[0] ? directories[selectedAgenUserIds[0]['directory']] : null);
-            $("#" + targetItemId + " select[id$='directory']").trigger('change');
-            $("#" + targetItemId + " input[id$='identifier']").val(selectedAgenUserIds[0] ? selectedAgenUserIds[0]['identifier'] : null);
+            copyAllIdentifiersFromAnother();
 
             $("#" + targetItemId + " select[id$='role']").val(selectedAgent['role']);
 
@@ -1076,11 +1099,21 @@
         function copyAllSubEntitiesFromAnother(subEntityName) {
             // positions, email, homepages, phones, addresses
             let subEntities = selectedAgent[subEntityName];
+            var entityName = getEntityNameFromItemId(targetItemId);
+            var entityIndex = getEntityIndexFromItemId(targetItemId);
 
             for (let i = 0; i < subEntities.length; i++) {
-                var entityName = getEntityNameFromItemId(targetItemId);
-                var entityIndex = getEntityIndexFromItemId(targetItemId);
                 createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, subEntities[i])
+            }
+        }
+
+        function copyAllIdentifiersFromAnother() {
+            var selectedAgenUserIds = selectedAgent['userIds'];
+            var entityName = getEntityNameFromItemId(targetItemId);
+            var entityIndex = getEntityIndexFromItemId(targetItemId);
+
+            for (let i = 0; i < selectedAgenUserIds.length; i++) {
+                createNewIdentifierForAgentDirectly(entityName, entityIndex, selectedAgenUserIds[i]["directory"], selectedAgenUserIds[i]["identifier"]);
             }
         }
 
