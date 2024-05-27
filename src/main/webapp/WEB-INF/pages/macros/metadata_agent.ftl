@@ -162,6 +162,35 @@
             });
         }
 
+        function createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, value) {
+            var newItem = $('#baseItem-' + subEntityName).clone();
+            newItem.hide();
+            newItem.appendTo('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's');
+            newItem.slideDown('slow');
+
+            // set correct indexes, names, ids
+            var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + subEntityName + "-item").length;
+            var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
+            var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt - 1;
+
+            newItem.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
+            var $input = newItem.find("#baseItem-" + subEntityName + "-input");
+            var $deleteLink = newItem.find("#baseItem-" + subEntityName + "-remove");
+            if (subEntityName === "address") {
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].address.address[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            } else {
+                $input.attr("id", "eml." + entityName + "s[" + entityIndex + "]." + subEntityName + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            }
+            $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
+            $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
+                removeSubEntityFromAgent(event, entityName, subEntityName);
+            });
+
+            if (value) {
+                $input.val(value)
+            }
+        }
+
         function createNewIdentifierForAgent(event) {
             var $target = getTargetLink(event);
             var id = $target.attr("id");
@@ -200,6 +229,11 @@
             return id.split("-")[1];
         }
 
+        // example ID expected: creator-item-0
+        function getEntityNameFromItemId(id) {
+            return id.split("-")[0];
+        }
+
         // example ID expected: creator-phone-remove-0-0
         function getSubEntityNameFromRemoveLinkId(id) {
             return id.split("-")[1];
@@ -207,6 +241,11 @@
 
         // example ID expected: plus-creator-phone-0
         function getSubEntityNameFromAddNewLinkId(id) {
+            return id.split("-")[2];
+        }
+
+        // example ID expected: creator-item-0
+        function getEntityIndexFromItemId(id) {
             return id.split("-")[2];
         }
 
@@ -1008,19 +1047,19 @@
         $("#copy-agent-button").on('click', function (e) {
             $("#" + targetItemId + " input[id$='firstName']").val(selectedAgent['firstName']);
             $("#" + targetItemId + " input[id$='lastName']").val(selectedAgent['lastName']);
-            $("#" + targetItemId + " input[id$='position']").val(selectedAgent['position']);
+            copyAllSubEntitiesFromAnother("position");
             $("#" + targetItemId + " input[id$='organisation']").val(selectedAgent['organisation']);
 
-            $("#" + targetItemId + " input[id$='address']").val(selectedAgent['address']['address']);
+            copyAllSubEntitiesFromAnother("address");
             $("#" + targetItemId + " input[id$='city']").val(selectedAgent['address']['city']);
             $("#" + targetItemId + " input[id$='province']").val(selectedAgent['address']['province']);
             $("#" + targetItemId + " select[id$='country']").val(selectedAgent['address']['country']);
             $("#" + targetItemId + " select[id$='country']").trigger('change');
             $("#" + targetItemId + " input[id$='postalCode']").val(selectedAgent['address']['postalCode']);
 
-            $("#" + targetItemId + " input[id$='phone']").val(selectedAgent['phone']);
-            $("#" + targetItemId + " input[id$='email']").val(selectedAgent['email']);
-            $("#" + targetItemId + " input[id$='homepage']").val(selectedAgent['homepage']);
+            copyAllSubEntitiesFromAnother("phone");
+            copyAllSubEntitiesFromAnother("email");
+            copyAllSubEntitiesFromAnother("homepage");
 
             var selectedAgenUserIds = selectedAgent['userIds'];
 
@@ -1033,6 +1072,17 @@
 
             $('#copy-agent-modal').modal('hide');
         });
+
+        function copyAllSubEntitiesFromAnother(subEntityName) {
+            // positions, email, homepages, phones, addresses
+            let subEntities = selectedAgent[subEntityName];
+
+            for (let i = 0; i < subEntities.length; i++) {
+                var entityName = getEntityNameFromItemId(targetItemId);
+                var entityIndex = getEntityIndexFromItemId(targetItemId);
+                createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, subEntities[i])
+            }
+        }
 
         $("[id^='creator-from-contact']").click(function(event) {
             event.preventDefault();
