@@ -1088,7 +1088,6 @@
             copyAllSubEntitiesFromAnother("phone");
             copyAllSubEntitiesFromAnother("email");
             copyAllSubEntitiesFromAnother("homepage");
-
             copyAllIdentifiersFromAnother();
 
             $("#" + targetItemId + " select[id$='role']").val(selectedAgent['role']);
@@ -1107,13 +1106,40 @@
             }
         }
 
+        function copyAllSubEntitiesFromFirstContact(entityName, subEntityName, entityIndex) {
+            // Take first contact
+            var $firstContactInputs;
+            if (subEntityName === "address") {
+                $firstContactInputs = $("[id^=eml\\.contacts\\[0\\]\\.address\\.address]");
+            } else {
+                $firstContactInputs = $("[id^=eml\\.contacts\\[0\\]\\." + subEntityName + "]");
+            }
+
+            // positions, email, homepages, phones, addresses
+            for (let i = 0; i < $firstContactInputs.length; i++) {
+                createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, $firstContactInputs[i].value)
+            }
+        }
+
         function copyAllIdentifiersFromAnother() {
-            var selectedAgenUserIds = selectedAgent['userIds'];
+            var selectedAgentUserIds = selectedAgent['userIds'];
             var entityName = getEntityNameFromItemId(targetItemId);
             var entityIndex = getEntityIndexFromItemId(targetItemId);
 
-            for (let i = 0; i < selectedAgenUserIds.length; i++) {
-                createNewIdentifierForAgentDirectly(entityName, entityIndex, selectedAgenUserIds[i]["directory"], selectedAgenUserIds[i]["identifier"]);
+            for (let i = 0; i < selectedAgentUserIds.length; i++) {
+                createNewIdentifierForAgentDirectly(entityName, entityIndex, selectedAgentUserIds[i]["directory"], selectedAgentUserIds[i]["identifier"]);
+            }
+        }
+
+        function copyAllIdentifiersFromFirstContact(entityName, entityIndex) {
+            // Take first contact
+            var $firstContactDirectorySelects;
+            var $firstContactIdentifierInputs;
+            $firstContactDirectorySelects = $("select[id^=eml\\.contacts\\[0\\]\\.userIds]");
+            $firstContactIdentifierInputs = $("input[id^=eml\\.contacts\\[0\\]\\.userIds]");
+
+            for (let i = 0; i < $firstContactDirectorySelects.length; i++) {
+                createNewIdentifierForAgentDirectly(entityName, entityIndex, $firstContactDirectorySelects[i].value, $firstContactIdentifierInputs[i].value);
             }
         }
 
@@ -1145,20 +1171,21 @@
             }
 
             var index = $target.attr("id").split("-")[3];
+            var entityName = getEntityNameFromItemId($target.attr("id"));
+
             $("#" + idPrefix + index + " [id$='firstName']").val($("#eml\\.contacts\\[0\\]\\.firstName").val());
             $("#" + idPrefix + index + " [id$='lastName']").val($("#eml\\.contacts\\[0\\]\\.lastName").val());
-            $("#" + idPrefix + index + " [id$='position']").val($("#eml\\.contacts\\[0\\]\\.position").val());
+            copyAllSubEntitiesFromFirstContact(entityName, "position", index);
             $("#" + idPrefix + index + " [id$='organisation']").val($("#eml\\.contacts\\[0\\]\\.organisation").val());
-            $("#" + idPrefix + index + " [id$='address']").val($("#eml\\.contacts\\[0\\]\\.address\\.address").val());
+            copyAllSubEntitiesFromFirstContact(entityName, "address", index);
             $("#" + idPrefix + index + " [id$='city']").val($("#eml\\.contacts\\[0\\]\\.address\\.city").val());
             $("#" + idPrefix + index + " [id$='province']").val($("#eml\\.contacts\\[0\\]\\.address\\.province").val());
             $("#" + idPrefix + index + " [id$='postalCode']").val($("#eml\\.contacts\\[0\\]\\.address\\.postalCode").val());
             $("#" + idPrefix + index + " [id$='country']").val($("#eml\\.contacts\\[0\\]\\.address\\.country").val());
-            $("#" + idPrefix + index + " [id$='phone']").val($("#eml\\.contacts\\[0\\]\\.phone").val());
-            $("#" + idPrefix + index + " [id$='email']").val($("#eml\\.contacts\\[0\\]\\.email").val());
-            $("#" + idPrefix + index + " [id$='homepage']").val($("#eml\\.contacts\\[0\\]\\.homepage").val());
-            $("#" + idPrefix + index + " [id$='directory']").val($("#eml\\.contacts\\[0\\]\\.userIds\\[0\\]\\.directory").val());
-            $("#" + idPrefix + index + " [id$='identifier']").val($("#eml\\.contacts\\[0\\]\\.userIds\\[0\\]\\.identifier").val());
+            copyAllSubEntitiesFromFirstContact(entityName, "phone", index);
+            copyAllSubEntitiesFromFirstContact(entityName, "email", index);
+            copyAllSubEntitiesFromFirstContact(entityName, "homepage", index);
+            copyAllIdentifiersFromFirstContact(entityName, index);
         }
 
         function copyPrimaryContactDetails(event, idPrefix) {
