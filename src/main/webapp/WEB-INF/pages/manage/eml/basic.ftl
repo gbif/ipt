@@ -1473,6 +1473,9 @@
                             <div class="col-md-5">
                                 <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName"/>
                             </div>
+                            <div class="col-md-6">
+                                <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
+                            </div>
                             <div class="col-md-2">
                                 <@input name="eml.creator.salutation" i18nkey="eml.resourceCreator.salutation"/>
                             </div>
@@ -1496,9 +1499,6 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
                             </div>
                             <div class="col-12">
                                 <div id="creator-addresss">
