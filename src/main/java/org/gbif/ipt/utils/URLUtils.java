@@ -38,6 +38,25 @@ public class URLUtils {
   private static final String LOCAL_IP = "127.0.0.1";
   private static final String LOCAL_HOST = "localhost";
 
+  private static final Set<String> VALID_CONTENT_TYPES = new HashSet<String>() {{
+    add("text/csv");
+    add("text/tab-separated-values");
+    add("application/csv");
+    add("application/vnd.ms-excel");
+    // add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    add("application/zip");
+    // add("application/x-zip-compressed");
+    // add("application/gzip");
+    // add("application/x-gzip");
+    // add("application/json");
+    add("text/plain");
+    // add("application/octet-stream");
+    // add("text/xml");
+    // add("application/xml");
+    // add("application/vnd.oasis.opendocument.spreadsheet");
+}};
+
+
   private URLUtils() {
 
   }
@@ -98,6 +117,24 @@ public class URLUtils {
       host = new HttpHost(url.getHost());
     }
     return host;
+  }
+
+  /**
+   * Method to get content type of a URL
+   *
+   * This method makes a HEAD request to the given URL to fetch the content type
+   * without downloading the entire content. It is useful for validating the
+   * type of content before performing any further operations.
+   *
+   * @param urlString the URL as a string
+   * @return the content type of the URL
+   * @throws IOException if an I/O exception occurs
+   */
+  public String getUrlContentType(String urlString) throws IOException {
+    URL url = new URL(urlString);
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("HEAD");
+    return connection.getContentType();
   }
 
 }

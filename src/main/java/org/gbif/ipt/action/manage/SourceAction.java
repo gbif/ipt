@@ -128,9 +128,12 @@ public class SourceAction extends ManagerBaseAction {
 
       // check text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
-      if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension)) {
-        addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
-        return ERROR;
+      boolean extension_fit = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
+
+      String contentType = URLUtils.getUrlContentType(url);
+      if (extension_fit || (!URLUtils.VALID_CONTENT_TYPES.contains(contentType))) {
+          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension.isEmpty() ? "unknown" : extension}));
+          return ERROR;
       }
     } catch (IOException e) {
       addActionError(getText("manage.source.url.invalid", new String[] {url}));
