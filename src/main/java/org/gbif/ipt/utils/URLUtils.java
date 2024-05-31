@@ -13,16 +13,19 @@
  */
 package org.gbif.ipt.utils;
 
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 
 
 /**
@@ -38,7 +41,7 @@ public class URLUtils {
   private static final String LOCAL_IP = "127.0.0.1";
   private static final String LOCAL_HOST = "localhost";
 
-  private static final Set<String> VALID_CONTENT_TYPES = new HashSet<String>() {{
+  public static final Set<String> VALID_CONTENT_TYPES = new HashSet<String>() {{
     add("text/csv");
     add("text/tab-separated-values");
     add("application/csv");
@@ -130,11 +133,18 @@ public class URLUtils {
    * @return the content type of the URL
    * @throws IOException if an I/O exception occurs
    */
-  public String getUrlContentType(String urlString) throws IOException {
+  public static String getUrlContentType(String urlString) throws IOException, MimeTypeParseException {
     URL url = new URL(urlString);
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("HEAD");
-    return connection.getContentType();
+    String contentType = connection.getContentType();
+
+    if (contentType != null) {
+      MimeType mimeType = new MimeType(contentType);
+      return mimeType.getBaseType();
+    } else {
+      return null;
+    }
   }
 
 }

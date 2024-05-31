@@ -28,6 +28,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -45,6 +46,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+
+import javax.activation.MimeTypeParseException;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -128,14 +131,18 @@ public class SourceAction extends ManagerBaseAction {
 
       // check text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
-      boolean extension_fit = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
+      boolean extensionNotAllowed = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
 
-      String contentType = URLUtils.getUrlContentType(url);
-      if (extension_fit || (!URLUtils.VALID_CONTENT_TYPES.contains(contentType))) {
+      if (extensionNotAllowed) {
+        String contentType = URLUtils.getUrlContentType(url);
+
+        // check mime type
+        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)){
           addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension.isEmpty() ? "unknown" : extension}));
           return ERROR;
+        }
       }
-    } catch (IOException e) {
+    } catch  (IOException | MimeTypeParseException e) {
       addActionError(getText("manage.source.url.invalid", new String[] {url}));
       return ERROR;
     }
