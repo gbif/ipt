@@ -3475,7 +3475,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
     Set<UUID> ls = new HashSet<>();
-    if (resource.getEml() != null) {
+    if (resource.getEml() != null && !resource.isDataPackage()) {
       List<String> ids = resource.getEml().getAlternateIdentifiers();
       for (String id : ids) {
         try {
