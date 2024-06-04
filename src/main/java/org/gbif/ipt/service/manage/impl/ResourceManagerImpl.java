@@ -1244,6 +1244,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
     resources.remove(resource.getShortname().toLowerCase());
+    publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
   }
 
   @Override
@@ -1263,6 +1264,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
       // remove object
       resources.remove(resource.getShortname().toLowerCase());
+      publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
     }
   }
 
