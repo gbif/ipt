@@ -613,16 +613,16 @@
                                     </div>
                                 </div>
                                 <div class="col-md-5">
-                                    <@input name="eml.associatedParties.firstName" i18nkey="eml.associatedParties.firstName"/>
+                                    <@input name="firstName" i18nkey="eml.associatedParties.firstName"/>
                                 </div>
                                 <div class="col-md-5">
-                                    <@input name="eml.associatedParties.lastName" i18nkey="eml.associatedParties.lastName" />
+                                    <@input name="lastName" i18nkey="eml.associatedParties.lastName" />
                                 </div>
                                 <div class="col-md-2">
-                                    <@input name="eml.associatedParties.salutation" i18nkey="eml.associatedParties.salutation"/>
+                                    <@input name="salutation" i18nkey="eml.associatedParties.salutation"/>
                                 </div>
                                 <div class="col-md-6">
-                                    <@input name="eml.associatedParties.organisation" i18nkey="eml.associatedParties.organisation"  />
+                                    <@input name="organisation" i18nkey="eml.associatedParties.organisation"  />
                                 </div>
                                 <div class="col-md-6">
                                     <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
@@ -670,16 +670,16 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <@input name="eml.associatedParties.address.city" i18nkey="eml.associatedParties.address.city" />
+                                    <@input name="address.city" i18nkey="eml.associatedParties.address.city" />
                                 </div>
                                 <div class="col-md-3">
-                                    <@input name="eml.associatedParties.address.province" i18nkey="eml.associatedParties.address.province" />
+                                    <@input name="address.province" i18nkey="eml.associatedParties.address.province" />
                                 </div>
                                 <div class="countryList col-md-3">
                                     <@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />
                                 </div>
                                 <div class="col-md-2">
-                                    <@input name="eml.associatedParties.address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+                                    <@input name="address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
                                 </div>
                                 <div class="col-12">
                                     <div id="associatedParty-phones">
