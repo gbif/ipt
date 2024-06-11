@@ -377,6 +377,8 @@ If the dwc:country element is used, it is recommended that the http://rs.gbif.or
 
 The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon.
 
+Note that extensions must reference to the taxa in the Taxon Core file by citing the `taxonID` in the `taxonID` field. See also this part of the documentation: https://ipt.gbif.org/manual/en/ipt/latest/best-practices-checklists#checklist-data
+
 == Sharing Type information
 
 The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera.
