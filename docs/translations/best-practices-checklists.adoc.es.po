@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2024-06-11 17:06\n"
+"PO-Revision-Date: 2024-06-11 18:26\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1023,7 +1023,7 @@ msgstr "Se pueden compartir citas bibliográficas. Los datos bibliográficos se 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:381
 msgid "Note that extensions must link to the taxa in the core data file by providing the `taxonID` in the `taxonID` field. See the <<checklist-data,structure of Darwin Core Archives>> above."
-msgstr ""
+msgstr "Tenga en cuenta que las extensiones deben vincularse a los taxones en el archivo de datos principal proporcionando el \"taxonID\" en el campo \"taxonID\". Consulte la <<checklist-data,structure of Darwin Core Archives>> arriba."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:382
