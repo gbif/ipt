@@ -60,7 +60,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   @Getter
   private int sheetIdx = 0;
   @Setter
-  private int ignoreHeaderLines = 0;
+  private int ignoreHeaderLines = 1;
   private File file;
   @Setter
   private long fileSize;
