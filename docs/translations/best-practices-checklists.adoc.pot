@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-11-21 10:29+0000\n"
+"POT-Creation-Date: 2024-06-11 15:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -1374,14 +1373,22 @@ msgid ""
 "taxon."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:381
+msgid ""
+"Note that extensions must link to the taxa in the core data file by "
+"providing the `taxonID` in the `taxonID` field. See the <<checklist-data,"
+"structure of Darwin Core Archives>> above."
+msgstr ""
+
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:380
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:382
 #, no-wrap
 msgid "Sharing Type information"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:383
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:385
 msgid ""
 "The sharing of information about types and specimens is supported. These "
 "data are shared as a separate, related file using the {latest-"
@@ -1390,13 +1397,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:384
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:386
 #, no-wrap
 msgid "Sharing Links and Identifiers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:387
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:389
 msgid ""
 "It is possible to share and describe multiple links to related external "
 "resources using the {latest-identifier}[Alternate Identifier Extension]. It "
@@ -1412,13 +1419,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:388
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:390
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:391
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:393
 msgid ""
 "Often, a link back to a source database follows a common format, differing "
 "only in the identifier number or taxon name used in the URL. This can result "
@@ -1434,7 +1441,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:393
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:395
 msgid ""
 "The metafile supports the creation of variables in the metafile that may "
 "refer to a web page or web service call. This variable may be embedded in "
@@ -1446,21 +1453,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:395
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:397
 msgid ""
 "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial "
 "Numbers (TSN) to provide links to taxon pages on its web site."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:398
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:400
 msgid ""
 "http://www.itis.gov/servlet/SingleRpt/SingleRpt?"
 "search_topic=TSN&search_value=174375"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:400
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:402
 msgid ""
 "If a core data file is published using the ITIS TSN system a link can be "
 "composed and tied to the “identifier” term in the core data standard using "
@@ -1468,20 +1475,20 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:403
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:405
 #, no-wrap
 msgid "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:406
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:408
 msgid ""
 "where the original numeric value is replaced by the variable `\\{id}`. This "
 "value would be derived from the core ID."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:409
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:411
 msgid ""
 "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It "
 "also supports name-based searches that can also be encoded as URLs. For "
@@ -1489,13 +1496,13 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:413
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:415
 #, no-wrap
 msgid "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:415
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:417
 msgid ""
 "embeds a scientific name “Struthio camelus” into a URL. Full scientific name "
 "combinations can be published in the core data file using the Darwin Core "
@@ -1504,26 +1511,26 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:418
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:420
 #, no-wrap
 msgid "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:421
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:423
 msgid ""
 "where `\\{12}` represents the 12th column value that will be substituted in "
 "the URL."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:423
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:425
 #, no-wrap
 msgid "GBIF Checklist Extensions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:426
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:428
 msgid ""
 "The core data file in a checklist contains taxon records. The set of terms "
 "that can be used to describe a taxon record is defined by the Taxon (Core) "
@@ -1531,7 +1538,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:428
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:430
 msgid ""
 "Each taxon record can be extended with one or more records in an extension "
 "file. The set of terms that can be used to describe each extension record is "
@@ -1539,25 +1546,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:430
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:432
 msgid ""
 "Below is the complete list of Extensions that can be used to provide "
 "additional information about a taxon record:"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:431
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:433
 #, no-wrap
 msgid "Taxon (Core) Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:434
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:436
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:438
 msgid ""
 "Use this set of terms to provide the fundamental information for a species "
 "checklist including classification, synonymy and other key elements. Each "
@@ -1575,18 +1582,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:437
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:439
 #, no-wrap
 msgid "Vernacular Names Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:440
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:442
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:444
 msgid ""
 "This extension provides the means to share information related to common "
 "(vernacular) names linked to taxa in the core data file. Multiple vernacular "
@@ -1594,18 +1601,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:443
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:445
 #, no-wrap
 msgid "References Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:446
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 msgid "Latest version issued: {latest-references}[{date-references}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:448
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:450
 msgid ""
 "Use this extension to describe one or more bibliographic references related "
 "to a taxon in the core data file. Use the type field to qualify the "
@@ -1614,20 +1621,20 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:449
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:451
 #, no-wrap
 msgid "Species Distribution Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:452
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:454
 msgid ""
 "Latest version issued: {latest-species-distribution}[{date-species-"
 "distribution}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:455
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:457
 msgid ""
 "Use this extension to share information on one or more distribution "
 "references for a taxon. One or more locality records may be linked to the "
@@ -1638,18 +1645,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:456
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:458
 #, no-wrap
 msgid "Species Description Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:459
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:461
 msgid "Latest version issued: {latest-description}[{date-description}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:462
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:464
 msgid ""
 "Use this extension to provide descriptive text for a taxon. This is "
 "typically in the form of a single paragraph per record as would be normally "
@@ -1660,18 +1667,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:463
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:465
 #, no-wrap
 msgid "Alternative Identifiers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:466
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:468
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:468
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:470
 msgid ""
 "Use this extension if you have more than one identifier or link to "
 "information about the taxon. A source database, may, for example provide "
@@ -1680,38 +1687,38 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:469
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:471
 #, no-wrap
 msgid "Types and Specimens Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:472
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:474
 msgid ""
 "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:474
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:476
 msgid ""
 "Use this extension to share data relating to one or more specimens or type "
 "references linked to the core taxon"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:475
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:477
 #, no-wrap
 msgid "Resource Relationship Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:478
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:480
 msgid ""
 "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:479
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:481
 msgid ""
 "This extension is used to describe one or more relationships that the core "
 "taxon has with other taxa, either in the source list or included in the "
