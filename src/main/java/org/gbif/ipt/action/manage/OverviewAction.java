@@ -304,6 +304,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
       try {
         resourceManager.deleteResourceFromIpt(resource);
+        addActionMessage(getText("manage.overview.resource.deleteFromIpt.successful", new String[] {resource.getShortname()}));
         return HOME;
       } catch (IOException e) {
         String msg = getText("manage.resource.delete.failed");

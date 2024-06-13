@@ -73,6 +73,7 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
@@ -1243,6 +1244,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
     resources.remove(resource.getShortname().toLowerCase());
+    publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
   }
 
   @Override
@@ -1262,6 +1264,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
       // remove object
       resources.remove(resource.getShortname().toLowerCase());
+      publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
     }
   }
 
@@ -3474,7 +3477,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
     Set<UUID> ls = new HashSet<>();
-    if (resource.getEml() != null) {
+    if (resource.getEml() != null && !resource.isDataPackage()) {
       List<String> ids = resource.getEml().getAlternateIdentifiers();
       for (String id : ids) {
         try {
@@ -3482,6 +3485,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           ls.add(uuid);
         } catch (IllegalArgumentException e) {
           // skip, isn't a candidate UUID
+        }
+      }
+    } else if (resource.getDataPackageMetadata() != null
+        && resource.getDataPackageMetadata() instanceof CamtrapMetadata
+        && CAMTRAP_DP.equals(resource.getCoreType())) {
+      CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+      List<RelatedIdentifier> relatedIdentifiers = metadata.getRelatedIdentifiers();
+      for (RelatedIdentifier identifier : relatedIdentifiers) {
+        if (identifier != null && identifier.getRelatedIdentifier() != null
+            && identifier.getRelatedIdentifier().contains("gbif")
+            && identifier.getRelatedIdentifierType() == RelatedIdentifier.RelatedIdentifierType.URL) {
+          String[] urlParts = identifier.getRelatedIdentifier().split("/");
+          if (urlParts.length > 0) {
+            String lastSegment = urlParts[urlParts.length - 1];
+            try {
+              UUID uuid = UUID.fromString(lastSegment);
+              ls.add(uuid);
+            } catch (IllegalArgumentException e) {
+              // skip, isn't a candidate UUID
+            }
+          }
         }
       }
     }

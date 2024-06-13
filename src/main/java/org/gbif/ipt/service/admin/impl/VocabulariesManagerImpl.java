@@ -226,9 +226,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
       if (alreadyInstalled == null) {
         finishInstall(tmpFile, vocabulary);
-      } else if (vocabulary.getIssued() != null
-              && alreadyInstalled.getIssued() != null
-              && vocabulary.getIssued().after(alreadyInstalled.getIssued())) {
+      } else if (isLoadedVocabularyNewerThanInstalled(alreadyInstalled.getIssued(), vocabulary.getIssued())
+          || alreadyInstalled.getIssued() == null
+          || !alreadyInstalled.isLatest()) {
         try {
           updateToLatest(alreadyInstalled, vocabulary);
         } catch (IOException e) {
@@ -249,6 +249,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       LOG.error(msg, e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_EXTENSION, msg, e);
     }
+  }
+
+  private boolean isLoadedVocabularyNewerThanInstalled(
+      Date installedVocabularyIssuedDate, Date loadedVocabularyIssuedDate) {
+    return installedVocabularyIssuedDate != null
+        && loadedVocabularyIssuedDate != null
+        && loadedVocabularyIssuedDate.after(installedVocabularyIssuedDate);
   }
 
   /**
@@ -275,6 +282,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       Vocabulary fromFile = loadFromFile(installedFile);
       // don't forget to set vocabulary URL (only available from JSON)
       fromFile.setUriResolvable(vocabulary.getUriResolvable());
+      fromFile.setLatest(true);
 
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
       vocabulariesById.put(vocabulary.getUriString(), fromFile);
