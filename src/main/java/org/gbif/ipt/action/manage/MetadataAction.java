@@ -524,6 +524,9 @@ public class MetadataAction extends ManagerBaseAction {
       // progress to next section, since save succeeded
       switch (section) {
         case BASIC_SECTION:
+          next = MetadataSection.ACKNOWLEDGEMENTS_SECTION;
+          break;
+        case ACKNOWLEDGEMENTS_SECTION:
           next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
           break;
         case GEOGRAPHIC_COVERAGE_SECTION:
