@@ -38,6 +38,12 @@
                 }
             }
 
+            var isInferAutomaticallyChecked = $('#inferTaxonomicCoverageAutomatically').is(":checked");
+            if (isInferAutomaticallyChecked) {
+                // enable description input
+                $('div#static-taxanomic textarea').show().prop('disabled', false);
+            }
+
             // add/remove "inferAutomatically" param when clicking checkbox
             $('#inferTaxonomicCoverageAutomatically').change(function() {
                 if ($(this).is(':checked')) {
