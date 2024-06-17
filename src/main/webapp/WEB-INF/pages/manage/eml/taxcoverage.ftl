@@ -25,7 +25,10 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
+                    // select checkbox
                     $('#inferTaxonomicCoverageAutomatically').prop('checked', true);
+                    // enable description input
+                    $('div#static-taxanomic textarea').show().prop('disabled', false);
                 }
 
                 // remove "reinferMetadata" param on load
