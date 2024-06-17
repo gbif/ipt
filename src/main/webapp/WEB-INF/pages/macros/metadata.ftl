@@ -253,12 +253,13 @@ $(document).ready(function(){
         });
     }
 
-    function addNewItem(effects){
-        var newItem=$('#baseItem').clone();
-        if(effects) newItem.hide();
+    function addNewItem(effects) {
+        calcIndexOfLastItem();
+        var newItem = $('#baseItem').clone();
+        if (effects) newItem.hide();
         newItem.appendTo('#items');
 
-        if(effects) {
+        if (effects) {
             newItem.slideDown('slow');
         }
 

@@ -34,7 +34,7 @@
                       <#if (minlength>0)> minlength="${minlength}"</#if><#t>
                       <#if (maxlength>0)> maxlength="${maxlength}"</#if><#t>
                       <#if requiredField> required</#if><#t>
-                      <#if disabled> readonly="readonly"</#if>><#t>
+                      <#if disabled> readonly="readonly" disabled</#if>><#t>
                       <#if value=="-99999"><#t>
                           <@s.property value="${name}"/><#t>
                       <#else><#t>

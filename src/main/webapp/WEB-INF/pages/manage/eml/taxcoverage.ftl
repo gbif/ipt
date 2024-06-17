@@ -39,8 +39,10 @@
             $('#inferTaxonomicCoverageAutomatically').change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
+                    $('div#static-taxanomic textarea').show().prop('disabled', false);
                 } else {
                     deleteQueryParam('inferAutomatically');
+                    $('div#static-taxanomic textarea').hide().prop('disabled', true);
                 }
             });
 
@@ -254,11 +256,11 @@
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
                                         <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                            </svg>
-                                        </span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.previewInferred"/></span>
                                         </a>
                                     </div>
@@ -381,7 +383,7 @@
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
                                 <div class="mt-2 mb-4">
-                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" />
+                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" disabled=true />
                                 </div>
 
                                 <!-- Data is inferred, preview -->
