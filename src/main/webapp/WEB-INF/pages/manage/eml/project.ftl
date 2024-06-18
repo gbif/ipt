@@ -277,9 +277,9 @@
                                             <div class="col-lg-4">
                                                 <@input name="eml.project.awards[" + item_index + "].awardUrl" help="i18n" i18nkey="eml.project.award.awardUrl" />
                                             </div>
-<#--                                            <div class="col-lg-5">-->
-<#--                                                <@input name="eml.project.award.funderIdentifier" help="i18n" />-->
-<#--                                            </div>-->
+                                            <div class="col-lg-6">
+                                                <@input name="eml.project.awards[" + item_index + "].funderIdentifiers[0]" help="i18n" i18nkey="eml.project.award.funderIdentifier" />
+                                            </div>
                                         </div>
                                     </#list>
                                 </div>
@@ -305,23 +305,7 @@
                                 <div id="relatedProjects-items">
                                     <#list eml.project.relatedProjects as item>
                                         <div id="relatedProject-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="handle columnLinks mt-2 d-flex justify-content-between">
-                                                <div>
-                                                    <div class="btn-group">
-                                                        <a id="dropdown-personnel-copy-${item_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <span>
-                                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                                </svg>
-                                                            </span>
-                                                            <span>${copyLink?lower_case?cap_first}</span>
-                                                        </a>
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-personnel-copy-${item_index}">
-                                                            <li><a id="personnel-from-contact-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                            <li><a id="personnel-copy-${item_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                            <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                                 <div>
                                                     <a id="relatedProject-removeLink-${item_index}" class="removeRelatedProjectLink metadata-action-link" href="">
                                                         <span>
@@ -332,15 +316,15 @@
                                                         <span>${removeRelatedProjectLink?lower_case?cap_first}</span>
                                                     </a>
                                                 </div>
-                                                <div class="col-12">
-                                                    <@input name="eml.project.award.title" help="i18n" requiredField=true/>
-                                                </div>
-                                                <div class="col-12">
-                                                    <@text name="eml.project.award.title" help="i18n"/>
-                                                </div>
-                                                <div class="col-12">
-                                                    Project personnel*
-                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <@input name="eml.project.relatedProjects[" + item_index + "].title"  i18nkey="eml.project.relatedProject.title" help="i18n" requiredField=true/>
+                                            </div>
+                                            <div class="col-12">
+                                                <@input name="eml.project.relatedProjects[" + item_index + "].description"  i18nkey="eml.project.relatedProject.description" help="i18n" />
+                                            </div>
+                                            <div class="col-12">
+                                                Project personnel*
                                             </div>
                                         </div>
                                     </#list>
@@ -488,7 +472,7 @@
                             <div id="baseItem-relatedProject" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                     <div>
-                                        <a id="relatedProject-removeLink" class="removeRelatedProjectlLink metadata-action-link" href="">
+                                        <a id="relatedProject-removeLink" class="removeRelatedProjectLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -499,10 +483,10 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <@input name="relatedProject-title" i18nkey="eml.project.relatedProject.title" requiredField=true/>
+                                    <@input name="relatedProjecttitle" i18nkey="eml.project.relatedProject.title" requiredField=true/>
                                 </div>
                                 <div class="col-12">
-                                    <@text name="relatedProject-description" i18nkey="eml.project.relatedProject.description" />
+                                    <@text name="relatedProjectdescription" i18nkey="eml.project.relatedProject.description" />
                                 </div>
                                 <div class="col-12">
                                     <@s.text name="eml.project.relatedProject.personnel" />
@@ -533,6 +517,9 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <@input name="awardawardUrl" i18nkey="eml.project.award.awardUrl" help="i18n" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="awardfunderIdentifiers[0]" help="i18n" i18nkey="eml.project.award.funderIdentifier" />
                                 </div>
                             </div>
 

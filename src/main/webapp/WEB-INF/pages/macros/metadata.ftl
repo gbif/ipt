@@ -130,6 +130,14 @@ $(document).ready(function(){
         removeItem(event);
     });
 
+    $(".removeAwardlLink").click(function (event) {
+        removeAwardItem(event);
+    })
+
+    $(".removeRelatedProjectLink").click(function (event) {
+        removeRelatedProjectItem(event);
+    });
+
     $(".removeCollectionLink").click(function (event) {
         removeCollectionItem(event);
     });
@@ -299,6 +307,13 @@ $(document).ready(function(){
     }
 
     function addRelatedProject(effects) {
+        var lastItem = $("#relatedProjects-items .item:last-child").attr("id");
+        var lastIndex;
+        if (lastItem !== undefined)
+            lastIndex = parseInt(lastItem.split("-")[2]);
+        else
+            lastIndex = -1;
+
         var newItem = $('#baseItem-relatedProject').clone();
         if (effects) newItem.hide();
         newItem.appendTo('#relatedProjects-items');
@@ -306,13 +321,6 @@ $(document).ready(function(){
         if (effects) {
             newItem.slideDown('slow');
         }
-
-        var lastItem = $("#relatedProjects-items .item:last-child").attr("id");
-        var lastIndex;
-        if (lastItem !== undefined)
-            lastIndex = parseInt(lastItem.split("-")[1]);
-        else
-            lastIndex = -1;
 
         setRelatedProjectIndex(newItem, ++lastIndex);
 
@@ -347,15 +355,15 @@ $(document).ready(function(){
         initInfoPopovers(newItem[0]);
     }
 
-    function removeItem(event){
+    function removeItem(event) {
         event.preventDefault();
         var $target = $(event.target);
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        $('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() {
+        $('#item-' + $target.attr("id").split("-")[1]).slideUp('slow', function () {
             $(this).remove();
-            $("#items .item").each(function(index) {
+            $("#items .item").each(function (index) {
                 setItemIndex($(this), index);
             });
             calcIndexOfLastItem();
@@ -368,9 +376,9 @@ $(document).ready(function(){
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        $('#collection-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
+        $('#collection-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
             $(this).remove();
-            $("#collection-items .item").each(function(index) {
+            $("#collection-items .item").each(function (index) {
                 setCollectionItemIndex($(this), index);
             });
             calcNumberOfCollectionItems();
@@ -379,6 +387,30 @@ $(document).ready(function(){
 
     function removeAwardItem(event) {
         event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#award-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#award-items .item").each(function (index) {
+                setAwardIndex($(this), index);
+            });
+        });
+    }
+
+    function removeRelatedProjectItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#relatedProject-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#relatedProjects-items .item").each(function (index) {
+                setRelatedProjectIndex($(this), index);
+            });
+        });
     }
 
     function removeSpecimenPreservationMethodItem(event) {
@@ -632,10 +664,31 @@ $(document).ready(function(){
             return $(this).attr("id");
         });
         $("#award-item-" + index + " [for$='awardUrl']").attr("for", "eml.project.awards[" + index + "].awardUrl");
+        // funder identifier
+        $("#award-item-" + index + " [id$='funderIdentifiers[0]']").attr("id", "eml.project.awards[" + index + "].funderIdentifiers[0]").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='funderIdentifiers[0]']").attr("for", "eml.project.awards[" + index + "].funderIdentifiers[0]");
     }
 
     function setRelatedProjectIndex(item, index) {
+        item.attr("id", "relatedProject-item-" + index);
 
+        $("#relatedProject-item-" + index + " [id^='relatedProject-removeLink']").attr("id", "relatedProject-removeLink-" + index);
+        $("#relatedProject-removeLink-" + index).click(function (event) {
+            removeRelatedProjectItem(event);
+        });
+
+        // title
+        $("#relatedProject-item-" + index + " [id$='title']").attr("id", "eml.project.relatedProjects[" + index + "].title").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='title']").attr("for", "eml.project.relatedProjects[" + index + "].title");
+        // title
+        $("#relatedProject-item-" + index + " [id$='description']").attr("id", "eml.project.relatedProjects[" + index + "].description").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='description']").attr("for", "eml.project.relatedProjects[" + index + "].description");
     }
 
     function setCollectionItemIndex(item, index) {
