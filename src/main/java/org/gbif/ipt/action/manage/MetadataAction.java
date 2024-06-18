@@ -460,6 +460,8 @@ public class MetadataAction extends ManagerBaseAction {
         loadAgentVocabularies();
         if (isHttpPost()) {
           resource.getEml().getProject().getPersonnel().clear();
+          resource.getEml().getProject().getAwards().clear();
+          resource.getEml().getProject().getRelatedProjects().clear();
         }
         break;
 
