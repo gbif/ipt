@@ -318,13 +318,63 @@
                                                 </div>
                                             </div>
                                             <div class="col-12">
-                                                <@input name="eml.project.relatedProjects[" + item_index + "].title"  i18nkey="eml.project.relatedProject.title" help="i18n" requiredField=true/>
+                                                <@input name="eml.project.relatedProjects[" + item_index + "].title"  i18nkey="eml.project.relatedProject.title" requiredField=true/>
                                             </div>
                                             <div class="col-12">
-                                                <@input name="eml.project.relatedProjects[" + item_index + "].description"  i18nkey="eml.project.relatedProject.description" help="i18n" />
+                                                <@text name="eml.project.relatedProjects[" + item_index + "].description"  i18nkey="eml.project.relatedProject.description" />
                                             </div>
                                             <div class="col-12">
-                                                Project personnel*
+                                                <div id="relatedProject-${item_index}-personnel">
+                                                    <div class="d-flex text-smaller">
+                                                        <label for="eml.project.relatedProject.personnel" class="form-label mb-0">
+                                                            <@s.text name="eml.project.relatedProject.personnel"/>
+                                                        </label>
+                                                    </div>
+                                                    <#list (eml.project.relatedProjects[item_index].personnel)! as personnel>
+                                                        <div id="relatedProject-${item_index}-personnel-${personnel_index}" class="personnel-item clearfix row g-3 border-bottom pb-3 mt-1">
+                                                            <div class="col-12 mt-auto py-1 d-flex justify-content-end">
+                                                                <a id="relatedProject-personnel-remove-${item_index}-${personnel_index}" class="removeRelatedProjectPersonnel metadata-action-link" href="">
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                    <span>${removeLink?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].firstName" i18nkey="eml.project.personnel.firstName" />
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true />
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].salutation" i18nkey="eml.project.personnel.salutation" />
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].directory" value="${(eml.project.relatedProjects[item_index].personnel[personnel_index].userIds[0].directory)!}" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].role" value="${(eml.project.relatedProjects[item_index].personnel[personnel_index].role)!}" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
+                                                            </div>
+                                                        </div>
+                                                    </#list>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mt-auto py-1">
+                                                        <a id="plus-relatedProject-personnel-${item_index}" href="" class="metadata-action-link add-relatedProject-personnel">
+                                                            <span>
+                                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                                </svg>
+                                                            </span>
+                                                            <span>${addLink?lower_case?cap_first}</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </#list>
@@ -489,7 +539,25 @@
                                     <@text name="relatedProjectdescription" i18nkey="eml.project.relatedProject.description" />
                                 </div>
                                 <div class="col-12">
-                                    <@s.text name="eml.project.relatedProject.personnel" />
+                                    <div id="relatedProject-personnel">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.project.relatedProject.personnel" class="form-label mb-0">
+                                                <@s.text name="eml.project.relatedProject.personnel"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-relatedProject-personnel" href="" class="metadata-action-link">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -543,6 +611,39 @@
                                     </div>
                                     <div class="text-end">
                                         <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link" href="">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                </svg>
+                                            </span>
+                                            <span>${removeLink?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <@input name="firstName" i18nkey="eml.project.personnel.firstName" />
+                                </div>
+                                <div class="col-lg-5">
+                                    <@input name="lastName" i18nkey="eml.project.personnel.lastName" requiredField=true />
+                                </div>
+                                <div class="col-lg-2">
+                                    <@input name="salutation" i18nkey="eml.project.personnel.salutation" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@select name="directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
+                                </div>
+                            </div>
+
+                            <div id="baseItem-relatedProject-personnel" class="personnel-item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="handle columnLinks mt-2 d-flex justify-content-end">
+                                    <div class="text-end">
+                                        <a id="personnel-removeLink" class="removeRelatedProjectPersonnel metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
