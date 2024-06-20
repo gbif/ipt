@@ -327,7 +327,7 @@
                                                 <div id="relatedProject-${item_index}-personnel">
                                                     <div class="d-flex text-smaller">
                                                         <label for="eml.project.relatedProject.personnel" class="form-label mb-0">
-                                                            <@s.text name="eml.project.relatedProject.personnel"/>
+                                                            <@s.text name="eml.project.relatedProject.personnel"/> <span class="text-gbif-danger">&#42;</span>
                                                         </label>
                                                     </div>
                                                     <#list (eml.project.relatedProjects[item_index].personnel)! as personnel>
@@ -396,7 +396,7 @@
                         <div class="my-md-3 p-3">
                             <!-- List of personnel -->
                             <div class="listBlock">
-                                <@textinline name="eml.project.personnel" help="i18n"/>
+                                <@textinline name="eml.project.personnel" help="i18n" requiredField=true />
 
                                 <div id="personnel-items">
                                     <#list eml.project.personnel as item>
@@ -542,7 +542,7 @@
                                     <div id="relatedProject-personnel">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.project.relatedProject.personnel" class="form-label mb-0">
-                                                <@s.text name="eml.project.relatedProject.personnel"/>
+                                                <@s.text name="eml.project.relatedProject.personnel"/>  <span class="text-gbif-danger">&#42;</span>
                                             </label>
                                         </div>
                                     </div>
