@@ -93,13 +93,13 @@ public class AccountAction extends POSTAction {
         currentUser.setLastname(user.getLastname());
         currentUser.setFirstname(user.getFirstname());
         addActionMessage(getText("admin.user.account.updated"));
-        LOG.debug("The user account has been updated");
+        LOG.info("The user {} account has been updated", user.getEmail());
         userManager.save();
         return SUCCESS;
       }
     } catch (IOException e) {
       addActionError(getText("admin.user.account.saveError"));
-      LOG.error("The user account change could not be made: " + e.getMessage(), e);
+      LOG.error("The user {} account change could not be made: " + e.getMessage(), user.getEmail(), e);
       addActionError(e.getMessage());
     }
 
