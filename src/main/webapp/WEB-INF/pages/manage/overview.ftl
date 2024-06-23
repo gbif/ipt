@@ -2467,7 +2467,11 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <#if resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
+                    <#if !networksAvailable>
+                        <div class="icon-box">
+                            <i class="confirm-danger-icon">!</i>
+                        </div>
+                    <#elseif resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
                         <div class="icon-box icon-box-warning">
                             <i class="confirm-danger-icon">!</i>
                         </div>
@@ -2480,6 +2484,10 @@
                     <#if resource.status == "DELETED">
                         <p>
                             <@s.text name="manage.overview.networks.deleted"/>
+                        </p>
+                    <#elseif !networksAvailable>
+                        <p>
+                            <@s.text name="manage.overview.networks.registryAccess"/>
                         </p>
                     <#elseif (potentialNetworks?size==0)>
                         <p>

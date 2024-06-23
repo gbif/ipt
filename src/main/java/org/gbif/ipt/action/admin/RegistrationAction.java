@@ -183,8 +183,14 @@ public class RegistrationAction extends POSTAction {
     }
 
     networks.put("", getText("admin.ipt.network.selection"));
-    networks.putAll(registryManager.getNetworksBrief().stream()
-            .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
+
+    try {
+      networks.putAll(registryManager.getNetworksBrief().stream()
+          .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName)));
+    } catch (RegistryException e) {
+      String msg = RegistryException.logRegistryException(e, this);
+      addActionWarning(getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()}) + msg);
+    }
   }
 
   @Override
