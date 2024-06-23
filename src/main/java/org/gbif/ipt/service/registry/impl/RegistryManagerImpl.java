@@ -675,6 +675,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         String content = response.getContent();
         networks = gson
             .fromJson(content, new TypeToken<List<Network>>() {}.getType());
+
+        throw new RegistryException(
+            Type.BAD_RESPONSE,
+            getListNetworksURL(),
+            "TEST getNetworksBrief");
       } catch (JsonSyntaxException e) {
         // add startup error message that explains the consequence of the error
         String msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
