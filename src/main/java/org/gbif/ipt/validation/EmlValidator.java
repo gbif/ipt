@@ -35,6 +35,7 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.ipt.model.PhysicalData;
 import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.Project;
+import org.gbif.metadata.eml.ipt.model.ProjectAward;
 import org.gbif.metadata.eml.ipt.model.StudyAreaDescription;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
@@ -727,29 +728,92 @@ public class EmlValidator extends BaseValidator {
                 action.getText("validation.required", new String[] {action.getText("eml.project.title")}));
             }
 
+            // Project awards list: title and funder name required
+            for (int index = 0; index < eml.getProject().getAwards().size(); index++) {
+              ProjectAward pa = eml.getProject().getAwards().get(index);
+
+              // title
+              if (!exists(pa.getTitle())) {
+                action.addFieldError("eml.project.awards[" + index + "].title",
+                    action.getText("validation.required", new String[] {action.getText("eml.project.award.title")}));
+              }
+
+              // funder name
+              if (!exists(pa.getFunderName())) {
+                action.addFieldError("eml.project.awards[" + index + "].funderName",
+                    action.getText("validation.required", new String[] {action.getText("eml.project.award.funderName")}));
+              }
+            }
+
+            // Related projects list: title and personnel required
+            for (int index = 0; index < eml.getProject().getRelatedProjects().size(); index++) {
+              Project rp = eml.getProject().getRelatedProjects().get(index);
+
+              // related project title
+              if (!exists(rp.getTitle())) {
+                action.addFieldError("eml.project.relatedProjects[" + index + "].title",
+                    action.getText("validation.required", new String[] {action.getText("eml.project.relatedProject.title")}));
+              }
+
+              // related project personnel
+              if (isAgentsListEmpty(rp.getPersonnel())) {
+                action.addActionError(action.getText("eml.project.relatedProject.personnel.required"));
+              } else {
+                for (int personnelIndex = 0; personnelIndex < eml.getProject().getPersonnel().size(); personnelIndex++) {
+                  Agent p = eml.getProject().getRelatedProjects().get(index).getPersonnel().get(personnelIndex);
+
+                  // firstName - optional. But if firstName exists, lastName have to exist
+                  if (exists(p.getFirstName()) && !exists(p.getLastName())) {
+                    action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
+                        action.getText("validation.firstname.lastname"));
+                  }
+                  // At least a lastName has to exist
+                  else if (!exists(p.getLastName())) {
+                    action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
+                        action.getText("validation.required", new String[] {action.getText("eml.project.personnel.lastName")}));
+                  }
+
+                  // directory and personnel id both required (if either is supplied)
+                  if (!p.getUserIds().isEmpty()) {
+                    if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
+                      action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].identifier",
+                          action.getText("validation.personnel"));
+                    } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
+                      action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].directory",
+                          action.getText("validation.directory"));
+                    }
+                  }
+                }
+              }
+            }
+
             // Personnel list
-            for (int index = 0; index < eml.getProject().getPersonnel().size(); index++) {
-              Agent p = eml.getProject().getPersonnel().get(index);
+            if (isAgentsListEmpty(eml.getProject().getPersonnel())) {
+              action.addActionError(action.getText("eml.project.personnel.required"));
+            } else {
+              for (int index = 0; index < eml.getProject().getPersonnel().size(); index++) {
+                Agent p = eml.getProject().getPersonnel().get(index);
 
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(p.getFirstName()) && !exists(p.getLastName())) {
-                action.addFieldError("eml.project.personnel[" + index + "].lastName",
-                  action.getText("validation.firstname.lastname"));
-              }
-              // At least a lastName has to exist
-              else if (!exists(p.getLastName())) {
-                action.addFieldError("eml.project.personnel[" + index + "].lastName",
-                  action.getText("validation.required", new String[] {action.getText("eml.project.personnel.lastName")}));
-              }
+                // firstName - optional. But if firstName exists, lastName have to exist
+                if (exists(p.getFirstName()) && !exists(p.getLastName())) {
+                  action.addFieldError("eml.project.personnel[" + index + "].lastName",
+                      action.getText("validation.firstname.lastname"));
+                }
+                // At least a lastName has to exist
+                else if (!exists(p.getLastName())) {
+                  action.addFieldError("eml.project.personnel[" + index + "].lastName",
+                      action.getText("validation.required", new String[] {action.getText("eml.project.personnel.lastName")}));
+                }
 
-              // directory and personnel id both required (if either is supplied)
-              if (!p.getUserIds().isEmpty()) {
-                if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.project.personnel[" + index + "].userIds[0].identifier",
-                    action.getText("validation.personnel"));
-                } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.project.personnel[" + index + "].userIds[0].directory",
-                    action.getText("validation.directory"));
+                // directory and personnel id both required (if either is supplied)
+                if (!p.getUserIds().isEmpty()) {
+                  if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
+                    action.addFieldError("eml.project.personnel[" + index + "].userIds[0].identifier",
+                        action.getText("validation.personnel"));
+                  } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
+                    action.addFieldError("eml.project.personnel[" + index + "].userIds[0].directory",
+                        action.getText("validation.directory"));
+                  }
                 }
               }
             }

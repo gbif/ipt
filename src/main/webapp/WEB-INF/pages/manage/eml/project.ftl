@@ -436,7 +436,7 @@
                                                 <@input name="eml.project.personnel[${item_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true/>
                                             </div>
                                             <div class="col-lg-2">
-                                                <@input name="eml.project.personnel[${item_index}].salutation" i18nkey="eml.project.personnel.salutation" requiredField=true/>
+                                                <@input name="eml.project.personnel[${item_index}].salutation" i18nkey="eml.project.personnel.salutation" />
                                             </div>
                                             <div class="col-lg-6">
                                                 <#if eml.project.personnel[item_index]?? && eml.project.personnel[item_index].userIds[0]??>
