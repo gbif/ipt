@@ -69,6 +69,7 @@
 
             $("#plus").click(function (event) {
                 event.preventDefault();
+                calculateCount();
                 var idNewForm = "temporal-" + count;
                 var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
                 // Add the fields depending on the actual value in the select

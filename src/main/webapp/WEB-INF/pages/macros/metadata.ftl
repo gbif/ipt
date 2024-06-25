@@ -281,6 +281,7 @@ $(document).ready(function(){
     }
 
     function addNewItem(effects) {
+        calcIndexOfLastItem();
         var newItem = $('#baseItem').clone();
         if (effects) newItem.hide();
         newItem.appendTo('#items');
@@ -533,7 +534,7 @@ $(document).ready(function(){
     function getEntityIndexFromRemoveLinkId(id) {
         return id.split("-")[3];
     }
-	
+
 	function setItemIndex(item, index){
 		item.attr("id","item-"+index);
         $("#item-" + index + " .removeLink").attr("id", "removeLink-" + index);
