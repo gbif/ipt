@@ -312,6 +312,10 @@
             });
         }
 
+        function removeAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex) {
+            $('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's').children('.' + subEntityName + '-item').remove();
+        }
+
         function removeIdentifierFromAgent(event) {
             event.preventDefault();
             var $target = getTargetLink(event);
@@ -1101,8 +1105,16 @@
             var entityName = getEntityNameFromItemId(targetItemId);
             var entityIndex = getEntityIndexFromItemId(targetItemId);
 
+            // first, remove current info
+            removeAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex);
+
+            // multiple objects in the address, choose 'address'
+            if (subEntityName === "address") {
+                subEntities = subEntities.address;
+            }
+
             for (let i = 0; i < subEntities.length; i++) {
-                createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, subEntities[i])
+                createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, subEntities[i]);
             }
         }
 
@@ -1125,6 +1137,8 @@
             var selectedAgentUserIds = selectedAgent['userIds'];
             var entityName = getEntityNameFromItemId(targetItemId);
             var entityIndex = getEntityIndexFromItemId(targetItemId);
+
+            removeAllSubEntitiesFromAgentDirectly(entityName, "identifier", entityIndex);
 
             for (let i = 0; i < selectedAgentUserIds.length; i++) {
                 createNewIdentifierForAgentDirectly(entityName, entityIndex, selectedAgentUserIds[i]["directory"], selectedAgentUserIds[i]["identifier"]);
