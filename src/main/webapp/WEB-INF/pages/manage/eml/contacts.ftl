@@ -1947,7 +1947,7 @@
 
                         <div class="my-3 p-3">
                             <!-- Associated parties -->
-                            <@textinline name="manage.metadata.parties.title" help="i18n" requiredField=true/>
+                            <@textinline name="manage.metadata.parties.title" help="i18n"/>
 
                             <!-- retrieve some link names one time -->
                             <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
