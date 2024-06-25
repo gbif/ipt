@@ -1,0 +1,941 @@
+<#escape x as x?html>
+    <#setting number_format="#####.##">
+    <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <title><@s.text name='manage.metadata.parties.title'/></title>
+    <script>
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+
+            // scroll to the error if present
+            var invalidElements = $(".is-invalid");
+
+            if (invalidElements !== undefined && invalidElements.length > 0) {
+                var invalidElement = invalidElements.first();
+                var pos = invalidElement.offset().top - 100;
+                // scroll to the element
+                $('body, html').animate({scrollTop: pos});
+            }
+
+            // reordering
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_temporals = initAndGetSortable('#associatedParty-items');
+
+            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_temporals[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#associatedParty-items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.associatedParties[" + index + "].firstName");
+                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.associatedParties[" + index + "].lastName");
+                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.associatedParties[" + index + "].position");
+                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.associatedParties[" + index + "].organisation");
+                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.associatedParties[" + index + "].address.address");
+                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.associatedParties[" + index + "].address.city");
+                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.associatedParties[" + index + "].address.province");
+                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.associatedParties[" + index + "].address.country");
+                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.associatedParties[" + index + "].address.postalCode");
+                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.associatedParties[" + index + "].phone");
+                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.associatedParties[" + index + "].email");
+                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.associatedParties[" + index + "].homepage");
+                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.associatedParties[" + index + "].userIds[0].directory");
+                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.associatedParties[" + index + "].userIds[0].identifier");
+                    $("div#" + elementId + " select[id$='role']").attr("name", "eml.associatedParties[" + index + "].role");
+                });
+
+                hideProcessing();
+            }
+
+            var copyAgentModal = $('#copy-agent-modal');
+            $('#resource').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agentType').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('#agent').select2({
+                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                dropdownParent: copyAgentModal,
+                minimumResultsForSearch: 10,
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+
+            $('[id^="eml.associatedParties"][id$=".address.country"]').select2({
+                placeholder: '${action.getText("eml.country.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".directory"]').select2({
+                placeholder: '${action.getText("eml.associatedParties.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $('[id^="eml.associatedParties"][id$=".role"]').select2({
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
+    <style>
+        .popover {
+            width: 50%;
+            max-width: 600px;
+        }
+
+        .form-control, .form-select {
+            min-height: calc(1.5em + .5rem + 2px);
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            border-radius: .2rem;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single {
+            height: calc(1.5em + .5rem + 2px) !important;
+            font-size: .875rem !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
+            line-height: calc(1.5em + .5rem) !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
+            line-height: calc(1.5em + .5rem) !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection__clear {
+            margin-top: .625em !important;
+        }
+
+        .select2-results__option, .select2-search__field {
+            font-size: .875rem;
+        }
+    </style>
+    <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
+    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
+
+    <#assign currentMetadataPage = "contacts"/>
+    <#assign currentMenu="manage"/>
+    <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container bg-body border rounded-2 mb-4">
+                <div class="container my-3 p-3">
+                    <div class="text-center fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div class="text-center">
+                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
+                            <@s.text name='manage.metadata.parties.title'/>
+                        </h1>
+                    </div>
+
+                    <div class="text-center fs-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <#include "metadata_section_select.ftl"/>
+
+        <div class="container-fluid bg-body">
+            <div class="container bd-layout main-content-container">
+                <main class="bd-main">
+                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                        <#include "eml_sidebar.ftl"/>
+                    </div>
+
+                    <div class="bd-content">
+                        <div class="my-md-3 p-3">
+                            <@textinline name="manage.metadata.parties.title" help="i18n" requiredField=true/>
+
+                            <!-- retrieve some link names one time -->
+                            <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
+                            <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+                            <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+                            <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
+                            <#assign addNewPosition><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.position'/></#assign>
+                            <#assign removePosition><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.position'/></#assign>
+                            <#assign addNewAddress><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.address.address'/></#assign>
+                            <#assign removeAddress><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.address.address'/></#assign>
+                            <#assign addNewPhone><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.phone'/></#assign>
+                            <#assign removePhone><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.phone'/></#assign>
+                            <#assign addNewEmail><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.email'/></#assign>
+                            <#assign removeEmail><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.email'/></#assign>
+                            <#assign addNewHomepage><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.homepage'/></#assign>
+                            <#assign removeHomepage><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.homepage'/></#assign>
+                            <#assign addNewIdentifier><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.identifier'/></#assign>
+                            <#assign removeIdentifier><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.identifier'/></#assign>
+                            <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
+
+                            <div id="associatedParty-items">
+                                <#list eml.associatedParties as item>
+                                    <div id="associatedParty-item-${item_index}" class="item row g-2 pb-4 border-bottom">
+                                        <div class="handle columnLinks mt-4 d-flex justify-content-between">
+                                            <div>
+                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                    <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    </svg>
+                                                </span>
+                                                    <span>${removeLink?lower_case?cap_first}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <@input name="eml.associatedParties[${item_index}].salutation" i18nkey="eml.associatedParties.salutation"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation"  />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${(eml.associatedParties[item_index].role)!}" options=roles />
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-positions">
+                                                <div class="d-flex text-smaller">
+                                                    <label for="eml.associatedParties.position" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.position"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].position as position>
+                                                    <div id="associatedParty-${item_index}-position-${position_index}" class="position-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-6">
+                                                                <@input name="eml.associatedParties[${item_index}].position[${position_index}]" i18nkey="eml.associatedParties.position" withLabel=false />
+                                                            </div>
+                                                            <div class="col-md-6 mt-auto py-1">
+                                                                <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removePosition?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-position-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewPosition?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-addresss">
+                                                <div class="d-flex text-smaller">
+                                                    <label for="eml.associatedParties.address" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.address.address"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].address.address as address>
+                                                    <div id="associatedParty-${item_index}-address-${address_index}" class="address-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-6">
+                                                                <@input name="eml.associatedParties[${item_index}].address.address[${address_index}]" i18nkey="eml.associatedParties.address.address" withLabel=false />
+                                                            </div>
+                                                            <div class="col-md-6 mt-auto py-1">
+                                                                <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removeAddress?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-address-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewAddress?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
+                                        </div>
+                                        <div class="countryList col-md-3">
+                                            <@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-phones">
+                                                <div class="d-flex text-smaller">
+                                                    <label for="eml.associatedParties.phone" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.phone"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].phone as phone>
+                                                    <div id="associatedParty-${item_index}-phone-${phone_index}" class="phone-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-6">
+                                                                <@input name="eml.associatedParties[${item_index}].phone[${phone_index}]" i18nkey="eml.associatedParties.phone" withLabel=false />
+                                                            </div>
+                                                            <div class="col-md-6 mt-auto py-1">
+                                                                <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removePhone?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-phone-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewPhone?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-emails">
+                                                <div class="d-flex text-smaller">
+                                                    <label for="eml.associatedParties.email" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.email"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].email as email>
+                                                    <div id="associatedParty-${item_index}-email-${email_index}" class="email-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-6">
+                                                                <@input name="eml.associatedParties[${item_index}].email[${email_index}]" i18nkey="eml.associatedParties.email" withLabel=false />
+                                                            </div>
+                                                            <div class="col-md-6 mt-auto py-1">
+                                                                <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removeEmail?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-email-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewEmail?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-homepages">
+                                                <div class="d-flex text-smaller">
+                                                    <label for="eml.associatedParties.homepage" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.homepage"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].homepage as homepage>
+                                                    <div id="associatedParty-${item_index}-homepage-${homepage_index}" class="homepage-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-6">
+                                                                <@input name="eml.associatedParties[${item_index}].homepage[${homepage_index}]" i18nkey="eml.associatedParties.homepage" type="url" withLabel=false />
+                                                            </div>
+                                                            <div class="col-md-6 mt-auto py-1">
+                                                                <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removeHomepage?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-homepage-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewHomepage?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="associatedParty-${item_index}-identifiers">
+                                                <div class="d-flex text-smaller">
+                                                    <a tabindex="0" role="button"
+                                                       class="popover-link"
+                                                       data-bs-toggle="popover"
+                                                       data-bs-trigger="focus"
+                                                       data-bs-html="true"
+                                                       data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                                                        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                                    </a>
+                                                    <label for="eml.associatedParties.userIds" class="form-label mb-0">
+                                                        <@s.text name="eml.contact.identifier"/>
+                                                    </label>
+                                                </div>
+                                                <#list eml.associatedParties[item_index].userIds as userId>
+                                                    <div id="associatedParty-${item_index}-identifier-${userId_index}" class="identifier-item">
+                                                        <div class="row g-2 mt-0">
+                                                            <div class="col-md-4">
+                                                                <@select name="eml.associatedParties[${item_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.associatedParties[item_index].userIds[0].directory)!]!}"/>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.associatedParties[item_index].userIds[0].identifier)!}"/>
+                                                            </div>
+
+                                                            <div class="col-md-4 mt-auto py-1">
+                                                                <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                    <span>${removeIdentifier?lower_case?cap_first}</span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mt-auto py-1">
+                                                    <a id="plus-associatedParty-identifier-${item_index}" href="" class="metadata-action-link add-identifier">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                        <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#list>
+                            </div>
+
+                            <div class="addNew col-12 mt-2">
+                                <a id="plus-associatedParty" href="" class="metadata-action-link">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>${addLink?lower_case?cap_first}</span>
+                                </a>
+                            </div>
+
+                            <!-- internal parameter -->
+                            <input name="r" type="hidden" value="${resource.shortname}" />
+
+                            <div id="baseItem-associatedParty" class="item row g-2 pb-4 border-bottom" style="display:none;">
+                                <div class="handle columnLinks mt-4 d-flex justify-content-between">
+                                    <div>
+                                        <a id="associatedParty-copy" href="" class="metadata-action-link">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                    <div class="text-end">
+                                        <a id="associatedParty-removeLink" class="removeContactLink metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removeLink?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <@input name="firstName" i18nkey="eml.associatedParties.firstName"/>
+                                </div>
+                                <div class="col-md-5">
+                                    <@input name="lastName" i18nkey="eml.associatedParties.lastName" />
+                                </div>
+                                <div class="col-md-2">
+                                    <@input name="salutation" i18nkey="eml.associatedParties.salutation"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <@input name="organisation" i18nkey="eml.associatedParties.organisation"  />
+                                </div>
+                                <div class="col-md-6">
+                                    <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-positions">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.associatedParties..position" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.position"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-position" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewPosition?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-addresss">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.associatedParties..address" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.address.address"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-address" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewAddress?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <@input name="address.city" i18nkey="eml.associatedParties.address.city" />
+                                </div>
+                                <div class="col-md-3">
+                                    <@input name="address.province" i18nkey="eml.associatedParties.address.province" />
+                                </div>
+                                <div class="countryList col-md-3">
+                                    <@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />
+                                </div>
+                                <div class="col-md-2">
+                                    <@input name="address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-phones">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.associatedParties..phone" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.phone"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-phone" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewPhone?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-emails">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.associatedParties..email" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.email"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-email" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewEmail?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-homepages">
+                                        <div class="d-flex text-smaller">
+                                            <label for="eml.associatedParties..homepage" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.homepage"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-homepage" href="" class="metadata-action-link add-agent-contact-info">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewHomepage?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="associatedParty-identifiers">
+                                        <div class="d-flex text-smaller">
+                                            <a tabindex="0" role="button"
+                                               class="popover-link"
+                                               data-bs-toggle="popover"
+                                               data-bs-trigger="focus"
+                                               data-bs-html="true"
+                                               data-bs-content="<@s.text name='eml.associatedParties.directory.help'/><br><br><@s.text name='eml.associatedParties.identifier.help'/>">
+                                                <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                            </a>
+                                            <label for="eml.associatedParties..userIds" class="form-label mb-0">
+                                                <@s.text name="eml.associatedParties.identifier"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mt-auto py-1">
+                                            <a id="plus-associatedParty-identifier" href="" class="metadata-action-link add-identifier">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                                <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-address" class="address-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
+                                    </div>
+                                    <div class="col-md-6 mt-auto py-1">
+                                        <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removeAddress?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-position" class="position-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
+                                    </div>
+                                    <div class="col-md-6 mt-auto py-1">
+                                        <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removePosition?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-phone" class="phone-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" value="" withLabel=false />
+                                    </div>
+                                    <div class="col-md-6 mt-auto py-1">
+                                        <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removePhone?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-email" class="email-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="baseItem-email-input" i18nkey="eml.contact.email" value="" withLabel=false />
+                                    </div>
+                                    <div class="col-md-6 mt-auto py-1">
+                                        <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removeEmail?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-homepage" class="homepage-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-6">
+                                        <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" value="" withLabel=false />
+                                    </div>
+                                    <div class="col-md-6 mt-auto py-1">
+                                        <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removeHomepage?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-identifier" class="identifier-item" style="display: none;">
+                                <div class="row g-2 mt-0">
+                                    <div class="col-md-4">
+                                        <@select name="baseItem-directory-select" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="" withLabel=false/>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <@input name="baseItem-identifier-input" help="i18n" i18nkey="eml.contact.identifier" value="" withLabel=false placeholder="${inputIdentifierPlaceholder}"/>
+                                    </div>
+                                    <div class="col-md-4 mt-auto py-1">
+                                        <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
+                                            <span>${removeIdentifier?lower_case?cap_first}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </form>
+
+    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="resource" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.resource"/>
+                            </label>
+                            <select name="resource" id="resource" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agentType" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agentType"/>
+                            </label>
+                            <select name="agentType" id="agentType" size="1" class="form-select">
+                                <option value=""></option>
+                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="agent" class="form-label">
+                                <@s.text name="eml.metadataAgent.copy.agent"/>
+                            </label>
+                            <select name="agent" id="agent" size="1" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <#include "/WEB-INF/pages/inc/footer.ftl">
+</#escape>

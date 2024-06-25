@@ -419,6 +419,14 @@ public class MetadataAction extends ManagerBaseAction {
         }
         break;
 
+      case CONTACTS_SECTION:
+        // populate agent vocabularies
+        loadAgentVocabularies();
+        if (isHttpPost()) {
+          resource.getEml().getAssociatedParties().clear();
+        }
+        break;
+
       case GEOGRAPHIC_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
@@ -526,6 +534,9 @@ public class MetadataAction extends ManagerBaseAction {
       // progress to next section, since save succeeded
       switch (section) {
         case BASIC_SECTION:
+          next = MetadataSection.CONTACTS_SECTION;
+          break;
+        case CONTACTS_SECTION:
           next = MetadataSection.ACKNOWLEDGEMENTS_SECTION;
           break;
         case ACKNOWLEDGEMENTS_SECTION:
