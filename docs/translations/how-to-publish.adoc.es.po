@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-22 01:05\n"
+"POT-Creation-Date: 2024-06-25 11:53+0000\n"
+"PO-Revision-Date: 2024-06-25 11:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -29,7 +29,7 @@ msgstr "Instrucciones"
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:16
 #: en/modules/ROOT/pages/how-to-publish.adoc:20
-#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
+#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 #, no-wrap
 msgid "Prerequisites"
 msgstr "Prerrequisitos"
