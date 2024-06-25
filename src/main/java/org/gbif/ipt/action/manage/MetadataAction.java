@@ -402,9 +402,6 @@ public class MetadataAction extends ManagerBaseAction {
 
         if (isHttpPost()) {
           resource.getEml().getDescription().clear();
-          resource.getEml().getContacts().clear();
-          resource.getEml().getCreators().clear();
-          resource.getEml().getMetadataProviders().clear();
           resource.getEml().setIntellectualRights(null);
 
           // publishing organisation, if provided must match organisation
@@ -423,6 +420,9 @@ public class MetadataAction extends ManagerBaseAction {
         // populate agent vocabularies
         loadAgentVocabularies();
         if (isHttpPost()) {
+          resource.getEml().getContacts().clear();
+          resource.getEml().getCreators().clear();
+          resource.getEml().getMetadataProviders().clear();
           resource.getEml().getAssociatedParties().clear();
         }
         break;

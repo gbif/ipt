@@ -239,7 +239,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // update frequency - mandatory (defaults to Unknown)
-          if (eml.getUpdateFrequency()==null) {
+          if (eml.getUpdateFrequency() == null) {
             if (resource.getUpdateFrequency() != null) {
               eml.setUpdateFrequency(resource.getUpdateFrequency().getIdentifier());
               action.addActionWarning(action.getText("eml.updateFrequency.default.interval", new String[] {resource.getUpdateFrequency().getIdentifier()}));
@@ -249,6 +249,9 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
+          break;
+
+        case CONTACTS_SECTION:
           // Contacts list: at least one field has to have had data entered into it to qualify for validation
           if (isAgentsListEmpty(eml.getContacts())) {
             action.addActionError(action.getText("eml.contact.required"));
@@ -259,17 +262,17 @@ public class EmlValidator extends BaseValidator {
               // firstName - optional. But if firstName exists, lastName have to exist
               if (exists(c.getFirstName()) && !exists(c.getLastName())) {
                 action.addFieldError("eml.contacts[" + index + "].lastName",
-                  action.getText("validation.firstname.lastname"));
+                    action.getText("validation.firstname.lastname"));
               }
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
                 if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.contacts[" + index + "].userIds[0].identifier",
-                    action.getText("validation.personnel"));
+                      action.getText("validation.personnel"));
                 } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.contacts[" + index + "].userIds[0].directory",
-                    action.getText("validation.directory"));
+                      action.getText("validation.directory"));
                 }
               }
 
@@ -277,14 +280,14 @@ public class EmlValidator extends BaseValidator {
               if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.contacts[" + index + "].organisation", action
-                  .getText("validation.required", new String[] {action.getText("eml.contact.organisation")}));
+                    .getText("validation.required", new String[] {action.getText("eml.contact.organisation")}));
                 action.addFieldError("eml.contacts[" + index + "].lastName",
-                  action.getText("validation.required", new String[] {action.getText("eml.contact.lastName")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.contact.lastName")}));
                 action.addFieldError("eml.contacts[" + index + "].position",
-                  action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
               }
 
-            /* email(s) are optional. But if they exist, they should be valid email addresses */
+              /* email(s) are optional. But if they exist, they should be valid email addresses */
               ValidationResult emailValidationResult;
               if (!c.getEmail().isEmpty()) {
                 for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
@@ -298,7 +301,7 @@ public class EmlValidator extends BaseValidator {
                 }
               }
 
-            /* phone(s) are optional. But if they exist, should match the pattern */
+              /* phone(s) are optional. But if they exist, should match the pattern */
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
                   if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
@@ -308,7 +311,7 @@ public class EmlValidator extends BaseValidator {
                 }
               }
 
-            /* Validate the homepage URL from each contact */
+              /* Validate the homepage URL from each contact */
               if (!c.getHomepage().isEmpty()) {
                 for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
                   if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
@@ -323,7 +326,7 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
-          // Creators list: at least one contact is required, and
+          // Creators' list: at least one contact is required, and
           // at least one field has to have had data entered into it to qualify for validation
           if (isAgentsListEmpty(eml.getCreators())) {
             action.addActionError(action.getText("eml.resourceCreator.required"));
@@ -334,17 +337,17 @@ public class EmlValidator extends BaseValidator {
               // firstName - optional. But if firstName exists, lastName have to exist
               if (exists(c.getFirstName()) && !exists(c.getLastName())) {
                 action.addFieldError("eml.creators[" + index + "].lastName",
-                  action.getText("validation.firstname.lastname"));
+                    action.getText("validation.firstname.lastname"));
               }
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
                 if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.creators[" + index + "].userIds[0].identifier",
-                    action.getText("validation.personnel"));
+                      action.getText("validation.personnel"));
                 } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.creators[" + index + "].userIds[0].directory",
-                    action.getText("validation.directory"));
+                      action.getText("validation.directory"));
                 }
               }
 
@@ -352,11 +355,11 @@ public class EmlValidator extends BaseValidator {
               if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.creators[" + index + "].organisation", action
-                  .getText("validation.required", new String[] {action.getText("eml.resourceCreator.organisation")}));
+                    .getText("validation.required", new String[] {action.getText("eml.resourceCreator.organisation")}));
                 action.addFieldError("eml.creators[" + index + "].lastName",
-                  action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.lastName")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.lastName")}));
                 action.addFieldError("eml.creators[" + index + "].position",
-                  action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
               }
 
               /* email(s) are optional. But if they exist, they should be valid email addresses */
@@ -406,17 +409,17 @@ public class EmlValidator extends BaseValidator {
               // firstName - optional. But if firstName exists, lastName have to exist
               if (exists(c.getFirstName()) && !exists(c.getLastName())) {
                 action.addFieldError("eml.metadataProviders[" + index + "].lastName",
-                  action.getText("validation.firstname.lastname"));
+                    action.getText("validation.firstname.lastname"));
               }
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
                 if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.metadataProviders[" + index + "].userIds[0].identifier",
-                    action.getText("validation.personnel"));
+                      action.getText("validation.personnel"));
                 } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
                   action.addFieldError("eml.metadataProviders[" + index + "].userIds[0].directory",
-                    action.getText("validation.directory"));
+                      action.getText("validation.directory"));
                 }
               }
 
@@ -424,11 +427,11 @@ public class EmlValidator extends BaseValidator {
               if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
                 action.addActionError(action.getText("validation.lastname.organisation.position"));
                 action.addFieldError("eml.metadataProviders[" + index + "].organisation", action
-                  .getText("validation.required", new String[] {action.getText("eml.metadataProvider.organisation")}));
+                    .getText("validation.required", new String[] {action.getText("eml.metadataProvider.organisation")}));
                 action.addFieldError("eml.metadataProviders[" + index + "].lastName",
-                  action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.lastName")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.lastName")}));
                 action.addFieldError("eml.metadataProviders[" + index + "].position",
-                  action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
+                    action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
               }
 
               /* email(s) are optional. But if they exist, they should be valid email addresses */
@@ -469,6 +472,7 @@ public class EmlValidator extends BaseValidator {
               }
             }
           }
+
           break;
 
         case GEOGRAPHIC_COVERAGE_SECTION:
