@@ -29,8 +29,6 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
-NOTE: Packages for Red Hat 8/9, CentOS 8/9 Stream, Rocky Linux 8/9 or similar are being developed.  Please see https://github.com/gbif/ipt/issues/1646[this issue] if you can help with testing.
-
 To install the IPT onto Red Hat 8–9, CentOS 8–9 or similar, first add the GBIF package repository and install the IPT package:
 
 [source,shell]
@@ -72,9 +70,9 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty and 
 
 === Tomcat
 
-The IPT has been tested and works well with recent releases of Tomcat 8 and 9.  Tomcat 10 and later versions are currently not supported. Minimum supported version is 8. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
+The IPT has been tested and works well with recent releases of Tomcat 9.  Tomcat 10 and later versions are currently not supported.  The minimum supported version is Tomcat 8, but this is likely to change as it is no longer supported by Apache or leading Linux distributions. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
 
-. Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
+. Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or refer to the https://tomcat.apache.org/[Tomcat documentation].
 
 . Configure the IPT data directory within Tomcat
 +

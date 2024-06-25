@@ -4,7 +4,7 @@
 ** xref:requirements.adoc[]
 ** xref:installation.adoc[]
 *** xref:tomcat-installation-linux.adoc[]
-*** xref:tomcat-installation-windows.adoc[]
+//*** xref:tomcat-installation-windows.adoc[]
 ** xref:initial-setup.adoc[]
 * xref:overview.adoc[]
 * xref:home.adoc[]
