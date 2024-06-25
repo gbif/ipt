@@ -28,6 +28,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -45,6 +46,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+
+import javax.activation.MimeTypeParseException;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -128,11 +131,18 @@ public class SourceAction extends ManagerBaseAction {
 
       // check text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
-      if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension)) {
-        addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
-        return ERROR;
+      boolean extensionNotAllowed = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
+
+      if (extensionNotAllowed) {
+        String contentType = URLUtils.getUrlContentType(url);
+
+        // check mime type
+        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)){
+          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension.isEmpty() ? "unknown" : extension}));
+          return ERROR;
+        }
       }
-    } catch (IOException e) {
+    } catch  (IOException | MimeTypeParseException e) {
       addActionError(getText("manage.source.url.invalid", new String[] {url}));
       return ERROR;
     }
@@ -150,10 +160,10 @@ public class SourceAction extends ManagerBaseAction {
         File tmpDir = dataDir.tmpDir();
         // override auto-generated name
         String unzippedFileName = fileFileName != null
-                ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
+            ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
 
         List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
-        addActionMessage(getText("manage.source.compressed.files", new String[] {String.valueOf(files.size())}));
+        addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
 
         // import each file
         for (File f : files) {
@@ -161,13 +171,19 @@ public class SourceAction extends ManagerBaseAction {
         }
       } catch (IOException e) {
         LOG.error(e);
-        addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
+        addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
         return ERROR;
       } catch (UnsupportedCompressionType e) {
+        LOG.error(e);
         addActionError(getText("manage.source.unsupported.compression.format"));
         return ERROR;
       } catch (InvalidFilenameException e) {
+        LOG.error(e);
         addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     } else {
@@ -175,7 +191,12 @@ public class SourceAction extends ManagerBaseAction {
         // treat as is - hopefully a simple text or Excel file
         addDataFile(file, fileFileName);
       } catch (InvalidFilenameException e) {
+        LOG.error(e);
         addActionError(getText("manage.source.invalidFileName"));
+        return ERROR;
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     }

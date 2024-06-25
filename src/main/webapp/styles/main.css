@@ -474,6 +474,11 @@ table {
     box-shadow: none;
 }
 
+/* Health page */
+.health-status-item {
+    box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
+}
+
 /* Health logo with red circle */
 /*.health-link::after {*/
 /*    content: ' ';*/
@@ -512,6 +517,10 @@ table {
 .source-item:hover, .mapping-item:hover, .network-item:hover, .version-item:hover, .registration-item:hover {
     background-color: rgba(0, 0, 0, 0.04);
     cursor: pointer;
+}
+
+.source-item, .mapping-item, .version-item, .registration-item, .network-item, .manager-item {
+    box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
 }
 
 @media (max-width: 576px) {
@@ -857,6 +866,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-success a, .alert-success a:hover, .alert-success a:focus {
     color: rgb(var(--alert-success-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 
 .alert-orange-2 {
@@ -872,6 +882,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-warning a, .alert-warning a:hover, .alert-warning a:focus {
     color: rgb(var(--alert-warning-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 
 .alert-red-2 {
@@ -887,6 +898,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .alert-danger a, .alert-danger a:hover, .alert-danger a:focus {
     color: rgb(var(--alert-danger-text-color)) !important;
     font-weight: 500;
+    text-decoration: underline !important;
 }
 /* Custom alerts colors END */
 
@@ -1222,6 +1234,10 @@ div.dataTables_processing>div:last-child>div {
     border: none !important;
     background: none;
     text-decoration: none;
+}
+
+.extension-item, .data-package-schema-item {
+    box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
 }
 
 .extension-action-button {
@@ -1716,11 +1732,19 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     border: 3px solid rgb(var(--color-gbif-danger));
 }
 
+.modal-confirm .icon-box-warning {
+    border: 3px solid rgb(var(--color-gbif-warning)) !important;
+}
+
 .modal-confirm .icon-box i {
     color: rgb(var(--color-gbif-danger));
     font-size: 46px;
     display: inline-block;
     margin-top: 13px;
+}
+
+.modal-confirm .icon-box-warning i {
+    color: rgb(var(--color-gbif-warning)) !important;
 }
 
 .confirm-danger-icon {
@@ -1925,6 +1949,7 @@ button.close {
 
 .bd-toc nav a.active {
     border-left: 2px solid rgb(var(--link-color));
+    font-weight: bold;
 }
 
 #additional, #managers, .section:last-of-type {

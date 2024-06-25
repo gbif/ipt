@@ -54,6 +54,7 @@ import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -72,6 +73,7 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
@@ -1182,10 +1184,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // aliases for inferred metadata
     xstream.alias("inferredMetadata", InferredEmlMetadata.class);
-    xstream.alias("inferredMetadata", InferredCamtrapMetadata.class);
+    xstream.alias("inferredMetadataCamtrap", InferredCamtrapMetadata.class);
     xstream.alias("inferredGeographicCoverage", InferredEmlGeographicCoverage.class);
+    xstream.alias("inferredGeographicScope", InferredCamtrapGeographicScope.class);
     xstream.alias("inferredTaxonomicCoverage", InferredEmlTaxonomicCoverage.class);
+    xstream.alias("inferredTaxonomicScope", InferredCamtrapTaxonomicScope.class);
     xstream.alias("inferredTemporalCoverage", InferredEmlTemporalCoverage.class);
+    xstream.alias("inferredTemporalScope", InferredCamtrapTemporalScope.class);
     xstream.alias("taxonKeyword", TaxonKeyword.class);
     xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
 
@@ -1239,6 +1244,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
     resources.remove(resource.getShortname().toLowerCase());
+    publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
   }
 
   @Override
@@ -1258,6 +1264,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
       // remove object
       resources.remove(resource.getShortname().toLowerCase());
+      publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
     }
   }
 
@@ -2102,9 +2109,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+        LOG.error("Cannot read inferred metadata file (Camtrap) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredCamtrapMetadata());
       }
     } else {
       if (!inferredMetadataFile.exists()) {
@@ -2117,9 +2123,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file for resource " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-                "Cannot read inferred metadata file for resource " + resource.getShortname() + ": " + e.getMessage());
+        LOG.error("Cannot read inferred metadata file (EML) for resource " + resource.getShortname(), e);
+        resource.setInferredMetadata(new InferredEmlMetadata());
       }
     }
   }
@@ -3120,9 +3125,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlGeocoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlGeographicCoverage() != null
-        && inferredMetadata.getInferredEmlGeographicCoverage().getData() != null) {
-      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredEmlGeographicCoverage().getData();
+        && inferredMetadata.getInferredGeographicCoverage() != null
+        && inferredMetadata.getInferredGeographicCoverage().getData() != null) {
+      GeospatialCoverage inferredGeocoverage = inferredMetadata.getInferredGeographicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getGeospatialCoverages().isEmpty()) {
@@ -3163,9 +3168,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlTaxonomicCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlTaxonomicCoverage() != null
-        && inferredMetadata.getInferredEmlTaxonomicCoverage().getData() != null) {
-      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredEmlTaxonomicCoverage().getData();
+        && inferredMetadata.getInferredTaxonomicCoverage() != null
+        && inferredMetadata.getInferredTaxonomicCoverage().getData() != null) {
+      TaxonomicCoverage inferredTaxonomicCoverage = inferredMetadata.getInferredTaxonomicCoverage().getData();
 
       // check object to preserve description
       if (!resource.getEml().getTaxonomicCoverages().isEmpty()) {
@@ -3190,9 +3195,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void updateEmlTemporalCoverageWithInferredFromSourceData(Resource resource, InferredEmlMetadata inferredMetadata) {
     if (!resource.getMappings().isEmpty()
-        && inferredMetadata.getInferredEmlTemporalCoverage() != null
-        && inferredMetadata.getInferredEmlTemporalCoverage().getData() != null) {
-      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredEmlTemporalCoverage().getData();
+        && inferredMetadata.getInferredTemporalCoverage() != null
+        && inferredMetadata.getInferredTemporalCoverage().getData() != null) {
+      TemporalCoverage inferredTemporalCoverage = inferredMetadata.getInferredTemporalCoverage().getData();
       resource.getEml().getTemporalCoverages().clear();
       resource.getEml().addTemporalCoverage(inferredTemporalCoverage);
     }
@@ -3472,7 +3477,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
     Set<UUID> ls = new HashSet<>();
-    if (resource.getEml() != null) {
+    if (resource.getEml() != null && !resource.isDataPackage()) {
       List<String> ids = resource.getEml().getAlternateIdentifiers();
       for (String id : ids) {
         try {
@@ -3480,6 +3485,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           ls.add(uuid);
         } catch (IllegalArgumentException e) {
           // skip, isn't a candidate UUID
+        }
+      }
+    } else if (resource.getDataPackageMetadata() != null
+        && resource.getDataPackageMetadata() instanceof CamtrapMetadata
+        && CAMTRAP_DP.equals(resource.getCoreType())) {
+      CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+      List<RelatedIdentifier> relatedIdentifiers = metadata.getRelatedIdentifiers();
+      for (RelatedIdentifier identifier : relatedIdentifiers) {
+        if (identifier != null && identifier.getRelatedIdentifier() != null
+            && identifier.getRelatedIdentifier().contains("gbif")
+            && identifier.getRelatedIdentifierType() == RelatedIdentifier.RelatedIdentifierType.URL) {
+          String[] urlParts = identifier.getRelatedIdentifier().split("/");
+          if (urlParts.length > 0) {
+            String lastSegment = urlParts[urlParts.length - 1];
+            try {
+              UUID uuid = UUID.fromString(lastSegment);
+              ls.add(uuid);
+            } catch (IllegalArgumentException e) {
+              // skip, isn't a candidate UUID
+            }
+          }
         }
       }
     }

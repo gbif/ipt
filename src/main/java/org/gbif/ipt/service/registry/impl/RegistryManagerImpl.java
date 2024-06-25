@@ -675,17 +675,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         String content = response.getContent();
         networks = gson
             .fromJson(content, new TypeToken<List<Network>>() {}.getType());
-      } catch (RegistryException e) {
-        // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e, baseAction);
-        // add startup error message about Registry error
-        warnings.addStartupError(msg);
-        LOG.error(msg);
-
-        // add startup error message that explains the consequence of the Registry error
-        msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
-        LOG.error(msg);
       } catch (JsonSyntaxException e) {
         // add startup error message that explains the consequence of the error
         String msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
@@ -712,17 +701,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       String content = response.getContent();
       networks = gson
           .fromJson(content, new TypeToken<List<KeyNamePair>>() {}.getType());
-    } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e, baseAction);
-      // add startup error message about Registry error
-      warnings.addStartupError(msg);
-      LOG.error(msg);
-
-      // add startup error message that explains the consequence of the Registry error
-      msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
-      warnings.addStartupError(msg);
-      LOG.error(msg);
     } catch (JsonSyntaxException e) {
       // add startup error message that explains the consequence of the error
       String msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});

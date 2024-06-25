@@ -13,18 +13,23 @@
  */
 package org.gbif.ipt.action.portal;
 
-import java.util.List;
+import com.google.inject.Inject;
+import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import lombok.Data;
+public class FallbackAction extends BaseAction {
 
-/**
- * Class similar to TaxonomicCoverage, but the TaxonomicKeywords are OrganizedTaxonomicKeywords.
- * <p>
- * @see org.gbif.metadata.eml.ipt.model.TaxonomicCoverage in project gbif-metadata-profile
- */
-@Data
-public class OrganizedTaxonomicCoverage {
+  private static final long serialVersionUID = 5075091500212058562L;
 
-  private List<OrganizedTaxonomicKeywords> keywords;
-  private String description;
+  @Inject
+  public FallbackAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+    super(textProvider, cfg, registrationManager);
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+  }
 }

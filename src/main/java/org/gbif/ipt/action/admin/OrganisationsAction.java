@@ -100,6 +100,7 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
   private Boolean synchronise = false;
+  private boolean organisationWithDoiRegistrationAgencyPresent = false;
 
   private static final Map<String, DOIRegistrationAgency> DOI_REGISTRATION_AGENCIES = new HashMap<>();
 
@@ -206,6 +207,13 @@ public class OrganisationsAction extends POSTAction {
 
     // remove default organisation named "no organisation" from list of editable organisations
     linkedOrganisations.removeIf(entry -> entry.getKey().equals(Constants.DEFAULT_ORG_KEY));
+
+    for (Organisation org : linkedOrganisations) {
+      if (org.isAgencyAccountPrimary()) {
+        organisationWithDoiRegistrationAgencyPresent = true;
+        break;
+      }
+    }
 
     if (id == null) {
       //  if no id was submitted we wanted to create a new organisation
@@ -356,5 +364,9 @@ public class OrganisationsAction extends POSTAction {
 
   public void setSynchronise(String synchronise) {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
+  }
+
+  public boolean isOrganisationWithDoiRegistrationAgencyPresent() {
+    return organisationWithDoiRegistrationAgencyPresent;
   }
 }

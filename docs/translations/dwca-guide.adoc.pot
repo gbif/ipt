@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -744,7 +744,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:183
-msgid "Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org)."
+msgid "Contact the GBIF Help Desk if you get stuck (helpdesk@gbif.org)."
 msgstr ""
 
 #. type: Title ==
@@ -813,7 +813,7 @@ msgid ""
 "Advanced users can request permission to register datasets in bulk, by "
 "integrating the GBIF API into their existing systems.  A https://github.com/"
 "gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] "
-"is provided as a Linux (Bash) shell script; contact the helpdesk for more "
+"is provided as a Linux (Bash) shell script; contact the Help Desk for more "
 "information."
 msgstr ""
 

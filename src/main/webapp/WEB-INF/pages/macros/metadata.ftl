@@ -66,11 +66,11 @@ $(document).ready(function(){
 
         $("#dateInferred").show();
 
-        <#if (inferredMetadata.inferredEmlTaxonomicCoverage)?? && inferredMetadata.inferredEmlTaxonomicCoverage.errors?size gt 0>
+        <#if (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size gt 0>
         $(".metadata-error-alert").show();
         </#if>
 
-        <#if (inferredMetadata.inferredEmlTaxonomicCoverage.data.taxonKeywords)??>
+        <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
             // remove all current items
             $("[id^=item-]").remove();
 
@@ -79,7 +79,7 @@ $(document).ready(function(){
 
             addNewItem(true);
 
-            <#list inferredMetadata.inferredEmlTaxonomicCoverage.data.taxonKeywords as taxon>
+            <#list inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords as taxon>
                 <#if !taxon?is_first>
                     addNewSubItemByIndex(0, "");
                 </#if>
@@ -253,12 +253,13 @@ $(document).ready(function(){
         });
     }
 
-    function addNewItem(effects){
-        var newItem=$('#baseItem').clone();
-        if(effects) newItem.hide();
+    function addNewItem(effects) {
+        calcIndexOfLastItem();
+        var newItem = $('#baseItem').clone();
+        if (effects) newItem.hide();
         newItem.appendTo('#items');
 
-        if(effects) {
+        if (effects) {
             newItem.slideDown('slow');
         }
 

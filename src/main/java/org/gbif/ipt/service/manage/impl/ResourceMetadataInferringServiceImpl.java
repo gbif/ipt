@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,6 +77,9 @@ import com.google.inject.Singleton;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CLASS;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_EVENT;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_OCCURRENCE;
+import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_TAXON;
 import static org.gbif.ipt.config.Constants.FAMILY;
 import static org.gbif.ipt.config.Constants.KINGDOM;
 import static org.gbif.ipt.config.Constants.ORDER;
@@ -101,6 +105,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   public static final String CAMTRAP_DEPLOYMENTS_LONGITUDE = "longitude";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START = "deploymentStart";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END = "deploymentEnd";
+  public static final int TAXON_LIMIT = 100;
 
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
@@ -161,7 +166,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlGeographicMetadataParams params) {
     InferredEmlGeographicCoverage inferredGeographicMetadata = new InferredEmlGeographicCoverage();
-    metadata.setInferredEmlGeographicCoverage(inferredGeographicMetadata);
+    metadata.setInferredGeographicCoverage(inferredGeographicMetadata);
 
     boolean errorOccurredWhileProcessingGeographicMetadata
         = handleEmlGeographicMetadataErrors(inferredGeographicMetadata, params);
@@ -179,7 +184,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTemporalMetadataParams params) {
     InferredEmlTemporalCoverage inferredTemporalMetadata = new InferredEmlTemporalCoverage();
-    metadata.setInferredEmlTemporalCoverage(inferredTemporalMetadata);
+    metadata.setInferredTemporalCoverage(inferredTemporalMetadata);
 
     boolean errorOccurredWhileProcessingGeographicMetadata
         = handleEmlTemporalMetadataErrors(inferredTemporalMetadata, params);
@@ -200,7 +205,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTaxonomicMetadataParams params) {
     InferredEmlTaxonomicCoverage inferredTaxonomicMetadata = new InferredEmlTaxonomicCoverage();
-    metadata.setInferredEmlTaxonomicCoverage(inferredTaxonomicMetadata);
+    metadata.setInferredTaxonomicCoverage(inferredTaxonomicMetadata);
 
     boolean errorOccurredWhileProcessingTaxonomicMetadata
         = handleEmlTaxonomicMetadataErrors(inferredTaxonomicMetadata, params);
@@ -278,36 +283,51 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       errorsPresent = true;
     }
 
+    if (params.kingdomsLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(KINGDOM, "eml.warning.limitExceeded");
+    }
+
+    if (params.phylumsLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(PHYLUM, "eml.warning.limitExceeded");
+    }
+
+    if (params.classesLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(CLASS, "eml.warning.limitExceeded");
+    }
+
+    if (params.ordersLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(ORDER, "eml.warning.limitExceeded");
+    }
+
+    if (params.familiesLimitExceeded) {
+      inferredTaxonomicMetadata.addRankWarning(FAMILY, "eml.warning.limitExceeded");
+    }
+
     return errorsPresent;
   }
 
   private void processMapping(ExtensionMapping mapping, InferredEmlMetadataParams params) {
-    // calculate column indexes for mapping
-    for (PropertyMapping field : mapping.getFields()) {
-      if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
-        params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
-        params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.phylumSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.classSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.orderSourceColumnIndex = field.getIndex();
-      } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
-        params.taxonomic.familySourceColumnIndex = field.getIndex();
-      } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
-        params.temporal.eventDateSourceColumnIndex = field.getIndex();
-      }
+    BiConsumer<String[], InferredEmlMetadataParams> lineProcessor;
+
+    // skip unsuitable mapping, calculate column indexes
+    if (DWC_ROWTYPE_OCCURRENCE.equals(mapping.getExtension().getRowType())) {
+      findGeoAndTemporalFieldsIndexes(mapping, params);
+      findTaxaFieldsIndexes(mapping, params);
+      lineProcessor = this::occurrenceMappingLineProcessor;
+    } else if (DWC_ROWTYPE_EVENT.equals(mapping.getExtension().getRowType())) {
+      findGeoAndTemporalFieldsIndexes(mapping, params);
+      lineProcessor = this::eventMappingLineProcessor;
+    } else if (DWC_ROWTYPE_TAXON.equals(mapping.getExtension().getRowType())) {
+      findTaxaFieldsIndexes(mapping, params);
+      lineProcessor = this::taxonMappingLineProcessor;
+    } else {
+      return;
     }
 
     ClosableReportingIterator<String[]> iter = null;
     try {
       // get the source iterator
       iter = sourceManager.rowIterator(mapping.getSource());
-      boolean initializeExtremeValues = true;
 
       while (iter.hasNext()) {
         String[] in = iter.next();
@@ -315,9 +335,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
           continue;
         }
 
-        processLine(in, params.geographic);
-        processLine(in, params.taxonomic);
-        processLine(in, params.temporal);
+        // process line
+        lineProcessor.accept(in, params);
       }
       // Catch ParseException, occurs for Excel files. Find out why
     } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
@@ -341,12 +360,110 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
   }
 
+  private void occurrenceMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.geographic);
+    processLine(in, params.temporal);
+    processLine(in, params.taxonomic);
+  }
+
+  private void eventMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.geographic);
+    processLine(in, params.temporal);
+  }
+
+  private void taxonMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
+    processLine(in, params.taxonomic);
+  }
+
+  private void findGeoAndTemporalFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
+    params.geographic.resetIndexParams();
+    params.temporal.resetIndexParams();
+
+    for (PropertyMapping field : mapping.getFields()) {
+      if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.geographic.decimalLongitudeSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for decimalLongitude, something wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.geographic.decimalLatitudeSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for decimalLatitude, something wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.temporal.eventDateSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for eventDate, something is wrong with the mapping: {}", field);
+        }
+      }
+    }
+  }
+
+  private void findTaxaFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
+    params.taxonomic.resetIndexParams();
+
+    for (PropertyMapping field : mapping.getFields()) {
+      if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.kingdomSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index nor default value for kingdom, something wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.taxonomic.phylumSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.phylumSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for phylum, something is wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.taxonomic.classSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.classSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for class, something is wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.taxonomic.orderSourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.orderSourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for order, something is wrong with the mapping: {}", field);
+        }
+      } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
+        if (field.getIndex() != null) {
+          params.taxonomic.familySourceColumnIndex = field.getIndex();
+        } else if (field.getDefaultValue() != null) {
+          params.taxonomic.familySourceDefaultValue = field.getDefaultValue();
+        } else {
+          LOG.error("There is no index or default value for family, something is wrong with the mapping: {}", field);
+        }
+      }
+    }
+  }
+
   private void processLine(String[] in, InferredEmlGeographicMetadataParams params) {
     if (params.isDecimalLongitudePropertyMapped()
         && params.isDecimalLatitudePropertyMapped()
         && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawLatitudeValue = in[params.decimalLatitudeSourceColumnIndex];
-      String rawLongitudeValue = in[params.decimalLongitudeSourceColumnIndex];
+      String rawLatitudeValue = params.decimalLatitudeSourceDefaultValue != null
+          ? params.decimalLatitudeSourceDefaultValue : in[params.decimalLatitudeSourceColumnIndex];
+      String rawLongitudeValue = params.decimalLongitudeSourceDefaultValue != null
+          ? params.decimalLongitudeSourceDefaultValue : in[params.decimalLongitudeSourceColumnIndex];
 
       OccurrenceParseResult<LatLng> latLngParseResult =
           CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
@@ -384,7 +501,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   private void processLine(String[] in, InferredEmlTemporalMetadataParams params) {
     if (params.isEventDatePropertyMapped() && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawEventDateValue = in[params.eventDateSourceColumnIndex];
+      String rawEventDateValue = params.eventDateSourceDefaultValue != null
+          ? params.eventDateSourceDefaultValue : in[params.eventDateSourceColumnIndex];
 
       TemporalParser temporalParser = DateParsers.defaultTemporalParser();
       ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
@@ -427,25 +545,70 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   }
 
   private void processLine(String[] in, InferredEmlTaxonomicMetadataParams params) {
-    if (params.isDataMapped() && params.isMaxItemsNumberNotExceeded()) {
-      if (params.isKingdomPropertyMapped() && params.isKingdomIndexWithingRange(in.length)) {
-        params.addNewTaxon(in[params.kingdomSourceColumnIndex], KINGDOM);
+    if (params.isDataMapped()) {
+      // kingdom
+      if (params.kingdomSourceDefaultValue != null && !params.defaultKingdomValueAdded) {
+        params.addNewKingdom(params.kingdomSourceDefaultValue);
+        params.defaultKingdomValueAdded = true;
+      } else if (params.isMaxNumberOfKingdomsExceeded()) {
+        if (!params.kingdomsLimitExceeded) {
+          params.removeAllKingdoms();
+          params.kingdomsLimitExceeded = true;
+        }
+      } else if (params.isKingdomPropertyMapped() && params.isKingdomIndexWithingRange(in.length)) {
+        params.addNewKingdom(in[params.kingdomSourceColumnIndex]);
       }
 
-      if (params.isPhylumPropertyMapped() && params.isPhylumIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.phylumSourceColumnIndex], PHYLUM);
+      // phylum
+      if (params.phylumSourceDefaultValue != null && !params.defaultPhylumValueAdded) {
+        params.addNewPhylum(params.phylumSourceDefaultValue);
+        params.defaultPhylumValueAdded = true;
+      } else if (params.isMaxNumberOfPhylumsExceeded()) {
+        if (!params.phylumsLimitExceeded) {
+          params.removeAllPhylums();
+          params.phylumsLimitExceeded = true;
+        }
+      } else if (params.isPhylumPropertyMapped() && params.isPhylumIndexWithinRange(in.length)) {
+        params.addNewPhylum(in[params.phylumSourceColumnIndex]);
       }
 
-      if (params.isClassPropertyMapped() && params.isClassIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.classSourceColumnIndex], CLASS);
+      // class
+      if (params.classSourceDefaultValue != null && !params.defaultClassValueAdded) {
+        params.addNewClass(params.classSourceDefaultValue);
+        params.defaultClassValueAdded = true;
+      } else if (params.isMaxNumberOfClassesExceeded()) {
+        if (!params.classesLimitExceeded) {
+          params.removeAllClasses();
+          params.classesLimitExceeded = true;
+        }
+      } else if (params.isClassPropertyMapped() && params.isClassIndexWithinRange(in.length)) {
+        params.addNewClass(in[params.classSourceColumnIndex]);
       }
 
-      if (params.isOrderPropertyMapped() && params.isOrderIndexWithinRange(in.length)) {
-        params.addNewTaxon(in[params.orderSourceColumnIndex], ORDER);
+      // order
+      if (params.orderSourceDefaultValue != null && !params.defaultOrderValueAdded) {
+        params.addNewOrder(params.orderSourceDefaultValue);
+        params.defaultOrderValueAdded = true;
+      } else if (params.isMaxNumberOfOrdersExceeded()) {
+        if (!params.ordersLimitExceeded) {
+          params.removeAllOrders();
+          params.ordersLimitExceeded = true;
+        }
+      } else if (params.isOrderPropertyMapped() && params.isOrderIndexWithinRange(in.length)) {
+        params.addNewOrder(in[params.orderSourceColumnIndex]);
       }
 
-      if (params.isFamilyPropertyMapped() && params.isFamilyIndexWithingRange(in.length)) {
-        params.addNewTaxon(in[params.familySourceColumnIndex], FAMILY);
+      // family
+      if (params.familySourceDefaultValue != null && !params.defaultFamilyValueAdded) {
+        params.addNewFamily(params.familySourceDefaultValue);
+        params.defaultFamilyValueAdded = true;
+      } else if (params.isMaxNumberOfFamiliesExceeded()) {
+        if (!params.familiesLimitExceeded) {
+          params.removeAllFamilies();
+          params.familiesLimitExceeded = true;
+        }
+      } else if (params.isFamilyPropertyMapped() && params.isFamilyIndexWithingRange(in.length)) {
+        params.addNewFamily(in[params.familySourceColumnIndex]);
       }
     }
   }
@@ -458,7 +621,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   static class InferredEmlGeographicMetadataParams {
     private int decimalLongitudeSourceColumnIndex = -1;
+    private String decimalLongitudeSourceDefaultValue;
     private int decimalLatitudeSourceColumnIndex = -1;
+    private String decimalLatitudeSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     private boolean noValidDataGeo = true;
@@ -473,16 +638,24 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     public boolean isDecimalLongitudePropertyMapped() {
-      return decimalLongitudeSourceColumnIndex != -1;
+      return decimalLongitudeSourceColumnIndex != -1 || decimalLongitudeSourceDefaultValue != null;
     }
 
     public boolean isDecimalLatitudePropertyMapped() {
-      return decimalLatitudeSourceColumnIndex != -1;
+      return decimalLatitudeSourceColumnIndex != -1 || decimalLatitudeSourceDefaultValue != null;
+    }
+
+    public void resetIndexParams() {
+      decimalLongitudeSourceColumnIndex = -1;
+      decimalLongitudeSourceDefaultValue = null;
+      decimalLatitudeSourceColumnIndex = -1;
+      decimalLatitudeSourceDefaultValue = null;
     }
   }
 
   static class InferredEmlTemporalMetadataParams {
     private int eventDateSourceColumnIndex = -1;
+    private String eventDateSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     boolean noValidDataTemporal = true;
@@ -496,38 +669,144 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     public boolean isEventDatePropertyMapped() {
-      return eventDateSourceColumnIndex != -1;
+      return eventDateSourceColumnIndex != -1 || eventDateSourceDefaultValue != null;
+    }
+
+    public void resetIndexParams() {
+      eventDateSourceColumnIndex = -1;
+      eventDateSourceDefaultValue = null;
     }
   }
 
   static class InferredEmlTaxonomicMetadataParams {
     private int kingdomSourceColumnIndex = -1;
+    private String kingdomSourceDefaultValue;
     private int phylumSourceColumnIndex = -1;
+    private String phylumSourceDefaultValue;
     private int classSourceColumnIndex = -1;
+    private String classSourceDefaultValue;
     private int orderSourceColumnIndex = -1;
+    private String orderSourceDefaultValue;
     private int familySourceColumnIndex = -1;
+    private String familySourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
     private int taxonItemsAdded = 0;
+    private int kingdomsAdded = 0;
+    private int phylumsAdded = 0;
+    private int classesAdded = 0;
+    private int ordersAdded = 0;
+    private int familiesAdded = 0;
+    private boolean defaultKingdomValueAdded = false;
+    private boolean defaultPhylumValueAdded = false;
+    private boolean defaultClassValueAdded = false;
+    private boolean defaultOrderValueAdded = false;
+    private boolean defaultFamilyValueAdded = false;
+    private boolean kingdomsLimitExceeded = false;
+    private boolean phylumsLimitExceeded = false;
+    private boolean classesLimitExceeded = false;
+    private boolean ordersLimitExceeded = false;
+    private boolean familiesLimitExceeded = false;
+
     private final Set<TaxonKeyword> taxa = new HashSet<>();
 
     public void addNewTaxon(String taxon, String type) {
       if (StringUtils.isNotEmpty(taxon)) {
+        int sizeBeforeAdding = taxa.size();
         taxa.add(new TaxonKeyword(taxon, type, null));
-        taxonItemsAdded++;
+        int sizeAfterAdding = taxa.size();
+
+        if (sizeAfterAdding > sizeBeforeAdding) {
+          taxonItemsAdded++;
+
+          switch (type) {
+            case KINGDOM:
+              kingdomsAdded++;
+              break;
+            case PHYLUM:
+              phylumsAdded++;
+              break;
+            case CLASS:
+              classesAdded++;
+              break;
+            case ORDER:
+              ordersAdded++;
+              break;
+            case FAMILY:
+              familiesAdded++;
+              break;
+            default:
+          }
+        }
       }
     }
 
-    public boolean isMaxItemsNumberNotExceeded() {
-      return taxonItemsAdded < 200;
+    public void addNewKingdom(String taxon) {
+      addNewTaxon(taxon, KINGDOM);
+    }
+
+    public void addNewPhylum(String taxon) {
+      addNewTaxon(taxon, PHYLUM);
+    }
+
+    public void addNewClass(String taxon) {
+      addNewTaxon(taxon, CLASS);
+    }
+
+    public void addNewOrder(String taxon) {
+      addNewTaxon(taxon, ORDER);
+    }
+
+    public void addNewFamily(String taxon) {
+      addNewTaxon(taxon, FAMILY);
+    }
+
+    public void removeAllKingdoms() {
+      taxa.removeIf(tk -> KINGDOM.equals(tk.getRank()));
+    }
+
+    public void removeAllPhylums() {
+      taxa.removeIf(tk -> PHYLUM.equals(tk.getRank()));
+    }
+
+    public void removeAllClasses() {
+      taxa.removeIf(tk -> CLASS.equals(tk.getRank()));
+    }
+
+    public void removeAllOrders() {
+      taxa.removeIf(tk -> ORDER.equals(tk.getRank()));
+    }
+
+    public void removeAllFamilies() {
+      taxa.removeIf(tk -> FAMILY.equals(tk.getRank()));
+    }
+
+    public boolean isMaxNumberOfKingdomsExceeded() {
+      return kingdomsAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfPhylumsExceeded() {
+      return phylumsAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfClassesExceeded() {
+      return classesAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfOrdersExceeded() {
+      return ordersAdded > TAXON_LIMIT;
+    }
+
+    public boolean isMaxNumberOfFamiliesExceeded() {
+      return familiesAdded > TAXON_LIMIT;
     }
 
     public boolean isDataMapped() {
-      return kingdomSourceColumnIndex != -1
-          || phylumSourceColumnIndex != -1
-          || classSourceColumnIndex != -1
-          || orderSourceColumnIndex != -1
-          || familySourceColumnIndex != -1;
+      return kingdomSourceColumnIndex != -1 || kingdomSourceDefaultValue != null
+          || phylumSourceColumnIndex != -1 || phylumSourceDefaultValue != null
+          || classSourceColumnIndex != -1 || classSourceDefaultValue != null
+          || orderSourceColumnIndex != -1 || orderSourceDefaultValue != null
+          || familySourceColumnIndex != -1 || familySourceDefaultValue != null;
     }
 
     public boolean isKingdomPropertyMapped() {
@@ -568,6 +847,24 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     public boolean isFamilyIndexWithingRange(int range) {
       return familySourceColumnIndex < range;
+    }
+
+    public void resetIndexParams() {
+      kingdomSourceColumnIndex = -1;
+      kingdomSourceDefaultValue = null;
+      phylumSourceColumnIndex = -1;
+      phylumSourceDefaultValue = null;
+      classSourceColumnIndex = -1;
+      classSourceDefaultValue = null;
+      orderSourceColumnIndex = -1;
+      orderSourceDefaultValue = null;
+      familySourceColumnIndex = -1;
+      familySourceDefaultValue = null;
+      defaultKingdomValueAdded = false;
+      defaultPhylumValueAdded = false;
+      defaultClassValueAdded = false;
+      defaultOrderValueAdded = false;
+      defaultFamilyValueAdded = false;
     }
   }
 

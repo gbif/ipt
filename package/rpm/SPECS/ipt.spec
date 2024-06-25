@@ -1,10 +1,13 @@
-#%define nr_ver_extra 1
-#%define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
+# Use this section for releases
+%define nr_ver 3.0.6
+%define nr_ver_extra 1
+%define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
 # Use this section for release candidates
-%define nr_ver 3.0
-%define nr_ver_extra -RC1
+#define nr_ver 3.0.0
+#define nr_ver_extra -RC1
+#define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
+
 %define release_number 0.1
-%define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
 
 Name: ipt
 Version: %{nr_ver}

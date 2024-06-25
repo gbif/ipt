@@ -14,6 +14,48 @@
         // a function called when adding new temporal coverages
         // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
+            function updateQueryParam(param, value) {
+                const url = new URL(window.location.href);
+                url.searchParams.set(param, value);
+                history.replaceState(null, '', url);
+            }
+
+            function deleteQueryParam(param) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete(param)
+                history.replaceState(null, '', url);
+            }
+
+            // Function to check if query param exists and update checkbox accordingly
+            function checkUrlParams() {
+                // if "inferAutomatically" present and true, tick the inferTemporalCoverageAutomatically checkbox
+                const urlParams = new URLSearchParams(window.location.search);
+                const checkboxParam = urlParams.get('inferAutomatically');
+                if (checkboxParam === 'true') {
+                    $('#inferTemporalCoverageAutomatically').prop('checked', true);
+                }
+
+                // remove "reinferMetadata" param on load
+                const reInferParam = urlParams.get('reinferMetadata');
+                if (reInferParam === 'true') {
+                    deleteQueryParam("reinferMetadata")
+                }
+            }
+
+            // add/remove "inferAutomatically" param when clicking checkbox
+            $('#inferTemporalCoverageAutomatically').change(function() {
+                if ($(this).is(':checked')) {
+                    updateQueryParam('inferAutomatically', 'true');
+                } else {
+                    deleteQueryParam('inferAutomatically');
+                }
+            });
+
+            // Check query params on page load
+            checkUrlParams();
+
+            $("#re-infer-link").on('click', displayProcessing);
+
             calculateCount();
 
             function calculateCount() {
@@ -27,6 +69,7 @@
 
             $("#plus").click(function (event) {
                 event.preventDefault();
+                calculateCount();
                 var idNewForm = "temporal-" + count;
                 var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
                 // Add the fields depending on the actual value in the select
@@ -73,11 +116,11 @@
 
                 $("#dateInferred").show();
 
-                <#if (inferredMetadata.inferredEmlTemporalCoverage)?? && inferredMetadata.inferredEmlTemporalCoverage.errors?size gt 0>
+                <#if (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size gt 0>
                 $(".metadata-error-alert").show();
                 </#if>
 
-                <#if (inferredMetadata.inferredEmlTemporalCoverage.data)??>
+                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
                 count = 0;
                 // remove all current items
                 $("[id^=temporal-]").remove();
@@ -93,8 +136,8 @@
                 updateFields(idNewForm, count, DATE_RANGE);
                 $("#tempTypes-" + count).val(DATE_RANGE);
                 $("#temporal-" + count).slideDown("slow").css('zoom', 1);
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredEmlTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredEmlTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
+                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
                 count++;
                 </#if>
             });
@@ -334,8 +377,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-                <#if (inferredMetadata.inferredEmlTemporalCoverage)??>
-                    <#list inferredMetadata.inferredEmlTemporalCoverage.errors as error>
+                <#if (inferredMetadata.inferredTemporalCoverage)??>
+                    <#list inferredMetadata.inferredTemporalCoverage.errors as error>
                         <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
@@ -410,7 +453,7 @@
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                         <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                        <a href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                        <a id="re-infer-link" href="metadata-tempcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
                                             <span>
                                                 <svg class="link-icon" viewBox="0 0 24 24">
                                                     <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
@@ -492,18 +535,18 @@
                             <!-- Static data -->
                             <div id="static-temporal" class="mt-4" style="display: none;">
                                 <!-- Data is inferred, preview -->
-                                <#if (inferredMetadata.inferredEmlTemporalCoverage.data)??>
+                                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                                <td>${(inferredMetadata.inferredEmlTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredEmlTemporalCoverage.data.endDate?date)!}</td>
+                                                <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
                                             </tr>
                                         </table>
                                     </div>
                                 <!-- Data infer finished, but there are errors/warnings -->
-                                <#elseif (inferredMetadata.inferredEmlTemporalCoverage)?? && inferredMetadata.inferredEmlTemporalCoverage.errors?size != 0>
-                                    <#list inferredMetadata.inferredEmlTemporalCoverage.errors as error>
+                                <#elseif (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size != 0>
+                                    <#list inferredMetadata.inferredTemporalCoverage.errors as error>
                                         <div class="callout callout-danger text-smaller">
                                             <@s.text name="${error}"/>
                                         </div>

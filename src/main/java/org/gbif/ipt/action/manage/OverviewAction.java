@@ -85,6 +85,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -128,8 +129,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
   private List<User> potentialManagers;
-  private List<KeyNamePair> allNetworks;
-  private List<KeyNamePair> potentialNetworks;
+  private List<KeyNamePair> allNetworks = new ArrayList<>();
+  private List<KeyNamePair> potentialNetworks = new ArrayList<>();
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
@@ -154,6 +155,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean undelete = false;
   private boolean publish = false;
   private boolean validateEml = false;
+  private boolean networksAvailable = true;
 
   private boolean validateDatapackageMetadata = false;
   private String summary;
@@ -304,6 +306,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
       try {
         resourceManager.deleteResourceFromIpt(resource);
+        addActionMessage(getText("manage.overview.resource.deleteFromIpt.successful", new String[] {resource.getShortname()}));
         return HOME;
       } catch (IOException e) {
         String msg = getText("manage.resource.delete.failed");
@@ -759,7 +762,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   public List<Network> getResourceNetworks() {
-    return registryManager.getResourceNetworks(resource);
+    try {
+      return registryManager.getResourceNetworks(resource);
+    } catch (RegistryException e) {
+      LOG.error("Failed to display resource's networks");
+      return Collections.emptyList();
+    }
   }
 
   public StatusReport getReport() {
@@ -1152,10 +1160,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       updateReport();
 
       // get potential new networks
-      allNetworks = registryManager.getNetworksBrief();
-      potentialNetworks = new ArrayList<>(allNetworks);
-      for (Network net : getResourceNetworks()) {
-        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+      try {
+        allNetworks = registryManager.getNetworksBrief();
+        potentialNetworks = new ArrayList<>(allNetworks);
+        for (Network net : getResourceNetworks()) {
+          potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+        }
+        networksAvailable = true;
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        addActionWarning(getText("manage.overview.networks.registryAccessUrl", new String[] {cfg.getRegistryUrl()}) + msg);
+        networksAvailable = false;
       }
 
       // get potential new managers
@@ -1888,5 +1903,26 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public void setPublishingOrganizationKey(String publishingOrganizationKey) {
     this.publishingOrganizationKey = publishingOrganizationKey;
+  }
+
+  public boolean isNetworksAvailable() {
+    return networksAvailable;
+  }
+
+  /**
+  * Resource's organisation is not synchronized, use this method to make sure use actual data.
+  */
+  public boolean isResourceOrganisationAssociatedWithDoiAgency() {
+    if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
+      Optional<Organisation> firstOrganisationMatch = organisations.stream()
+          .filter(org -> resource.getOrganisation().getKey().equals(org.getKey()))
+          .findFirst();
+
+      if (firstOrganisationMatch.isPresent()) {
+        return firstOrganisationMatch.get().isAssociatedWithDoiRegistrationAgency();
+      }
+    }
+
+    return false;
   }
 }

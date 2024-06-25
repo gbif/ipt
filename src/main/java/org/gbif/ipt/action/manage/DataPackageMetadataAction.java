@@ -256,8 +256,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if absent or re-infer if requested
-    if (reinferMetadata || resource.getInferredMetadata() == null) {
+    boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
+        && resource.getInferredMetadata().getLastModified() != null
+        && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
+
+    // infer metadata if absent, re-infer if requested or mappings changed
+    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
       InferredMetadata inferredMetadataRaw = metadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredCamtrapMetadata) {

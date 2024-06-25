@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-01-11 10:21+0000\n"
+"POT-Creation-Date: 2024-06-25 11:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:16
 #: en/modules/ROOT/pages/how-to-publish.adoc:20
-#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
+#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 #, no-wrap
 msgid "Prerequisites"
 msgstr ""
@@ -129,7 +129,7 @@ msgstr ""
 msgid ""
 "Hint: if no data hosting centre exists in your country, and you or your "
 "organization don't have the technical skills and capacity to host an IPT, "
-"you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance."
+"you can contact the GBIF Help Desk <helpdesk@gbif.org> for assistance."
 msgstr ""
 
 #. type: Plain text
@@ -152,7 +152,7 @@ msgstr ""
 #: en/modules/ROOT/pages/how-to-publish.adoc:29
 msgid ""
 "Hint: if you aren't affiliated with any organization, you can contact the "
-"GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can "
+"GBIF Help Desk <helpdesk@gbif.org> for assistance. In the meantime, you can "
 "proceed to publish your data."
 msgstr ""
 

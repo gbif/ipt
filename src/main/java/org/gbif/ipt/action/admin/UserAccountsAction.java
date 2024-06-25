@@ -96,8 +96,10 @@ public class UserAccountsAction extends POSTAction {
 
   @Override
   public String delete() {
-    if (getCurrentUser().getEmail().equalsIgnoreCase(id)) {
+    User currentUser = getCurrentUser();
+    if (currentUser.getEmail().equalsIgnoreCase(id)) {
       // can't remove logged in user
+      LOG.error("Cannot remove an account {} when logged in to it", id);
       addActionError(getText("admin.user.deleted.current"));
     } else {
       try {
@@ -106,7 +108,10 @@ public class UserAccountsAction extends POSTAction {
           return NOT_FOUND;
         }
         userManager.save();
+
+        LOG.info("User {} has been successfully deleted by {}", id, currentUser.getEmail());
         addActionMessage(getText("admin.user.deleted"));
+
         return SUCCESS;
       } catch (DeletionNotAllowedException e) {
         if (Reason.LAST_ADMIN == e.getReason()) {
@@ -181,41 +186,63 @@ public class UserAccountsAction extends POSTAction {
 
   @Override
   public String save() {
+    User currentUser = getCurrentUser();
+
     try {
       if (id == null) {
         String passwordBeforeSaving = user.getPassword();
         userManager.create(user);
+
         String emailLink = String.format(EMAIL_NEW_ACCOUNT, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), passwordBeforeSaving, user.getRole());
+
+        LOG.info("User {} has been created by {}", id, currentUser.getEmail());
         addActionMessage(getText("admin.user.added", new String[] {emailLink}));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
         String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         user.setPassword(hash);
         userManager.save(user);
+
         String emailLink = String.format(EMAIL_PASSWORD_CHANGE, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), newPassword);
+
+        LOG.info("User {} password has been changed by {}", user.getEmail(), currentUser.getEmail());
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword, emailLink}));
       } else {
-        if (userManager.get(user.getEmail()).getRole() == Role.Admin && user.getRole() != Role.Admin
-          && userManager.list(Role.Admin).size() < 2) {
+        User currentStateUser = userManager.get(user.getEmail());
+
+        if (currentStateUser.getRole() != user.getRole()) {
+          LOG.info("User {} role has been changed from {} to {} by {}",
+              user.getEmail(), currentStateUser.getRole(), user.getRole(), currentUser.getEmail());
+        }
+
+        if (currentStateUser.getRole() == Role.Admin
+            && user.getRole() != Role.Admin
+            && userManager.list(Role.Admin).size() < 2) {
+          LOG.error("Cannot change the role of the last administrator");
           addActionError(getText("admin.user.changed.current"));
           return INPUT;
         }
+
         if (user.getEmail().equals(getCurrentUser().getEmail())) {
           getCurrentUser().setRole(user.getRole());
         }
+
         userManager.save(user);
         if (getCurrentUser().getRole() != Role.Admin) {
           return HOME;
         }
+
+        LOG.info("User {} has been successfully updated by {}", user.getEmail(), currentUser.getEmail());
         addActionMessage(getText("admin.user.changed"));
       }
       return SUCCESS;
     } catch (IOException e) {
-      LOG.error("The user change couldnt be saved: " + e.getMessage(), e);
+      LOG.error("User change couldn't be saved: " + e.getMessage(), e);
       addActionError(getText("admin.user.saveError"));
       addActionError(e.getMessage());
       return INPUT;
     } catch (AlreadyExistingException e) {
+      LOG.error("User with the email address {} already exists", user.getEmail(), e);
       addActionError(getText("admin.user.exists", new String[] {user.getEmail()}));
       // resetting user
       user = new User();

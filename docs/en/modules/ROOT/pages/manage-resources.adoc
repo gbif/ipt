@@ -698,7 +698,7 @@ image::ipt2/manage/IPTManageResourceNetworks.png[]
 
 To add the resource to a network, click on the {threedots} menu and select the "Add" option. To remove it, click the {threedots} menu on the network item and select "Delete".
 
-IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF helpdesk.
+IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk.
 
 === Resource Managers
 

@@ -188,12 +188,12 @@
                                 ${group}
                             </h6>
                         </#if>
-                        <div class="mt-3 overflow-x-auto">
+                        <div class="mt-3">
                             <#list groupProperties as p>
                                 <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                                     <div class="col-lg-3 mt-1">
                                         <div class="title">
-                                            <div class="head overflow-x-auto text-smaller">
+                                            <div class="head overflow-x-auto text-break text-smaller">
                                                 <#if p.link?has_content>
                                                     <a href="${p.link}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${p.name}</b></a>
                                                 <#else>

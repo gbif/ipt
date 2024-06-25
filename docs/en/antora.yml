@@ -1,7 +1,7 @@
 name: ipt
 title: Integrated Publishing Toolkit
 version: "3.0"
-display_version: "3.0-RC1"
+display_version: "3.0"
 start_page: ROOT:index.adoc
 nav:
   - modules/ROOT/nav.adoc

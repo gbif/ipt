@@ -24,4 +24,9 @@ public class InferredCamtrapMetadata implements InferredMetadata {
   private InferredCamtrapTaxonomicScope inferredTaxonomicScope;
   private InferredCamtrapTemporalScope inferredTemporalScope;
   private Date lastModified;
+
+  @Override
+  public Date getLastModified() {
+    return lastModified;
+  }
 }

@@ -104,13 +104,15 @@
                 }
             });
 
-            $("#doiRegistrationAgencyAssociation").change(function () {
-                if (!$('#doiRegistrationAgencyAssociation').is(':checked')) {
+            <#if !organisationWithDoiRegistrationAgencyPresent>
+            $("#organisation\\.associatedWithDoiRegistrationAgency").change(function () {
+                if (!$('#organisation\\.associatedWithDoiRegistrationAgency').is(':checked')) {
                     hideDoiRegistrationFields();
                 } else {
                     showDoiRegistrationFields();
                 }
             });
+            </#if>
 
             $("#save").on("click", displayProcessing);
         });
@@ -173,6 +175,7 @@
                     <#if id?has_content>
                         <p>${organisation.description!}</p>
 
+                        <@s.hidden id="organisation.name" name="organisation.name" required="true" />
                         <@s.hidden name="organisation.key" id="organisation.key" required="true" />
                         <@s.hidden name="id" id="id" required="true" />
                         <!-- preserve other fields not edited -->
@@ -245,14 +248,10 @@
                         </#if>
                     </div>
 
-                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content />
+                    <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content || organisation.associatedWithDoiRegistrationAgency />
 
                     <div class="col-12">
-                        <#if id?has_content>
-                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?string}" help="i18n"/>
-                        <#else>
-                            <@checkbox name="doiRegistrationAgencyAssociation" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="false" help="i18n"/>
-                        </#if>
+                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?c}" help="i18n"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>

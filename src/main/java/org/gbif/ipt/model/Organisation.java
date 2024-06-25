@@ -39,6 +39,7 @@ public class Organisation extends AgentBase implements Serializable {
   private boolean canHost;
   private boolean agencyAccountPrimary;
   private DOIRegistrationAgency doiRegistrationAgency;
+  private boolean associatedWithDoiRegistrationAgency;
   private String agencyAccountUsername;
   private Password agencyAccountPassword;
   private String doiPrefix;
@@ -248,6 +249,14 @@ public class Organisation extends AgentBase implements Serializable {
     return Constants.TEST_DOI_PREFIX;
   }
 
+  public boolean isAssociatedWithDoiRegistrationAgency() {
+    return associatedWithDoiRegistrationAgency;
+  }
+
+  public void setAssociatedWithDoiRegistrationAgency(boolean associatedWithDoiRegistrationAgency) {
+    this.associatedWithDoiRegistrationAgency = associatedWithDoiRegistrationAgency;
+  }
+
   /**
    * Create new Organisation by cloning another.
    *
@@ -263,6 +272,7 @@ public class Organisation extends AgentBase implements Serializable {
     setCanHost(another.isCanHost());
     setAgencyAccountPrimary(another.isAgencyAccountPrimary());
     setDoiRegistrationAgency(another.getDoiRegistrationAgency());
+    setAssociatedWithDoiRegistrationAgency(another.isAssociatedWithDoiRegistrationAgency());
     setAgencyAccountUsername(another.getAgencyAccountUsername());
     setAgencyAccountPassword(another.getAgencyAccountPassword());
     setDoiPrefix(another.getDoiPrefix());

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-02-06 20:32+0000\n"
-"PO-Revision-Date: 2023-03-14 04:20\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -22,7 +22,6 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:14
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
@@ -68,7 +67,7 @@ msgstr "サンプルデータセット"
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "よくある質問"
@@ -99,8 +98,8 @@ msgstr "サンプリングイベントデータ"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:6
-msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
-msgstr "特定の場所と時間における種のオカレンスの証拠だけでなく、より広い分類群の群集組成や複数の時間と場所における種の相対的な存在量を評価するのに十分な詳細を示す資料です。 このようなデータセットは、生物多様性を測定・観察するための標準化されたプロトコルに由来するものです。 例えば、植生のトランセクト調査、標準化された鳥類のセンサス調査データ、環境ゲノムサンプルなどがありますが、これらのデータは、どのようなプロトコルに従ったのか、どのオカレンス記録がプロトコルに従ったサンプリングイベントに由来するのか、理想的にはサンプルに記録された種の相対的な存在量（適切な数値指標による）を示すことによってオカレンスデータを追加します。 これらの追加要素は、異なる時間や場所（同じプロトコルが示されている場合）のデータのより良い比較をサポートし、場合によっては研究者が特定の場所から特定の種の不在を推測することができるかもしれません。これらのデータセットには、xref:resource-metadata.adoc[リソースメタデータ]に含まれるものと同じ基本的な記述情報と、xref:occurrence-data.adoc[オカレンスデータ]と同じ標準的な要素が含まれています。"
+msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer the absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/sampling-event-data.adoc:7
@@ -126,18 +125,18 @@ msgstr "このlink:https://ipt.gbif.org/manual/ja/ipt/latest/sampling-event-data
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:16
-msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences."
-msgstr "また、データが対応データベースに保存されている場合は、DwCカラム名を使用して2つのSQLテーブル（ビュー）を作成することができます。1つはサンプリングイベント用、もう1つは関連する種のオカレンス用です。"
+msgid "Alternatively, if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:18
-msgid "Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
-msgstr "各サンプリングイベント記録には、すべてのxref:occurrence-data.adoc#required-dwc-fields[DwC必須項目]と可能な限り多くのxref:occurrence-data.adoc#recommended-dwc-fields[DwC推奨項目]を含める必要があります。追加のDwC列でテーブルを拡張することはできますが、このlink:{latest-dwc-event}[リスト]にあるDwC用語のみです。"
+msgid "Each sampling event record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:20
-msgid "Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event."
-msgstr "同様に、各生物種のオカレンス記録には、すべてのxref:occurrence-data.adoc#required-dwc-fields[DwC必須項目]と可能な限り多くのxref:occurrence-data.adoc#recommended-dwc-fields[DwC推奨項目]を含める必要があります。追加のDwC列でテーブルを拡張することができますが、このlink:{latest-dwc-occurrence}[リスト]のDwC用語のみです。一部のDwC用語は、サンプリング事象と種のオカレンスの両方の記録に追加されるため、冗長になります。一般的な規則として、同じ値を持つ冗長な用語は追加しないようにします。例えば、ある事象の場所を定義し、その後、個々のオカレンスについてより具体的な場所を定義する場合 は、異なる値を持つ用語があっても問題ありません。一方、個々のオカレンスの場所が提供されない場合、その場所はイベントデータから引用されます。"
+msgid "Similarly, each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example, if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise, when the location of individual occurrences isn't supplied, its location gets inherited from the event."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:22
@@ -196,108 +195,103 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - 存
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:50
-msgid "Israeli Butterfly Monitoring Scheme (BMS-IL): http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il[DwC-A] / http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[IPT homepage]"
-msgstr "Israeli Butterfly Monitoring Scheme (BMS-IL): http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il[DwC-A] / http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[IPTホームページ]"
+msgid "http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:51
-msgid "Dutch Vegetation Database (LVD): http://cloud.gbif.org/eubon/archive.do?r=lvd[DwC-A] / http://cloud.gbif.org/eubon/resource?r=lvd[IPT homepage]"
-msgstr "Dutch Vegetation Database (LVD): http://cloud.gbif.org/eubon/archive.do?r=lvd[DwC-A] / http://cloud.gbif.org/eubon/resource?r=lvd[IPTホームページ]"
+msgid "http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:52
-msgid "Reef Life Survey: Global reef fish dataset: http://ipt.ala.org.au/archive.do?r=global[DwC-A] / http://ipt.ala.org.au/resource?r=global[IPT homepage]"
-msgstr "Reef Life Survey: Global reef fish dataset: http://ipt.ala.org.au/archive.do?r=global[DwC-A] / http://ipt.ala.org.au/resource?r=global[IPTホームページ]"
+msgid "http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:53
-msgid "Lepidurus arcticus survey Northeast Greenland 2013: http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013[DwC-A] / http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[IPT homepage]"
-msgstr "Lepidurus arcticus survey Northeast Greenland 2013: http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013[DwC-A] / http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[IPTホームページ]"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:54
-msgid "Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPT homepage]"
-msgstr "Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPTホームページ]"
+msgid "http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]"
+msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:57
+#: en/modules/ROOT/pages/sampling-event-data.adoc:56
 #, no-wrap
 msgid "Q. How do I indicate that a sampling event was part of a time series?"
 msgstr "Q. あるサンプリングイベントが時系列の一部であることを示すにはどうしたらよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:60
+#: en/modules/ROOT/pages/sampling-event-data.adoc:59
 #, no-wrap
 msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 msgstr "*A.* 同じ場所でのサンプリングイベントは、すべて同じlink:https://dwc.tdwg.org/terms/#dwc:locationID[locationID]を共有する必要があります。\n"
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:61
+#: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
 msgid "Q. How do I publish a hierarchy of events (recursive data type) using parentEventID?"
 msgstr "Q. parentEventIDを使用して、イベントの階層（再帰的データ型）を公開するにはどうすればよいですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:64
+#: en/modules/ROOT/pages/sampling-event-data.adoc:63
 #, no-wrap
-msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
-msgstr "*A.* 典型的な例は、より大きなプロットのサブサンプリングです。すべてのサブサンプリングイベント（子）をサンプリングイベント（親）の下にグループ化するために、すべてのサブサンプリングイベントのparentEventIDは（親）サンプリングイベントのeventIDに設定されなければなりません。有効であるためには、すべてのparentEventIDは同じデータセットで定義されたレコードのeventIDを参照しなければなりません。そうでない場合、parentEventID は他の場所で記述されたイベントレコードに解決するグローバルに一意な識別子(例えば DOI、HTTP URI など)でなければなりません。理想的には、すべての（子）サブサンプリングイベントは、それが参照する（親）イベントと同じ日付と場所を共有します。\n"
+msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be a globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
+msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:65
+#: en/modules/ROOT/pages/sampling-event-data.adoc:64
 #, no-wrap
 msgid "Q. How do I publish absence data?"
 msgstr "Q. 不在データはどのように公開するのですか？"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:68
+#: en/modules/ROOT/pages/sampling-event-data.adoc:67
 #, no-wrap
 msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
 msgstr "*A.* *ステップ1*：サンプリングの時間や場所で観察できたはずなのに観察されなかった種について、以下のフィールドを設定して種オカレンス記録を追加することで、種の不在を明示します。\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:70
+#: en/modules/ROOT/pages/sampling-event-data.adoc:69
 msgid "Mandatory:"
 msgstr "必須"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:72
+#: en/modules/ROOT/pages/sampling-event-data.adoc:71
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[absent]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:74
+#: en/modules/ROOT/pages/sampling-event-data.adoc:73
 msgid "Optional (provide one or both):"
 msgstr "オプション（どちらか一方または両方を提供します）"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:76
+#: en/modules/ROOT/pages/sampling-event-data.adoc:75
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:77
+#: en/modules/ROOT/pages/sampling-event-data.adoc:76
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: \"0\", \"individuals\""
 msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: \"0\", \"individuals\""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:79
+#: en/modules/ROOT/pages/sampling-event-data.adoc:78
 msgid "Alternatively, include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks."
 msgstr "あるいは、サンプリングで派生する種のオカレンスがなかったとしても、サンプリングイベントの記録を含めます。これにより、種の不在を推論することができます。このlink:https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[ノルウェーのサンプリングイベントデータセット]の例では、これがどのように見えるかを示しています。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:81
+#: en/modules/ROOT/pages/sampling-event-data.adoc:80
 #, no-wrap
-msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
-msgstr "*ステップ2*：データセットに含まれるすべてのサンプリングイベントの分類学的範囲を定義します。サンプリングイベントのデータセットとともにタイムスタンプ付きのチェックリストを公表することを推奨します。これは、サンプリングプロトコル（及び調査の分類学的範囲と識別を行う担当者の専門性）を考慮し、サンプリングの時間と場所で観察できる種組成を表すものです。これにより、正確な存在／不在データを記録することができます。通常の（予想される）種の構成に加え、チェックリストには侵入種（予想外の）種を含めることができます。しかし、分類学的、生物地理学・生態学的な理由から、このチェックリストはサンプリングイベントのデータセットのコンテキスト内にのみ存在することになります。\n"
+msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data to be recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/sampling-event-data.adoc:82
+msgid "Instructions on how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:83
-msgid "Instructions how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
-msgstr "チェックリストの作成方法は、xref:checklist-data.adoc[こちら]をご覧ください。チェックリストには、a）同定を行った人とその分類学的専門知識、b）サンプリングの時間と場所でこれらの種が検出・同定可能であると判断した方法を記述した詳細なメタデータを添付する必要があります。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:84
 msgid "To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section."
 msgstr "チェックリストをサンプリングイベントのデータセットにリンクさせるには、xref:manage-resources.adoc#external-links[外部リンク]セクションでデータセットのメタデータにチェックリストを追加します。"
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-01-08 10:22+0000\n"
-"PO-Revision-Date: 2024-01-08 12:04\n"
+"POT-Creation-Date: 2024-02-19 09:58+0000\n"
+"PO-Revision-Date: 2024-02-19 10:35\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -141,14 +141,14 @@ msgstr "サンプルデータセット"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:39
-msgid "Database of Vascular Plants of Canada (VASCAN): https://doi.org/10.5886/zw3aqw[DOI] /http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
+msgid "https://doi.org/10.5886/zw3aqw[Database of Vascular Plants of Canada (VASCAN)]"
 msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
 #: en/modules/ROOT/pages/faq.adoc:1
 #: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "FAQ"
 msgstr "よくある質問"

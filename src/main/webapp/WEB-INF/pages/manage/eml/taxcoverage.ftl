@@ -1,13 +1,63 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
+            function updateQueryParam(param, value) {
+                const url = new URL(window.location.href);
+                url.searchParams.set(param, value);
+                history.replaceState(null, '', url);
+            }
+
+            function deleteQueryParam(param) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete(param)
+                history.replaceState(null, '', url);
+            }
+
+            // Function to check if query param exists and update checkbox accordingly
+            function checkUrlParams() {
+                // if "inferAutomatically" present and true, tick the inferTaxonomicCoverageAutomatically checkbox
+                const urlParams = new URLSearchParams(window.location.search);
+                const checkboxParam = urlParams.get('inferAutomatically');
+                if (checkboxParam === 'true') {
+                    // select checkbox
+                    $('#inferTaxonomicCoverageAutomatically').prop('checked', true);
+                    // enable description input
+                    $('div#static-taxanomic textarea').show().prop('disabled', false);
+                }
+
+                // remove "reinferMetadata" param on load
+                const reInferParam = urlParams.get('reinferMetadata');
+                if (reInferParam === 'true') {
+                    deleteQueryParam("reinferMetadata")
+                }
+            }
+
+            var isInferAutomaticallyChecked = $('#inferTaxonomicCoverageAutomatically').is(":checked");
+            if (isInferAutomaticallyChecked) {
+                // enable description input
+                $('div#static-taxanomic textarea').show().prop('disabled', false);
+            }
+
+            // add/remove "inferAutomatically" param when clicking checkbox
+            $('#inferTaxonomicCoverageAutomatically').change(function() {
+                if ($(this).is(':checked')) {
+                    updateQueryParam('inferAutomatically', 'true');
+                    $('div#static-taxanomic textarea').show().prop('disabled', false);
+                } else {
+                    deleteQueryParam('inferAutomatically');
+                    $('div#static-taxanomic textarea').hide().prop('disabled', true);
+                }
+            });
+
+            // Check query params on page load
+            checkUrlParams();
+
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -113,6 +163,8 @@
                 hideProcessing();
             }
 
+            $("#re-infer-link").on('click', displayProcessing);
+
             $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({
                 placeholder: '${action.getText("eml.rank.selection")?js_string}',
                 language: {
@@ -130,6 +182,7 @@
     <#assign currentMetadataPage = "taxcoverage"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
     <div class="container px-0">
@@ -145,8 +198,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-                <#if (inferredMetadata.inferredEmlTaxonomicCoverage)??>
-                    <#list inferredMetadata.inferredEmlTaxonomicCoverage.errors as error>
+                <#if (inferredMetadata.inferredTaxonomicCoverage)??>
+                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
                         <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                             <div class="me-3">
                                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
@@ -212,17 +265,17 @@
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
                                         <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                            </svg>
-                                        </span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                </svg>
+                                            </span>
                                             <span><@s.text name="eml.previewInferred"/></span>
                                         </a>
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                         <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                        <a href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                        <a id="re-infer-link" href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
                                             <span>
                                                 <svg class="link-icon" viewBox="0 0 24 24">
                                                     <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
@@ -338,24 +391,32 @@
 
                             <!-- Static data -->
                             <div id="static-taxanomic" class="mt-4" style="display: none;">
+                                <div class="mt-2 mb-4">
+                                    <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" disabled=true />
+                                </div>
+
                                 <!-- Data is inferred, preview -->
-                                <#if (inferredMetadata.inferredEmlTaxonomicCoverage.organizedData.keywords)??>
+                                <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-borderless">
-                                            <#list inferredMetadata.inferredEmlTaxonomicCoverage.organizedData.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                            <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
+                                                <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || (inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content && inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content)) >
                                                     <tr>
-                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                        <#if k.rank?lower_case == "class">
-                                                            <th class="col-4">Class</th>
-                                                        <#else>
-                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                        </#if>
+                                                        <#-- 1st col, write rank name once -->
+                                                        <th class="col-4">${ranks.get(k.rank?html)?cap_first!}</th>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
-                                                            <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
-                                                            </#list>
+                                                            <#if inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content>
+                                                                <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
+                                                            </#if>
+
+                                                            <#if rankWarning?has_content>
+                                                                <code><@s.text name="${rankWarning}"/></code>
+                                                            <#else>
+                                                                <#list k.displayNames as name>
+                                                                    &nbsp;${name}<#if name_has_next>,</#if>
+                                                                </#list>
+                                                            </#if>
                                                         </td>
                                                     </tr>
                                                 </#if>
@@ -363,8 +424,8 @@
                                         </table>
                                     </div>
                                 <!-- Data infer finished, but there are errors/warnings -->
-                                <#elseif (inferredMetadata.inferredEmlTaxonomicCoverage)?? && inferredMetadata.inferredEmlTaxonomicCoverage.errors?size != 0>
-                                    <#list inferredMetadata.inferredEmlTaxonomicCoverage.errors as error>
+                                <#elseif (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0>
+                                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
                                         <div class="callout callout-danger text-smaller">
                                             <@s.text name="${error}"/>
                                         </div>

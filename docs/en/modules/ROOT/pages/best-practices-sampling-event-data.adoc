@@ -157,7 +157,7 @@ Data produced from a large sampling project should be published as a single data
 Sampling events provide better documentation and benefit both the scientific community and policy makers (https://www.gbif.org/sampling-event-data[read more]).
 We encourage strongly the republishing of occurrence data as sampling-event data when possible.
 
-In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations.
+In order to do so, you should create a new sampling-event dataset and send an email to GBIF's Help Desk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations.
 
 === Modelling continuous monitoring of live individuals
 

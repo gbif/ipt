@@ -179,7 +179,7 @@ To use the validator:
 . Validate
 . Review the response that and address any validation errors
 . Repeat the process until the file is successfully validated.
-. Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
+. Contact the GBIF Help Desk if you get stuck (helpdesk@gbif.org).
 
 == Registration of DwC-As with GBIF
 
@@ -195,7 +195,7 @@ Fortunately, the IPT and GBIF API support automatic registration for datasets. O
 
 You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
-Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information.
+Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the Help Desk for more information.
 
 == Annex: Preparing Your Data
 

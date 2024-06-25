@@ -16,7 +16,9 @@ package org.gbif.ipt.model;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import lombok.Data;
@@ -29,8 +31,13 @@ public class InferredEmlTaxonomicCoverage {
   private OrganizedTaxonomicCoverage organizedData;
   private boolean inferred = false;
   private Set<String> errors = new HashSet<>();
+  private Map<String, String> rankWarnings = new HashMap<>();
 
   public void addError(String error) {
     errors.add(error);
+  }
+
+  public void addRankWarning(String rank, String warning) {
+    rankWarnings.put(rank, warning);
   }
 }

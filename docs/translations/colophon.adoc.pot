@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-12-11 10:21+0000\n"
+"POT-Creation-Date: 2024-02-05 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,9 +51,10 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:18
 msgid ""
-"Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit "
-"User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. "
-"https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
+"Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF "
+"Integrated Publishing Toolkit User Manual, version {page-component-version}. "
+"Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-"
+"component-version}/"
 msgstr ""
 
 #.  If not English
@@ -70,8 +71,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:26
 msgid ""
-"Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit "
-"User Manual, version {page-component-version}. "
+"Wieczorek J, Blissett M, Braak K & Podolskiy M ({localyear}) The GBIF "
+"Integrated Publishing Toolkit User Manual, version {page-component-version}. "
 "(TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. "
 "https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
 msgstr ""

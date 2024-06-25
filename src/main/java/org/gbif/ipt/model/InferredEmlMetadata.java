@@ -20,8 +20,13 @@ import lombok.Data;
 @Data
 public class InferredEmlMetadata implements InferredMetadata {
 
-  private InferredEmlGeographicCoverage inferredEmlGeographicCoverage;
-  private InferredEmlTaxonomicCoverage inferredEmlTaxonomicCoverage;
-  private InferredEmlTemporalCoverage inferredEmlTemporalCoverage;
+  private InferredEmlGeographicCoverage inferredGeographicCoverage;
+  private InferredEmlTaxonomicCoverage inferredTaxonomicCoverage;
+  private InferredEmlTemporalCoverage inferredTemporalCoverage;
   private Date lastModified;
+
+  @Override
+  public Date getLastModified() {
+    return lastModified;
+  }
 }

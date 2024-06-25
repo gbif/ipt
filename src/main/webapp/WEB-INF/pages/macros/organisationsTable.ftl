@@ -16,7 +16,7 @@ organisationsTable macro: Generates a data table that has searching, pagination,
                 '<#if (o.alias)??>${o.alias?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${emptyString}</#if>',
                 '<#if o?? && o.canHost><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
                 '${(o.doiRegistrationAgency)!"${emptyString}"}',
-                '<#if o?? && o.agencyAccountPrimary><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
+                '<#if o?? && (o.agencyAccountPrimary || o.associatedWithDoiRegistrationAgency)><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if>',
                 '<form class="needs-validation" action="organisation.do" method="post">' +
                 '<div class="form-group d-flex justify-content-end">' +
                 '<input type="hidden" name="organisation.key" value="${(o.key)!}" required="true">' +

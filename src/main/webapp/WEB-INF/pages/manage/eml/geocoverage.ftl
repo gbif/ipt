@@ -20,6 +20,48 @@
 
     <script>
         $(document).ready(function() {
+            function updateQueryParam(param, value) {
+                const url = new URL(window.location.href);
+                url.searchParams.set(param, value);
+                history.replaceState(null, '', url);
+            }
+
+            function deleteQueryParam(param) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete(param)
+                history.replaceState(null, '', url);
+            }
+
+            // Function to check if query param exists and update checkbox accordingly
+            function checkUrlParams() {
+                // if "inferAutomatically" present and true, tick the inferGeocoverageAutomatically checkbox
+                const urlParams = new URLSearchParams(window.location.search);
+                const checkboxParam = urlParams.get('inferAutomatically');
+                if (checkboxParam === 'true') {
+                    $('#inferGeocoverageAutomatically').prop('checked', true);
+                }
+
+                // remove "reinferMetadata" param on load
+                const reInferParam = urlParams.get('reinferMetadata');
+                if (reInferParam === 'true') {
+                    deleteQueryParam("reinferMetadata")
+                }
+            }
+
+            // add/remove "inferAutomatically" param when clicking checkbox
+            $('#inferGeocoverageAutomatically').change(function() {
+                if ($(this).is(':checked')) {
+                    updateQueryParam('inferAutomatically', 'true');
+                } else {
+                    deleteQueryParam('inferAutomatically');
+                }
+            });
+
+            // Check query params on page load
+            checkUrlParams();
+
+            $("#re-infer-link").on('click', displayProcessing);
+
             var newBboxBase = "eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.";
             var maxLatId = newBboxBase + "max\\.latitude";
             var minLatId = newBboxBase + "min\\.latitude";
@@ -55,13 +97,35 @@
             var minLatVal = isNaN(parseFloat(minLatInputValue)) ? MIN_LAT_VAL_LIMIT : parseFloat(minLatInputValue.replace(",", "."));
             var maxLatVal = isNaN(parseFloat(maxLatInputValue)) ? MAX_LAT_VAL_LIMIT : parseFloat(maxLatInputValue.replace(",", "."));
 
+            var adjustedBounds = adjustBoundsForDateLine(minLngVal, maxLngVal);
+
+            var bounds = L.latLngBounds(
+                L.latLng(minLatVal, adjustedBounds.west),  // Southwest corner
+                L.latLng(maxLatVal, adjustedBounds.east)   // Northeast corner
+            );
+
             // make the location filter: a draggable/resizable rectangle
             var locationFilter = new L.LocationFilter({
                 enable: true,
                 enableButton: false,
                 adjustButton: false,
-                bounds:  L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal))
+                bounds:  bounds
             }).addTo(map);
+
+            // Function to adjust the longitude values if they cross the international date line
+            function adjustBoundsForDateLine(minLng, maxLng) {
+                if (minLng > maxLng) {
+                    return {
+                        west: minLng,
+                        east: maxLng + 360
+                    };
+                } else {
+                    return {
+                        west: minLng,
+                        east: maxLng
+                    };
+                }
+            }
 
             // checks if global coverage is set. If on, coordinate input fields are hidden and the map disabled
             if (maxLatVal === MAX_LAT_VAL_LIMIT && minLatVal === MIN_LAT_VAL_LIMIT && maxLngVal === MAX_LNG_VAL_LIMIT && minLngVal === MIN_LNG_VAL_LIMIT) {
@@ -81,7 +145,7 @@
                 $("#dateInferred").show();
                 $("#globalCoverage").prop("checked", false);
                 adjustMapWithInferredCoordinates();
-                <#if (inferredMetadata.inferredEmlGeographicCoverage)?? && inferredMetadata.inferredEmlGeographicCoverage.errors?size gt 0>
+                <#if (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size gt 0>
                     $(".metadata-error-alert").show();
                 </#if>
             });
@@ -129,19 +193,19 @@
                 locationFilter.enable();
 
                 // replace "," with "." (if needed) for correct work of locationFilter
-                var minLngRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!?replace(",", ".")}"
+                var minLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!?replace(",", ".")}"
                 var minLngVal = parseFloat(minLngRaw);
                 if (isNaN(minLngVal)) minLngVal = -180;
 
-                var maxLngRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!?replace(",", ".")}";
+                var maxLngRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!?replace(",", ".")}";
                 var maxLngVal = parseFloat(maxLngRaw);
                 if (isNaN(maxLngVal)) maxLngVal = 180;
 
-                var minLatRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!?replace(",", ".")}";
+                var minLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!?replace(",", ".")}";
                 var minLatVal = parseFloat(minLatRaw);
                 if (isNaN(minLatVal)) minLatVal = -90;
 
-                var maxLatRaw = "${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!?replace(",", ".")}";
+                var maxLatRaw = "${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!?replace(",", ".")}";
                 var maxLatVal = parseFloat(maxLatRaw);
                 if (isNaN(maxLatVal)) maxLatVal = 90;
 
@@ -149,11 +213,11 @@
             }
 
             function setInferredCoordinatesToInputs() {
-                <#if (inferredMetadata.inferredEmlGeographicCoverage.data)??>
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!}");
-                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val("${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!}");
+                <#if (inferredMetadata.inferredGeographicCoverage.data)??>
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!}");
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val("${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!}");
                 </#if>
             }
 
@@ -186,6 +250,10 @@
                 }
             });
 
+            function normalizeLongitude(lng) {
+                // Normalize longitude to the range of -180 to 180
+                return ((lng + 180) % 360 + 360) % 360 - 180;
+            }
 
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
@@ -198,17 +266,17 @@
                     $('#preview-inferred-geo').show();
                     $('.intro').show();
 
-                    var minLatVal = locationFilter.getBounds()._southWest.lat
-                    var minLngVal = locationFilter.getBounds()._southWest.lng
-                    var maxLatVal = locationFilter.getBounds()._northEast.lat
-                    var maxLngVal = locationFilter.getBounds()._northEast.lng
+                    var minLatVal = locationFilter.getBounds()._southWest.lat;
+                    var minLngVal = normalizeLongitude(locationFilter.getBounds()._southWest.lng);
+                    var maxLatVal = locationFilter.getBounds()._northEast.lat;
+                    var maxLngVal = normalizeLongitude(locationFilter.getBounds()._northEast.lng);
 
                     // only language
                     var localeLanguageCode = "${currentLocale}".split("_")[0];
 
                     var minLatValFormatted = minLatVal.toLocaleString(localeLanguageCode);
-                    var minLngValFormatted  = minLngVal.toLocaleString(localeLanguageCode);
-                    var maxLatValFormatted  = maxLatVal.toLocaleString(localeLanguageCode);
+                    var minLngValFormatted = minLngVal.toLocaleString(localeLanguageCode);
+                    var maxLatValFormatted = maxLatVal.toLocaleString(localeLanguageCode);
                     var maxLngValFormatted = maxLngVal.toLocaleString(localeLanguageCode);
 
                     $("#" + minLatId).val(minLatValFormatted);
@@ -255,7 +323,10 @@
                 if (isNaN(maxLatVal)) {
                     maxLatVal = MAX_LAT_VAL_LIMIT;
                 }
-                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)), true);
+
+                var adjustedLongitude = adjustBoundsForDateLine(minLngVal, maxLngVal);
+
+                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, adjustedLongitude.west), L.latLng(maxLatVal, adjustedLongitude.east)), true);
             });
 
             $('#metadata-section').change(function () {
@@ -375,8 +446,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-            <#if (inferredMetadata.inferredEmlGeographicCoverage)??>
-                <#list inferredMetadata.inferredEmlGeographicCoverage.errors as error>
+            <#if (inferredMetadata.inferredGeographicCoverage)??>
+                <#list inferredMetadata.inferredGeographicCoverage.errors as error>
                     <div class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
                         <div class="me-3">
                             <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
@@ -451,7 +522,7 @@
                                 </div>
                                 <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                     <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                    <a href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link">
+                                    <a id="re-infer-link" href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
                                         <span>
                                             <svg class="link-icon" viewBox="0 0 24 24">
                                                 <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
@@ -465,18 +536,18 @@
 
                         <div id="static-coordinates" class="mt-3" style="display: none;">
                             <!-- Data is inferred, preview -->
-                            <#if (inferredMetadata.inferredEmlGeographicCoverage.data)??>
+                            <#if (inferredMetadata.inferredGeographicCoverage.data)??>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-borderless">
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
-                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredEmlGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
+                                            <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.min.longitude)!}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.latitude)!},&nbsp;${(inferredMetadata.inferredGeographicCoverage.data.boundingCoordinates.max.longitude)!}&#93;</td>
                                         </tr>
                                     </table>
                                 </div>
                             <!-- Data infer finished, but there are errors/warnings -->
-                            <#elseif (inferredMetadata.inferredEmlGeographicCoverage)?? && inferredMetadata.inferredEmlGeographicCoverage.errors?size != 0>
-                                <#list inferredMetadata.inferredEmlGeographicCoverage.errors as error>
+                            <#elseif (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size != 0>
+                                <#list inferredMetadata.inferredGeographicCoverage.errors as error>
                                     <div class="callout callout-danger text-smaller">
                                         <@s.text name="${error}"/>
                                     </div>
@@ -503,8 +574,6 @@
                                     <@s.text name='manage.metadata.geocoverage.warning'/>
                                 </div>
                                 <div class="row g-3 mt-0">
-<#--                                    ${inferredMetadata}-->
-
                                     <div class="col-md-6">
                                         <label class="form-label" for="eml.geospatialCoverages[0].boundingCoordinates.min.longitude">
                                             <@s.text name="eml.geospatialCoverages.boundingCoordinates.min.longitude"/>

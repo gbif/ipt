@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-01-11 10:21+0000\n"
-"PO-Revision-Date: 2024-01-11 10:31\n"
+"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"PO-Revision-Date: 2024-02-19 10:36\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -108,8 +108,8 @@ msgstr "ヒント：技術的なスキルとほぼ100％オンラインで維持
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:26
-msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance."
-msgstr "ヒント：自国にデータホスティングセンターがなく、あなたやあなたの機関にIPTをホストする技術的スキルと能力がない場合、GBIFヘルプデスク<helpdesk@gbif.org>に連絡して支援を受けることができます。"
+msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Help Desk <helpdesk@gbif.org> for assistance."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:27
@@ -123,8 +123,8 @@ msgstr "ヒント：GBIFに機関を登録するには、まずこのオンラ�
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:29
-msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
-msgstr "ヒント：どの機関にも所属していない場合は、GBIFヘルプデスク<helpdesk@gbif.org>に連絡して支援を求めることができます。その間に、データの公開を進めることができます。"
+msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Help Desk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:33

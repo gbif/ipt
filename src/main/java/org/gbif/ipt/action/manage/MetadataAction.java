@@ -23,7 +23,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -40,7 +39,6 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.ipt.model.Agent;
-import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
@@ -57,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
@@ -69,6 +66,8 @@ import org.apache.struts2.dispatcher.Parameter;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.opensymphony.xwork2.ActionContext;
+
+import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
 
 public class MetadataAction extends ManagerBaseAction {
 
@@ -105,9 +104,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
   private InferredEmlMetadata inferredMetadata;
-  private BBox inferredGeocoverage;
-  private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
-  private KeyNamePair inferredTemporalCoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -313,8 +309,18 @@ public class MetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if absent or re-infer if requested
-    if (reinferMetadata || resource.getInferredMetadata() == null) {
+    boolean mappingsChangedAfterLastTry =
+        !DATASET_TYPE_METADATA_IDENTIFIER.equals(resource.getCoreType())
+            && resource.getInferredMetadata() != null
+            && resource.getInferredMetadata().getLastModified() != null
+            && resource.getMappingsModified() != null
+            && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
+
+    // infer metadata if:
+    // 1) It was requested
+    // 2) It is absent
+    // 3) Mappings were changed
+    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
       InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredEmlMetadata) {
@@ -993,14 +999,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   public InferredEmlMetadata getInferredMetadata() {
     return inferredMetadata;
-  }
-
-  public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
-    return inferredTaxonomicCoverage;
-  }
-
-  public KeyNamePair getInferredTemporalCoverage() {
-    return inferredTemporalCoverage;
   }
 
   public void setFile(File file) {
