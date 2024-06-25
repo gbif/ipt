@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-25 11:53+0000\n"
-"PO-Revision-Date: 2024-06-25 11:57\n"
+"PO-Revision-Date: 2024-06-25 16:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -33,7 +33,7 @@ msgstr "Instalación de Tomcat 8 en Windows"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
 msgid "Tomcat 8 is no longer supported.  Search for alternative installation instructions to install Tomcat 9."
-msgstr ""
+msgstr "Tomcat 8 ya no es compatible.  Busque instrucciones de instalación alternativas para instalar Tomcat 9."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:6
