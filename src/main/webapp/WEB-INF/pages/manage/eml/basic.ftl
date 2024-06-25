@@ -330,7 +330,15 @@
                             <div class="col-12">
                                 <@input name="eml.title" help="i18n" requiredField=true />
                             </div>
+                        </div>
 
+                        <div class="row g-3 mt-1">
+                            <div class="col-lg-6">
+                                <@input name="eml.shortName" help="i18n" />
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-1">
                             <div class="col-lg-6">
                                 <#if resource.organisation??>
                                     <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
