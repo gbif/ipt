@@ -155,46 +155,6 @@
                 });
             }
 
-            const sortable_contacts = initAndGetSortable('#contact-items');
-            const sortable_creators = initAndGetSortable('#creator-items');
-            const sortable_metadataProviders = initAndGetSortable('#metadataProvider-items');
-            const sortable_description = initAndGetSortable('#items');
-
-            sortable_contacts[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
-            sortable_creators[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
-            sortable_metadataProviders[0].addEventListener('sortupdate', changeAgentInputNamesAfterDragging);
-            sortable_description[0].addEventListener('sortupdate', function(e) {
-                // recalculate names!
-                displayProcessing();
-                var contactItems = $("#items div.item");
-
-                contactItems.each(function (index) {
-                    var elementId = $(this)[0].id;
-
-                    $("div#" + elementId + " textarea").attr("name", "eml.description[" + index + "]");
-                });
-
-                hideProcessing();
-            });
-
-            sortable_contacts[0].addEventListener('drag', dragScroll);
-            sortable_creators[0].addEventListener('drag', dragScroll);
-            sortable_metadataProviders[0].addEventListener('drag', dragScroll);
-            sortable_description[0].addEventListener('drag', dragScroll);
-
-            function dragScroll(e) {
-                var cursor = e.pageY;
-                var parentWindow = parent.window;
-                var pixelsToTop = $(parentWindow).scrollTop();
-                var screenHeight = $(parentWindow).height();
-
-                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
-                    parentWindow.scrollBy(0, (screenHeight / 30));
-                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
-                    parentWindow.scrollBy(0, -(screenHeight / 30));
-                }
-            }
-
             $('select#eml\\.metadataLanguage').select2({
                 placeholder: '',
                 language: {
@@ -269,109 +229,6 @@
                 width: "100%",
                 allowClear: true,
                 minimumResultsForSearch: 'Infinity',
-                theme: 'bootstrap4'
-            });
-
-            $('[id^="eml.contacts"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.creators"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-
-            function changeAgentInputNamesAfterDragging(e) {
-                displayProcessing();
-                var contactItems = $("#contact-items div.item");
-
-                contactItems.each(function (index) {
-                    var elementId = $(this)[0].id;
-
-                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.contacts[" + index + "].firstName");
-                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.contacts[" + index + "].lastName");
-                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.contacts[" + index + "].position");
-                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.contacts[" + index + "].organisation");
-                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.contacts[" + index + "].address.address");
-                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.contacts[" + index + "].address.city");
-                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.contacts[" + index + "].address.province");
-                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.contacts[" + index + "].address.country");
-                    $("div#" + elementId + " select[id$='country']").trigger("change");
-                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.contacts[" + index + "].address.postalCode");
-                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.contacts[" + index + "].phone");
-                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.contacts[" + index + "].email");
-                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.contacts[" + index + "].homepage");
-                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.contacts[" + index + "].userIds[0].directory");
-                    $("div#" + elementId + " select[id$='directory']").trigger("change");
-                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.contacts[" + index + "].userIds[0].identifier");
-                });
-
-                hideProcessing();
-            }
-
-            var copyAgentModal = $('#copy-agent-modal');
-            $('#resource').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('#agentType').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('#agent').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
                 theme: 'bootstrap4'
             });
         });
@@ -474,39 +331,47 @@
                                 <@input name="eml.title" help="i18n" requiredField=true />
                             </div>
 
-                            <div class="col-lg-4">
-                                <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" requiredField=true />
-                            </div>
-
-                            <div class="col-lg-4">
-                                <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" requiredField=true />
-                            </div>
-
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <#if resource.organisation??>
                                     <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
                                 <#else>
                                     <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations requiredField=true />
                                 </#if>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-lg-4">
+                    <div class="my-3 p-3">
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" requiredField=true />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-3 p-3">
+                        <div class="row g-3">
+                            <div class="col-lg-6">
                                 <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" requiredField=true />
                             </div>
 
-                            <div class="col-lg-4">
-                                <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
+                            <div class="col-lg-6">
+                                <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" requiredField=true />
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-lg-4">
-                                <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unknown'}" requiredField=true />
-                            </div>
-
+                    <div class="my-3 p-3">
+                        <div class="row g-3">
                             <!-- Intellectual Rights -->
                             <div class="col-12">
                                 <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
-                                <div id="intellectualRightsDiv" class="mt-3 p-3">
+                                <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller">
                                     <@licenseLogoClass eml.intellectualRights!/>
 
                                     <#if eml.intellectualRights?has_content>
@@ -581,6 +446,14 @@
                                 </a>
                             </div>
                             <@simpleText name=""/>
+                        </div>
+                    </div>
+
+                    <div class="my-3 p-3">
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unknown'}" requiredField=true />
+                            </div>
                         </div>
                     </div>
                 </div>

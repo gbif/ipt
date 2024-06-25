@@ -455,14 +455,6 @@ public class MetadataAction extends ManagerBaseAction {
         }
         break;
 
-      case PARTIES_SECTION:
-        // populate agent vocabularies
-        loadAgentVocabularies();
-        if (isHttpPost()) {
-          resource.getEml().getAssociatedParties().clear();
-        }
-        break;
-
       case PROJECT_SECTION:
         // populate agent vocabularies
         loadAgentVocabularies();
@@ -552,9 +544,6 @@ public class MetadataAction extends ManagerBaseAction {
           next = MetadataSection.KEYWORDS_SECTION;
           break;
         case KEYWORDS_SECTION:
-          next = MetadataSection.PARTIES_SECTION;
-          break;
-        case PARTIES_SECTION:
           next = MetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:
