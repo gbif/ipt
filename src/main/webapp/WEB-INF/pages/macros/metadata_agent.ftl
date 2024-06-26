@@ -917,6 +917,20 @@
                 event.preventDefault();
                 createNewIdentifierForAgent(event);
             });
+
+            // show/hide "This contact will appear in the citation"
+            $('#associatedParty-item-' + index + " [id$='role']").change(function () {
+                var selectedValue = $(this).val();
+                var selectId = $(this).attr('id');
+
+                if (selectId.includes("role")) {
+                    if (selectedValue === 'originator' || selectedValue === 'metadataProvider') {
+                        if (index) $('#associatedParty-item-' + index + ' .contact-citation-banner').show();
+                    } else {
+                        if (index) $('#associatedParty-item-' + index + ' .contact-citation-banner').hide();
+                    }
+                }
+            });
         }
 
         function setPersonnelItemIndex(item, index) {

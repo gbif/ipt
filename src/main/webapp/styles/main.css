@@ -2744,3 +2744,13 @@ header.shrink #accountDropdownLink {
         z-index: 1030;
     }
 }
+
+/* "This contact will be in the citation" badge */
+span.contact-citation-banner {
+    background: rgb(var(--color-gbif-primary));;
+    color: white;
+    padding: 0 3px;
+    font-size: 0.75rem;
+    font-weight: bolder;
+    border-radius: 3px;
+}
