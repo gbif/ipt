@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-02-19 08:36+0000\n"
+"POT-Creation-Date: 2024-06-28 12:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,8 +25,8 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:137
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:257
 #: en/modules/ROOT/pages/manage-resources.adoc:320
 #, no-wrap
 msgid "Geographic Coverage"
@@ -34,8 +34,8 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:136
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:239
 #: en/modules/ROOT/pages/manage-resources.adoc:333
 #, no-wrap
 msgid "Taxonomic Coverage"
@@ -43,8 +43,8 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:138
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:275
 #: en/modules/ROOT/pages/manage-resources.adoc:359
 #, no-wrap
 msgid "Temporal Coverage"
