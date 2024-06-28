@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 10:21+0000\n"
-"PO-Revision-Date: 2023-12-11 11:25\n"
+"POT-Creation-Date: 2024-06-25 11:53+0000\n"
+"PO-Revision-Date: 2024-06-25 11:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -37,14 +37,10 @@ msgstr ""
 msgid "xref:installation.adoc[]"
 msgstr ""
 
+#. *** xref:tomcat-installation-windows.adoc[]
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:7
 msgid "xref:tomcat-installation-linux.adoc[]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/nav.adoc:8
-msgid "xref:tomcat-installation-windows.adoc[]"
 msgstr ""
 
 #. type: Plain text
