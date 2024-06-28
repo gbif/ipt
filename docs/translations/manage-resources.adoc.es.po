@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-06-28 12:33\n"
+"PO-Revision-Date: 2024-06-28 20:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2773,5 +2773,5 @@ msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
 msgid "If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry"
-msgstr ""
+msgstr "Si aplica, envíe un correo electrónico a helpdesk@gbif.org alertando que la instalación técnica DiGIR/BioCASe/TAPIR/IPT que usaba el recurso ha quedado en desuso, y puede ser eliminada del Registro de GBIF."
 
