@@ -149,14 +149,6 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            function initAndGetSortable(selector) {
-                return sortable(selector, {
-                    forcePlaceholderSize: true,
-                    placeholderClass: 'border',
-                    handle: '.handle'
-                });
-            }
-
             $('select#eml\\.metadataLanguage').select2({
                 placeholder: '',
                 language: {
@@ -247,7 +239,7 @@
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
-                focus: true,
+                focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
                 ]
@@ -259,7 +251,7 @@
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
-                focus: true,
+                focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
                 ]
@@ -271,7 +263,7 @@
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
-                focus: true,
+                focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
                 ]
