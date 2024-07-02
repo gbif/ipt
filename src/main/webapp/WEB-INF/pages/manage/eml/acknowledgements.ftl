@@ -2,7 +2,6 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>
@@ -30,11 +29,9 @@
 
                 // Extract HTML content from Summernote editor
                 var htmlContent = $('#acknowledgements-editor').summernote('code');
-                console.log("editor1 content: " + htmlContent);
 
                 // Convert HTML to DocBook
                 var docbookContent = convertToDocBook(htmlContent);
-                console.log("so-called docbook content: " + docbookContent);
 
                 // Assign DocBook content to a hidden input field
                 $('#acknowledgements').val(docbookContent);
