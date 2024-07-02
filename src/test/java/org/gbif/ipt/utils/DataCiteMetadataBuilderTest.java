@@ -334,7 +334,7 @@ public class DataCiteMetadataBuilderTest {
       dataCiteMetadata.getRightsList().getRights().get(0).getValue());
 
     // Abstract aka description
-    assertEquals("Comprehensive ants collection.",
+    assertEquals("Comprehensive ants collection. Mostly dried preserved.",
       dataCiteMetadata.getDescriptions().getDescription().get(0).getContent().get(0));
     assertEquals(DescriptionType.ABSTRACT,
       dataCiteMetadata.getDescriptions().getDescription().get(0).getDescriptionType());
