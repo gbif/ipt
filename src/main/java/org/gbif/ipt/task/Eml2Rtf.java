@@ -103,12 +103,8 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      for (String para : eml.getDescription()) {
-        if (StringUtils.isNotBlank(para)) {
-          p.add(para.replace("\r\n", "\n"));
-          p.add(Chunk.NEWLINE);
-        }
-      }
+      p.add(eml.getDescription());
+      p.add(Chunk.NEWLINE);
       doc.add(p);
       p.clear();
     }

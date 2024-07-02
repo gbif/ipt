@@ -401,7 +401,6 @@ public class MetadataAction extends ManagerBaseAction {
         }
 
         if (isHttpPost()) {
-          resource.getEml().getDescription().clear();
           resource.getEml().setIntellectualRights(null);
 
           // publishing organisation, if provided must match organisation

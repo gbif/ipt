@@ -83,9 +83,7 @@ public class DataCiteMetadataBuilderTest {
     resource.setEml(eml);
 
     eml.setTitle("Ants of New York State");
-    List<String> description = new ArrayList<>();
-    description.add("Comprehensive ants collection.");
-    description.add("Mostly dried preserved.");
+    String description = "Comprehensive ants collection. Mostly dried preserved.";
     eml.setDescription(description);
     eml.setMetadataLanguage("eng");
     eml.setLanguage("heb");

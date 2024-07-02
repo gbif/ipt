@@ -182,8 +182,7 @@ public class GenerateDCATTest {
     Resource res = getResource(resourceXML);
 
     // add another paragraph to description
-    res.getEml().getDescription().add("Second paragraph");
-    assertEquals(2, res.getEml().getDescription().size());
+    res.getEml().setDescription("Second paragraph");
 
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
@@ -202,8 +201,7 @@ public class GenerateDCATTest {
     Resource res = getResource(resourceXML);
 
     // add another paragraph with '\n' character to description
-    res.getEml().getDescription().add("Second paragraph\nwith line break");
-    assertEquals(2, res.getEml().getDescription().size());
+    res.getEml().setDescription("Second paragraph\nwith line break");
 
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
@@ -330,7 +328,7 @@ public class GenerateDCATTest {
 
     // update resource title and description, to have double quotation marks which need to be escaped
     resource.setTitle("TEST \"RESOURCE\"");
-    resource.getEml().getDescription().set(0, "Test \"description\"");
+    resource.getEml().setDescription("Test \"description\"");
 
     // update keyword sets: should be three, with "Occurrence" and "Observation" repeating more than once which breaks the feed
     resource.getEml().getKeywords().clear();

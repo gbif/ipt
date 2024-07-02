@@ -425,14 +425,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       eml.setTitle(metadata.getTitle());
 
       if (metadata.getDescription() != null) {
-        // split description into paragraphs
-        List<String> paragraphs = Arrays.stream(metadata.getDescription().split("\r?\n"))
-            .map(org.gbif.utils.text.StringUtils::trim)
-            .filter(StringUtils::isNotEmpty)
-            .collect(Collectors.toList());
-        for (String para : paragraphs) {
-          eml.addDescriptionPara(para);
-        }
+        eml.setDescription(metadata.getDescription());
       }
 
       if (metadata.getHomepage() != null) {

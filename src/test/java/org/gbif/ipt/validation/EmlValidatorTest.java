@@ -168,14 +168,12 @@ public class EmlValidatorTest {
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
-    List<String> description = new ArrayList<>();
-    eml.setDescription(description);
+    eml.setDescription("");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    description.add("shrt");
+    eml.setDescription("shrt");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
-    description.clear();
-    description.add("long_enough");
+    eml.setDescription("long_enough");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
@@ -740,7 +738,7 @@ public class EmlValidatorTest {
     resource.setUpdateFrequency(MaintenanceUpdateFrequency.ANNUALLY.toString());
 
     empty.setTitle("Title");
-    empty.addDescriptionPara("Description");
+    empty.setDescription("Description");
     empty.setMetadataLanguage(Language.FRENCH.getIso3LetterCode());
     empty.setLanguage(Language.SPANISH.getIso3LetterCode());
     empty.setIntellectualRights("CC-BY");
