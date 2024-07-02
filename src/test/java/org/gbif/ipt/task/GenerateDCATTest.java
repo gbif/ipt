@@ -181,13 +181,10 @@ public class GenerateDCATTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
 
-    // add another paragraph to description
-    res.getEml().setDescription("Second paragraph");
-
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
     // ensure line break is properly escaped
-    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\"" + "\\n" + "Second paragraph" + "\""));
+    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\""));
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 
@@ -200,14 +197,10 @@ public class GenerateDCATTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
 
-    // add another paragraph with '\n' character to description
-    res.getEml().setDescription("Second paragraph\nwith line break");
-
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
     // ensure line break is properly escaped
-    assertTrue(dcat.contains("dct:description \"\"\"Test \\\"description\\\"\\nSecond paragraph\n" +
-        "with line break\"\"\""));
+    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\""));
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 

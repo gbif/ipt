@@ -364,7 +364,7 @@ public class ResourceManagerImplTest {
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
-    assertEquals("Test description", res.getEml().getDescription());
+    assertEquals("<p>Test description</p>", res.getEml().getDescription());
     assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEml().getEmlVersion());
   }
 
@@ -426,7 +426,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties
     assertNull(res.getEml().getTitle());
-    assertTrue(res.getEml().getDescription().isEmpty());
+    assertNull(res.getEml().getDescription());
 
     // properties that never get set on new resource creation
 
@@ -517,7 +517,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties
     assertNull(res.getEml().getTitle());
-    assertTrue(res.getEml().getDescription().isEmpty());
+    assertNull(res.getEml().getDescription());
   }
 
   /**
@@ -1655,7 +1655,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, reconstructed.getRecordsPublished()); // changed
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
-    assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription()); // changed
+    assertEquals("<p>Test description for version 1.1</p>", reconstructed.getEml().getDescription()); // changed
   }
 
   /**
@@ -1716,7 +1716,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, reconstructed.getRecordsPublished()); // unchanged
     // ensure reconstructed resource uses eml-5.0.xml
     assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
-    assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription()); // changed
+    assertEquals("<p>This dataset covers mosses and lichens from Russia.</p>", reconstructed.getEml().getDescription()); // changed
     // creator populated
     assertNotNull(resource.getCreator());
     assertEquals(creator, resource.getCreator());

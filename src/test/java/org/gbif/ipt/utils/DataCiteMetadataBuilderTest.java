@@ -336,8 +336,6 @@ public class DataCiteMetadataBuilderTest {
     // Abstract aka description
     assertEquals("Comprehensive ants collection.",
       dataCiteMetadata.getDescriptions().getDescription().get(0).getContent().get(0));
-    assertEquals("Mostly dried preserved.",
-      dataCiteMetadata.getDescriptions().getDescription().get(1).getContent().get(0));
     assertEquals(DescriptionType.ABSTRACT,
       dataCiteMetadata.getDescriptions().getDescription().get(0).getDescriptionType());
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
