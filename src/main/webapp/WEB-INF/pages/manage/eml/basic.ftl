@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script>
         $(document).ready(function(){
@@ -231,6 +233,147 @@
                 minimumResultsForSearch: 'Infinity',
                 theme: 'bootstrap4'
             });
+
+            var docBookDescription = `${eml.description}`;
+            var htmlDescription = convertToHtml(docBookDescription);
+
+            var docBookGettingStarted = `${eml.gettingStarted!}`;
+            var htmlGettingStarted = convertToHtml(docBookGettingStarted);
+
+            var docBookIntroduction = `${eml.introduction!}`;
+            var htmlIntroduction = convertToHtml(docBookIntroduction);
+
+            $('#description-editor').summernote({
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
+                toolbar: [
+                    ['insert', ['codeview']]
+                ]
+            });
+
+            $('#description-editor').summernote('code', htmlDescription);
+
+            $('#gettingStarted-editor').summernote({
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
+                toolbar: [
+                    ['insert', ['codeview']]
+                ]
+            });
+
+            $('#gettingStarted-editor').summernote('code', htmlGettingStarted);
+
+            $('#introduction-editor').summernote({
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
+                toolbar: [
+                    ['insert', ['codeview']]
+                ]
+            });
+
+            $('#introduction-editor').summernote('code', htmlIntroduction);
+
+            // Function to convert HTML to DocBook
+            function convertToDocBook(html) {
+                // Replace <div> with <section>
+                html = html.replace(/<div>/g, '<section>').replace(/<\/div>/g, '</section>');
+
+                // Replace <h1> with <title>
+                html = html.replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>');
+
+                // Replace <p> with <para>
+                html = html.replace(/<p>/g, '<para>').replace(/<\/p>/g, '</para>');
+
+                // Replace <ul> with <itemizedlist> and <li> with <listitem>
+                html = html.replace(/<ul>/g, '<itemizedlist>').replace(/<\/ul>/g, '</itemizedlist>');
+                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
+
+                // Replace <ol> with <orderedlist> and <li> with <listitem>
+                html = html.replace(/<ol>/g, '<orderedlist>').replace(/<\/ol>/g, '</orderedlist>');
+                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
+
+                // Replace <b> with <emphasis>
+                html = html.replace(/<b>/g, '<emphasis>').replace(/<\/b>/g, '</emphasis>');
+
+                // Replace <sub> with <subscript> and <sup> with <superscript>
+                html = html.replace(/<sub>/g, '<subscript>').replace(/<\/sub>/g, '</subscript>');
+                html = html.replace(/<sup>/g, '<superscript>').replace(/<\/sup>/g, '</superscript>');
+
+                // Replace <pre> with <literal>
+                html = html.replace(/<pre>/g, '<literal>').replace(/<\/pre>/g, '</literal>');
+
+                // Replace <a href="...">...</a> with <ulink url="..."><citetitle>...</citetitle></ulink>
+                html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '<ulink url="$1"><citetitle>$2</citetitle></ulink>');
+
+                return html;
+            }
+
+            function convertToHtml(docBook) {
+                // Decode HTML entities
+                docBook = $('<textarea />').html(docBook).text();
+
+                // Replace <section> with <div>
+                docBook = docBook.replace(/<section>/g, '<div>').replace(/<\/section>/g, '</div>');
+
+                // Replace <title> with <h1>
+                docBook = docBook.replace(/<title>/g, '<h1>').replace(/<\/title>/g, '</h1>');
+
+                // Replace <para> with <p>
+                docBook = docBook.replace(/<para>/g, '<p>').replace(/<\/para>/g, '</p>');
+
+                // Replace <itemizedlist> with <ul> and <listitem> with <li>
+                docBook = docBook.replace(/<itemizedlist>/g, '<ul>').replace(/<\/itemizedlist>/g, '</ul>');
+                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
+
+                // Replace <orderedlist> with <ol> and <listitem> with <li>
+                docBook = docBook.replace(/<orderedlist>/g, '<ol>').replace(/<\/orderedlist>/g, '</ol>');
+                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
+
+                // Replace <emphasis> with <b>
+                docBook = docBook.replace(/<emphasis>/g, '<b>').replace(/<\/emphasis>/g, '</b>');
+
+                // Replace <subscript> with <sub> and <superscript> with <sup>
+                docBook = docBook.replace(/<subscript>/g, '<sub>').replace(/<\/subscript>/g, '</sub>');
+                docBook = docBook.replace(/<superscript>/g, '<sup>').replace(/<\/superscript>/g, '</sup>');
+
+                // Replace <literal> with <pre>
+                docBook = docBook.replace(/<literal>/g, '<pre>').replace(/<\/literal>/g, '</pre>');
+
+                // Replace <ulink url="..."><citetitle>...</citetitle></ulink> with <a href="...">...</a>
+                docBook = docBook.replace(/<ulink url="([^"]+)"><citetitle>([^<]+)<\/citetitle><\/ulink>/g, '<a href="$1">$2</a>');
+
+                return docBook;
+            }
+
+            // Form submission events
+            $('#basic-metadata-form').submit(function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Extract HTML content from Summernote editor
+                var htmlContentDescription = $('#description-editor').summernote('code');
+                var htmlContentGettingStarted = $('#gettingStarted-editor').summernote('code');
+                var htmlContentIntroduction = $('#introduction-editor').summernote('code');
+
+                // Convert HTML to DocBook
+                var docbookContentDescription = convertToDocBook(htmlContentDescription);
+                var docbookContentGettingStarted = convertToDocBook(htmlContentGettingStarted);
+                var docbookContentIntroduction = convertToDocBook(htmlContentIntroduction);
+
+                // Assign DocBook content to a hidden input field
+                $('#description').val(docbookContentDescription);
+                $('#gettingStarted').val(docbookContentGettingStarted);
+                $('#introduction').val(docbookContentIntroduction);
+
+                // Submit the form
+                this.submit();
+            });
         });
     </script>
     <style>
@@ -271,7 +414,7 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="basic-metadata-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container my-3 p-3">
@@ -412,51 +555,33 @@
                     <div class="my-3 p-3">
                         <!-- Descriptions, broken into one or more paragraphs -->
                         <@textinline name="eml.description" help="i18n" requiredField=true/>
-                        <div id="items">
-                            <#list eml.description as item>
-                                <div id="item-${item_index}" class="handle item pb-4 border-bottom">
-                                    <div class="handle columnLinks my-2 d-flex justify-content-end">
-                                        <a id="removeLink-${item_index}" class="removeLink metadata-action-link mt-1" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                </svg>
-                                            </span>
-                                            <span><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/></span>
-                                        </a>
-                                    </div>
-                                    <@simpleText name="eml.description[${item_index}]" minlength=5 requiredField=true></@simpleText>
-                                </div>
-                            </#list>
-                        </div>
-                        <div class="addNew my-2">
-                            <a id="plus" href="" class="metadata-action-link">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
-                                <span><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.description.item'/></span>
-                            </a>
-                        </div>
 
-                        <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
-                            <div class="handle columnLinks my-2 d-flex justify-content-end">
-                                <a id="removeLink" class="removeLink metadata-action-link" href="">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                        </svg>
-                                    </span>
-                                    <span><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/></span>
-                                </a>
-                            </div>
-                            <@simpleText name=""/>
+                        <div class="mt-3">
+                            <textarea id="description-editor" name="description"></textarea>
+                            <input id="description" type="hidden" name="eml.description">
+                        </div>
+                    </div>
+
+                    <div class="my-md-3 p-3">
+                        <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
+
+                        <div class="mt-3">
+                            <textarea id="gettingStarted-editor" name="gettingStarted"></textarea>
+                            <input id="gettingStarted" type="hidden" name="eml.gettingStarted">
+                        </div>
+                    </div>
+
+                    <div class="my-md-3 p-3">
+                        <@textinline name="manage.metadata.introduction" help="i18n"/>
+
+                        <div class="mt-3">
+                            <textarea id="introduction-editor" name="introduction"></textarea>
+                            <input id="introduction" type="hidden" name="eml.introduction">
                         </div>
                     </div>
 
                     <div class="my-3 p-3">
-                        <@textinline name="eml.maintenance"/>
+                        <@textinline name="eml.maintenance" help="i18n"/>
 
                         <div class="row g-3 mt-2">
                             <div class="col-lg-6">
