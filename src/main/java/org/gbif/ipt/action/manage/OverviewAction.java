@@ -1252,6 +1252,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       usableSpace = cfg.getDataDir().getDataDirUsableSpace();
       freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
+
+      if (resource.isPublished()
+          && resource.getEml() != null
+          && resource.getEml().getProject() != null
+          && resource.getEml().getProject().getTitle() != null
+          && resource.getEml().getProject().getPersonnel().isEmpty()) {
+        addActionWarning(getText("validation.personnel.now.required"));
+      }
     }
   }
 
