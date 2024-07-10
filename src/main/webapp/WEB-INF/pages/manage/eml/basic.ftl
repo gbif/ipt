@@ -226,7 +226,7 @@
                 theme: 'bootstrap4'
             });
 
-            var docBookDescription = `${eml.description}`;
+            var docBookDescription = `${eml.description!}`;
             var htmlDescription = convertToHtml(docBookDescription);
 
             var docBookGettingStarted = `${eml.gettingStarted!}`;

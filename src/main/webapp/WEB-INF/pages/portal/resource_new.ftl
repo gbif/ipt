@@ -483,14 +483,8 @@
                         <@s.text name='portal.resource.description'/>
                     </h4>
                     <div property="dc:abstract" class="mt-3 overflow-x-auto">
-                        <#if (eml.description?size>0)>
-                            <#list eml.description as para>
-                                <#if para?has_content>
-                                    <p>
-                                        <@para?interpret />
-                                    </p>
-                                </#if>
-                            </#list>
+                        <#if (eml.description??)>
+                            ${eml.description}
                         <#else>
                             <p><@s.text name='portal.resource.no.description'/></p>
                         </#if>

@@ -511,9 +511,9 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
-    // be valid, otherwise an error is displayed
-    if (emlValidator.areAllSectionsValid(this, resource)) {
+    // before saving, the minimum amount of mandatory metadata must have been provided, and the current metadata section
+    // must be valid, otherwise an error is displayed
+    if (emlValidator.isSectionValid(this, resource, section)) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified

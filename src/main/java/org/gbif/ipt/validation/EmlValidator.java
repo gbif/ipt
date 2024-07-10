@@ -152,6 +152,17 @@ public class EmlValidator extends BaseValidator {
     return !problemsEncountered;
   }
 
+  public boolean isSectionValid(BaseAction action, Resource resource, MetadataSection section) {
+    validate(action, resource, section);
+
+    if (action.hasActionErrors() || action.hasFieldErrors()) {
+      action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu." + section.getName())}));
+      return false;
+    }
+
+    return true;
+  }
+
   /**
    * Validate an EML document, optionally only a part of it.
    * </br>
@@ -187,7 +198,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // description - mandatory and greater than 5 chars
-          if (eml.getDescription().isEmpty()) {
+          if (eml.getDescription() == null) {
             action
               .addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
           } else {
