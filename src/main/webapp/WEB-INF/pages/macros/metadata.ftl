@@ -491,15 +491,16 @@ $(document).ready(function(){
         var $target = getTargetLink(event);
         var id = $target.attr("id");
         var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
-        var newItem = $('#baseItem-relatedProject-personnel').clone();
-        newItem.hide();
-        newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
-        newItem.slideDown('slow');
 
         // set correct indexes, names, ids
         var numberOfSubEntities = $("#relatedProject-" + entityIndex + "-personnel ." + "personnel-item").length;
         var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
         var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt;
+
+        var newItem = $('#baseItem-relatedProject-personnel').clone();
+        newItem.hide();
+        newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
+        newItem.slideDown('slow');
 
         newItem.attr("id", "relatedProject-" + entityIndex + "-personnel-" + subEntityIndex);
         var $firstNameInput = newItem.find("#firstName");
