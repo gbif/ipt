@@ -2754,3 +2754,25 @@ span.contact-citation-banner {
     font-weight: bolder;
     border-radius: 3px;
 }
+
+.ul-contact-info {
+    display: inline;
+    padding: 0;
+}
+
+.ul-contact-info li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.ul-contact-info li.item:after {
+    font-style: normal;
+    content: '\25CF';
+    font-size: 80%;
+    padding-left: 4px;
+    padding-right: 2px;
+}
+
+.break-all {
+    word-break: break-all;
+}
