@@ -497,7 +497,7 @@
                     </h4>
                     <div property="dc:abstract" class="mt-3 overflow-x-auto">
                         <#if (eml.description??)>
-                            ${eml.description}
+                            <@eml.description?interpret />
                         <#else>
                             <p><@s.text name='portal.resource.no.description'/></p>
                         </#if>
