@@ -116,6 +116,12 @@
         <div class="my-3 p-3">
             <p class="text-center"><@s.text name='manage.autopublish.intro'/></p>
 
+            <p id="timezone" class="text-center">
+                <@s.text name="manage.autopublish.help.timezone">
+                    <@s.param>${serverTimeZone}</@s.param>
+                </@s.text>
+            </p>
+
             <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
                     <div class="callout callout-warning text-smaller">
@@ -249,13 +255,6 @@
                             <input type="time" id="updateFrequencyTime" name="updateFrequencyTime" class="form-control" value="${updateFrequencyTime!"12:00"}">
                         </div>
 
-                        <div class="col-12 text-center mt-2">
-                            <div class="callout callout-info text-smaller">
-                                   <@s.text name="manage.autopublish.warning.timezone">
-                                     <@s.param>${serverTimeZone}</@s.param>
-                                   </@s.text>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </form>

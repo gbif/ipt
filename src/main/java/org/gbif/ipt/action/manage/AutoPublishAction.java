@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.manage;
 
-import java.util.TimeZone;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -29,6 +28,7 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,11 +87,12 @@ public class AutoPublishAction extends ManagerBaseAction {
     int updateFrequencyMinute = Integer.parseInt(hoursAndMinutes[1]);
 
     if (OFF_FREQUENCY.equals(updateFrequency)) {
-      LOG.debug("Turning off auto-publishing for [" + resource.getShortname() + "]");
+      LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
       resource.clearAutoPublishingFrequency();
     } else if (MaintenanceUpdateFrequency.findByIdentifier(updateFrequency) != null) {
-      LOG.debug("Updating auto-publishing for [" + resource.getShortname() + "] to: " + updateFrequency);
+      LOG.debug("Updating auto-publishing for [{}] to: {}", resource.getShortname(),
+        updateFrequency);
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
       resource.setAutoPublishingFrequency(
         updateFrequency,
@@ -102,17 +103,18 @@ public class AutoPublishAction extends ManagerBaseAction {
         updateFrequencyHour,
         updateFrequencyMinute);
     } else {
-      LOG.error("Cannot update auto-publishing setting for [" + resource.getShortname() + "]. Unknown frequency: " + updateFrequency);
+      LOG.error("Cannot update auto-publishing setting for [{}]. Unknown frequency: {}",
+        resource.getShortname(), updateFrequency);
       return ERROR;
     }
 
     // update next published date
     resourceManager.updatePublicationMode(resource);
-    LOG.debug("Next published date updated for resource [" + resource.getShortname() + "]");
+    LOG.debug("Next published date updated for resource [{}]", resource.getShortname());
 
     // save entire resource config
     saveResource();
-    LOG.debug("Resource [" + resource.getShortname() + "] saved with new auto-publishing setting");
+    LOG.debug("Resource [{}] saved with new auto-publishing setting", resource.getShortname());
 
     return SUCCESS;
   }
@@ -177,19 +179,22 @@ public class AutoPublishAction extends ManagerBaseAction {
   private void populateDaysOfWeek() {
     daysOfWeek = new LinkedHashMap<>();
     for (DayEnum dayOfWeek : DayEnum.values()) {
-      daysOfWeek.put(dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
+      daysOfWeek.put(
+          dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
     }
   }
 
   private void setServerTimeZone() {
-    req.setAttribute("serverTimeZone", TimeZone.getDefault().getDisplayName(false ,0));
+    req.setAttribute("serverTimeZone", TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
   }
 
   private void setUpdateFrequencyTime() {
     // Retrieve the saved time and set it as a request attribute
-    int savedHour = resource.getUpdateFrequencyHour();
-    int savedMinute = resource.getUpdateFrequencyMinute();
-    String savedTime = String.format("%02d:%02d", savedHour, savedMinute);
-    req.setAttribute("updateFrequencyTime", savedTime);
+    if (resource.getPublicationMode().equals(PublicationMode.AUTO_PUBLISH_ON)) {
+      int savedHour = resource.getUpdateFrequencyHour();
+      int savedMinute = resource.getUpdateFrequencyMinute();
+      String savedTime = String.format("%02d:%02d", savedHour, savedMinute);
+      req.setAttribute("updateFrequencyTime", savedTime);
+    }
   }
 }
