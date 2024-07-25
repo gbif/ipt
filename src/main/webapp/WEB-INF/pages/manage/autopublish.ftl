@@ -251,7 +251,7 @@
 
                         <div class="col-12 text-center mt-2">
                             <div class="callout callout-info text-smaller">
-                                   <@s.text name="manage.autopublish.warning.utc">
+                                   <@s.text name="manage.autopublish.warning.timezone">
                                      <@s.param>${serverTimeZone}</@s.param>
                                    </@s.text>
                             </div>
