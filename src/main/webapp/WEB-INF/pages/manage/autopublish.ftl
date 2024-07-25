@@ -248,6 +248,14 @@
                         <div id="updateFrequencyTimeWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
                             <input type="time" id="updateFrequencyTime" name="updateFrequencyTime" class="form-control" value="${updateFrequencyTime!"12:00"}">
                         </div>
+
+                        <div class="col-12 text-center mt-2">
+                            <div class="callout callout-info text-smaller">
+                                   <@s.text name="manage.autopublish.warning.utc">
+                                     <@s.param>${serverTimeZone}</@s.param>
+                                   </@s.text>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

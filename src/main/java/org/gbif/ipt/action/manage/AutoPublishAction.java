@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import java.util.TimeZone;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -67,6 +68,9 @@ public class AutoPublishAction extends ManagerBaseAction {
     populateBiMonths();
     populateDays();
     populateDaysOfWeek();
+
+    setServerTimeZone();
+    setUpdateFrequencyTime();
   }
 
   @Override
@@ -175,5 +179,17 @@ public class AutoPublishAction extends ManagerBaseAction {
     for (DayEnum dayOfWeek : DayEnum.values()) {
       daysOfWeek.put(dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
     }
+  }
+
+  private void setServerTimeZone() {
+    req.setAttribute("serverTimeZone", TimeZone.getDefault().getDisplayName(false ,0));
+  }
+
+  private void setUpdateFrequencyTime() {
+    // Retrieve the saved time and set it as a request attribute
+    int savedHour = resource.getUpdateFrequencyHour();
+    int savedMinute = resource.getUpdateFrequencyMinute();
+    String savedTime = String.format("%02d:%02d", savedHour, savedMinute);
+    req.setAttribute("updateFrequencyTime", savedTime);
   }
 }
