@@ -276,19 +276,25 @@
                 // Replace <div> with <section>
                 html = html.replace(/<div>/g, '<section>').replace(/<\/div>/g, '</section>');
 
-                // Replace <h1> with <title>
-                html = html.replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>');
+                // Replace <h> with <title>
+                html = html
+                    .replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>')
+                    .replace(/<h2>/g, '<title>').replace(/<\/h2>/g, '</title>')
+                    .replace(/<h3>/g, '<title>').replace(/<\/h3>/g, '</title>')
+                    .replace(/<h4>/g, '<title>').replace(/<\/h4>/g, '</title>')
+                    .replace(/<h5>/g, '<title>').replace(/<\/h5>/g, '</title>');
+
+                // Replace <ul> with <itemizedlist>
+                // Replace <ol> with <orderedlist>
+                // Replace <li> with <listitem>
+                // Also, wrap into <para> where needed
+                html = html
+                    .replace(/<ul>/g, '<para><itemizedlist>').replace(/<\/ul>/g, '</itemizedlist></para>')
+                    .replace(/<ol>/g, '<para><orderedlist>').replace(/<\/ol>/g, '</orderedlist></para>')
+                    .replace(/<li>/g, '<listitem><para>').replace(/<\/li>/g, '</para></listitem>');
 
                 // Replace <p> with <para>
                 html = html.replace(/<p>/g, '<para>').replace(/<\/p>/g, '</para>');
-
-                // Replace <ul> with <itemizedlist> and <li> with <listitem>
-                html = html.replace(/<ul>/g, '<itemizedlist>').replace(/<\/ul>/g, '</itemizedlist>');
-                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
-
-                // Replace <ol> with <orderedlist> and <li> with <listitem>
-                html = html.replace(/<ol>/g, '<orderedlist>').replace(/<\/ol>/g, '</orderedlist>');
-                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
 
                 // Replace <b> with <emphasis>
                 html = html.replace(/<b>/g, '<emphasis>').replace(/<\/b>/g, '</emphasis>');
@@ -316,16 +322,17 @@
                 // Replace <title> with <h1>
                 docBook = docBook.replace(/<title>/g, '<h1>').replace(/<\/title>/g, '</h1>');
 
+                // Replace <itemizedlist> with <ul>
+                // Replace <orderedlist> with <ol>
+                // Replace <listitem> with <li>
+                // Also, unwrap <para> where needed
+                docBook = docBook
+                    .replace(/<para><itemizedlist>/g, '<ul>').replace(/<\/itemizedlist><\/para>/g, '</ul>')
+                    .replace(/<para><orderedlist>/g, '<ol>').replace(/<\/orderedlist><\/para>/g, '</ol>')
+                    .replace(/<listitem><para>/g, '<li>').replace(/<\/para><\/listitem>/g, '</li>');
+
                 // Replace <para> with <p>
                 docBook = docBook.replace(/<para>/g, '<p>').replace(/<\/para>/g, '</p>');
-
-                // Replace <itemizedlist> with <ul> and <listitem> with <li>
-                docBook = docBook.replace(/<itemizedlist>/g, '<ul>').replace(/<\/itemizedlist>/g, '</ul>');
-                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
-
-                // Replace <orderedlist> with <ol> and <listitem> with <li>
-                docBook = docBook.replace(/<orderedlist>/g, '<ol>').replace(/<\/orderedlist>/g, '</ol>');
-                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
 
                 // Replace <emphasis> with <b>
                 docBook = docBook.replace(/<emphasis>/g, '<b>').replace(/<\/emphasis>/g, '</b>');
@@ -546,7 +553,7 @@
 
                     <div class="my-3 p-3">
                         <!-- Descriptions, broken into one or more paragraphs -->
-                        <@textinline name="eml.description" help="i18n" requiredField=true/>
+                        <@textinline name="eml.description" help="i18n" i18nkey="" requiredField=true/>
 
                         <div class="mt-3">
                             <textarea id="description-editor" name="description"></textarea>

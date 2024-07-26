@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.validation;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.api.vocabulary.Language;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -21,6 +20,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.metadata.eml.EMLProfileVersion;
+import org.gbif.metadata.eml.InvalidEmlException;
+import org.gbif.metadata.eml.ipt.IptEmlWriter;
 import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.BBox;
@@ -52,23 +54,35 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.validation.EmailValidationMessageTranslator.EMAIL_ERROR_TRANSLATIONS;
+import static org.gbif.metadata.eml.EmlValidator.newValidator;
 
 public class EmlValidator extends BaseValidator {
+
+  private static final Logger LOG = LogManager.getLogger(EmlValidator.class);
 
   protected static Pattern phonePattern = Pattern.compile("[\\w ()/+-\\.]+");
   private AppConfig cfg;
   private RegistrationManager regManager;
   private SimpleTextProvider simpleTextProvider;
+  private org.gbif.metadata.eml.EmlValidator emlProfileValidator;
 
   @Inject
   public EmlValidator(AppConfig cfg, RegistrationManager registrationManager, SimpleTextProvider simpleTextProvider) {
     this.cfg = cfg;
     this.regManager = registrationManager;
     this.simpleTextProvider = simpleTextProvider;
+    try {
+      this.emlProfileValidator = newValidator(EMLProfileVersion.GBIF_1_3);
+    } catch (Exception e) {
+      LOG.error("Failed to initialize EML Profile Validator", e);
+    }
   }
 
   /**
@@ -198,14 +212,55 @@ public class EmlValidator extends BaseValidator {
           }
 
           // description - mandatory and greater than 5 chars
-          if (eml.getDescription() == null) {
-            action
-              .addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
+//          if (eml.getDescription() == null) {
+//            action
+//              .addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
+//          } else {
+//            // ensure description is longer than min length
+//            if (!exists(eml.getDescription(), 5)) {
+//              action.addFieldError("eml.description",
+//                  action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+//            }
+//          }
+
+          // TODO: description length, it seems it's always has <p></p> so, adjust length?
+          if (emlProfileValidator == null) {
+            action.addActionError(action.getText("validation.cannnot.be.performed"));
           } else {
-            // ensure description is longer than min length
-            if (!exists(eml.getDescription(), 5)) {
-              action.addFieldError("eml.description",
-                  action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setDescription(eml.getDescription());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("eml.description")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.description")}));
+              LOG.error("Failed to validate description", e);
+            }
+
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setGettingStarted(eml.getGettingStarted());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.gettingStarted")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.gettingStarted")}));
+              LOG.error("Failed to validate getting started", e);
+            }
+
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setIntroduction(eml.getIntroduction());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.introduction")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.introduction")}));
+              LOG.error("Failed to validate introduction", e);
             }
           }
 
@@ -477,6 +532,25 @@ public class EmlValidator extends BaseValidator {
                   }
                 }
               }
+            }
+          }
+
+          break;
+
+        case ACKNOWLEDGEMENTS_SECTION:
+          if (emlProfileValidator == null) {
+            action.addActionError(action.getText("validation.cannnot.be.performed"));
+          } else {
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setAcknowledgements(eml.getAcknowledgements());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.acknowledgements")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.acknowledgements")}));
+              LOG.error("Failed to validate acknowledgements", e);
             }
           }
 
@@ -1524,5 +1598,23 @@ public class EmlValidator extends BaseValidator {
       }
     }
     return true;
+  }
+
+  // Minimal Stub EML to perform validation of specific fields using XML Schema
+  private static Eml getStubEml() {
+    Eml eml = new Eml();
+    eml.setTitle("title");
+    eml.setLanguage("EN");
+    eml.setMetadataLanguage("EN");
+    eml.setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\">Creative Commons Attribution Non Commercial (CC-BY-NC 4.0) License</a>.");
+    eml.setDescription("description");
+    eml.setUpdateFrequency("unknown");
+
+    Agent contact = new Agent();
+    contact.setLastName("Contact 1");
+    eml.addContact(contact);
+    eml.addCreator(contact);
+
+    return eml;
   }
 }
