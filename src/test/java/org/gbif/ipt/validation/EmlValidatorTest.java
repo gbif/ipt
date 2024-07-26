@@ -33,13 +33,13 @@ import org.gbif.utils.file.FileUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -165,6 +165,7 @@ public class EmlValidatorTest {
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
+  @Disabled("Currently not applicable because of DocBook")
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
