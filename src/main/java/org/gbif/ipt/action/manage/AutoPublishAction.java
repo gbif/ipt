@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import java.util.Optional;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -191,8 +192,8 @@ public class AutoPublishAction extends ManagerBaseAction {
   private void setUpdateFrequencyTime() {
     // Retrieve the saved time and set it as a request attribute
     if (resource.getPublicationMode().equals(PublicationMode.AUTO_PUBLISH_ON)) {
-      int savedHour = resource.getUpdateFrequencyHour();
-      int savedMinute = resource.getUpdateFrequencyMinute();
+      int savedHour = Optional.ofNullable(resource.getUpdateFrequencyHour()).orElse(12);
+      int savedMinute = Optional.ofNullable(resource.getUpdateFrequencyMinute()).orElse(0);
       String savedTime = String.format("%02d:%02d", savedHour, savedMinute);
       req.setAttribute("updateFrequencyTime", savedTime);
     }
