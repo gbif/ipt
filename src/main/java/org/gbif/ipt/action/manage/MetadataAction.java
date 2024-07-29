@@ -374,6 +374,13 @@ public class MetadataAction extends ManagerBaseAction {
           getEml().setIntellectualRights(removeNewlineCharacters(getEml().getIntellectualRights()));
         }
 
+        // Public, published occurrence resources have a distribution download URL
+        if (CoreRowType.OCCURRENCE.toString().equalsIgnoreCase(resource.getCoreType())
+            && resource.isPublished()
+            && resource.isPubliclyAvailable()) {
+          resource.getEml().setDistributionDownloadUrl(cfg.getBaseUrl() + "/archive.do?r=" + resource.getShortname());
+        }
+
         // populate agent vocabularies
         loadAgentVocabularies();
 
