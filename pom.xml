@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.0.7-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
