@@ -347,10 +347,10 @@
             var $input = item.find("input");
             var $select = item.find("select");
             var $deleteLink = item.find("a");
-            $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "]").attr("name", function () {
+            $input.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {
                 return $(this).attr("id");
             });
-            $select.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "]").attr("name", function () {
+            $select.attr("id", "eml." + entityName + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory").attr("name", function () {
                 return $(this).attr("id");
             });
             $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
