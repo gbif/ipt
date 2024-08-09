@@ -1203,6 +1203,7 @@
 
             $("#" + idPrefix + index + " [id$='firstName']").val($("#eml\\.contacts\\[0\\]\\.firstName").val());
             $("#" + idPrefix + index + " [id$='lastName']").val($("#eml\\.contacts\\[0\\]\\.lastName").val());
+            $("#" + idPrefix + index + " [id$='salutation']").val($("#eml\\.contacts\\[0\\]\\.salutation").val());
             copyAllSubEntitiesFromFirstContact(entityName, "position", index);
             $("#" + idPrefix + index + " [id$='organisation']").val($("#eml\\.contacts\\[0\\]\\.organisation").val());
             copyAllSubEntitiesFromFirstContact(entityName, "address", index);

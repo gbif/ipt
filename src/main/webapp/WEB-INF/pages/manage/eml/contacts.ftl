@@ -583,14 +583,15 @@
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
                                                 </div>
-                                                <#list eml.contacts[contact_index].userIds as userId>
+                                                <#list contact.userIds as userId>
+                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="contact-${contact_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
-                                                                <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.contacts[contact_index].userIds[userId_index].directory)!]!}"/>
+                                                                <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.contacts[contact_index].userIds[userId_index].identifier)!}"/>
+                                                                <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                             </div>
 
                                                             <div class="col-md-4 mt-auto py-1">
@@ -605,16 +606,17 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </#if>
                                                 </#list>
                                             </div>
                                             <div class="row">
                                                 <div class="col mt-auto py-1">
                                                     <a id="plus-contact-identifier-${contact_index}" href="" class="metadata-action-link add-identifier">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
                                                         <span>${addNewIdentifier?lower_case?cap_first}</span>
                                                     </a>
                                                 </div>
@@ -1092,14 +1094,15 @@
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
                                                 </div>
-                                                <#list eml.creators[creator_index].userIds as userId>
+                                                <#list creator.userIds as userId>
+                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="creator-${creator_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
-                                                                <@select name="eml.creators[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.creators[creator_index].userIds[userId_index].directory)!]!}"/>
+                                                                <@select name="eml.creators[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.creators[creator_index].userIds[userId_index].identifier)!}"/>
+                                                                <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                             </div>
 
                                                             <div class="col-md-4 mt-auto py-1">
@@ -1114,6 +1117,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </#if>
                                                 </#list>
                                             </div>
                                             <div class="row">
@@ -1180,11 +1184,11 @@
                                 <div class="col-md-5">
                                     <@input name="eml.creator.lastName" i18nkey="eml.resourceCreator.lastName"/>
                                 </div>
-                                <div class="col-md-6">
-                                    <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
-                                </div>
                                 <div class="col-md-2">
                                     <@input name="eml.creator.salutation" i18nkey="eml.resourceCreator.salutation"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
                                 </div>
                                 <div class="col-12">
                                     <div id="creator-positions">
@@ -1609,14 +1613,15 @@
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
                                                 </div>
-                                                <#list eml.metadataProviders[metadataProvider_index].userIds as userId>
+                                                <#list metadataProvider.userIds as userId>
+                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="metadataProvider-${metadataProvider_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
-                                                                <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.metadataProviders[metadataProvider_index].userIds[userId_index].directory)!]!}"/>
+                                                                <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.metadataProviders[metadataProvider_index].userIds[userId_index].identifier)!}"/>
+                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                             </div>
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
@@ -1630,6 +1635,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </#if>
                                                 </#list>
                                             </div>
                                             <div class="row">
@@ -2259,14 +2265,15 @@
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
                                                 </div>
-                                                <#list eml.associatedParties[item_index].userIds as userId>
+                                                <#list item.userIds as userId>
+                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="associatedParty-${item_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
-                                                                <@select name="eml.associatedParties[${item_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" withLabel=false value="${userIdDirecotriesExtended[(eml.associatedParties[item_index].userIds[0].directory)!]!}"/>
+                                                                <@select name="eml.associatedParties[${item_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(eml.associatedParties[item_index].userIds[0].identifier)!}"/>
+                                                                <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                             </div>
 
                                                             <div class="col-md-4 mt-auto py-1">
@@ -2281,6 +2288,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </#if>
                                                 </#list>
                                             </div>
                                             <div class="row">
