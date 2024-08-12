@@ -759,6 +759,11 @@ $(document).ready(function(){
             return $(this).attr("id");
         });
         $("#relatedProject-item-" + index + " [for$='title']").attr("for", "eml.project.relatedProjects[" + index + "].title");
+        // identifier
+        $("#relatedProject-item-" + index + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + index + "].identifier").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='identifier']").attr("for", "eml.project.relatedProjects[" + index + "].identifier");
         // description
         $("#relatedProject-item-" + index + " [id$='description']").attr("id", "eml.project.relatedProjects[" + index + "].description").attr("name", function () {
             return $(this).attr("id");

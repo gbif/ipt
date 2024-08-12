@@ -321,6 +321,9 @@
                                                 <@input name="eml.project.relatedProjects[" + item_index + "].title"  i18nkey="eml.project.relatedProject.title" requiredField=true/>
                                             </div>
                                             <div class="col-12">
+                                                <@input name="eml.project.relatedProjects[" + item_index + "].identifier"  i18nkey="eml.project.relatedProject.identifier" />
+                                            </div>
+                                            <div class="col-12">
                                                 <@text name="eml.project.relatedProjects[" + item_index + "].description"  i18nkey="eml.project.relatedProject.description" />
                                             </div>
                                             <div class="col-12">
@@ -534,6 +537,9 @@
                                 </div>
                                 <div class="col-12">
                                     <@input name="relatedProjecttitle" i18nkey="eml.project.relatedProject.title" requiredField=true/>
+                                </div>
+                                <div class="col-12">
+                                    <@input name="relatedProjectidentifier" i18nkey="eml.project.relatedProject.identifier" />
                                 </div>
                                 <div class="col-12">
                                     <@text name="relatedProjectdescription" i18nkey="eml.project.relatedProject.description" />
