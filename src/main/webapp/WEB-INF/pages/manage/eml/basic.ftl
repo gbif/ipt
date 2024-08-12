@@ -229,12 +229,6 @@
             var docBookDescription = `${eml.description!}`;
             var htmlDescription = convertToHtml(docBookDescription);
 
-            var docBookGettingStarted = `${eml.gettingStarted!}`;
-            var htmlGettingStarted = convertToHtml(docBookGettingStarted);
-
-            var docBookIntroduction = `${eml.introduction!}`;
-            var htmlIntroduction = convertToHtml(docBookIntroduction);
-
             $('#description-editor').summernote({
                 height: 200,
                 minHeight: null,
@@ -246,30 +240,6 @@
             });
 
             $('#description-editor').summernote('code', htmlDescription);
-
-            $('#gettingStarted-editor').summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ]
-            });
-
-            $('#gettingStarted-editor').summernote('code', htmlGettingStarted);
-
-            $('#introduction-editor').summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ]
-            });
-
-            $('#introduction-editor').summernote('code', htmlIntroduction);
 
             // Function to convert HTML to DocBook
             function convertToDocBook(html) {
@@ -305,6 +275,9 @@
 
                 // Replace <pre> with <literal>
                 html = html.replace(/<pre>/g, '<literal>').replace(/<\/pre>/g, '</literal>');
+
+                // Remove <br>
+                html = html.replace(/<br>/g, '').replace(/<\/br>/g, '');
 
                 // Replace <a href="...">...</a> with <ulink url="..."><citetitle>...</citetitle></ulink>
                 html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '<ulink url="$1"><citetitle>$2</citetitle></ulink>');
@@ -350,6 +323,33 @@
                 return docBook;
             }
 
+            function validateHTML(html) {
+                // Define allowed tags
+                const allowedTags = [
+                    'h1', 'h2', 'h3', 'h4', 'h5',
+                    'ul', 'ol', 'li',
+                    'p', 'b', 'sub', 'sup', 'pre', 'a'
+                ];
+
+                // Match all HTML tags in the string
+                const regex = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+                let match;
+
+                // Loop through all found tags
+                while ((match = regex.exec(html)) !== null) {
+                    // Extract the tag name from the match
+                    const tagName = match[1].toLowerCase();
+
+                    // Check if the tag is not in the allowed list
+                    if (!allowedTags.includes(tagName)) {
+                        return { isValid: false, tag: match[0] }; // Forbidden tag found
+                    }
+                }
+
+                return { isValid: true }; // No forbidden tags found
+            }
+
+
             // Form submission events
             $('#basic-metadata-form').submit(function(event) {
                 // Prevent the default form submission
@@ -357,18 +357,19 @@
 
                 // Extract HTML content from Summernote editor
                 var htmlContentDescription = $('#description-editor').summernote('code');
-                var htmlContentGettingStarted = $('#gettingStarted-editor').summernote('code');
-                var htmlContentIntroduction = $('#introduction-editor').summernote('code');
+
+                const descriptionValidation = validateHTML(htmlContentDescription);
+                if (!descriptionValidation.isValid) {
+                    $("#html-validation-error-block").show();
+                    $("#html-validation-error-message").text("Invalid description. Unsupported tag: " + descriptionValidation.tag);
+                    return;
+                }
 
                 // Convert HTML to DocBook
                 var docbookContentDescription = convertToDocBook(htmlContentDescription);
-                var docbookContentGettingStarted = convertToDocBook(htmlContentGettingStarted);
-                var docbookContentIntroduction = convertToDocBook(htmlContentIntroduction);
 
                 // Assign DocBook content to a hidden input field
                 $('#description').val(docbookContentDescription);
-                $('#gettingStarted').val(docbookContentGettingStarted);
-                $('#introduction').val(docbookContentIntroduction);
 
                 // Submit the form
                 this.submit();
@@ -411,6 +412,16 @@
 
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+    <div id="html-validation-error-block" class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+        <div class="me-3">
+            <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+        </div>
+        <div class="overflow-x-hidden pt-1">
+            <span id="html-validation-error-message"></span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 </div>
 
 <form id="basic-metadata-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
@@ -558,24 +569,6 @@
                         <div class="mt-3">
                             <textarea id="description-editor" name="description"></textarea>
                             <input id="description" type="hidden" name="eml.description">
-                        </div>
-                    </div>
-
-                    <div class="my-md-3 p-3">
-                        <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
-
-                        <div class="mt-3">
-                            <textarea id="gettingStarted-editor" name="gettingStarted"></textarea>
-                            <input id="gettingStarted" type="hidden" name="eml.gettingStarted">
-                        </div>
-                    </div>
-
-                    <div class="my-md-3 p-3">
-                        <@textinline name="manage.metadata.introduction" help="i18n"/>
-
-                        <div class="mt-3">
-                            <textarea id="introduction-editor" name="introduction"></textarea>
-                            <input id="introduction" type="hidden" name="eml.introduction">
                         </div>
                     </div>
 

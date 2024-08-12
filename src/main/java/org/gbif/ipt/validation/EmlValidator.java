@@ -238,30 +238,6 @@ public class EmlValidator extends BaseValidator {
               action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.description")}));
               LOG.error("Failed to validate description", e);
             }
-
-            try {
-              Eml stubValidationEml = getStubEml();
-              stubValidationEml.setGettingStarted(eml.getGettingStarted());
-              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
-              emlProfileValidator.validate(emlString);
-            } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.gettingStarted")}));
-            } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.gettingStarted")}));
-              LOG.error("Failed to validate getting started", e);
-            }
-
-            try {
-              Eml stubValidationEml = getStubEml();
-              stubValidationEml.setIntroduction(eml.getIntroduction());
-              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
-              emlProfileValidator.validate(emlString);
-            } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.introduction")}));
-            } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.introduction")}));
-              LOG.error("Failed to validate introduction", e);
-            }
           }
 
           // intellectual rights - mandatory
@@ -707,6 +683,36 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
+          break;
+
+        case ADDITIONAL_DESCRIPTION_SECTION:
+          if (emlProfileValidator == null) {
+            action.addActionError(action.getText("validation.cannnot.be.performed"));
+          } else {
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setGettingStarted(eml.getGettingStarted());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.gettingStarted")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.gettingStarted")}));
+              LOG.error("Failed to validate getting started", e);
+            }
+
+            try {
+              Eml stubValidationEml = getStubEml();
+              stubValidationEml.setIntroduction(eml.getIntroduction());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.introduction")}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.introduction")}));
+              LOG.error("Failed to validate introduction", e);
+            }
+          }
           break;
 
         case KEYWORDS_SECTION:

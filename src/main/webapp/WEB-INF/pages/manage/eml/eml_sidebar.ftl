@@ -2,7 +2,7 @@
 
 <nav id="sidebar-content">
     <ul>
-        <#list ["basic", "contacts", "acknowledgements", "geocoverage", "taxcoverage","tempcoverage", "keywords", "project", "methods", "citations", "collections", "physical", "additional"] as it>
+        <#list ["basic", "contacts", "acknowledgements", "geocoverage", "taxcoverage", "tempcoverage", "additionalDescription", "keywords", "project", "methods", "citations", "collections", "physical", "additional"] as it>
             <li>
                 <a class="sidebar-navigation-link <#if it == currentMetadataPage>active</#if>" href="metadata-${it}.do?r=${resource.shortname!r!}">
                     <@s.text name="submenu.${it}"/>

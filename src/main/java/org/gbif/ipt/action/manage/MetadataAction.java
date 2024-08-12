@@ -547,6 +547,9 @@ public class MetadataAction extends ManagerBaseAction {
           next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
           break;
         case TEMPORAL_COVERAGE_SECTION:
+          next = MetadataSection.ADDITIONAL_DESCRIPTION_SECTION;
+          break;
+        case ADDITIONAL_DESCRIPTION_SECTION:
           next = MetadataSection.KEYWORDS_SECTION;
           break;
         case KEYWORDS_SECTION:
