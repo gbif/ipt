@@ -190,7 +190,7 @@
                     </div>
 
                     <div class="text-center">
-                        <h1 class="py-2 text-gbif-header fs-2 fw-normal">
+                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
                             <@s.text name='manage.metadata.acknowledgements.title'/>
                         </h1>
                     </div>
