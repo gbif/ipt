@@ -171,7 +171,6 @@
                 return { isValid: true }; // No forbidden tags found
             }
 
-
             // Form submission events
             $('#additional-description-form').submit(function(event) {
                 // Prevent the default form submission
@@ -182,19 +181,41 @@
                 var htmlContentGettingStarted = $('#gettingStarted-editor').summernote('code');
                 var htmlContentIntroduction = $('#introduction-editor').summernote('code');
 
-                // const introductionValidation = validateHTML(htmlContentIntroduction);
-                // if (!introductionValidation.isValid) {
-                //     $("#html-validation-error-block").show();
-                //     $("#html-validation-error-message").text("Invalid introduction. Unsupported tag: " + descriptionValidation.tag);
-                //     return;
-                // }
-                //
-                // const gettingStartedValidation = validateHTML(htmlContentGettingStarted);
-                // if (!gettingStartedValidation.isValid) {
-                //     $("#html-validation-error-block").show();
-                //     $("#html-validation-error-message").text("Invalid getting started. Unsupported tag: " + descriptionValidation.tag);
-                //     return;
-                // }
+                const purposeValidation = validateHTML(htmlContentPurpose);
+                if (!purposeValidation.isValid) {
+                    $("#html-validation-error-block").show();
+                    var errorMessagePurpose =
+                        '${action.getText("eml.purpose.unsupportedHtmlInput1")?js_string}'
+                        + " " + purposeValidation.tag + ". "
+                        + '${action.getText("eml.purpose.unsupportedHtmlInput2")?js_string}';
+                    $("#html-validation-error-message").text(errorMessagePurpose);
+                    $('body, html').animate({scrollTop: 0});
+                    return;
+                }
+
+                const introductionValidation = validateHTML(htmlContentIntroduction);
+                if (!introductionValidation.isValid) {
+                    $("#html-validation-error-block").show();
+                    var errorMessageIntroduction =
+                        '${action.getText("manage.metadata.introduction.unsupportedHtmlInput1")?js_string}'
+                        + " " + introductionValidation.tag + ". "
+                        + '${action.getText("manage.metadata.introduction.unsupportedHtmlInput2")?js_string}';
+                    $("#html-validation-error-message").text(errorMessageIntroduction);
+                    $('body, html').animate({scrollTop: 0});
+                    return;
+                }
+
+                const gettingStartedValidation = validateHTML(htmlContentGettingStarted);
+                if (!gettingStartedValidation.isValid) {
+                    $("#html-validation-error-block").show();
+                    var errorMessageGettingStarted =
+                        '${action.getText("manage.metadata.gettingStarted.unsupportedHtmlInput1")?js_string}'
+                        + " " + gettingStartedValidation.tag + ". "
+                        + '${action.getText("manage.metadata.gettingStarted.unsupportedHtmlInput2")?js_string}';
+                    $("#html-validation-error-message").text(errorMessageGettingStarted);
+                    $('body, html').animate({scrollTop: 0});
+                    return;
+                }
 
                 // Convert HTML to DocBook
                 var docbookContentPurpose = convertToDocBook(htmlContentPurpose);

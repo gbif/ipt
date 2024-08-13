@@ -361,7 +361,12 @@
                 const descriptionValidation = validateHTML(htmlContentDescription);
                 if (!descriptionValidation.isValid) {
                     $("#html-validation-error-block").show();
-                    $("#html-validation-error-message").text("Invalid description. Unsupported tag: " + descriptionValidation.tag);
+                    var errorMessage =
+                        '${action.getText("eml.description.unsupportedHtmlInput1")?js_string}'
+                        + " " + descriptionValidation.tag + ". "
+                        + '${action.getText("eml.description.unsupportedHtmlInput2")?js_string}';
+                    $("#html-validation-error-message").text(errorMessage);
+                    $('body, html').animate({scrollTop: 0});
                     return;
                 }
 

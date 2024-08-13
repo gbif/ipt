@@ -22,6 +22,32 @@
 
             $('#acknowledgements-editor').summernote('code', htmlAcknowledgements);
 
+            function validateHTML(html) {
+                // Define allowed tags
+                const allowedTags = [
+                    'h1', 'h2', 'h3', 'h4', 'h5',
+                    'ul', 'ol', 'li',
+                    'p', 'b', 'sub', 'sup', 'pre', 'a'
+                ];
+
+                // Match all HTML tags in the string
+                const regex = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+                let match;
+
+                // Loop through all found tags
+                while ((match = regex.exec(html)) !== null) {
+                    // Extract the tag name from the match
+                    const tagName = match[1].toLowerCase();
+
+                    // Check if the tag is not in the allowed list
+                    if (!allowedTags.includes(tagName)) {
+                        return { isValid: false, tag: match[0] }; // Forbidden tag found
+                    }
+                }
+
+                return { isValid: true }; // No forbidden tags found
+            }
+
             // Form submission event
             $('#acknowledgements-form').submit(function(event) {
                 // Prevent the default form submission
@@ -29,6 +55,18 @@
 
                 // Extract HTML content from Summernote editor
                 var htmlContent = $('#acknowledgements-editor').summernote('code');
+
+                const acknowledgementsValidation = validateHTML(htmlContent);
+                if (!acknowledgementsValidation.isValid) {
+                    $("#html-validation-error-block").show();
+                    var errorMessage =
+                        '${action.getText("manage.metadata.acknowledgements.unsupportedHtmlInput1")?js_string}'
+                        + " " +  acknowledgementsValidation.tag + ". "
+                        + '${action.getText("manage.metadata.acknowledgements.unsupportedHtmlInput2")?js_string}';
+                    $("#html-validation-error-message").text(errorMessage);
+                    $('body, html').animate({scrollTop: 0});
+                    return;
+                }
 
                 // Convert HTML to DocBook
                 var docbookContent = convertToDocBook(htmlContent);
@@ -68,6 +106,9 @@
 
                 // Replace <pre> with <literal>
                 html = html.replace(/<pre>/g, '<literal>').replace(/<\/pre>/g, '</literal>');
+
+                // Remove <br>
+                html = html.replace(/<br>/g, '').replace(/<\/br>/g, '');
 
                 // Replace <a href="...">...</a> with <ulink url="..."><citetitle>...</citetitle></ulink>
                 html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '<ulink url="$1"><citetitle>$2</citetitle></ulink>');
@@ -120,6 +161,16 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+        <div id="html-validation-error-block" class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
+            <div class="me-3">
+                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1">
+                <span id="html-validation-error-message"></span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 
     <form id="acknowledgements-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
@@ -175,6 +226,10 @@
                         <div class="my-md-3 p-3">
                             <p class="mb-3">
                                 <@s.text name='manage.metadata.acknowledgements.intro'/>
+                            </p>
+
+                            <p class="mb-3">
+                                <@s.text name='manage.metadata.acknowledgements.description'/>
                             </p>
 
                             <textarea id="acknowledgements-editor" name="acknowledgements"></textarea>
