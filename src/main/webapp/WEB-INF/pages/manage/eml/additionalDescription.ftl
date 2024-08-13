@@ -316,7 +316,7 @@
                             <@textinline name="manage.metadata.introduction" help="i18n"/>
 
                             <div>
-                                <p class="mb-3 mt-3">
+                                <p class="mb-3 mt-3 text-smaller fst-italic">
                                     <@s.text name='manage.metadata.introduction.description'/>
                                 </p>
                             </div>
@@ -332,7 +332,7 @@
                             <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
 
                             <div>
-                                <p class="mb-3 mt-3">
+                                <p class="mb-3 mt-3 text-smaller fst-italic">
                                     <@s.text name='manage.metadata.gettingStarted.description'/>
                                 </p>
                             </div>

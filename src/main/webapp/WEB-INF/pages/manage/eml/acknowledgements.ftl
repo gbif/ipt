@@ -228,7 +228,7 @@
                                 <@s.text name='manage.metadata.acknowledgements.intro'/>
                             </p>
 
-                            <p class="mb-3">
+                            <p class="mb-3 text-smaller fst-italic">
                                 <@s.text name='manage.metadata.acknowledgements.description'/>
                             </p>
 
