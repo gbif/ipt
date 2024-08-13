@@ -18,11 +18,26 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
+            var docBookPurpose = `${eml.purpose!}`;
+            var htmlPurpose = convertToHtml(docBookPurpose);
+
             var docBookGettingStarted = `${eml.gettingStarted!}`;
             var htmlGettingStarted = convertToHtml(docBookGettingStarted);
 
             var docBookIntroduction = `${eml.introduction!}`;
             var htmlIntroduction = convertToHtml(docBookIntroduction);
+
+            $('#purpose-editor').summernote({
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: false,
+                toolbar: [
+                    ['insert', ['codeview']]
+                ]
+            });
+
+            $('#purpose-editor').summernote('code', htmlPurpose);
 
             $('#gettingStarted-editor').summernote({
                 height: 200,
@@ -163,6 +178,7 @@
                 event.preventDefault();
 
                 // Extract HTML content from Summernote editor
+                var htmlContentPurpose = $('#purpose-editor').summernote('code');
                 var htmlContentGettingStarted = $('#gettingStarted-editor').summernote('code');
                 var htmlContentIntroduction = $('#introduction-editor').summernote('code');
 
@@ -181,10 +197,12 @@
                 // }
 
                 // Convert HTML to DocBook
+                var docbookContentPurpose = convertToDocBook(htmlContentPurpose);
                 var docbookContentGettingStarted = convertToDocBook(htmlContentGettingStarted);
                 var docbookContentIntroduction = convertToDocBook(htmlContentIntroduction);
 
                 // Assign DocBook content to a hidden input field
+                $('#purpose').val(docbookContentPurpose);
                 $('#gettingStarted').val(docbookContentGettingStarted);
                 $('#introduction').val(docbookContentIntroduction);
 
@@ -262,21 +280,17 @@
                     </div>
 
                     <div class="bd-content">
+                        <!-- Purpose -->
                         <div class="my-md-3 p-3">
-                            <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
-
-                            <div>
-                                <p class="mb-3 mt-3">
-                                    <@s.text name='manage.metadata.gettingStarted.description'/>
-                                </p>
-                            </div>
+                            <@textinline name="eml.purpose" help="i18n"/>
 
                             <div class="mt-3">
-                                <textarea id="gettingStarted-editor" name="gettingStarted"></textarea>
-                                <input id="gettingStarted" type="hidden" name="eml.gettingStarted">
+                                <textarea id="purpose-editor" name="purpose"></textarea>
+                                <input id="purpose" type="hidden" name="eml.purpose">
                             </div>
                         </div>
 
+                        <!-- Introduction -->
                         <div class="my-md-3 p-3">
                             <@textinline name="manage.metadata.introduction" help="i18n"/>
 
@@ -289,6 +303,22 @@
                             <div class="mt-3">
                                 <textarea id="introduction-editor" name="introduction"></textarea>
                                 <input id="introduction" type="hidden" name="eml.introduction">
+                            </div>
+                        </div>
+
+                        <!-- Getting Started -->
+                        <div class="my-md-3 p-3">
+                            <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
+
+                            <div>
+                                <p class="mb-3 mt-3">
+                                    <@s.text name='manage.metadata.gettingStarted.description'/>
+                                </p>
+                            </div>
+
+                            <div class="mt-3">
+                                <textarea id="gettingStarted-editor" name="gettingStarted"></textarea>
+                                <input id="gettingStarted" type="hidden" name="eml.gettingStarted">
                             </div>
                         </div>
                     </div>
