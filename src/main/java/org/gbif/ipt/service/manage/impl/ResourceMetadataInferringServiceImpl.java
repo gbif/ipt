@@ -192,8 +192,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     if (!errorOccurredWhileProcessingGeographicMetadata) {
       TemporalCoverage tempCoverage = new TemporalCoverage();
       try {
-        tempCoverage.setStart(params.startDateStr);
-        tempCoverage.setEnd(params.endDateStr);
+        tempCoverage.setStart(params.startDateTA.toString());
+        tempCoverage.setEnd(params.endDateTA.toString());
         inferredTemporalMetadata.setInferred(true);
         inferredTemporalMetadata.setData(tempCoverage);
       } catch (ParseException e) {
@@ -1219,8 +1219,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     if (!errorOccurredWhileProcessingTemporalMetadata) {
       try {
-        inferredTemporalScope.setStartDate(DateUtils.calendarDate(params.startDateStr));
-        inferredTemporalScope.setEndDate(DateUtils.calendarDate(params.endDateStr));
+        inferredTemporalScope.setStartDate(DateUtils.calendarDate(params.startDateTA.toString()));
+        inferredTemporalScope.setEndDate(DateUtils.calendarDate(params.endDateTA.toString()));
         inferredTemporalScope.setInferred(true);
       } catch (ParseException e) {
         LOG.error("Failed to parse date for temporal coverage", e);
