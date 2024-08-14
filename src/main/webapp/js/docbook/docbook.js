@@ -1,15 +1,18 @@
 // Function to convert HTML to DocBook
 function convertToDocBook(html) {
+    // Replace <h> with <title>
+    // Hacks are needed:
+    // 1. Title must be inside <section>
+    // 2. There must be at least one <para> or <section> inside <section> (empty <para> added)
+    html = html
+        .replace(/<h1>/g, '<section><title>').replace(/<\/h1>/g, '</title><para></para></section>')
+        .replace(/<h2>/g, '<section><title>').replace(/<\/h2>/g, '</title><para></para></section>')
+        .replace(/<h3>/g, '<section><title>').replace(/<\/h3>/g, '</title><para></para></section>')
+        .replace(/<h4>/g, '<section><title>').replace(/<\/h4>/g, '</title><para></para></section>')
+        .replace(/<h5>/g, '<section><title>').replace(/<\/h5>/g, '</title><para></para></section>');
+
     // Replace <div> with <section>
     html = html.replace(/<div>/g, '<section>').replace(/<\/div>/g, '</section>');
-
-    // Replace <h> with <title>
-    html = html
-        .replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>')
-        .replace(/<h2>/g, '<title>').replace(/<\/h2>/g, '</title>')
-        .replace(/<h3>/g, '<title>').replace(/<\/h3>/g, '</title>')
-        .replace(/<h4>/g, '<title>').replace(/<\/h4>/g, '</title>')
-        .replace(/<h5>/g, '<title>').replace(/<\/h5>/g, '</title>');
 
     // Replace <ul> with <itemizedlist>
     // Replace <ol> with <orderedlist>
@@ -20,6 +23,9 @@ function convertToDocBook(html) {
         .replace(/<ol>/g, '<para><orderedlist>').replace(/<\/ol>/g, '</orderedlist></para>')
         .replace(/<li>/g, '<listitem><para>').replace(/<\/li>/g, '</para></listitem>');
 
+    // Replace <pre> with <literalLayout>
+    html = html.replace(/<pre>/g, '<para><literalLayout>').replace(/<\/pre>/g, '</literalLayout></para>');
+
     // Replace <p> with <para>
     html = html.replace(/<p>/g, '<para>').replace(/<\/p>/g, '</para>');
 
@@ -29,9 +35,6 @@ function convertToDocBook(html) {
     // Replace <sub> with <subscript> and <sup> with <superscript>
     html = html.replace(/<sub>/g, '<subscript>').replace(/<\/sub>/g, '</subscript>');
     html = html.replace(/<sup>/g, '<superscript>').replace(/<\/sup>/g, '</superscript>');
-
-    // Replace <pre> with <literal>
-    html = html.replace(/<pre>/g, '<literal>').replace(/<\/pre>/g, '</literal>');
 
     // Remove <br>
     html = html.replace(/<br>/g, '').replace(/<\/br>/g, '');
@@ -46,6 +49,12 @@ function convertToDocBook(html) {
 function convertToHtml(docBook) {
     // Decode HTML entities
     docBook = $('<textarea />').html(docBook).text();
+
+    // Remove empty <para></para>
+    docBook = docBook.replace(/<para><\/para>/g, '');
+
+    // Replace <title> with <h1>
+    docBook = docBook.replace(/<section><title>/g, '<h1>').replace(/<\/title><\/section>/g, '</h1>');
 
     // Replace <section> with <div>
     docBook = docBook.replace(/<section>/g, '<div>').replace(/<\/section>/g, '</div>');
@@ -62,6 +71,9 @@ function convertToHtml(docBook) {
         .replace(/<para><orderedlist>/g, '<ol>').replace(/<\/orderedlist><\/para>/g, '</ol>')
         .replace(/<listitem><para>/g, '<li>').replace(/<\/para><\/listitem>/g, '</li>');
 
+    // Replace <literal> with <pre>
+    docBook = docBook.replace(/<para><literalLayout>/g, '<pre>').replace(/<\/literalLayout><\/para>/g, '</pre>');
+
     // Replace <para> with <p>
     docBook = docBook.replace(/<para>/g, '<p>').replace(/<\/para>/g, '</p>');
 
@@ -71,9 +83,6 @@ function convertToHtml(docBook) {
     // Replace <subscript> with <sub> and <superscript> with <sup>
     docBook = docBook.replace(/<subscript>/g, '<sub>').replace(/<\/subscript>/g, '</sub>');
     docBook = docBook.replace(/<superscript>/g, '<sup>').replace(/<\/superscript>/g, '</sup>');
-
-    // Replace <literal> with <pre>
-    docBook = docBook.replace(/<literal>/g, '<pre>').replace(/<\/literal>/g, '</pre>');
 
     // Replace <ulink url="..."><citetitle>...</citetitle></ulink> with <a href="...">...</a>
     docBook = docBook.replace(/<ulink url="([^"]+)"><citetitle>([^<]+)<\/citetitle><\/ulink>/g, '<a href="$1">$2</a>');
