@@ -125,6 +125,14 @@
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
                             <p class="mb-3">
+                                <a tabindex="0" role="button"
+                                   class="popover-link"
+                                   data-bs-toggle="popover"
+                                   data-bs-trigger="focus"
+                                   data-bs-html="true"
+                                   data-bs-content="<@s.text name='manage.metadata.acknowledgements.info' escapeHtml=true/>">
+                                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                </a>
                                 <@s.text name='manage.metadata.acknowledgements.intro'/>
                             </p>
 

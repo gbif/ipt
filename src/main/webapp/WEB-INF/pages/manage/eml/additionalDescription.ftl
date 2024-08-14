@@ -198,6 +198,12 @@
                         <div class="my-md-3 p-3">
                             <@textinline name="eml.purpose" help="i18n"/>
 
+                            <div>
+                                <p class="mb-3 mt-3 text-smaller fst-italic">
+                                    <@s.text name='eml.purpose.description'/>
+                                </p>
+                            </div>
+
                             <div class="mt-3">
                                 <textarea id="purpose-editor" name="purpose"></textarea>
                                 <input id="purpose" type="hidden" name="eml.purpose">
