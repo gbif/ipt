@@ -5,6 +5,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>
+    <script src="${baseURL}/js/docbook/docbook.js"></script>
     <script>
         $(document).ready(function() {
             var docBookAcknowledgements = `${eml.acknowledgements!}`;
@@ -21,32 +22,6 @@
             });
 
             $('#acknowledgements-editor').summernote('code', htmlAcknowledgements);
-
-            function validateHTML(html) {
-                // Define allowed tags
-                const allowedTags = [
-                    'h1', 'h2', 'h3', 'h4', 'h5',
-                    'ul', 'ol', 'li',
-                    'p', 'b', 'sub', 'sup', 'pre', 'a'
-                ];
-
-                // Match all HTML tags in the string
-                const regex = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-                let match;
-
-                // Loop through all found tags
-                while ((match = regex.exec(html)) !== null) {
-                    // Extract the tag name from the match
-                    const tagName = match[1].toLowerCase();
-
-                    // Check if the tag is not in the allowed list
-                    if (!allowedTags.includes(tagName)) {
-                        return { isValid: false, tag: match[0] }; // Forbidden tag found
-                    }
-                }
-
-                return { isValid: true }; // No forbidden tags found
-            }
 
             // Form submission event
             $('#acknowledgements-form').submit(function(event) {
@@ -77,81 +52,6 @@
                 // Submit the form
                 this.submit();
             });
-
-            // Function to convert HTML to DocBook
-            function convertToDocBook(html) {
-                // Replace <div> with <section>
-                html = html.replace(/<div>/g, '<section>').replace(/<\/div>/g, '</section>');
-
-                // Replace <h1> with <title>
-                html = html.replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>');
-
-                // Replace <p> with <para>
-                html = html.replace(/<p>/g, '<para>').replace(/<\/p>/g, '</para>');
-
-                // Replace <ul> with <itemizedlist> and <li> with <listitem>
-                html = html.replace(/<ul>/g, '<itemizedlist>').replace(/<\/ul>/g, '</itemizedlist>');
-                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
-
-                // Replace <ol> with <orderedlist> and <li> with <listitem>
-                html = html.replace(/<ol>/g, '<orderedlist>').replace(/<\/ol>/g, '</orderedlist>');
-                html = html.replace(/<li>/g, '<listitem>').replace(/<\/li>/g, '</listitem>');
-
-                // Replace <b> with <emphasis>
-                html = html.replace(/<b>/g, '<emphasis>').replace(/<\/b>/g, '</emphasis>');
-
-                // Replace <sub> with <subscript> and <sup> with <superscript>
-                html = html.replace(/<sub>/g, '<subscript>').replace(/<\/sub>/g, '</subscript>');
-                html = html.replace(/<sup>/g, '<superscript>').replace(/<\/sup>/g, '</superscript>');
-
-                // Replace <pre> with <literal>
-                html = html.replace(/<pre>/g, '<literal>').replace(/<\/pre>/g, '</literal>');
-
-                // Remove <br>
-                html = html.replace(/<br>/g, '').replace(/<\/br>/g, '');
-
-                // Replace <a href="...">...</a> with <ulink url="..."><citetitle>...</citetitle></ulink>
-                html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '<ulink url="$1"><citetitle>$2</citetitle></ulink>');
-
-                return html;
-            }
-
-            function convertToHtml(docBook) {
-                // Decode HTML entities
-                docBook = $('<textarea />').html(docBook).text();
-
-                // Replace <section> with <div>
-                docBook = docBook.replace(/<section>/g, '<div>').replace(/<\/section>/g, '</div>');
-
-                // Replace <title> with <h1>
-                docBook = docBook.replace(/<title>/g, '<h1>').replace(/<\/title>/g, '</h1>');
-
-                // Replace <para> with <p>
-                docBook = docBook.replace(/<para>/g, '<p>').replace(/<\/para>/g, '</p>');
-
-                // Replace <itemizedlist> with <ul> and <listitem> with <li>
-                docBook = docBook.replace(/<itemizedlist>/g, '<ul>').replace(/<\/itemizedlist>/g, '</ul>');
-                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
-
-                // Replace <orderedlist> with <ol> and <listitem> with <li>
-                docBook = docBook.replace(/<orderedlist>/g, '<ol>').replace(/<\/orderedlist>/g, '</ol>');
-                docBook = docBook.replace(/<listitem>/g, '<li>').replace(/<\/listitem>/g, '</li>');
-
-                // Replace <emphasis> with <b>
-                docBook = docBook.replace(/<emphasis>/g, '<b>').replace(/<\/emphasis>/g, '</b>');
-
-                // Replace <subscript> with <sub> and <superscript> with <sup>
-                docBook = docBook.replace(/<subscript>/g, '<sub>').replace(/<\/subscript>/g, '</sub>');
-                docBook = docBook.replace(/<superscript>/g, '<sup>').replace(/<\/superscript>/g, '</sup>');
-
-                // Replace <literal> with <pre>
-                docBook = docBook.replace(/<literal>/g, '<pre>').replace(/<\/literal>/g, '</pre>');
-
-                // Replace <ulink url="..."><citetitle>...</citetitle></ulink> with <a href="...">...</a>
-                docBook = docBook.replace(/<ulink url="([^"]+)"><citetitle>([^<]+)<\/citetitle><\/ulink>/g, '<a href="$1">$2</a>');
-
-                return docBook;
-            }
         });
     </script>
     <#assign currentMenu="manage"/>

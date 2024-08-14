@@ -5,6 +5,7 @@
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script src="${baseURL}/js/docbook/docbook.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
@@ -326,6 +327,7 @@
             function validateHTML(html) {
                 // Define allowed tags
                 const allowedTags = [
+                    'div',
                     'h1', 'h2', 'h3', 'h4', 'h5',
                     'ul', 'ol', 'li',
                     'p', 'b', 'sub', 'sup', 'pre', 'a'
