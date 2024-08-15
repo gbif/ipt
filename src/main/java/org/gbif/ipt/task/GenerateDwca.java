@@ -19,6 +19,7 @@ import org.gbif.dwc.ArchiveField;
 import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.MetaDescriptorWriter;
+import org.gbif.dwc.MetadataException;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
@@ -34,6 +35,9 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.metadata.eml.EMLProfileVersion;
+import org.gbif.metadata.eml.EmlValidator;
+import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.csv.CSVReader;
@@ -47,6 +51,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,6 +80,7 @@ import org.apache.logging.log4j.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.xml.sax.SAXException;
 
 public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -386,6 +392,28 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     try {
       // retrieve newly generated archive - decompressed
       Archive arch = DwcFiles.fromLocation(dwcaFolder.toPath());
+
+      // validate EML
+      try {
+        addMessage(Level.INFO, "? Validating EML file");
+        EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
+        String emlString = arch.getMetadata();
+        emlValidator.validate(emlString);
+        addMessage(Level.INFO, "✓ Validated EML file");
+      } catch (MetadataException | SAXException e) {
+        // some error validating this file, report
+        log.error("Exception caught while validating EML file", e);
+        addMessage(Level.ERROR, "Failed to validate EML file");
+        setState(e);
+        throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
+      } catch (InvalidEmlException e) {
+        // InvalidEmlException
+        log.error("Invalid EML", e);
+        addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
+        setState(e);
+        throw new GeneratorException("Invalid EML", e);
+      }
+
       // populate basisOfRecord lookup HashMap
       loadBasisOfRecordMapFromVocabulary();
       // perform validation on core file (includes core ID and basisOfRecord validation)
@@ -402,7 +430,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       throw new GeneratorException("Problem occurred while validating DwC-A", e);
     }
     // final reporting
-    addMessage(Level.INFO, "Archive validated");
+    addMessage(Level.INFO, "✓ Archive validated");
   }
 
   /**
