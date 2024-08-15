@@ -1,5 +1,8 @@
 // Function to convert HTML to DocBook
 function convertToDocBook(html) {
+    // Trim first
+    html = html.trim();
+
     // Replace <h> with <title>
     // Hacks are needed:
     // 1. Title must be inside <section>
