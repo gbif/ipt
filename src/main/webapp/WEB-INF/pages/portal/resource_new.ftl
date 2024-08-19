@@ -1044,7 +1044,7 @@
                 </#if>
 
                 <!-- Additional metadata section -->
-                <#if eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
+                <#if eml.introduction?has_content || eml.gettingStarted?has_content || eml.acknowledgements?has_content || eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
                     <span class="anchor anchor-home-resource-page" id="anchor-additional"></span>
                     <div id="additional" class="pb-5 section">
 
@@ -1058,6 +1058,24 @@
                             </#if>
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
+                                    <#if eml.acknowledgements?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.acknowledgements'/></th>
+                                            <td><@eml.acknowledgements?interpret /></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.introduction?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.introduction'/></th>
+                                            <td><@eml.introduction?interpret /></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.gettingStarted?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.gettingStarted'/></th>
+                                            <td><@eml.gettingStarted?interpret /></td>
+                                        </tr>
+                                    </#if>
                                     <#if eml.purpose?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.purpose'/></th>
