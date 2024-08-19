@@ -879,6 +879,34 @@
                                             <td><@eml.project.designDescription?interpret /></td>
                                         </tr>
                                     </#if>
+                                    <#if eml.project.awards?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.project.award'/></th>
+                                            <td>
+                                                <#list eml.project.awards as award>
+                                                    <strong>${award.title!}</strong><br>
+                                                    <#list award.funderIdentifiers as fi>${fi}<#sep>, </#sep></#list><br>
+                                                    <#if award.funderName?has_content>${award.funderName}<br></#if>
+                                                    <#if award.awardNumber?has_content>${award.awardNumber}<br></#if>
+                                                    <#if award.awardUrl?has_content><a href="${award.awardUrl}">${award.awardUrl}</a><br></#if>
+                                                    <#sep><br></#sep>
+                                                </#list>
+                                            </td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.project.relatedProjects?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.project.relatedProjects'/></th>
+                                            <td>
+                                                <#list eml.project.relatedProjects as relatedProject>
+                                                    <strong>${relatedProject.title}<br></strong>
+                                                    <#if relatedProject.identifier?has_content>${relatedProject.identifier}<br></#if>
+                                                    <#if relatedProject.description?has_content>${relatedProject.description}<br></#if>
+                                                    <#sep><br></#sep>
+                                                </#list>
+                                            </td>
+                                        </tr>
+                                    </#if>
                                 </table>
                             </div>
 
