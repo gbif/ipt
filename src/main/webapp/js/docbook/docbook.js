@@ -3,6 +3,9 @@ function convertToDocBook(html) {
     // Trim first
     html = html.trim();
 
+    // Remove <br> tags
+    html = html.replace(/<br>/g, '').replace(/<br\/>/g, '');
+
     // Replace <h> with <title>
     // Hacks are needed:
     // 1. Title must be inside <section>
@@ -96,11 +99,13 @@ function convertToHtml(docBook) {
 // Function to validate HTML (it must contain only allowed tags)
 function validateHTML(html) {
     // Define allowed tags
+    // br - is not allowed but will be cleaned in the beginning
     const allowedTags = [
         'div',
         'h1', 'h2', 'h3', 'h4', 'h5',
         'ul', 'ol', 'li',
-        'p', 'b', 'sub', 'sup', 'pre', 'a'
+        'p', 'b', 'sub', 'sup', 'pre', 'a',
+        'br'
     ];
 
     // Match all HTML tags in the string
