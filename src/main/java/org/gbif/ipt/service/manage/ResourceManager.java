@@ -43,6 +43,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.annotation.Nullable;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.ListValuedMap;
 import org.xml.sax.SAXException;
@@ -421,7 +422,7 @@ public interface ResourceManager {
    * @param emlFile
    * @param validate
    */
-  void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
+  void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, ParserConfigurationException, IOException, InvalidEmlException, ImportException;
 
   /**
    * Replace the datapackage metadata file in a resource by the provided file

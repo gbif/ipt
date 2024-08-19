@@ -127,6 +127,9 @@ public final class Constants {
   public static final Set<String> GBIF_SUPPORTED_LICENSES;
   public static final Set<String> GBIF_SUPPORTED_LICENSES_CODES;
 
+  public static final String EML_2_1_1_SCHEMA = "eml://ecoinformatics.org/eml-2.1.1";
+  public static final String EML_2_2_0_SCHEMA = "https://eml.ecoinformatics.org/eml-2.2.0";
+
   static {
     Set<String> licencesInternal = new HashSet<>();
     licencesInternal.add("http://creativecommons.org/publicdomain/zero/1.0/legalcode");

@@ -54,7 +54,6 @@ import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
-import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
@@ -176,6 +175,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListValuedMap;
@@ -197,6 +199,8 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.EML_2_1_1_SCHEMA;
+import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
@@ -452,10 +456,36 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws IOException if failed to read EML file
    * @throws InvalidEmlException if EML is invalid
    */
-  private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
-      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
-      String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
-      emlValidator.validate(emlString);
+  private void validateEmlFile(File emlFile)
+      throws SAXException, ParserConfigurationException, IOException, InvalidEmlException {
+    EMLProfileVersion emlProfileVersion = getEmlProfileVersion(emlFile);
+    EmlValidator emlValidator = EmlValidator.newValidator(emlProfileVersion);
+    String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
+    emlValidator.validate(emlString);
+  }
+
+  private EMLProfileVersion getEmlProfileVersion(File emlFile)
+      throws SAXException, ParserConfigurationException, IOException, InvalidEmlException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    org.w3c.dom.Document document = builder.parse(emlFile);
+
+    String emlNamespace = document.getDocumentElement().getNamespaceURI();
+
+    EMLProfileVersion emlProfileVersion;
+    if (EML_2_1_1_SCHEMA.equals(emlNamespace)) {
+      LOG.debug("Use GBIF metadata profile 1.2 for validation");
+      emlProfileVersion = EMLProfileVersion.GBIF_1_2;
+    } else if (EML_2_2_0_SCHEMA.equals(emlNamespace)) {
+      LOG.debug("Use GBIF metadata profile 1.3 for validation");
+      emlProfileVersion = EMLProfileVersion.GBIF_1_3;
+    } else {
+      LOG.error("Unsupported EML version or unrecognized namespace.");
+      throw new InvalidEmlException("Unsupported EML version or unrecognized namespace.");
+    }
+
+    return emlProfileVersion;
   }
 
   private void validateDatapackageMetadataFile(BaseAction action, File metadataFile, Class<? extends DataPackageMetadata> metadataClass) throws IOException, org.gbif.ipt.service.InvalidMetadataException {
@@ -980,7 +1010,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Validation is optional.
    */
   @Override
-  public void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException {
+  public void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, ParserConfigurationException, IOException, InvalidEmlException, ImportException {
     if (validate) {
       validateEmlFile(emlFile);
     }
