@@ -2776,3 +2776,8 @@ span.contact-citation-banner {
 .break-all {
     word-break: break-all;
 }
+
+/* HTML/DocBook textarea */
+.note-editor h1 {
+    font-size: 1.5rem;
+}
