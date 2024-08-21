@@ -321,12 +321,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Override
   public String getLatestCompatibleSchemaVersion(String schemaName, String schemaVersion) throws RegistryException {
-    Map<String, String> jSON = gson
-        .fromJson(requestHttpGetFromRegistry(getDataSchemaVersionURL(schemaName, schemaVersion)).getContent(),
-            new TypeToken<Map<String, String>>() {
-            }.getType());
+    String content = null;
+    String dataSchemaVersionURL = null;
+    try {
+      dataSchemaVersionURL = getDataSchemaVersionURL(schemaName, schemaVersion);
+      content = requestHttpGetFromRegistry(dataSchemaVersionURL).getContent();
+      Map<String, String> jSON = gson
+          .fromJson(content,
+              new TypeToken<Map<String, String>>() {
+              }.getType());
 
-    return jSON.get("latestCompatibleVersion");
+      return jSON.get("latestCompatibleVersion");
+    } catch (Exception e) {
+      LOG.error("Error retrieving latest compatible schema version.\nURL: {}\nContent: {}",
+          dataSchemaVersionURL, content, e);
+      throw new RegistryException(Type.UNKNOWN, dataSchemaVersionURL, e);
+    }
   }
 
   @Override
@@ -371,6 +381,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schema url by name and version.
    */
   private String getDataSchemaURL(String schemaName, String schemaVersion) {
+    if ("extended-occurrence-dp".equals(schemaName)) {
+      return "https://rs.gbif.org/sandbox/experimental/data-packages/dwca_v2-dp/extended-occurrence-dp/0.1/";
+    }
     return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion;
   }
 

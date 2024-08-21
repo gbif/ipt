@@ -1192,9 +1192,7 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <#if typesVocabulary[resourceTypeLowerCase]??>
-                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
-                            </#if>
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]!resourceTypeLowerCase}</span>
                             <#if resource.status??>
                                 <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
                                     <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">

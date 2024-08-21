@@ -175,22 +175,20 @@
         <div class="container mx-auto">
             <div class="d-flex justify-content-between">
                 <div class="d-flex py-2 fs-smaller">
-                    [#if typesVocabulary[resourceTypeLowerCase]??]
-                        <div class="py-2 me-3">
-                            <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+                    <div class="py-2 me-3">
+                        <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]!resourceTypeLowerCase}</span>
 
-                            [#if resource.status??]
-                            <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
-                                [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
-                                    <i class="bi bi-circle fs-smaller-2"></i>
-                                [#else]
-                                    <i class="bi bi-circle-fill fs-smaller-2"></i>
-                                [/#if]
-                                <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
-                            </span>
+                        [#if resource.status??]
+                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
+                            [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
+                                <i class="bi bi-circle fs-smaller-2"></i>
+                            [#else]
+                                <i class="bi bi-circle-fill fs-smaller-2"></i>
                             [/#if]
-                        </div>
-                    [/#if]
+                            <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
+                        </span>
+                        [/#if]
+                    </div>
 
                     <div>
                         <span class="fw-500">${resource.title!resource.shortname}</span><br>

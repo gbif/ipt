@@ -243,7 +243,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       try {
         dataPackageFileRawContent = new String(Files.readAllBytes(tmpFileSchema.toPath()), StandardCharsets.UTF_8);
       } catch (IOException e) {
-        LOG.error("Failed to read the data package schema file " + filename, e);
+        LOG.error("Failed to read the data package schema file {}. {}", filename, e.getMessage());
       }
 
       try (FileWriter fw = new FileWriter(tmpFileSchema)) {
@@ -330,6 +330,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
                 String filename = org.gbif.ipt.utils.FileUtils
                     .getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
+                filename = filename.replaceAll("dwca_v2", "dwca_v2_extended-occurrence-dp");
                 File tableSchemaFile = getTableSchemaConfigFileByName(files, filename);
                 tableSchemas.add(loadTableSchemaFromFile(tableSchemaFile));
               }

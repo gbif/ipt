@@ -486,9 +486,11 @@
                                 <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" requiredField=true />
                             </div>
 
+                            <#if (resource.coreType) != "extended-occurrence-dp">
                             <div class="col-lg-4">
                                 <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" requiredField=true />
                             </div>
+                            </#if>
 
                             <div class="col-lg-4">
                                 <#if resource.organisation??>
@@ -502,9 +504,11 @@
                                 <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" requiredField=true />
                             </div>
 
+                            <#if (resource.coreType) != "extended-occurrence-dp">
                             <div class="col-lg-4">
                                 <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
                             </div>
+                            </#if>
 
                             <div class="col-lg-4">
                                 <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unkown'}" requiredField=true />

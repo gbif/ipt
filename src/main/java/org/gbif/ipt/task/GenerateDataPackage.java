@@ -73,6 +73,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
+import static org.gbif.ipt.config.Constants.DWCA_V2_EXTENDED_OCCURRENCE;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -229,7 +230,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     try {
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
-      if (COL_DP.equals(resource.getCoreType())) {
+      if (DWCA_V2_EXTENDED_OCCURRENCE.equals(resource.getCoreType())) {
+        dataPackage.write(zip, this::writeEMLMetadata, true);
+      } else if (COL_DP.equals(resource.getCoreType())) {
         dataPackage.write(zip, this::writeCustomColDPMetadata, true);
       } else {
         dataPackage.write(zip, true);
@@ -259,7 +262,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Apart from standard frictionless metadata ColDP archive must contain specific metadata.yaml file.
+   * Apart from a standard frictionless metadata, ColDP archive must contain specific metadata.yaml file.
    */
   private void writeCustomColDPMetadata(Path outputDir) {
     Path target = outputDir.getFileSystem().getPath("metadata.yaml");
@@ -270,6 +273,20 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       addMessage(Level.ERROR, "Failed to write metadata.yaml");
     }
   }
+
+  /**
+   * Apart from a standard frictionless metadata, DwCA v2 occurrence must contain a EML file.
+   */
+  private void writeEMLMetadata(Path outputDir) {
+    Path target = outputDir.getFileSystem().getPath("eml.xml");
+    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+      metadataReader.writeValue(writer, resource.getEml());
+    } catch (IOException e) {
+      log.error("Failed to write eml.xml", e);
+      addMessage(Level.ERROR, "Failed to write eml.xml");
+    }
+  }
+
 
   /**
    * Checks if the executing thread has been interrupted, i.e. generation was cancelled.
@@ -792,6 +809,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         addCamtrapMetadata();
       } else if (COL_DP.equals(type)) {
         addColMetadata();
+      } else if (DWCA_V2_EXTENDED_OCCURRENCE.equals(type)) {
+        addDataPackageMetadata();
       } else {
         addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
       }
@@ -823,6 +842,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private void addCamtrapMetadata() throws Exception {
+    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+
+    dataPackage = new Package(metadataFile.toPath(), false);
+    setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+  }
+
+  private void addDataPackageMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
 
     dataPackage = new Package(metadataFile.toPath(), false);
