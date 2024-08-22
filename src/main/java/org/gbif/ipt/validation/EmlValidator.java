@@ -850,7 +850,7 @@ public class EmlValidator extends BaseValidator {
               if (isAgentsListEmpty(rp.getPersonnel())) {
                 action.addActionError(action.getText("eml.project.relatedProject.personnel.required"));
               } else {
-                for (int personnelIndex = 0; personnelIndex < eml.getProject().getPersonnel().size(); personnelIndex++) {
+                for (int personnelIndex = 0; personnelIndex < eml.getProject().getRelatedProjects().get(index).getPersonnel().size(); personnelIndex++) {
                   Agent p = eml.getProject().getRelatedProjects().get(index).getPersonnel().get(personnelIndex);
 
                   // firstName - optional. But if firstName exists, lastName have to exist
