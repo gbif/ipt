@@ -114,11 +114,6 @@ $(document).ready(function(){
         addRelatedProject(true);
     });
 
-    $(".add-relatedProject-personnel").click(function (event) {
-        event.preventDefault();
-        createNewPersonnelForRelatedProject(event);
-    });
-
     $("#plus-collection").click(function (event) {
         event.preventDefault();
         addNewCollectionItem(true);
@@ -141,10 +136,6 @@ $(document).ready(function(){
 
     $(".removeRelatedProjectLink").click(function (event) {
         removeRelatedProjectItem(event);
-    });
-
-    $(".removeRelatedProjectPersonnel").click(function (event) {
-        removeRelateProjectPersonnelItem(event);
     });
 
     $(".removeCollectionLink").click(function (event) {
@@ -423,22 +414,6 @@ $(document).ready(function(){
         });
     }
 
-    function removeRelateProjectPersonnelItem(event) {
-        event.preventDefault();
-        var $target = $(event.target);
-        if (!$target.is('a')) {
-            $target = $(event.target).closest('a');
-        }
-        var relatedProjectIndex = $target.attr("id").split("-")[3];
-        var personnelIndex = $target.attr("id").split("-")[4];
-        $('#relatedProject-' + relatedProjectIndex + '-personnel-' + personnelIndex).slideUp('slow', function () {
-            $(this).remove();
-            $("#relatedProject-" + relatedProjectIndex + "-personnel .personnel-item").each(function (index) {
-                setRelatedProjectPersonnelIndex($(this), relatedProjectIndex, index);
-            });
-        });
-    }
-
     function removeSpecimenPreservationMethodItem(event) {
         event.preventDefault();
         var $target = $(event.target);
@@ -487,42 +462,7 @@ $(document).ready(function(){
         });
     }
 
-    function createNewPersonnelForRelatedProject(event) {
-        var $target = getTargetLink(event);
-        var id = $target.attr("id");
-        var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
 
-        // set correct indexes, names, ids
-        var numberOfSubEntities = $("#relatedProject-" + entityIndex + "-personnel ." + "personnel-item").length;
-        var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
-        var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt;
-
-        var newItem = $('#baseItem-relatedProject-personnel').clone();
-        newItem.hide();
-        newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
-        newItem.slideDown('slow');
-
-        newItem.attr("id", "relatedProject-" + entityIndex + "-personnel-" + subEntityIndex);
-        var $firstNameInput = newItem.find("#firstName");
-        var $lastNameInput = newItem.find("#lastName");
-        var $salutationInput = newItem.find("#salutation");
-        var $directorySelect = newItem.find("#directory");
-        var $identifierInput = newItem.find("#identifier");
-        var $roleSelect = newItem.find("#role");
-        var $deleteLink = newItem.find("#personnel-removeLink");
-
-        $firstNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].firstName").attr("name", function () {return $(this).attr("id");});
-        $lastNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].lastName").attr("name", function () {return $(this).attr("id");});
-        $salutationInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].salutation").attr("name", function () {return $(this).attr("id");});
-        $directorySelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
-        $identifierInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
-        $roleSelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].role").attr("name", function () {return $(this).attr("id");});
-        $deleteLink.attr("id", "relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex);
-
-        $("#relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
-            removeRelateProjectPersonnelItem(event);
-        });
-    }
 
     function getTargetLink(event) {
         var $target = $(event.target);
@@ -774,7 +714,7 @@ $(document).ready(function(){
         $("#relatedProject-item-" + index + " #plus-relatedProject-personnel").attr("id", "plus-relatedProject-personnel-" + index);
         $("#plus-relatedProject-personnel-" + index).click(function (event) {
             event.preventDefault();
-            createNewPersonnelForRelatedProject(event);
+            // createNewPersonnelForRelatedProject(event);
         });
     }
 

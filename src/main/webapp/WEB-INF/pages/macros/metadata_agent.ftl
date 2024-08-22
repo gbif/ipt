@@ -10,7 +10,6 @@
         calcNumberOfCreatorItems();
         calcNumberOfMetadataProviderItems();
         calcNumberOfAssociatedPartyItems();
-        calcNumberOfPersonnelItems();
 
         function calcNumberOfContactItems() {
             var lastItem = $("#contact-items .item:last-child").attr("id");
@@ -42,14 +41,6 @@
                 associatedPartyItemsCount = parseInt(lastItem.split("-")[2]);
             else
                 associatedPartyItemsCount = -1;
-        }
-
-        function calcNumberOfPersonnelItems() {
-            var lastItem = $("#personnel-items .item:last-child").attr("id");
-            if (lastItem !== undefined)
-                personnelItemsCount = parseInt(lastItem.split("-")[2]);
-            else
-                personnelItemsCount = -1;
         }
 
         function initializeSortableComponent(componentId) {
@@ -87,7 +78,12 @@
         $("#plus-personnel").click(function (event) {
             event.preventDefault();
             addNewPersonnelItem(true);
-            initializeSortableComponent("personnel-items")
+            initializeSortableComponent("personnel-items");
+        });
+
+        $(".add-relatedProject-personnel").click(function (event) {
+            event.preventDefault();
+            createNewPersonnelForRelatedProject(event);
         });
 
         $(".removeContactLink").click(function (event) {
@@ -109,6 +105,27 @@
         $(".removePersonnelLink").click(function (event) {
             removePersonnelItem(event);
         });
+
+        $(".removeRelatedProjectPersonnelLink").click(function (event) {
+            removeRelatedProjectPersonnelItem(event);
+        });
+
+        function removeRelatedProjectPersonnelItem(event) {
+            event.preventDefault();
+            var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
+            var relatedProjectId = $target.attr("id").split("-")[3];
+            var personnelId = $target.attr("id").split("-")[4];
+
+            $('#relatedProject-' + relatedProjectId + '-personnel-' + personnelId).slideUp('slow', function () {
+                $(this).remove();
+                $("#relatedProject-" + relatedProjectId + "-personnel .relatedProject-personnel-item").each(function (index) {
+                    setRelatedProjectPersonnelItemIndex($(this), relatedProjectId, index);
+                });
+            });
+        }
 
         $(".add-agent-contact-info").click(function (event) {
             event.preventDefault();
@@ -274,7 +291,11 @@
 
         // example ID expected: creator-item-0
         function getEntityIndexFromItemId(id) {
-            return id.split("-")[2];
+            if (id.includes("relatedProject") && id.includes("personnel")) {
+                return id.split("-")[3];
+            } else {
+                return id.split("-")[2];
+            }
         }
 
         // example ID expected: creator-phone-remove-0-0
@@ -312,7 +333,7 @@
             });
         }
 
-        function removeAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex) {
+        function removeOrCleanAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex) {
             $('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's').children('.' + subEntityName + '-item').remove();
         }
 
@@ -413,6 +434,7 @@
         }
 
         function addNewPersonnelItem(effects) {
+            var personnelItemsCount = $('#personnel-items .item').length;
             var newItem = $('#baseItem-personnel').clone();
             if (effects) newItem.hide();
             newItem.appendTo('#personnel-items');
@@ -421,7 +443,7 @@
                 newItem.slideDown('slow');
             }
 
-            setPersonnelItemIndex(newItem, ++personnelItemsCount);
+            setPersonnelItemIndex(newItem, personnelItemsCount);
 
             initInfoPopovers(newItem[0]);
         }
@@ -497,7 +519,6 @@
                 $("#personnel-items .item").each(function (index) {
                     setPersonnelItemIndex($(this), index);
                 });
-                calcNumberOfPersonnelItems();
             });
         }
 
@@ -822,7 +843,7 @@
             });
             $("#associatedParty-from-contact-" + index).click(function (event) {
                 event.preventDefault();
-                copyPrimaryContactDetails(event, "associatedParty-item-");
+                copyPrimaryContactDetails(event, "associatedParty-item-" + index);
             });
 
             $("#associatedParty-item-" + index + " [id$='firstName']").attr("id", "eml.associatedParties[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
@@ -950,7 +971,7 @@
             });
             $("#personnel-from-contact-" + index).click(function (event) {
                 event.preventDefault();
-                copyPrimaryContactDetails(event, "personnel-item-");
+                copyPrimaryContactDetails(event, "personnel-item-" + index);
             });
 
             $("#personnel-item-" + index + " [id$='firstName']").attr("id", "eml.project.personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
@@ -989,6 +1010,119 @@
             });
             $("#personnel-item-" + index + " [id$='identifier']").attr("id", "eml.project.personnel[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='identifier']").attr("for", "eml.project.personnel[" + index + "].userIds[0].identifier");
+        }
+
+        function setRelatedProjectPersonnelItemIndex(item, relatedProjectId, index) {
+            var itemId = "relatedProject-" + relatedProjectId + "-personnel-" + index;
+            item.attr("id", itemId);
+
+            $("#" + itemId + " [id^='relatedProject-personnel-remove']").attr("id", "relatedProject-personnel-remove-" + relatedProjectId + "-" + index);
+            $("#relatedProject-personnel-remove-" + relatedProjectId + "-" + index).click(function (event) {
+                removeRelatedProjectPersonnelItem(event);
+            });
+
+            $("#" + itemId + " [id^='dropdown-relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "dropdown-relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+            $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-from-contact']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-from-contact-" + index);
+            $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+            $("#relatedProject-" + relatedProjectId + "-personnel-copy-" + index).click(function (event) {
+                event.preventDefault();
+                targetItemId = itemId;
+                showCopyAgentModal();
+            });
+            $("#personnel-" + relatedProjectId + "-personnel-from-contact-" + index).click(function (event) {
+                event.preventDefault();
+                copyPrimaryContactDetails(event, itemId);
+            });
+
+            $("#" + itemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='firstName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName");
+            $("#" + itemId + " [id$='lastName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='lastName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName");
+            $("#" + itemId + " [id$='salutation']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='salutation']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation");
+            $("#" + itemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='role']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role");
+            $("#" + itemId + " [id$='role']").select2({
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $("#" + itemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='directory']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory");
+            $("#" + itemId + " [id$='directory']").select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            $("#" + itemId + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+            $("#" + itemId + " [for$='identifier']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier");
+        }
+
+        function createNewPersonnelForRelatedProject(event) {
+            var $target = getTargetLink(event);
+            var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
+
+            // set correct indexes, names, ids
+            var numberOfSubEntities = $("#relatedProject-" + entityIndex + "-personnel ." + "relatedProject-personnel-item").length;
+            var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
+            var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt;
+
+            var newItem = $('#baseItem-relatedProject-personnel').clone();
+            newItem.hide();
+            newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
+            newItem.slideDown('slow');
+
+            newItem.attr("id", "relatedProject-" + entityIndex + "-personnel-" + subEntityIndex);
+            var $firstNameInput = newItem.find("#firstName");
+            var $lastNameInput = newItem.find("#lastName");
+            var $salutationInput = newItem.find("#salutation");
+            var $directorySelect = newItem.find("#directory");
+            var $identifierInput = newItem.find("#identifier");
+            var $roleSelect = newItem.find("#role");
+            var $deleteLink = newItem.find("#personnel-removeLink");
+            var $copyDropdown = newItem.find("#dropdown-personnel-copy");
+            var $copyFromContactLink = newItem.find("#personnel-from-contact");
+            var $copyPersonnelLink = newItem.find("#personnel-copy");
+
+            $firstNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].firstName").attr("name", function () {return $(this).attr("id");});
+            $lastNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].lastName").attr("name", function () {return $(this).attr("id");});
+            $salutationInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].salutation").attr("name", function () {return $(this).attr("id");});
+            $directorySelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+            $identifierInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+            $roleSelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].role").attr("name", function () {return $(this).attr("id");});
+            $deleteLink.attr("id", "relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex);
+            $copyDropdown.attr("id", "dropdown-relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+            $copyFromContactLink.attr("id", "relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex);
+            $copyPersonnelLink.attr("id", "relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+
+            $("#relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
+                removeRelateProjectPersonnelItem(event);
+            });
+
+            $("#relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex).click(function (event) {
+                event.preventDefault();
+                copyPrimaryContactDetails(event, getItemId(event, "relatedProject-personnel-item"));
+            });
+
+            $("#relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex).click(function (event) {
+                event.preventDefault();
+                targetItemId = this.id.replace('-copy-', '-');
+                showCopyAgentModal();
+            });
         }
 
         var url = "${baseURL}/manager-api/suggest-resources";
@@ -1090,9 +1224,16 @@
             showCopyAgentModal();
         });
 
+        $(".relatedProject-personnel-copy-personnel-link").on('click', function (e) {
+            e.preventDefault();
+            targetItemId = this.id.replace('-copy-', '-');
+            showCopyAgentModal();
+        });
+
         $("#copy-agent-button").on('click', function (e) {
             $("#" + targetItemId + " input[id$='firstName']").val(selectedAgent['firstName']);
             $("#" + targetItemId + " input[id$='lastName']").val(selectedAgent['lastName']);
+            $("#" + targetItemId + " input[id$='salutation']").val(selectedAgent['salutation']);
             copyAllSubEntitiesFromAnother("position");
             $("#" + targetItemId + " input[id$='organisation']").val(selectedAgent['organisation']);
 
@@ -1120,7 +1261,7 @@
             var entityIndex = getEntityIndexFromItemId(targetItemId);
 
             // first, remove current info
-            removeAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex);
+            removeOrCleanAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex);
 
             // multiple objects in the address, choose 'address'
             if (subEntityName === "address") {
@@ -1152,7 +1293,44 @@
             var entityName = getEntityNameFromItemId(targetItemId);
             var entityIndex = getEntityIndexFromItemId(targetItemId);
 
-            removeAllSubEntitiesFromAgentDirectly(entityName, "identifier", entityIndex);
+            removeOrCleanAllSubEntitiesFromAgentDirectly(entityName, "identifier", entityIndex);
+
+            // related project personnel have only one identifier
+            if (targetItemId.includes('relatedProject') && targetItemId.includes("personnel")) {
+                var firstIndex = targetItemId.split("-")[1];
+                var secondIndex = targetItemId.split("-")[3];
+
+                var $directorySelect = $('#eml\\.project\\.relatedProjects\\[' + firstIndex + '\\]\\.personnel\\[' + secondIndex + '\\]\\.userIds\\[0\\]\\.directory');
+                var $identifierInput = $('#eml\\.project\\.relatedProjects\\[' + firstIndex + '\\]\\.personnel\\[' + secondIndex + '\\]\\.userIds\\[0\\]\\.identifier');
+
+                $directorySelect.val('');
+                $directorySelect.trigger('change');
+                $identifierInput.val('');
+
+                if (selectedAgentUserIds[0]) {
+                    $directorySelect.val(selectedAgentUserIds[0].directory);
+                    $directorySelect.trigger('change');
+                    $identifierInput.val(selectedAgentUserIds[0].identifier);
+                }
+            }
+
+            // project personnel have only one identifier
+            if (targetItemId.includes('personnel-item')) {
+                var index = targetItemId.split("-")[2];
+
+                var $personnelDirectorySelect = $('#eml\\.project\\.personnel\\[' + index + '\\]\\.userIds\\[0\\]\\.directory');
+                var $personnelIdentifierInput = $('#eml\\.project\\.personnel\\[' + index + '\\]\\.userIds\\[0\\]\\.identifier');
+
+                $personnelDirectorySelect.val('');
+                $personnelDirectorySelect.trigger('change');
+                $personnelIdentifierInput.val('');
+
+                if (selectedAgentUserIds[0]) {
+                    $personnelDirectorySelect.val(selectedAgentUserIds[0].directory);
+                    $personnelDirectorySelect.trigger('change');
+                    $personnelIdentifierInput.val(selectedAgentUserIds[0].identifier);
+                }
+            }
 
             for (let i = 0; i < selectedAgentUserIds.length; i++) {
                 createNewIdentifierForAgentDirectly(entityName, entityIndex, selectedAgentUserIds[i]["directory"], selectedAgentUserIds[i]["identifier"]);
@@ -1183,13 +1361,30 @@
 
         $("[id^='associatedParty-from-contact']").click(function(event) {
             event.preventDefault();
-            copyPrimaryContactDetails(event, "associatedParty-item-");
+            copyPrimaryContactDetails(event, getItemId(event, "item"));
         });
 
         $("[id^='personnel-from-contact']").click(function(event) {
             event.preventDefault();
-            copyPrimaryContactDetails(event, "personnel-item-");
+            copyPrimaryContactDetails(event, getItemId(event, "item"));
         });
+
+        $(".relatedProject-personnel-copy-from-contact-link").click(function(event) {
+            event.preventDefault();
+            copyPrimaryContactDetails(event, getItemId(event, "relatedProject-personnel-item"));
+        });
+
+        function getItemId(event, itemClass) {
+            event.preventDefault();
+            var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
+
+            var linkId = $target.attr("id");
+            var $parentItem = $('#' + linkId).closest('.' + itemClass);
+            return $parentItem.attr("id");
+        }
 
         function copyDetails(event, idPrefix) {
             event.preventDefault();
@@ -1217,29 +1412,26 @@
             copyAllIdentifiersFromFirstContact(entityName, index);
         }
 
-        function copyPrimaryContactDetails(event, idPrefix) {
+        function copyPrimaryContactDetails(event, itemId) {
             event.preventDefault();
-            var $target = $(event.target);
-            if (!$target.is('a')) {
-                $target = $(event.target).closest('a');
-            }
 
-            var index = $target.attr("id").split("-")[3];
             // replace " with &quot; to prevent JS from failing
-            $("#" + idPrefix + index + " [id$='firstName']").val("${primaryContact.firstName!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='lastName']").val("${primaryContact.lastName!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='position']").val("${primaryContact.position!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='organisation']").val("${primaryContact.organisation!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='address']").val("${primaryContact.address.address!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='city']").val("${primaryContact.address.city!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='province']").val("${primaryContact.address.province!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='postalCode']").val("${primaryContact.address.postalCode!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='country']").val("${primaryContact.address.country!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='phone']").val("${primaryContact.phone!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='email']").val("${primaryContact.email!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='homepage']").val("${primaryContact.homepage!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='directory']").val("${primaryContact.userIds[0].directory!?replace("\"", "&quot;")}");
-            $("#" + idPrefix + index + " [id$='identifier']").val("${primaryContact.userIds[0].identifier!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='firstName']").val("${primaryContact.firstName!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='lastName']").val("${primaryContact.lastName!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='salutation']").val("${primaryContact.salutation!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='position']").val("${primaryContact.position!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='organisation']").val("${primaryContact.organisation!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='address']").val("${primaryContact.address.address!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='city']").val("${primaryContact.address.city!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='province']").val("${primaryContact.address.province!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='postalCode']").val("${primaryContact.address.postalCode!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='country']").val("${primaryContact.address.country!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='phone']").val("${primaryContact.phone!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='email']").val("${primaryContact.email!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='homepage']").val("${primaryContact.homepage!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='directory']").val("${primaryContact.userIds[0].directory!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='directory']").trigger('change');
+            $("#" + itemId + " [id$='identifier']").val("${primaryContact.userIds[0].identifier!?replace("\"", "&quot;")}");
         }
 
 });

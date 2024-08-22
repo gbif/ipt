@@ -334,16 +334,34 @@
                                                         </label>
                                                     </div>
                                                     <#list (eml.project.relatedProjects[item_index].personnel)! as personnel>
-                                                        <div id="relatedProject-${item_index}-personnel-${personnel_index}" class="personnel-item clearfix row g-3 border-bottom pb-3 mt-1">
-                                                            <div class="col-12 mt-auto py-1 d-flex justify-content-end">
-                                                                <a id="relatedProject-personnel-remove-${item_index}-${personnel_index}" class="removeRelatedProjectPersonnel metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                    <span>${removeLink?lower_case?cap_first}</span>
-                                                                </a>
+                                                        <div id="relatedProject-${item_index}-personnel-${personnel_index}" class="relatedProject-personnel-item clearfix row g-3 border-bottom pb-3 mt-1">
+                                                            <div class="col-12 mt-auto py-1 d-flex justify-content-between">
+                                                                <div>
+                                                                    <div class="btn-group">
+                                                                        <a id="dropdown-relatedProject-${item_index}-personnel-copy-${personnel_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <span>
+                                                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                            <span>${copyLink?lower_case?cap_first}</span>
+                                                                        </a>
+                                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-relatedProject-${item_index}-personnel-copy-${personnel_index}">
+                                                                            <li><a id="relatedProject-${item_index}-personnel-from-contact-${personnel_index}" class="relatedProject-personnel-copy-from-contact-link dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                                            <li><a id="relatedProject-${item_index}-personnel-copy-${personnel_index}" class="relatedProject-personnel-copy-personnel-link dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <a id="relatedProject-personnel-remove-${item_index}-${personnel_index}" class="removeRelatedProjectPersonnelLink metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span>${removeLink?lower_case?cap_first}</span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                             <div class="col-lg-5">
                                                                 <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].firstName" i18nkey="eml.project.personnel.firstName" />
@@ -602,11 +620,11 @@
                                     <div>
                                         <div class="btn-group">
                                             <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                </svg>
-                                            </span>
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>${copyLink?lower_case?cap_first}</span>
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="personnel-creator-copy">
@@ -646,10 +664,26 @@
                                 </div>
                             </div>
 
-                            <div id="baseItem-relatedProject-personnel" class="personnel-item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
-                                <div class="handle columnLinks mt-2 d-flex justify-content-end">
+                            <div id="baseItem-relatedProject-personnel" class="relatedProject-personnel-item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="handle columnLinks mt-2 d-flex justify-content-between">
+                                    <div>
+                                        <div class="btn-group">
+                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${copyLink?lower_case?cap_first}</span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="personnel-creator-copy">
+                                                <li><a id="personnel-from-contact" class="relatedProject-personnel-copy-from-contact-link dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                <li><a id="personnel-copy" class="relatedProject-personnel-copy-personnel-link dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div class="text-end">
-                                        <a id="personnel-removeLink" class="removeRelatedProjectPersonnel metadata-action-link" href="">
+                                        <a id="personnel-removeLink" class="removeRelatedProjectPersonnelLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
