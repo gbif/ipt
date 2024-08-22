@@ -1110,7 +1110,7 @@
             $copyPersonnelLink.attr("id", "relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
 
             $("#relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
-                removeRelateProjectPersonnelItem(event);
+                removeRelatedProjectPersonnelItem(event);
             });
 
             $("#relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex).click(function (event) {

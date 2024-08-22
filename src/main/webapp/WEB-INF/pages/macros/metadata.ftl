@@ -462,8 +462,6 @@ $(document).ready(function(){
         });
     }
 
-
-
     function getTargetLink(event) {
         var $target = $(event.target);
         if (!$target.is('a')) {
@@ -714,58 +712,177 @@ $(document).ready(function(){
         $("#relatedProject-item-" + index + " #plus-relatedProject-personnel").attr("id", "plus-relatedProject-personnel-" + index);
         $("#plus-relatedProject-personnel-" + index).click(function (event) {
             event.preventDefault();
-            // createNewPersonnelForRelatedProject(event);
+            createNewPersonnelForRelatedProject(event);
         });
     }
 
-    function setRelatedProjectPersonnelIndex(item, relatedProjectIndex, index) {
-        // main item id
-        const newItemId = "relatedProject-" + relatedProjectIndex + "-personnel-" + index;
-        item.attr("id", newItemId);
+    function createNewPersonnelForRelatedProject(event) {
+        var $target = getTargetLink(event);
+        var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
 
-        // remove link
-        $("#" + newItemId + " [id^='relatedProject-personnel-remove']").attr("id", "relatedProject-personnel-remove-" + relatedProjectIndex + "-" + index);
-        $("#relatedProject-personnel-remove-" + relatedProjectIndex + "-" + index).click(function (event) {
-            removeRelateProjectPersonnelItem(event);
+        // set correct indexes, names, ids
+        var numberOfSubEntities = $("#relatedProject-" + entityIndex + "-personnel ." + "relatedProject-personnel-item").length;
+        var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
+        var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt;
+
+        var newItem = $('#baseItem-relatedProject-personnel').clone();
+        newItem.hide();
+        newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
+        newItem.slideDown('slow');
+
+        newItem.attr("id", "relatedProject-" + entityIndex + "-personnel-" + subEntityIndex);
+        var $firstNameInput = newItem.find("#firstName");
+        var $lastNameInput = newItem.find("#lastName");
+        var $salutationInput = newItem.find("#salutation");
+        var $directorySelect = newItem.find("#directory");
+        var $identifierInput = newItem.find("#identifier");
+        var $roleSelect = newItem.find("#role");
+        var $deleteLink = newItem.find("#personnel-removeLink");
+        var $copyDropdown = newItem.find("#dropdown-personnel-copy");
+        var $copyFromContactLink = newItem.find("#personnel-from-contact");
+        var $copyPersonnelLink = newItem.find("#personnel-copy");
+
+        $firstNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].firstName").attr("name", function () {return $(this).attr("id");});
+        $lastNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].lastName").attr("name", function () {return $(this).attr("id");});
+        $salutationInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].salutation").attr("name", function () {return $(this).attr("id");});
+        $directorySelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+        $identifierInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+        $roleSelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].role").attr("name", function () {return $(this).attr("id");});
+        $deleteLink.attr("id", "relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex);
+        $copyDropdown.attr("id", "dropdown-relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+        $copyFromContactLink.attr("id", "relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex);
+        $copyPersonnelLink.attr("id", "relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+
+        $("#relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
+            removeRelatedProjectPersonnelItem(event);
         });
 
-        const idPrefix = "eml.project.relatedProjects[" + relatedProjectIndex + "].personnel[" + index + "].";
-
-        // first name
-        $("#" + newItemId + " [id$='firstName']").attr("id", idPrefix + "firstName").attr("name", function () {
-            return $(this).attr("id");
+        $("#relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex).click(function (event) {
+            event.preventDefault();
+            copyPrimaryContactDetails(event, getItemId(event, "relatedProject-personnel-item"));
         });
-        $("#" + newItemId + " [for$='firstName']").attr("for", idPrefix + "firstName");
 
-        // last name
-        $("#" + newItemId + " [id$='lastName']").attr("id", idPrefix + "lastName").attr("name", function () {
-            return $(this).attr("id");
+        $("#relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex).click(function (event) {
+            event.preventDefault();
+            targetItemId = this.id.replace('-copy-', '-');
+            showCopyAgentModal();
         });
-        $("#" + newItemId + " [for$='lastName']").attr("for", idPrefix + "lastName");
+    }
 
-        // salutation
-        $("#" + newItemId + " [id$='salutation']").attr("id", idPrefix + "salutation").attr("name", function () {
-            return $(this).attr("id");
-        });
-        $("#" + newItemId + " [for$='salutation']").attr("for", idPrefix + "salutation");
+    function copyPrimaryContactDetails(event, itemId) {
+        event.preventDefault();
 
-        // personnel directory
-        $("#" + newItemId + " [id$='directory']").attr("id", idPrefix + "userIds[0].directory").attr("name", function () {
-            return $(this).attr("id");
-        });
-        $("#" + newItemId + " [for$='directory']").attr("for", idPrefix + "userIds[0].directory");
+        // replace " with &quot; to prevent JS from failing
+        $("#" + itemId + " [id$='firstName']").val("${(primaryContact.firstName)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='lastName']").val("${(primaryContact.lastName)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='salutation']").val("${(primaryContact.salutation)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='position']").val("${(primaryContact.position)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='organisation']").val("${(primaryContact.organisation)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='address']").val("${(primaryContact.address.address)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='city']").val("${(primaryContact.address.city)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='province']").val("${(primaryContact.address.province)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='postalCode']").val("${(primaryContact.address.postalCode)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='country']").val("${(primaryContact.address.country)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='phone']").val("${(primaryContact.phone)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='email']").val("${(primaryContact.email)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='homepage']").val("${(primaryContact.homepage)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='directory']").val("${(primaryContact.userIds[0].directory)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='directory']").trigger('change');
+        $("#" + itemId + " [id$='identifier']").val("${(primaryContact.userIds[0].identifier)!?replace("\"", "&quot;")}");
+    }
 
-        // personnel identifier
-        $("#" + newItemId + " [id$='identifier']").attr("id", idPrefix + "userIds[0].identifier").attr("name", function () {
-            return $(this).attr("id");
-        });
-        $("#" + newItemId + " [for$='identifier']").attr("for", idPrefix + "userIds[0].identifier");
+    function removeRelatedProjectPersonnelItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        var relatedProjectId = $target.attr("id").split("-")[3];
+        var personnelId = $target.attr("id").split("-")[4];
 
-        // role
-        $("#" + newItemId + " [id$='role']").attr("id", idPrefix + "role").attr("name", function () {
-            return $(this).attr("id");
+        $('#relatedProject-' + relatedProjectId + '-personnel-' + personnelId).slideUp('slow', function () {
+            $(this).remove();
+            $("#relatedProject-" + relatedProjectId + "-personnel .relatedProject-personnel-item").each(function (index) {
+                setRelatedProjectPersonnelItemIndex($(this), relatedProjectId, index);
+            });
         });
-        $("#" + newItemId + " [for$='role']").attr("for", idPrefix + "role");
+    }
+
+    function showCopyAgentModal() {
+        var dialogWindow = $("#copy-agent-modal");
+        dialogWindow.modal('show');
+    }
+
+    function getItemId(event, itemClass) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+
+        var linkId = $target.attr("id");
+        var $parentItem = $('#' + linkId).closest('.' + itemClass);
+        return $parentItem.attr("id");
+    }
+
+    function setRelatedProjectPersonnelItemIndex(item, relatedProjectId, index) {
+        var itemId = "relatedProject-" + relatedProjectId + "-personnel-" + index;
+        item.attr("id", itemId);
+
+        $("#" + itemId + " [id^='relatedProject-personnel-remove']").attr("id", "relatedProject-personnel-remove-" + relatedProjectId + "-" + index);
+        $("#relatedProject-personnel-remove-" + relatedProjectId + "-" + index).click(function (event) {
+            removeRelatedProjectPersonnelItem(event);
+        });
+
+        $("#" + itemId + " [id^='dropdown-relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "dropdown-relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+        $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-from-contact']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-from-contact-" + index);
+        $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+        $("#relatedProject-" + relatedProjectId + "-personnel-copy-" + index).click(function (event) {
+            event.preventDefault();
+            targetItemId = itemId;
+            showCopyAgentModal();
+        });
+        $("#personnel-" + relatedProjectId + "-personnel-from-contact-" + index).click(function (event) {
+            event.preventDefault();
+            copyPrimaryContactDetails(event, itemId);
+        });
+
+        $("#" + itemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='firstName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName");
+        $("#" + itemId + " [id$='lastName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='lastName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName");
+        $("#" + itemId + " [id$='salutation']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='salutation']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation");
+        $("#" + itemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='role']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role");
+        $("#" + itemId + " [id$='role']").select2({
+            placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 'Infinity',
+            allowClear: true,
+            theme: 'bootstrap4'
+        });
+        $("#" + itemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='directory']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory");
+        $("#" + itemId + " [id$='directory']").select2({
+            placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 'Infinity',
+            allowClear: true,
+            theme: 'bootstrap4'
+        });
+        $("#" + itemId + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='identifier']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier");
     }
 
     function setCollectionItemIndex(item, index) {
