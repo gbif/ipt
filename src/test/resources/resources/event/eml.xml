@@ -1,8 +1,8 @@
-<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0"
          xmlns:dc="http://purl.org/dc/terms/"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
-         packageId="http://localhost:8080/resource?id=event/v1.0" system="http://gbif.org" scope="system"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif-uat.org/schema/eml-gbif-profile/1.3/eml.xsd"
+         packageId="http://localhost:8080/resource?id=test/v1.0" system="http://gbif.org" scope="system"
          xml:lang="eng">
 
 <dataset>
