@@ -714,6 +714,37 @@ $(document).ready(function(){
             event.preventDefault();
             createNewPersonnelForRelatedProject(event);
         });
+
+        $("#relatedProject-item-" + index + " [id^='relatedProject-'][id$='-personnel'] .relatedProject-personnel-item").each(function (i) {
+            var updatedPersonnelItemId = "relatedProject-" + index + "-personnel-" + i;
+            $(this).attr("id", updatedPersonnelItemId);
+
+            $("#" + updatedPersonnelItemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].firstName").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='lastName']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].lastName").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='salutation']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].salutation").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].userIds[0].directory").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].userIds[0].identifier").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].role").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#relatedProject-item-" + index + " [id^='plus-relatedProject-personnel']").attr("id", "plus-relatedProject-personnel-" + index);
+            // TODO copy link indexes!
+            // $("#plus-relatedProject-personnel-" + index).click(function (event) {
+            //     event.preventDefault();
+            //     createNewPersonnelForRelatedProject(event);
+            // });
+        });
+        $("#relatedProject-item-" + index + " [id^='relatedProject-'][id$='-personnel']").attr("id", "relatedProject-" + index + "-personnel");
     }
 
     function createNewPersonnelForRelatedProject(event) {

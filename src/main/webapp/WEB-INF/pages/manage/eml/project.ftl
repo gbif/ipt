@@ -572,7 +572,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col mt-auto py-1">
-                                            <a id="plus-relatedProject-personnel" href="" class="metadata-action-link">
+                                            <a id="plus-relatedProject-personnel" href="" class="add-relatedProject-personnel metadata-action-link">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
