@@ -204,6 +204,7 @@ import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
+import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
 import static org.gbif.ipt.utils.FileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
@@ -3083,7 +3084,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // create versioned eml file
     File trunkFile = dataDir.resourceEmlFile(resource.getShortname());
+
+    // validate EML (only for metadata-only resources, otherwise it will be validated afterward)
+    if (METADATA.toString().equalsIgnoreCase(resource.getCoreType())) {
+      try {
+        EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
+        String emlString = FileUtils.readFileToString(trunkFile, StandardCharsets.UTF_8);
+        emlValidator.validate(emlString);
+      } catch (IOException | SAXException e) {
+        throw new PublicationException(PublicationException.TYPE.EML,
+            "Can't publish eml file for resource " + resource.getShortname() + ". Failed to validate EML", e);
+      } catch (InvalidEmlException e) {
+        throw new PublicationException(PublicationException.TYPE.EML,
+            "Can't publish eml file for resource " + resource.getShortname() + ". Invalid EML", e);
+      }
+    }
+
     File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+
     try {
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
