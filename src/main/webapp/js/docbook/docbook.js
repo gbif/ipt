@@ -2,23 +2,23 @@
 function convertToDocBook(html) {
     // Trim first
     html = html.trim();
-
     // Remove <br> tags
     html = html.replace(/<br>/g, '').replace(/<br\/>/g, '');
+    // Remove ` (tick)
+    html = html.replace(/`/g, '');
 
     // Replace <h> with <title>
-    // Hacks are needed:
-    // 1. Title must be inside <section>
-    // 2. There must be at least one <para> or <section> inside <section> (empty <para> added)
     html = html
-        .replace(/<h1>/g, '<section><title>').replace(/<\/h1>/g, '</title><para></para></section>')
-        .replace(/<h2>/g, '<section><title>').replace(/<\/h2>/g, '</title><para></para></section>')
-        .replace(/<h3>/g, '<section><title>').replace(/<\/h3>/g, '</title><para></para></section>')
-        .replace(/<h4>/g, '<section><title>').replace(/<\/h4>/g, '</title><para></para></section>')
-        .replace(/<h5>/g, '<section><title>').replace(/<\/h5>/g, '</title><para></para></section>');
+        .replace(/<h1>/g, '<title>').replace(/<\/h1>/g, '</title>')
+        .replace(/<h2>/g, '<title>').replace(/<\/h2>/g, '</title>')
+        .replace(/<h3>/g, '<title>').replace(/<\/h3>/g, '</title>')
+        .replace(/<h4>/g, '<title>').replace(/<\/h4>/g, '</title>')
+        .replace(/<h5>/g, '<title>').replace(/<\/h5>/g, '</title>');
 
-    // Replace <div> with <section>
-    html = html.replace(/<div>/g, '<section>').replace(/<\/div>/g, '</section>');
+    // Replace <div> with <section> (ignore classes)
+    html = html
+        .replace(/<div\s+class="[^"]*">/g, '<section>')
+        .replace(/<\/div>/g, '</section>');
 
     // Replace <ul> with <itemizedlist>
     // Replace <ol> with <orderedlist>
@@ -48,6 +48,9 @@ function convertToDocBook(html) {
     // Replace <a href="...">...</a> with <ulink url="..."><citetitle>...</citetitle></ulink>
     html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '<ulink url="$1"><citetitle>$2</citetitle></ulink>');
 
+    // Remove empty <para></para>
+    html = html.replace(/<para><\/para>/g, '');
+
     return html;
 }
 
@@ -58,9 +61,6 @@ function convertToHtml(docBook) {
 
     // Remove empty <para></para>
     docBook = docBook.replace(/<para><\/para>/g, '');
-
-    // Replace <title> with <h1>
-    docBook = docBook.replace(/<section><title>/g, '<h1>').replace(/<\/title><\/section>/g, '</h1>');
 
     // Replace <section> with <div>
     docBook = docBook.replace(/<section>/g, '<div>').replace(/<\/section>/g, '</div>');

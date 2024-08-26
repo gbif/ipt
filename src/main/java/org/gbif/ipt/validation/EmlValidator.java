@@ -48,7 +48,9 @@ import org.gbif.metadata.eml.ipt.model.UserId;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -67,11 +69,30 @@ public class EmlValidator extends BaseValidator {
 
   private static final Logger LOG = LogManager.getLogger(EmlValidator.class);
 
+  // Regular expression to match the pattern: error name, line number, column number, and optionally any technical codes like 'cvc-complex-type.2.3'.
+  private static final String EML_VALIDATION_ERROR_PATTERN = "^[^;]*;\\s*lineNumber:\\s*\\d+;\\s*columnNumber:\\s*\\d+;\\s*(?:[^:]*:\\s*)?";
   protected static Pattern phonePattern = Pattern.compile("[\\w ()/+-\\.]+");
   private AppConfig cfg;
   private RegistrationManager regManager;
   private SimpleTextProvider simpleTextProvider;
   private org.gbif.metadata.eml.EmlValidator emlProfileValidator;
+
+  private static final Map<String, String> TAG_REPLACEMENTS;
+
+  static {
+    TAG_REPLACEMENTS = new HashMap<>();
+    TAG_REPLACEMENTS.put("title", "h");
+    TAG_REPLACEMENTS.put("section", "div");
+    TAG_REPLACEMENTS.put("para", "p");
+    TAG_REPLACEMENTS.put("value", "value"); // no change
+    TAG_REPLACEMENTS.put("itemizedlist", "ul");
+    TAG_REPLACEMENTS.put("orderedlist", "ol");
+    TAG_REPLACEMENTS.put("emphasis", "b");
+    TAG_REPLACEMENTS.put("subscript", "sub");
+    TAG_REPLACEMENTS.put("superscript", "sup");
+    TAG_REPLACEMENTS.put("literalLayout", "pre");
+    TAG_REPLACEMENTS.put("ulink", "a");
+  }
 
   @Inject
   public EmlValidator(AppConfig cfg, RegistrationManager registrationManager, SimpleTextProvider simpleTextProvider) {
@@ -233,7 +254,7 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("eml.description")}));
+              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("eml.description"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
             } catch (Exception e) {
               action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.description")}));
               LOG.error("Failed to validate description", e);
@@ -523,7 +544,7 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.acknowledgements")}));
+              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.acknowledgements"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
             } catch (Exception e) {
               action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.acknowledgements")}));
               LOG.error("Failed to validate acknowledgements", e);
@@ -691,11 +712,23 @@ public class EmlValidator extends BaseValidator {
           } else {
             try {
               Eml stubValidationEml = getStubEml();
+              stubValidationEml.setGettingStarted(eml.getPurpose());
+              String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
+              emlProfileValidator.validate(emlString);
+            } catch (InvalidEmlException e) {
+              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("eml.purpose"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+            } catch (Exception e) {
+              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.purpose")}));
+              LOG.error("Failed to validate purpose", e);
+            }
+
+            try {
+              Eml stubValidationEml = getStubEml();
               stubValidationEml.setGettingStarted(eml.getGettingStarted());
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.gettingStarted")}));
+              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.gettingStarted"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
             } catch (Exception e) {
               action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.gettingStarted")}));
               LOG.error("Failed to validate getting started", e);
@@ -707,7 +740,7 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid", new String[] {action.getText("manage.metadata.introduction")}));
+              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.introduction"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
             } catch (Exception e) {
               action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.introduction")}));
               LOG.error("Failed to validate introduction", e);
@@ -1622,5 +1655,28 @@ public class EmlValidator extends BaseValidator {
     eml.addCreator(contact);
 
     return eml;
+  }
+
+  /**
+   * 1) Removes technical info from the error message (exception message, line and column number etc.)
+   * 2) Convert DocBook element names to HTML element names
+   *
+   * @param technicalMessage error message
+   * @return simplified and converted message
+   */
+  public static String simplifyDocBookValidationErrorMessage(String technicalMessage) {
+    // Remove the matched part of the message using the regex.
+    String simplifiedMessage = technicalMessage.replaceFirst(EML_VALIDATION_ERROR_PATTERN, "");
+
+    // Replace tags in the message
+    for (Map.Entry<String, String> entry : TAG_REPLACEMENTS.entrySet()) {
+      String originalTag = "'" + entry.getKey() + "'";
+      String replacementTag = "'" + entry.getValue() + "'";
+      simplifiedMessage = simplifiedMessage.replace(originalTag, replacementTag);
+      simplifiedMessage = simplifiedMessage.replace(entry.getKey(), entry.getValue());
+    }
+
+    // Return the simplified message
+    return simplifiedMessage.trim();
   }
 }
