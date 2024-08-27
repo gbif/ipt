@@ -280,8 +280,12 @@ public class DataPackageSchemaAction extends POSTAction {
     String latestCompatibleVersion = registryManager.getLatestCompatibleSchemaVersion(installedSchema.getName(), installedSchema.getVersion());
     String installedVersion = installedSchema.getVersion();
     String latestVersion = latestSchema.getVersion();
+    Date installedSchemaIssuedDate = installedSchema.getIssued();
+    Date latestSchemaIssuedDate = latestSchema.getIssued();
 
-    if (installedVersion.equals(latestCompatibleVersion) && latestCompatibleVersion.equals(latestVersion)) {
+    if (installedVersion.equals(latestCompatibleVersion)
+        && latestCompatibleVersion.equals(latestVersion)
+        && (installedSchemaIssuedDate != null && installedSchemaIssuedDate.equals(latestSchemaIssuedDate))) {
       LOG.debug("Installed data schema with identifier {} was issued {}. It's the latest available schema.",
           installedSchema.getIdentifier(), installedSchema.getIssued());
     } else if (installedVersion.equals(latestCompatibleVersion)) {
