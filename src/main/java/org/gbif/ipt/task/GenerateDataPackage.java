@@ -477,7 +477,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
       packageResource.setSchema(schema);
     } catch (Exception e) {
-      log.error("Fatal Package Generator Error encountered while adding schema data", e);
+      log.error("Fatal Package Generator Error encountered while adding schema data {}", tableSchema.getIdentifier());
+      log.error(e);
       // set last error report!
       setState(e);
       throw new GeneratorException("Error adding schema file", e);
