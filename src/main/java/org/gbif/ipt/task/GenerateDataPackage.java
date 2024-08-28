@@ -38,6 +38,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -275,14 +276,16 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
   }
 
-  // TODO: eml.xml is wrong!
+  // TODO: eml.xml must be validated!
   /**
    * Apart from a standard frictionless metadata, DwCA v2 occurrence must contain a EML file.
    */
   private void writeEMLMetadata(Path outputDir) {
     Path target = outputDir.getFileSystem().getPath("eml.xml");
-    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
-      metadataReader.writeValue(writer, resource.getEml());
+    try {
+      File sourceFile = dataDir.resourceEmlFile(resource.getShortname());
+      Path sourcePath = sourceFile.toPath();
+      Files.copy(sourcePath, target, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       log.error("Failed to write eml.xml", e);
       addMessage(Level.ERROR, "Failed to write eml.xml");
