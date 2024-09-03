@@ -69,7 +69,7 @@
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
-    <jetty-maven-plugin.version>9.4.55.v20240627</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>9.4.56.v20240826</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.11.0</junit.version>
