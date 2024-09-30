@@ -13,6 +13,7 @@ Restart=on-failure
 User=ipt
 Group=ipt
 SyslogIdentifier=ipt
+ReadWritePaths=/var/lib/ipt/
 
 [Install]
 WantedBy=multi-user.target
