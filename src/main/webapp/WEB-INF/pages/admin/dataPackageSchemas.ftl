@@ -39,7 +39,7 @@
                             <@s.text name="button.view"/>
                         </a>
                         <#if !ds.latest && ds.updatable>
-                            <form action='updateDatapackage.do' method='post'>
+                            <form action='updateDataPackage.do' method='post'>
                                 <input type='hidden' name='id' value='${ds.identifier}' />
 
                                 <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">

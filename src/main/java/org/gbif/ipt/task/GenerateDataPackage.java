@@ -66,6 +66,7 @@ import com.google.inject.assistedinject.Assisted;
 import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
+import io.frictionlessdata.tableschema.exception.ValidationException;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.schema.Schema;
 
@@ -271,6 +272,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
   }
 
+  // TODO: eml.xml is wrong!
   /**
    * Checks if the executing thread has been interrupted, i.e. generation was cancelled.
    *
@@ -459,11 +461,18 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     try {
       Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
       packageResource.setSchema(schema);
-    } catch (Exception e) {
-      log.error("Fatal Package Generator Error encountered while adding schema data", e);
-      // set last error report!
+    } catch (ValidationException e) {
+      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
+      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
+      // set the last error report!
       setState(e);
-      throw new GeneratorException("Error adding schema file", e);
+      throw new GeneratorException("Validation error while adding schema file", e);
+    } catch (Exception e) {
+      log.error("Fatal Package Generator Error encountered while adding schema data {}", tableSchema.getIdentifier(), e);
+      addMessage(Level.ERROR, "Error while adding schema data " + tableSchema.getIdentifier());
+      // set the last error report!
+      setState(e);
+      throw new GeneratorException("Error while adding schema file", e);
     }
 
     // add resource to package
