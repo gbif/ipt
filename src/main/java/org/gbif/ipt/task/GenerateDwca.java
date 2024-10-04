@@ -19,7 +19,6 @@ import org.gbif.dwc.ArchiveField;
 import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.MetaDescriptorWriter;
-import org.gbif.dwc.MetadataException;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
@@ -47,11 +46,11 @@ import org.gbif.utils.text.LineComparator;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -303,6 +302,30 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private void addEmlFile() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.METADATA);
+
+    // validate EML
+    try {
+      addMessage(Level.INFO, "? Validating EML file");
+      EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
+
+      try (InputStream is = FileUtils.openInputStream(dataDir.resourceEmlFile(resource.getShortname()))) {
+        emlValidator.validate(is);
+        addMessage(Level.INFO, "✓ Validated EML file");
+      }
+    } catch (IOException | SAXException e) {
+      // some error validating this file, report
+      log.error("Exception caught while validating EML file", e);
+      addMessage(Level.ERROR, "Failed to validate EML file");
+      setState(e);
+      throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
+    } catch (InvalidEmlException e) {
+      // InvalidEmlException
+      log.error("Invalid EML", e);
+      addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
+      setState(e);
+      throw new GeneratorException("Invalid EML", e);
+    }
+
     try {
       FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname()), new File(dwcaFolder,
         DataDir.EML_XML_FILENAME));
@@ -392,27 +415,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     try {
       // retrieve newly generated archive - decompressed
       Archive arch = DwcFiles.fromLocation(dwcaFolder.toPath());
-
-      // validate EML
-      try {
-        addMessage(Level.INFO, "? Validating EML file");
-        EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
-        String emlString = arch.getMetadata();
-        emlValidator.validate(emlString);
-        addMessage(Level.INFO, "✓ Validated EML file");
-      } catch (MetadataException | SAXException e) {
-        // some error validating this file, report
-        log.error("Exception caught while validating EML file", e);
-        addMessage(Level.ERROR, "Failed to validate EML file");
-        setState(e);
-        throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
-      } catch (InvalidEmlException e) {
-        // InvalidEmlException
-        log.error("Invalid EML", e);
-        addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
-        setState(e);
-        throw new GeneratorException("Invalid EML", e);
-      }
 
       // populate basisOfRecord lookup HashMap
       loadBasisOfRecordMapFromVocabulary();
