@@ -192,7 +192,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
           .replaceQueryParam("request_locale")
           .build().toString();
     } catch (RuntimeException e) {
-      LOG.warn("Failed to reconstruct requestURL from " + req.getRequestURL(), e);
+      LOG.warn("Failed to reconstruct requestURL from {}. Error: {}", req.getRequestURL(), e.getMessage());
     }
     return getBaseURL();
   }
