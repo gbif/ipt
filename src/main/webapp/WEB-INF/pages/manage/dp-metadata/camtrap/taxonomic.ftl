@@ -368,7 +368,7 @@
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
 
                             <div class="mt-4">
-                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
+                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="datapackagemetadata.infer.automatically.short.help" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">
