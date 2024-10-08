@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -232,10 +233,19 @@ public class EmlValidator extends BaseValidator {
             action.addActionWarning(action.getText("eml.title.shortname.match"));
           }
 
-          // TODO: how to check description is 5 characters (tags should be excluded!)
+          String strippedDescription = Optional.ofNullable(eml.getDescription())
+              .map(d -> d.replaceAll("<[^>]*>", "")) // get rid of tags
+              .map(String::trim)
+              .orElse("");
+
           // description - mandatory
-          if (StringUtils.isEmpty(eml.getDescription())) {
-            action.addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
+          if (StringUtils.isEmpty(strippedDescription)) {
+            action.addActionError(
+                action.getText("validation.required", new String[] {action.getText("eml.description")}));
+          } else if (!exists(strippedDescription, 5)) {
+            // ensure description is longer than min length
+            action.addActionError(
+                action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
           } else if (emlProfileValidator == null) {
             action.addActionError(action.getText("validation.cannnot.be.performed"));
           } else {
