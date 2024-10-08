@@ -232,20 +232,11 @@ public class EmlValidator extends BaseValidator {
             action.addActionWarning(action.getText("eml.title.shortname.match"));
           }
 
-          // description - mandatory and greater than 5 chars
-//          if (eml.getDescription() == null) {
-//            action
-//              .addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
-//          } else {
-//            // ensure description is longer than min length
-//            if (!exists(eml.getDescription(), 5)) {
-//              action.addFieldError("eml.description",
-//                  action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
-//            }
-//          }
-
-          // TODO: description length, it seems it's always has <p></p> so, adjust length?
-          if (emlProfileValidator == null) {
+          // TODO: how to check description is 5 characters (tags should be excluded!)
+          // description - mandatory
+          if (StringUtils.isEmpty(eml.getDescription())) {
+            action.addActionError(action.getText("validation.required", new String[] {action.getText("eml.description")}));
+          } else if (emlProfileValidator == null) {
             action.addActionError(action.getText("validation.cannnot.be.performed"));
           } else {
             try {
