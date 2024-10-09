@@ -1366,7 +1366,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 .select2-container--bootstrap4.select2-container--focus .select2-selection {
-    border-color: rgba(var(--color-gbif-primary), 0.5) !important;
+    border-color: rgb(var(--color-gbif-primary)) !important;
     box-shadow: none !important;
 }
 
@@ -2743,4 +2743,41 @@ header.shrink #accountDropdownLink {
         left: 0;
         z-index: 1030;
     }
+}
+
+/* "This contact will be in the citation" badge */
+span.contact-citation-banner {
+    background: rgb(var(--color-gbif-primary));;
+    color: white;
+    padding: 0 3px;
+    font-size: 0.75rem;
+    font-weight: bolder;
+    border-radius: 3px;
+}
+
+.ul-contact-info {
+    display: inline;
+    padding: 0;
+}
+
+.ul-contact-info li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.ul-contact-info li.item:after {
+    font-style: normal;
+    content: '\25CF';
+    font-size: 80%;
+    padding-left: 4px;
+    padding-right: 2px;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+/* HTML/DocBook textarea */
+.note-editor h1 {
+    font-size: 1.5rem;
 }

@@ -33,13 +33,13 @@ import org.gbif.utils.file.FileUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -165,17 +165,16 @@ public class EmlValidatorTest {
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
+  @Disabled("Currently not applicable because of DocBook")
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
-    List<String> description = new ArrayList<>();
-    eml.setDescription(description);
+    eml.setDescription("");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    description.add("shrt");
+    eml.setDescription("shrt");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
-    description.clear();
-    description.add("long_enough");
+    eml.setDescription("long_enough");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
@@ -218,7 +217,7 @@ public class EmlValidatorTest {
     eml.setUpdateFrequency(null);
     resource.setUpdateFrequency(null);
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
+    assertEquals("unknown", eml.getUpdateFrequency().getIdentifier());
 
     // valid, because will reuse auto-publishing interval as update frequency
     eml.setUpdateFrequency(null);
@@ -242,7 +241,7 @@ public class EmlValidatorTest {
     // defaults correct?
     assertEquals("eng", resource.getEml().getLanguage());
     assertEquals("eng", resource.getEml().getMetadataLanguage());
-    assertEquals("unkown", eml.getUpdateFrequency().getIdentifier());
+    assertEquals("unknown", eml.getUpdateFrequency().getIdentifier());
   }
 
   /**
@@ -269,10 +268,10 @@ public class EmlValidatorTest {
   public void testBasicPartContactIncomplete() {
     // invalid
     eml.addContact(badAgent);
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // no user ids to begin
     assertTrue(badAgent.getUserIds().isEmpty());
@@ -281,10 +280,10 @@ public class EmlValidatorTest {
     UserId invalidId = new UserId("", "1234-5678-9101-1213");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its directory
     badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // clear user ids
     badAgent.getUserIds().clear();
@@ -294,10 +293,10 @@ public class EmlValidatorTest {
     invalidId = new UserId("http://orcid.org", "");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its identifier
     badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
   }
 
   /**
@@ -309,10 +308,10 @@ public class EmlValidatorTest {
   public void testBasicPartCreatorIncomplete() {
     // invalid
     eml.addCreator(badAgent);
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // no user ids to begin
     assertTrue(badAgent.getUserIds().isEmpty());
@@ -321,10 +320,10 @@ public class EmlValidatorTest {
     UserId invalidId = new UserId("", "1234-5678-9101-1213");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its directory
     badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // clear user ids
     badAgent.getUserIds().clear();
@@ -334,10 +333,10 @@ public class EmlValidatorTest {
     invalidId = new UserId("http://orcid.org", "");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its identifier
     badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
   }
 
   /**
@@ -349,10 +348,10 @@ public class EmlValidatorTest {
   public void testBasicPartMetaProviderIncomplete() {
     // invalid
     eml.addMetadataProvider(badAgent);
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     badAgent.setLastName("Smith");
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // no user ids to begin
     assertTrue(badAgent.getUserIds().isEmpty());
@@ -361,10 +360,10 @@ public class EmlValidatorTest {
     UserId invalidId = new UserId("", "1234-5678-9101-1213");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its directory
     badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
 
     // clear user ids
     badAgent.getUserIds().clear();
@@ -374,10 +373,10 @@ public class EmlValidatorTest {
     invalidId = new UserId("http://orcid.org", "");
     badAgent.getUserIds().add(invalidId);
     assertFalse(badAgent.getUserIds().isEmpty());
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
     // make user id valid by setting its identifier
     badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
-    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CONTACTS_SECTION));
   }
 
   @Test
@@ -494,11 +493,11 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testProjectPartPersonnelOptional() {
+  public void testProjectPartPersonnelMissing() {
     assertNotNull(eml.getProject().getTitle());
     eml.getProject().getPersonnel().clear();
     assertTrue(eml.getProject().getPersonnel().isEmpty());
-    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test
@@ -740,7 +739,7 @@ public class EmlValidatorTest {
     resource.setUpdateFrequency(MaintenanceUpdateFrequency.ANNUALLY.toString());
 
     empty.setTitle("Title");
-    empty.addDescriptionPara("Description");
+    empty.setDescription("Description");
     empty.setMetadataLanguage(Language.FRENCH.getIso3LetterCode());
     empty.setLanguage(Language.SPANISH.getIso3LetterCode());
     empty.setIntellectualRights("CC-BY");

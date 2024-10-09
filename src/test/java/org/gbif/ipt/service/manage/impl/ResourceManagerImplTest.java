@@ -364,7 +364,7 @@ public class ResourceManagerImplTest {
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
-    assertEquals("Test description", res.getEml().getDescription().get(0));
+    assertEquals("<p>Test description</p>", res.getEml().getDescription());
     assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEml().getEmlVersion());
   }
 
@@ -426,7 +426,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties
     assertNull(res.getEml().getTitle());
-    assertTrue(res.getEml().getDescription().isEmpty());
+    assertNull(res.getEml().getDescription());
 
     // properties that never get set on new resource creation
 
@@ -517,7 +517,7 @@ public class ResourceManagerImplTest {
 
     // there are no eml properties
     assertNull(res.getEml().getTitle());
-    assertTrue(res.getEml().getDescription().isEmpty());
+    assertNull(res.getEml().getDescription());
   }
 
   /**
@@ -1635,8 +1635,7 @@ public class ResourceManagerImplTest {
     resource.setOrganisation(organisation);
     assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
     resource.getEml().setTitle("Title for pending version 1.2");
-    List<String> description = new ArrayList<>();
-    description.add("Title description for pending version 1.2");
+    String description = "Title description for pending version 1.2";
     resource.getEml().setDescription(description);
 
     // retrieve previous persisted Eml file for version 1.1
@@ -1656,7 +1655,7 @@ public class ResourceManagerImplTest {
     assertEquals(1, reconstructed.getRecordsPublished()); // changed
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
-    assertEquals("Test description for version 1.1", reconstructed.getEml().getDescription().get(0)); // changed
+    assertEquals("<p>Test description for version 1.1</p>", reconstructed.getEml().getDescription()); // changed
   }
 
   /**
@@ -1696,8 +1695,7 @@ public class ResourceManagerImplTest {
     resource.setKey(key);
 
     resource.getEml().setTitle("Title for pending version 5.1");
-    List<String> description = new ArrayList<>();
-    description.add("Description for pending version 5.1");
+    String description = "Description for pending version 5.1";
     resource.getEml().setDescription(description);
 
     // retrieve previous persisted Eml file for version 5.0
@@ -1718,7 +1716,7 @@ public class ResourceManagerImplTest {
     assertEquals(0, reconstructed.getRecordsPublished()); // unchanged
     // ensure reconstructed resource uses eml-5.0.xml
     assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
-    assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription().get(0)); // changed
+    assertEquals("<p>This dataset covers mosses and lichens from Russia.</p>", reconstructed.getEml().getDescription()); // changed
     // creator populated
     assertNotNull(resource.getCreator());
     assertEquals(creator, resource.getCreator());

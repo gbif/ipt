@@ -96,10 +96,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1252,6 +1252,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       usableSpace = cfg.getDataDir().getDataDirUsableSpace();
       freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
+
+      if (resource.isPublished()
+          && resource.getEml() != null
+          && resource.getEml().getProject() != null
+          && resource.getEml().getProject().getTitle() != null
+          && resource.getEml().getProject().getPersonnel().isEmpty()) {
+        addActionWarning(getText("validation.personnel.now.required"));
+      }
     }
   }
 
@@ -1652,7 +1660,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error("Failed to replace EML", e);
       addActionError(getText("manage.overview.failed.replace.eml"));
       return ERROR;
-    } catch (SAXException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       LOG.error("Failed to create EML validator", e);
       addActionError(getText("manage.overview.failed.replace.eml.validator"));
       return ERROR;

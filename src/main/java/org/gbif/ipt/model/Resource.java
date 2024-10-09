@@ -1464,7 +1464,12 @@ public class Resource implements Serializable, Comparable<Resource> {
 
     // make list of verified agents (having first and last name)
     Set<String> verifiedAuthorList = new LinkedHashSet<>();
-    Stream.of(getEml().getCreators(), getEml().getMetadataProviders())
+
+    List<Agent> suitableAssociatedParties = getEml().getAssociatedParties().stream()
+        .filter(p -> "originator".equalsIgnoreCase(p.getRole()) || "metadataProvider".equalsIgnoreCase(p.getRole()))
+        .collect(Collectors.toList());
+
+    Stream.of(getEml().getCreators(), getEml().getMetadataProviders(), suitableAssociatedParties)
         .flatMap(Collection::stream)
         .map(this::getCitationAgentName)
         .filter(StringUtils::isNotEmpty)

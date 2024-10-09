@@ -362,12 +362,23 @@ public class MetadataAction extends ManagerBaseAction {
 
         // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
         frequencies = new LinkedHashMap<>();
-        frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
-
+        // temporary fix: remove "unkown" from vocabulary
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false)
+          .entrySet()
+          .stream()
+          .filter(p -> !"unkown".equals(p.getKey()))
+          .forEach(p -> frequencies.put(p.getKey(), p.getValue()));
 
         // sanitize intellectualRights - pre-v2.2 text was manually entered and may have characters that break js
         if (getEml().getIntellectualRights() != null) {
           getEml().setIntellectualRights(removeNewlineCharacters(getEml().getIntellectualRights()));
+        }
+
+        // Public, published occurrence resources have a distribution download URL
+        if (CoreRowType.OCCURRENCE.toString().equalsIgnoreCase(resource.getCoreType())
+            && resource.isPublished()
+            && resource.isPubliclyAvailable()) {
+          resource.getEml().setDistributionDownloadUrl(cfg.getBaseUrl() + "/archive.do?r=" + resource.getShortname());
         }
 
         // populate agent vocabularies
@@ -397,10 +408,6 @@ public class MetadataAction extends ManagerBaseAction {
         }
 
         if (isHttpPost()) {
-          resource.getEml().getDescription().clear();
-          resource.getEml().getContacts().clear();
-          resource.getEml().getCreators().clear();
-          resource.getEml().getMetadataProviders().clear();
           resource.getEml().setIntellectualRights(null);
 
           // publishing organisation, if provided must match organisation
@@ -412,6 +419,17 @@ public class MetadataAction extends ManagerBaseAction {
               resource.setOrganisation(organisation);
             }
           }
+        }
+        break;
+
+      case CONTACTS_SECTION:
+        // populate agent vocabularies
+        loadAgentVocabularies();
+        if (isHttpPost()) {
+          resource.getEml().getContacts().clear();
+          resource.getEml().getCreators().clear();
+          resource.getEml().getMetadataProviders().clear();
+          resource.getEml().getAssociatedParties().clear();
         }
         break;
 
@@ -443,19 +461,13 @@ public class MetadataAction extends ManagerBaseAction {
         }
         break;
 
-      case PARTIES_SECTION:
-        // populate agent vocabularies
-        loadAgentVocabularies();
-        if (isHttpPost()) {
-          resource.getEml().getAssociatedParties().clear();
-        }
-        break;
-
       case PROJECT_SECTION:
         // populate agent vocabularies
         loadAgentVocabularies();
         if (isHttpPost()) {
           resource.getEml().getProject().getPersonnel().clear();
+          resource.getEml().getProject().getAwards().clear();
+          resource.getEml().getProject().getRelatedProjects().clear();
         }
         break;
 
@@ -506,9 +518,9 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
-    // be valid, otherwise an error is displayed
-    if (emlValidator.areAllSectionsValid(this, resource)) {
+    // before saving, the minimum amount of mandatory metadata must have been provided, and the current metadata section
+    // must be valid, otherwise an error is displayed
+    if (emlValidator.isSectionValid(this, resource, section)) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified
@@ -520,6 +532,12 @@ public class MetadataAction extends ManagerBaseAction {
       // progress to next section, since save succeeded
       switch (section) {
         case BASIC_SECTION:
+          next = MetadataSection.CONTACTS_SECTION;
+          break;
+        case CONTACTS_SECTION:
+          next = MetadataSection.ACKNOWLEDGEMENTS_SECTION;
+          break;
+        case ACKNOWLEDGEMENTS_SECTION:
           next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
           break;
         case GEOGRAPHIC_COVERAGE_SECTION:
@@ -529,12 +547,12 @@ public class MetadataAction extends ManagerBaseAction {
           next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
           break;
         case TEMPORAL_COVERAGE_SECTION:
+          next = MetadataSection.ADDITIONAL_DESCRIPTION_SECTION;
+          break;
+        case ADDITIONAL_DESCRIPTION_SECTION:
           next = MetadataSection.KEYWORDS_SECTION;
           break;
         case KEYWORDS_SECTION:
-          next = MetadataSection.PARTIES_SECTION;
-          break;
-        case PARTIES_SECTION:
           next = MetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:
@@ -689,7 +707,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
-   * vocabulary {@link -linkoffline http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
+   * vocabulary <a href="http://rs.gbif.org/vocabulary/eml/update_frequency.xml">http://rs.gbif.org/vocabulary/eml/update_frequency.xml</a>.
    *
    * @return update frequencies map
    */
@@ -859,7 +877,7 @@ public class MetadataAction extends ManagerBaseAction {
       Agent current = new Agent();
       current.setFirstName(getCurrentUser().getFirstname());
       current.setLastName(getCurrentUser().getLastname());
-      current.setEmail(getCurrentUser().getEmail());
+      current.setEmail(Collections.singletonList(getCurrentUser().getEmail()));
 
       // contacts list
       Agent firstContact = null;

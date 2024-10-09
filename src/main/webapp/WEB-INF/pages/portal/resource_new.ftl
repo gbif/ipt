@@ -48,18 +48,22 @@
                     </ul>
                 </#if>
             </div>
+
             <#if con.position?has_content>
-                <div class="contactPosition">
-                    ${con.position!}
-                </div>
+                <ul class="contactPosition ul-contact-info">
+                    <#list con.position as p><li <#if p_has_next>class="item" </#if>>${p}</li></#list>
+                </ul>
             </#if>
+
             <div class="address">
                 <#if con.organisation?has_content && (con.firstName?has_content || con.lastName?has_content) >
                     <div>${con.organisation}</div>
                 </#if>
 
                 <#if con.address.address?has_content>
-                    <div>${con.address.address!}</div>
+                    <ul class="address ul-contact-info">
+                        <#list con.address.address as a><li <#if a_has_next>class="item" </#if>>${a}</li></#list>
+                    </ul>
                 </#if>
 
                 <#if con.address.postalCode?has_content || con.address.city?has_content>
@@ -80,32 +84,41 @@
                 </#if>
 
                 <#if con.email?has_content>
-                    <div class="email"><a href="mailto:${con.email}" title="email">${con.email}</a></div>
+                    <ul class="email ul-contact-info">
+                        <#list con.email as e><li <#if e_has_next>class="item" </#if>><a href="mailto:${e}" title="email" class="break-all">${e}</a></li></#list>
+                    </ul>
                 </#if>
 
                 <#if con.phone?has_content>
-                    <div class="phone">${con.phone}</div>
+                    <ul class="phone ul-contact-info">
+                        <#list con.phone as p><li <#if p_has_next>class="item" </#if>>${p}</li></#list>
+                    </ul>
                 </#if>
-
             </div>
+
             <#if con.homepage?has_content>
-                <div class="overflow-wrap">
-                    <a href="${con.homepage}">${con.homepage}</a>
-                </div>
+                <ul class="ul-contact-info">
+                    <#list con.homepage as h><li <#if h_has_next>class="item" </#if>><a href="${h}" class="break-all">${h}</a></li></#list>
+                </ul>
             </#if>
-            <#if (con.userIds?size > 0)>
-                <#assign directory>${con.userIds[0].directory}</#assign>
-                <#assign identifier>${con.userIds[0].identifier}</#assign>
-                <#if directory?has_content && identifier?has_content>
-                    <div class="overflow-wrap">
-                        <a href="${directory}${identifier}" target="_blank">
-                            <#if directory?contains("orcid.org")>
-                                <img src="${baseURL}/images/icons/orcid_16x16.gif" class="orcid-small">
+
+            <#if con.userIds?has_content>
+                <div>
+                    <ul class="ul-contact-info">
+                        <#list con.userIds as userId>
+                            <#if userId.directory?has_content && userId.identifier?has_content>
+                                <li <#if userId_has_next>class="item" </#if>>
+                                    <a href="${userId.directory}${userId.identifier}" class="break-all" target="_blank">
+                                        <#if userId.directory?contains("orcid.org")>
+                                            <img src="${baseURL}/images/icons/orcid_16x16.gif" class="orcid-small">
+                                        </#if>
+                                        ${userId.directory}${userId.identifier}
+                                    </a>
+                                </li>
                             </#if>
-                            ${directory}${identifier}
-                        </a>
-                    </div>
-                </#if>
+                        </#list>
+                    </ul>
+                </div>
             </#if>
         </div>
     </div>
@@ -483,14 +496,8 @@
                         <@s.text name='portal.resource.description'/>
                     </h4>
                     <div property="dc:abstract" class="mt-3 overflow-x-auto">
-                        <#if (eml.description?size>0)>
-                            <#list eml.description as para>
-                                <#if para?has_content>
-                                    <p>
-                                        <@para?interpret />
-                                    </p>
-                                </#if>
-                            </#list>
+                        <#if (eml.description??)>
+                            <@eml.description?interpret />
                         <#else>
                             <p><@s.text name='portal.resource.no.description'/></p>
                         </#if>
@@ -872,6 +879,34 @@
                                             <td><@eml.project.designDescription?interpret /></td>
                                         </tr>
                                     </#if>
+                                    <#if eml.project.awards?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.project.award'/></th>
+                                            <td>
+                                                <#list eml.project.awards as award>
+                                                    <strong>${award.title!}</strong><br>
+                                                    <#list award.funderIdentifiers as fi>${fi}<#sep>, </#sep></#list><br>
+                                                    <#if award.funderName?has_content>${award.funderName}<br></#if>
+                                                    <#if award.awardNumber?has_content>${award.awardNumber}<br></#if>
+                                                    <#if award.awardUrl?has_content><a href="${award.awardUrl}">${award.awardUrl}</a><br></#if>
+                                                    <#sep><br></#sep>
+                                                </#list>
+                                            </td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.project.relatedProjects?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.project.relatedProjects'/></th>
+                                            <td>
+                                                <#list eml.project.relatedProjects as relatedProject>
+                                                    <strong>${relatedProject.title}<br></strong>
+                                                    <#if relatedProject.identifier?has_content>${relatedProject.identifier}<br></#if>
+                                                    <#if relatedProject.description?has_content>${relatedProject.description}<br></#if>
+                                                    <#sep><br></#sep>
+                                                </#list>
+                                            </td>
+                                        </tr>
+                                    </#if>
                                 </table>
                             </div>
 
@@ -1037,7 +1072,7 @@
                 </#if>
 
                 <!-- Additional metadata section -->
-                <#if eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
+                <#if eml.introduction?has_content || eml.gettingStarted?has_content || eml.acknowledgements?has_content || eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
                     <span class="anchor anchor-home-resource-page" id="anchor-additional"></span>
                     <div id="additional" class="pb-5 section">
 
@@ -1051,6 +1086,24 @@
                             </#if>
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
+                                    <#if eml.acknowledgements?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.acknowledgements'/></th>
+                                            <td><@eml.acknowledgements?interpret /></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.introduction?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.introduction'/></th>
+                                            <td><@eml.introduction?interpret /></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.gettingStarted?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='manage.metadata.gettingStarted'/></th>
+                                            <td><@eml.gettingStarted?interpret /></td>
+                                        </tr>
+                                    </#if>
                                     <#if eml.purpose?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.purpose'/></th>
