@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"POT-Creation-Date: 2024-06-25 11:53+0000\n"
+"PO-Revision-Date: 2024-06-25 11:56\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -29,7 +29,7 @@ msgstr "手順"
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:16
 #: en/modules/ROOT/pages/how-to-publish.adoc:20
-#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
+#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 #, no-wrap
 msgid "Prerequisites"
 msgstr "前提条件"
