@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-10-09 07:45+0000\n"
-"PO-Revision-Date: 2024-10-09 17:09\n"
+"PO-Revision-Date: 2024-10-09 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -68,7 +68,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/60?closed=1[48 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/60?closed=1[48 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -113,7 +113,7 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
 msgid "This major release introduces support for EML 2.2.0."
-msgstr ""
+msgstr "Esta versión introduce soporte para EML 2.2.0."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
