@@ -1,3 +1,4 @@
+
 name: ipt
 title: Integrated Publishing Toolkit
 version: "3.0"
@@ -16,14 +17,12 @@ asciidoc:
     # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
     eml-location: https://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores
-    latest-dwc-occurrence:   https://rs.gbif.org/core/dwc_occurrence_2022-02-02.xml
-    date-dwc-occurrence:     "2022-02-02"
-    latest-dwc-taxon:        https://rs.gbif.org/core/dwc_taxon_2022-02-02.xml
-    date-dwc-taxon:          "2022-02-02"
-    latest-dwc-event:        https://rs.gbif.org/core/dwc_event_2022-02-02.xml
-    date-dwc-event:          "2022-02-02"
-    sandbox-material-sample: https://rs.gbif.org/sandbox/core/dwc_material_sample.xml
-    date-material-sample:    "2015-02-13"
+    latest-dwc-occurrence:   https://rs.gbif.org/core/dwc_occurrence_2024-02-23.xml
+    date-dwc-occurrence:     "2024-02-23"
+    latest-dwc-taxon:        https://rs.gbif.org/core/dwc_taxon_2024-02-19.xml
+    date-dwc-taxon:          "2024-02-19"
+    latest-dwc-event:        https://rs.gbif.org/core/dwc_event_2024-02-19.xml
+    date-dwc-event:          "2024-02-19"
     # Extensions
     latest-resource-relation:    https://rs.gbif.org/extension/dwc/resource_relation_2022-02-02.xml
     date-resource-relation:      "2022-02-02"
@@ -40,8 +39,8 @@ asciidoc:
     latest-vernacularname:       https://rs.gbif.org/terms/1.0/VernacularName
     date-vernacularname:         "2015-02-13"
     # Vocabularies
-    latest-basis-of-record:      https://rs.gbif.org/vocabulary/dwc/basis_of_record_2022-02-02.xml
-    date-basis-of-record:        "2022-02-02"
+    latest-basis-of-record:      https://rs.gbif.org/vocabulary/dwc/basis_of_record_2024-02-19.xml
+    date-basis-of-record:        "2024-02-19"
     latest-description-type:     https://rs.gbif.org/vocabulary/gbif/descriptionType
     date-description-type:       "2015-02-13"
     latest-nomenclatural-status: https://rs.gbif.org/vocabulary/gbif/nomenclatural_status
@@ -51,7 +50,7 @@ asciidoc:
     latest-preservation-method:  https://rs.gbif.org/vocabulary/gbif/preservation_method
     date-preservation-method:    "2015-02-13"
     latest-quantity-type:        https://rs.gbif.org/vocabulary/gbif/quantityType
-    date-quantity-type:          "2015-07-10"
+    date-quantity-type:          "2023-02-28"
     latest-rank:                 https://rs.gbif.org/vocabulary/gbif/rank
     date-rank:                   "2015-04-24"
     latest-reference-type:       https://rs.gbif.org/vocabulary/gbif/referenceType
