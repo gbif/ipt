@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-10-14 15:13+0000\n"
-"PO-Revision-Date: 2024-10-14 15:21\n"
+"PO-Revision-Date: 2024-10-14 17:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -93,7 +93,7 @@ msgstr "*Configurar el IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid "To configure the IPT to use the Material Sample Core for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr ""
+msgstr "Para configurar el IPT para usar el Material de Ejemplo del Core, por ejemplo, agregue las siguientes 2 líneas a `$IPT_DATA_DIR/config/ipt.properties`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
