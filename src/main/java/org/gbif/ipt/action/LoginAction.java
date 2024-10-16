@@ -23,6 +23,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 
@@ -63,7 +64,13 @@ public class LoginAction extends POSTAction {
     super.prepare();
     adminEmail = userManager.getDefaultAdminEmail();
     if (StringUtils.isBlank(adminEmail)) {
-      adminEmail = userManager.list(User.Role.Admin).get(0).getEmail();
+      List<User> users = userManager.list(User.Role.Admin);
+
+      if (!users.isEmpty()) {
+        adminEmail = users.get(0).getEmail();
+      } else {
+        LOG.error("Failed to load the default admin email");
+      }
     }
   }
 
@@ -83,9 +90,9 @@ public class LoginAction extends POSTAction {
           User authUser = userManager.authenticate(email.trim(), password.trim());
           if (authUser == null) {
             addActionError(getText("admin.user.wrong.email.password.combination"));
-            LOG.info("User " + email + " failed to log in");
+            LOG.info("User {} failed to log in", email);
           } else {
-            LOG.info("User " + email + " logged in successfully");
+            LOG.info("User {} logged in successfully", email);
             authUser.setLastLoginToNow();
             userManager.save();
             session.put(Constants.SESSION_USER, authUser);
@@ -124,7 +131,7 @@ public class LoginAction extends POSTAction {
     // remove referer from session
     session.remove(Constants.SESSION_REFERER);
 
-    LOG.info("Redirecting to " + redirectUrl);
+    LOG.info("Redirecting to {}", redirectUrl);
   }
 
   public String getRedirectUrl() {
