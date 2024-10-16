@@ -230,6 +230,8 @@ public interface ResourceManager {
    */
   DatatableResult list(User user, DatatableRequest request);
 
+  DatatableResult listAll(DatatableRequest request);
+
   /**
    * Load all configured resources from the data directory into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we

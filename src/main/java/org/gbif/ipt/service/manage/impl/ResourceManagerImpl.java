@@ -213,6 +213,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
+  private Map<String, String> failedResources = new HashMap<>();
   // simplified resources for home page (metadata from last published version!)
   private Map<String, SimplifiedResource> publishedPublicVersionsSimplified = new HashMap<>();
   private static final int MAX_PROCESS_FAILURES = 3;
@@ -279,6 +280,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } catch (Exception e) {
       LOG.error("Failed to reconstruct resource's last published version", e);
+      failedResources.put(res.getShortname(), "Failed to reconstruct resource's last published version. " + e.getMessage());
     }
   }
 
@@ -1938,6 +1940,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
   }
 
+  private String toAdminResourceManageLink(String resource) {
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/admin/manageResource?r=" + resource + "'>" + resource + "</a>";
+  }
+
   /**
    * Converts raw data to UI format.
    * Wraps lower case status into span to make it badge on UI.
@@ -2012,6 +2018,55 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
+  public DatatableResult listAll(DatatableRequest request) {
+    List<String> resources = getDirectoryNames(dataDir.resourcesDir());
+
+    List<String> filteredResources = resources.stream()
+        .filter(res -> StringUtils.containsIgnoreCase(res, request.getSearch()))
+        .collect(Collectors.toList());
+
+    List<List<String>> data = filteredResources.stream()
+        .skip(request.getOffset())
+        .limit(request.getLimit())
+        .map(this::toDatatableResourceManagementView)
+        .collect(Collectors.toList());
+
+    DatatableResult result = new DatatableResult();
+    result.setTotalRecords(resources.size());
+    result.setTotalDisplayRecords(filteredResources.size());
+    result.setData(data);
+
+    return result;
+  }
+
+  private List<String> toDatatableResourceManagementView(String resource) {
+    List<String> result = new ArrayList<>();
+    result.add(toAdminResourceManageLink(resource));
+
+    return result;
+  }
+
+  private List<String> getDirectoryNames(File rootDirectory) {
+    List<String> directoryNames = new ArrayList<>();
+
+    // Ensure the rootDirectory is a directory and exists
+    if (rootDirectory.exists() && rootDirectory.isDirectory()) {
+      // Get all files and directories in the root directory
+      File[] files = rootDirectory.listFiles();
+
+      if (files != null) {
+        // Iterate over the files and check if each is a directory
+        for (File file : files) {
+          if (file.isDirectory()) {
+            directoryNames.add(file.getName()); // Add the directory name to the list
+          }
+        }
+      }
+    }
+
+    return directoryNames;
+  }
+
   @Override
   public int load(File resourcesDir, User creator) {
     resources.clear();
@@ -2025,26 +2080,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           File[] resourceDirFiles = resourceDir.listFiles((dir, name) -> !name.equalsIgnoreCase(".DS_Store"));
 
           if (resourceDirFiles == null) {
-            LOG.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
+            LOG.error("Resource directory {} could not be read. Please verify its content", resourceDir.getName());
+            failedResources.put(resourceDir.getName(), "Resource directory could not be read");
           } else if (resourceDirFiles.length == 0) {
-            LOG.warn("Cleaning up empty resource directory " + resourceDir.getName());
+            LOG.warn("Cleaning up empty resource directory {}", resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
           } else {
             try {
-              LOG.debug("Loading resource from directory " + resourceDir.getName());
+              LOG.debug("Loading resource from directory {}", resourceDir.getName());
               addResource(loadFromDir(resourceDir, creator));
               counter++;
             } catch (InvalidConfigException e) {
-              LOG.error("Can't load resource " + resourceDir.getName(), e);
+              LOG.error("Can't load resource {}", resourceDir.getName(), e);
             }
           }
         }
       }
-      LOG.info("Loaded " + counter + " resources into memory altogether.");
-      LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
+      LOG.info("Loaded {} resources into memory altogether.", counter);
+      LOG.info("Cleaned up {} resources altogether.", counterDeleted);
     } else {
-      LOG.error("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.error("Data directory does not hold a resources directory: {}", dataDir.dataFile(""));
     }
     return counter;
   }
@@ -2181,7 +2237,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
           resource.setCreator(creator);
-          LOG.warn("On load, populated missing creator for resource: " + shortname);
+          LOG.warn("On load, populated missing creator for resource: {}", shortname);
         }
 
         // non-existing users end up being a NULL in the set, so remove them
@@ -2266,10 +2322,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           syncEmlWithResource(resource);
         }
 
-        LOG.debug("Read resource configuration for " + shortname);
+        LOG.debug("Read resource configuration for {}", shortname);
         return resource;
       } catch (Exception e) {
-        LOG.error("Cannot read resource configuration for " + shortname, e);
+        LOG.error("Cannot read resource configuration for {}", shortname, e);
+        failedResources.put(shortname, "Cannot read resource configuration. " + e.getMessage());
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
           "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }

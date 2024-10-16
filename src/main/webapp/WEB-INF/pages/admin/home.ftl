@@ -252,6 +252,33 @@
 						<div>
 							<h4 class="d-flex fs-regular mt-1">
 								<span class="text-gbif-primary me-2">
+									<i class="bi bi-card-list admin-icon"></i>
+								</span>
+								<span>
+									<@s.text name="admin.home.manageResources"/>
+								</span>
+							</h4>
+						</div>
+					</div>
+					<div class="d-flex flex-column flex-auto flex-justify-between">
+						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-0 px-4 fs-smaller">
+							<@s.text name="admin.home.manageResources.description"/>
+						</div>
+						<div class="d-flex flex-justify-between flex-items-center pt-2 pb-4 px-4">
+							<a href="${baseURL}/admin/manageResources.do" title="" class="action-link-button action-link-button-primary">
+								<@s.text name="button.view"/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="d-flex flex-column col-lg-3 col-md-4 col-sm-6 col-12 px-2">
+				<div class="border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+					<div class="d-flex flex-justify-between px-4 pt-4 pb-0">
+						<div>
+							<h4 class="d-flex fs-regular mt-1">
+								<span class="text-gbif-primary me-2">
 									<i class="bi bi-journal-text admin-icon"></i>
 								</span>
 									<span>
