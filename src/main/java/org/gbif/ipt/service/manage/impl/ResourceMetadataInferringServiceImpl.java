@@ -231,7 +231,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     } else if (!params.mappingsExist) {
       inferredGeographicMetadata.addError("eml.error.noMappings");
       errorsPresent = true;
-    } else if (!params.isDecimalLatitudePropertyMapped() || !params.isDecimalLongitudePropertyMapped()) {
+    } else if (!params.isDecimalLatitudeMappedForAtLeastOneMapping()
+        || !params.isDecimalLongitudeMappedForAtLeastOneMapping()) {
       inferredGeographicMetadata.addError("eml.geospatialCoverages.error.fieldsNotMapped");
       errorsPresent = true;
     } else if (params.noValidDataGeo) {
@@ -253,7 +254,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     } else if (!params.mappingsExist) {
       inferredTemporalMetadata.addError("eml.error.noMappings");
       errorsPresent = true;
-    } else if (!params.isEventDatePropertyMapped()) {
+    } else if (!params.isEventDatePropertyMappedForAtLeastOneMapping()) {
       inferredTemporalMetadata.addError("eml.temporalCoverages.error.fieldsNotMapped");
       errorsPresent = true;
     } else if (params.noValidDataTemporal) {
@@ -383,6 +384,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
         if (field.getIndex() != null) {
           params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
+          params.geographic.decimalLatitudeSourceColumnPresentInOneOfMappings = true;
         } else if (field.getDefaultValue() != null) {
           params.geographic.decimalLongitudeSourceDefaultValue = field.getDefaultValue();
         } else {
@@ -391,6 +393,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
         if (field.getIndex() != null) {
           params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
+          params.geographic.decimalLongitudeSourceColumnPresentInOneOfMappings = true;
         } else if (field.getDefaultValue() != null) {
           params.geographic.decimalLatitudeSourceDefaultValue = field.getDefaultValue();
         } else {
@@ -399,6 +402,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
         if (field.getIndex() != null) {
           params.temporal.eventDateSourceColumnIndex = field.getIndex();
+          params.temporal.eventDateSourceColumnPresentInOneOfMappings = true;
         } else if (field.getDefaultValue() != null) {
           params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
         } else {
@@ -621,8 +625,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   static class InferredEmlGeographicMetadataParams {
     private int decimalLongitudeSourceColumnIndex = -1;
+    private boolean decimalLongitudeSourceColumnPresentInOneOfMappings = false;
     private String decimalLongitudeSourceDefaultValue;
     private int decimalLatitudeSourceColumnIndex = -1;
+    private boolean decimalLatitudeSourceColumnPresentInOneOfMappings = false;
     private String decimalLatitudeSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
@@ -645,6 +651,14 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       return decimalLatitudeSourceColumnIndex != -1 || decimalLatitudeSourceDefaultValue != null;
     }
 
+    public boolean isDecimalLongitudeMappedForAtLeastOneMapping() {
+      return decimalLongitudeSourceColumnPresentInOneOfMappings || decimalLongitudeSourceDefaultValue != null;
+    }
+
+    public boolean isDecimalLatitudeMappedForAtLeastOneMapping() {
+      return decimalLatitudeSourceColumnPresentInOneOfMappings || decimalLatitudeSourceDefaultValue != null;
+    }
+
     public void resetIndexParams() {
       decimalLongitudeSourceColumnIndex = -1;
       decimalLongitudeSourceDefaultValue = null;
@@ -655,6 +669,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   static class InferredEmlTemporalMetadataParams {
     private int eventDateSourceColumnIndex = -1;
+    private boolean eventDateSourceColumnPresentInOneOfMappings = false;
     private String eventDateSourceDefaultValue;
     private boolean mappingsExist;
     private boolean serverError;
@@ -670,6 +685,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     public boolean isEventDatePropertyMapped() {
       return eventDateSourceColumnIndex != -1 || eventDateSourceDefaultValue != null;
+    }
+
+    public boolean isEventDatePropertyMappedForAtLeastOneMapping() {
+      return eventDateSourceColumnPresentInOneOfMappings || eventDateSourceDefaultValue != null;
     }
 
     public void resetIndexParams() {
