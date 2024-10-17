@@ -35,7 +35,7 @@
 
         <p class="text-center text-smaller mt-5 mb-4">
             <@s.text name="login.intro">
-                <@s.param>${adminEmail}</@s.param>
+                <@s.param>${adminEmail!}</@s.param>
             </@s.text>
         </p>
 
@@ -59,7 +59,7 @@
 
                 <#if email?has_content>
                     <p class="text-center text-smaller pt-3">
-                        <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
+                        <@s.text name="login.forgottenpassword"><@s.param>${adminEmail!}</@s.param></@s.text>
                     </p>
                 </#if>
 
