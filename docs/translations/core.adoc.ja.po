@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
-"PO-Revision-Date: 2023-03-13 06:07\n"
+"POT-Creation-Date: 2024-10-14 15:13+0000\n"
+"PO-Revision-Date: 2024-10-14 15:21\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -92,8 +92,8 @@ msgstr "*IPTを設定する*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
-msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr "例えば、link:{sandbox-material-sample}[Material Sample Core]を使用するようにIPTを設定するには、 `$IPT_DATA_DIR/config/ipt.properties`に以下の2行を追加してください。"
+msgid "To configure the IPT to use the Material Sample Core for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
