@@ -17,7 +17,7 @@ import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_COLDP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_PACKAGE_DWCA_V2_EXTENDED_OCCURRENCE_DP_IDENTIFIER;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_DWCA_V2_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_INTERACTION_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_MATERIAL_DP_IDENTIFIER;
 
@@ -28,7 +28,7 @@ public enum SupportedDataPackageType {
   COLDP(Constants.COL_DP, DATA_PACKAGE_COLDP_IDENTIFIER, "1.0", "dev"),
   MATERIAL_DP(Constants.MATERIAL_DP, DATA_PACKAGE_MATERIAL_DP_IDENTIFIER, "0.1", "dev"),
   INTERACTION_DP(Constants.INTERACTION_DP, DATA_PACKAGE_INTERACTION_DP_IDENTIFIER, "0.1", "dev"),
-  DWCA_V2_EXTENDED_OCCURRENCE_DP(Constants.DWCA_V2_EXTENDED_OCCURRENCE, DATA_PACKAGE_DWCA_V2_EXTENDED_OCCURRENCE_DP_IDENTIFIER, "0.1", "dev");
+  DWCA_V2_DP(Constants.DWCA_V2_DP, DATA_PACKAGE_DWCA_V2_DP_IDENTIFIER, "0.1", "dev");
 
   private final String name;
   private final String identifier;

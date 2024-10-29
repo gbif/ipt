@@ -75,7 +75,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
-import static org.gbif.ipt.config.Constants.DWCA_V2_EXTENDED_OCCURRENCE;
+import static org.gbif.ipt.config.Constants.DWCA_V2_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -232,7 +232,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     try {
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
-      if (DWCA_V2_EXTENDED_OCCURRENCE.equals(resource.getCoreType())) {
+      if (DWCA_V2_DP.equals(resource.getCoreType())) {
         dataPackage.write(zip, this::writeEMLMetadata, true);
       } else if (COL_DP.equals(resource.getCoreType())) {
         dataPackage.write(zip, this::writeCustomColDPMetadata, true);
@@ -821,7 +821,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         addCamtrapMetadata();
       } else if (COL_DP.equals(type)) {
         addColMetadata();
-      } else if (DWCA_V2_EXTENDED_OCCURRENCE.equals(type)) {
+      } else if (DWCA_V2_DP.equals(type)) {
         addDataPackageMetadata();
       } else {
         addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
