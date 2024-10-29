@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * The minimum requirement is either a persons family name, an organisation name or any of the identifiers for them.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
   "orcid",
   "family",
