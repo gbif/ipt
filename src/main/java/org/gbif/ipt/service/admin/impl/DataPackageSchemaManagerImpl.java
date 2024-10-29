@@ -330,7 +330,6 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
                 String filename = org.gbif.ipt.utils.FileUtils
                     .getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
-                filename = filename.replaceAll("dwca_v2", "dwca_v2_extended-occurrence-dp");
                 File tableSchemaFile = getTableSchemaConfigFileByName(files, filename);
                 tableSchemas.add(loadTableSchemaFromFile(tableSchemaFile));
               }
