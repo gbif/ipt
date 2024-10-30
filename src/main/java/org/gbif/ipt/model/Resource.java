@@ -485,9 +485,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public BigDecimal getDataPackageMetadataVersion() {
     try {
-      return (dataPackageMetadataVersion == null || dataPackageMetadata.getVersion() != null)
-        ? new BigDecimal(dataPackageMetadata.getVersion())
-        : dataPackageMetadataVersion;
+      if (dataPackageMetadataVersion == null) {
+        if (dataPackageMetadata.getVersion() != null) {
+          return new BigDecimal(dataPackageMetadata.getVersion());
+        } else {
+          return new BigDecimal("1.0");
+        }
+      } else {
+        return dataPackageMetadataVersion;
+      }
     } catch (NumberFormatException e) {
       LOG.error("Failed to parse version: {}", dataPackageMetadata.getVersion());
       return new BigDecimal("1.0");
