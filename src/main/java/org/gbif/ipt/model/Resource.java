@@ -525,7 +525,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   private BigDecimal getNextVersionForDataPackage() {
-    String versionAsString = getDataPackageMetadata().getVersion();
+    String versionAsString = Optional.ofNullable(getDataPackageMetadata())
+        .map(DataPackageMetadata::getVersion)
+        .orElse("1");
     boolean isVersionContainsDot = versionAsString.contains(".");
 
     if (lastPublished == null) {
