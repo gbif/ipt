@@ -135,7 +135,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         if (!getTmap().containsValue(sourceValueEntry.getValue())) {
           Optional<String> vocabularyMatch = vocab.stream()
             .filter(v -> v.replaceAll("_", "")
-              .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("", "_")))
+              .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("_", "")))
             .findFirst();
 
           if (vocabularyMatch.isPresent()) {
