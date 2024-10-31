@@ -1500,9 +1500,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           Integer recordCount = null;
 
           if (resource.isDataPackage()) {
+            // take number of observations as number of records for Camtrap
+            // for the rest data packages - total number of all records
             if (CAMTRAP_DP.equals(resource.getCoreType())) {
-              // take number of observations as number of records
               recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+            } else {
+              recordCount = resource.getRecordsByExtension().values().stream()
+                  .mapToInt(Integer::intValue)
+                  .sum();
             }
           } else {
             recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));

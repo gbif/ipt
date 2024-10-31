@@ -154,8 +154,8 @@
                         </div>
                     </#if>
 
-                    <#if resource.lastPublished?? && resource.organisation??>
-                        <div class="text-gbif-primary fs-smaller-2">
+                    <#if resource.lastPublished??>
+                        <div class="text-gbif-primary fs-smaller-2 mt-2">
                             <span>
                                 <#-- the existence of parameter version means the version is not equal to the latest published version -->
                                 <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
@@ -164,22 +164,7 @@
                                     <@s.text name='portal.resource.latest.version'/>
                                 </#if>
 
-                                <#if dpMetadata.created?has_content>
-                                    <#assign createdLongDate>
-                                        ${dpMetadata.created?date?string.long}
-                                    </#assign>
-                                    <#assign createdLongShortDate>
-                                        ${dpMetadata.created?date?string("MMM d, yyyy")}
-                                    </#assign>
-                                </#if>
-
-                                <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                                    ${publishedOnText?lower_case}&nbsp;<span>${createdLongDate!}</span>
-                                <#else>
-                                    <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text>
-                                    <span>${createdLongShortDate}</span>
-                                    <span style="display: none">${resource.organisation.name}</span>
-                                </#if>
+                                ${publishedOnText?lower_case}&nbsp;<span>${resource.lastPublished?date?string.long}</span>
                             </span>
                         </div>
                     <#else>
