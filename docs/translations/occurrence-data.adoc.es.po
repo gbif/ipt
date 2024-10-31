@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-10-31 09:17+0000\n"
-"PO-Revision-Date: 2024-10-31 09:56\n"
+"PO-Revision-Date: 2024-10-31 14:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -186,7 +186,7 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
 msgid "https://ipt.vertnet.org/archive.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)] (also registered on GBIF here: https://doi.org/10.15468/emivh3)"
-msgstr ""
+msgstr "https://ipt.vertnet.org/archive.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)] (también registrado en GBIF aquí: https://doi.org/10.15468/emivh3)"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:48
