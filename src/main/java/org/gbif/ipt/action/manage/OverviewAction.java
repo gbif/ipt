@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,6 +113,7 @@ import org.xml.sax.SAXException;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
@@ -149,6 +151,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Date now;
   private File emlFile;
   private File datapackageMetadataFile;
+  private String datapackageMetadataRaw;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
@@ -1159,6 +1162,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // refresh archive report
       updateReport();
 
+      try {
+        if (COL_DP.equals(resource.getCoreType())) {
+          File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+          datapackageMetadataRaw = Files.readString(metadataFile.toPath());
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to read ColDP metadata", e);
+      }
+
       // get potential new networks
       try {
         allNetworks = registryManager.getNetworksBrief();
@@ -1915,6 +1927,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public boolean isNetworksAvailable() {
     return networksAvailable;
+  }
+
+  public String getDatapackageMetadataRaw() {
+    return datapackageMetadataRaw;
   }
 
   /**

@@ -1146,6 +1146,12 @@
         if (scrollPosition > 220) {
             resourceNav.style.display = "block";
         }
+
+        $("#view-metadata-button").on('click', function () {
+            console.log("view-metadata-button")
+            var dialogWindow = $("#datapackage-metadata-modal");
+            dialogWindow.modal('show');
+        });
     });
 </script>
 
@@ -2760,6 +2766,20 @@
                     <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="datapackage-metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="datapackage-metadata-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm" style="max-width: none !important; margin: 1.75rem; font-size: 12px;">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="datapackage-metadata-modal-title">Metadata</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <pre id="json-raw-data" class="fs-smaller-2">${datapackageMetadataRaw!}</pre>
                 </div>
             </div>
         </div>

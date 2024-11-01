@@ -35,6 +35,14 @@
                         </svg>
                         <@s.text name="button.edit"/>
                     </a>
+                <#elseif resource.coreType?has_content && resource.coreType == "coldp">
+                    <a id="view-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="#">
+                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                        </svg>
+                        <@s.text name="button.view"/>
+                    </a>
                 <#elseif resource.coreType?has_content && resource.coreType != "coldp">
                     <a id="edit-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="datapackage-metadata-basic.do?r=${resource.shortname}">
                         <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">

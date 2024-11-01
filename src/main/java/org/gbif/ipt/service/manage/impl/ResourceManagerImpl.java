@@ -1031,6 +1031,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
 
+    if (metadata instanceof ColMetadata) {
+      ColMetadata colMetadata = (ColMetadata) metadata;
+      colMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
+    }
+
     if (metadata instanceof FrictionlessMetadata) {
       FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
       // set name, erase some internal fields

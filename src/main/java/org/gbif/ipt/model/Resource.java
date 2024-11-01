@@ -548,6 +548,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     int majorVersion;
+
+    // TODO: NumberFormatException - preserve versioning!
     if (isVersionContainsDot) {
       majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
     } else {
