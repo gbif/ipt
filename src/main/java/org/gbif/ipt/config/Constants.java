@@ -17,7 +17,9 @@ import org.gbif.dwc.terms.DwcTerm;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -126,6 +128,7 @@ public final class Constants {
   // Set of GBIF supported licenses
   public static final Set<String> GBIF_SUPPORTED_LICENSES;
   public static final Set<String> GBIF_SUPPORTED_LICENSES_CODES;
+  public static final Map<String, String> COLDP_LICENSES_CODES_TO_GBIF = new HashMap<>();
 
   public static final String EML_2_1_1_SCHEMA = "eml://ecoinformatics.org/eml-2.1.1";
   public static final String EML_2_2_0_SCHEMA = "https://eml.ecoinformatics.org/eml-2.2.0";
@@ -144,6 +147,10 @@ public final class Constants {
     licenseCodesInternal.add("CC-BY-4.0");
     licenseCodesInternal.add("CC-BY-NC-4.0");
     GBIF_SUPPORTED_LICENSES_CODES = Collections.unmodifiableSet(licenseCodesInternal);
+
+    COLDP_LICENSES_CODES_TO_GBIF.put("cc by nc", "CC-BY-NC-4.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("cc by", "CC-BY-4.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("cc0", "CC0-1.0");
   }
 
   private Constants() {

@@ -38,6 +38,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -114,6 +115,7 @@ import org.xml.sax.SAXException;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
@@ -1536,17 +1538,40 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       if (resource.isDataPackage()) {
         if (CAMTRAP_DP.equals(resource.getCoreType())) {
-          CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+            CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
 
-          Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
-              .map(license -> (CamtrapLicense) license)
-              .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
-              .findFirst();
+            Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
+                .map(license -> (CamtrapLicense) license)
+                .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
+                .findFirst();
 
-          return dataLicenceWrapped
-              .map(FrictionlessLicense::getName)
-              .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
-              .orElse(false);
+            return dataLicenceWrapped
+                .map(FrictionlessLicense::getName)
+                .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+                .orElse(false);
+          } else {
+            LOG.error("Wrong metadata type for Camtrap DP resource {}: {}",
+                resource.getShortname(),
+                resource.getDataPackageMetadata().getClass().getSimpleName());
+            return false;
+          }
+        } else if (COL_DP.equals(resource.getCoreType())) {
+          if (resource.getDataPackageMetadata() instanceof ColMetadata) {
+            ColMetadata metadata = (ColMetadata) resource.getDataPackageMetadata();
+
+            Optional<String> license = Optional.ofNullable(metadata.getLicense());
+
+            return license
+                .map(COLDP_LICENSES_CODES_TO_GBIF::get)
+                .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+                .orElse(false);
+          } else {
+            LOG.error("Wrong metadata type for ColDP resource {}: {}",
+                resource.getShortname(),
+                resource.getDataPackageMetadata().getClass().getSimpleName());
+            return false;
+          }
         }
       } else {
         File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
