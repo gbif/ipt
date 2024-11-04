@@ -1362,14 +1362,18 @@ input[type="search"]:focus::-webkit-search-cancel-button {
     max-height: 75vh;
 }
 
+.peek-table thead tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
 .peek-table thead tr th {
     position: sticky;
     top: 0;
-    background-color: lightgrey;
+    background-color: white;
     z-index: 1;
 }
 
-.peek-table tbody tr.odd {
+.peek-table tbody tr.even {
     background-color: rgba(0, 0, 0, 0.023);
 }
 /* Overlay div for modal views END */
