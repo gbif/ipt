@@ -328,7 +328,7 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_DWCA)
+    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_ARCHIVE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
   }
 

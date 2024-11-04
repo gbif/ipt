@@ -57,10 +57,10 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   /**
-   * Handles DwC-A file download request.
+   * Handles DwC-A or data package archive file download request.
    * <p>
    * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
-   * requested the latest published version is used.
+   *  requested, the latest published version is used.
    * <p>
    * Conditional (If-Modified-Since) requests are handled in execute().
    *
