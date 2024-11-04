@@ -41,7 +41,7 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 === Exemplar datasets
 
-* http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)]
+* https://ipt.vertnet.org/archive.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)] (also registered on GBIF here: https://doi.org/10.15468/emivh3)
 
 === FAQ
 
