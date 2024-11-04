@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -1165,7 +1166,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       try {
         if (COL_DP.equals(resource.getCoreType())) {
           File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-          datapackageMetadataRaw = Files.readString(metadataFile.toPath());
+          datapackageMetadataRaw = org.apache.commons.io.FileUtils.readFileToString(metadataFile, StandardCharsets.UTF_8);
         }
       } catch (Exception e) {
         LOG.error("Failed to read ColDP metadata", e);
