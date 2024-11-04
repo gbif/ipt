@@ -1329,7 +1329,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 #modalback {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -1355,6 +1355,22 @@ input[type="search"]:focus::-webkit-search-cancel-button {
     background-color: #fff;
     border: 1px solid #000;
     padding: 15px;
+}
+
+.peek-table-wrapper {
+    overflow-x: auto;
+    max-height: 75vh;
+}
+
+.peek-table thead tr th {
+    position: sticky;
+    top: 0;
+    background-color: lightgrey;
+    z-index: 1;
+}
+
+.peek-table tbody tr.odd {
+    background-color: rgba(0, 0, 0, 0.023);
 }
 /* Overlay div for modal views END */
 
