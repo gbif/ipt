@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2024-11-05 08:02\n"
+"PO-Revision-Date: 2024-11-05 09:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -54,7 +54,7 @@ msgstr "GBIF 資料整合發布工具（IPT）是一個免費的開源網路應�
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:8
 msgid "primary taxon occurrence data"
-msgstr "原始的分類單元出現記錄資料"
+msgstr "原始的分類單元出現紀錄資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
@@ -89,70 +89,70 @@ msgstr "有幾個因素促使了 GBIF 主導 IPT 的開發："
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:22
 msgid "limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;"
-msgstr ""
+msgstr "先前的發布工具（如 DiGIR、TAPIR、BioCASe）在發布和轉移大型資料集方面有所限制；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:23
 msgid "the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions."
-msgstr ""
+msgstr "需要減少發布者伺服器和 GBIF 伺服器在索引過程中的負載。這是因為來自 DiGIR、TAPIR 或 BioCASe 的索引會因重複的 HTTP 請求與回應的交互動作而造成負載過重。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:24
 msgid "the need to speed up the process of indexing biodiversity occurrence datasets;"
-msgstr ""
+msgstr "需要加快生物多樣性出現紀錄資料集的索引過程；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:25
 msgid "the need to offer additional benefits and services to the data publishers to encourage data publication;"
-msgstr ""
+msgstr "需要為資料發布者提供額外的利益和服務，以鼓勵他們發布資料；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:26
 msgid "the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata."
-msgstr ""
+msgstr "缺乏適當的工具來發布某些類型的生物多樣性資料，例如名稱清單和資料集詮釋資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:28
 msgid "To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org."
-msgstr ""
+msgstr "若要了解 IPT 的運作方式，可以觀看這段 25 分鐘的示範影片，它簡明地演示了如何通過 GBIF.org 正確地發布和註冊資料集。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:33
 #, no-wrap
 msgid "Users"
-msgstr ""
+msgstr "使用者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:36
 msgid "If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
-msgstr ""
+msgstr "如果您只是想試用 IPT，請發送電子郵件至 helpdesk@gbif.org 來申請一個 https://ipt.gbif.org/[IPT 示範系統] 的帳戶。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:42
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately."
-msgstr ""
+msgstr "請務必訂閱 https://lists.gbif.org/mailman/listinfo/ipt/[IPT 郵件列表]。該列表是 IPT 使用者的支持小組。確保 IPT 保持最新狀態對於其安全性和穩定性至關重要，因此，如果您負責管理 IPT，應訂閱以接收新版本通知，便於立即更新。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:43
 #, no-wrap
 msgid "Developers"
-msgstr ""
+msgstr "開發人員"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:46
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr ""
+msgstr "IPT 的核心開發由 GBIF 主導，但程式碼的編寫是一項需要社群努力的任務，歡迎大家參與。您可以瀏覽 https://github.com/gbif/ipt/issues[開放議題] 尋找您想要處理的項目。請注意，貢獻可以通過倉庫的分支或複製來提交 https://help.github.com/articles/creating-a-pull-request/[pull request]。完整的開發者指南請參閱 xref:developer-guide.adoc[此處]。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:47
 #, no-wrap
 msgid "Translators"
-msgstr ""
+msgstr "翻譯人員"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:50
 msgid "The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here]."
-msgstr ""
+msgstr "IPT 的使用者介面和手冊都需要國際化，這是一項社群協作，歡迎大家參與。翻譯人員的完整說明可參閱 xref.adoc[此處]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:52
