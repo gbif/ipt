@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2024-11-05 06:30\n"
+"PO-Revision-Date: 2024-11-05 08:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
 #: en/modules/ROOT/pages/index.adoc:38
 msgid "The simplest way to begin using the IPT is to request a free account on a https://www.gbif.org/data-hosting-centres[trusted data hosting centre^] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
-msgstr "開始使用 IPT 最簡單的方法是在 https://www.gbif.org/data-hosting-centres [可信賴的數據託管中心^] 申請一個免費的帳戶。這樣一來，您就可以管理自己的數據集，並通過 GBIF.org 發佈，而無需自己另外設置和維護 IPT 伺服器。"
+msgstr "開始使用 IPT 最簡單的方法是在 https://www.gbif.org/zh-tw/data-hosting-centres [可信賴的數據託管中心^] 申請一個免費的帳戶。這樣一來，您就可以管理自己的數據集，並通過 GBIF.org 發佈，而無需自己另外設置和維護 IPT 伺服器。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
@@ -33,58 +33,58 @@ msgstr "或者，如果您想自行設置 IPT 實例，可以參考 xref:getting
 #: en/modules/ROOT/pages/index.adoc:30
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
-msgstr "如何經由 GBIF.org 發布生物多樣性資料"
+msgstr "如何使用 IPT 來透過 GBIF.org 發布生物多樣性資料"
 
 #. type: Title =
 #: en/modules/ROOT/pages/index.adoc:1
 #, no-wrap
 msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
-msgstr ""
+msgstr "GBIF 資料整合發布工具（IPT）使用者手冊"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
 msgid "_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._"
-msgstr ""
+msgstr "_有關最新版本的資訊，包括下載內容，請參閱 xref:releases.adoc[發佈] 頁面._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
 msgid "The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:"
-msgstr ""
+msgstr "GBIF 資料整合發布工具（IPT）是一個免費的開源網路應用程式，讓您輕鬆共享四種類型的生物多樣性相關資訊："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:8
 msgid "primary taxon occurrence data"
-msgstr ""
+msgstr "原始的分類單元出現記錄資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
 msgid "taxon checklists"
-msgstr ""
+msgstr "分類單元清單"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:10
 msgid "sampling event data"
-msgstr ""
+msgstr "調查活動資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11
 msgid "general metadata about data sources."
-msgstr ""
+msgstr "資料來源的一般詮釋數據。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:13
 msgid "An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository."
-msgstr ""
+msgstr "IPT 實例以及通過該 IPT 所註冊的資料和詮釋資料將連接到 GBIF 登錄系統。這些資料會被 GBIF 編入索引，以便讓使用者只要通過 GBIF 入口網站進行檢索，就能公開地查詢和使用。此外，IPT 還可以設置 DataCite 帳戶，為資料集分配 DOI，使其成為資料儲存庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:18
 msgid "Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and international organizations. GBIF also has formal partnerships with relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
-msgstr ""
+msgstr "全球生物多樣性資訊機構（GBIF）經由各國政府資助成立於2001年，是全球最大旨在通過網路平臺提供生物多樣性資料的免費訪問與使用的多邊倡議。 https://www.gbif.org/zh-tw/participation/participant-list[GBIF 的多元參與者] 主要包括各個國家和國際組織。GBIF 也與相關的國際條約機構建立了正式合作夥伴關係。GBIF 的使命是促進和實現全球免費和開放的生物多樣性資料訪問，以支持科學、保育和永續發展。關於 GBIF 的更多資訊，請訪問 https://www.gbif.org/zh-tw/[GBIF.org]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:20
 msgid "Several factors have provided motivation for GBIF to lead the development of the IPT:"
-msgstr ""
+msgstr "有幾個因素促使了 GBIF 主導 IPT 的開發："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:22
