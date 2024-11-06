@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-06 06:32\n"
+"PO-Revision-Date: 2024-11-06 08:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -146,7 +146,7 @@ msgstr "創建新資源"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
 msgid "Below the Manage Resource table is a form that can be used to create a new resource. First, a unique \"shortname\" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., \"firstresource\" or \"first_resource\", but not \"first resource\" or \"première ressource!\"). Second, a resource type must be provided. Please note that when an optional Darwin Core archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe different types of archived resources from which a new resource can be derived:"
-msgstr ""
+msgstr "在「資源管理表格」下方有一個表單，可用於創建新資源。首先，需要為資源提供一個唯一的「短名稱」。該短名稱將用於在 IPT 實例中唯一標識該資源，並用於生成訪問資源的 URL。短名稱必須至少包含三個字元，可包含字母和數字（A-Z、a-z 和 0-9），但不得包含空白、破折號和底線以外的標點符號，或重音字元（例如，「firstresource」或「first_resource」，但不能是「first resource」或「première ressource!」）。其次，需要提供一個資源類型。請注意，當加載一個可選的 Darwin Core 存檔資源時（詳見下文），系統將自動確定並覆蓋此選擇的類型。第三，可以上傳可選的存檔資源。以下部分將描述可以衍生新資源的不同類型的存檔資源："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
@@ -156,7 +156,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
 msgid "<<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,"
-msgstr ""
+msgstr "<<上傳壓縮的（.zip）IPT 資源配置資料夾>>,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
@@ -166,7 +166,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 10GB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr ""
+msgstr "當然，您也可以選擇 _完全創建一個新的資源_，而不加載現有的存檔資源。在此選項中，資源的配置將需要通過 IPT 表單全部創建，包括上傳資料來源檔案（或連接到資料庫或 URLs）並將其中的欄位映射到適當延伸資料集中的術語。*請注意，IPT 有 10GB 的檔案上傳限制*，但是，*IPT 匯出/發布的達爾文核心標準存檔檔案大小沒有限制*。請參閱 <<upload-limits,有關檔案上傳限制的說明>> 以了解如何應對檔案上傳限制。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
