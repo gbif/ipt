@@ -20,6 +20,9 @@
                             ${ext.title}
                         </h4>
                         <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${ext.rowType!}
+                        </p>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ext.issued?date?string["d MMMM yyyy"]}
                         </p>
                     </div>
@@ -69,6 +72,9 @@
                         <h4 class="d-flex fs-regular mt-1 mb-0">
                             ${ext.title}
                         </h4>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${ext.rowType!}
+                        </p>
                         <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ext.issued?date?string["d MMMM yyyy"]}
                         </p>
