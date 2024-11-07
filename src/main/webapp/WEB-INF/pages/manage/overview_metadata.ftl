@@ -88,7 +88,11 @@
             <#else>
                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-complete"><@s.text name="manage.overview.metadata.complete"/></span>
             </#if>
-            <@s.text name="manage.overview.metadata.description"/>
+            <#if resource.coreType?has_content && resource.coreType == "coldp">
+                <@s.text name="manage.overview.metadata.coldp.description"/>
+            <#else>
+                <@s.text name="manage.overview.metadata.description"/>
+            </#if>
         </p>
     </div>
 </div>
