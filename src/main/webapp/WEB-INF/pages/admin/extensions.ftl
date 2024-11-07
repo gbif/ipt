@@ -22,9 +22,15 @@
                         <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ext.rowType!}
                         </p>
-                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                        <#if ext.isLatest()>
+                        <p class="text-gbif-primary mb-0 fs-smaller-2">
                             ${ext.issued?date?string["d MMMM yyyy"]}
                         </p>
+                        <#else>
+                            <p class="text-gbif-danger mb-0 fs-smaller-2">
+                                ${ext.issued?date?string["d MMMM yyyy"]}
+                            </p>
+                        </#if>
                     </div>
                 </div>
                 <div class="d-flex flex-column flex-auto flex-justify-between">
@@ -75,7 +81,7 @@
                         <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ext.rowType!}
                         </p>
-                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                        <p class="text-gbif-primary mb-0 fs-smaller-2">
                             ${ext.issued?date?string["d MMMM yyyy"]}
                         </p>
                     </div>
