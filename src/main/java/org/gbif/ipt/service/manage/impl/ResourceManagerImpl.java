@@ -1963,7 +1963,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
     }
-    return "<span class=\"text-nowrap status-pill status-" + status.name().toLowerCase() + "\">" +
+    return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + status.name().toLowerCase() + "\">" +
         icon +
         "<span>" +
         localizedStatus +

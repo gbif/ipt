@@ -1198,8 +1198,9 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <#if typesVocabulary[resourceTypeLowerCase]??>
-                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                            <#if resourceSubtypeLowerCase?has_content>
+                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                             </#if>
                             <#if resource.status??>
                                 <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
