@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-06 08:07\n"
+"PO-Revision-Date: 2024-11-07 06:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -171,18 +171,18 @@ msgstr "當然，您也可以選擇 _完全創建一個新的資源_，而不加
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "開始時，請先輸入新的資源簡稱，然後按下標有「創建」的按鈕。這將打開資源概覽頁面。接著，根據「資源管理選單」部分中「資源概覽」標題下的說明，完成資源管理頁面的各個部分。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr ""
+msgstr "上傳達爾文核心標準檔案"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
 msgid "The IPT is able to import valid Darwin Core Archive files up to 10GB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "IPT 可以匯入大小高達 10GB 的達爾文核心標準檔案。關於達爾文核心標準檔案的資訊可以在 https://dwc.tdwg.org/[Darwin Core 網站]找到，並且有更多關於 IPT 如何使用它們的說明請參考 xref.dwca-guide.adoc[此處]。要匯入達爾文核心標準檔案，點選標有「選擇檔案」的按鈕來找到目標檔案。選擇檔案後，其名稱將顯示在「選擇檔案」按鈕旁。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:29
@@ -193,7 +193,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:32
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process."
-msgstr ""
+msgstr "點擊標有「創建」的按鈕。如果匯入檔案時發生問題，系統將顯示錯誤訊息通知使用者。如果匯入成功，將顯示資源概覽頁面，頁面頂部會有一則訊息說明匯入的結果。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:33
@@ -205,58 +205,58 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:35
 #, no-wrap
 msgid "Upload a zipped IPT resource configuration folder"
-msgstr ""
+msgstr "上傳已壓縮的 IPT 資源配置資料夾"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
 msgid "It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will *not* copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name."
-msgstr ""
+msgstr "使用者可以從壓縮的 IPT 資源配置資料夾建立資源的副本，前提是該資源必須在相容的 IPT 版本下建立。這種方式將複製資源所有的詮釋資料、來源資料和映射，但不會複製其註冊資訊、版本歷史、DOI、版本號碼、管理者、發布狀態、建立日期、最後發布日期，也不會保留資源的簡稱。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:39
 msgid "To do so, follow these instructions:"
-msgstr ""
+msgstr "操作步驟如下："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:41
 msgid "Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the `$data-directory/resources` folder, and named using the resource short name. For example, if the resource had short name \"ants\", it would be found at `$data-directory/resources/ants`."
-msgstr ""
+msgstr "找到您要複製的資源配置資料夾。資源配置資料夾儲存在 $data-directory/resources 資料夾中，並使用資源簡稱命名。舉例來說，如果資源的簡稱是「ants」，則它將位於 $data-directory/resources/ants。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:42
 msgid "Zip (compress) the resource configuration folder: `ants/` → `ants.zip`"
-msgstr ""
+msgstr "壓縮（打包）資源配置資料夾：ants/ → ants.zip"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:43
 msgid "On the \"Create a New Resource\" section on the \"Manage Resource Menu\" page:"
-msgstr ""
+msgstr "在「資源管理選單」頁面的「創建新資源」部分中："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:44
 msgid "Enter a new resource short name. You can preserve the zipped resource's short name, provided it doesn't already exist in your IPT."
-msgstr ""
+msgstr "輸入新的資源簡稱。如果壓縮資源的簡稱尚未在 IPT 中存在，則可以保留其簡稱。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:45
 msgid "Click on the button labelled \"Choose File\", then navigate to and select the intended zipped resource configuration folder."
-msgstr ""
+msgstr "點擊標有「選擇檔案」的按鈕，然後找到並選擇已壓縮的目標資源配置資料夾。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:46
 msgid "After selecting the file, its name will appear next to the \"Choose File\" button. Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource."
-msgstr ""
+msgstr "選擇檔案後，其名稱將顯示在「選擇檔案」按鈕旁。點擊標有「創建」的按鈕。如果匯入檔案時發生問題，系統將顯示錯誤訊息通知使用者。如果匯入成功，將顯示資源概覽頁面，並將該資源的詮釋資料、來源資料和映射從壓縮資源中複製到新的資源中。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:47
 #, no-wrap
 msgid "Upload a metadata file"
-msgstr ""
+msgstr "上傳詮釋資料檔案"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "IPT 可以匯入和匯出符合「GBIF 詮釋資料設定檔」的有效資料集詮釋資料檔案。關於 GBIF EML 詮釋資料設定檔的資訊，以及如何撰寫符合 GBIF 達爾文核心標準詮釋資料設定檔的詮釋資料文件，請參考 xref:gbif-metadata-profile.adoc[GBIF 詮釋資料設定檔 - 使用指南]。要匯入詮釋資料檔案，選擇資源類型「僅詮釋資料」，然後點擊標有「選擇檔案」的按鈕，找到並選擇目標詮釋資料檔案。選擇檔案後，其名稱將顯示在「選擇檔案」按鈕旁。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
