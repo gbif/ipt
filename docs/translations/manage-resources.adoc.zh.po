@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-07 06:19\n"
+"PO-Revision-Date: 2024-11-07 07:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -267,29 +267,29 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:53
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the <<Basic Metadata>> page of the metadata."
-msgstr ""
+msgstr "點擊標有「創建」的按鈕。如果匯入檔案時發生問題，系統將顯示錯誤訊息通知使用者。如果匯入成功，將顯示資源概覽頁面，其中詮釋資料也會顯示在畫面上。由於此為僅詮釋資料的資源，來源資料和映射的部分將保持隱藏。如果您稍後決定新增原始資料集，只需在詮釋資料的 <<基本詮釋資料>> 頁面中更改資源類型。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:54
 #, no-wrap
 msgid "Edit an existing resource"
-msgstr ""
+msgstr "編輯現有的資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:56
 msgid "The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section for details on how to edit various aspects of the resource."
-msgstr ""
+msgstr "現有資源表僅顯示當前使用者可以編輯的資源。要編輯資源，請在資源表中點擊資源名稱。該連結將打開所選資源的資源概覽頁面。請參考「資源管理選單」部分中「資源概覽」標題下的說明，以了解如何編輯該資源的各種相關資料。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:57
 #, no-wrap
 msgid "Resource Overview"
-msgstr ""
+msgstr "資源概覽"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:59
 msgid "This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections."
-msgstr ""
+msgstr "此頁面允許具有管理許可權的使用者編輯資源配置。資源名稱顯示在頁面頂部的選單列下方。如果資源尚未命名，則會在頁面頂部顯示資源簡稱，並充當標題。資源名稱下方是一個表格，左側顯示資源配置的各個類別，右側顯示相應的區段。表格中的資訊圖示可幫助引導管理者去使用各類別。這些類別各自的配置方式將在後續部分詳細說明。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:60
@@ -312,18 +312,18 @@ msgstr "來源資料"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:65
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr ""
+msgstr "資源概覽頁面的此區域允許使用者從檔案、資料庫或 URL 匯入原始資料到 IPT。如果資源沒有來源資料，則被視為僅詮釋資料資源，即僅包含資料集的資訊，無任何原始資料。如果多個資料來源彼此相關，也可以將資源連結到多個資料來源。更多關於多個資料來源之間的關聯說明，請參閱達爾文核心標準文字檔指南的 http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[實作指南]部分。以下是選擇來源資料的初步步驟說明，無論是來自文字檔、資料庫來源或可用於 URL 的文字檔："
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:66
 #, no-wrap
 msgid "File as data source"
-msgstr ""
+msgstr "檔案作為資料來源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:68
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the {threedots} menu at \"Source Data\" and select \"Add\". Then select \"File\" from the dropdown box in the modal window and click on the button labelled \"Browse…\" or \"Choose file\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "IPT 可以匯入未壓縮的分隔文字檔（如 CSV、Tab，或使用其他分隔符的檔案）或以 Zip 或 Gzip 壓縮的等效檔案，也支援 Excel 檔案。點擊「來源資料」的 {threedots} 選單，選擇「添加」，然後在彈出視窗中從下拉框中選擇「檔案」，並點擊標有「瀏覽...」或「選擇檔案」的按鈕來尋找並選擇要匯入的檔案。檔案名稱僅能由字母數字字符（A-Z、0-9）、空格、底線、句號、括號和連字符組成。選擇檔案後，其名稱將顯示在「瀏覽...」按鈕的右側。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:69
@@ -336,48 +336,48 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:72
 msgid "Click on the button labelled \"Clear\" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it)."
-msgstr ""
+msgstr "點擊標有「清除」的按鈕以移除所選檔案，並返回到選擇來源資料之前的狀態。或者，點擊標有「添加」的按鈕以打開來源資料檔案詳細頁面（如果存在同名檔案覆寫風險，系統將顯示對話框，詢問使用者是否確認覆寫）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:74
 msgid "If the IPT detects the number of columns in a mapped data source has changed when overwriting it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "如果 IPT 檢測到在覆寫時映射的資料來源中的欄位數已更改，系統將警告使用者應更新其映射。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:76
 #, no-wrap
 msgid "Upload limits"
-msgstr ""
+msgstr "上傳大小限制"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:79
 msgid "The IPT has an upload size limit of 10GB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 10GB in size into the IPT, the following work-arounds are recommended:"
-msgstr ""
+msgstr "IPT 的上傳大小限制為 10GB。對於匯出/發布的達爾文核心標準檔案，IPT 則無大小限制。若要將超過 10GB 的資料集載入 IPT，建議採用以下解決方案："
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "compress the file with Zip or Gzip"
-msgstr ""
+msgstr "使用 Zip 或 Gzip 壓縮檔案"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr ""
+msgstr "將資料載入 IPT 支援的 xref:database-connection.adoc[IPT 支援的資料庫]之一"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:83
 msgid "retrieve the file from a URL"
-msgstr ""
+msgstr "從 URL 檢索檔案"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:84
 msgid "split the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)"
-msgstr ""
+msgstr "拆分檔案（當資料集發布時，IPT 將按照映射順序合併檔案）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:87
 msgid "This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr ""
+msgstr "此頁面顯示資源名稱以及檔案特徵摘要（可讀性、檢測到的欄數、檔案的絕對路徑、檔案大小、檢測到的行數和檔案最後載入到 IPT 的日期）。來源資料檔案詳細頁面允許使用者檢視並編輯描述所選檔案內容的參數，並使用這些設置來分析和預覽檔案。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:88
@@ -389,19 +389,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:91
 #, no-wrap
 msgid "*Source Name* - header, the name of the file selected, without the file extension.\n"
-msgstr ""
+msgstr "*來源名稱* - 標頭，選定檔案的名稱，不包括副檔名。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:92
 #, no-wrap
 msgid "*Source type* - type of the source, Text file here.\n"
-msgstr ""
+msgstr "*來源類型* - 來源的類型，此處為文字檔。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:93
 #, no-wrap
 msgid "*Readable* - this icon indicates whether data are accessible using the file format information provided on this page.\n"
-msgstr ""
+msgstr "*可讀* - 此圖示表示資料是否可使用此頁面上所提供的檔案格式資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:94
