@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-08 11:36\n"
+"PO-Revision-Date: 2024-11-08 12:33\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -618,7 +618,7 @@ msgstr "當來源資料的參數設定完成並可以正確訪問資料後，點
 #: en/modules/ROOT/pages/manage-resources.adoc:143
 #, no-wrap
 msgid "URL as data source"
-msgstr ""
+msgstr "URL 作為來源資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:145
