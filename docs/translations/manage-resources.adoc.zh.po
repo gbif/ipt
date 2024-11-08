@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-08 07:21\n"
+"PO-Revision-Date: 2024-11-08 08:20\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -437,44 +437,44 @@ msgstr "*最後修改* - 檔案最後儲存的日期戳記。\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.\n"
-msgstr ""
+msgstr "*來源紀錄* - 此連結下載處理檔案時所產生的紀錄檔案，記錄了此頁面的資訊。任何處理過程中遇到的問題，例如遺失的資料或意外格式，將會顯示在此紀錄檔案中。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
 #, no-wrap
 msgid "*Analyse* - (from Options dropdown) click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.\n"
-msgstr ""
+msgstr "*分析* - （在選項下拉選單中）按此按鈕以根據此頁面的檔案設定生成資料摘要。分析會顯示檔案是否可讀，若可讀，則顯示欄位數。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:101
 #, no-wrap
 msgid "*Preview* - (from Options dropdown) click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*預覽* - （在選項下拉選單中）按此按鈕以檢視檔案中的資料解釋。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:102
 #, no-wrap
 msgid "*Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.\n"
-msgstr ""
+msgstr "*標頭列數* - 若檔案不包含欄位名稱列則為 0，若包含欄位名稱列則為 1。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:103
 #, no-wrap
 msgid "*Field Delimiter* - the character or characters that signify a break between columns of data.\n"
-msgstr ""
+msgstr "*欄位分隔符* - 資料欄位之間分隔的字符或字符組合。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:104
 #, no-wrap
 msgid "*Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., `'` or `\"`). Please note this will not properly enclose columns whose content includes newline characters (\\n) or carriage returns (`\\r`).\n"
-msgstr ""
+msgstr "*欄位引號* - 用來標示資料欄位起始的單一字符（或無），例如 ' 或 \"。請注意，若欄位內容包含換行符號（\\n）或回車符號（\\r），則無法正確地標示欄位內容的起始。 \n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:105
 #: en/modules/ROOT/pages/manage-resources.adoc:140
 #, no-wrap
 msgid "*Multi-value Delimiter* - a single character that delimits the values in a multi-value field (e.g., `|` or `;`).\n"
-msgstr ""
+msgstr "*複數值分隔符* - 用來分隔擁有多於一個值的欄位的單一字符（例如 | 或 ;）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:106
