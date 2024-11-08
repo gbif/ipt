@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-07 07:31\n"
+"PO-Revision-Date: 2024-11-08 07:21\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -407,31 +407,31 @@ msgstr "*可讀* - 此圖示表示資料是否可使用此頁面上所提供的�
 #: en/modules/ROOT/pages/manage-resources.adoc:94
 #, no-wrap
 msgid "*File* - the full path to the location of the file to use as the data source.\n"
-msgstr ""
+msgstr "*檔案* - 用於作為資料來源的檔案完整路徑。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:95
 #, no-wrap
 msgid "*Columns* - the number of columns in the dataset as configured using the parameters on this page.\n"
-msgstr ""
+msgstr "*欄位數* - - 依照此頁面設定的參數，資料集中的欄位數。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:96
 #, no-wrap
 msgid "*Rows* - the number of rows found in the data file. (Note: This number helps check if all records are identified.)\n"
-msgstr ""
+msgstr "*行列數* - 資料檔案中找到的行列數。（註：此數字有助於確認所有紀錄是否已被識別。）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:97
 #, no-wrap
 msgid "*Size* - the file size.\n"
-msgstr ""
+msgstr "*檔案大小* - 資料來源檔案的大小。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:98
 #, no-wrap
 msgid "*Modified* - the date stamp of the file indicating when it was last saved.\n"
-msgstr ""
+msgstr "*最後修改* - 檔案最後儲存的日期戳記。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:99
