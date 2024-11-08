@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-08 08:20\n"
+"PO-Revision-Date: 2024-11-08 09:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -480,51 +480,51 @@ msgstr "*複數值分隔符* - 用來分隔擁有多於一個值的欄位的單�
 #: en/modules/ROOT/pages/manage-resources.adoc:106
 #, no-wrap
 msgid "*Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).\n"
-msgstr ""
+msgstr "*字元位元系統* - 定義資料中字元的位元系統（例如 ISO 8859-5 指的是西里爾字母）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:107
 #: en/modules/ROOT/pages/manage-resources.adoc:139
 #, no-wrap
 msgid "*Date Format* - a code describing the format of fields having a date data type (e.g., `YYYY-MM-DD` for four-digit year, two-digit month, and two-digit day separated by dashes).\n"
-msgstr ""
+msgstr "*日期格式* - 用於描述具有日期型別的欄位格式的代碼（例如 YYYY-MM-DD 表示四位數年份、兩位數月份和兩位數日期，以短橫分隔）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
 #, no-wrap
 msgid "*Selected Worksheet* - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet. After changing the sheet click *Analyse* to update the row/column information.\n"
-msgstr ""
+msgstr "*已選工作表* - （僅適用於 Excel 檔案）此下拉選單列出 Excel 檔案/活頁簿中所有工作表的名稱。僅可使用 1 張工作表作為資料來源，默認為第一張工作表。更改工作表後，點擊 Analyse 以更新行/列資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:110
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file. To reopen the Source Data File detail page just click on the appropriate item."
-msgstr ""
+msgstr "設定好資料來源的參數以確保檔案正確解讀後，點擊標示「儲存」的按鈕以儲存此設定。如果儲存成功，將顯示「資源概述」頁面，並在此頁面上顯示該檔案的摘要資訊。要重新開啟「來源資料檔案」的相關細節頁面，只需點擊相關項目。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:114
 msgid "Should the user want to delete this source, they can reopen the Source Data File detail page and press the \"Delete source file\" button. Be aware though, that any mappings associated to this file will also be deleted."
-msgstr ""
+msgstr "若使用者想要刪除此來源，他們可以重新開啟「來源資料檔案」的相關細節頁面，然後按「刪除來源檔案」按鈕。需注意，任何與此檔案相關的映射也會被刪除。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:116
 msgid "If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go."
-msgstr ""
+msgstr "若來源資料包含多個文字檔，則可以對每個要匯入的檔案重複執行此部分描述的過程。也可以匯入包含多個文字檔的壓縮資料夾，以一次性新增多個來源檔案。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 #, no-wrap
 msgid "Database as data source"
-msgstr ""
+msgstr "資料庫作為資料來源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "IPT 可以使用資料庫連接來從表格或檢視表中匯入資料。受支援的資料庫連接列表請參見 xref:database-connection.adoc[受支援的資料庫] 一節。要設定資料庫作為資料來源，點擊 {threedots} 選單並選擇「新增」。然後從彈出視窗的下拉選單中選擇「資料庫」，再點擊標示「連接」的按鈕，這將打開「來源資料資料庫」的相關細節頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
 msgid "The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyse and preview the data."
-msgstr ""
+msgstr "「來源資料資料庫」的相關細節頁面顯示了資源名稱及資料庫特徵摘要（可讀性、偵測到的欄位數），並允許使用者查看及編輯如何從資料庫訪問資料的參數，以及使用這些設定來分析和預覽資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:123
