@@ -124,15 +124,20 @@
                                 <@s.text name="basic.seealso"/>: <a href="${c.link}">${c.link}</a>
                             </p>
                         </#if>
-                        <div>
-                            <@s.text name="vocabulary.terms.pref"/>:
-                            <em><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span><#sep>;</#sep> </#list></em>
-                        </div>
+                        <ul>
+                            <#list c.preferredTerms as t>
+                                <li><em>${t.title} <span class="small">[${t.lang}]</span></em></li>
+                            </#list>
+                        </ul>
                         <#if c.alternativeTerms?has_content>
-                        <div>
-                            <@s.text name="vocabulary.terms.alt"/>:
-                            <em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span><#sep>;</#sep> </#list></em>
-                        </div>
+                            <p class="mb-0">
+                                <@s.text name="vocabulary.terms.alt"/>:
+                            </p>
+                            <ul class="fs-smaller-2">
+                                <#list c.alternativeTerms as t>
+                                    <li class="text-discreet"><em>${t.title} <span>[${t.lang}]</span></em></li>
+                                </#list>
+                            </ul>
                         </#if>
                     </div>
                 </div>

@@ -221,11 +221,12 @@
                     ${eml.title!resource.shortname}
                 </h1>
 
-                <#if typesVocabulary[resourceTypeLowerCase]??>
-                    <div class="text-center">
-                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]}</span>
-                    </div>
-                </#if>
+                <div class="text-center">
+                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                    <#if resourceSubtypeLowerCase?has_content>
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
+                    </#if>
+                </div>
 
                 <#if resource.lastPublished?? && resource.organisation??>
                     <div class="text-gbif-primary fs-smaller-2 mt-2">

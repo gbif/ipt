@@ -26,6 +26,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -134,7 +135,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         if (!getTmap().containsValue(sourceValueEntry.getValue())) {
           Optional<String> vocabularyMatch = vocab.stream()
             .filter(v -> v.replaceAll("_", "")
-              .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("", "_")))
+              .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("_", "")))
             .findFirst();
 
           if (vocabularyMatch.isPresent()) {
@@ -206,7 +207,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
         if (field.getConstraints() != null && field.getConstraints().getVocabulary() != null) {
           Map<String, String> vocabRawData = field.getConstraints().getVocabulary().stream()
-            .collect(Collectors.toMap(Function.identity(), Function.identity()));
+            .collect(Collectors.toMap(Function.identity(), Function.identity(), (e1, e2) -> e1, LinkedHashMap::new));
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 

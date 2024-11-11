@@ -23,7 +23,7 @@ While the core definition is still undergoing changes, it gets registered into t
 . *Configure IPT*
 +
 --
-To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`.
+To configure the IPT to use the Material Sample Core for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`.
 
 NOTE: be sure to escape any colons like above*
 

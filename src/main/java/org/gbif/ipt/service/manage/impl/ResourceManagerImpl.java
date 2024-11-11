@@ -1033,6 +1033,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
 
+    if (metadata instanceof ColMetadata) {
+      ColMetadata colMetadata = (ColMetadata) metadata;
+      colMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
+    }
+
     if (metadata instanceof FrictionlessMetadata) {
       FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
       // set name, erase some internal fields
@@ -1502,9 +1507,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           Integer recordCount = null;
 
           if (resource.isDataPackage()) {
+            // take number of observations as number of records for Camtrap
+            // for the rest data packages - total number of all records
             if (CAMTRAP_DP.equals(resource.getCoreType())) {
-              // take number of observations as number of records
               recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+            } else {
+              recordCount = resource.getRecordsByExtension().values().stream()
+                  .mapToInt(Integer::intValue)
+                  .sum();
             }
           } else {
             recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
@@ -1959,7 +1969,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
     }
-    return "<span class=\"text-nowrap status-pill status-" + status.name().toLowerCase() + "\">" +
+    return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + status.name().toLowerCase() + "\">" +
         icon +
         "<span>" +
         localizedStatus +

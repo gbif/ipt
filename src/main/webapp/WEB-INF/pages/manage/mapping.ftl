@@ -462,6 +462,18 @@
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
 
 <div class="container px-0">
+    <#if (redundants?size>0)>
+        <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
+            <div class="me-3">
+                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1">
+                <@s.text name="manage.mapping.redundant.info"><@s.param>${redundants?size}</@s.param></@s.text>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </#if>
+
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 

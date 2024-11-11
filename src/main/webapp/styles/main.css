@@ -1098,23 +1098,27 @@ div.dataTables_processing>div:last-child>div {
 .autopublish-enabled {
     background: #C9E1C0 !important;
     color: #4e565f !important;
+    border-color: #C9E1C0 !important;
 }
 
 .autopublish-disabled {
     background: #F8DFA3 !important;
+    border-color: #F8DFA3 !important;
 }
 
 .metadata-incomplete {
     background: #F1BDB8 !important;
+    border-color: #F1BDB8 !important;
 }
 
 .metadata-complete {
     background: #C9E1C0 !important;
+    border-color: #C9E1C0 !important;
     color: #575757 !important;
 }
 
 .license-pill, .doi-pill, .version-pill {
-    border: 1px #dee2e6 solid;
+    border: 1px solid;
     border-radius: 8px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -1125,24 +1129,28 @@ div.dataTables_processing>div:last-child>div {
 .version-current {
     color: white;
     background: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
 }
 
 .version-next {
     color: #666666;
+    border-color: #dee2e6;
 }
 
 .license-pill-current, .doi-pill-current {
     color: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
 }
 
 .license-pill-next, .doi-pill-next {
     color: #666666;
+    border-color: #dee2e6;
 }
 
 .status-pill {
     border: 1px solid #dee2e6 !important;
     border-radius: 50rem !important;
-    padding: 0.125rem 0.5rem;
+    padding: 0.25rem 0.5rem;
 }
 
 .status-public, .statuspublic {
@@ -1167,31 +1175,37 @@ div.dataTables_processing>div:last-child>div {
 .type-occurrence, .type-camtrap-dp, .type-coldp, .type-material-dp, .type-interaction-dp {
     background: #3e8622 !important;
     color: white;
+    border-color: #3e8622 !important;
 }
 
 .type-checklist {
     background: #947AB2 !important;
     color: white;
+    border-color: #947AB2 !important;
 }
 
 .type-metadata {
     background: #5976b1 !important;
     color: white !important;
+    border-color: #5976b1 !important;
 }
 
 .type-samplingevent {
     background: #297ea8 !important;
     color: white;
+    border-color: #297ea8 !important;
 }
 
 .type-materialentity {
-  background: #0094df !important;;
-  color: white !important;
+    background: #0094df !important;
+    color: white !important;
+    border-color: #0094df !important;
 }
 
 .type-other {
     background: #7B7979 !important;
     color: white !important;
+    border-color: #7B7979 !important;
 }
 
 .type-taxonomicauthority, .type-nomenclatorauthority, .type-inventorythematic, .type-inventoryregional,
@@ -1290,10 +1304,10 @@ div.dataTables_processing>div:last-child>div {
 }
 
 .dt-content-pill {
-    border-radius: 8px;
-    padding-left: .5rem;
-    padding-right: .5rem;
+    border-radius: 50rem;
+    padding: 0.125rem 0.5rem;
     background: #d3d3d3;
+    border: 1px solid;
 }
 /* DataTables styles END */
 
@@ -1329,7 +1343,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 #modalback {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -1355,6 +1369,26 @@ input[type="search"]:focus::-webkit-search-cancel-button {
     background-color: #fff;
     border: 1px solid #000;
     padding: 15px;
+}
+
+.peek-table-wrapper {
+    overflow-x: auto;
+    max-height: 75vh;
+}
+
+.peek-table thead tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.peek-table thead tr th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+}
+
+.peek-table tbody tr.even {
+    background-color: rgba(0, 0, 0, 0.023);
 }
 /* Overlay div for modal views END */
 

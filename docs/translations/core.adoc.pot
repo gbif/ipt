@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"POT-Creation-Date: 2024-10-14 15:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,9 +124,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid ""
-"To configure the IPT to use the {sandbox-material-sample}[Material Sample "
-"Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt."
-"properties`."
+"To configure the IPT to use the Material Sample Core for example, add the "
+"following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
 msgstr ""
 
 #. type: Plain text

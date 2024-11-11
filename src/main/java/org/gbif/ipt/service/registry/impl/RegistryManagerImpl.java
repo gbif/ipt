@@ -30,6 +30,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
@@ -82,6 +83,9 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
+
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
 
   private static class RegistryServices {
@@ -93,6 +97,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
+  private static final String SERVICE_TYPE_COLDP = "COLDP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_MATERIAL_ENTITY = "DWC-ARCHIVE-MATERIAL-ENTITY";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
@@ -196,6 +201,50 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   private List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
+    if (COL_DP.equals(resource.getCoreType())) {
+      return buildRegistryParametersForColDP(resource);
+    } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      return buildRegistryParametersForCamtrapDP(resource);
+    } else {
+      LOG.error("Unknown data package type: {}", resource.getCoreType());
+      return Collections.emptyList();
+    }
+  }
+
+  private List<NameValuePair> buildRegistryParametersForColDP(Resource resource) {
+    List<NameValuePair> data = new ArrayList<>();
+
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+    ColMetadata colMetadata = null;
+
+    if (metadata instanceof ColMetadata) {
+      colMetadata = (ColMetadata) metadata;
+    }
+
+    if (colMetadata != null) {
+      data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+          : StringUtils.trimToEmpty(resource.getShortname())));
+      data.add(new BasicNameValuePair("description", metadata.getDescription()));
+
+      // Use resource creator as primary contact. May use one of the contributors in the future.
+      data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
+      data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
+      data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
+
+      // service type and url
+      data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_COLDP));
+      data.add(new BasicNameValuePair("serviceUrls", cfg.getResourceArchiveUrl(resource.getShortname())));
+
+      LOG.debug(data);
+    } else {
+      LOG.debug("Failed to extract ColMetadata to build registry parameters! Metadata type is {}",
+          metadata.getClass().getSimpleName());
+    }
+
+    return data;
+  }
+
+  private List<NameValuePair> buildRegistryParametersForCamtrapDP(Resource resource) {
     List<NameValuePair> data = new ArrayList<>();
 
     DataPackageMetadata metadata = resource.getDataPackageMetadata();

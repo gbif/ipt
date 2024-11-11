@@ -485,9 +485,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public BigDecimal getDataPackageMetadataVersion() {
     try {
-      return (dataPackageMetadataVersion == null || dataPackageMetadata.getVersion() != null)
-        ? new BigDecimal(dataPackageMetadata.getVersion())
-        : dataPackageMetadataVersion;
+      if (dataPackageMetadataVersion == null) {
+        if (dataPackageMetadata.getVersion() != null) {
+          return new BigDecimal(dataPackageMetadata.getVersion());
+        } else {
+          return new BigDecimal("1.0");
+        }
+      } else {
+        return dataPackageMetadataVersion;
+      }
     } catch (NumberFormatException e) {
       LOG.error("Failed to parse version: {}", dataPackageMetadata.getVersion());
       return new BigDecimal("1.0");
@@ -519,7 +525,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   private BigDecimal getNextVersionForDataPackage() {
-    String versionAsString = getDataPackageMetadata().getVersion();
+    String versionAsString = Optional.ofNullable(getDataPackageMetadata())
+        .map(DataPackageMetadata::getVersion)
+        .orElse("1");
     boolean isVersionContainsDot = versionAsString.contains(".");
 
     if (lastPublished == null) {
@@ -540,6 +548,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     int majorVersion;
+
+    // TODO: NumberFormatException - preserve versioning!
     if (isVersionContainsDot) {
       majorVersion = Integer.parseInt(versionAsString.substring(0, versionAsString.indexOf(".")));
     } else {
