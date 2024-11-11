@@ -221,7 +221,7 @@ public interface ResourceManager {
   List<Resource> list(User user);
 
   /**
-   * list all resource that can be managed by a given user.
+   * list all resources that can be managed by a given user.
    *
    * @param user User
    * @param request request parameters
@@ -230,7 +230,16 @@ public interface ResourceManager {
    */
   DatatableResult list(User user, DatatableRequest request);
 
-  DatatableResult listAll(DatatableRequest request);
+  /**
+   * list all resources that are in the data directory including failing ones
+   *
+   * @param request request parameters
+   *
+   * @return list of resources wrapped by DatatableResult class
+   */
+  DatatableResult listAllStored(DatatableRequest request);
+
+  List<File> listAllResourceFiles(String shortname);
 
   /**
    * Load all configured resources from the data directory into memory.

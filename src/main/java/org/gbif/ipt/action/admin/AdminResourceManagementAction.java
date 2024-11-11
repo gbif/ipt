@@ -53,7 +53,7 @@ public class AdminResourceManagementAction extends POSTAction {
   @Override
   public String execute() {
     DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
-    resources = resourceManager.listAll(dr);
+    resources = resourceManager.listAllStored(dr);
 
     return SUCCESS;
   }

@@ -2028,7 +2028,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
-  public DatatableResult listAll(DatatableRequest request) {
+  public DatatableResult listAllStored(DatatableRequest request) {
     List<String> resources = getDirectoryNames(dataDir.resourcesDir());
 
     List<String> filteredResources = resources.stream()
@@ -2047,6 +2047,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.setData(data);
 
     return result;
+  }
+
+  public List<File> listAllResourceFiles(String shortname) {
+    return dataDir.resourceFiles(shortname);
   }
 
   private List<String> toDatatableResourceManagementView(String resource) {

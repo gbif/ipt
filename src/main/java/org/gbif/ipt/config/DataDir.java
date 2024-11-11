@@ -24,7 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
@@ -312,6 +316,11 @@ public class DataDir {
       return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + COL_DP_METADATA_FILENAME);
     }
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + FRICTIONLESS_METADATA_FILENAME);
+  }
+
+  public List<File> resourceFiles(String resourceName) {
+    File[] filesArray = dataFile(RESOURCES_DIR + "/" + resourceName).listFiles();
+    return filesArray != null ? Arrays.stream(filesArray).collect(Collectors.toList()) : new ArrayList<>();
   }
 
   public File resourceFile(Resource resource, String path) {
