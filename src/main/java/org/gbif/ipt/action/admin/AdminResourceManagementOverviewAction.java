@@ -39,6 +39,8 @@ public class AdminResourceManagementOverviewAction extends POSTAction {
   @Getter
   private String shortname = null;
   @Getter
+  private boolean resourceSuccessfullyLoaded = false;
+  @Getter
   private List<File> resourceFiles = new ArrayList<>();
   @Getter
   private File resourceFile;
@@ -92,6 +94,8 @@ public class AdminResourceManagementOverviewAction extends POSTAction {
         }
       }
     }
+
+    resourceSuccessfullyLoaded = resourceManager.get(shortname) != null;
   }
 
   @Override

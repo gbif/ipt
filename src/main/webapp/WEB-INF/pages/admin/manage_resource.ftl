@@ -99,11 +99,25 @@
                         ${shortname}
                     </h1>
 
-                    <div class="text-gbif-primary fs-smaller-2 mt-1">
-                        <span>
-                            <a href="" class="text-gbif-primary fw-bold">Resource</a> has been loaded successfully
-                        </span>
-                    </div>
+                    <#if resourceSuccessfullyLoaded>
+                        <div class="text-gbif-primary fs-smaller-2 mt-1">
+                            <span>
+                                Resource has been loaded successfully
+                            </span>
+                        </div>
+
+                        <div class="fs-smaller-2 mt-1">
+                            <span>
+                                <a href="${baseURL}/manage/resource?r=${shortname}">Resource overview</a>
+                            </span>
+                        </div>
+                    <#else>
+                         <div class="text-gbif-danger fs-smaller-2 mt-1">
+                            <span>
+                                Resource has been failed to load
+                            </span>
+                         </div>
+                    </#if>
 
                     <div class="mt-2">
                         <a href="${baseURL}/admin/manageResources.do" class="button btn btn-sm btn-outline-secondary top-button">
