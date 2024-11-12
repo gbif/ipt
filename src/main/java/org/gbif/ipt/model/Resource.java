@@ -149,6 +149,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   private DOI doi;
   private UUID doiOrganisationKey;
 
+  // error related fields
+  private boolean failed = false;
+  private String errorMessage;
+  private StackTraceElement[] errorStackTrace;
+
   public void addManager(User manager) {
     if (manager != null) {
       this.managers.add(manager);
@@ -1844,6 +1849,30 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setMakePublicDate(Date makePublicDate) {
     this.makePublicDate = makePublicDate;
+  }
+
+  public StackTraceElement[] getErrorStackTrace() {
+    return errorStackTrace;
+  }
+
+  public void setErrorStackTrace(StackTraceElement[] errorStackTrace) {
+    this.errorStackTrace = errorStackTrace;
+  }
+
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+  public void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+  }
+
+  public boolean isFailed() {
+    return failed;
+  }
+
+  public void setFailed(boolean failed) {
+    this.failed = failed;
   }
 
   public boolean isDataPackage() {

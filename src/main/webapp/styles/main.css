@@ -1153,6 +1153,16 @@ div.dataTables_processing>div:last-child>div {
     padding: 0.25rem 0.5rem;
 }
 
+.load-status-loaded {
+    color: #5EA642 !important;
+    border-color: #5EA642C0 !important;
+}
+
+.load-status-failed {
+    color: #E37C72 !important;
+    border-color: #E37C72C0 !important;
+}
+
 .status-public, .statuspublic {
     color: #5EA642 !important;
     border-color: #5EA642C0 !important;

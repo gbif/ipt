@@ -32,6 +32,7 @@ import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.AdminTableViewResource;
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
@@ -213,7 +214,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
-  private Map<String, String> failedResources = new HashMap<>();
+  private Map<String, Resource> failedResources = new HashMap<>();
   // simplified resources for home page (metadata from last published version!)
   private Map<String, SimplifiedResource> publishedPublicVersionsSimplified = new HashMap<>();
   private static final int MAX_PROCESS_FAILURES = 3;
@@ -280,7 +281,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } catch (Exception e) {
       LOG.error("Failed to reconstruct resource's last published version", e);
-      failedResources.put(res.getShortname(), "Failed to reconstruct resource's last published version. " + e.getMessage());
+
+      res.setFailed(true);
+      res.setErrorMessage("Failed to reconstruct resource's last published version. " + e.getMessage());
+      res.setErrorStackTrace(e.getStackTrace());
+
+      failedResources.put(res.getShortname(), res);
     }
   }
 
@@ -1778,6 +1784,44 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         || StringUtils.containsIgnoreCase(resource.getSubject(), search);
   }
 
+  private List<String> toDatatableResourceAdminView(
+      AdminTableViewResource resource, Locale locale, Map<String, String> datasetTypes) {
+    List<String> result = new ArrayList<>();
+    result.add(toAdminResourceManageLink(resource.getShortname()));
+    result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
+    result.add(toUiStatus(resource.getPublicationStatus(), locale));
+    result.add(toUiDateTime(resource.getLastModified()));
+    result.add(resource.getCreatorName() != null ? resource.getCreatorName() : "<span>--</span>");
+    result.add(toUiLoadStatus(resource.isFailed(), locale));
+
+    return result;
+  }
+
+  private AdminTableViewResource toAdminTableViewResource(String shortname) {
+    Resource resource = resources.get(shortname);
+
+    if (resource == null) {
+      resource = failedResources.get(shortname);
+    }
+
+    if (resource == null) {
+      resource = new Resource();
+      resource.setShortname(shortname);
+      resource.setFailed(true);
+      resource.setErrorMessage("Resource was not found among loaded and failed resourced");
+    }
+
+    AdminTableViewResource result = new AdminTableViewResource();
+    result.setFailed(resource.isFailed());
+    result.setShortname(shortname);
+    result.setPublicationStatus(resource.getStatus());
+    result.setCoreType(resource.getCoreType());
+    result.setLastModified(resource.getModified());
+    result.setCreatorName(resource.getCreatorName());
+
+    return result;
+  }
+
   /**
    * Converts raw data (one simplified resource) to UI data for portal home page.
    * BEWARE! Order is crucial!
@@ -1962,6 +2006,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return wrapped publication status (badge)
    */
   private String toUiStatus(PublicationStatus status, Locale locale) {
+    if (status == null) {
+      return "<span>--</span>";
+    }
+
     String localizedStatus = textProvider.getTexts(locale).getString("manage.home.visible." + status.name().toLowerCase());
     String icon;
     if (status == PublicationStatus.PUBLIC || status == PublicationStatus.PRIVATE) {
@@ -1971,6 +2019,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + status.name().toLowerCase() + "\">" +
         icon +
+        "<span>" +
+        localizedStatus +
+        "</span>" +
+        "</span>";
+  }
+
+  private String toUiLoadStatus(boolean failedToLoad, Locale locale) {
+    String loadStatus = failedToLoad ? "failed" : "loaded";
+    String localizedStatus =
+        textProvider.getTexts(locale).getString("admin.home.load.status." + loadStatus);
+
+    return "<span class=\"text-nowrap status-pill fs-smaller-2 load-status-" + loadStatus + "\">" +
         "<span>" +
         localizedStatus +
         "</span>" +
@@ -2029,20 +2089,35 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public DatatableResult listAllStored(DatatableRequest request) {
-    List<String> resources = getDirectoryNames(dataDir.resourcesDir());
+    List<String> resourcesInDataDirectory = getDirectoryNames(dataDir.resourcesDir());
 
-    List<String> filteredResources = resources.stream()
+    List<String> filteredResources = resourcesInDataDirectory.stream()
         .filter(res -> StringUtils.containsIgnoreCase(res, request.getSearch()))
         .collect(Collectors.toList());
+
+    Locale currentLocale = Locale.forLanguageTag(request.getLocale());
+
+    // TODO: no need to load dataset types every time?
+    Map<String, String> datasetTypes =
+        MapUtils.getMapWithLowercaseKeys(
+            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
+    // add data packages
+    List<DataPackageSchema> installedSchemas = schemaManager.list();
+    for (DataPackageSchema installedSchema : installedSchemas) {
+      datasetTypes.put(
+          installedSchema.getName(),
+          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
+    }
 
     List<List<String>> data = filteredResources.stream()
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(this::toDatatableResourceManagementView)
+        .map(this::toAdminTableViewResource)
+        .map(res -> toDatatableResourceAdminView(res, currentLocale, datasetTypes))
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
-    result.setTotalRecords(resources.size());
+    result.setTotalRecords(resourcesInDataDirectory.size());
     result.setTotalDisplayRecords(filteredResources.size());
     result.setData(data);
 
@@ -2051,13 +2126,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public List<File> listAllResourceFiles(String shortname) {
     return dataDir.resourceFiles(shortname);
-  }
-
-  private List<String> toDatatableResourceManagementView(String resource) {
-    List<String> result = new ArrayList<>();
-    result.add(toAdminResourceManageLink(resource));
-
-    return result;
   }
 
   private List<String> getDirectoryNames(File rootDirectory) {
@@ -2095,7 +2163,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
           if (resourceDirFiles == null) {
             LOG.error("Resource directory {} could not be read. Please verify its content", resourceDir.getName());
-            failedResources.put(resourceDir.getName(), "Resource directory could not be read");
+
+            Resource failedResource = new Resource();
+            failedResource.setShortname(resourceDir.getName());
+            failedResource.setFailed(true);
+            failedResource.setErrorMessage("Resource directory could not be read");
+
+            failedResources.put(resourceDir.getName(), failedResource);
           } else if (resourceDirFiles.length == 0) {
             LOG.warn("Cleaning up empty resource directory {}", resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
@@ -2240,13 +2314,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * and returns the Resource instance for the internal in memory cache.
    */
   private Resource loadFromDir(File resourceDir, @Nullable User creator, ActionLogger alog) throws InvalidConfigException {
+    Resource resource = null;
+
     if (resourceDir.exists()) {
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();
       try {
         File cfgFile = dataDir.resourceFile(shortname);
         InputStream input = new FileInputStream(cfgFile);
-        Resource resource = (Resource) xstream.fromXML(input);
+        resource = (Resource) xstream.fromXML(input);
 
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
@@ -2340,7 +2416,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return resource;
       } catch (Exception e) {
         LOG.error("Cannot read resource configuration for {}", shortname, e);
-        failedResources.put(shortname, "Cannot read resource configuration. " + e.getMessage());
+
+        if (resource != null) {
+          resource.setFailed(true);
+          resource.setErrorMessage(e.getMessage());
+          resource.setErrorStackTrace(e.getStackTrace());
+        }
+
+        failedResources.put(shortname, resource);
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
           "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }

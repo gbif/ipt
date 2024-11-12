@@ -39,10 +39,20 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             const PAGE_PARAM = "page";
 
             var columnIndexName = {
-                0: "name"
+                0: "name",
+                1: "type",
+                2: "visibility",
+                3: "lastModified",
+                4: "author",
+                5: "status"
             };
             var columnNameIndex = {
-                "name": 0
+                "name": 0,
+                "type": 1,
+                "visibility": 2,
+                "lastModified": 3,
+                "author": 4,
+                "status": 5
             };
 
             var urlParams = new URLSearchParams(window.location.search);
@@ -86,9 +96,14 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     }
                 },
                 "aoColumns": [
-                    {"sTitle": "<@s.text name="manage.home.name"/>", "sClass": "all text-break"}
+                    {"sTitle": "<@s.text name="manage.home.name"/>", "sClass": "all text-break"},
+                    {"sTitle": "<@s.text name="manage.home.type"/>", "sClass": "desktop tablet-l tablet-p"},
+                    {"sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "sClass": "desktop tablet-l"},
+                    {"sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false, "sClass": "text-xl-end desktop"},
+                    {"sTitle": "<@s.text name="portal.home.author"/>", "sClass": "desktop tablet-l"},
+                    {"sTitle": "<@s.text name="admin.home.load.status"/>", "sClass": "desktop tablet-l"},
                 ],
-                // "aaSorting": [[sortParam, orderParam]],
+                "aaSorting": [[sortParam, orderParam]],
                 "aoColumnDefs": [
                     {'bSortable': false, 'aTargets': [0]}
                 ],
