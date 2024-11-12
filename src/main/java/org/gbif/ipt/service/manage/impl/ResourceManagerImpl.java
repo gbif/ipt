@@ -60,7 +60,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
-import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.PortalAndManageTableViewResource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -218,7 +218,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Resource> resources = new HashMap<>();
   private Map<String, Resource> failedResources = new HashMap<>();
   // simplified resources for home page (metadata from last published version!)
-  private Map<String, SimplifiedResource> publishedPublicVersionsSimplified = new HashMap<>();
+  private Map<String, PortalAndManageTableViewResource> publishedPublicVersionsSimplified = new HashMap<>();
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
@@ -318,7 +318,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource regular Resource
    * @return simplified resource
    */
-  protected SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
+  protected PortalAndManageTableViewResource toSimplifiedResourceReconstructedVersion(Resource resource) {
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
 
@@ -330,7 +330,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
             resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
 
-    SimplifiedResource result = new SimplifiedResource();
+    PortalAndManageTableViewResource result = new PortalAndManageTableViewResource();
     result.setShortname(publishedPublicVersion.getShortname());
     result.setTitle(publishedPublicVersion.getTitle());
     result.setStatus(publishedPublicVersion.getStatus());
@@ -367,8 +367,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource regular Resource
    * @return simplified resource
    */
-  private SimplifiedResource toSimplifiedResource(Resource resource) {
-    SimplifiedResource result = new SimplifiedResource();
+  private PortalAndManageTableViewResource toSimplifiedResource(Resource resource) {
+    PortalAndManageTableViewResource result = new PortalAndManageTableViewResource();
     result.setShortname(resource.getShortname());
     result.setTitle(resource.getTitle());
     result.setStatus(resource.getStatus());
@@ -1670,7 +1670,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request) {
-    List<SimplifiedResource> filteredResources = publishedPublicVersionsSimplified.values().stream()
+    List<PortalAndManageTableViewResource> filteredResources = publishedPublicVersionsSimplified.values().stream()
         .filter(p -> matchesSearchString(p, request.getSearch()))
         .collect(Collectors.toList());
 
@@ -1692,7 +1692,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
 
     List<List<String>> data = filteredResources.stream()
-        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
+        .sorted(portalAndManageTableViewResourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
         .map(res -> toDatatableResourcePortalView(res, currentLocale, datasetTypes, datasetSubtypes))
@@ -1713,52 +1713,92 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param order asc/desc
    * @return comparator
    */
-  private Comparator<SimplifiedResource> resourceComparator(int index, String order) {
+  private Comparator<PortalAndManageTableViewResource> portalAndManageTableViewResourceComparator(int index, String order) {
     boolean isDescendingOrder = isDescendingOrder(order);
     if (index == 1) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getTitleOrShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getTitleOrShortname, nullSafeStringComparator);
     } else if (index == 2) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getOrganizationAliasOrName, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getOrganizationAliasOrName, nullSafeStringComparator);
     } else if (index == 3) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getCoreType, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getCoreType, nullSafeStringComparator);
     } else if (index == 4) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getSubtype, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getSubtype, nullSafeStringComparator);
     } else if (index == 5) {
       return isDescendingOrder ?
-          Comparator.comparingInt(SimplifiedResource::getRecordsPublished).reversed() :
-          Comparator.comparingInt(SimplifiedResource::getRecordsPublished);
+          Comparator.comparingInt(PortalAndManageTableViewResource::getRecordsPublished).reversed() :
+          Comparator.comparingInt(PortalAndManageTableViewResource::getRecordsPublished);
     } else if (index == 6) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getModified, nullSafeDateComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getModified, nullSafeDateComparator);
     } else if (index == 7) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getLastPublished, nullSafeDateComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getLastPublished, nullSafeDateComparator);
     } else if (index == 8) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getNextPublished, nullSafeDateComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getNextPublished, nullSafeDateComparator);
     } else if (index == 9) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
-          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
+          Comparator.comparing(PortalAndManageTableViewResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
     } else if (index == 10) {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getCreatorName, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getCreatorName, nullSafeStringComparator);
     } else {
       return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator);
+          Comparator.comparing(PortalAndManageTableViewResource::getShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(PortalAndManageTableViewResource::getShortname, nullSafeStringComparator);
+    }
+  }
+
+  /**
+   * Produces comparator from the raw parameters.
+   *
+   * @param index field index (0 - shortname, 1 - core type, 2 - modified, 3 - publication status etc.)
+   * @param order asc/desc
+   * @return comparator
+   */
+  private Comparator<AdminTableViewResource> adminTableViewResourceComparator(int index, String order) {
+    boolean isDescendingOrder = isDescendingOrder(order);
+    if (index == 0) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getShortname, nullSafeStringComparator);
+    } else if (index == 1) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getCoreType, nullSafeStringComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getCoreType, nullSafeStringComparator);
+    } else if (index == 2) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator);
+    } else if (index == 3) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getPublicationStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
+          Comparator.comparing(AdminTableViewResource::getPublicationStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
+    } else if (index == 4) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getCreatorName, nullSafeStringComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getCreatorName, nullSafeStringComparator);
+    } else if (index == 5) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getLoadStatus, nullSafeStringComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getLoadStatus, nullSafeStringComparator);
+    } else {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getShortname, nullSafeStringComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getShortname, nullSafeStringComparator);
     }
   }
 
@@ -1779,7 +1819,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param search search string
    * @return true/false
    */
-  private boolean matchesSearchString(SimplifiedResource resource, String search) {
+  private boolean matchesSearchString(PortalAndManageTableViewResource resource, String search) {
     if (StringUtils.isEmpty(search)) {
       return true;
     }
@@ -1842,7 +1882,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return UI data (array)
    */
   private List<String> toDatatableResourcePortalView(
-      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
+      PortalAndManageTableViewResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceHomeLink(resource));
@@ -1871,7 +1911,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return UI data (array)
    */
   private List<String> toDatatableResourceManageView(
-      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
+      PortalAndManageTableViewResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
     List<String> result = new ArrayList<>();
     result.add(toUiLogoUrl(resource.getLogoUrl()));
     result.add(toResourceManageLink(resource));
@@ -1947,7 +1987,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource lightweight resource
    * @return alias or name or "--"
    */
-  private String toUiOrganization(SimplifiedResource resource) {
+  private String toUiOrganization(PortalAndManageTableViewResource resource) {
     String result = resource.getOrganizationAliasOrName();
     return result != null && !"No organization".equals(result) ? result : "--";
   }
@@ -1960,7 +2000,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param locale locale
    * @return link to records section
    */
-  private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
+  private String toUiRecordsPublished(PortalAndManageTableViewResource resource, Locale locale) {
     NumberFormat format = NumberFormat.getInstance(locale);
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
   }
@@ -1987,7 +2027,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource lightweight resource
    * @return link to resource (home page)
    */
-  private String toResourceHomeLink(SimplifiedResource resource) {
+  private String toResourceHomeLink(PortalAndManageTableViewResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
   }
@@ -1999,7 +2039,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource lightweight resource
    * @return link to resource (manage page)
    */
-  private String toResourceManageLink(SimplifiedResource resource) {
+  private String toResourceManageLink(PortalAndManageTableViewResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
   }
@@ -2049,7 +2089,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public DatatableResult list(User user, DatatableRequest request) {
-    List<SimplifiedResource> filteredResources = resources.values().stream()
+    List<PortalAndManageTableViewResource> filteredResources = resources.values().stream()
         .filter(res -> RequireManagerInterceptor.isAuthorized(user, res))
         .map(this::toSimplifiedResource)
         .filter(res -> matchesSearchString(res, request.getSearch()))
@@ -2072,7 +2112,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
 
     List<List<String>> data = filteredResources.stream()
-        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
+        .sorted(portalAndManageTableViewResourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
         .map(res -> toDatatableResourceManageView(res, currentLocale, datasetTypes, datasetSubtypes))
@@ -2120,9 +2160,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     List<List<String>> data = filteredResources.stream()
+        .map(this::toAdminTableViewResource)
+        .sorted(adminTableViewResourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
         .skip(request.getOffset())
         .limit(request.getLimit())
-        .map(this::toAdminTableViewResource)
         .map(res -> toDatatableResourceAdminView(res, currentLocale, datasetTypes))
         .collect(Collectors.toList());
 
@@ -3627,7 +3668,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Change resource status to REGISTERED and update organization.
    */
   private void updateStoredResources(Resource resource) {
-    SimplifiedResource simplifiedResource = publishedPublicVersionsSimplified.get(resource.getShortname());
+    PortalAndManageTableViewResource simplifiedResource = publishedPublicVersionsSimplified.get(resource.getShortname());
     if (simplifiedResource != null) {
       simplifiedResource.setStatus(PublicationStatus.REGISTERED);
       simplifiedResource.setOrganisationAlias(resource.getOrganisationAlias());

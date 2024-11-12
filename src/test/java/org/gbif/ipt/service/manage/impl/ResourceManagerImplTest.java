@@ -32,7 +32,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.PortalAndManageTableViewResource;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -82,7 +82,6 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -1862,7 +1861,7 @@ public class ResourceManagerImplTest {
     // prepare resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
 
-    doReturn(new SimplifiedResource()).when(resourceManager).toSimplifiedResourceReconstructedVersion(any());
+    doReturn(new PortalAndManageTableViewResource()).when(resourceManager).toSimplifiedResourceReconstructedVersion(any());
 
     // add versionHistory for version 2.0
     Date released20 = new Date();
@@ -1991,7 +1990,7 @@ public class ResourceManagerImplTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
 
-    doReturn(new SimplifiedResource()).when(manager).toSimplifiedResourceReconstructedVersion(any());
+    doReturn(new PortalAndManageTableViewResource()).when(manager).toSimplifiedResourceReconstructedVersion(any());
 
     // construct resource directory with a few resources
     File resourceDirectory = FileUtils.createTempDir();

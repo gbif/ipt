@@ -38,4 +38,9 @@ public class AdminTableViewResource {
   private PublicationStatus publicationStatus;
   private String creatorName;
   private boolean failed;
+
+  // TODO: enum or constants
+  public String getLoadStatus() {
+    return failed ? "failed" : "loaded";
+  }
 }

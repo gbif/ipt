@@ -101,12 +101,9 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     {"sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "sClass": "desktop tablet-l"},
                     {"sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false, "sClass": "text-xl-end desktop"},
                     {"sTitle": "<@s.text name="portal.home.author"/>", "sClass": "desktop tablet-l"},
-                    {"sTitle": "<@s.text name="admin.home.load.status"/>", "sClass": "desktop tablet-l"},
+                    {"sTitle": "<@s.text name="admin.home.load.status"/>", "bSearchable": false, "sClass": "desktop tablet-l"},
                 ],
                 "aaSorting": [[sortParam, orderParam]],
-                "aoColumnDefs": [
-                    {'bSortable': false, 'aTargets': [0]}
-                ],
                 "oSearch": {"sSearch": searchParam},
                 "fnInitComplete": function (oSettings) {
                     /* Do nothing for now, may need in the future */
