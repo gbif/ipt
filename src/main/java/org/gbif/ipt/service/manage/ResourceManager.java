@@ -129,6 +129,15 @@ public interface ResourceManager {
   Resource get(String shortname);
 
   /**
+   * Gets a resource that failed to load by its shortName.
+   *
+   * @param shortname Resource shortName
+   *
+   * @return Resource, or null if none was found for this shortName
+   */
+  Resource getFailed(String shortname);
+
+  /**
    * Validate if the EML file exists for a specific resource in the data directory.
    *
    * @param shortName Resource shortname

@@ -130,6 +130,22 @@
     </div>
 
     <main class="container main-content-container my-4">
+        <#if resource.failed>
+        <div class="py-md-4 py-3">
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                Error
+            </h4>
+
+            <div>
+                ${resource.errorMessage!}
+            </div>
+
+            <div class="mt-2">
+                <a href="">See stacktrace</a>
+            </div>
+        </div>
+        </#if>
+
         <div class="py-md-4 py-3">
             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 Resource file

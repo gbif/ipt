@@ -152,7 +152,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   // error related fields
   private boolean failed = false;
   private String errorMessage;
-  private StackTraceElement[] errorStackTrace;
+  private String errorStackTrace;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -1851,11 +1851,11 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.makePublicDate = makePublicDate;
   }
 
-  public StackTraceElement[] getErrorStackTrace() {
+  public String getErrorStackTrace() {
     return errorStackTrace;
   }
 
-  public void setErrorStackTrace(StackTraceElement[] errorStackTrace) {
+  public void setErrorStackTrace(String errorStackTrace) {
     this.errorStackTrace = errorStackTrace;
   }
 

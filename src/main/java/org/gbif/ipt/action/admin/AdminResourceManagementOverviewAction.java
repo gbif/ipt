@@ -16,6 +16,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -38,6 +39,8 @@ public class AdminResourceManagementOverviewAction extends POSTAction {
 
   @Getter
   private String shortname = null;
+  @Getter
+  private Resource resource;
   @Getter
   private boolean resourceSuccessfullyLoaded = false;
   @Getter
@@ -95,7 +98,13 @@ public class AdminResourceManagementOverviewAction extends POSTAction {
       }
     }
 
-    resourceSuccessfullyLoaded = resourceManager.get(shortname) != null;
+    resource = resourceManager.get(shortname);
+
+    if (resource != null) {
+      resourceSuccessfullyLoaded = true;
+    } else {
+      resource = resourceManager.getFailed(shortname);
+    }
   }
 
   @Override

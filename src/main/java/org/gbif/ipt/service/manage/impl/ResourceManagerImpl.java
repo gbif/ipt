@@ -145,6 +145,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -284,7 +286,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       res.setFailed(true);
       res.setErrorMessage("Failed to reconstruct resource's last published version. " + e.getMessage());
-      res.setErrorStackTrace(e.getStackTrace());
+      res.setErrorStackTrace(getStackTraceAsString(e));
 
       failedResources.put(res.getShortname(), res);
     }
@@ -1332,6 +1334,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       return null;
     }
     return resources.get(shortname.toLowerCase());
+  }
+
+  @Override
+  public Resource getFailed(String shortname) {
+    if (shortname == null) {
+      return null;
+    }
+    return failedResources.get(shortname.toLowerCase());
   }
 
   /**
@@ -2420,7 +2430,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         if (resource != null) {
           resource.setFailed(true);
           resource.setErrorMessage(e.getMessage());
-          resource.setErrorStackTrace(e.getStackTrace());
+          resource.setErrorStackTrace(getStackTraceAsString(e));
         }
 
         failedResources.put(shortname, resource);
@@ -4246,5 +4256,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (versionedDwcaFile.exists()) {
       FileUtils.forceDelete(versionedDwcaFile);
     }
+  }
+
+  public String getStackTraceAsString(Exception e) {
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    e.printStackTrace(printWriter);
+    return stringWriter.toString();
   }
 }
