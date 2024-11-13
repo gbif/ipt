@@ -2,6 +2,28 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // display/hide stacktrace
+            $('#toggle-stacktrace').click(function(event) {
+                event.preventDefault();
+
+                var stacktraceDiv = $('#error-stack-trace-block');
+
+                // Toggle visibility
+                stacktraceDiv.toggle();
+
+                var isStacktraceDivVisible = stacktraceDiv.is(':visible');
+
+                // Change the link text
+                if (isStacktraceDivVisible) {
+                    $(this).text('Hide stacktrace');
+                } else {
+                    $(this).text('Show stacktrace');
+                }
+            });
+        });
+    </script>
     <title><@s.text name="title"/></title>
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/macros/forms.ftl">
@@ -140,9 +162,15 @@
                 ${resource.errorMessage!}
             </div>
 
-            <div class="mt-2">
-                <a href="">See stacktrace</a>
-            </div>
+            <#if resource.errorStackTrace?has_content>
+                <div class="mt-2">
+                    <a href="#" id="toggle-stacktrace">Show stacktrace</a>
+                </div>
+
+                <div id="error-stack-trace-block" class="mt-2 fs-smaller" style="display: none;">
+                    <pre>${resource.errorStackTrace}</pre>
+                </div>
+            </#if>
         </div>
         </#if>
 
