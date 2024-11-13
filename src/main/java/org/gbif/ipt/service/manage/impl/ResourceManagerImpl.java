@@ -1781,12 +1781,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           Comparator.comparing(AdminTableViewResource::getCoreType, nullSafeStringComparator);
     } else if (index == 2) {
       return isDescendingOrder ?
-          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator).reversed() :
-          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator);
-    } else if (index == 3) {
-      return isDescendingOrder ?
           Comparator.comparing(AdminTableViewResource::getPublicationStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
           Comparator.comparing(AdminTableViewResource::getPublicationStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
+    } else if (index == 3) {
+      return isDescendingOrder ?
+          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator).reversed() :
+          Comparator.comparing(AdminTableViewResource::getLastModified, nullSafeDateComparator);
     } else if (index == 4) {
       return isDescendingOrder ?
           Comparator.comparing(AdminTableViewResource::getCreatorName, nullSafeStringComparator).reversed() :
