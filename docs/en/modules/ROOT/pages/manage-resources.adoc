@@ -750,7 +750,4 @@ You will receive a confirmation message like this, showing the existing dataset 
 +
 image::ipt2/manage/IPTManageResourcePublishOverwrite.png[]
 
-. *Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:
-.. the name and URL (or GBIF Registry UUID) of your IPT
-.. the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)
-.. (if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry
+. If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry

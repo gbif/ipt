@@ -37,26 +37,8 @@
 <body class="bg-body d-flex flex-column h-100">
 
 [#assign currentLocale = .vars["locale"]!"en"/]
-[#if currentLocale == "en"]
-    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "es"]
-    [#assign typesVocabulary = {"occurrence": "Registros biológicos", "checklist": "Lista de chequeo", "samplingevent": "Evento de muestreo", "metadata": "Solamente metadatos", "other": "Otro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "pt"]
-    [#assign typesVocabulary = {"occurrence": "Ocorrência", "checklist": "Checklist", "samplingevent": "Evento de amostragem", "metadata": "Somente metadatos", "other": "Outro", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "fr"]
-    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Données d'échantillonnage", "metadata": "Métadonnées uniquement", "other": "Autre", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "zh"]
-    [#assign typesVocabulary = {"occurrence": "出現紀錄", "checklist": "名錄", "samplingevent": "Sampling event", "metadata": "元數據", "other": "其它", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "ja"]
-    [#assign typesVocabulary = {"occurrence": "オカレンス（観察データと標本)", "checklist": "チェックリスト", "samplingevent": "サンプリング イベント", "metadata": "メタデータ", "other": "その他", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#elseif currentLocale == "ru"]
-    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[#else]
-    [#assign typesVocabulary = {"occurrence": "Occurrence", "checklist": "Checklist", "samplingevent": "Sampling event", "metadata": "Metadata-only", "other": "Other", "materialentity": "Material entity", "camtrap-dp": "Camtrap DP", 'coldp': "ColDP", 'material-dp': "Material DP", "interaction-dp": "Interaction DP"}]
-[/#if]
-
 [#assign resourceTypeLowerCase = (resource.coreType?lower_case)!"other"]
-
+[#assign resourceSubtypeLowerCase = (resource.subtype?lower_case)!""]
 
 <header>
     <nav class="main-nav navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-0 border-bottom">
@@ -175,22 +157,20 @@
         <div class="container mx-auto">
             <div class="d-flex justify-content-between">
                 <div class="d-flex py-2 fs-smaller">
-                    [#if typesVocabulary[resourceTypeLowerCase]??]
-                        <div class="py-2 me-3">
-                            <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resource.coreType?lower_case}">${typesVocabulary[resourceTypeLowerCase]}</span>
+                    <div class="py-2 me-3">
+                        <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resourceTypeLowerCase}">[@s.text name="portal.resource.type.${resourceTypeLowerCase}"/]</span>
 
-                            [#if resource.status??]
-                            <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
-                                [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
-                                    <i class="bi bi-circle fs-smaller-2"></i>
-                                [#else]
-                                    <i class="bi bi-circle-fill fs-smaller-2"></i>
-                                [/#if]
-                                <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
-                            </span>
+                        [#if resource.status??]
+                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
+                            [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
+                                <i class="bi bi-circle fs-smaller-2"></i>
+                            [#else]
+                                <i class="bi bi-circle-fill fs-smaller-2"></i>
                             [/#if]
-                        </div>
-                    [/#if]
+                            <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
+                        </span>
+                        [/#if]
+                    </div>
 
                     <div>
                         <span class="fw-500">${resource.title!resource.shortname}</span><br>

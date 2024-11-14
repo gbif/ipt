@@ -3,11 +3,12 @@
 %define nr_ver_extra 1
 %define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
 # Use this section for release candidates
+# (Replace % with # when commenting out, macros are expanded in comments!)
 #define nr_ver 3.0.0
 #define nr_ver_extra -RC1
 #define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
 
-%define release_number 0.1
+%define release_number 1
 
 Name: ipt
 Version: %{nr_ver}
@@ -22,21 +23,17 @@ Source4: ipt.7
 Summary: GBIF Integrated Publishing Toolkit (IPT)
 BuildArch: noarch
 
-%{?systemd_requires}
+BuildRequires: systemd-rpm-macros
 %define _unitdir /usr/lib/systemd/system
 
 %if 0%{?el7}
 Requires: java >= 1:1.8.0
 %else
-Requires: java-11 >= 10.0.0
+Requires: java-11-headless >= 10.0.0
 %endif
 Requires: jetty-runner
 
 Requires(pre): /usr/sbin/useradd, /usr/bin/getent
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
-
 
 %description
 The Global Biodiversity Information Facility (GBIF) provides this Integrated Publishing Toolkit (IPT) to

@@ -899,7 +899,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   private boolean agentsMatch(Agent agent1, Agent agent2) {
     boolean namesMatch = false;
-    boolean emailsMatch;
+    boolean emailsMatch = false;
     boolean positionsMatch;
 
     if (agent1.getFullName() != null && agent2.getFullName() != null) {
@@ -907,7 +907,19 @@ public class ResourceAction extends PortalBaseAction {
     }
 
     if (agent1.getEmail() != null && agent2.getEmail() != null) {
-      emailsMatch = agent1.getEmail().equalsIgnoreCase(agent2.getEmail());
+      emailsMatch = true;
+      if (agent1.getEmail().size() != agent2.getEmail().size()) {
+        emailsMatch = false;
+      } else {
+        for (int i = 0; i < agent1.getEmail().size(); i++) {
+          String email1 = agent1.getEmail().get(i);
+          String email2 = agent2.getEmail().get(i);
+          if (!email1.equalsIgnoreCase(email2)) {
+            emailsMatch = false;
+            break;
+          }
+        }
+      }
     } else {
       emailsMatch = true;
     }

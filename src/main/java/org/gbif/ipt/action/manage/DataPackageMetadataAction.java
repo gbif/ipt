@@ -258,6 +258,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
         && resource.getInferredMetadata().getLastModified() != null
+        && resource.getMappingsModified() != null
         && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
 
     // infer metadata if absent, re-infer if requested or mappings changed

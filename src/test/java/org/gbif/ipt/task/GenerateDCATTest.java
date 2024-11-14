@@ -181,14 +181,10 @@ public class GenerateDCATTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
 
-    // add another paragraph to description
-    res.getEml().getDescription().add("Second paragraph");
-    assertEquals(2, res.getEml().getDescription().size());
-
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
     // ensure line break is properly escaped
-    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\"" + "\\n" + "Second paragraph" + "\""));
+    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\""));
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 
@@ -201,15 +197,10 @@ public class GenerateDCATTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
 
-    // add another paragraph with '\n' character to description
-    res.getEml().getDescription().add("Second paragraph\nwith line break");
-    assertEquals(2, res.getEml().getDescription().size());
-
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
     // ensure line break is properly escaped
-    assertTrue(dcat.contains("dct:description \"\"\"Test \\\"description\\\"\\nSecond paragraph\n" +
-        "with line break\"\"\""));
+    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\""));
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 
@@ -330,7 +321,7 @@ public class GenerateDCATTest {
 
     // update resource title and description, to have double quotation marks which need to be escaped
     resource.setTitle("TEST \"RESOURCE\"");
-    resource.getEml().getDescription().set(0, "Test \"description\"");
+    resource.getEml().setDescription("Test \"description\"");
 
     // update keyword sets: should be three, with "Occurrence" and "Observation" repeating more than once which breaks the feed
     resource.getEml().getKeywords().clear();
@@ -362,7 +353,7 @@ public class GenerateDCATTest {
     Agent agent = new Agent();
     agent.setFirstName("Eric");
     agent.setLastName("Stienen");
-    agent.setEmail("eric.stienen@inbo.be");
+    agent.addEmail("eric.stienen@inbo.be");
     resource.getEml().addCreator(agent);
     resource.getEml().addContact(agent);
     resource.getEml().addMetadataProvider(agent);

@@ -21,9 +21,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum MetadataSection {
   BASIC_SECTION("basic"),
+  CONTACTS_SECTION("contacts"),
+  ACKNOWLEDGEMENTS_SECTION("acknowledgements"),
   GEOGRAPHIC_COVERAGE_SECTION ("geocoverage"),
   TAXANOMIC_COVERAGE_SECTION ("taxcoverage"),
   TEMPORAL_COVERAGE_SECTION ("tempcoverage"),
+  ADDITIONAL_DESCRIPTION_SECTION("additionalDescription"),
   PROJECT_SECTION ("project"),
   METHODS_SECTION ("methods"),
   CITATIONS_SECTION ("citations"),

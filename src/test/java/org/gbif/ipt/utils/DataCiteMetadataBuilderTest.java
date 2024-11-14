@@ -83,9 +83,7 @@ public class DataCiteMetadataBuilderTest {
     resource.setEml(eml);
 
     eml.setTitle("Ants of New York State");
-    List<String> description = new ArrayList<>();
-    description.add("Comprehensive ants collection.");
-    description.add("Mostly dried preserved.");
+    String description = "Comprehensive ants collection. Mostly dried preserved.";
     eml.setDescription(description);
     eml.setMetadataLanguage("eng");
     eml.setLanguage("heb");
@@ -124,14 +122,14 @@ public class DataCiteMetadataBuilderTest {
 
     // associatedProvider = contributor
     Agent contributor3 = new Agent();
-    contributor3.setPosition("Insects Curator");
+    contributor3.addPosition("Insects Curator");
     contributor3.setRole("curator");
     List<UserId> contributorUserIds3 = new ArrayList<>();
     contributor3.setUserIds(contributorUserIds3);
     eml.addAssociatedParty(contributor3);
 
     Agent contributor4 = new Agent();
-    contributor4.setPosition("Programmer");
+    contributor4.addPosition("Programmer");
     contributor4.setRole("programmer");
     eml.addAssociatedParty(contributor4);
     // TODO add more associatedParties covering all roles
@@ -336,10 +334,8 @@ public class DataCiteMetadataBuilderTest {
       dataCiteMetadata.getRightsList().getRights().get(0).getValue());
 
     // Abstract aka description
-    assertEquals("Comprehensive ants collection.",
+    assertEquals("Comprehensive ants collection. Mostly dried preserved.",
       dataCiteMetadata.getDescriptions().getDescription().get(0).getContent().get(0));
-    assertEquals("Mostly dried preserved.",
-      dataCiteMetadata.getDescriptions().getDescription().get(1).getContent().get(0));
     assertEquals(DescriptionType.ABSTRACT,
       dataCiteMetadata.getDescriptions().getDescription().get(0).getDescriptionType());
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
@@ -444,7 +440,7 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testConvertEmlCreatorsWithPositionName() {
     Agent creator1 = new Agent();
-    creator1.setPosition("President");
+    creator1.addPosition("President");
     List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));

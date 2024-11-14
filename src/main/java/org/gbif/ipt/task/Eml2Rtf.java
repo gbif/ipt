@@ -103,12 +103,8 @@ public class Eml2Rtf {
       p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      for (String para : eml.getDescription()) {
-        if (StringUtils.isNotBlank(para)) {
-          p.add(para.replace("\r\n", "\n"));
-          p.add(Chunk.NEWLINE);
-        }
-      }
+      p.add(eml.getDescription());
+      p.add(Chunk.NEWLINE);
       doc.add(p);
       p.clear();
     }
@@ -290,8 +286,8 @@ public class Eml2Rtf {
         p.add(creator.getFirstName() + " ");
       }
       p.add(creator.getLastName());
-      if (StringUtils.isNotBlank(creator.getEmail())) {
-        p.add(" (" + creator.getEmail() + ")");
+      if (!creator.getEmail().isEmpty()) {
+        p.add(" (" + creator.getEmail().get(0) + ")");
       }
       isFirst = false;
     }
@@ -312,8 +308,8 @@ public class Eml2Rtf {
           p.add(metadataProvider.getFirstName() + " ");
         }
         p.add(metadataProvider.getLastName());
-        if (StringUtils.isNotBlank(metadataProvider.getEmail())) {
-          p.add(" (" + metadataProvider.getEmail() + ")");
+        if (!metadataProvider.getEmail().isEmpty()) {
+          p.add(" (" + metadataProvider.getEmail().get(0) + ")");
         }
         isFirst = false;
       }

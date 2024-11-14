@@ -104,6 +104,16 @@ $(document).ready(function(){
         initializeSortableComponent("items");
     });
 
+    $("#plus-award").click(function (event) {
+        event.preventDefault();
+        addNewAward(true);
+    });
+
+    $("#plus-relatedProject").click(function (event) {
+        event.preventDefault();
+        addRelatedProject(true);
+    });
+
     $("#plus-collection").click(function (event) {
         event.preventDefault();
         addNewCollectionItem(true);
@@ -118,6 +128,14 @@ $(document).ready(function(){
 
     $(".removeLink").click(function(event) {
         removeItem(event);
+    });
+
+    $(".removeAwardlLink").click(function (event) {
+        removeAwardItem(event);
+    })
+
+    $(".removeRelatedProjectLink").click(function (event) {
+        removeRelatedProjectItem(event);
     });
 
     $(".removeCollectionLink").click(function (event) {
@@ -268,12 +286,54 @@ $(document).ready(function(){
         initInfoPopovers(newItem[0]);
     }
 
-    function addNewCollectionItem(effects){
-        var newItem=$('#baseItem-collection').clone();
-        if(effects) newItem.hide();
+    function addNewAward(effects) {
+        var lastItem = $("#award-items .item:last-child").attr("id");
+        var lastIndex;
+        if (lastItem !== undefined)
+            lastIndex = parseInt(lastItem.split("-")[2]);
+        else
+            lastIndex = -1;
+
+        var newItem = $('#baseItem-award').clone();
+        if (effects) newItem.hide();
+        newItem.appendTo('#award-items');
+
+        if (effects) {
+            newItem.slideDown('slow');
+        }
+
+        setAwardIndex(newItem, ++lastIndex);
+
+        initInfoPopovers(newItem[0]);
+    }
+
+    function addRelatedProject(effects) {
+        var lastItem = $("#relatedProjects-items .item:last-child").attr("id");
+        var lastIndex;
+        if (lastItem !== undefined)
+            lastIndex = parseInt(lastItem.split("-")[2]);
+        else
+            lastIndex = -1;
+
+        var newItem = $('#baseItem-relatedProject').clone();
+        if (effects) newItem.hide();
+        newItem.appendTo('#relatedProjects-items');
+
+        if (effects) {
+            newItem.slideDown('slow');
+        }
+
+        setRelatedProjectIndex(newItem, ++lastIndex);
+
+        initInfoPopovers(newItem[0]);
+    }
+
+    function addNewCollectionItem(effects) {
+        var newItem = $('#baseItem-collection').clone();
+        if (effects) newItem.hide();
         newItem.appendTo('#collection-items');
 
-        if(effects) {
+        if (effects) {
             newItem.slideDown('slow');
         }
 
@@ -282,12 +342,12 @@ $(document).ready(function(){
         initInfoPopovers(newItem[0]);
     }
 
-    function addNewSpecimenPreservationMethodItem(effects){
-        var newItem=$('#baseItem-specimenPreservationMethod').clone();
-        if(effects) newItem.hide();
+    function addNewSpecimenPreservationMethodItem(effects) {
+        var newItem = $('#baseItem-specimenPreservationMethod').clone();
+        if (effects) newItem.hide();
         newItem.appendTo('#specimenPreservationMethod-items');
 
-        if(effects) {
+        if (effects) {
             newItem.slideDown('slow');
         }
 
@@ -296,15 +356,15 @@ $(document).ready(function(){
         initInfoPopovers(newItem[0]);
     }
 
-    function removeItem(event){
+    function removeItem(event) {
         event.preventDefault();
         var $target = $(event.target);
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        $('#item-'+$target.attr("id").split("-")[1]).slideUp('slow', function() {
+        $('#item-' + $target.attr("id").split("-")[1]).slideUp('slow', function () {
             $(this).remove();
-            $("#items .item").each(function(index) {
+            $("#items .item").each(function (index) {
                 setItemIndex($(this), index);
             });
             calcIndexOfLastItem();
@@ -317,12 +377,40 @@ $(document).ready(function(){
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        $('#collection-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
+        $('#collection-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
             $(this).remove();
-            $("#collection-items .item").each(function(index) {
+            $("#collection-items .item").each(function (index) {
                 setCollectionItemIndex($(this), index);
             });
             calcNumberOfCollectionItems();
+        });
+    }
+
+    function removeAwardItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#award-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#award-items .item").each(function (index) {
+                setAwardIndex($(this), index);
+            });
+        });
+    }
+
+    function removeRelatedProjectItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#relatedProject-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#relatedProjects-items .item").each(function (index) {
+                setRelatedProjectIndex($(this), index);
+            });
         });
     }
 
@@ -373,7 +461,19 @@ $(document).ready(function(){
             $("#taxonsLink-" + index).parent().children("img").show();
         });
     }
-	
+
+    function getTargetLink(event) {
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        return $target;
+    }
+
+    function getEntityIndexFromRemoveLinkId(id) {
+        return id.split("-")[3];
+    }
+
 	function setItemIndex(item, index){
 		item.attr("id","item-"+index);
         $("#item-" + index + " .removeLink").attr("id", "removeLink-" + index);
@@ -548,6 +648,273 @@ $(document).ready(function(){
 		<#default>
   	  </#switch>		
 	}
+
+    function setAwardIndex(item, index) {
+        item.attr("id", "award-item-" + index);
+
+        $("#award-item-" + index + " [id^='award-removeLink']").attr("id", "award-removeLink-" + index);
+        $("#award-removeLink-" + index).click(function (event) {
+            removeAwardItem(event);
+        });
+
+        // title
+        $("#award-item-" + index + " [id$='title']").attr("id", "eml.project.awards[" + index + "].title").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='title']").attr("for", "eml.project.awards[" + index + "].title");
+        // funder name
+        $("#award-item-" + index + " [id$='funderName']").attr("id", "eml.project.awards[" + index + "].funderName").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='funderName']").attr("for", "eml.project.awards[" + index + "].funderName");
+        // award number
+        $("#award-item-" + index + " [id$='awardNumber']").attr("id", "eml.project.awards[" + index + "].awardNumber").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='awardNumber']").attr("for", "eml.project.awards[" + index + "].awardNumber");
+        // award url
+        $("#award-item-" + index + " [id$='awardUrl']").attr("id", "eml.project.awards[" + index + "].awardUrl").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='awardUrl']").attr("for", "eml.project.awards[" + index + "].awardUrl");
+        // funder identifier
+        $("#award-item-" + index + " [id$='funderIdentifiers[0]']").attr("id", "eml.project.awards[" + index + "].funderIdentifiers[0]").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#award-item-" + index + " [for$='funderIdentifiers[0]']").attr("for", "eml.project.awards[" + index + "].funderIdentifiers[0]");
+    }
+
+    function setRelatedProjectIndex(item, index) {
+        item.attr("id", "relatedProject-item-" + index);
+
+        $("#relatedProject-item-" + index + " [id^='relatedProject-removeLink']").attr("id", "relatedProject-removeLink-" + index);
+        $("#relatedProject-removeLink-" + index).click(function (event) {
+            removeRelatedProjectItem(event);
+        });
+
+        // title
+        $("#relatedProject-item-" + index + " [id$='title']").attr("id", "eml.project.relatedProjects[" + index + "].title").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='title']").attr("for", "eml.project.relatedProjects[" + index + "].title");
+        // identifier
+        $("#relatedProject-item-" + index + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + index + "].identifier").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='identifier']").attr("for", "eml.project.relatedProjects[" + index + "].identifier");
+        // description
+        $("#relatedProject-item-" + index + " [id$='description']").attr("id", "eml.project.relatedProjects[" + index + "].description").attr("name", function () {
+            return $(this).attr("id");
+        });
+        $("#relatedProject-item-" + index + " [for$='description']").attr("for", "eml.project.relatedProjects[" + index + "].description");
+        // personnel
+        $("#relatedProject-item-" + index + " #relatedProject-personnel").attr("id", "relatedProject-" + index + "-personnel");
+        $("#relatedProject-item-" + index + " #plus-relatedProject-personnel").attr("id", "plus-relatedProject-personnel-" + index);
+        $("#plus-relatedProject-personnel-" + index).click(function (event) {
+            event.preventDefault();
+            createNewPersonnelForRelatedProject(event);
+        });
+
+        $("#relatedProject-item-" + index + " [id^='relatedProject-'][id$='-personnel'] .relatedProject-personnel-item").each(function (i) {
+            var updatedPersonnelItemId = "relatedProject-" + index + "-personnel-" + i;
+            $(this).attr("id", updatedPersonnelItemId);
+
+            $("#" + updatedPersonnelItemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].firstName").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='lastName']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].lastName").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='salutation']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].salutation").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].userIds[0].directory").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].userIds[0].identifier").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#" + updatedPersonnelItemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + index + "].personnel[" + i + "].role").attr("name", function () {
+                return $(this).attr("id");
+            });
+            $("#relatedProject-item-" + index + " [id^='plus-relatedProject-personnel']").attr("id", "plus-relatedProject-personnel-" + index);
+            // TODO copy link indexes!
+            // $("#plus-relatedProject-personnel-" + index).click(function (event) {
+            //     event.preventDefault();
+            //     createNewPersonnelForRelatedProject(event);
+            // });
+        });
+        $("#relatedProject-item-" + index + " [id^='relatedProject-'][id$='-personnel']").attr("id", "relatedProject-" + index + "-personnel");
+    }
+
+    function createNewPersonnelForRelatedProject(event) {
+        var $target = getTargetLink(event);
+        var entityIndex = getEntityIndexFromRemoveLinkId($target.attr("id"));
+
+        // set correct indexes, names, ids
+        var numberOfSubEntities = $("#relatedProject-" + entityIndex + "-personnel ." + "relatedProject-personnel-item").length;
+        var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
+        var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt;
+
+        var newItem = $('#baseItem-relatedProject-personnel').clone();
+        newItem.hide();
+        newItem.appendTo('#relatedProject-' + entityIndex + '-personnel');
+        newItem.slideDown('slow');
+
+        newItem.attr("id", "relatedProject-" + entityIndex + "-personnel-" + subEntityIndex);
+        var $firstNameInput = newItem.find("#firstName");
+        var $lastNameInput = newItem.find("#lastName");
+        var $salutationInput = newItem.find("#salutation");
+        var $directorySelect = newItem.find("#directory");
+        var $identifierInput = newItem.find("#identifier");
+        var $roleSelect = newItem.find("#role");
+        var $deleteLink = newItem.find("#personnel-removeLink");
+        var $copyDropdown = newItem.find("#dropdown-personnel-copy");
+        var $copyFromContactLink = newItem.find("#personnel-from-contact");
+        var $copyPersonnelLink = newItem.find("#personnel-copy");
+
+        $firstNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].firstName").attr("name", function () {return $(this).attr("id");});
+        $lastNameInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].lastName").attr("name", function () {return $(this).attr("id");});
+        $salutationInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].salutation").attr("name", function () {return $(this).attr("id");});
+        $directorySelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+        $identifierInput.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+        $roleSelect.attr("id", "eml.project.relatedProjects[" + entityIndex + "].personnel[" + subEntityIndex + "].role").attr("name", function () {return $(this).attr("id");});
+        $deleteLink.attr("id", "relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex);
+        $copyDropdown.attr("id", "dropdown-relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+        $copyFromContactLink.attr("id", "relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex);
+        $copyPersonnelLink.attr("id", "relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex);
+
+        $("#relatedProject-personnel-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
+            removeRelatedProjectPersonnelItem(event);
+        });
+
+        $("#relatedProject-" + entityIndex + "-personnel-from-contact-" + subEntityIndex).click(function (event) {
+            event.preventDefault();
+            copyPrimaryContactDetails(event, getItemId(event, "relatedProject-personnel-item"));
+        });
+
+        $("#relatedProject-" + entityIndex + "-personnel-copy-" + subEntityIndex).click(function (event) {
+            event.preventDefault();
+            targetItemId = this.id.replace('-copy-', '-');
+            showCopyAgentModal();
+        });
+    }
+
+    function copyPrimaryContactDetails(event, itemId) {
+        event.preventDefault();
+
+        // replace " with &quot; to prevent JS from failing
+        $("#" + itemId + " [id$='firstName']").val("${(primaryContact.firstName)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='lastName']").val("${(primaryContact.lastName)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='salutation']").val("${(primaryContact.salutation)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='position']").val("${(primaryContact.position)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='organisation']").val("${(primaryContact.organisation)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='address']").val("${(primaryContact.address.address)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='city']").val("${(primaryContact.address.city)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='province']").val("${(primaryContact.address.province)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='postalCode']").val("${(primaryContact.address.postalCode)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='country']").val("${(primaryContact.address.country)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='phone']").val("${(primaryContact.phone)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='email']").val("${(primaryContact.email)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='homepage']").val("${(primaryContact.homepage)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='directory']").val("${(primaryContact.userIds[0].directory)!?replace("\"", "&quot;")}");
+        $("#" + itemId + " [id$='directory']").trigger('change');
+        $("#" + itemId + " [id$='identifier']").val("${(primaryContact.userIds[0].identifier)!?replace("\"", "&quot;")}");
+    }
+
+    function removeRelatedProjectPersonnelItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        var relatedProjectId = $target.attr("id").split("-")[3];
+        var personnelId = $target.attr("id").split("-")[4];
+
+        $('#relatedProject-' + relatedProjectId + '-personnel-' + personnelId).slideUp('slow', function () {
+            $(this).remove();
+            $("#relatedProject-" + relatedProjectId + "-personnel .relatedProject-personnel-item").each(function (index) {
+                setRelatedProjectPersonnelItemIndex($(this), relatedProjectId, index);
+            });
+        });
+    }
+
+    function showCopyAgentModal() {
+        var dialogWindow = $("#copy-agent-modal");
+        dialogWindow.modal('show');
+    }
+
+    function getItemId(event, itemClass) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+
+        var linkId = $target.attr("id");
+        var $parentItem = $('#' + linkId).closest('.' + itemClass);
+        return $parentItem.attr("id");
+    }
+
+    function setRelatedProjectPersonnelItemIndex(item, relatedProjectId, index) {
+        var itemId = "relatedProject-" + relatedProjectId + "-personnel-" + index;
+        item.attr("id", itemId);
+
+        $("#" + itemId + " [id^='relatedProject-personnel-remove']").attr("id", "relatedProject-personnel-remove-" + relatedProjectId + "-" + index);
+        $("#relatedProject-personnel-remove-" + relatedProjectId + "-" + index).click(function (event) {
+            removeRelatedProjectPersonnelItem(event);
+        });
+
+        $("#" + itemId + " [id^='dropdown-relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "dropdown-relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+        $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-from-contact']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-from-contact-" + index);
+        $("#" + itemId + " [id^='relatedProject-" + relatedProjectId + "-personnel-copy']").attr("id", "relatedProject-" + relatedProjectId + "-personnel-copy-" + index);
+        $("#relatedProject-" + relatedProjectId + "-personnel-copy-" + index).click(function (event) {
+            event.preventDefault();
+            targetItemId = itemId;
+            showCopyAgentModal();
+        });
+        $("#personnel-" + relatedProjectId + "-personnel-from-contact-" + index).click(function (event) {
+            event.preventDefault();
+            copyPrimaryContactDetails(event, itemId);
+        });
+
+        $("#" + itemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='firstName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName");
+        $("#" + itemId + " [id$='lastName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='lastName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].lastName");
+        $("#" + itemId + " [id$='salutation']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='salutation']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].salutation");
+        $("#" + itemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='role']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role");
+        $("#" + itemId + " [id$='role']").select2({
+            placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 'Infinity',
+            allowClear: true,
+            theme: 'bootstrap4'
+        });
+        $("#" + itemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='directory']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory");
+        $("#" + itemId + " [id$='directory']").select2({
+            placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            minimumResultsForSearch: 'Infinity',
+            allowClear: true,
+            theme: 'bootstrap4'
+        });
+        $("#" + itemId + " [id$='identifier']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier").attr("name", function () {return $(this).attr("id");});
+        $("#" + itemId + " [for$='identifier']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].identifier");
+    }
 
     function setCollectionItemIndex(item, index) {
         item.attr("id", "collection-item-" + index);

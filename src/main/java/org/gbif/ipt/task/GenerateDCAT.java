@@ -533,21 +533,9 @@ public class GenerateDCAT {
     }
 
     //dct:description
-    if (!eml.getDescription().isEmpty()) {
+    if (eml.getDescription() != null) {
       addPredicateToBuilder(datasetBuilder, "dct:description");
-      StringBuilder description = new StringBuilder();
-      Iterator<String> iter = eml.getDescription().iterator();
-      while (iter.hasNext()) {
-        String des = StringUtils.trimToNull(iter.next());
-        if (des != null) {
-          description.append(des);
-        }
-        // turtle format requires line breaks to be escaped
-        if (iter.hasNext()) {
-          description.append("\\n");
-        }
-      }
-      addObjectToBuilder(datasetBuilder, description.toString(), ObjectTypes.LITERAL);
+      addObjectToBuilder(datasetBuilder, eml.getDescription(), ObjectTypes.LITERAL);
     }
 
     //dcat:keyword
@@ -576,8 +564,8 @@ public class GenerateDCAT {
     for (Agent contact : eml.getContacts()) {
       addPredicateToBuilder(datasetBuilder, "dcat:contactPoint");
       String agent = " a vcard:Individual ; vcard:fn \"" + contact.getFullName() + "\"";
-      if (contact.getEmail() != null) {
-        agent += "; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
+      if (contact.getEmail() != null && !contact.getEmail().isEmpty()) {
+        agent += "; vcard:hasEmail <mailto:" + contact.getEmail().get(0) + "> ";
       }
       addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
     }
