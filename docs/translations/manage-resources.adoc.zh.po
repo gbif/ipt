@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-15 02:08\n"
+"PO-Revision-Date: 2024-11-16 09:28\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -301,7 +301,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:61
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceOverview-2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceOverview-2.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:63
@@ -623,28 +623,28 @@ msgstr "URL 作為來源資料"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:145
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the {threedots} menu and select \"Add\". Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "IPT 可以直接從 URL 匯入未壓縮的分隔文字檔案（CSV、tab 檔或其他分隔符號檔案）或壓縮檔案。點擊 {threedots} 選單並選擇「新增」。接著，從來源資料類型的下拉選單中選擇「URL」，然後提供來源的名稱和類型，或直接將完整 URL（包括 http:// 或 https://）貼入下方的框中。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
 msgid "Click on the button labelled \"Clear\" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data URL detail page."
-msgstr ""
+msgstr "點擊標示為「清除」的按鈕可移除 URL 選擇並回到選取資料來源前的狀態。或者，點擊標示為「新增」的按鈕來開啟來源資料 URL 的相關細節頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:151
 msgid "This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr ""
+msgstr "此頁面顯示資源名稱和 URL 特徵的摘要（可讀性、檢測到的欄數、URL 位置、檢測到的行數以及 URL 最後載入 IPT 的日期）。來源資料 URL 的相關細節頁面允許使用者查看和編輯描述所選檔案內容的設定參數，並使用這些設定進行分析和預覽。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:152
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceSourceURL.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceSourceURL.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:155
 msgid "From this point, the process is very similar to using a file as a data source.  See the <<File as data source>> section for an explanation of the page."
-msgstr ""
+msgstr "從這裡開始的流程與使用檔案作為資料來源的方式非常相似。詳情請參閱 <<檔案作為資料來源>> 章節。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:156
