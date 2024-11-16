@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-16 10:34\n"
+"PO-Revision-Date: 2024-11-16 12:40\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -682,7 +682,7 @@ msgstr "資料來源選擇頁面"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:167
 msgid "This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources."
-msgstr ""
+msgstr "此頁面說明延伸資料集支援的資料類型，並顯示一個包含所有已配置的資料來源的選擇框。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:169
