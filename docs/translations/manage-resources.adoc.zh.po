@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-16 09:28\n"
+"PO-Revision-Date: 2024-11-16 10:34\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -101,7 +101,7 @@ msgstr "選單：資源管理"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:4
 msgid "This menu is visible to users with an Admin or Manager role."
-msgstr "此選單僅對具有管理員或經理角色的使用者可見。"
+msgstr "此選單僅對具有管理權限的使用者可見。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:6
@@ -171,7 +171,7 @@ msgstr "當然，您也可以選擇 _完全創建一個新的資源_，而不加
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr "開始時，請先輸入新的資源簡稱，然後按下標有「創建」的按鈕。這將打開資源概覽頁面。接著，根據「資源管理選單」部分中「資源概覽」標題下的說明，完成資源管理頁面的各個部分。"
+msgstr "開始時，請先輸入新的資源簡稱，然後按下標有「創建」的按鈕。這將打開資源概覽頁面。接著，根據「選單：資源管理」部分中「資源概覽」標題下的說明，完成資源管理頁面的各個部分。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
@@ -230,7 +230,7 @@ msgstr "壓縮（打包）資源配置資料夾：ants/ → ants.zip"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:43
 msgid "On the \"Create a New Resource\" section on the \"Manage Resource Menu\" page:"
-msgstr "在「資源管理選單」頁面的「創建新資源」部分中："
+msgstr "在「選單：資源管理」頁面的「創建新資源」部分中："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:44
@@ -278,7 +278,7 @@ msgstr "編輯現有的資源"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:56
 msgid "The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section for details on how to edit various aspects of the resource."
-msgstr "現有資源表僅顯示當前使用者可以編輯的資源。要編輯資源，請在資源表中點擊資源名稱。該連結將打開所選資源的資源概覽頁面。請參考「資源管理選單」部分中「資源概覽」標題下的說明，以了解如何編輯該資源的各種相關資料。"
+msgstr "現有資源表僅顯示當前使用者可以編輯的資源。要編輯資源，請在資源表中點擊資源名稱。該連結將打開所選資源的資源概覽頁面。請參考「選單：資源管理」部分中「資源概覽」標題下的說明，以了解如何編輯該資源的各種相關資料。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:57
@@ -519,7 +519,7 @@ msgstr "資料庫作為資料來源"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr "IPT 可以使用資料庫連接來從表格或檢視表中匯入資料。受支援的資料庫連接列表請參見 xref:database-connection.adoc[受支援的資料庫] 一節。要設定資料庫作為資料來源，點擊 {threedots} 選單並選擇「新增」。然後從彈出視窗的下拉選單中選擇「資料庫」，再點擊標示「連接」的按鈕，這將打開「來源資料資料庫」的相關細節頁面。"
+msgstr "IPT 可以使用資料庫連接來從表格或檢視表中匯入資料。受支援的資料庫連接列表請參見 xref:database-connection.adoc[受支援的資料庫] 一節。要設定資料庫作為資料來源，點擊 {threedots} 選單並選擇「新增」。然後從彈出視窗的下拉選單中選擇「資料庫」，再點擊標示「連接」的按鈕，這將打開「來源資料庫」的相關細節頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
@@ -655,12 +655,12 @@ msgstr "達爾文核心標準資料對照"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:158
 msgid "This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed."
-msgstr ""
+msgstr "資源概覽頁面的此部分允許使用者將傳入資料中的欄位對照到已安裝擴展中的欄位，並查看哪些來源欄位尚未進行對照。此選項僅在至少一個資料來源成功新增，且至少一個延伸資料集已安裝後才可用。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:160
 msgid "Once these conditions have been met, the dropdown will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the \"Configure Core Types and Extensions\" heading in the \"Administration Menu\" section for an explanation of how to install extensions."
-msgstr ""
+msgstr "當滿足這些條件後，該下拉列表將包含一個選擇框，列出已安裝的核心類型和延伸資料集。選擇一個核心類型並進行對照，然後選擇要對照的延伸資料集。選擇與來源資料欄位相符的延伸資料集。如果在選擇框中沒有出現所需的核心類型或延伸資料集，則需要先安裝該延伸資料集。詳情請參閱「選單：系統管理」章節中的「設定核心類型和延伸資料集」標題下的說明。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:161
@@ -671,13 +671,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:164
 msgid "After the desired core type or extension is selected, click on the button labelled \"Add\" to open the <<Data Source selection page>>."
-msgstr ""
+msgstr "選擇所需的核心類型或延伸資料集後，點擊標示為「新增」的按鈕以開啟 <<資料來源選擇頁面>>。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:165
 #, no-wrap
 msgid "Data Source selection page"
-msgstr ""
+msgstr "資料來源選擇頁面"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:167
