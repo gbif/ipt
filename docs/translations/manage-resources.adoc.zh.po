@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-16 12:40\n"
+"PO-Revision-Date: 2024-11-17 05:01\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -166,7 +166,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 10GB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr "當然，您也可以選擇 _完全創建一個新的資源_，而不加載現有的存檔資源。在此選項中，資源的配置將需要通過 IPT 表單全部創建，包括上傳資料來源檔案（或連接到資料庫或 URLs）並將其中的欄位對照到適當延伸資料集中的術語。*請注意，IPT 有 10GB 的檔案上傳限制*，但是，*IPT 匯出/發布的達爾文核心標準存檔檔案大小沒有限制*。請參閱 <<upload-limits,有關檔案上傳限制的說明>> 以了解如何應對檔案上傳限制。"
+msgstr "當然，您也可以選擇 _完全創建一個新的資源_，而不加載現有的存檔資源。在此選項中，資源的配置將需要通過 IPT 表單全部創建，包括上傳資料來源檔案（或連接到資料庫或 URLs）並將其中的欄位對照到適當延伸資料集中的術語。*請注意，IPT 有 10GB 的檔案上傳限制*，但是，*IPT 匯出/發布的達爾文核心集檔案大小沒有限制*。請參閱 <<upload-limits,有關檔案上傳限制的說明>> 以了解如何應對檔案上傳限制。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
@@ -177,12 +177,12 @@ msgstr "開始時，請先輸入新的資源簡稱，然後按下標有「創建
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr "上傳達爾文核心標準檔案"
+msgstr "上傳達爾文核心集檔案"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
 msgid "The IPT is able to import valid Darwin Core Archive files up to 10GB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr "IPT 可以匯入大小高達 10GB 的達爾文核心標準檔案。關於達爾文核心標準檔案的資訊可以在 https://dwc.tdwg.org/[Darwin Core 網站]找到，並且有更多關於 IPT 如何使用它們的說明請參考 xref.dwca-guide.adoc[此處]。要匯入達爾文核心標準檔案，點選標有「選擇檔案」的按鈕來找到目標檔案。選擇檔案後，其名稱將顯示在「選擇檔案」按鈕旁。"
+msgstr "IPT 可以匯入大小高達 10GB 的達爾文核心集檔案。關於達爾文核心集檔案的資訊可以在 https://dwc.tdwg.org/[Darwin Core 網站]找到，並且有更多關於 IPT 如何使用它們的說明請參考 xref.dwca-guide.adoc[此處]。要匯入達爾文核心集檔案，點選標有「選擇檔案」的按鈕來找到目標檔案。選擇檔案後，其名稱將顯示在「選擇檔案」按鈕旁。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:29
@@ -352,7 +352,7 @@ msgstr "上傳大小限制"
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:79
 msgid "The IPT has an upload size limit of 10GB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 10GB in size into the IPT, the following work-arounds are recommended:"
-msgstr "IPT 的上傳大小限制為 10GB。對於匯出/發布的達爾文核心標準檔案，IPT 則無大小限制。若要將超過 10GB 的資料集載入 IPT，建議採用以下解決方案："
+msgstr "IPT 的上傳大小限制為 10GB。對於匯出/發布的達爾文核心集檔案，IPT 則無大小限制。若要將超過 10GB 的資料集載入 IPT，建議採用以下解決方案："
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
@@ -687,12 +687,12 @@ msgstr "此頁面說明延伸資料集支援的資料類型，並顯示一個包
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:169
 msgid "A resource must only use 1 core type: choose \"Darwin Core Checklist\" when the basis of the resource is taxon names, or choose \"Darwin Core Occurrence\" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions."
-msgstr ""
+msgstr "一個資源只能使用一種核心類型：當資源以分類單元名稱為基礎時，選擇「達爾文核心標準清單」；當資源以自然界中的出現紀錄（觀測紀錄）或收藏品（標本）為基礎時，選擇「達爾文核心標準出現紀錄」。只有在所需的核心類型完成對照後，才可以對照其他延伸資料集。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:171
 msgid "It is possible to map another core type as an extension as long as it is different from the core type mapped."
-msgstr ""
+msgstr "使用者可以將不同於該核心類型的其他核心類型作為延伸資料集進行對照。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:172
@@ -703,12 +703,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:175
 msgid "Select the data source to map, and then click on the button labelled \"Save\". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping)."
-msgstr ""
+msgstr "選擇要對照的資料來源，然後點擊標示為「儲存」的按鈕以開啟資料對照的相關細節頁面（請跳轉到下文的 <<資料對照相關細節>> 以獲取實際進行對照的說明）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:177
 msgid "After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the {threedots} menu and select \"Preview\" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version."
-msgstr ""
+msgstr "新增對照後，它將顯示在「達爾文核心標準資料對照」。此區域會列出所有資源的對照，分為核心類型資料對照和延伸集資料對照。點擊任一項目以修改它，或點擊 {threedots} 選單並選擇「預覽」來預覽當前的資料對照。建議資源管理者在發布新版本前預覽所有資料對照。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:178
@@ -720,7 +720,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:180
 #, no-wrap
 msgid "Data Mapping detail page"
-msgstr ""
+msgstr "資料對照細節頁面"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:182
