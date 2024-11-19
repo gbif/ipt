@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-17 05:01\n"
+"PO-Revision-Date: 2024-11-19 07:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -725,7 +725,7 @@ msgstr "資料對照細節頁面"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:182
 msgid "After a mapping between a data source and Core Type or Extension has been created, this page opens and displays a status message showing how many fields from the data source were automatically mapped to the fields in the extensions. Fields are automatically mapped if the field names, converted to all lower case, match each other."
-msgstr ""
+msgstr "在建立資料來源與核心類型或延伸資料集的資料對照後，這個頁面將開啟並顯示從來源資料自動對照到延伸資料集欄位的欄位數量。轉換為小寫後的欄位名稱如果相符，則欄位會自動進行對照。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:183
@@ -736,7 +736,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:186
 msgid "The Data Mapping page allows a user to specify exactly how the data accessible through this IPT resource are to be configured based on the selected extension. At the top of the page is description of what extension the source data is being mapped to. The name of the source data is a link back to the edit source data page. The name of the extension is a link to a description of the extension."
-msgstr ""
+msgstr "資料對照頁面允許使用者基於所選擇的延伸資料集指定此 IPT 資源中的資料配置方式。頁面頂部描述了來源資料被對照到的延伸資料集。來源資料的名稱是一個返回到編輯來源資料頁面的連結，延伸資料集的名稱是指向延伸資料集說明的連結。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:188
