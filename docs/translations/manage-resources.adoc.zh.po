@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-19 07:31\n"
+"PO-Revision-Date: 2024-11-19 09:36\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -741,7 +741,7 @@ msgstr "資料對照頁面允許使用者基於所選擇的延伸資料集指定
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:188
 msgid "A sidebar on the left-hand side of the page has links to jump to specific sets of related fields (classes/groups) in the extension plus filters to show and hide fields on the page."
-msgstr ""
+msgstr "頁面左側的側邊欄包含了跳轉到延伸資料集中相關欄位組（類別/群組）的連結，以及頁面欄位的顯示和隱藏過濾器。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:190
