@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 06:26\n"
+"PO-Revision-Date: 2024-11-23 07:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -758,13 +758,13 @@ msgstr "*來源資料欄位選擇框* - 左側選擇框為空白或包含來自�
 #: en/modules/ROOT/pages/manage-resources.adoc:193
 #, no-wrap
 msgid "*Data source field select box* - ID field - This field can be matched to a source data field, or it can be set to \"No ID\" signifying that the field will not be mapped to a source data field. The ID field is required in order to link records from the two sources together. The ID can be auto-generated from the \"Line Number\" or \"UUID Generator\", but this feature is exclusively available when mapping a source to the Taxon Core Type's taxonID field.\n"
-msgstr ""
+msgstr "*來源資料欄位選擇框* - ID 欄位 - 此欄位可以對照到來源資料欄位，也可以設置為「無 ID」，表示該欄位不會對照到來源資料欄位。ID 欄位是連接兩個來源紀錄的必要條件。對於分類單元核心類型的 “taxonID” 欄位，可利用“行號”或“UUID生成器”自動生成 ID。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:194
 #, no-wrap
 msgid "*Constant value text box* - To set the published value of any non-identifier extension field to a single value for every record in the data source, enter the desired constant for the extension field in the text box to the right of the source field select box. To activate the text box, make sure that no value is selected in the source field select box. Example:\n"
-msgstr ""
+msgstr "*常數值文字框* - 要將已發佈的來源資料中的每一筆紀錄的非標識延伸集欄位值設為單一常數值，請在該欄位的選擇框右側的文字框中輸入所需的常數。要啟用文字框，請確保來源欄位選擇框中未選擇任何值。例子如下：\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:195
