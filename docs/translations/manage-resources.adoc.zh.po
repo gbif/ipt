@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 14:03\n"
+"PO-Revision-Date: 2024-11-23 15:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -824,31 +824,31 @@ msgstr "*轉換* - 點擊此按鈕可打開 <<內容轉換頁>>，在該頁中�
 #: en/modules/ROOT/pages/manage-resources.adoc:212
 #, no-wrap
 msgid "*Filter* - The filter allows the user to include only records that match a criterion set for one of the source data fields. To use the filter, first select from the drop down whether you want the filter to be applied *After Translation* or *Before Translation* (in other words, after translations on the source data have been applied, or before - refer to Translation section above for more details about translation). Then, choose the field upon which the criterion will be based using the left select box. The text box at the right may contain a value against which to compare the value of the field in the source data. Do not enclose the value with any punctuation. The second select box allows the user to choose a comparison operator from among the following:\n"
-msgstr ""
+msgstr "*過濾器* - 過濾器允許使用者篩選出任一來源資料欄位有符合指定條件的紀錄。使用過濾器時，首先從下拉選單中選擇是否希望過濾器在轉換後或轉換前應用（有關轉換的更多詳情，請參閱上述轉換部分）。接著，通過左側的選擇框來選擇要依據哪個欄位設置條件。右側的文字框中可以輸入一個值，這個值將與來源資料欄位的值進行比較。請勿使用任何標點符號包圍輸入的值。第二個選擇框允許使用者選擇以下比較運算符之一：\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:215
 #, no-wrap
 msgid "*IsNull* - this operator is true if the source data field is empty. In this case no value is needed in the text box at the right. If there is a value in the text box, it will be ignored.\n"
-msgstr ""
+msgstr "*為空* - 如果來源資料欄位為空，則此運算符為真。在這種情況下，右側的文字框中不需要任何值。如果文字框中有值，則將被忽略。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:216
 #, no-wrap
 msgid "*IsNotNull* - this operator is true if the source data field is not empty. In this case no value is needed in the text box at the right. If there is a value in the text box, it will be ignored.\n"
-msgstr ""
+msgstr "*不為空* - 如果來源資料欄位不為空，則此運算符為真。在這種情況下，右側的文字框中不需要任何值。如果文字框中有值，則將被忽略。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:217
 #, no-wrap
 msgid "*Equals* - this operator is true if the source data field is equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will not be included in the filtered data set.\n"
-msgstr ""
+msgstr "*等於* - 如果來源資料欄位等於右側文字框中的值，則此運算符為真。相等性是基於字串匹配來評估的，因此，如果資料來源的記錄值為 2.0，而文字框中的值為 2，該記錄將不會包含在過濾後的資料集中。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:218
 #, no-wrap
 msgid "*NotEquals* - this operator is true if the source data field is not equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will be included in the filtered data set.\n"
-msgstr ""
+msgstr "*不等於* - 如果來源資料欄位不等於右側文字框中的值，則此運算符為真。相等性是基於字串匹配來評估的，因此，如果資料來源的記錄值為 2.0，而文字框中的值為 2，該記錄將包含在過濾後的資料集中。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:219
