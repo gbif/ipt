@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-19 09:36\n"
+"PO-Revision-Date: 2024-11-23 05:28\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -746,7 +746,7 @@ msgstr "頁面左側的側邊欄包含了跳轉到延伸資料集中相關欄位
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:190
 msgid "To the right of the sidebar are rows of information divided into two columns of information; the first column (left-hand side) lists the names of fields in the extension; the second column (right-hand side) contains a set of controls (select boxes, text boxes) to set the value the extension field is supposed to contain. If a field name has been chosen in the source data field select box, text labelled \"Source Sample\" and a button labelled \"Translate\" will appear below it. Descriptions of the controls that may appear in the right-hand column of the data mapping table are given below:"
-msgstr ""
+msgstr "側邊欄右側為資料，分為兩欄；第一欄（左側）列出延伸資料集中的欄位名稱；第二欄（右側）包含一組控制項（選擇框、文字框）以設置擴展欄位應包含的值。如果在來源資料欄位選擇框中選擇了欄位名稱，則會顯示標記為「來源範例」的文字和標示著「翻譯」的按鈕。以下是資料對照表右欄中可能出現的控制項說明："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:192
