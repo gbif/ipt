@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 11:28\n"
+"PO-Revision-Date: 2024-11-23 13:00\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -800,13 +800,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:206
 #, no-wrap
 msgid "*Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon beside the controlled value select box. Click on this icon to open a <<Vocabulary detail page>> in a new browser tab on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.\n"
-msgstr ""
+msgstr "*詞彙詳細按鈕* - 若延伸資料集欄位受限於控制詞彙，則複選框旁會有一個圖標。點擊此圖標可在新標籤頁中打開 <<詞彙相關細節頁面>>，查看該延伸資料集欄位所接受的值及其解釋和各種語言的同義詞。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:207
 #, no-wrap
 msgid "*Source Sample* - This area shows actual values from the first five records of the selected field of the source data, separated by spaces and the character `|`. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.\n"
-msgstr ""
+msgstr "*來源範例* - 此區域顯示來源資料選定欄位的前五條紀錄的實際值，值之間用空格和字符 | 分隔，幫助使用者判斷來源資料欄位的內容是否適合對照到延伸資料集的欄位。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:208
