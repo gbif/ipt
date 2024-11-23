@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 15:19\n"
+"PO-Revision-Date: 2024-11-23 17:13\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -866,36 +866,36 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:225
 #, no-wrap
 msgid "*Required fields* - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together.\n"
-msgstr ""
+msgstr "*必填欄位* - 如果該核心類型或延伸資料集有任何必須對照的屬性，這些屬性名稱會被突出顯示。請注意，如果核心類型為出現紀錄，basisOfRecord 必須進行對照。未對照 http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] 欄位，則資料發布將會失敗。另外，對於 ID 欄位，僅在需要將兩個來源連接在一起時才需要此欄位。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:227
 msgid "In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following sections, links, and buttons:"
-msgstr ""
+msgstr "除了頁面頂部有關延伸資料集的說明資訊和上述兩個欄位外，資料對照頁面可能還包含以下部分、連結和按鈕："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:229
 #, no-wrap
 msgid "*Resource Title* - clicking on this link will navigate to the Resource Overview page without saving any of the pending changes.\n"
-msgstr ""
+msgstr "*資源標題* - 點擊此連結將跳轉到資源概覽頁面，並且不會儲存任何待處理的變更。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:230
 #, no-wrap
 msgid "*Hide unmapped Fields* - this filter/link will remove from view on this page all fields that have not yet been mapped, leaving only those with completed mappings. To view again those fields that have not been mapped, click on the \"Show all\" link.\n"
-msgstr ""
+msgstr "*隱藏未對照欄位* - 此過濾器/連結將隱藏頁面上所有尚未對照的欄位，只顯示已完成對照的欄位。如果要再次查看尚未對照的欄位，請點擊「顯示所有」連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:231
 #, no-wrap
 msgid "*Show all fields* - this filter/link will make all fields visible, whether mapped already or not. This link appears only after the \"Hide Unmapped Fields\" link has been invoked.\n"
-msgstr ""
+msgstr "*顯示所有欄位* - 此過濾器/連結將使所有欄位可見，無論是否已對照。此連結僅在已啟用「隱藏未對照欄位」後顯示。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:232
 #, no-wrap
 msgid "*Hide redundant classes* - this filter/link will remove from view on this page all fields belonging to classes/groups of terms that are redundant. A class is redundant, if it is already included in the core extension. To view again those fields that belong to redundant classes, click on the \"Show all classes\" link. This link appears only after the \"Show all classes\" link has been invoked.\n"
-msgstr ""
+msgstr "*隱藏多餘類別* - 此過濾器/連結將隱藏頁面上所有屬於多餘的類別/術語群組欄位。如果某個類別已經包含在核心延伸資料集中，那麼該類別就是多餘的。如果要再次查看屬於多餘類別的欄位，請點擊「顯示所有類別」連結。此連結僅在已啟用「顯示所有類別」後顯示。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:233
