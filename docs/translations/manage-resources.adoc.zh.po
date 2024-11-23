@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 05:28\n"
+"PO-Revision-Date: 2024-11-23 06:26\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -752,7 +752,7 @@ msgstr "側邊欄右側為資料，分為兩欄；第一欄（左側）列出延
 #: en/modules/ROOT/pages/manage-resources.adoc:192
 #, no-wrap
 msgid "*Data source field select box* - The left-hand select box is either blank or contains the name of a field from the data source. The IPT fills as many selections as it can from extension field names that match a data source field name. All of the remaining source field select boxes are left blank, signifying that the extension field has not been mapped to a source data field. If a field name is selected, the resource will use the value from that field in the source data as the value for the extension field in the Darwin Core Archive created by the IPT when the resource is published.\n"
-msgstr ""
+msgstr "*來源資料欄位選擇框* - 左側選擇框為空白或包含來自資料來源的欄位名稱。IPT 根據與資料來源欄位名稱匹配的延伸資料集欄位名稱進行自動對照與填充。未對照的延伸集欄位選擇框將保持空白，表示延伸集欄位尚未對照到來源資料欄位。如果選定欄位名稱，在 IPT 發布資源時生成的達爾文核心集檔案中，該資源將使用來源資料中的欄位值作為延伸集欄位的值。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:193
