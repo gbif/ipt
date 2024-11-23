@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 07:22\n"
+"PO-Revision-Date: 2024-11-23 11:28\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -776,7 +776,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:198
 #, no-wrap
 msgid "*Constant controlled value select box* - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.\n"
-msgstr ""
+msgstr "*控制常量選擇框* - 如果延伸集的右邊欄位是一個選擇框而不是文字框，代表了該欄位僅能選填控制詞彙。選擇一個詞彙列表中的值作為常量，以替代輸入文字框的方式賦值。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:199
@@ -788,7 +788,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:202
 #, no-wrap
 msgid "*Use resource DOI* - (Special constant controlled value) It is possible to set the default value for datasetID equal to the resource DOI. This option only applies to extensions having the Darwin Core term http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], such as the Occurrence extension. To activate the checkbox, make sure that no source data field has been selected and no constant value has been entered.\n"
-msgstr ""
+msgstr "*使用資源 DOI* -（特殊控制常量）可設置 datasetID 的預設值為資源 DOI。此選項僅適用於具有 Darwin Core 項 http://rs.tdwg.org/dwc/terms/#datasetID[datasetID] 的延伸資料集，例如出現紀錄延伸集。要啟用該複選框，請確保來源資料欄位未被選擇且控制常量未被輸入。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:203
