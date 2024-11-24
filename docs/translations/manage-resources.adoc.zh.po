@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-23 17:13\n"
+"PO-Revision-Date: 2024-11-24 04:51\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -901,25 +901,25 @@ msgstr "*隱藏多餘類別* - 此過濾器/連結將隱藏頁面上所有屬於
 #: en/modules/ROOT/pages/manage-resources.adoc:233
 #, no-wrap
 msgid "*Show all classes* - this filter/link will make all fields belonging to redundant classes/groups visible. This link appears only after the \"Hide redundant classes\" link has been invoked.\n"
-msgstr ""
+msgstr "*顯示所有類別* - 此過濾器/連結將使所有屬於多餘類別/群組的欄位可見。此連結僅在已啟用「隱藏多餘類別」後顯示。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:234
 #, no-wrap
 msgid "*Save* - clicking on any of the potentially many buttons labelled \"Save\" will change the pending changes on the page.\n"
-msgstr ""
+msgstr "*儲存* - 點擊任何標有「儲存」的按鈕將保存頁面上的變更。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:235
 #, no-wrap
 msgid "*Delete* - clicking this button will remove the entire mapping to a data source, not just the mapped fields, and return to the Resource Overview page.\n"
-msgstr ""
+msgstr "*刪除* - 點擊此按鈕將刪除對資料來源的所有對照，而不僅僅是刪除已對照的欄位，並返回資源概覽頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:236
 #, no-wrap
 msgid "*Back* - clicking on this button will abandon all changes that have been made on this page since it was last saved and return to the Resource Overview page.\n"
-msgstr ""
+msgstr "*返回* - 點擊此按鈕將撤銷自上次儲存以來在此頁面上所做的所有變更，並返回資源概覽頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:237
