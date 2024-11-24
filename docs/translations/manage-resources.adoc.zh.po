@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 08:42\n"
+"PO-Revision-Date: 2024-11-24 09:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -498,12 +498,12 @@ msgstr "*已選工作表* - （僅適用於 Excel 檔案）此下拉選單列出
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:110
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file. To reopen the Source Data File detail page just click on the appropriate item."
-msgstr "設定好資料來源的參數以確保檔案正確解讀後，點擊標示「儲存」的按鈕以儲存此設定。如果儲存成功，將顯示「資源概述」頁面，並在此頁面上顯示該檔案的摘要資訊。要重新開啟「來源資料檔案」的相關細節頁面，只需點擊相關項目。"
+msgstr "設定好資料來源的參數以確保檔案正確解讀後，點擊標示「儲存」的按鈕以儲存此設定。如果儲存成功，將顯示「資源概述」頁面，並在此頁面上顯示該檔案的摘要資訊。要重新開啟「來源資料檔案」的詳情頁，只需點擊相關項目。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:114
 msgid "Should the user want to delete this source, they can reopen the Source Data File detail page and press the \"Delete source file\" button. Be aware though, that any mappings associated to this file will also be deleted."
-msgstr "若使用者想要刪除此來源，他們可以重新開啟「來源資料檔案」的相關細節頁面，然後按「刪除來源檔案」按鈕。需注意，任何與此檔案相關的資料對照也會被刪除。"
+msgstr "若使用者想要刪除此來源，他們可以重新開啟「來源資料檔案」的詳情頁，然後按「刪除來源檔案」按鈕。需注意，任何與此檔案相關的資料對照也會被刪除。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:116
@@ -519,12 +519,12 @@ msgstr "資料庫作為資料來源"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select \"Add\". Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr "IPT 可以使用資料庫連接來從表格或檢視表中匯入資料。受支援的資料庫連接列表請參見 xref:database-connection.adoc[受支援的資料庫] 一節。要設定資料庫作為資料來源，點擊 {threedots} 選單並選擇「新增」。然後從彈出視窗的下拉選單中選擇「資料庫」，再點擊標示「連接」的按鈕，這將打開「來源資料庫」的相關細節頁面。"
+msgstr "IPT 可以使用資料庫連接來從表格或檢視表中匯入資料。受支援的資料庫連接列表請參見 xref:database-connection.adoc[受支援的資料庫] 一節。要設定資料庫作為資料來源，點擊 {threedots} 選單並選擇「新增」。然後從彈出視窗的下拉選單中選擇「資料庫」，再點擊標示「連接」的按鈕，這將打開「來源資料庫」的詳情頁。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
 msgid "The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyse and preview the data."
-msgstr "「來源資料資料庫」的相關細節頁面顯示了資源名稱及資料庫特徵摘要（可讀性、偵測到的欄位數），並允許使用者查看及編輯如何從資料庫訪問資料的參數，以及使用這些設定來分析和預覽資料。"
+msgstr "「來源資料資料庫」的詳情頁顯示了資源名稱及資料庫特徵摘要（可讀性、偵測到的欄位數），並允許使用者查看及編輯如何從資料庫訪問資料的參數，以及使用這些設定來分析和預覽資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:123
@@ -612,7 +612,7 @@ msgstr "*字元位元系統* - 定義資料中字元位元的系統（例如 Lat
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:142
 msgid "After the parameters for the data source have been set so that the data are accessed correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labelled \"Edit\" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page."
-msgstr "當來源資料的參數設定完成並可以正確訪問資料後，點擊標示「儲存」的按鈕以儲存此配置。若儲存成功，將顯示「資源概述」頁面，並在來源資料區塊右側顯示資料的摘要資訊。來源資料摘要資訊中還會顯示一個標示「編輯」的按鈕，允許使用者重新開啟「來源資料庫」的相關細節頁面。"
+msgstr "當來源資料的參數設定完成並可以正確訪問資料後，點擊標示「儲存」的按鈕以儲存此配置。若儲存成功，將顯示「資源概述」頁面，並在來源資料區塊右側顯示資料的摘要資訊。來源資料摘要資訊中還會顯示一個標示「編輯」的按鈕，允許使用者重新開啟「來源資料庫」的詳情頁。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:143
@@ -628,12 +628,12 @@ msgstr "IPT 可以直接從 URL 匯入未壓縮的分隔文字檔案（CSV、tab
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
 msgid "Click on the button labelled \"Clear\" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data URL detail page."
-msgstr "點擊標示為「清除」的按鈕可移除 URL 選擇並回到選取資料來源前的狀態。或者，點擊標示為「新增」的按鈕來開啟來源資料 URL 的相關細節頁面。"
+msgstr "點擊標示為「清除」的按鈕可移除 URL 選擇並回到選取資料來源前的狀態。或者，點擊標示為「新增」的按鈕來開啟來源資料 URL 的詳情頁。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:151
 msgid "This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr "此頁面顯示資源名稱和 URL 特徵的摘要（可讀性、檢測到的欄數、URL 位置、檢測到的行數以及 URL 最後載入 IPT 的日期）。來源資料 URL 的相關細節頁面允許使用者查看和編輯描述所選檔案內容的設定參數，並使用這些設定進行分析和預覽。"
+msgstr "此頁面顯示資源名稱和 URL 特徵的摘要（可讀性、檢測到的欄數、URL 位置、檢測到的行數以及 URL 最後載入 IPT 的日期）。來源資料 URL 的詳情頁允許使用者查看和編輯描述所選檔案內容的設定參數，並使用這些設定進行分析和預覽。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:152
@@ -703,7 +703,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:175
 msgid "Select the data source to map, and then click on the button labelled \"Save\". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping)."
-msgstr "選擇要對照的資料來源，然後點擊標示為「儲存」的按鈕以開啟資料對照的相關細節頁面（請跳轉到下文的 <<資料對照相關細節>> 以獲取實際進行對照的說明）。"
+msgstr "選擇要對照的資料來源，然後點擊標示為「儲存」的按鈕以開啟資料對照的詳情頁（請跳轉到下文的 <<資料對照詳情頁>> 以獲取實際進行對照的說明）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:177
@@ -800,7 +800,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:206
 #, no-wrap
 msgid "*Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon beside the controlled value select box. Click on this icon to open a <<Vocabulary detail page>> in a new browser tab on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.\n"
-msgstr "*詞彙詳細按鈕* - 若延伸資料集欄位受限於控制詞彙，則複選框旁會有一個圖標。點擊此圖標可在新標籤頁中打開 <<詞彙相關細節頁面>>，查看該延伸資料集欄位所接受的值及其解釋和各種語言的同義詞。\n"
+msgstr "*詞彙詳細按鈕* - 若延伸資料集欄位受限於控制詞彙，則複選框旁會有一個圖標。點擊此圖標可在新標籤頁中打開 <<詞彙詳情頁>>，查看該延伸資料集欄位所接受的值及其解釋和各種語言的同義詞。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:207
@@ -983,30 +983,30 @@ msgstr "*刪除* - （從選項下拉選單）點擊此按鈕以移除該欄位�
 #: en/modules/ROOT/pages/manage-resources.adoc:255
 #, no-wrap
 msgid "*Reload* - (from Options dropdown) click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.\n"
-msgstr ""
+msgstr "*重新載入* - （從選項下拉選單）點擊此按鈕以再次搜尋來源資料中的獨特值。現有的轉譯會被保留，而來源資料中的任何未轉譯的新獨特值將出現在列表中。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:256
 #, no-wrap
 msgid "*Automap* - (from Options dropdown) this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.\n"
-msgstr ""
+msgstr "*自動對照* - （從選項下拉選單）此按鈕僅在該欄位受限於控制詞彙時顯示。點擊此按鈕可基於已知的同義詞自動填入標準的轉譯資料值。對於來源資料中沒有已知同義詞的值，將保持空白。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:257
 #, no-wrap
 msgid "*Cancel* - click on this button to close the Value Translation page without saving any of the changes that have been made.\n"
-msgstr ""
+msgstr "*取消* - 點擊此按鈕以關閉轉譯值頁面，且不儲存所做的任何變更。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:258
 #, no-wrap
 msgid "Vocabulary detail page"
-msgstr ""
+msgstr "詞彙詳情頁"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:260
 msgid "This page shows a list of concepts within the vocabulary. In the context of mapping data, it shows a list of accepted values that can be used for the extension field. Each concept may contain a description, its preferred synonyms (in various languages), plus any alternative synonyms (in various languages)."
-msgstr ""
+msgstr "此頁面顯示詞彙中的概念清單。在資料對照的背景下，它顯示可用於延伸資料集欄位的資料值清單。每個概念可能包含說明、其首選同義詞（多語言）以及任何替代同義詞（多語言）。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:261
@@ -1023,7 +1023,7 @@ msgstr "元數據"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:265
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select \"Edit\" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Incomplete\" in the Metadata area of the page."
-msgstr ""
+msgstr "資源概覽頁面的這個區域允許使用者編輯資源的詮釋資料。請點擊 {threedots} 選單，然後從下拉選單中選擇「編輯」以進行編輯。每個資源都需要一組最低限度的描述性詮釋資料，以便能夠在 GBIF 網路上發布，並在需要時由 GBIF 分配 DOI。如果有任何必填的詮釋資料缺失，資源概覽頁面將在詮釋資料區域顯示「不完整」的徽章。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:266
@@ -1034,12 +1034,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:269
 msgid "An existing resource file can be uploaded, replacing any existing metadata. To do this, click the {threedots} menu and select \"Upload\". Then click the \"Browse\" button and choose the EML file."
-msgstr ""
+msgstr "使用者可以上傳一個現有的資源檔案來取代任何現有的詮釋資料。點擊 {threedots} 選單，然後選擇「上傳」。接著點擊「瀏覽」按鈕並選擇 EML 檔案。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:271
 msgid "Clicking on the \"Edit\" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr ""
+msgstr "點擊「編輯」選項會開啟 <<基本詮釋資料>> 頁面，這是一系列詮釋資料頁面中的第一頁。當完成任何詮釋資料頁面的資料輸入並點擊「儲存」按鈕後，下一頁將依序顯示。當最後一頁的詮釋資料儲存後，將返回 <<基本詮釋資料>> 頁面。在任何頁面點擊「取消」按鈕將放棄該頁面上所做的任何變更並返回資源概覽頁面。在每個詮釋資料頁面的左側欄中，有一個指向所有詮釋資料頁面的連結列表，便於參考和跳轉。點擊任一連結即可開啟對應的詮釋資料頁面。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:272
@@ -1050,12 +1050,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:275
 msgid "Following is a list of the metadata pages and their contents:"
-msgstr ""
+msgstr "以下是詮釋資料頁面及其內容的清單："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:278
 msgid "All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organization."
-msgstr ""
+msgstr "所有詮釋資料欄位均為必填。請注意，每個聯絡人的資訊至少需提供姓氏、職位或所屬組織。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:279
