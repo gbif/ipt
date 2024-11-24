@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 16:49\n"
+"PO-Revision-Date: 2024-11-24 18:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1121,7 +1121,7 @@ msgstr "*說明* - 一段簡短的資源概覽，分段說明。應提供足夠�
 #: en/modules/ROOT/pages/manage-resources.adoc:291
 #, no-wrap
 msgid "*Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. The contacts in the list can be rearranged by simply dragging the elements and placing them in the right place.\n"
-msgstr ""
+msgstr "*資源聯絡人* - 資源聯絡人和組織的清單。他們應被聯絡以獲取更多關於該資源的資訊，包括如何維護資源，處理資源及其資料的潛在問題。清單中的聯絡人可以通過拖放操作進行重新排列。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:293
@@ -1133,13 +1133,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:296
 #, no-wrap
 msgid "*Copy from another* - click on this link to copy contact data from any resource. A modal window is displayed with options to choose the resource and the contact.\n"
-msgstr ""
+msgstr "*從其他資源複製* - 點擊此連結可從任何資源中複製聯絡資料。彈出視窗會顯示選擇資源和聯絡人的選項。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:297
 #, no-wrap
 msgid "*Add new resource contact* - click on this link to initiate a form for an additional resource contact.\n"
-msgstr ""
+msgstr "*新增資源聯絡人* - 點擊此連結可開啟新增聯絡人表單。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:298
