@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 09:56\n"
+"PO-Revision-Date: 2024-11-24 12:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1067,7 +1067,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:282
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr ""
+msgstr "*標題* - 資源的標題。此標題將作為資源的名稱顯示在 IPT 中，也會出現在 GBIF 登錄表中，並構成引用的一部分。請使用對資料集使用者描述性強的標題，例如「丹麥自然歷史博物館（SNM）的坦尚尼亞鳥類收藏」，而非「aves_tz_snm」。避免使用僅為您的組織所知的檔名或縮寫。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:283
