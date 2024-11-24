@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 14:21\n"
+"PO-Revision-Date: 2024-11-24 15:52\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1085,25 +1085,25 @@ msgstr "*更新頻率* - 資源初次發布後進行更改的頻率。為方便�
 #: en/modules/ROOT/pages/manage-resources.adoc:285
 #, no-wrap
 msgid "*Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field \"other\" can be selected. Review the information under the \"Configure Core Types and Extensions\" heading of the \"Administration Menu\" section.\n"
-msgstr ""
+msgstr "*類型* - 資源的類型。此欄位的值取決於資源的核心對照，並且如果已經完成 Darwin Core 對照，該值將無法再編輯。如果在清單中找不到所需的類型，可以選擇「其他」。請查看「選單：系統管理」部分的「核心類型和延伸資料集配置」標題下的資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:286
 #, no-wrap
 msgid "*Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection.\n"
-msgstr ""
+msgstr "*子類型* - 資源的子類型。此欄位的選項取決於類型欄位。如果清單中未找到所需的子類型，可保持預設選項。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:287
 #, no-wrap
 msgid "*Metadata Language* - the language in which the metadata are written.\n"
-msgstr ""
+msgstr "*詮釋資料語言* - 詮釋資料所使用的語言。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:288
 #, no-wrap
 msgid "*Resource Language* - the language in which the data for the resource are written.\n"
-msgstr ""
+msgstr "*資源語言* - 資源資料所使用的語言。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:289
