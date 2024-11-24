@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 15:52\n"
+"PO-Revision-Date: 2024-11-24 16:49\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1109,13 +1109,13 @@ msgstr "*資源語言* - 資源資料所使用的語言。\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:289
 #, no-wrap
 msgid "*Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.\n"
-msgstr ""
+msgstr "*資料授權* - 資源所適用的授權。授權提供了一種標準化方式來定義您的作品適用的使用方式。GBIF 鼓勵發布者從三種（預設）機器可讀選項（CC0 1.0、CC-BY 4.0 或 CC-BY-NC 4.0）中選擇限制最少的授權，以鼓勵資料能被更廣泛地使用和應用。了解更多關於 GBIF 授權政策，請參閱 http://www.gbif.org/terms/licences[此處]。如果您無法選擇其中任何一種授權，請聯絡 GBIF 秘書處 participation@gbif.org。如需了解如何在紀錄層級上給予授權，請參閱 xref:applying-license.adoc[如何為資料集授權]。如需了解如何更改 IPT 的預設授權選項，請參閱 IPT 維基中的 xref:applying-license.adoc[資料集授權]頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:290
 #, no-wrap
 msgid "*Description* - a brief overview of the resource broken into paragraphs. This should provide enough information to help potential users of the data to understand if it may be of interest.\n"
-msgstr ""
+msgstr "*說明* - 一段簡短的資源概覽，分段說明。應提供足夠的信息，幫助潛在使用者瞭解該資料是否可能引起他們的興趣。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:291
