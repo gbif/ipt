@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-25 08:32\n"
+"PO-Revision-Date: 2024-11-25 10:25\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -39,7 +39,7 @@ msgstr "地理涵蓋範圍"
 #: en/modules/ROOT/pages/manage-resources.adoc:333
 #, no-wrap
 msgid "Taxonomic Coverage"
-msgstr "分類群涵蓋範圍"
+msgstr "分類群範圍"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
@@ -48,7 +48,7 @@ msgstr "分類群涵蓋範圍"
 #: en/modules/ROOT/pages/manage-resources.adoc:359
 #, no-wrap
 msgid "Temporal Coverage"
-msgstr "時間涵蓋範圍"
+msgstr "時間範圍"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
@@ -1302,7 +1302,7 @@ msgstr "*描述* - 地理覆蓋範圍的文字描述。該資訊可作為其他�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:336
 msgid "This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labelled \"Add new taxonomic coverage\". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state."
-msgstr "此詮釋資料頁面允許使用者輸入有關資源所涵蓋的一個或多個分類群群組的資訊，每個群組被稱為分類群範圍。每個範圍包括一個說明和分類群列表，其中每個分類群包含分類群名稱（科學名或通用名）和分類階層。在尚未建立任何分類群範圍之前，頁面上僅顯示一個標記為「新增分類群範圍」的連結。點擊該連結將新增一個要求提供說明的文字框和幾個同樣的操作連結。以下為在尚未輸入任何資料時，分類群範圍頁面內容的螢幕截圖以及該狀態下控制項的相關解說："
+msgstr "此詮釋資料頁面允許使用者輸入有關資源所涵蓋的一個或多個分類群群組的資訊，每個群組被稱為分類群範圍。每個範圍包括一個說明和分類群列表，其中每個分類群包含分類群名稱（科學名或通用名）和分類位階。在尚未建立任何分類群範圍之前，頁面上僅顯示一個標記為「新增分類群範圍」的連結。點擊該連結將新增一個要求提供說明的文字框和幾個同樣的操作連結。以下為在尚未輸入任何資料時，分類群範圍頁面內容的螢幕截圖以及該狀態下控制項的相關解說："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:337
@@ -1344,19 +1344,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:348
 #, no-wrap
 msgid "*Taxon List* - this text box allows the user to enter a list of taxa with each taxon on a separate line by using the ENTER key within the text box. The taxa entered in this list are treated as scientific names.\n"
-msgstr ""
+msgstr "*分類群列表* - 此文字框允許使用者輸入一個分類群列表。每行輸入一個分類群，使用ENTER鍵進行分行。輸入的分類群被視為學名。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:349
 #, no-wrap
 msgid "*Add* - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.\n"
-msgstr ""
+msgstr "*新增* - 此按鈕將輸入到「分類群列表」文字框的值在分類群範圍內建立相應的科學名。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:350
 #, no-wrap
 msgid "*Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a \"Remove this taxon\" link. The taxon can contain any combination of scientific and common name with an optional rank.\n"
-msgstr ""
+msgstr "*新增單一分類群* - 此連結新增控制項以輸入分類群範圍中的單一分類群——包括學名和俗名的文字框、一個標示位階的選擇框，以及一個「移除此分類群」的連結。分類群可以為學名和俗名的任意組合，並可選擇輸入位階。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:351
@@ -1368,36 +1368,36 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:354
 #, no-wrap
 msgid "*Scientific Name* - this text box is meant to contain the scientific name for the taxon.\n"
-msgstr ""
+msgstr "*學名* - 此文字框用於輸入分類群的學名。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:355
 #, no-wrap
 msgid "*Common Name* - this text box is meant to contain the scientific name for the taxon.\n"
-msgstr ""
+msgstr "*俗名* - 此文字框用於輸入分類群的俗名。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:356
 #, no-wrap
 msgid "*Rank* - this text box is meant to contain the taxonomic rank of the taxon.\n"
-msgstr ""
+msgstr "*位階* - 此文字框用於輸入分類群的分類位階。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:357
 #, no-wrap
 msgid "*Remove this taxon* - clicking on this link will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.\n"
-msgstr ""
+msgstr "*移除此分類群* - 點擊此連結將移除分類群（學名、俗名和位階）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:358
 #, no-wrap
 msgid "*Add new taxonomic coverage* - click on this link to initiate a form for a new taxonomic coverage with a text box labelled \"Description\" and links to \"Add several taxa\" and \"Add new taxon\" as described above.\n"
-msgstr ""
+msgstr "*新增分類群範圍* - 點擊此連結以新增一個新的分類群範圍表單，其中包括標記為「說明」的文字框及如上所示的「新增多個分類群」和「新增單一分類群」的連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:362
 msgid "This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labelled \"Add new temporal coverage\". Clicking on this link will show the default temporal coverage type \"Single Date\" in a select box, a text box labelled \"Start Date\", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state."
-msgstr ""
+msgstr "這個詮釋資料頁面包含有關資源所涵蓋的一個或多個日期、日期範圍或命名的時間段的資訊，每個時間段被稱為時間範圍。範圍可能涉及資料集或集合被創建的時間（單一天、日期範圍或形成時期），或者資料集或集合中主體存在的時間（生存時間段）。在建立資源的首個時間範圍之前，頁面僅顯示一個標記為「新增時間範圍」的連結。點擊該連結會顯示默認的時間範圍類型「單一天」選擇框、一個標記為「開始日期」的文字框、一個日曆圖示，以及兩個相關連結。以下為尚未輸入資料時的默認時間範圍頁面螢幕截圖以及該狀態下控制項的解釋："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:363
@@ -1409,7 +1409,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:366
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the temporal coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*自動從來源資料推斷* - 來源資料將被分析並在發布時自動設定時間範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:368
