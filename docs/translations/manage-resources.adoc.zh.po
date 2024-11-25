@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-24 18:38\n"
+"PO-Revision-Date: 2024-11-25 07:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1145,79 +1145,79 @@ msgstr "*新增資源聯絡人* - 點擊此連結可開啟新增聯絡人表單�
 #: en/modules/ROOT/pages/manage-resources.adoc:298
 #, no-wrap
 msgid "*Remove this resource contact* - click on this link to remove the resource contact that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此資源聯絡人* - 點擊此連結以移除該資源聯絡人，該聯絡人位於連結下方。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:299
 #, no-wrap
 msgid "*First Name* - the first or given name of the resource contact.\n"
-msgstr ""
+msgstr "*名字* - 資源聯絡人的名字。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:300
 #, no-wrap
 msgid "*Last Name* (required if Position and Organization are empty, required if the first name is not empty) - the last or surname of the resource contact.\n"
-msgstr ""
+msgstr "姓氏（當職位和組織為空時必填，當名字非空時必填）- 資源聯絡人的姓氏。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:301
 #, no-wrap
 msgid "*Position* (required if Last Name and Organization are empty) - the relevant title or position held by the resource contact.\n"
-msgstr ""
+msgstr "*職位*（當姓氏和組織為空時必填）- 資源聯絡人所擔任的相關職位或頭銜。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:302
 #, no-wrap
 msgid "*Organization* (required if Last Name and Position are empty) - the organization or institution with which the resource contact is associated. Though the organization may be one of those registered in the GBIF Registry, this is not required. Thus, the organization must be entered in the text box rather than selected from a list of registered organizations.\n"
-msgstr ""
+msgstr "*組織*（當姓氏和職位為空時必填）- 與資源聯絡人相關的組織或機構。雖然該組織可能是GBIF註冊的組織之一，但這不是必要的。因此，需在文字框中輸入組織名稱，而非從已註冊組織列表中選取。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:303
 #, no-wrap
 msgid "*Address* - the physical street or building address of the resource contact.\n"
-msgstr ""
+msgstr "*地址* - 資源聯絡人的實體街道或建築地址。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:304
 #, no-wrap
 msgid "*City* - the city, town, municipality or similar physical location of the resource contact's address.\n"
-msgstr ""
+msgstr "*城市* - 資源聯絡人地址中的城市、城鎮、縣市或類似的實體地點。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:305
 #, no-wrap
 msgid "*State/Province* - the state, province, or similar geographic region of the resource contact's address.\n"
-msgstr ""
+msgstr "*州/省* - 資源聯絡人地址中的州、省或類似的地理區域。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:306
 #, no-wrap
 msgid "*Country* - the name of the country or other first level administrative region of the resource contact's address.\n"
-msgstr ""
+msgstr "*國家* - 資源聯絡人地址中的國家或其他第一級行政區域名稱。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:307
 #, no-wrap
 msgid "*Postal Code* - the postal code (e.g., zip code) of the resource contact's address.\n"
-msgstr ""
+msgstr "*郵政編碼* - 資源聯絡人地址的郵政編碼（例如，郵遞區號）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:308
 #, no-wrap
 msgid "*Phone* - the preferred full international telephone number at which to reach the resource contact.\n"
-msgstr ""
+msgstr "*電話* - 聯絡資源聯絡人的首選完整國際電話號碼。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:309
 #, no-wrap
 msgid "*Email* - the preferred email address at which to reach the resource contact.\n"
-msgstr ""
+msgstr "*電子郵件* - 聯絡資源聯絡人的首選電子郵件地址。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:310
 #, no-wrap
 msgid "*Home Page* - the URL to a worldwide web page for the resource contact.\n"
-msgstr ""
+msgstr "*主頁* - 資源聯絡人的網頁URL。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:311
