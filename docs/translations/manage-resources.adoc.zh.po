@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-25 07:06\n"
+"PO-Revision-Date: 2024-11-25 08:32\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:276
 #, no-wrap
 msgid "Basic Metadata"
-msgstr "基本元數據"
+msgstr "基本詮釋資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
@@ -90,7 +90,7 @@ msgstr "採集、蒐藏資料"
 #: en/modules/ROOT/pages/manage-resources.adoc:538
 #, no-wrap
 msgid "Additional Metadata"
-msgstr "其他元數據"
+msgstr "其他詮釋資料"
 
 #. type: Title =
 #: en/modules/ROOT/pages/manage-resources.adoc:1
@@ -1018,7 +1018,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 #, no-wrap
 msgid "Metadata"
-msgstr "元數據"
+msgstr "詮釋資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:265
@@ -1224,36 +1224,36 @@ msgstr "*主頁* - 資源聯絡人的網頁URL。\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:443
 #, no-wrap
 msgid "*Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the xref:user-id.adoc[Add a New User ID Directory] page in the IPT wiki.\n"
-msgstr ""
+msgstr "*人員目錄* - 該人員標識符所屬的人員目錄系統的URL。默認提供四種名錄可選：ORCID、ResearchID、LinkedIn和Google Scholar。如果需要更改 IPT 的默認目錄設置，請參閱 IPT 維基中的xref:user-id.adoc[新增使用者ID目錄]頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:312
 #: en/modules/ROOT/pages/manage-resources.adoc:444
 #, no-wrap
 msgid "*Personnel Identifier* - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.\n"
-msgstr ""
+msgstr "*人員標識符* - 16位的ORCID ID（例如0000-0002-1825-0097）或將此人連結到指定人員目錄的其他標識符。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:315
 #, no-wrap
 msgid "*Resource Creators* - the people and organizations who created the resource, in priority order. The list will be used to auto-generate the resource citation (if auto-generation is turned on). If this person or organization is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labelled \"copy details from resource contact\". The resource creator has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.\n"
-msgstr ""
+msgstr "*資源創建者* - 創建資源的個人和組織，按優先順序排列。該列表將用於自動生成資源引用（若開啟自動生成功能）。如果此個人或組織與第一個資源聯絡人相同，所有聯絡人的詳細資訊可以透過點擊「從資源聯絡人複製詳細資訊」的連結自動填充至資源創建者的對應欄位。資源創建者所需資訊與資源聯絡人具有相同的欄位和要求。請參閱上文中的資源聯絡人欄位解釋。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:317
 msgid "the person(s) or organization(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource can add themselves as an associated party with role 'publisher'."
-msgstr ""
+msgstr "在IPT中的資源創建者以及有效發布該資源的負責人或組織可以將自己添加為相關團隊中的「發布者」角色。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:319
 #, no-wrap
 msgid "*Metadata Providers* - the people and organizations responsible for producing the resource metadata. If this person or organization is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labelled \"copy details from resource contact\". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.\n"
-msgstr ""
+msgstr "*詮釋資料提供者* - 負責產生資源詮釋資料的個人或組織。如果此個人或組織與第一個資源聯絡人相同，所有聯絡人的詳細信息可以透過點擊「從資源聯絡人複製詳細信息」的連結自動填充至詮釋資料提供者的對應欄位。詮釋資料提供者具有與資源聯絡人相同的欄位和要求，請參閱上文中的資源聯絡人欄位解釋。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:323
 msgid "This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls."
-msgstr ""
+msgstr "此詮釋資料頁面包含有關資源涵蓋的地理區域的資訊。頁面上有一個地圖及相關控制項，允許使用者設定地理覆蓋範圍。下方為地理覆蓋頁面的內容螢幕截圖，以及控制項的相關說明。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:324
@@ -1265,7 +1265,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:327
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the geographical coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*從來源資料自動推斷* - 來源資料將被分析並在發布時自動設定地理覆蓋範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:328
@@ -1273,36 +1273,36 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:367
 #, no-wrap
 msgid "*Preview inferred* - analyze source data and display inferred values.\n"
-msgstr ""
+msgstr "*預覽推斷結果* - 分析來源資料並顯示推斷的值。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:329
 #, no-wrap
 msgid "*Coverage Map* - if connected to the Internet, a map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on all corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Drag the entire box, or drag individual markers to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. The map features hill shading, natural vegetation colours, advanced labelling, etc. The map has buttons to zoom in (+) and zoom out (-) and can be dragged in any direction to change the area of the earth being shown.\n"
-msgstr ""
+msgstr "*覆蓋範圍地圖* - 若已連接到網際網路，地理覆蓋頁面將顯示一張地圖。此地圖上顯示一個具有控制點（標記）的框。標記位於框的所有角落，對應緯度和經度文字框中的值。拖動整個框，或拖動個別標記至新位置即可重新設定框的地理邊界。對應的緯度和經度值將同步變更以匹配地圖上的框。地圖具有地形陰影、自然植被顏色、進階標籤等功能，並提供放大（+）和縮小（-）按鈕，可向任意方向拖動以變更顯示的地球上的區域。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:330
 #, no-wrap
 msgid "*Set global coverage?* - click on this check box to change the geographic coverage to cover the entire earth.\n"
-msgstr ""
+msgstr "*設定全球覆蓋範圍？* - 點擊此複選框以將地理覆蓋範圍更改為覆蓋整個地球。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:331
 #, no-wrap
 msgid "*South/West & North/East* - these four text boxes correspond to the SW and NE corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labelled \"Save\".\n"
-msgstr ""
+msgstr "*南/西 & 北/東* - 這四個文字框對應於資源覆蓋區域邊界框的SW和NE角。需輸入的值為小數度數（例如45.2345），標準限制值為-90至+90緯度（南/北）以及-180至+180經度（西/東），北半球為正緯度，格林威治子午線以東至國際日期變更線為正經度。拖動地圖上的邊界框標記將自動設定這些值，但亦可直接在文字框中手動輸入有效值。儲存頁面以更新地圖。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:332
 #, no-wrap
 msgid "*Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr ""
+msgstr "*描述* - 地理覆蓋範圍的文字描述。該資訊可作為其他欄位資訊的替代或補充。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:336
 msgid "This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labelled \"Add new taxonomic coverage\". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state."
-msgstr ""
+msgstr "此詮釋資料頁面允許使用者輸入有關資源所涵蓋的一個或多個分類群群組的資訊，每個群組被稱為分類群範圍。每個範圍包括一個說明和分類群列表，其中每個分類群包含分類群名稱（科學名或通用名）和分類階層。在尚未建立任何分類群範圍之前，頁面上僅顯示一個標記為「新增分類群範圍」的連結。點擊該連結將新增一個要求提供說明的文字框和幾個同樣的操作連結。以下為在尚未輸入任何資料時，分類群範圍頁面內容的螢幕截圖以及該狀態下控制項的相關解說："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:337
@@ -1314,25 +1314,25 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:340
 #, no-wrap
 msgid "*Automatically infer from source data* - source data would be analyzed and the taxonomic coverage would be set automatically on publication.\n"
-msgstr ""
+msgstr "*自動從來源資料推斷* - 來源資料將被分析並在發佈時自動設定分類群範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:342
 #, no-wrap
 msgid "*Remove this taxonomic coverage* - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.\n"
-msgstr ""
+msgstr "*移除此分類群範圍* - 點擊此連結可移除該連結正下方的分類群範圍，包括相關說明、列表及所有單一分類群條目。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:343
 #, no-wrap
 msgid "*Description* - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr ""
+msgstr "*說明* - 對資源中代表的分類群範圍的文字說明。每個分類群範圍都有自己的說明。此資訊可用於替代或補充頁面中其他欄位的資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:344
 #, no-wrap
 msgid "*Add several taxa* - this link adds a text box labelled \"Taxon List\" to the page.\n"
-msgstr ""
+msgstr "*新增多個分類群* - 此連結在頁面上新增一個標記為「分類群列表」的文字框。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:345
