@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-25 10:25\n"
+"PO-Revision-Date: 2024-11-25 11:47\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1415,31 +1415,31 @@ msgstr "*自動從來源資料推斷* - 來源資料將被分析並在發布時�
 #: en/modules/ROOT/pages/manage-resources.adoc:368
 #, no-wrap
 msgid "*Add new temporal coverage* - click on this link to initiate a form for an additional temporal coverage.\n"
-msgstr ""
+msgstr "*新增時間範圍* - 點擊此連結以新增一個新的時間範圍表單。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:369
 #, no-wrap
 msgid "*Remove this temporal coverage* - click on this link to remove the temporal coverage that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此時間範圍* - 點擊此連結以移除該連結正下方的時間範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:370
 #, no-wrap
 msgid "*Temporal Coverage Type* - select one of the options in this select box to set the type of temporal coverage, which can consist of a single date, a date range, a formation period, or a living time period. Selecting a type will reveal controls appropriate to the choice as explained below.\n"
-msgstr ""
+msgstr "*時間範圍類型* - 從選擇框中選擇其中一個選項以設置時間範圍類型，類型可以是單一天、日期範圍、形成時期或生存時間段。選擇某種類型後，將顯示與該選項相關的控制項，詳見下文說明。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:371
 #, no-wrap
 msgid "*Single Date* - this is the default temporal coverage type showing when a temporal coverage is first created. This type is meant to represent a coverage spanning one day. Selecting this type reveals a text box for a Start Date, with a calendar icon to the right with which a date can be selected.\n"
-msgstr ""
+msgstr "*單一天* - 此為新增時間範圍時顯示的默認類型，用於表示一天的覆蓋範圍。選擇此類型後，會顯示一個標記為「開始日期」的文字框及在其右側的日曆圖示，通過此圖示可選擇日期。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:372
 #, no-wrap
 msgid "*Start Date* - this text box is meant to contain a single date in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr ""
+msgstr "*開始日期* - 此文字框用於輸入單一天範圍的日期，格式需符合指定日期格式。可以點擊日曆圖標選擇日期，也可以手動輸入。欲知指定的日期格式，請點擊旁邊的資訊圖標。例如：2010-12-31 對應公曆的2010年12月31日。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:373
@@ -1451,19 +1451,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:376
 #, no-wrap
 msgid "*Date Range* - this temporal coverage is meant to describe the time period within which the objects in the collection were collected. Selecting this temporal coverage type reveals a text box for a Start Date and a text box for an End Date, each with a calendar icon to the right with which a date can be selected.\n"
-msgstr ""
+msgstr "*日期範圍* - 此時間範圍類型用於描述集合中對象被收集的起止日期。選擇此類型後，會顯示兩個文字框，分別標記為「開始日期」和「結束日期」，各在其右邊附有一個用來點選日期的日曆圖標。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:377
 #, no-wrap
 msgid "*Start Date* - this text box is meant to contain the date the coverage began, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr ""
+msgstr "*開始日期* - 用於輸入日期範圍的開始日期的文字框，格式需符合支持的日期格式。可以點擊日曆圖標選擇日期，也可以手動輸入。欲知指定的日期格式，請點擊旁邊的資訊圖標。例如：2010-12-31 對應公曆的2010年12月31日。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:378
 #, no-wrap
 msgid "*End Date* - this text box is meant to contain the date the coverage ended, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr ""
+msgstr "*結束日期* - 用於輸入範圍結束日期的文字框，格式需符合支持的日期格式。可以點擊日曆圖標選擇日期，也可以手動輸入。欲知支持的日期格式，請點擊旁邊的資訊圖標。例如：2010-12-31 對應公曆的2010年12月31日。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:379
@@ -1475,7 +1475,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:382
 #, no-wrap
 msgid "*Formation Period* - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: \"Victorian\", \"1922-1932\", \"c. 1750\".\n"
-msgstr ""
+msgstr "*形成時期* - 此時間範圍類型適用於標示資料集或集合在特定時間段內被組建。例如：「維多利亞時期」、「1922-1932」或「約1750（c. 1750）」。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:383
@@ -1487,7 +1487,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:386
 #, no-wrap
 msgid "*Living Time Period* - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including palaeontological time periods. Examples: \"1900-1950\", \"Ming Dynasty\", \"Pleistocene\".\n"
-msgstr ""
+msgstr "*生存時間段* - 此時間範圍類型適用於標示資料集中生物體存在的時期，包括地質年代。例如：「1900-1950」、「明朝」或「更新世」。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:387
