@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-26 06:05\n"
+"PO-Revision-Date: 2024-11-26 07:47\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1611,66 +1611,66 @@ msgstr "*初始作者* - 最初收集或準備資料集的代理人（與基本�
 #: en/modules/ROOT/pages/manage-resources.adoc:417
 #, no-wrap
 msgid "*Owner*: an agent who owns the data set (may or may not be the custodian)\n"
-msgstr ""
+msgstr "*擁有者* - 擁有資料集的代理人（可能與資料管理人相同或不同）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "*Point Of Contact*: an agent to contact for further information about the data set\n"
-msgstr ""
+msgstr "*聯絡人* - 可用於進一步獲取資料集相關資訊的聯絡代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:419
 #, no-wrap
 msgid "*Principal Investigator*: a primary scientific contact associated with the data set\n"
-msgstr ""
+msgstr "*主要研究人員* - 與資料集相關的主要學術聯絡人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:420
 #, no-wrap
 msgid "*Processor*: an agent responsible for any post-collection processing of the data set\n"
-msgstr ""
+msgstr "*資料處理者* - 負責對資料集進行收集後處理的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:421
 #, no-wrap
 msgid "*Publisher*: the agent associated with publishing a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*出版者* - 與使用資料集的發布物或資料論文的發布相關的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:422
 #, no-wrap
 msgid "*User*: an agent that makes use of the dataset\n"
-msgstr ""
+msgstr "*使用者* - 使用資料集的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:423
 #, no-wrap
 msgid "*Programmer*: an agent providing informatics/programming support related to the data set\n"
-msgstr ""
+msgstr "*程式開發人員* - 提供與資料集相關的資訊學或程式設計支援的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:424
 #, no-wrap
 msgid "*Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens\n"
-msgstr ""
+msgstr "*策展人* - 負責維護和記錄集合中標本的代理人。他們的職責包括準備和標記標本，以便於識別，並保護這些標本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:425
 #, no-wrap
 msgid "*Reviewer*: person assigned to review the dataset and verify its data and/or metadata quality. This role is analogous to the role played by peer reviewers in the scholarly publication process.\n"
-msgstr ""
+msgstr "*審查者* - 負責審查資料集並驗證其資料和/或詮釋資料質量的人員。此角色類似於學術發布流程中的同儕審查員角色。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:426
 #, no-wrap
 msgid "*Add new associated party* - click on this link to initiate a form for an additional associated party.\n"
-msgstr ""
+msgstr "*新增關聯方* - 點擊此連結以新增一個額外的關聯方表單。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:430
 msgid "This metadata page contains information about a project under which the data in the resource were produced."
-msgstr ""
+msgstr "此詮釋資料頁面包含有關資源中資料生成的專案資訊。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:431
@@ -1682,13 +1682,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:434
 #, no-wrap
 msgid "*Title* - the title of the project.\n"
-msgstr ""
+msgstr "*標題* - 專案的標題。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:435
 #, no-wrap
 msgid "*Identifier* - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.\n"
-msgstr ""
+msgstr "*識別碼* - 研究專案的唯一識別碼。這可用於連結與相同專案相關的多個資料集/EML文件實例，例如監測系列的實例。這些連結的性質可在專案說明中加以描述。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:436
