@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-26 01:25\n"
+"PO-Revision-Date: 2024-11-26 02:53\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1516,7 +1516,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:396
 #, no-wrap
 msgid "*Remove this keyword set* - click on this link to remove the keyword set that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此關鍵字集* - 點擊此連結移除該連結正下方的關鍵字集。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:397
