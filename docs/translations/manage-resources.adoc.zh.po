@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-26 02:53\n"
+"PO-Revision-Date: 2024-11-26 05:03\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1522,24 +1522,24 @@ msgstr "*移除此關鍵字集* - 點擊此連結移除該連結正下方的關�
 #: en/modules/ROOT/pages/manage-resources.adoc:397
 #, no-wrap
 msgid "*Thesaurus/Vocabulary* - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter \"n/a\" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.\n"
-msgstr ""
+msgstr "*詞庫/詞彙表* - 輸入關鍵字集中所用詞庫或控制詞彙的名稱。如果關鍵字集未被詞庫/詞彙表管理，輸入「n/a」以標示不適用。例如：IRIS關鍵字詞庫。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:398
 #, no-wrap
 msgid "*Keyword List* - enter a list of keywords, separated by commas that describe or are related to the resource.\n"
-msgstr ""
+msgstr "*關鍵字列表* - 輸入一個描述或與資源相關的關鍵字列表，並用逗號分隔。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:399
 #, no-wrap
 msgid "*Add new keyword set* - click on this link to initiate a form for an additional keyword set.\n"
-msgstr ""
+msgstr "*新增關鍵字集* - 點擊此連結以新增關鍵字集表單。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:403
 msgid "This metadata pages contains information about one or more people or organizations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <<Basic Metadata>> page. Explanations for the remainder of the controls are given below."
-msgstr ""
+msgstr "此詮釋資料頁面包含有關與資源相關的個人或組織的資訊，這些人員或組織未在<<基本詮釋資料>>頁面中被提及。頁面上的許多控制項與<<基本詮釋資料>>頁面中的資源聯絡人相同。其餘控制項的相關說明如下："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:404
