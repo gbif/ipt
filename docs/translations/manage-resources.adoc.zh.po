@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-26 05:03\n"
+"PO-Revision-Date: 2024-11-26 06:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1551,61 +1551,61 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:407
 #, no-wrap
 msgid "*Copy from another* - if this person or organization is the same as the other contact of any resource, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.\n"
-msgstr ""
+msgstr "*從其他地方複製* - 如果此人或組織與任何資源的其他聯絡人相同，點擊此連結可將其詳細資訊複製到該關聯方的相應欄位。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:408
 #, no-wrap
 msgid "*Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此關聯方* - 點擊此連結移除該連結正下方的關聯方。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:409
 #, no-wrap
 msgid "*Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr ""
+msgstr "*角色* - 此選擇框包含一個 https://rs.gbif.org/vocabulary/gbif/agent_role.xml[角色列表]，用於標示關聯方在資源中的角色。點擊選擇框左側的資訊圖標可查看角色相關說明。選擇列表中最適合的角色。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:410
 #, no-wrap
 msgid "*Author*: an agent associated with authoring a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*作者* - 指與資料集相關的出版物或資料論文的作者。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:411
 #, no-wrap
 msgid "*Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)\n"
-msgstr ""
+msgstr "*內容提供者* - 對資料集貢獻內容的代理人（描述的資料集可能是由多個部分組成的）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:412
 #, no-wrap
 msgid "*Custodian Steward*: an agent who is responsible for/takes care of the data set\n"
-msgstr ""
+msgstr "*資料管理人* - 負責資料集的或對資料集進行管理和維護的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:413
 #, no-wrap
 msgid "*Distributor*: an agent involved in the publishing/distribution chain of a data set\n"
-msgstr ""
+msgstr "*發行者* - 參與資料集發布/分發流程的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:414
 #, no-wrap
 msgid "*Editor*: an agent associated with editing a publication that used the data set, or of a data paper\n"
-msgstr ""
+msgstr "*編輯者* - 與使用該資料集的出版物相關的，或是發布該資料論文的代理人。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:415
 #, no-wrap
 msgid "*Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page\n"
-msgstr ""
+msgstr "*詮釋資料提供者* - 負責提供詮釋資料的代理人（與基本詮釋資料頁面中的詮釋資料提供者相同）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:416
 #, no-wrap
 msgid "*Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)\n"
-msgstr ""
+msgstr "*初始作者* - 最初收集或準備資料集的代理人（與基本詮釋資料頁面中的創建者相同）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:417
