@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-27 00:22\n"
+"PO-Revision-Date: 2024-11-27 01:20\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1730,18 +1730,18 @@ msgstr "*人員名字* - 與專案相關的人的名字。\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:442
 #, no-wrap
 msgid "*Personnel Last Name* - the last name of the person associated with the project.\n"
-msgstr ""
+msgstr "*人員姓氏* - 與專案相關的人的姓氏。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:445
 #, no-wrap
 msgid "*Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.\n"
-msgstr ""
+msgstr "*人員角色* - 與專案相關的人的角色。點擊選擇框左側的資訊圖標以查看不同角色的相關描述，並在選擇框中選擇最適合的角色。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:449
 msgid "This metadata page contains information about sampling methods used for the data represented by the resource."
-msgstr ""
+msgstr "此詮釋資料頁面包含資源的資料採樣方法相關資訊。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:450
@@ -1753,13 +1753,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:453
 #, no-wrap
 msgid "*Study Extent* - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the \"Study Area Description\" field of the Project metadata page.\n"
-msgstr ""
+msgstr "*研究範圍* - 描述採樣發生的物理和時間條件。地理研究範圍通常是專案詮釋資料頁面“研究區域描述”欄位中一個較大範圍的代表。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:454
 #, no-wrap
 msgid "*Sampling Description* - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
-msgstr ""
+msgstr "*採樣說明* - 研究專案中採用的採樣步驟的文本描述。此元素的內容類似於期刊文獻方法章節中的採樣步驟描述。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:455
