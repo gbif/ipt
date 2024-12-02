@@ -35,6 +35,8 @@ import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -539,6 +541,9 @@ public class MappingAction extends ManagerBaseAction {
     // report validation without skipping this save
     validateAndReport();
     LOG.debug("mapping saved..");
+
+    // encode id (rowType) before redirect (might be issues with '#' and other characters)
+    id = URLEncoder.encode(id, StandardCharsets.UTF_8);
 
     return "save";
   }
