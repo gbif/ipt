@@ -52,6 +52,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+import com.opensymphony.xwork2.interceptor.ValidationErrorAware;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
 
@@ -65,7 +66,7 @@ import static org.gbif.ipt.config.Constants.CANCEL;
  * Please don't add any action errors as this will trigger the validation interceptor and causes problems, use
  * {@link MappingAction#addActionWarning} instead.
  */
-public class MappingAction extends ManagerBaseAction {
+public class MappingAction extends ManagerBaseAction implements ValidationErrorAware {
 
   private static final long serialVersionUID = -831969146160030857L;
 
@@ -609,5 +610,12 @@ public class MappingAction extends ManagerBaseAction {
       return resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType());
     }
     return false;
+  }
+
+  // by default DefaultWorkflowInterceptor redirects to "input".
+  // "error" is necessary for this action
+  @Override
+  public String actionErrorOccurred(String currentResultName) {
+    return defaultResult;
   }
 }
