@@ -282,8 +282,10 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
    */
   public List<String> getRedundantGroups() {
     List<String> redundantGroups = new ArrayList<>();
-    if (resource.getCoreRowType() != null && !resource.getCoreRowType()
-      .equalsIgnoreCase(mapping.getExtension().getRowType())) {
+    if (resource.getCoreRowType() != null
+        && mapping != null
+        && mapping.getExtension() != null
+        && !resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
       Extension core = extensionManager.get(resource.getCoreRowType());
       redundantGroups = extensionManager.getRedundantGroups(mapping.getExtension(), core);
     }
