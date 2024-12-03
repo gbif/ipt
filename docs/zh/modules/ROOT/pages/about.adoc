@@ -1,0 +1,13 @@
+= 選單：關於
+
+The default About page gives basic information about the current IPT installation.
+
+If the IPT has not been registered the following page is displayed
+
+image::ipt2/about/IPTAbout.png[]
+
+and if the IPT is registered
+
+image::ipt2/about/IPTAboutRegistered.png[]
+
+Information displayed on the page can be edited in xref:administration.adoc#configure-gbif-registration-options[Administration → Configure GBIF Registration Options].
