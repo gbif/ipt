@@ -546,7 +546,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     LOG.debug("mapping saved..");
 
     // encode id (rowType) before redirect (might be issues with '#' and other characters)
-    id = URLEncoder.encode(id, StandardCharsets.UTF_8);
+    id = URLEncoder.encode(id, StandardCharsets.UTF_8.toString());
 
     return "save";
   }
