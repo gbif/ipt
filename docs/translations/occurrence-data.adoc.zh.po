@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 09:58+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"POT-Creation-Date: 2024-10-31 09:17+0000\n"
+"PO-Revision-Date: 2024-10-31 09:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -185,7 +185,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
-msgid "http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)]"
+msgid "https://ipt.vertnet.org/archive.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)] (also registered on GBIF here: https://doi.org/10.15468/emivh3)"
 msgstr ""
 
 #. type: Title ====
