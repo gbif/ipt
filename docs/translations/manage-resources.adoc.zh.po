@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-11-27 01:20\n"
+"PO-Revision-Date: 2024-12-03 02:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1765,7 +1765,7 @@ msgstr "*採樣說明* - 研究專案中採用的採樣步驟的文本描述。�
 #: en/modules/ROOT/pages/manage-resources.adoc:455
 #, no-wrap
 msgid "*Quality Control* - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).\n"
-msgstr ""
+msgstr "*質量控制* - 此欄位描述為了控制或評估採樣步驟所產生資料的質量而採取的行動。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:456
