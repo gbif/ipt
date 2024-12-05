@@ -14,7 +14,11 @@
 package org.gbif.ipt.utils;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +30,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
-
 
 /**
  * Class with utility functions for URL validation and handling.
@@ -41,24 +44,25 @@ public class URLUtils {
   private static final String LOCAL_IP = "127.0.0.1";
   private static final String LOCAL_HOST = "localhost";
 
-  public static final Set<String> VALID_CONTENT_TYPES = new HashSet<String>() {{
-    add("text/csv");
-    add("text/tab-separated-values");
-    add("application/csv");
-    add("application/vnd.ms-excel");
-    // add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    add("application/zip");
-    // add("application/x-zip-compressed");
-    // add("application/gzip");
-    // add("application/x-gzip");
-    // add("application/json");
-    add("text/plain");
-    // add("application/octet-stream");
-    // add("text/xml");
-    // add("application/xml");
-    // add("application/vnd.oasis.opendocument.spreadsheet");
-}};
-
+  public static final Set<String> VALID_CONTENT_TYPES = new HashSet<>() {
+    {
+      add("text/csv");
+      add("text/tab-separated-values");
+      add("application/csv");
+      add("application/vnd.ms-excel");
+      // add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      add("application/zip");
+      // add("application/x-zip-compressed");
+      // add("application/gzip");
+      // add("application/x-gzip");
+      // add("application/json");
+      add("text/plain");
+      // add("application/octet-stream");
+      // add("text/xml");
+      // add("application/xml");
+      // add("application/vnd.oasis.opendocument.spreadsheet");
+    }
+  };
 
   private URLUtils() {
 
@@ -124,7 +128,7 @@ public class URLUtils {
 
   /**
    * Method to get content type of a URL
-   *
+   * <p>
    * This method makes a HEAD request to the given URL to fetch the content type
    * without downloading the entire content. It is useful for validating the
    * type of content before performing any further operations.
@@ -138,6 +142,8 @@ public class URLUtils {
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("HEAD");
     String contentType = connection.getContentType();
+
+    LOG.debug("Raw content type: {}", contentType);
 
     if (contentType != null) {
       MimeType mimeType = new MimeType(contentType);

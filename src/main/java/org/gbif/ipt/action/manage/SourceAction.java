@@ -125,25 +125,31 @@ public class SourceAction extends ManagerBaseAction {
 
       // check not found
       if (responseCode == 404) {
-        addActionError(getText("manage.source.url.notFound", new String[] {url}));
+        LOG.error("Can't read URL {} : Not Found", url);
+        addActionError(getText("manage.source.url.notFound", new String[]{url}));
         return ERROR;
       }
 
-      // check text file (or no extension)
+      // check a text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
-      boolean extensionNotAllowed = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
+      boolean extensionNotAllowed = (!extension.isEmpty()
+          && !StringUtils.equalsAny(extension, "txt", "tsv", "csv", "zip"));
 
       if (extensionNotAllowed) {
+        LOG.debug("No extension in the URL, checking content type.");
         String contentType = URLUtils.getUrlContentType(url);
+        LOG.debug("Content type confirmed: {}", contentType);
 
-        // check mime type
-        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)){
-          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension.isEmpty() ? "unknown" : extension}));
+        // check a mime type
+        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)) {
+          LOG.error("Not allowed content type: {}", contentType);
+          addActionError(getText("manage.source.url.invalidExtension", new String[]{url, extension}));
           return ERROR;
         }
       }
-    } catch  (IOException | MimeTypeParseException e) {
-      addActionError(getText("manage.source.url.invalid", new String[] {url}));
+    } catch (IOException | MimeTypeParseException e) {
+      LOG.error("Failed to create a URL source: {}", e.getMessage());
+      addActionError(getText("manage.source.url.invalid", new String[]{url}));
       return ERROR;
     }
 
