@@ -221,6 +221,12 @@
                                                     <td>${(source.lastModified?datetime?string.long_medium)!}</td>
                                                 </tr>
                                             </#if>
+                                            <#if (logExists)>
+                                                <tr>
+                                                    <th><@s.text name='manage.source.source.log'/></th>
+                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
+                                                </tr>
+                                            </#if>
                                         <#elseif source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE'>
                                             <tr>
                                                 <th><@s.text name='manage.source.file'/></th>
@@ -251,7 +257,7 @@
                                             <#if (logExists)>
                                                 <tr>
                                                     <th><@s.text name='manage.source.source.log'/></th>
-                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.download'/></a></td>
+                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
                                                 </tr>
                                             </#if>
                                         </#if>
