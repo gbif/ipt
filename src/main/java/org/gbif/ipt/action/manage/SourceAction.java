@@ -438,6 +438,12 @@ public class SourceAction extends ManagerBaseAction {
     if (id != null && source != null) {
       if (this.analyze || !source.isReadable()) {
         problem = sourceManager.analyze(source);
+        result = "analyze";
+        if (problem == null) {
+          addActionMessage(getText("manage.source.analyzed"));
+        } else {
+          addActionError(getText("manage.source.analyzed.problem", new String[] {problem}));
+        }
       } else {
         result = SUCCESS;
       }
