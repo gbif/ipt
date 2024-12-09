@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-03 02:50\n"
+"PO-Revision-Date: 2024-12-09 06:20\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1771,19 +1771,19 @@ msgstr "*質量控制* - 此欄位描述為了控制或評估採樣步驟所產�
 #: en/modules/ROOT/pages/manage-resources.adoc:456
 #, no-wrap
 msgid "*Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.\n"
-msgstr ""
+msgstr "*步驟說明* - 研究方法中的步驟是一系列重複元素中的一種。這些元素記錄了研究中使用的一系列方法和程序，以及產生資料檔案的處理步驟。包括方法步驟的文本描述、相關文獻、軟體、儀器、來源資料以及所採取的任何質量控制措施。每個方法應該詳細描述，讓其他研究人員可以理解並在需要時再次用相同方法進行該研究。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:457
 #, no-wrap
 msgid "*Add new method step* -  click on this link to add a text box labelled \"Step Description\" to the page (see above). One may add as many method steps as desired.\n"
-msgstr ""
+msgstr "*新增方法步驟* - 點擊此連結以在頁面上新增一個標記為「步驟說明」的文字框（如上所述）。可以新增任意數量的方法步驟。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:458
 #, no-wrap
 msgid "*Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此方法步驟* - 點擊此連結以移除該連結正下方的方法步驟文字框。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:462
