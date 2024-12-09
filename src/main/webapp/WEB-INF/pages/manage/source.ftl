@@ -14,6 +14,14 @@
             cancelAnswer: "<@s.text name="basic.no"/>",
             buttonType: "danger"
         });
+        $('#analyze').jConfirmAction({
+            titleQuestion: "<@s.text name="basic.confirm"/>",
+            question: "<@s.text name="manage.source.analyze.confirmation.message"/>",
+            yesAnswer: "<@s.text name="basic.yes"/>",
+            cancelAnswer: "<@s.text name="basic.no"/>",
+            buttonType: "primary",
+            processing: true
+        });
         $("#peekBtn").click(function (e) {
             e.preventDefault();
             displayProcessing();
@@ -36,7 +44,6 @@
         });
 
         $("#save").on("click", displayProcessing);
-        $("#analyze").on("click", displayProcessing);
 
         $(document.body).on('click', '.helpOptionLink', function (e) {
             e.preventDefault();
