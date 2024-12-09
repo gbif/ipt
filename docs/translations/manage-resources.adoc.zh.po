@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-09 06:20\n"
+"PO-Revision-Date: 2024-12-09 07:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1788,7 +1788,7 @@ msgstr "*移除此方法步驟* - 點擊此連結以移除該連結正下方的�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:462
 msgid "This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labelled \"Bibliographic Citations\", and a link labelled \"Add new bibliographic citation\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含有關如何引用此資源的資訊，以及與此資料集相關的引用書目，例如在資料生成過程中有使用或由此產生的相關發布內容。每個引用（無論是資源引用還是書目中的引用）都包含一個有助於在數位資源中找到該引用的唯一引用識別碼（可選），以及一個傳統的文字引用。在輸入任何引用資料之前，此頁面將顯示一個資源的引用識別碼文字框、一個資源引用的文字框、一個標記為「書目引用」的標題，以及一個標記為「新增書目引用」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:463
@@ -1799,34 +1799,34 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:466
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr ""
+msgstr "在 GBIF.org 的資料集頁面上，自由文本引用會被覆蓋 - 更多資訊請參考 https://www.gbif.org/faq?q=citation[GBIF 常見問題]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:468
 #, no-wrap
 msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
-msgstr ""
+msgstr "*資源引用* - 用於引用資料集的單一引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:469
 #, no-wrap
 msgid "Example citation with institutional creator:\n"
-msgstr ""
+msgstr "機構創建者的引用範例：\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:471
 msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
-msgstr ""
+msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:473
 msgid "Example citation with 9 creators:"
-msgstr ""
+msgstr "9 位創建者的引用範例："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:475
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f"
-msgstr ""
+msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
