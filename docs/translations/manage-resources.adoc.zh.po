@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-10 06:49\n"
+"PO-Revision-Date: 2024-12-10 08:47\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1879,7 +1879,7 @@ msgstr "*移除此書目引用* - 點擊此連結以移除該連結正下方的�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:490
 msgid "This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labelled \"Add new curatorial unit\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含與資源相關的自然歷史實體集合的資訊（如果有），以及這些集合中稱為策展單元的物件類型列表和其摘要資訊。在輸入任何集合資料之前，頁面將顯示每個區段的標題（集合、標本保存方法、策展單元）以及一個標記為「新增策展單元」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:491
@@ -1891,37 +1891,37 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:494
 #, no-wrap
 msgid "*Collections* - the list of collections that this resource is based on.\n"
-msgstr ""
+msgstr "*集合* - 此資源所基於的集合列表。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:495
 #, no-wrap
 msgid "*Add new citation* -  click on this link to add the text boxes required for an additional collection in the Collections section.\n"
-msgstr ""
+msgstr "*新增集合* - 點擊此連結以新增集合區段所需的文字框。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:496
 #, no-wrap
 msgid "*Collection Name* - the full standard name by which the collection is known or cited in the local language.\n"
-msgstr ""
+msgstr "*集合名稱* - 集合在本地語言中被認知或引用的完整標準名稱。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:497
 #, no-wrap
 msgid "*Collection Identifier* - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.\n"
-msgstr ""
+msgstr "*集合識別碼* - 集合的 URI（LSID 或 URL）。在 RDF 中用作集合資源的 URI。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:498
 #, no-wrap
 msgid "*Parent Collection Identifier* - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter \"Not applicable\" if this collection does not have a parent collection.\n"
-msgstr ""
+msgstr "*父集合識別碼* - 用於標識此子集合的父集合。支持構建集合和子集合的層次結構。如果此集合沒有父集合，請輸入「不適用」。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:499
 #, no-wrap
 msgid "*Remove this collection* - click on this link to remove the collection that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此集合* - 點擊此連結以移除該連結正下方的集合。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:500
