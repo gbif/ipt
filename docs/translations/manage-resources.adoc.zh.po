@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-09 07:42\n"
+"PO-Revision-Date: 2024-12-10 05:30\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1832,7 +1832,7 @@ msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisl
 #: en/modules/ROOT/pages/manage-resources.adoc:477
 #, no-wrap
 msgid "*Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.\n"
-msgstr ""
+msgstr "*自動生成 - 開啟/關閉* - 開啟此功能讓 IPT 自動生成資源引用。自動生成的引用格式是基於 DataCite 的推薦格式，它符合《資料引用原則聯合聲明》。此格式包含一個版本號，對於不斷更新的資料集尤為重要。更多資訊請參閱 IPT wiki 中的 xref:citation.adoc[資料集引用格式] 頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:478
