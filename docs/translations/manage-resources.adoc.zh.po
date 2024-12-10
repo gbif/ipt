@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-10 05:30\n"
+"PO-Revision-Date: 2024-12-10 06:49\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1838,31 +1838,31 @@ msgstr "*自動生成 - 開啟/關閉* - 開啟此功能讓 IPT 自動生成資�
 #: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
-msgstr ""
+msgstr "*引用識別碼* - 用於解析至線上資料集的 DOI、URI 或其他永久識別碼。建議在引用中包含識別碼。如果資源已分配 DOI（xref:doi-workflow.adoc[IPT 使用方式]），IPT 會將 DOI 設為引用識別碼，並且無法再進行更改。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:479
 #, no-wrap
 msgid "*Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.\n"
-msgstr ""
+msgstr "*書目引用* - 與此資源相關的或在此資源創建過程中使用的其他資源的引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:480
 #, no-wrap
 msgid "*Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.\n"
-msgstr ""
+msgstr "*新增書目引用* - 點擊此連結以新增書目中額外引用所需的文字框。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:481
 #, no-wrap
 msgid "*Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.\n"
-msgstr ""
+msgstr "*書目引用* - 與此資源相關或在此資源創建過程中使用的外部資源引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:482
 #, no-wrap
 msgid "*Bibliographic Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end.\n"
-msgstr ""
+msgstr "*書目引用識別碼* - 用於解析至外部線上資源的 DOI、URI 或其他永久識別碼。通常應在引用的最後包含此識別碼。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:483
@@ -1874,7 +1874,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:486
 #, no-wrap
 msgid "*Remove this bibliographic citation* - click on this link to remove the citation that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此書目引用* - 點擊此連結以移除該連結正下方的引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:490
