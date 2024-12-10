@@ -785,9 +785,22 @@
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutSpaces.toLowerCase());
 
-            if (file.size > 10000000000) {
+            const ACCEPTED_FILE_NAMES = /^[\w.\-\s()]+$/;
+
+            function isValidString(input) {
+                return ACCEPTED_FILE_NAMES.test(input);
+            }
+
+            var isFileNameInvalid = !isValidString(file.name);
+            var isFileSizeTooBig = file.size > 10000000000;
+            var isSourceAlreadyExistOrRepeated = isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces);
+            var displayWarning = isFileNameInvalid || isFileSizeTooBig || isSourceAlreadyExistOrRepeated;
+
+            if (isFileNameInvalid) {
+                fileError.innerText = `<@s.text name='manage.overview.source.file.name.invalid'/>`;
+            } else if (isFileSizeTooBig) {
                 fileError.innerText = `<@s.text name='manage.overview.source.file.too.big'/>`;
-            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+            } else if (isSourceAlreadyExistOrRepeated) {
                 fileError.innerText = `<@s.text name='manage.resource.addSource.sameName.confirm'/>`;
 
                 var confirmOverwriteLink = document.createElement("a");
@@ -812,7 +825,7 @@
             // link divs
             fileMeta.appendChild(fileName);
             fileMeta.appendChild(fileStatus);
-            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+            if (displayWarning) {
                 fileMeta.appendChild(fileError);
                 fileDoneIcon.style.visibility = "hidden";
                 fileDoneIcon.style.display = "none";
