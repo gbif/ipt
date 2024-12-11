@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-11 05:33\n"
+"PO-Revision-Date: 2024-12-11 09:52\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1957,7 +1957,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:509
 #, no-wrap
 msgid "*Curatorial Units* - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.\n"
-msgstr ""
+msgstr "*策展單元* - 此資源涵蓋的策展單元數量。數量可以以範圍或具有不確定性的數值輸入。例如，策展單元包括皮膚、策展表、針、盒子和罐子等。整體上，此部分按照集合的物理內容類型進行一個總結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:510
