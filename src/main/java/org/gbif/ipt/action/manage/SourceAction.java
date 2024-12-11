@@ -189,8 +189,8 @@ public class SourceAction extends ManagerBaseAction {
         return ERROR;
       } catch (InvalidFilenameException e) {
         LOG.error(e);
-        addErrorHeader("manage.source.invalidFileName");
-        addActionError(getText("manage.source.invalidFileName"));
+        addErrorHeader("manage.source.invalidFileName.archive");
+        addActionError(getText("manage.source.invalidFileName.archive"));
         return ERROR;
       } catch (Exception e) {
         LOG.error(e);
