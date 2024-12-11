@@ -1106,7 +1106,7 @@
             fileItemElement.find('.fileError').remove();
 
             var fileNameWithExtension = fileItemElement.find('.fileName').text();
-            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'));
+            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
 
             confirmedFiles.push(fileNameWithoutExtension);
 
