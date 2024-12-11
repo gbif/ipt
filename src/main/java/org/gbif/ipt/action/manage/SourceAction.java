@@ -44,10 +44,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.google.inject.Inject;
 
 import javax.activation.MimeTypeParseException;
+import javax.servlet.http.HttpServletResponse;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -177,18 +179,22 @@ public class SourceAction extends ManagerBaseAction {
         }
       } catch (IOException e) {
         LOG.error(e);
+        addErrorHeader("manage.source.filesystem.error");
         addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
         return ERROR;
       } catch (UnsupportedCompressionType e) {
         LOG.error(e);
+        addErrorHeader("manage.source.unsupported.compression.format");
         addActionError(getText("manage.source.unsupported.compression.format"));
         return ERROR;
       } catch (InvalidFilenameException e) {
         LOG.error(e);
+        addErrorHeader("manage.source.invalidFileName");
         addActionError(getText("manage.source.invalidFileName"));
         return ERROR;
       } catch (Exception e) {
         LOG.error(e);
+        addErrorHeader("manage.source.upload.unexpectedException");
         addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
@@ -198,16 +204,23 @@ public class SourceAction extends ManagerBaseAction {
         addDataFile(file, fileFileName);
       } catch (InvalidFilenameException e) {
         LOG.error(e);
+        addErrorHeader("manage.source.invalidFileName");
         addActionError(getText("manage.source.invalidFileName"));
         return ERROR;
       } catch (Exception e) {
         LOG.error(e);
+        addErrorHeader("manage.source.upload.unexpectedException");
         addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     }
 
     return SUCCESS;
+  }
+
+  private void addErrorHeader(String value) {
+    HttpServletResponse response = ServletActionContext.getResponse();
+    response.setHeader("X-Error-Message", getText(value));
   }
 
   private String addSqlSource() {

@@ -678,6 +678,36 @@
             dialogWindow.modal('show');
         }
 
+        const uploadStatus = sessionStorage.getItem("uploadStatus");
+
+        if (uploadStatus === "success") {
+            showSourceCreatedSuccessfullyInfoWindow();
+            sessionStorage.removeItem("uploadStatus");
+        } else if (uploadStatus === "fail") {
+            console.log("upload failed");
+            sessionStorage.removeItem("uploadStatus");
+        }
+
+        function showSourceCreatedSuccessfullyInfoWindow() {
+            const templateOneSource = `<@s.text name="manage.overview.source.created"/>`;
+            const templateMultipleSources = `<@s.text name="manage.overview.sources.created"/>`;
+            const sources = sessionStorage.getItem("createdSources");
+            sessionStorage.removeItem("createdSources");
+
+            var message;
+            if (sources.includes(",")) {
+                message = templateMultipleSources.replace("{0}", sources);
+            } else {
+                message = templateOneSource.replace("{0}", sources);
+            }
+
+            $("#sources-created-successfully-info .message").html(message);
+
+            $("#sources-created-successfully-info").fadeIn(200, function () {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        }
+
         var selectedFiles = [];
 
         document.getElementById("chooseFilesButton").addEventListener("click", function () {
@@ -703,6 +733,7 @@
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
+            var sourceNamesConcatenated = "";
 
             // hide remove buttons - already submitted
             var removeButtons = document.querySelectorAll(".removeButton");
@@ -713,18 +744,25 @@
             for (var i = 0; i < selectedFiles.length; i++) {
                 var file = selectedFiles[i];
                 var fileItem = fileItems[i];
-                var progressBar = fileItem.querySelector(".progressBar-value");
-                var fileStatus = fileItem.querySelector(".fileStatus");
 
-                promises.push(uploadFile(file, i, progressBar, fileStatus));
+                const nameWithoutExtension = file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+                if (sourceNamesConcatenated) {
+                    sourceNamesConcatenated += ", ";
+                }
+                sourceNamesConcatenated += nameWithoutExtension;
+
+                promises.push(uploadFile(file, i, fileItem));
             }
 
             try {
                 await Promise.all(promises);
+                sessionStorage.setItem("uploadStatus", "success");
+                sessionStorage.setItem("createdSources", sourceNamesConcatenated);
                 closeModal();
                 window.location.reload();
             } catch (error) {
-                console.log(error)
+                sessionStorage.setItem("uploadStatus", "fail");
+                console.log(error);
             }
         });
 
@@ -889,8 +927,14 @@
             document.getElementById("fileList").appendChild(fileItem);
         }
 
-        async function uploadFile(file, fileIndex, progressBar, fileStatus) {
+        async function uploadFile(file, fileIndex, fileItem) {
             return new Promise(function (resolve, reject) {
+                var fileMeta = fileItem.querySelector(".fileMeta");
+                var progressBar = fileItem.querySelector(".progressBar-value");
+                var fileDoneIcon = fileItem.querySelector(".fileDoneIcon");
+                var fileWarningIcon = fileItem.querySelector(".fileWarningIcon");
+                var fileStatus = fileItem.querySelector(".fileStatus");
+
                 var formData = new FormData();
                 formData.append("r", "${resource.shortname}");
                 formData.append("sourceType", "source-file");
@@ -901,17 +945,46 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "addsource.do", true);
 
+                // Prevent automatic redirection by setting responseType to 'document'
+                xhr.responseType = 'document';
+
                 xhr.onload = function () {
-                    var redirectUrl = xhr.getResponseHeader("Location");
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl;
+                    if (xhr.status >= 300 && xhr.status < 400) {
+                        // Redirection detected, handle it manually
+                        var redirectUrl = xhr.getResponseHeader("Location");
+                        if (redirectUrl) {
+                            // Optional: Navigate to the redirect URL manually
+                            window.location.href = redirectUrl;
+                        }
+                    } else {
+                        // Process the error response
+                        var errorMessage = xhr.getResponseHeader("X-Error-Message");
+
+                        if (errorMessage) {
+                            // file error div
+                            var fileError = document.createElement("div");
+                            fileError.className = "fileError";
+                            fileError.setAttribute('data-index', fileIndex);
+                            fileError.innerText = errorMessage;
+
+                            fileMeta.appendChild(fileError)
+
+                            fileDoneIcon.style.visibility = "hidden";
+                            fileDoneIcon.style.display = "none";
+                            fileWarningIcon.style.visibility = "visible";
+                            fileWarningIcon.style.display = "block";
+
+                            reject(new Error(errorMessage)); // Reject with the error message
+                            return;
+                        }
+
+                        resolve(); // Resolve on success
                     }
-                    resolve();
                 };
 
-                xhr.onerror = function() {
-                    console.error('An error occurred during the request:', xhr.status, xhr.statusText);
-                    reject(new Error('An error occurred during the request:' + xhr.status + "" + xhr.statusText));
+                xhr.onerror = function () {
+                    console.error("An error occurred during the request:", xhr.status, xhr.statusText);
+                    reject(new Error("An error occurred during the request: " + xhr.status + " " + xhr.statusText));
                 };
 
                 xhr.upload.onprogress = function (event) {
@@ -938,13 +1011,17 @@
                 xhr.onloadend = function () {
                     progressBar.style.width = "100%"; // Set progress to 100%
 
-                    // hide progress bar
+                    // Hide progress bar
                     var fileProgressBarWrapper = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .progressBar');
-                    fileProgressBarWrapper.classList.add("d-none")
+                    if (fileProgressBarWrapper) {
+                        fileProgressBarWrapper.classList.add("d-none");
+                    }
 
-                    // and display done icon
+                    // Display done icon
                     var fileDoneIcon = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .fileDoneIcon');
-                    fileDoneIcon.style.visibility = "visible";
+                    if (fileDoneIcon) {
+                        fileDoneIcon.style.visibility = "visible";
+                    }
 
                     // "Upload Complete", set to empty
                     fileStatus.innerText = "";
@@ -1186,6 +1263,15 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+        <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
+            <div class="me-3">
+                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1 message">
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 
     <div class="container-fluid border-bottom">

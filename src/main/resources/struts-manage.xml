@@ -162,7 +162,9 @@
         <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
       </result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="httpheader">
+        <param name="status">400</param>
+      </result>
     </action>
 
     <action name="canceloverwrite" class="org.gbif.ipt.action.manage.SourceAction" method="cancelOverwrite">
