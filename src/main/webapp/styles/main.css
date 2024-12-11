@@ -2511,11 +2511,21 @@ header.shrink span.test-mode-banner {
     padding: 0.5rem 0;
 }
 
+.simpleCallout {
+    text-align: left;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
 .fileItem:last-child {
     border-bottom: 0 !important;
 }
 
 .fileItem-inner {
+    display: flex;
+}
+
+.simpleCallout-inner {
     display: flex;
 }
 
@@ -2526,6 +2536,23 @@ header.shrink span.test-mode-banner {
     overflow: hidden;
     text-overflow: ellipsis;
     display: flex;
+}
+
+.simpleCalloutInfo {
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    font-size: 0.875rem;
+}
+
+.simpleCalloutInfo-message {
+    color: rgb(var(--color-gbif-primary));
+}
+
+.simpleCalloutInfo-warning {
+    color: rgb(var(--color-gbif-danger));
 }
 
 .fileDoneIcon {
@@ -2546,7 +2573,20 @@ header.shrink span.test-mode-banner {
     vertical-align: -0.5em;
 }
 
+.simpleCalloutIcon {
+    display: none;
+    visibility: hidden;
+    margin-right: 0.25em;
+    line-height: 1;
+    font-size: 1.5em;
+    vertical-align: -0.5em;
+}
+
 .fileWarningIcon i {
+    vertical-align: -0.375em;
+}
+
+.simpleCalloutIcon i {
     vertical-align: -0.375em;
 }
 
@@ -2560,14 +2600,14 @@ header.shrink span.test-mode-banner {
     font-size: 0.875rem;
 }
 
-.confirmOverwriteSourceFileLink {
+.confirmOverwriteSourceFileLink, .confirmOverwriteSourceLink {
     color: rgb(var(--color-gbif-danger)) !important;
     margin-left: 8px;
     font-weight: 500;
     text-decoration: none !important;
 }
 
-.confirmOverwriteSourceFileLink:hover {
+.confirmOverwriteSourceFileLink:hover, .confirmOverwriteSourceLink:hover {
     color: rgb(var(--color-gbif-danger)) !important;
     filter: brightness(0.85);
     font-weight: 500;

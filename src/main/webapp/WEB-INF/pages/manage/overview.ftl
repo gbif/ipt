@@ -318,6 +318,7 @@
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
                 $("#callout-source-exists").hide();
+                $("#callout-file-upload-info").show();
             } else if (selectedTabId === 'tab-source-url') {
                 sourceTypeInput.attr("value", "source-url");
                 urlInput.show();
@@ -337,6 +338,8 @@
                 confirmedFiles = []
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
+
+                $("#callout-file-upload-info").hide();
 
                 if (sourceNames.includes(sourceNameValue)) {
                     $("#callout-source-exists").show();
@@ -370,6 +373,8 @@
                 confirmedFiles = [];
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
+
+                $("#callout-file-upload-info").hide();
 
                 if (sourceNames.includes(sourceNameValue)) {
                     $("#callout-source-exists").show();
@@ -2298,12 +2303,43 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
+                                    <div id="callout-file-upload-info" class="border rounded px-3 py-1 mt-3">
+                                        <div class="simpleCallout">
+                                            <div class="simpleCallout-inner">
+                                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
+                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                    </div>
+                                                    <div class="simpleCalloutMeta">
+                                                        <div class="simpleCalloutMessage">
+                                                            You can upload multiple files at once, including text files, spreadsheets, or compressed archives.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
 
-                                    <div id="callout-source-exists" class="callout callout-danger text-smaller" style="display: none;">
-                                        <@s.text name="manage.resource.addSource.sameName.confirm"/>
-                                        <br>
-                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3"><@s.text name="button.confirm"/></button>
+                                    <div id="callout-source-exists" class="border rounded px-3 py-1 mt-3" style="display: none;">
+                                        <div class="simpleCallout" >
+                                            <div class="simpleCallout-inner">
+                                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
+                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                        <i class="bi bi-exclamation-circle text-gbif-danger"></i>
+                                                    </div>
+                                                    <div class="simpleCalloutMeta">
+                                                        <div class="simpleCalloutError">
+                                                            <@s.text name="manage.resource.addSource.sameName.confirm"/>
+                                                            <a id="btn-confirm-source-overwrite" class="confirmOverwriteSourceLink custom-link" href="#">
+                                                                <@s.text name="button.confirm"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
