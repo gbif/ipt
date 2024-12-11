@@ -691,14 +691,14 @@
         function showSourceCreatedSuccessfullyInfoWindow() {
             const templateOneSource = `<@s.text name="manage.overview.source.created"/>`;
             const templateMultipleSources = `<@s.text name="manage.overview.sources.created"/>`;
-            const sources = sessionStorage.getItem("createdSources");
-            sessionStorage.removeItem("createdSources");
+            const files = sessionStorage.getItem("uploadedFiles");
+            sessionStorage.removeItem("uploadedFiles");
 
             var message;
-            if (sources.includes(",")) {
-                message = templateMultipleSources.replace("{0}", sources);
+            if (files.includes(",")) {
+                message = templateMultipleSources.replace("{0}", files);
             } else {
-                message = templateOneSource.replace("{0}", sources);
+                message = templateOneSource.replace("{0}", files);
             }
 
             $("#sources-created-successfully-info .message").html(message);
@@ -733,7 +733,7 @@
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
-            var sourceNamesConcatenated = "";
+            var fileNamesConcatenated = "";
 
             // hide remove buttons - already submitted
             var removeButtons = document.querySelectorAll(".removeButton");
@@ -745,11 +745,10 @@
                 var file = selectedFiles[i];
                 var fileItem = fileItems[i];
 
-                const nameWithoutExtension = file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
-                if (sourceNamesConcatenated) {
-                    sourceNamesConcatenated += ", ";
+                if (fileNamesConcatenated) {
+                    fileNamesConcatenated += ", ";
                 }
-                sourceNamesConcatenated += nameWithoutExtension;
+                fileNamesConcatenated += file.name;
 
                 promises.push(uploadFile(file, i, fileItem));
             }
@@ -757,7 +756,7 @@
             try {
                 await Promise.all(promises);
                 sessionStorage.setItem("uploadStatus", "success");
-                sessionStorage.setItem("createdSources", sourceNamesConcatenated);
+                sessionStorage.setItem("uploadedFiles", fileNamesConcatenated);
                 closeModal();
                 window.location.reload();
             } catch (error) {
