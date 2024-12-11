@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-10 08:47\n"
+"PO-Revision-Date: 2024-12-11 05:33\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1933,19 +1933,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:503
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr ""
+msgstr "*標本保存方法* - 此資源涉及的標本保存方法列表，說明防止非活體集合物理劣化所使用的處理或技術。可選的值基於 {latest-preservation-method}[GBIF 標本保存方法詞彙表]。您可以在達爾文核心標準資料對照準備工作中記錄標本的一系列準備和保存方法（http://rs.tdwg.org/dwc/terms/preparations）。請勿為活體集合選擇任何處理方法。此部分可能與集合的策展單元相關。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:504
 #, no-wrap
 msgid "*Add new preservation method* -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.\n"
-msgstr ""
+msgstr "*新增保存方法* - 點擊此連結以顯示一個文字框來新增保存方法。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:505
 #, no-wrap
 msgid "*Remove this preservation method* - click on this link to remove the preservation method that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此保存方法* - 點擊此連結以移除該連結正下方的保存方法。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:506
