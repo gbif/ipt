@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-11 09:52\n"
+"PO-Revision-Date: 2024-12-11 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1963,61 +1963,61 @@ msgstr "*策展單元* - 此資源涵蓋的策展單元數量。數量可以以�
 #: en/modules/ROOT/pages/manage-resources.adoc:510
 #, no-wrap
 msgid "*Add new curatorial unit* -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is \"Count Range\".\n"
-msgstr ""
+msgstr "*新增策展單元* - 點擊此連結以顯示一個文字框來新增策展單元。當新增策展單元時，默認的「方法類型」選擇為「數量範圍」。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:511
 #, no-wrap
 msgid "*Method Type* - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.\n"
-msgstr ""
+msgstr "*方法類型* - 此選擇框允許使用者為特定類型物件選擇指定其數量的方法。此數量可以為一個範圍或具有不確定性的數量。選擇後，適當的文字框將出現以呈現該計數方法。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:512
 #, no-wrap
 msgid "*Count Range* - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.\n"
-msgstr ""
+msgstr "*數量範圍* - 此方法允許使用者設置某類單元物件數量的上下限。詳情請看上面的截圖。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:513
 #, no-wrap
 msgid "*Between* - enter the lower bound of the number of objects in this text box.\n"
-msgstr ""
+msgstr "*介於* - 在此文字框中輸入物件數量的下限。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:514
 #, no-wrap
 msgid "*and* - enter the upper bound of the number of objects in this text box.\n"
-msgstr ""
+msgstr "*和* - 在此文字框中輸入物件數量的上限。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:515
 #, no-wrap
 msgid "*Count with uncertainty* - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.\n"
-msgstr ""
+msgstr "*具有不確定性的數量* - 此方法允許使用者設置某類物件的數量及其上下不確定性範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:516
 #, no-wrap
 msgid "*Count* - enter the mean likely number of object in this text box.\n"
-msgstr ""
+msgstr "*數量* - 在此文字框中輸入物件的平均可能數量。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:517
 #, no-wrap
 msgid "*+/-* - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type\n"
-msgstr ""
+msgstr "*+/-* - 對於該特定單位類型物件的可能計數範圍，在此文字框中輸入多於或少於其計數文字框中的數值來代表其可能的上下數量範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:518
 #, no-wrap
 msgid "*Unit Type* - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.\n"
-msgstr ""
+msgstr "*單元類型* - 方法類型和數量所對應的單一物件類型（標本、批次、托盤、盒子、罐子等）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:519
 #, no-wrap
 msgid "*Remove this curatorial unit* - click on this link to remove the curatorial unit that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此策展單元* - 點擊此連結以移除該連結正下方的策展單元。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:520
@@ -2034,7 +2034,7 @@ msgstr "外部連結"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:525
 msgid "This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labelled \"Add new external link\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含連結至資源首頁以及資源其他形式（例如資料庫檔案、試算表、連結資料等）的連結與相關資訊。在輸入任何外部連結之前，該頁面會顯示一個資源首頁的文字框以及一個標示為「新增外部連結」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:526
@@ -2046,55 +2046,55 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "*Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.\n"
-msgstr ""
+msgstr "*資源首頁* - 輸入包含資源或其資料集相關資訊網頁的完整當前網址。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:530
 #, no-wrap
 msgid "*Other Data Formats* - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).\n"
-msgstr ""
+msgstr "*其他資料格式* - 資源資料的其他格式連結（例如，資料庫轉存、試算表、Nexus、連結資料等）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:531
 #, no-wrap
 msgid "*Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.\n"
-msgstr ""
+msgstr "*新增外部連結* - 點擊此連結以新增所需的文字框來輸入額外的外部連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:532
 #, no-wrap
 msgid "*Name* - the name of the file or data set.\n"
-msgstr ""
+msgstr "*名稱* - 檔案或資料集的名稱。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:533
 #, no-wrap
 msgid "*Character Set* - the name or code for the character encoding (e.g., ASCII, UTF-8).\n"
-msgstr ""
+msgstr "*字元集* - 字元編碼的名稱或代碼（例如，ASCII、UTF-8）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:534
 #, no-wrap
 msgid "*Download URL* - the URL from which the file for the document or data set can be downloaded in the mentioned format.\n"
-msgstr ""
+msgstr "*下載 URL* - 可下載該指定格式文件或資料集檔案的 URL。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:535
 #, no-wrap
 msgid "*Data Format* - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).\n"
-msgstr ""
+msgstr "*資料格式* - 文件或檔案格式的名稱或代碼（例如，CSV、TXT、XLS、Microsoft Excel、MySQL）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:536
 #, no-wrap
 msgid "*Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).\n"
-msgstr ""
+msgstr "*資料格式版本* - 在資料格式文字框中指定的文件或檔案格式版本（例如，2003、5.2）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:537
 #, no-wrap
 msgid "*Remove this external link* - click on the link having this label to remove the external link that follows immediately below.\n"
-msgstr ""
+msgstr "移除此外部連結 - 點擊此標籤的連結以移除該連結正下方的外部連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:541
