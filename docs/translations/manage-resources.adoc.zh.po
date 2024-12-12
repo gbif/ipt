@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-12 08:39\n"
+"PO-Revision-Date: 2024-12-12 12:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2147,36 +2147,36 @@ msgstr "*其他資訊* - 未被其他資源詮釋資料欄位記錄的任何資�
 #: en/modules/ROOT/pages/manage-resources.adoc:551
 #, no-wrap
 msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr ""
+msgstr "*替代識別碼* - 此部分包含該資源的額外或替代識別碼列表。當資源被發布時，IPT 的資源 URL 會被新增到識別碼列表中。如果資源被分配了一個新的 DOI（參見 xref:doi-workflow.adoc[使用 IPT]），IPT 將確保此 DOI 被放置在識別碼列表的首位。當資源在 GBIF 上被註冊時，GBIF註冊表的唯一資源鍵也會新增至識別碼列表。如果該資源代表了一個現有的 GBIF 註冊資源，則可將現有的已註冊資源之 UUID 新增至識別碼列表。這將幫助 IPT 資源在註冊過程中更新現有資源，而非註冊一個全新的資源。有關如何遷移資源的更多資訊，請參閱 <<遷移資源>> 章節。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:552
 #, no-wrap
 msgid "*Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.\n"
-msgstr ""
+msgstr "*新增替代識別碼* - 點擊此連結以顯示一個文字框來新增資源的替代識別碼。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:553
 #, no-wrap
 msgid "*Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).\n"
-msgstr ""
+msgstr "*替代識別碼* - 該資源的替代識別碼文字（例如 URL、UUID 或其他唯一鍵值）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:554
 #, no-wrap
 msgid "*Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.\n"
-msgstr ""
+msgstr "*移除此替代識別碼* - 點擊此連結以移除該連結正下方的替代識別碼。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:555
 #, no-wrap
 msgid "Publication"
-msgstr ""
+msgstr "發布資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:557
 msgid "This area of the Resource Overview page allows a user to publish a version of the resource."
-msgstr ""
+msgstr "使用者可以利用資源概覽頁面中的這個部分發布資源的新版本。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:558
@@ -2188,103 +2188,103 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:561
 msgid "Click on the {threedots} menu and select the \"Publish\" option to trigger publishing a new version. The \"Publish\" option will be enabled if"
-msgstr ""
+msgstr "點擊 {threedots} 選單並選擇「發布」選項以觸發新版本的發布。當以下條件滿足時，「發布」選項將啟用："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:563
 msgid "the required metadata for the resource are complete, and"
-msgstr ""
+msgstr "資源的必要詮釋資料已完成；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:564
 msgid "the user has the role \"Manager with/without registration rights\"."
-msgstr ""
+msgstr "使用者具有「管理者（具有/不具有註冊權限）」角色。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:566
 msgid "Once the resource is registered only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear:"
-msgstr ""
+msgstr "只有具有「註冊權限管理者」角色的使用者可以發布已註冊的資源，因為資源的註冊會在每次發布過程中被更新（請參閱「選單：系統管理」章節中「管理使用者帳戶」部分的「創建新使用者」章節下的角色解釋）。按下「發布」選項後，將顯示一個確認對話框："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:567
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishConfirm.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishConfirm.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:570
 msgid "The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing \"Publish\" is explained in the \"Publishing steps\" section below."
-msgstr ""
+msgstr "資源管理者需輸入自上一次/當前版本發布以來，資源（詮釋資料或資料）所做更改的摘要。此更改摘要將作為資源版本歷史的一部分被儲存，並可由資源管理者通過資源首頁編輯。按下「發布」後會發生的完整說明，請參閱以下的「發布步驟」章節。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:571
 #, no-wrap
 msgid "A pending publication:"
-msgstr ""
+msgstr "一個待發布的內容："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:575
 msgid "Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:"
-msgstr ""
+msgstr "此處顯示一個表格，用於比較當前版本與待發布版本。資源管理者可以使用此表格管理資源版本控制、預覽待發布版本，並審核和驗證當前版本。表格中的資料包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:577
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].\n"
-msgstr ""
+msgstr "*版本* - 跟踪當前/待發布版本`主版本.次版本`的版本號。通常僅與 xref:doi-workflow.adoc[IPT 發行的 DOI 流程] 相關。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:578
 #, no-wrap
 msgid "*Current* - current already published version.\n"
-msgstr ""
+msgstr "*當前* - 已發布的當前版本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:579
 #, no-wrap
 msgid "*Pending* - next version.\n"
-msgstr ""
+msgstr "*待發布* - 下一個版本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:580
 #, no-wrap
 msgid "*License* - resource license (e.g. CC0 1.0).\n"
-msgstr ""
+msgstr "*授權* - 資源的授權（例如 CC0 1.0）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:581
 #, no-wrap
 msgid "*DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.\n"
-msgstr ""
+msgstr "*DOI* - 若啟用了 IPT 發行的 DOIs，請參閱 xref:doi-workflow.adoc[]。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:582
 #, no-wrap
 msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.\n"
-msgstr ""
+msgstr "*可見性* - 當前/待發布版本的可見性。為了將資源註冊到 GBIF，資源管理者需確保當前版本為公開狀態。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:583
 #, no-wrap
 msgid "*Published on* - to date the current version was published on / the date the pending version will be published on.\n"
-msgstr ""
+msgstr "*發布於* - 當前版本發布的日期/待發布版本將發布的日期。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:584
 #, no-wrap
 msgid "*Publication log* - button. Click to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
-msgstr ""
+msgstr "*發布日誌* - 按鈕。點擊以檢索當前版本的發布日誌。資源管理者可使用發布日誌來診斷發布失敗的原因。例如，有關內容的詳細說明請參閱以下 <<發布狀態>> 章節。此項不適用於待發布版本。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:585
 #, no-wrap
 msgid "Publishing steps"
-msgstr ""
+msgstr "資源發布步驟"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
-msgstr ""
+msgstr "發布資源的操作包括以下描述的步驟。發布為全有或全無的操作，這意味著每個步驟都必須成功完成，才能發布新版本。如果任何步驟失敗，或取消發布操作，版本將復原至最後已發布的版本。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
@@ -2410,7 +2410,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:622
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:625
@@ -2421,7 +2421,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:626
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:629
@@ -2465,13 +2465,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:642
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:644
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:647
@@ -2499,7 +2499,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:656
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:659
