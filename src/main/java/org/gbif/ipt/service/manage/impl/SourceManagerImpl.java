@@ -434,7 +434,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
 
     src = new UrlSource();
-    File file = new File(dataDir.tmpDir(), filename);
+    File file = dataDir.sourceFile(resource, filename);
 
     try (InputStream in = url.toURL().openStream()) {
       if (url.toString().endsWith("zip")) {

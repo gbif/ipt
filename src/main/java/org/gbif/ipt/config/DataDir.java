@@ -485,6 +485,13 @@ public class DataDir {
     return resourceFile(resource.getShortname(), "sources/" + source.getName() + source.getPreferredFileSuffix());
   }
 
+  public File sourceFile(Resource resource, String filename) {
+    if (resource == null) {
+      return null;
+    }
+    return resourceFile(resource.getShortname(), "sources/" + filename);
+  }
+
   public File sourceLogFile(String resourceName, String sourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log");
   }

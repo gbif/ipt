@@ -38,38 +38,38 @@ import java.util.zip.ZipInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class UrlSource extends SourceBase implements RowIterable, SourceWithHeader {
 
+  private static final long serialVersionUID = 5509301114753152587L;
   private static final Logger LOG = LogManager.getLogger(UrlSource.class);
 
+  @Setter
+  @Getter
   private URI url;
-
+  @Setter
+  @Getter
   private String fieldsTerminatedBy = "\t";
+  @Setter
+  @Getter
   private String fieldsEnclosedBy;
   private int ignoreHeaderLines = 0;
+  @Setter
+  @Getter
   private File file; // only for analyzing
+  @Setter
+  @Getter
   private long fileSize;
+  @Setter
+  @Getter
   private int rows;
+  @Getter
   protected Date lastModified;
-
-  public URI getUrl() {
-    return url;
-  }
-
-  public void setUrl(URI url) {
-    this.url = url;
-  }
-
-  public String getFieldsEnclosedBy() {
-    return fieldsEnclosedBy;
-  }
 
   public String getFieldsEnclosedByEscaped() {
     return escape(fieldsEnclosedBy);
-  }
-
-  public String getFieldsTerminatedBy() {
-    return fieldsTerminatedBy;
   }
 
   public String getFieldsTerminatedByEscaped() {
@@ -81,48 +81,16 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     return ignoreHeaderLines;
   }
 
-  public File getFile() {
-    return file;
-  }
-
-  public long getFileSize() {
-    return fileSize;
-  }
-
   public String formattedFileSize(String locale) {
     return FileUtils.formatSize(fileSize, 1, locale, true);
-  }
-
-  public int getRows() {
-    return rows;
-  }
-
-  public Date getLastModified() {
-    return lastModified;
-  }
-
-  public void setFieldsEnclosedBy(String fieldsEnclosedBy) {
-    this.fieldsEnclosedBy = fieldsEnclosedBy;
   }
 
   public void setFieldsEnclosedByEscaped(String fieldsEnclosedBy) {
     this.fieldsEnclosedBy = unescape(fieldsEnclosedBy);
   }
 
-  public void setFieldsTerminatedBy(String fieldsTerminatedBy) {
-    this.fieldsTerminatedBy = fieldsTerminatedBy;
-  }
-
   public void setFieldsTerminatedByEscaped(String fieldsTerminatedBy) {
     this.fieldsTerminatedBy = unescape(fieldsTerminatedBy);
-  }
-
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  public void setFileSize(long fileSize) {
-    this.fileSize = fileSize;
   }
 
   public void setIgnoreHeaderLines(Integer ignoreHeaderLines) {
@@ -134,17 +102,13 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     this.lastModified = lastModified;
   }
 
-  public void setRows(int rows) {
-    this.rows = rows;
-  }
-
   @Override
   public SourceType getSourceType() {
     return SourceType.URL;
   }
 
   public Character getFieldQuoteChar() {
-    if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
+    if (fieldsEnclosedBy == null || fieldsEnclosedBy.isEmpty()) {
       return null;
     }
     return fieldsEnclosedBy.charAt(0);
@@ -161,38 +125,43 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
   }
 
   public static InputStream decompressInputStream(InputStream inputStream) throws IOException {
-    PipedInputStream decompressedStream;
+    // Increase buffer size to reduce blocking between threads.
+    PipedInputStream pipedInputStream = new PipedInputStream(8192);
+    PipedOutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream);
 
-    try (ZipInputStream zipStream = new ZipInputStream(inputStream)) {
-      ZipEntry firstEntry = zipStream.getNextEntry();
+    Thread producerThread = new Thread(() -> {
+      try (ZipInputStream zipStream = new ZipInputStream(inputStream);
+           PipedOutputStream out = pipedOutputStream) {
 
-      if (firstEntry == null) {
-        LOG.error("Exception while reading zipped URL source: no entries in the archive");
-        throw new IOException("Exception while reading zipped URL source: no entries in the archive");
+        ZipEntry firstEntry = zipStream.getNextEntry();
+        if (firstEntry == null) {
+          LOG.error("Exception while reading zipped URL source: no entries in the archive");
+          throw new IOException("Exception while reading zipped URL source: no entries in the archive");
+        }
+
+        LOG.debug("Reading file {} from archive", firstEntry.getName());
+
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = zipStream.read(buffer)) != -1) {
+          out.write(buffer, 0, bytesRead);
+        }
+
+      } catch (IOException e) {
+        LOG.error("Exception during decompression", e);
+      } finally {
+        // Always close the output stream to signal the consumer that writing is complete.
+        try {
+          pipedOutputStream.close();
+          inputStream.close();
+        } catch (IOException e) {
+          LOG.error("Error closing PipedOutputStream", e);
+        }
       }
+    });
 
-      String filename = firstEntry.getName();
-      LOG.debug("Reading file {} from archive", filename);
-
-      try (PipedOutputStream outputStream = new PipedOutputStream()) {
-        decompressedStream = new PipedInputStream(outputStream);
-
-        Thread streamingThread = new Thread(() -> {
-          try {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = zipStream.read(buffer)) != -1) {
-              outputStream.write(buffer, 0, bytesRead);
-            }
-          } catch (IOException e) {
-            LOG.error("Exception while reading zipped URL source", e);
-          }
-        });
-
-        streamingThread.start();
-      }
-    }
-    return decompressedStream;
+    producerThread.start();
+    return pipedInputStream; // The caller reads from this InputStream
   }
 
   private CSVReader getReader() throws IOException {
@@ -209,17 +178,17 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     List<String> columns = new ArrayList<>();
 
     try (CSVReader reader = getReader()) {
-      if (ignoreHeaderLines > 0) {
+      if (ignoreHeaderLines > 0 && reader.header != null) {
         columns = Arrays.asList(reader.header);
       } else {
-        // careful - the reader.header can be null. In this case set number of columns to 0
+        // careful - the reader.header can be null. In this case, set the number of columns to 0
         int numColumns = (reader.header == null) ? 0 : reader.header.length;
         for (int x = 1; x <= numColumns; x++) {
           columns.add("Column #" + x);
         }
       }
     } catch (IOException e) {
-      LOG.warn("Can't read source " + getName(), e);
+      LOG.error("Can't read source {}", getName(), e);
     }
 
     return columns;
@@ -229,7 +198,18 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     LOG.debug("Analyzing URL source {}", url);
     Set<Integer> emptyLines = new HashSet<>();
 
-    try (InputStream in = url.toURL().openStream()) {
+    if (!file.exists()) {
+      boolean newFileCreated = file.createNewFile();
+
+      if (!newFileCreated) {
+        LOG.error("Failed to create new file {}", file);
+        setReadable(false);
+        return emptyLines;
+      }
+    }
+
+    try {
+      InputStream in = url.toURL().openStream();
       if (url.toString().endsWith("zip")) {
         Files.copy(decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
       } else {
@@ -237,7 +217,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
       }
       setFile(file);
     } catch (IOException e) {
-      LOG.error("URL not readable {}", url);
+      LOG.error("URL not readable {}. Error: {}", url, e.getMessage());
       setReadable(false);
       return emptyLines;
     }
