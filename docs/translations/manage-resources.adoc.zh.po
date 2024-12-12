@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-12 12:02\n"
+"PO-Revision-Date: 2024-12-12 13:14\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1067,7 +1067,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:282
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr "*標題* - 資源的標題。此標題將作為資源的名稱顯示在 IPT 中，也會出現在 GBIF 註冊表中，並構成引用的一部分。請使用對資料集使用者描述性強的標題，例如「丹麥自然歷史博物館（SNM）的坦尚尼亞鳥類收藏」，而非「aves_tz_snm」。避免使用僅為您的組織所知的檔名或縮寫。\n"
+msgstr "*標題* - 資源的標題。此標題將作為資源的名稱顯示在 IPT 中，也會出現在 GBIF 註冊庫中，並構成引用的一部分。請使用對資料集使用者描述性強的標題，例如「丹麥自然歷史博物館（SNM）的坦尚尼亞鳥類收藏」，而非「aves_tz_snm」。避免使用僅為您的組織所知的檔名或縮寫。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:283
@@ -2289,53 +2289,53 @@ msgstr "發布資源的操作包括以下描述的步驟。發布為全有或全
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
 msgid "The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved."
-msgstr ""
+msgstr "當前的詮釋資料將寫入名為 eml.xml 的檔案中。同時，還會保存一個遞增版本的檔案，命名為 eml-n.xml（其中 n 為與發布版本對應的遞增版本號）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:591
 msgid "A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved."
-msgstr ""
+msgstr "一份採用豐富文字格式（Rich Text Format，RTF）的資料發布文件將寫入名為 shortname.rtf 的檔案中。同樣，還會保存一個遞增版本的 RTF 檔案，命名為 shortname-n.rtf。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:592
 msgid "The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see \"Data Validation\" section below)."
-msgstr ""
+msgstr "根據資料對照配置的當前原始資源資料將寫入名為 dwca.zip 的達爾文核心集檔案中。系統將接著對達爾文核心集檔案中的資料檔案進行驗證（詳見下方「資料驗證」部分）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:593
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
-msgstr ""
+msgstr "如果 IPT 的存檔模式已啟用（詳見 xref:administration.adoc#configure-ipt-settings[配置 IPT 設定]部分），還會保存達爾文核心集檔案的遞增版本檔案，命名為 dwca-n.zip。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:594
 msgid "The information about the resource is updated in the GBIF Registry if the resource is registered."
-msgstr ""
+msgstr "如果資源已註冊，該資源的相關資訊將更新至 GBIF 註冊庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:595
 msgid "The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT."
-msgstr ""
+msgstr "如果使用者透過 IPT 分配了 DOI 給資源，則該資源的 DOI 詮釋資料將被更新並傳播至 DOI 解析器。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:596
 #, no-wrap
 msgid "Data Validation"
-msgstr ""
+msgstr "資料驗證"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:599
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
-msgstr ""
+msgstr "IPT 將資料檔案以制表符分隔的格式寫入 DwC-A，且不包含斷行符號（*注意：原始資料中的斷行符號將被替換為空字串*）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:601
 msgid "After writing, the IPT also validates their content in the following ways:"
-msgstr ""
+msgstr "寫入後，IPT 還會通過以下方式驗證其內容："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:603
 msgid "If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique."
-msgstr ""
+msgstr "如果核心記錄識別碼（例如 Occurrence 核心的核心記錄識別碼為 occurrenceID）的欄位存在於核心資料檔案中，IPT 將驗證每筆紀錄是否具有該識別碼，且該識別碼是唯一的。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:604
