@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-12 13:14\n"
+"PO-Revision-Date: 2024-12-12 14:15\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2340,54 +2340,54 @@ msgstr "如果核心記錄識別碼（例如 Occurrence 核心的核心記錄識
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:604
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr ""
+msgstr "達爾文核心術語 http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] 是出現紀錄延伸資料集中必須的術語。因此，IPT 將驗證每個出現紀錄資料檔案是否具有 basisOfRecord 欄位。此外，還會驗證每筆出現紀錄是否具有有效的 basisOfRecord 值，並與 {latest-basis-of-record}[達爾文核心標準類型詞彙表] 相匹配。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:605
 #, no-wrap
 msgid "Publishing Status page"
-msgstr ""
+msgstr "資源發布狀態頁面"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:608
 msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
-msgstr ""
+msgstr "一個標題為「資源發布狀態」的頁面將顯示各個發布步驟為成功或失敗的狀態消息。新版本的發布為全有或全無的事件，這意味著所有步驟必須成功完成，否則此版本將被撤銷。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:610
 #, no-wrap
 msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
-msgstr ""
+msgstr "*資源概覽* - 此連結將導向剛發布的資源的「資源管理」頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:611
 #, no-wrap
 msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
-msgstr ""
+msgstr "*發布日誌* - 此連結將下載名為 publication.log 的檔案，其中包含發布過程的詳細輸出。為了幫助管理者識別發布過程中的問題，該檔案包括以下具體資訊：\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:612
 #, no-wrap
 msgid "how many records couldn't be read and were not written to the DwC-A\n"
-msgstr ""
+msgstr "有多少筆紀錄無法讀取，未寫入達爾文核心集檔案（DwC-A）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:613
 #, no-wrap
 msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
-msgstr ""
+msgstr "有多少筆紀錄缺少識別碼，或有重複的識別碼（如果核心紀錄識別碼欄位已進行對照）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:614
 #, no-wrap
 msgid "how many records contained fewer columns than the number that was mapped\n"
-msgstr ""
+msgstr "有多少筆紀錄的欄位數少於已對照的欄位數量\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:615
 #, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
-msgstr ""
+msgstr "*日誌消息* - 「資源發布狀態」頁面會顯示儲存於 publication.log 中資訊的摘要。該檔案儲存在 IPT 資料目錄中對應資源的資料夾內，並可以透過上述「發布日誌」連結訪問。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:616
@@ -2539,7 +2539,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:673
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
@@ -2602,7 +2602,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
@@ -2652,7 +2652,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:715
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDelete.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:718
@@ -2663,7 +2663,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:719
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDeleteRegistered.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:722
