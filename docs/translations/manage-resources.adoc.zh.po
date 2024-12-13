@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 00:36\n"
+"PO-Revision-Date: 2024-12-13 01:36\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2415,7 +2415,7 @@ msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:625
 msgid "Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press \"Save\"."
-msgstr ""
+msgstr "選擇五種發布間隔之一（年度、半年、每月、每週或每日）並設定時間，然後按下「儲存」。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:626
@@ -2426,12 +2426,12 @@ msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:629
 msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" option can be used to change or disable auto-publishing."
-msgstr ""
+msgstr "啟用自動發布後，發布間隔和下一次發布日期將會清楚地顯示在自動發布部分。可通過「編輯」選項更改或停用自動發布。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:631
 msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
-msgstr ""
+msgstr "在失敗的情況下，發布將自動重試最多三次，以防止無限循環的發布。設定為自動發布但未成功完成的資源，其下一次發布日期將設置為過去的時間，並在公開和資源管理表格中被突出標記。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:632
@@ -2442,13 +2442,13 @@ msgstr "可見度"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr ""
+msgstr "在「資源管理」頁面的「可見性」部分，擁有資源管理員權限的使用者可以更改資源的可見性狀態。資源的可見性決定了誰可以查看它，以及該資源是否可以註冊到 GBIF。預設情況下，每個資源僅對創建者和在 IPT 上具有管理員角色的使用者可見。關於每種可見性狀態的詳細說明，請參考以下資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:636
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
-msgstr ""
+msgstr "*私有* - 私有資源僅對創建者、在 IPT 上被授權管理該資源的使用者或具有管理員角色的使用者可見。這主要用於保護資源不被公開，直到其配置完成且正確無誤。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:638
@@ -2459,7 +2459,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:641
 msgid "When the resource is ready for public visibility, click on the {threedots} menu and select the option labelled \"Change\". This will display a modal window with two options. You can make the resource public right away or at a set date"
-msgstr ""
+msgstr "當資源準備好公開時，點擊 {threedots} 選單並選擇標記為「更改」的選項。將彈出一個視窗，提供「立即公開」或「設置為某個日期公開」的選項。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:642
@@ -2476,13 +2476,13 @@ msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:647
 msgid "After submitting the form a message will appear at the top of the page saying that the status has been changed to \"Public\"."
-msgstr ""
+msgstr "提交表單後，頁面頂部將顯示一個表示狀態已更改為「公開」的消息。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:650
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
-msgstr ""
+msgstr "*公開* - 公開資源對於使用該 IPT 實例的任何人都可見（在 IPT 首頁的公開資源表格中）。資源最終可以通過互聯網被任何知道其主頁 URL 的人訪問。不過，該資源只有在註冊到 GBIF 註冊庫後才能通過 GBIF 網站全域搜尋到（參見 <<註冊資源>> 部分）。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:652
