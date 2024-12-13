@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 01:36\n"
+"PO-Revision-Date: 2024-12-13 02:48\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2442,7 +2442,7 @@ msgstr "可見度"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr "在「資源管理」頁面的「可見性」部分，擁有資源管理員權限的使用者可以更改資源的可見性狀態。資源的可見性決定了誰可以查看它，以及該資源是否可以註冊到 GBIF。預設情況下，每個資源僅對創建者和在 IPT 上具有管理員角色的使用者可見。關於每種可見性狀態的詳細說明，請參考以下資訊。"
+msgstr "在「資源管理」頁面的「公開狀態」部分，擁有資源管理員權限的使用者可以更改資源的公開狀態。資源的公開狀態決定了誰可以查看它，以及該資源是否可以註冊到 GBIF。預設情況下，每個資源僅對創建者和在 IPT 上具有管理員角色的使用者可見。關於每種公開狀態的詳細說明，請參考以下資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:636
@@ -2493,7 +2493,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:655
 msgid "One option appear in the {threedots} menu of the visibility area. Clicking on the option labelled \"Change\" will display a modal window"
-msgstr ""
+msgstr "點擊在此部分的 {threedots} 選單中的「更改」選項將顯示彈出窗口。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:656
@@ -2504,13 +2504,13 @@ msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:659
 msgid "Clicking on button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
-msgstr ""
+msgstr "點擊標記為「是」的按鈕將完全移除資源的公開狀態，並將其恢復為私有狀態。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:662
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
-msgstr ""
+msgstr "*已註冊* - 已註冊的資源可通過 GBIF 網站搜尋，並可在 GBIF 平台上索引及訪問其資料。請注意，註冊後可能需要最多一小時，資料才會被 GBIF 完成索引。註冊完成後，有關該資源的註冊資訊將顯示在 <<註冊資源>> 部分。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:664
@@ -2522,18 +2522,18 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "如果資源已註冊，每次點擊「發布」按鈕時，其註冊資訊也會在 GBIF 註冊庫中被更新。已註冊資源的公開狀態無法更改為私有。如果需要從 GBIF 註冊庫中移除資源，請按照「選單：資源管理」部分中「資源概覽」標題下的「刪除資源」部分所述的步驟進行。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:669
 #, no-wrap
 msgid "Registration"
-msgstr ""
+msgstr "註冊資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:672
 msgid "The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry."
-msgstr ""
+msgstr "如果資源尚未被註冊到 GBIF 註冊庫上，使用者將無法在 GBIF 網頁上成功全域搜尋該資源。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:673
@@ -2544,27 +2544,27 @@ msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "Registration is enabled when:"
-msgstr ""
+msgstr "註冊資源的啟用條件包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:678
 msgid "the required metadata for the resource are complete,"
-msgstr ""
+msgstr "資源的必需詮釋資料已完成；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:679
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
-msgstr ""
+msgstr "資源已被發布（請參考下方資源概覽頁的 <<資源發布>> 章節）；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:680
 msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
-msgstr ""
+msgstr "使用者擁有「具有註冊權限的管理員」角色（請參考「選單：系統管理」章節「管理使用者帳戶」部分中「建立新使用者」的角色說明）。具有管理員角色的使用者可將「具有註冊權限的管理員」角色授予其他使用者。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:682
 msgid "Click on the {threedots} menu and select the option labelled \"Register\" to register the resource with the GBIF Registry."
-msgstr ""
+msgstr "點擊 {threedots} 選單並點選「註冊」以將資源註冊到 GBIF 註冊庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
