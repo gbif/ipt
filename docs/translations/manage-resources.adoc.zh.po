@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-12 14:15\n"
+"PO-Revision-Date: 2024-12-13 00:36\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2404,7 +2404,7 @@ msgstr "自動定期發布"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:621
 msgid "To turn on automated publishing, in the Auto-publishing section click the {threedots} menu and select \"Edit\"."
-msgstr ""
+msgstr "要啟用自動發布功能，請在「自動發布」點擊 {threedots} 選單，然後選擇「編輯」。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:622
