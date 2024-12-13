@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 02:48\n"
+"PO-Revision-Date: 2024-12-13 04:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2569,7 +2569,7 @@ msgstr "點擊 {threedots} 選單並點選「註冊」以將資源註冊到 GBIF
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
-msgstr ""
+msgstr "如果希望此資源更新現有的已註冊 DiGIR、BioCASe 或 TAPIR 資源，請參考下方 <<遷移資源>> 部分。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:686
@@ -2767,7 +2767,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:751
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
