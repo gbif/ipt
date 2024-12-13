@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 04:24\n"
+"PO-Revision-Date: 2024-12-13 05:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2574,7 +2574,7 @@ msgstr "如果希望此資源更新現有的已註冊 DiGIR、BioCASe 或 TAPIR 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:686
 msgid "Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
-msgstr ""
+msgstr "點擊此選項將開啟一個對話框，用以確認您已閱讀並理解 GBIF 資料共享協議（含連結）。勾選複選框以表示您同意這些條款。只有在勾選同意後，對話框底部才會出現一個標記為「是」的按鈕。點擊「是」以註冊該資源，或者點擊「否」以延遲決定並關閉對話框。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:687
@@ -2585,7 +2585,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:690
 msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\". Registration section when the resource is registered:"
-msgstr ""
+msgstr "如果註冊成功，頁面頂部將出現一條訊息，表示狀態已更改為「已註冊」。當資源註冊成功時，註冊區域將顯示以下內容："
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:693
@@ -2596,7 +2596,7 @@ msgstr "網路"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:696
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
-msgstr ""
+msgstr "此區域允許資源加入一個或多個 GBIF 網絡——這些網絡是基於特定主題的多個發布者的資料集集合。GBIF 最大的網絡是 https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[海洋生物多樣性資訊系統 (OBIS)]。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:697
@@ -2607,7 +2607,7 @@ msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "To add the resource to a network, click on the {threedots} menu and select the \"Add\" option. To remove it, click the {threedots} menu on the network item and select \"Delete\"."
-msgstr ""
+msgstr "要將資源添加到某個網絡，點擊 {threedots} 選單並選擇「添加」選項。要移除資源，點擊該網絡項目的 {threedots} 選單並選擇「刪除」。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:702
