@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 08:03\n"
+"PO-Revision-Date: 2024-12-13 10:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2284,7 +2284,7 @@ msgstr "資源發布步驟"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
-msgstr "發布資源的操作包括以下描述的步驟。發布為全有或全無的操作，這意味著每個步驟都必須成功完成，才能發布新版本。如果任何步驟失敗，或取消發布操作，版本將復原至最後已發布的版本。"
+msgstr "發布資源的操作包括以下描述的步驟。資源發布為全有或全無的操作，這意味著每個步驟都必須成功完成，才能發布新版本。如果任何步驟失敗，或取消發布操作，版本將復原至最後已發布的版本。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
@@ -2685,33 +2685,33 @@ msgstr "無論選擇哪個選項，都會將資源從 IPT 中移除，並從文�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:727
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "在刪除資源之前，您可以備份資料以便日後恢復。為此，請查看 IPT 的資料目錄內的伺服器，在資源資料夾中找到目標資源的目錄（以資源的簡短名稱命名）。將該目錄複製到 IPT 資料目錄之外的安全存儲位置。這樣保存的資源可以通過「選單：資源管理」部分「創建新資源」標題下的「整合現有資源配置資料夾」步驟，重新整合到 IPT 中或與另一個 IPT 實例整合。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:728
 #, no-wrap
 msgid "Migrate a Resource"
-msgstr ""
+msgstr "遷移資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:731
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
-msgstr ""
+msgstr "現在有一種方式可以將現有已註冊的 DiGIR、BioCASe、TAPIR 或 DwC-A 資源遷移到 IPT。這使現有資源能夠保留其 GBIF 註冊庫的 UUID。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:733
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
-msgstr ""
+msgstr "此方法只需要將 IPT 資源配置更新為其在 GBIF 註冊庫中對應的已註冊資源。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:735
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
-msgstr ""
+msgstr "要將現有已註冊資源遷移到您的 IPT 資源，請遵循以下指示："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:737
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
-msgstr ""
+msgstr "確保 IPT 資源是公開且未註冊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:738
