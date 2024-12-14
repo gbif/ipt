@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"PO-Revision-Date: 2024-12-14 07:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -30,7 +30,7 @@ msgstr "此選單只有系統管理員登入時顯示。"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
 msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button."
-msgstr ""
+msgstr "此部分描述了「選單：管理」的每項功能。點擊「選單：管理」將打開一個頁面（如下圖所示），使用者可通過點擊相應按鈕執行特定的管理任務。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
@@ -43,12 +43,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:9
 #, no-wrap
 msgid "Configure IPT settings"
-msgstr ""
+msgstr "設定 IPT 參數"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:11
 msgid "This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance."
-msgstr ""
+msgstr "此頁面允許管理員設定或更改此 IPT 實例的特性。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
