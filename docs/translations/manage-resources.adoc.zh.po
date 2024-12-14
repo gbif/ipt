@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-13 10:35\n"
+"PO-Revision-Date: 2024-12-14 02:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2716,17 +2716,17 @@ msgstr "確保 IPT 資源是公開且未註冊。"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:738
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
-msgstr ""
+msgstr "確定擁有*現有已註冊資源*的組織已配置為可發布資料集的組織，並且已添加至 IPT。請參閱 xref:administration.adoc#add-organization[添加組織] 部分以瞭解更多資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:739
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
-msgstr ""
+msgstr "在基本詮釋資料頁面上的下拉選單中點選擁有該資源的組織。請記得儲存基本詮釋資料頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:740
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr ""
+msgstr "前往*現有已註冊資源*的 GBIF 資料集頁面。根據 IPT 運行的模式（測試或生產），您需要分別訪問 https://www.gbif-uat.org/dataset 或 https://www.gbif.org/dataset。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:741
