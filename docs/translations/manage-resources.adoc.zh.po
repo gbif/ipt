@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-14 02:57\n"
+"PO-Revision-Date: 2024-12-14 04:32\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -151,7 +151,7 @@ msgstr "在「資源管理表格」下方有一個表單，可用於創建新資
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>> or Camtrap Frictionless Data Package,"
-msgstr ""
+msgstr "<<上傳達爾文核心集檔案>> 或是 Camtrap 無摩擦資料包,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
@@ -161,7 +161,7 @@ msgstr "<<上傳壓縮的（.zip）IPT 資源配置資料夾>>,"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>> (EML or Frictionless metadata)"
-msgstr ""
+msgstr "<<上傳一個詮釋資料檔案>>（EML 或無摩擦詮釋資料）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
@@ -1079,7 +1079,7 @@ msgstr "*發布組織* - 負責發布（生成、發布或保存）該資源的�
 #: en/modules/ROOT/pages/manage-resources.adoc:284
 #, no-wrap
 msgid "*Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.\n"
-msgstr "*更新頻率* - 資源初次發布後進行更改的頻率。為方便起見，該值將預設為自動發布間隔（如果已開啟自動發布功能），但之後可以隨時將其覆寫。請注意，資源的維護頻率說明也可以在附加詮釋資料頁面中輸入。\n"
+msgstr "*更新頻率* - 資源初次發布後進行更改的頻率。為方便起見，該值將預設為自動發布間隔（如果已開啟自動發布功能），但之後可以隨時將其覆寫。請注意，資源的維護頻率說明也可以在其他詮釋資料頁面中輸入。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:285
@@ -2731,37 +2731,37 @@ msgstr "前往*現有已註冊資源*的 GBIF 資料集頁面。根據 IPT 運�
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:741
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
-msgstr ""
+msgstr "確保 GBIF 資料集頁面顯示*現有已註冊資源*正確配對相應的*資源所屬組織*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:743
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
-msgstr ""
+msgstr "如果顯示的*資源所屬組織*不同，必須先更新 GBIF 註冊庫才能繼續執行後續步驟。請發送電子郵件至 helpdesk@gbif.org 來請求更新。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:745
 msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
-msgstr ""
+msgstr "從 GBIF 資料集頁面的 URL 複製 GBIF 註冊庫的 UUID，例如 `5d637678-cb64-4863-a12b-78b4e1a56628`。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:746
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
-msgstr ""
+msgstr "將此 UUID 添加到 IPT 資源 的「其他詮釋資料」頁面上的替代識別碼列表中。請記得儲存「其他詮釋資料」頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:747
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
-msgstr ""
+msgstr "確保 IPT 中沒有其他公開或已註冊的資源使用該 UUID 作為它們的替代識別碼。如果您正在嘗試替換 IPT 中現有的已註冊資源，則必須先刪除該資源。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
-msgstr ""
+msgstr "在資源概覽頁面上，點擊「註冊」按鈕。您需要確認已閱讀並理解 GBIF 資料共享協議，才能執行註冊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:750
 msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
-msgstr ""
+msgstr "您將收到確認消息，顯示 GBIF 中的現有資料集已被更新。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:751
@@ -2772,5 +2772,5 @@ msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
 msgid "If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry"
-msgstr ""
+msgstr "如果適用，請發送電子郵件至 helpdesk@gbif.org，通知他們 DiGIR/BioCASe/TAPIR/IPT 支援該資源的技術安裝是否已棄用，以及是否可以從 GBIF 註冊庫中刪除。"
 
