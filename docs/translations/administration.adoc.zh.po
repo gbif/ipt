@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-14 07:31\n"
+"PO-Revision-Date: 2024-12-15 02:14\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -60,13 +60,13 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.\n"
-msgstr ""
+msgstr "*IPT 資料目錄* - 顯示伺服器上儲存 IPT 配置、資源和日誌檔案的目錄。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:16
 #, no-wrap
 msgid "*Default language* - This shows the default IPT language. English by default.\n"
-msgstr ""
+msgstr "*預設語言* - 指 IPT 的預設語言，預設為英文。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
