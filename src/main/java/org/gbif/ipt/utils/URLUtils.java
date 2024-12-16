@@ -44,25 +44,16 @@ public class URLUtils {
   private static final String LOCAL_IP = "127.0.0.1";
   private static final String LOCAL_HOST = "localhost";
 
-  public static final Set<String> VALID_CONTENT_TYPES = new HashSet<>() {
-    {
-      add("text/csv");
-      add("text/tab-separated-values");
-      add("application/csv");
-      add("application/vnd.ms-excel");
-      // add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-      add("application/zip");
-      // add("application/x-zip-compressed");
-      // add("application/gzip");
-      // add("application/x-gzip");
-      // add("application/json");
-      add("text/plain");
-      // add("application/octet-stream");
-      // add("text/xml");
-      // add("application/xml");
-      // add("application/vnd.oasis.opendocument.spreadsheet");
-    }
-  };
+  public static final Set<String> VALID_CONTENT_TYPES = new HashSet<>();
+
+  static {
+    VALID_CONTENT_TYPES.add("text/csv");
+    VALID_CONTENT_TYPES.add("text/tab-separated-values");
+    VALID_CONTENT_TYPES.add("application/csv");
+    VALID_CONTENT_TYPES.add("application/vnd.ms-excel");
+    VALID_CONTENT_TYPES.add("application/zip");
+    VALID_CONTENT_TYPES.add("text/plain");
+  }
 
   private URLUtils() {
 
