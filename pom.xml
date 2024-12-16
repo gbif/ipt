@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>56</version>
+    <version>59</version>
   </parent>
 
   <artifactId>ipt</artifactId>
@@ -21,6 +21,10 @@
    To build a release please use -P release
    -->
   <properties>
+      <maven.compiler.source>11</maven.compiler.source>
+      <maven.compiler.target>11</maven.compiler.target>
+      <java.version>11</java.version>
+
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
       Therefore, we keep both available - make sure they are always negated in all profiles!
