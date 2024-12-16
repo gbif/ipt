@@ -21,9 +21,6 @@
    To build a release please use -P release
    -->
   <properties>
-    <!-- Compile in Java 11-->
-    <java.version>11</java.version>
-
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
       Therefore, we keep both available - make sure they are always negated in all profiles!
