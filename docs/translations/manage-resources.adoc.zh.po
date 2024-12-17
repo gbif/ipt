@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-14 04:32\n"
+"PO-Revision-Date: 2024-12-17 05:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2482,7 +2482,7 @@ msgstr "提交表單後，頁面頂部將顯示一個表示狀態已更改為「
 #: en/modules/ROOT/pages/manage-resources.adoc:650
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
-msgstr "*公開* - 公開資源對於使用該 IPT 實例的任何人都可見（在 IPT 首頁的公開資源表格中）。資源最終可以通過互聯網被任何知道其主頁 URL 的人訪問。不過，該資源只有在註冊到 GBIF 註冊庫後才能通過 GBIF 網站全域搜尋到（參見 <<註冊資源>> 部分）。\n"
+msgstr "*公開* - 公開資源對於使用該 IPT 實例的任何人都可見（在 IPT 首頁的公開資源表格中）。資源最終可以通過網際網路被任何知道其主頁 URL 的人訪問。不過，該資源只有在註冊到 GBIF 註冊庫後才能通過 GBIF 網站全域搜尋到（參見 <<註冊資源>> 部分）。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:652
