@@ -49,9 +49,6 @@ This major release introduces support for EML 2.2.0.
 
 == *3.0.6* – June 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.6/ipt-3.0.6.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.6 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/58?closed=1[3 issues].
 * Translated into 7 languages
 
@@ -59,9 +56,6 @@ This minor release addresses issues with taxonomic metadata description and regi
 
 == *3.0.5* – June 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.5/ipt-3.0.5.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.5 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/57?closed=1[5 issues].
 * Translated into 7 languages
 
@@ -69,9 +63,6 @@ This minor release addresses issues with vocabulary update, Camtrap resource reg
 
 == *3.0.4* – May 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.4/ipt-3.0.4.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.4 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/56?closed=1[2 issues].
 * Translated into 7 languages
 
@@ -79,9 +70,6 @@ This minor release addresses issues with metadata.
 
 == *3.0.3* – April 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.3/ipt-3.0.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.3 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/55?closed=1[4 issues].
 * Translated into 7 languages
 
@@ -89,9 +77,6 @@ This minor release addresses issues with metadata and DOI issuing.
 
 == *3.0.2* – April 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.2/ipt-3.0.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.2 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/54?closed=1[11 issues].
 * Translated into 7 languages
 
@@ -99,9 +84,6 @@ This minor release addresses issues with inferred metadata, DOI functionality, a
 
 == *3.0.1* – February 2024
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.0.1/ipt-3.0.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
-* xref:release-notes.adoc[IPT v3.0.1 Release Notes]
-* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/52?closed=1[12 issues].
 * Translated into 7 languages
 
