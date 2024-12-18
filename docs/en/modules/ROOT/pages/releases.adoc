@@ -11,6 +11,22 @@ Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGU
 endif::[]
 ====
 
+== *3.1.2* – December 2024
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.1.2/ipt-3.1.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:release-notes.adoc[IPT v3.1.2 Release Notes]
+* xref:index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/63?closed=1[20 issues].
+* Translated into 20 languages
+
+This minor release brings support to ColDP. Also, it introduces some general improvements and bug fixes with source creation and file upload.
+
+Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
+
 == *3.1.1* – December 2024
 
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.1.1/ipt-3.1.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
@@ -20,12 +36,6 @@ endif::[]
 * Translated into 7 languages
 
 This minor release introduces some general improvements and addresses issues with mappings to some extensions.
-
-Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *3.1.0* – October 2024
 
