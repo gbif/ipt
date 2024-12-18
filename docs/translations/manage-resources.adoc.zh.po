@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-03 02:50\n"
+"PO-Revision-Date: 2024-12-17 05:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -151,7 +151,7 @@ msgstr "在「資源管理表格」下方有一個表單，可用於創建新資
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>> or Camtrap Frictionless Data Package,"
-msgstr ""
+msgstr "<<上傳達爾文核心集檔案>> 或是 Camtrap 無摩擦資料包,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
@@ -161,7 +161,7 @@ msgstr "<<上傳壓縮的（.zip）IPT 資源配置資料夾>>,"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>> (EML or Frictionless metadata)"
-msgstr ""
+msgstr "<<上傳一個詮釋資料檔案>>（EML 或無摩擦詮釋資料）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
@@ -1067,7 +1067,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:282
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  \"Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)\" is a good title, \"aves_tz_snm\" is not! Avoid using filenames or acronyms known only within your organization.\n"
-msgstr "*標題* - 資源的標題。此標題將作為資源的名稱顯示在 IPT 中，也會出現在 GBIF 註冊表中，並構成引用的一部分。請使用對資料集使用者描述性強的標題，例如「丹麥自然歷史博物館（SNM）的坦尚尼亞鳥類收藏」，而非「aves_tz_snm」。避免使用僅為您的組織所知的檔名或縮寫。\n"
+msgstr "*標題* - 資源的標題。此標題將作為資源的名稱顯示在 IPT 中，也會出現在 GBIF 註冊庫中，並構成引用的一部分。請使用對資料集使用者描述性強的標題，例如「丹麥自然歷史博物館（SNM）的坦尚尼亞鳥類收藏」，而非「aves_tz_snm」。避免使用僅為您的組織所知的檔名或縮寫。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:283
@@ -1079,7 +1079,7 @@ msgstr "*發布組織* - 負責發布（生成、發布或保存）該資源的�
 #: en/modules/ROOT/pages/manage-resources.adoc:284
 #, no-wrap
 msgid "*Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.\n"
-msgstr "*更新頻率* - 資源初次發布後進行更改的頻率。為方便起見，該值將預設為自動發布間隔（如果已開啟自動發布功能），但之後可以隨時將其覆寫。請注意，資源的維護頻率說明也可以在附加詮釋資料頁面中輸入。\n"
+msgstr "*更新頻率* - 資源初次發布後進行更改的頻率。為方便起見，該值將預設為自動發布間隔（如果已開啟自動發布功能），但之後可以隨時將其覆寫。請注意，資源的維護頻率說明也可以在其他詮釋資料頁面中輸入。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:285
@@ -1653,7 +1653,7 @@ msgstr "*程式開發人員* - 提供與資料集相關的資訊學或程式設�
 #: en/modules/ROOT/pages/manage-resources.adoc:424
 #, no-wrap
 msgid "*Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens\n"
-msgstr "*策展人* - 負責維護和記錄集合中標本的代理人。他們的職責包括準備和標記標本，以便於識別，並保護這些標本。\n"
+msgstr "*策展人* - 負責維護和記錄蒐藏資料集合中標本的代理人。他們的職責包括準備和標記標本，以便於識別，並保護這些標本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:425
@@ -1771,24 +1771,24 @@ msgstr "*質量控制* - 此欄位描述為了控制或評估採樣步驟所產�
 #: en/modules/ROOT/pages/manage-resources.adoc:456
 #, no-wrap
 msgid "*Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.\n"
-msgstr ""
+msgstr "*步驟說明* - 研究方法中的步驟是一系列重複元素中的一種。這些元素記錄了研究中使用的一系列方法和程序，以及產生資料檔案的處理步驟。包括方法步驟的文本描述、相關文獻、軟體、儀器、來源資料以及所採取的任何質量控制措施。每個方法應該詳細描述，讓其他研究人員可以理解並在需要時再次用相同方法進行該研究。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:457
 #, no-wrap
 msgid "*Add new method step* -  click on this link to add a text box labelled \"Step Description\" to the page (see above). One may add as many method steps as desired.\n"
-msgstr ""
+msgstr "*新增方法步驟* - 點擊此連結以在頁面上新增一個標記為「步驟說明」的文字框（如上所述）。可以新增任意數量的方法步驟。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:458
 #, no-wrap
 msgid "*Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此方法步驟* - 點擊此連結以移除該連結正下方的方法步驟文字框。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:462
 msgid "This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labelled \"Bibliographic Citations\", and a link labelled \"Add new bibliographic citation\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含有關如何引用此資源的資訊，以及與此資料集相關的引用書目，例如在資料生成過程中有使用或由此產生的相關發布內容。每個引用（無論是資源引用還是書目中的引用）都包含一個有助於在數位資源中找到該引用的唯一引用識別碼（可選），以及一個傳統的文字引用。在輸入任何引用資料之前，此頁面將顯示一個資源的引用識別碼文字框、一個資源引用的文字框、一個標記為「書目引用」的標題，以及一個標記為「新增書目引用」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:463
@@ -1799,70 +1799,70 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:466
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr ""
+msgstr "在 GBIF.org 的資料集頁面上，自由文本引用會被覆蓋 - 更多資訊請參考 https://www.gbif.org/faq?q=citation[GBIF 常見問題]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:468
 #, no-wrap
 msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
-msgstr ""
+msgstr "*資源引用* - 用於引用資料集的單一引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:469
 #, no-wrap
 msgid "Example citation with institutional creator:\n"
-msgstr ""
+msgstr "機構創建者的引用範例：\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:471
 msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
-msgstr ""
+msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. https://doi.org/10.5886/qzxxd2pa"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:473
 msgid "Example citation with 9 creators:"
-msgstr ""
+msgstr "9 位創建者的引用範例："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:475
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f"
-msgstr ""
+msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 1.2. Universite de Montreal Biodiversity Centre. Dataset/Species checklist. https://doi.org/10.5886/1bft7W5f"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
 #, no-wrap
 msgid "*Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.\n"
-msgstr ""
+msgstr "*自動生成 - 開啟/關閉* - 開啟此功能讓 IPT 自動生成資源引用。自動生成的引用格式是基於 DataCite 的推薦格式，它符合《資料引用原則聯合聲明》。此格式包含一個版本號，對於不斷更新的資料集尤為重要。更多資訊請參閱 IPT wiki 中的 xref:citation.adoc[資料集引用格式] 頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (xref:doi-workflow.adoc[using the IPT]), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
-msgstr ""
+msgstr "*引用識別碼* - 用於解析至線上資料集的 DOI、URI 或其他永久識別碼。建議在引用中包含識別碼。如果資源已分配 DOI（xref:doi-workflow.adoc[IPT 使用方式]），IPT 會將 DOI 設為引用識別碼，並且無法再進行更改。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:479
 #, no-wrap
 msgid "*Bibliographic Citations* - the additional citations of other resources related to or used in the creation of this resource.\n"
-msgstr ""
+msgstr "*書目引用* - 與此資源相關的或在此資源創建過程中使用的其他資源的引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:480
 #, no-wrap
 msgid "*Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.\n"
-msgstr ""
+msgstr "*新增書目引用* - 點擊此連結以新增書目中額外引用所需的文字框。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:481
 #, no-wrap
 msgid "*Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.\n"
-msgstr ""
+msgstr "*書目引用* - 與此資源相關或在此資源創建過程中使用的外部資源引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:482
 #, no-wrap
 msgid "*Bibliographic Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end.\n"
-msgstr ""
+msgstr "*書目引用識別碼* - 用於解析至外部線上資源的 DOI、URI 或其他永久識別碼。通常應在引用的最後包含此識別碼。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:483
@@ -1874,12 +1874,12 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:486
 #, no-wrap
 msgid "*Remove this bibliographic citation* - click on this link to remove the citation that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此書目引用* - 點擊此連結以移除該連結正下方的引用。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:490
 msgid "This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labelled \"Add new curatorial unit\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含與資源相關的自然歷史實體蒐藏的資訊（如果有），以及這些集合中稱為策展單元的物件類型列表和其摘要資訊。在輸入任何蒐藏資料之前，頁面將顯示每個區段的標題（蒐藏集合、標本保存方法、策展單元）以及一個標記為「新增策展單元」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:491
@@ -1891,37 +1891,37 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:494
 #, no-wrap
 msgid "*Collections* - the list of collections that this resource is based on.\n"
-msgstr ""
+msgstr "*蒐藏集合* - 此資源所基於的蒐藏集合列表。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:495
 #, no-wrap
 msgid "*Add new citation* -  click on this link to add the text boxes required for an additional collection in the Collections section.\n"
-msgstr ""
+msgstr "*新增蒐藏資料集合* - 點擊此連結以顯示一個文字框來新增額外的蒐集資料集合於蒐藏資料章節。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:496
 #, no-wrap
 msgid "*Collection Name* - the full standard name by which the collection is known or cited in the local language.\n"
-msgstr ""
+msgstr "*蒐藏資料集合名稱* - 蒐藏資料集合在本地語言中被認知或引用的完整標準名稱。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:497
 #, no-wrap
 msgid "*Collection Identifier* - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.\n"
-msgstr ""
+msgstr "*蒐藏資料集合識別碼* - 蒐藏資料集合的 URI（LSID 或 URL）。在 RDF 中用作蒐藏資料集合資源的 URI。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:498
 #, no-wrap
 msgid "*Parent Collection Identifier* - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter \"Not applicable\" if this collection does not have a parent collection.\n"
-msgstr ""
+msgstr "*父蒐藏集合識別碼* - 用於標識此子蒐藏集合的父蒐藏集合。支持構建蒐藏集合和子蒐藏集合的層次結構。如果此蒐藏集合沒有父蒐藏集合，請輸入「不適用」。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:499
 #, no-wrap
 msgid "*Remove this collection* - click on this link to remove the collection that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此蒐藏資料集合* - 點擊此連結以移除該連結正下方的蒐藏資料集合。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:500
@@ -1933,19 +1933,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:503
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr ""
+msgstr "*標本保存方法* - 此資源涉及的標本保存方法列表，說明防止非活體蒐藏集合物理劣化所使用的處理或技術。可選的值基於 {latest-preservation-method}[GBIF 標本保存方法詞彙表]。您可以在達爾文核心標準資料對照準備工作中記錄標本的一系列準備和保存方法（http://rs.tdwg.org/dwc/terms/preparations）。請勿為活體蒐藏集合選擇任何處理方法。此部分可能與集合的策展單元相關。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:504
 #, no-wrap
 msgid "*Add new preservation method* -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.\n"
-msgstr ""
+msgstr "*新增保存方法* - 點擊此連結以顯示一個文字框來新增保存方法。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:505
 #, no-wrap
 msgid "*Remove this preservation method* - click on this link to remove the preservation method that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此保存方法* - 點擊此連結以移除該連結正下方的保存方法。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:506
@@ -1957,67 +1957,67 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:509
 #, no-wrap
 msgid "*Curatorial Units* - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.\n"
-msgstr ""
+msgstr "*策展單元* - 此資源涵蓋的策展單元數量。數量可以以範圍或具有不確定性的數值輸入。例如，策展單元包括皮膚、策展表、針、盒子和罐子等。整體上，此部分按照蒐藏資料集合的物理內容類型進行一個總結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:510
 #, no-wrap
 msgid "*Add new curatorial unit* -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is \"Count Range\".\n"
-msgstr ""
+msgstr "*新增策展單元* - 點擊此連結以顯示一個文字框來新增策展單元。當新增策展單元時，默認的「方法類型」選擇為「數量範圍」。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:511
 #, no-wrap
 msgid "*Method Type* - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.\n"
-msgstr ""
+msgstr "*方法類型* - 此選擇框允許使用者為特定類型物件選擇指定其數量的方法。此數量可以為一個範圍或具有不確定性的數量。選擇後，適當的文字框將出現以呈現該計數方法。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:512
 #, no-wrap
 msgid "*Count Range* - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.\n"
-msgstr ""
+msgstr "*數量範圍* - 此方法允許使用者設置某類單元物件數量的上下限。詳情請看上面的截圖。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:513
 #, no-wrap
 msgid "*Between* - enter the lower bound of the number of objects in this text box.\n"
-msgstr ""
+msgstr "*介於* - 在此文字框中輸入物件數量的下限。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:514
 #, no-wrap
 msgid "*and* - enter the upper bound of the number of objects in this text box.\n"
-msgstr ""
+msgstr "*和* - 在此文字框中輸入物件數量的上限。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:515
 #, no-wrap
 msgid "*Count with uncertainty* - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.\n"
-msgstr ""
+msgstr "*具有不確定性的數量* - 此方法允許使用者設置某類物件的數量及其上下不確定性範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:516
 #, no-wrap
 msgid "*Count* - enter the mean likely number of object in this text box.\n"
-msgstr ""
+msgstr "*數量* - 在此文字框中輸入物件的平均可能數量。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:517
 #, no-wrap
 msgid "*+/-* - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type\n"
-msgstr ""
+msgstr "*+/-* - 對於該特定單位類型物件的可能計數範圍，在此文字框中輸入多於或少於其計數文字框中的數值來代表其可能的上下數量範圍。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:518
 #, no-wrap
 msgid "*Unit Type* - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.\n"
-msgstr ""
+msgstr "*單元類型* - 方法類型和數量所對應的單一物件類型（標本、批次、托盤、盒子、罐子等）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:519
 #, no-wrap
 msgid "*Remove this curatorial unit* - click on this link to remove the curatorial unit that follows immediately below the link.\n"
-msgstr ""
+msgstr "*移除此策展單元* - 點擊此連結以移除該連結正下方的策展單元。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:520
@@ -2034,7 +2034,7 @@ msgstr "外部連結"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:525
 msgid "This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labelled \"Add new external link\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含連結至資源首頁以及資源其他形式（例如資料庫檔案、試算表、連結資料等）的連結與相關資訊。在輸入任何外部連結之前，該頁面會顯示一個資源首頁的文字框以及一個標示為「新增外部連結」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:526
@@ -2046,60 +2046,60 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:529
 #, no-wrap
 msgid "*Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.\n"
-msgstr ""
+msgstr "*資源首頁* - 輸入包含資源或其資料集相關資訊網頁的完整當前網址。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:530
 #, no-wrap
 msgid "*Other Data Formats* - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).\n"
-msgstr ""
+msgstr "*其他資料格式* - 資源資料的其他格式連結（例如，資料庫轉存、試算表、Nexus、連結資料等）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:531
 #, no-wrap
 msgid "*Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.\n"
-msgstr ""
+msgstr "*新增外部連結* - 點擊此連結以顯示一個文字框來新增額外的外部連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:532
 #, no-wrap
 msgid "*Name* - the name of the file or data set.\n"
-msgstr ""
+msgstr "*名稱* - 檔案或資料集的名稱。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:533
 #, no-wrap
 msgid "*Character Set* - the name or code for the character encoding (e.g., ASCII, UTF-8).\n"
-msgstr ""
+msgstr "*字元集* - 字元編碼的名稱或代碼（例如，ASCII、UTF-8）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:534
 #, no-wrap
 msgid "*Download URL* - the URL from which the file for the document or data set can be downloaded in the mentioned format.\n"
-msgstr ""
+msgstr "*下載 URL* - 可下載該指定格式文件或資料集檔案的 URL。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:535
 #, no-wrap
 msgid "*Data Format* - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).\n"
-msgstr ""
+msgstr "*資料格式* - 文件或檔案格式的名稱或代碼（例如，CSV、TXT、XLS、Microsoft Excel、MySQL）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:536
 #, no-wrap
 msgid "*Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).\n"
-msgstr ""
+msgstr "*資料格式版本* - 在資料格式文字框中指定的文件或檔案格式版本（例如，2003、5.2）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:537
 #, no-wrap
 msgid "*Remove this external link* - click on the link having this label to remove the external link that follows immediately below.\n"
-msgstr ""
+msgstr "移除此外部連結 - 點擊此標籤的連結以移除該連結正下方的外部連結。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:541
 msgid "This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labelled \"Add new alternative identifier\"."
-msgstr ""
+msgstr "此詮釋資料頁面包含此資源未在其他詮釋資料頁面中記錄的其餘資訊，包括資源的替代識別碼。在輸入任何替代識別碼之前，該頁面會顯示目的、維護方法說明、額外詮釋資料文字框，替代識別碼區域的標題，以及一個標示為「新增替代識別碼」的連結。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:542
@@ -2111,72 +2111,72 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:545
 #, no-wrap
 msgid "*Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.\n"
-msgstr ""
+msgstr "*建立日期* - 資源首版發布的日期。此值將用於自動生成資源引用時所顯示的發布年份。該值在發布時被自動設定且不可編輯。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:546
 #, no-wrap
 msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).\n"
-msgstr ""
+msgstr "*發布日期* - 資源最後一次發布的日期。此值在發布時自動設定（請參閱 <<資源發布>> 章節）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:547
 #, no-wrap
 msgid "*Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.\n"
-msgstr ""
+msgstr "*資源標誌 URL* - 資源的代表性標誌。可使用標誌 URL 上傳資源，或者從磁碟中選擇影像檔案進行上傳。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:548
 #, no-wrap
 msgid "*Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.\n"
-msgstr ""
+msgstr "*目的* - 資料集開發的目的摘要。包括創建資料集的目標以及資料集的用途。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:549
 #, no-wrap
 msgid "*Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.\n"
-msgstr ""
+msgstr "*維護說明* - 描述該資源維護的頻率。此部分補充說明基本詮釋資料頁面中所選擇的更新頻率。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:550
 #, no-wrap
 msgid "*Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.\n"
-msgstr ""
+msgstr "*其他資訊* - 未被其他資源詮釋資料欄位記錄的任何資訊，例如專案歷史、使用當前資料發布的內容、其他地方發布的相關資料資訊等。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:551
 #, no-wrap
 msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr ""
+msgstr "*替代識別碼* - 此部分包含該資源的額外或替代識別碼列表。當資源被發布時，IPT 的資源 URL 會被新增到識別碼列表中。如果資源被分配了一個新的 DOI（參見 xref:doi-workflow.adoc[使用 IPT]），IPT 將確保此 DOI 被放置在識別碼列表的首位。當資源在 GBIF 上被註冊時，GBIF註冊表的唯一資源鍵也會新增至識別碼列表。如果該資源代表了一個現有的 GBIF 註冊資源，則可將現有的已註冊資源之 UUID 新增至識別碼列表。這將幫助 IPT 資源在註冊過程中更新現有資源，而非註冊一個全新的資源。有關如何遷移資源的更多資訊，請參閱 <<遷移資源>> 章節。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:552
 #, no-wrap
 msgid "*Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.\n"
-msgstr ""
+msgstr "*新增替代識別碼* - 點擊此連結以顯示一個文字框來新增資源的替代識別碼。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:553
 #, no-wrap
 msgid "*Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).\n"
-msgstr ""
+msgstr "*替代識別碼* - 該資源的替代識別碼文字（例如 URL、UUID 或其他唯一鍵值）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:554
 #, no-wrap
 msgid "*Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.\n"
-msgstr ""
+msgstr "*移除此替代識別碼* - 點擊此連結以移除該連結正下方的替代識別碼。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:555
 #, no-wrap
 msgid "Publication"
-msgstr ""
+msgstr "發布資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:557
 msgid "This area of the Resource Overview page allows a user to publish a version of the resource."
-msgstr ""
+msgstr "使用者可以利用資源概覽頁面中的這個部分發布資源的新版本。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:558
@@ -2188,206 +2188,206 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:561
 msgid "Click on the {threedots} menu and select the \"Publish\" option to trigger publishing a new version. The \"Publish\" option will be enabled if"
-msgstr ""
+msgstr "點擊 {threedots} 選單並選擇「發布」選項以觸發新版本的發布。當以下條件滿足時，「發布」選項將啟用："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:563
 msgid "the required metadata for the resource are complete, and"
-msgstr ""
+msgstr "資源的必要詮釋資料已完成；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:564
 msgid "the user has the role \"Manager with/without registration rights\"."
-msgstr ""
+msgstr "使用者具有「管理者（具有/不具有註冊權限）」角色。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:566
 msgid "Once the resource is registered only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear:"
-msgstr ""
+msgstr "只有具有「註冊權限管理者」角色的使用者可以發布已註冊的資源，因為資源的註冊會在每次發布過程中被更新（請參閱「選單：系統管理」章節中「管理使用者帳戶」部分的「創建新使用者」章節下的角色解釋）。按下「發布」選項後，將顯示一個確認對話框："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:567
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishConfirm.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishConfirm.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:570
 msgid "The resource manager should enter a summary of what changes have been made to the resource (metadata or data) since the last/current version was published. The change summary is stored as part of the resource version history, and can be edited by resource managers via the resource homepage. A complete description of what happens after pressing \"Publish\" is explained in the \"Publishing steps\" section below."
-msgstr ""
+msgstr "資源管理者需輸入自上一次/當前版本發布以來，資源（詮釋資料或資料）所做更改的摘要。此更改摘要將作為資源版本歷史的一部分被儲存，並可由資源管理者通過資源首頁編輯。按下「發布」後會發生的完整說明，請參閱以下的「發布步驟」章節。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:571
 #, no-wrap
 msgid "A pending publication:"
-msgstr ""
+msgstr "一個待發布的內容："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:575
 msgid "Shown here is table that compares the current version against the pending version. Resource managers can use this table to manage resource versioning, preview the pending version, plus review and validate the current version. The data in the table includes:"
-msgstr ""
+msgstr "此處顯示一個表格，用於比較當前版本與待發布版本。資源管理者可以使用此表格管理資源版本控制、預覽待發布版本，並審核和驗證當前版本。表格中的資料包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:577
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version.  This is usually relevant only if you use the xref:doi-workflow.adoc[IPT-issued DOI workflow].\n"
-msgstr ""
+msgstr "*版本* - 跟踪當前/待發布版本`主版本.次版本`的版本號。通常僅與 xref:doi-workflow.adoc[IPT 發行的 DOI 流程] 相關。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:578
 #, no-wrap
 msgid "*Current* - current already published version.\n"
-msgstr ""
+msgstr "*當前* - 已發布的當前版本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:579
 #, no-wrap
 msgid "*Pending* - next version.\n"
-msgstr ""
+msgstr "*待發布* - 下一個版本。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:580
 #, no-wrap
 msgid "*License* - resource license (e.g. CC0 1.0).\n"
-msgstr ""
+msgstr "*授權* - 資源的授權（例如 CC0 1.0）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:581
 #, no-wrap
 msgid "*DOI* - see xref:doi-workflow.adoc[] if IPT-issued DOIs is enabled.\n"
-msgstr ""
+msgstr "*DOI* - 若啟用了 IPT 發行的 DOIs，請參閱 xref:doi-workflow.adoc[]。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:582
 #, no-wrap
 msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.\n"
-msgstr ""
+msgstr "*可見性* - 當前/待發布版本的可見性。為了將資源註冊到 GBIF，資源管理者需確保當前版本為公開狀態。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:583
 #, no-wrap
 msgid "*Published on* - to date the current version was published on / the date the pending version will be published on.\n"
-msgstr ""
+msgstr "*發布於* - 當前版本發布的日期/待發布版本將發布的日期。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:584
 #, no-wrap
 msgid "*Publication log* - button. Click to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the <<Publishing Status page>> section. This is not applicable to the pending version.\n"
-msgstr ""
+msgstr "*發布日誌* - 按鈕。點擊以檢索當前版本的發布日誌。資源管理者可使用發布日誌來診斷發布失敗的原因。例如，有關內容的詳細說明請參閱以下 <<發布狀態>> 章節。此項不適用於待發布版本。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:585
 #, no-wrap
 msgid "Publishing steps"
-msgstr ""
+msgstr "資源發布步驟"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
-msgstr ""
+msgstr "發布資源的操作包括以下描述的步驟。資源發布為全有或全無的操作，這意味著每個步驟都必須成功完成，才能發布新版本。如果任何步驟失敗，或取消發布操作，版本將復原至最後已發布的版本。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
 msgid "The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved."
-msgstr ""
+msgstr "當前的詮釋資料將寫入名為 eml.xml 的檔案中。同時，還會保存一個遞增版本的檔案，命名為 eml-n.xml（其中 n 為與發布版本對應的遞增版本號）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:591
 msgid "A data publication document in Rich Text Format (RTF) is written to the file shortname.rtf. An incremental version of the RTF file named shortname-n.rtf is always saved."
-msgstr ""
+msgstr "一份採用豐富文字格式（Rich Text Format，RTF）的資料發布文件將寫入名為 shortname.rtf 的檔案中。同樣，還會保存一個遞增版本的 RTF 檔案，命名為 shortname-n.rtf。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:592
 msgid "The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see \"Data Validation\" section below)."
-msgstr ""
+msgstr "根據資料對照配置的當前原始資源資料將寫入名為 dwca.zip 的達爾文核心集檔案中。系統將接著對達爾文核心集檔案中的資料檔案進行驗證（詳見下方「資料驗證」部分）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:593
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
-msgstr ""
+msgstr "如果 IPT 的存檔模式已啟用（詳見 xref:administration.adoc#configure-ipt-settings[配置 IPT 設定]部分），還會保存達爾文核心集檔案的遞增版本檔案，命名為 dwca-n.zip。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:594
 msgid "The information about the resource is updated in the GBIF Registry if the resource is registered."
-msgstr ""
+msgstr "如果資源已註冊，該資源的相關資訊將更新至 GBIF 註冊庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:595
 msgid "The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT."
-msgstr ""
+msgstr "如果使用者透過 IPT 分配了 DOI 給資源，則該資源的 DOI 詮釋資料將被更新並傳播至 DOI 解析器。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:596
 #, no-wrap
 msgid "Data Validation"
-msgstr ""
+msgstr "資料驗證"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:599
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
-msgstr ""
+msgstr "IPT 將資料檔案以制表符分隔的格式寫入 DwC-A，且不包含斷行符號（*注意：原始資料中的斷行符號將被替換為空字串*）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:601
 msgid "After writing, the IPT also validates their content in the following ways:"
-msgstr ""
+msgstr "寫入後，IPT 還會通過以下方式驗證其內容："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:603
 msgid "If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique."
-msgstr ""
+msgstr "如果核心記錄識別碼（例如 Occurrence 核心的核心記錄識別碼為 occurrenceID）的欄位存在於核心資料檔案中，IPT 將驗證每筆紀錄是否具有該識別碼，且該識別碼是唯一的。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:604
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr ""
+msgstr "達爾文核心術語 http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] 是出現紀錄延伸資料集中必須的術語。因此，IPT 將驗證每個出現紀錄資料檔案是否具有 basisOfRecord 欄位。此外，還會驗證每筆出現紀錄是否具有有效的 basisOfRecord 值，並與 {latest-basis-of-record}[達爾文核心標準類型詞彙表] 相匹配。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:605
 #, no-wrap
 msgid "Publishing Status page"
-msgstr ""
+msgstr "資源發布狀態頁面"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:608
 msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
-msgstr ""
+msgstr "一個標題為「資源發布狀態」的頁面將顯示各個發布步驟為成功或失敗的狀態消息。新版本的發布為全有或全無的事件，這意味著所有步驟必須成功完成，否則此版本將被撤銷。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:610
 #, no-wrap
 msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
-msgstr ""
+msgstr "*資源概覽* - 此連結將導向剛發布的資源的「資源管理」頁面。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:611
 #, no-wrap
 msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
-msgstr ""
+msgstr "*發布日誌* - 此連結將下載名為 publication.log 的檔案，其中包含發布過程的詳細輸出。為了幫助管理者識別發布過程中的問題，該檔案包括以下具體資訊：\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:612
 #, no-wrap
 msgid "how many records couldn't be read and were not written to the DwC-A\n"
-msgstr ""
+msgstr "有多少筆紀錄無法讀取，未寫入達爾文核心集檔案（DwC-A）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:613
 #, no-wrap
 msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
-msgstr ""
+msgstr "有多少筆紀錄缺少識別碼，或有重複的識別碼（如果核心紀錄識別碼欄位已進行對照）\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:614
 #, no-wrap
 msgid "how many records contained fewer columns than the number that was mapped\n"
-msgstr ""
+msgstr "有多少筆紀錄的欄位數少於已對照的欄位數量\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:615
 #, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
-msgstr ""
+msgstr "*日誌消息* - 「資源發布狀態」頁面會顯示儲存於 publication.log 中資訊的摘要。該檔案儲存在 IPT 資料目錄中對應資源的資料夾內，並可以透過上述「發布日誌」連結訪問。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:616
@@ -2404,34 +2404,34 @@ msgstr "自動定期發布"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:621
 msgid "To turn on automated publishing, in the Auto-publishing section click the {threedots} menu and select \"Edit\"."
-msgstr ""
+msgstr "要啟用自動發布功能，請在「自動發布」點擊 {threedots} 選單，然後選擇「編輯」。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:622
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatus.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:625
 msgid "Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press \"Save\"."
-msgstr ""
+msgstr "選擇五種發布間隔之一（年度、半年、每月、每週或每日）並設定時間，然後按下「儲存」。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:626
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingSetup.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:629
 msgid "When automated publishing is on, the publishing interval and next published date are clearly displayed in the auto-publishing section. The \"Edit\" option can be used to change or disable auto-publishing."
-msgstr ""
+msgstr "啟用自動發布後，發布間隔和下一次發布日期將會清楚地顯示在自動發布部分。可通過「編輯」選項更改或停用自動發布。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:631
 msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
-msgstr ""
+msgstr "在失敗的情況下，發布將自動重試最多三次，以防止無限循環的發布。設定為自動發布但未成功完成的資源，其下一次發布日期將設置為過去的時間，並在公開和資源管理表格中被突出標記。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:632
@@ -2442,13 +2442,13 @@ msgstr "可見度"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr ""
+msgstr "在「資源管理」頁面的「公開狀態」部分，擁有資源管理員權限的使用者可以更改資源的公開狀態。資源的公開狀態決定了誰可以查看它，以及該資源是否可以註冊到 GBIF。預設情況下，每個資源僅對創建者和在 IPT 上具有管理員角色的使用者可見。關於每種公開狀態的詳細說明，請參考以下資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:636
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
-msgstr ""
+msgstr "*私有* - 私有資源僅對創建者、在 IPT 上被授權管理該資源的使用者或具有管理員角色的使用者可見。這主要用於保護資源不被公開，直到其配置完成且正確無誤。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:638
@@ -2459,30 +2459,30 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:641
 msgid "When the resource is ready for public visibility, click on the {threedots} menu and select the option labelled \"Change\". This will display a modal window with two options. You can make the resource public right away or at a set date"
-msgstr ""
+msgstr "當資源準備好公開時，點擊 {threedots} 選單並選擇標記為「更改」的選項。將彈出一個視窗，提供「立即公開」或「設置為某個日期公開」的選項。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:642
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:644
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:647
 msgid "After submitting the form a message will appear at the top of the page saying that the status has been changed to \"Public\"."
-msgstr ""
+msgstr "提交表單後，頁面頂部將顯示一個表示狀態已更改為「公開」的消息。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:650
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
-msgstr ""
+msgstr "*公開* - 公開資源對於使用該 IPT 實例的任何人都可見（在 IPT 首頁的公開資源表格中）。資源最終可以通過網際網路被任何知道其主頁 URL 的人訪問。不過，該資源只有在註冊到 GBIF 註冊庫後才能通過 GBIF 網站全域搜尋到（參見 <<註冊資源>> 部分）。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:652
@@ -2493,24 +2493,24 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:655
 msgid "One option appear in the {threedots} menu of the visibility area. Clicking on the option labelled \"Change\" will display a modal window"
-msgstr ""
+msgstr "點擊在此部分的 {threedots} 選單中的「更改」選項將顯示彈出窗口。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:656
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:659
 msgid "Clicking on button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
-msgstr ""
+msgstr "點擊標記為「是」的按鈕將完全移除資源的公開狀態，並將其恢復為私有狀態。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:662
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
-msgstr ""
+msgstr "*已註冊* - 已註冊的資源可通過 GBIF 網站搜尋，並可在 GBIF 平台上索引及訪問其資料。請注意，註冊後可能需要最多一小時，資料才會被 GBIF 完成索引。註冊完成後，有關該資源的註冊資訊將顯示在 <<註冊資源>> 部分。\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:664
@@ -2522,59 +2522,59 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "如果資源已註冊，每次點擊「發布」按鈕時，其註冊資訊也會在 GBIF 註冊庫中被更新。已註冊資源的公開狀態無法更改為私有。如果需要從 GBIF 註冊庫中移除資源，請按照「選單：資源管理」部分中「資源概覽」標題下的「刪除資源」部分所述的步驟進行。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:669
 #, no-wrap
 msgid "Registration"
-msgstr ""
+msgstr "註冊資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:672
 msgid "The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry."
-msgstr ""
+msgstr "如果資源尚未被註冊到 GBIF 註冊庫上，使用者將無法在 GBIF 網頁上成功全域搜尋該資源。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:673
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "Registration is enabled when:"
-msgstr ""
+msgstr "註冊資源的啟用條件包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:678
 msgid "the required metadata for the resource are complete,"
-msgstr ""
+msgstr "資源的必需詮釋資料已完成；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:679
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
-msgstr ""
+msgstr "資源已被發布（請參考下方資源概覽頁的 <<資源發布>> 章節）；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:680
 msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
-msgstr ""
+msgstr "使用者擁有「具有註冊權限的管理員」角色（請參考「選單：系統管理」章節「管理使用者帳戶」部分中「建立新使用者」的角色說明）。具有管理員角色的使用者可將「具有註冊權限的管理員」角色授予其他使用者。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:682
 msgid "Click on the {threedots} menu and select the option labelled \"Register\" to register the resource with the GBIF Registry."
-msgstr ""
+msgstr "點擊 {threedots} 選單並點選「註冊」以將資源註冊到 GBIF 註冊庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
-msgstr ""
+msgstr "如果希望此資源更新現有的已註冊 DiGIR、BioCASe 或 TAPIR 資源，請參考下方 <<遷移資源>> 部分。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:686
 msgid "Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
-msgstr ""
+msgstr "點擊此選項將開啟一個對話框，用以確認您已閱讀並理解 GBIF 資料共享協議（含連結）。勾選複選框以表示您同意這些條款。只有在勾選同意後，對話框底部才會出現一個標記為「是」的按鈕。點擊「是」以註冊該資源，或者點擊「否」以延遲決定並關閉對話框。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:687
@@ -2585,7 +2585,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:690
 msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\". Registration section when the resource is registered:"
-msgstr ""
+msgstr "如果註冊成功，頁面頂部將出現一條訊息，表示狀態已更改為「已註冊」。當資源註冊成功時，註冊區域將顯示以下內容："
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:693
@@ -2596,23 +2596,23 @@ msgstr "網路"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:696
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
-msgstr ""
+msgstr "此區域允許資源加入一個或多個 GBIF 網絡——這些網絡是基於特定主題的多個發布者的資料集集合。GBIF 最大的網絡是 https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[海洋生物多樣性資訊系統 (OBIS)]。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "To add the resource to a network, click on the {threedots} menu and select the \"Add\" option. To remove it, click the {threedots} menu on the network item and select \"Delete\"."
-msgstr ""
+msgstr "要將資源添加到某個網絡，點擊 {threedots} 選單並選擇「添加」選項。要移除資源，點擊該網絡項目的 {threedots} 選單並選擇「刪除」。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:702
 msgid "Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk."
-msgstr ""
+msgstr "請僅在獲得網絡管理員或 GBIF 支援中心的批准後，才將您的資源添加到某個網絡。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:703
@@ -2629,7 +2629,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:708
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the {threedots} menu and selecting option labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the respective {threedots} menu and selecting the option labelled \"Delete\"."
-msgstr ""
+msgstr "每個資源都可以明確指定一個或多個管理員，這些管理員有權查看、更改和移除資源。創建資源的使用者自動擁有這些權限。可以從資源概覽頁面的選擇框中按名稱選擇其他管理員，然後點擊 {threedots} 選單並點選「添加」來賦予其相同的權限。與資源相關的任何擁有「具有註冊權限的管理員」角色的使用者，也可以在 GBIF 註冊庫中註冊並更新該資源。所有具有管理員角色的使用者將自動擁有 IPT 實例中所有資源的完整管理權限。該區域將顯示資源創建者的姓名和電子郵件地址。如果已添加管理員，其姓名和電子郵件地址將列在創建者之下。任何已添加的管理員都可以通過點擊其相應的 {threedots} 選單並點選「刪除」來移除其管理權限。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:709
@@ -2641,136 +2641,136 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:711
 #, no-wrap
 msgid "Delete a Resource"
-msgstr ""
+msgstr "刪除資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:714
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will display a modal confirmation window."
-msgstr ""
+msgstr "在資源概覽頁面上點擊標記為「刪除」的按鈕，將顯示一個確認視窗。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:715
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDelete.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:718
 msgid "For registered with GBIF resources, it will display a modal window with two options."
-msgstr ""
+msgstr "對於已在 GBIF 註冊的資源，將彈出一個提供兩個選項的視窗："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:719
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDeleteRegistered.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:722
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
-msgstr ""
+msgstr "*從 IPT 和 GBIF.org 中刪除*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:723
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
-msgstr ""
+msgstr "*僅從 IPT 中刪除（未註冊）*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:725
 msgid "Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org."
-msgstr ""
+msgstr "無論選擇哪個選項，都會將資源從 IPT 中移除，並從文件系統中刪除相關的所有檔案。第一個選項也將會從 GBIF.org 中刪除該資源。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:727
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
-msgstr ""
+msgstr "在刪除資源之前，您可以備份資料以便日後恢復。為此，請查看 IPT 的資料目錄內的伺服器，在資源資料夾中找到目標資源的目錄（以資源的簡短名稱命名）。將該目錄複製到 IPT 資料目錄之外的安全存儲位置。這樣保存的資源可以通過「選單：資源管理」部分「創建新資源」標題下的「整合現有資源配置資料夾」步驟，重新整合到 IPT 中或與另一個 IPT 實例整合。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:728
 #, no-wrap
 msgid "Migrate a Resource"
-msgstr ""
+msgstr "遷移資源"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:731
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
-msgstr ""
+msgstr "現在有一種方式可以將現有已註冊的 DiGIR、BioCASe、TAPIR 或 DwC-A 資源遷移到 IPT。這使現有資源能夠保留其 GBIF 註冊庫的 UUID。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:733
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
-msgstr ""
+msgstr "此方法只需要將 IPT 資源配置更新為其在 GBIF 註冊庫中對應的已註冊資源。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:735
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
-msgstr ""
+msgstr "要將現有已註冊資源遷移到您的 IPT 資源，請遵循以下指示："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:737
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
-msgstr ""
+msgstr "確保 IPT 資源是公開且未註冊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:738
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
-msgstr ""
+msgstr "確定擁有*現有已註冊資源*的組織已配置為可發布資料集的組織，並且已添加至 IPT。請參閱 xref:administration.adoc#add-organization[添加組織] 部分以瞭解更多資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:739
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
-msgstr ""
+msgstr "在基本詮釋資料頁面上的下拉選單中點選擁有該資源的組織。請記得儲存基本詮釋資料頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:740
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr ""
+msgstr "前往*現有已註冊資源*的 GBIF 資料集頁面。根據 IPT 運行的模式（測試或生產），您需要分別訪問 https://www.gbif-uat.org/dataset 或 https://www.gbif.org/dataset。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:741
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
-msgstr ""
+msgstr "確保 GBIF 資料集頁面顯示*現有已註冊資源*正確配對相應的*資源所屬組織*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:743
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
-msgstr ""
+msgstr "如果顯示的*資源所屬組織*不同，必須先更新 GBIF 註冊庫才能繼續執行後續步驟。請發送電子郵件至 helpdesk@gbif.org 來請求更新。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:745
 msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
-msgstr ""
+msgstr "從 GBIF 資料集頁面的 URL 複製 GBIF 註冊庫的 UUID，例如 `5d637678-cb64-4863-a12b-78b4e1a56628`。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:746
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
-msgstr ""
+msgstr "將此 UUID 添加到 IPT 資源 的「其他詮釋資料」頁面上的替代識別碼列表中。請記得儲存「其他詮釋資料」頁面。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:747
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
-msgstr ""
+msgstr "確保 IPT 中沒有其他公開或已註冊的資源使用該 UUID 作為它們的替代識別碼。如果您正在嘗試替換 IPT 中現有的已註冊資源，則必須先刪除該資源。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
-msgstr ""
+msgstr "在資源概覽頁面上，點擊「註冊」按鈕。您需要確認已閱讀並理解 GBIF 資料共享協議，才能執行註冊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:750
 msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
-msgstr ""
+msgstr "您將收到確認消息，顯示 GBIF 中的現有資料集已被更新。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:751
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:753
 msgid "If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry"
-msgstr ""
+msgstr "如果適用，請發送電子郵件至 helpdesk@gbif.org，通知他們 DiGIR/BioCASe/TAPIR/IPT 支援該資源的技術安裝是否已棄用，以及是否可以從 GBIF 註冊庫中刪除。"
 
