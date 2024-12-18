@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<3-1-1-december-2024,3.1.1>>.
+The current, stable release is version <<3-1-2-december-2024,3.1.2>>.
 
 You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
