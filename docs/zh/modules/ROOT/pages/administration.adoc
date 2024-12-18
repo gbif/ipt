@@ -1,0 +1,241 @@
+= 選單：系統管理
+
+此選單只有系統管理員登入時顯示。
+
+此部分描述了「選單：管理」的每項功能。點擊「選單：管理」將打開一個頁面（如下圖所示），使用者可通過點擊相應按鈕執行特定的管理任務。
+
+image::ipt2/administration/IPTAdminBeforeRegistration.png[]
+
+== 設定 IPT 參數
+此頁面允許管理員設定或更改此 IPT 實例的特性。
+
+image::ipt2/administration/IPTAdminConfigIPT.png[]
+
+* *IPT 資料目錄* - 顯示伺服器上儲存 IPT 配置、資源和日誌檔案的目錄。
+* *預設語言* - 指 IPT 的預設語言，預設為英文。
+* *IPT 管理員電子郵件* - 顯示在登入頁面上，如果有忘記密碼的使用者可以透過此電子郵件聯繫 IPT 管理員。如果未設定，則使用第一位管理員的電子郵件。
+* [[public-url]] *公開 URL* - 這是指向此 IPT 實例根目錄的 URL。在 IPT 安裝過程中會自動設定該 URL。公開 URL 必須可以通過網際網路存取，以便 IPT 完全正常運行。如果將公開 URL 設定為 localhost，則無法將此 IPT 實例註冊到 GBIF，導致此實例無法與組織關聯，且資源將無法被公開存取。
++
+--
+[NOTE]
+.手動更新公開 URL
+====
+一旦 IPT 設置參數被儲存，IPT 會測試公開 URL 是否可從客戶端電腦進行訪問。如果在指定的公開 URL 下無法訪問該 IPT 實例，則會顯示警告訊息，且變更將不會被儲存。如果新 URL 尚未生效（例如需要重啟 IPT 的來更新埠的更改），可按以下步驟修改公開 URL：
+
+* 關閉 IPT。
+* 在 IPT 的資料目錄中，使用文字或程式編輯器（如 Notepad、TextEdit、vim，但勿使用 Microsoft Word）打開檔案 `config/ipt.properties`。
+* 在 `ipt.properties` 檔案中，將以 `ipt.baseURL` 開頭的行更改為包含新 URL 和新埠的值，並在冒號前增加反斜槓符號。例如，輸入 `ipt.baseURL=http\://example.org\:7001/ipt` 以指向 http://example.org:7001/ipt。
+* 在伺服器容器中重新啟動 IPT。
+* 根據本使用手冊中「發布所有資源」部分的說明，更新 IPT 的詮釋資料。
+====
+
+--
+* *機構代理 URL* - 如果 IPT 所在的伺服器無法直接通過 HTTP/HTTPS 訪問網際網路，而必須通過機構代理伺服器路由傳出 HTTP/HTTPS 請求，請在此輸入主機地址和埠號。例如：`http://proxy.example.org:8080`。
+* *Google Analytics 密鑰* - 如果希望通過 Google Analytics 追蹤 IPT 實例的使用情況，可在此文字框中輸入您的 Google Analytics 密鑰。更多關於 Google Analytics 的資訊請參閱 https://www.google.com/intl/en/analytics/。
+* *除錯模式* - 如果希望 IPT 以詳細除錯模式記錄日誌，可勾選此選項。除錯模式通常僅在追蹤 IPT 問題時才需要。IPT 日誌檔案位於 IPT 資料目錄中的 debug.log 檔案。資料目錄會在安裝過程的第一步中設定（參見「起手式：安裝及初始設定」）。管理員可以參考「選單：系統管理」部分「檢視 IPT 日誌」標題下的資訊來查看 debug.log 檔案。
+* *封存模式* - 勾選此框將封存 IPT 實例中所有資源的已發布版本，從而追蹤資源的版本歷史。如果未勾選，舊版本將被最新版本覆蓋。請注意磁碟空間不足的可能性。
+* *封存版本數量* - 啟用封存模式後，可設定數值以保留舊版本的數量，並自動刪除更早的版本。
+* *IPT 伺服器位置* - 此頁面區域允許管理員設定 IPT 所在伺服器的地理座標（緯度和經度）。設定這些座標允許 GBIF 在全球其他註冊的 IPT 實例中對本實例進行地圖定位。
+
+== 發布所有資源
+此選項會發布所有資源，屬於管理操作。因此，對於每個資源，它會建立一個新的 DwC-A、EML 和 RTF，並透過 RSS 傳播更新至註冊庫。此外，它也會更新 IPT 和註冊庫中的已註冊資源的詮釋資料。如果多個資源已被更新，而您希望一次性發布所有這些資源的新版本而非逐一發布，請點擊此按鈕。
+
+== 配置使用者帳戶
+This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. Users can be deleted or passwords reset by clicking on icons on the right side.
+
+image::ipt2/administration/IPTAdminUserAccounts.png[]
+
+=== Create a new user
+A new user can be created by clicking on the button labelled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labelled "Save".
+
+image::ipt2/administration/IPTAdminUserCreateUser.png[]
+
+* *Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.
++
+--
+[NOTE]
+====
+If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.
+====
+
+--
+* *First name* - The first name of the user.
+* *Last name* - The last name of the user.
+* *Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.
+* *Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.
++
+--
+[NOTE]
+====
+If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the "Account" link in the header in the upper right corner of every page after logging in.
+====
+
+--
+* *Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
+
+After creation, an email with credential can be sent to the user:
+
+image::ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png[]
+
+=== Modify an existing user
+Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled "Save". Details of the information to be entered on this page can be found in the explanations in the "Create a new user" section, above.
+
+image::ipt2/administration/IPTAdminUserEditUser.png[]
+
+The Options dropdown contains to buttons:
+
+* *Reset password* - If a user forgets a password, clicking on the button labelled "Reset Password" can generate a new one, after which a new password is given in an information message at the top of the page.
+* *Delete* - delete current user.
++
+--
+[NOTE]
+====
+The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.
+====
+
+--
+
+After password reset, an email with a new password can be sent to the user:
+
+image::ipt2/administration/IPTAdminUserEmailResetPassword.png[]
+
+=== Delete a user
+Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labelled "Delete" to remove this user account. There are several conditions under which a user cannot be deleted:
+
+. An admin cannot delete their own account while logged in therefore it must be deleted by another admin.
+. The IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account.
+. Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned.
+. A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role.
+
+== Configure GBIF registration options
+This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the "Configure Organizations" heading in the "Administration Menu" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page.
+
+The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labelled "Validate".
+
+If the validation test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Causes for an error include:
+
+* *No Internet connectivity* - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labelled "Validate" button is clicked. Restore Internet connectivity before trying to proceed with registration.
+* *Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).
+* *Firewall* - If the Internet connection is live, a firewall may be preventing connections to the public URL or institutional proxy. Change the firewall or institutional proxy settings to all outside connections.
+* *GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF Help Desk (helpdesk@gbif.org).
+
+image::ipt2/administration/IPTAdminRegistrationStep1.png[]
+
+If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its shared token must be known*. For explanations of the fields and selections on this form, refer to the information below.
+
+image::ipt2/administration/IPTAdminRegistrationStep2.png[]
+
+Following are explanations of the specific information to select or enter:
+
+* *Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.
+* *Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled "Save" is clicked.
+* *Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.
+* *Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.
+* *Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.
+* *Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.
+* *Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.
+* *Contact Email* - enter the current email address of the person whose name is given in the Contact Name.
+* *IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.
+* *Save* - when all of the information above is entered or selected, click on the button labelled "Save" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.
+* *Note*: Any changes to the IPT registration (rather than resource registration - for which see the "Visibility" section under the "Resource Overview" heading in the "Manage Resources Menu" section as well as the information under the "Publish all resources" heading in the "Administration Menu" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).
+
+=== Edit GBIF registration
+After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Help Desk (helpdesk@gbif.org) directly.
+
+image::ipt2/administration/IPTAdminEditRegistration.png[]
+
+Network view:
+
+image::ipt2/administration/IPTAdminEditRegistrationNetwork.png[]
+
+Edit organization's shared tokens view:
+
+image::ipt2/administration/IPTAdminEditRegistrationTokens.png[]
+
+== Configure Organizations
+This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used.
+
+****
+_Assigning DOIs within the IPT is unusual, very few publishers use this function. See xref:doi-workflow.adoc[]._
+
+An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessarily have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
+****
+
+image::ipt2/administration/IPTAdminOrgs.png[]
+
+=== Edit organization
+On this page a user having the Admin role can edit the organization. Click on the button labelled "Edit" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below.
+
+image::ipt2/administration/IPTAdminOrgsEditOrg.png[]
+
+Following are explanations of the specific information to select or enter:
+
+* *Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.
+* *Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.
+* *Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.
+* *Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.
+* *DOI registration agency* - the type of account used to xref:doi-workflow.adoc[register DOIs] for resources; only DataCite is supported. _Most publishers do not need this feature._ *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). Confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.
+* *Account username* - the username (symbol) of the DataCite account issued to the organization.
+* *Account password* - the password of the DataCite account issued to the organization.
+* *DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/[test prefix] when running the IPT in test mode.
+* *Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.
+
+=== Add organization
+Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled "Add" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organization" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled "Save" to add the selected organization to the list.
+
+image::ipt2/administration/IPTAdminOrgsAddOrg.png[]
+
+== Configure Core Types and Extensions
+This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence, Taxon, and Event for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the "Darwin Core Mappings" heading of the "Resource Overview" section.
+
+Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord].
+
+Following the lists of installed Core Types and Extensions, there is a section labelled "Synchronize Extensions and Vocabularies" having a single button labelled "Synchronize". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section.
+
+image::ipt2/administration/IPTAdminExtensions.png[]
+
+The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labelled either "Install" or "Remove". If the extension is out-of-date, another button labelled "Update" will also appear. In the right-hand column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the date it was issued (released), the number of properties (fields, terms) in the extension, the name of the extension, its namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at http://rs.tdwg.org/dwc/terms/guides/text/. Following are the actions that can be taken with respect to extensions:
+
+=== Synchronize Extensions and Vocabularies
+An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating in the IPT. Click on the button labelled "Synchronize" to synchronize existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronization was successful or if there were any errors.
+
+=== View extension details
+The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
+
+image::ipt2/administration/IPTAdminExtensionsDetail.png[]
+
+For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label "Vocabulary:". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers.
+
+image::ipt2/administration/IPTAdminExtensionsDetailVocabulary.png[]
+
+=== Install extension
+For any of the extensions that have not yet been installed in the IPT, there is a button labelled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.
+
+=== Remove extension
+For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
+
+=== Update extension
+For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
+
+image::ipt2/administration/IPTAdminExtensionsUpdate.png[]
+
+== Data Packages
+
+This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields) that support a specific purpose.
+
+image::ipt2/administration/IPTAdminDataPackages.png[]
+
+Details page:
+
+image::ipt2/administration/IPTAdminDataPackagesDetail.png[]
+
+== UI Management
+
+The IPT logo and colour scheme can be managed from the UI Management page.
+
+image::ipt2/administration/IPTAdminUIManagement.png[]
+
+== 檢視 IPT 日誌
+Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.
+
+image::ipt2/administration/IPTAdminLogs.png[]
