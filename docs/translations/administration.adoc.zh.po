@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-23 13:04\n"
+"PO-Revision-Date: 2024-12-23 14:33\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -230,23 +230,23 @@ msgstr "*角色* - 使用者在此 IPT 實例中的角色。具有管理員角�
 #: en/modules/ROOT/pages/administration.adoc:66
 #, no-wrap
 msgid "*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.\n"
-msgstr ""
+msgstr "*密碼* - 使用者的密碼必須至少包含四個字元，並應確保密碼安全性的強度且避免遺忘密碼，因為密碼無法從 IPT 中恢復。\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:71
 msgid "If a user's password is lost, it can be reset to an automatically generated new value by a user having the Admin role. It is the responsibility of the Admin user to communicate this new password to the user for whom it was reset. The user can then change the password to the desired value by entering it in the IPT Account page accessible through the \"Account\" link in the header in the upper right corner of every page after logging in."
-msgstr ""
+msgstr "若使用者遺失密碼，管理員角色的使用者可以重設密碼為自動生成的新值。重設密碼後，管理員必須將新密碼傳達給該使用者。使用者登入後，可以透過右上角「帳戶」連結中的 IPT 帳戶頁面更改密碼。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:75
 #, no-wrap
 msgid "*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
-msgstr ""
+msgstr "*確認密碼* - 輸入與「密碼」欄位完全相同的值，以確認密碼輸入正確。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "After creation, an email with credential can be sent to the user:"
-msgstr ""
+msgstr "成功創建帳戶後，可以將包含憑證的電子郵件傳送給使用者："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:78
@@ -258,12 +258,12 @@ msgstr "ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png"
 #: en/modules/ROOT/pages/administration.adoc:80
 #, no-wrap
 msgid "Modify an existing user"
-msgstr ""
+msgstr "修改現有使用者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:82
 msgid "Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled \"Save\". Details of the information to be entered on this page can be found in the explanations in the \"Create a new user\" section, above."
-msgstr ""
+msgstr "在現有使用者的詳細頁面中可以更改使用者的資訊。選擇想要修改的使用者名稱，即可打開顯示該使用者所有資訊的頁面。您可以變更名字、姓氏和角色，點擊「儲存」按鈕完成變更。詳細資訊請參考「創建新使用者」部分的說明。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:83
@@ -274,29 +274,29 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:86
 msgid "The Options dropdown contains to buttons:"
-msgstr ""
+msgstr "下拉選單中包含以下按鈕："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:88
 #, no-wrap
 msgid "*Reset password* - If a user forgets a password, clicking on the button labelled \"Reset Password\" can generate a new one, after which a new password is given in an information message at the top of the page.\n"
-msgstr ""
+msgstr "*重設密碼* - 若使用者忘記密碼，點擊「重設密碼」按鈕可生成新密碼，新密碼會顯示在頁面頂部的通知訊息中。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:89
 #, no-wrap
 msgid "*Delete* - delete current user.\n"
-msgstr ""
+msgstr "*刪除* - 刪除當前使用者。\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:94
 msgid "The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one."
-msgstr ""
+msgstr "IPT 不會自動通知受影響的使用者密碼已變更，因此管理員必須負責將新密碼傳達給該使用者。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:99
 msgid "After password reset, an email with a new password can be sent to the user:"
-msgstr ""
+msgstr "密碼重設後，可以將包含新密碼的電子郵件傳送給使用者："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:100
@@ -308,38 +308,38 @@ msgstr "ipt2/administration/IPTAdminUserEmailResetPassword.png"
 #: en/modules/ROOT/pages/administration.adoc:102
 #, no-wrap
 msgid "Delete a user"
-msgstr ""
+msgstr "刪除使用者"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:104
 msgid "Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labelled \"Delete\" to remove this user account. There are several conditions under which a user cannot be deleted:"
-msgstr ""
+msgstr "若不再需要某個使用者帳戶，您可以透過詳細頁面將其刪除。點擊使用者詳細頁面底部的「刪除」按鈕即可移除該使用者帳戶。但在以下情況下，無法刪除使用者："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:106
 msgid "An admin cannot delete their own account while logged in therefore it must be deleted by another admin."
-msgstr ""
+msgstr "管理員無法刪除自己的帳戶，需由另一位管理員刪除。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:107
 msgid "The IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account."
-msgstr ""
+msgstr "IPT 實例必須至少保留一名擁有管理員角色的使用者，因此無法刪除最後一位管理員。若要移除該使用者，請先建立一位新管理員，並用新管理員登入後刪除原管理員的帳戶。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:108
 msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned."
-msgstr ""
+msgstr "每個資源必須至少關聯一名擁有管理員或管理者角色的使用者，因此無法刪除最後一位管理者。若要移除該使用者，請先將其他管理員或具管理者角色的使用者關聯至該資源。請參考 xref:manage-resources.adoc#resource-managers[資源管理者] 以瞭解如何新增管理者。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:109
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr ""
+msgstr "若使用者是某些資源的創建者，則無法刪除該使用者。若要限制該使用者對其資源的存取權，請將其角色變更為普通使用者。請參考「修改現有使用者」部分的說明以變更使用者角色。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:110
 #, no-wrap
 msgid "Configure GBIF registration options"
-msgstr ""
+msgstr "配置 GBIF 註冊選項"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:112
