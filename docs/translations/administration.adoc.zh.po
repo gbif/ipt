@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-23 14:33\n"
+"PO-Revision-Date: 2024-12-23 15:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -344,7 +344,7 @@ msgstr "配置 GBIF 註冊選項"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:112
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr ""
+msgstr "此頁面允許使用者將 IPT 實例註冊到 GBIF 註冊庫（如果尚未註冊）。IPT 必須先完成註冊，才能將 IPT 中的資源與組織關聯（請參考「選單：系統管理」章節下的「配置組織」），或進行發布（請參考 xref:manage-resources.adoc#published-versions[已發布資源版本]）。已註冊的 IPT 及其公開資源的資訊，將可透過 GBIF 註冊庫的功能進行搜尋，並且公開資源中的資料也可被 GBIF 入口網站索引。如果 IPT 實例已被註冊，其相關資訊可以在「編輯 GBIF 註冊資訊」頁面進行變更。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:114
