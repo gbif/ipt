@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-23 15:42\n"
+"PO-Revision-Date: 2024-12-24 01:59\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -349,12 +349,12 @@ msgstr "此頁面允許使用者將 IPT 實例註冊到 GBIF 註冊庫（如果�
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:114
 msgid "The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labelled \"Validate\"."
-msgstr ""
+msgstr "註冊的首要步驟是測試 IPT 的公開 URL 是否有效，並能被 GBIF 服務連結。點擊「驗證」按鈕進行測試。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:116
 msgid "If the validation test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Causes for an error include:"
-msgstr ""
+msgstr "若驗證失敗，系統會顯示錯誤訊息，並指出連結失敗的原因。可能導致失敗的原因包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:118
