@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-24 04:12\n"
+"PO-Revision-Date: 2024-12-26 13:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -407,13 +407,13 @@ msgstr "以下是有關表單欄位的詳細說明："
 #: en/modules/ROOT/pages/administration.adoc:131
 #, no-wrap
 msgid "*Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.\n"
-msgstr ""
+msgstr "*組織* - 下拉選單包含 GBIF 註冊庫中的組織列表。選擇與此 IPT 實例相關聯的單一組織。如果無法在列表中找到目標組織，請使用 GBIF 註冊庫（https://www.gbif.org/publisher/search）檢查該組織是否以與預期不同的名稱註冊。如果該組織尚未在 GBIF 註冊庫中註冊，請聯繫 GBIF 服務台以完成組織註冊，然後再繼續進行 IPT 註冊。點擊幫助圖示並點開 GBIF 服務台連結即可打開預設郵件客戶端，填寫必要資訊後發送郵件。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:132
 #, no-wrap
 msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
-msgstr ""
+msgstr "*組織的共享標記* - 必須在此文字框中輸入該組織在 GBIF 註冊庫中註冊的共享標記，以驗證使用者有權限將 IPT 實例與該組織關聯。如果您未持有組織的共享標記，可向註冊聯絡人請求。選擇組織後，共享標記文字框下方將顯示該組織主要聯絡人的連結。共享標記將用於在按下標示為「儲存」的按鈕時驗證 IPT 的註冊狀態。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:133
