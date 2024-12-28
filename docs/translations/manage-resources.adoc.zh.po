@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-28 12:28+0000\n"
-"PO-Revision-Date: 2024-12-17 05:19\n"
+"PO-Revision-Date: 2024-12-28 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -129,7 +129,7 @@ msgstr "當首次打開「資源管理」頁面時，將顯示當前使用者有
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
 msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#public-resource-table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
-msgstr "*可見性* - 指定誰有權查看資源的類別。如果資源為「公開」，則所有使用者都能在首頁的 xref:home.adoc#public-resource-table[公共資源表格]中查看。如果資源為「私密」，則僅創建者、被邀請管理該資源的使用者以及具有管理員角色的使用者才能在「資源管理表格」中看到。關於邀請他人管理資源的詳細資訊，請參閱「資源管理」中「資源概覽」標題下「資源管理員」的部分。\n"
+msgstr "*公開狀態* - 指定誰有權查看資源的類別。如果資源為「公開」，則所有使用者都能在首頁的 xref:home.adoc#public-resource-table[公共資源表格]中查看。如果資源為「私密」，則僅創建者、被邀請管理該資源的使用者以及具有管理員角色的使用者才能在「資源管理表格」中看到。關於邀請他人管理資源的詳細資訊，請參閱「資源管理」中「資源概覽」標題下「資源管理員」的部分。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:14
@@ -2261,7 +2261,7 @@ msgstr "*DOI* - 若啟用了 IPT 發行的 DOIs，請參閱 xref:doi-workflow.ad
 #: en/modules/ROOT/pages/manage-resources.adoc:582
 #, no-wrap
 msgid "*Visibility* - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public.\n"
-msgstr "*可見性* - 當前/待發布版本的可見性。為了將資源註冊到 GBIF，資源管理者需確保當前版本為公開狀態。\n"
+msgstr "*公開狀態* - 當前/待發布版本的公開狀態。為了將資源註冊到 GBIF，資源管理者需確保當前版本為公開狀態。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:583
@@ -2437,7 +2437,7 @@ msgstr "在失敗的情況下，發布將自動重試最多三次，以防止無
 #: en/modules/ROOT/pages/manage-resources.adoc:632
 #, no-wrap
 msgid "Visibility"
-msgstr "可見度"
+msgstr "公開狀態"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
