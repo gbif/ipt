@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-28 12:29\n"
+"PO-Revision-Date: 2024-12-28 14:54\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -467,13 +467,13 @@ msgstr "*儲存* - 當上述所有資訊均已填寫或選擇後，按下「儲�
 #: en/modules/ROOT/pages/administration.adoc:141
 #, no-wrap
 msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Publish all resources\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
-msgstr ""
+msgstr "*注意*: 任何對 IPT 註冊的更改（而非資源註冊——相關資訊請參見「資源概覽」標題下的「公開狀態」部分以及「選單：資源管理」中「發布所有資源」標題下的資訊），均需與 GBIF 服務台（helpdesk@gbif.org）協商進行。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:142
 #, no-wrap
 msgid "Edit GBIF registration"
-msgstr ""
+msgstr "編輯 GBIF 註冊"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:144
@@ -484,7 +484,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:145
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistration.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistration.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:148
@@ -495,7 +495,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:149
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationNetwork.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistrationNetwork.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:152
@@ -506,7 +506,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:153
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationTokens.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminEditRegistrationTokens.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:155
