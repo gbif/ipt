@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-26 13:16\n"
+"PO-Revision-Date: 2024-12-28 11:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -419,19 +419,19 @@ msgstr "*組織的共享標記* - 必須在此文字框中輸入該組織在 GBI
 #: en/modules/ROOT/pages/administration.adoc:133
 #, no-wrap
 msgid "*Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.\n"
-msgstr ""
+msgstr "*別名* - 輸入一個方便的名稱或代碼以代表此 IPT 實例中的組織。別名將在 IPT 使用者介面內的組織下拉選單中代替完整組織名稱出現。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.\n"
-msgstr ""
+msgstr "*是否可以發布資源？* - 如果選定的組織也可以與此 IPT 實例發布的資源相關聯，請勾選此選項。如果未勾選，則該組織不會出現在可用於關聯資源的組織列表中。只有當該組織僅作為 IPT 實例的主機，而不涉及通過 IPT 實例發布任何資源時，才保持未勾選狀態。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.\n"
-msgstr ""
+msgstr "*IPT 實例稱號* - 輸入 IPT 實例的稱號，該稱號將用於 GBIF 的註冊。稱號是用於列出和搜索 IPT 實例的主要資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:136
