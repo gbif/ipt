@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-28 11:31\n"
+"PO-Revision-Date: 2024-12-28 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -437,31 +437,31 @@ msgstr "*IPT 實例稱號* - 輸入 IPT 實例的稱號，該稱號將用於 GBI
 #: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "*Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.\n"
-msgstr ""
+msgstr "*此 IPT 實例的相關說明* - 輸入此 IPT 實例的相關說明，該說明將用於 GBIF 的註冊。說明的目的是幫助註冊使用者進一步了解此 IPT 實例的意義，尤其是詮釋資料欄位以外的更多資訊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:137
 #, no-wrap
 msgid "*Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.\n"
-msgstr ""
+msgstr "*聯絡人姓名* - 輸入負責提供 IPT 實例安裝資訊的人的姓名。此人應是 IPT 實例中擁有管理員角色，並了解安裝技術細節的使用者。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
 #, no-wrap
 msgid "*Contact Email* - enter the current email address of the person whose name is given in the Contact Name.\n"
-msgstr ""
+msgstr "*聯絡人電子郵件* - 輸入與聯絡人姓名相對應的電子郵件地址。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:139
 #, no-wrap
 msgid "*IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.\n"
-msgstr ""
+msgstr "*IPT 密碼* - 輸入用於編輯 GBIF 註冊庫中此 IPT 安裝實例條目的密碼。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:140
 #, no-wrap
 msgid "*Save* - when all of the information above is entered or selected, click on the button labelled \"Save\" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.\n"
-msgstr ""
+msgstr "*儲存* - 當上述所有資訊均已填寫或選擇後，按下「儲存」按鈕以完成此 IPT 實例的安裝與註冊於 GBIF 註冊庫。在成功註冊 IPT 實例後，「配置 GBIF 註冊」頁面將顯示 IPT 已與所選組織建立關聯。同時，成功註冊後，「配置組織」頁面將可從「選單：系統管理」中訪問。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:141
