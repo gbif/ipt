@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-29 08:34\n"
+"PO-Revision-Date: 2024-12-29 10:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -568,13 +568,13 @@ msgstr "*組織共享標記* - 用於在 GBIF 註冊庫中編輯此組織條目�
 #: en/modules/ROOT/pages/administration.adoc:176
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
-msgstr ""
+msgstr "*組織別名* - 在 IPT 實例中為方便起見給予組織的名稱；在 IPT 的組織選單中，別名將代替完整的組織名稱顯示。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:177
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
-msgstr ""
+msgstr "*是否可以發布資源* - 此選框表示該組織是否可以在 IPT 中與資源相關聯。只有勾選此選框的組織才會出現在可與資源關聯的列表中。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:178
