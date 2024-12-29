@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-28 15:51\n"
+"PO-Revision-Date: 2024-12-29 08:34\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -527,7 +527,7 @@ msgstr "_在 IPT 中指派 DOI 的情況不常見，極少數發布者會使用�
 #. type: delimited block *
 #: en/modules/ROOT/pages/administration.adoc:162
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessarily have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr ""
+msgstr "能夠為資源指派 DOI 的 IPT 必須為擁有 DataCite 帳戶的組織。配置 DataCite 帳戶的組織不一定必須能夠發布資源（與資源相關聯）。一次只能使用一個 DataCite 帳戶來註冊 DOI，且 IPT 的檔案封存模式也必須開啟（請參閱 <<配置 IPT 設定>> 部分以了解檔案封存模式）。組織列表將顯示哪些組織已配置 DataCite 帳戶，以及在此 IPT 實例中的哪個組織已被選定用於為所有資源註冊 DOI。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:164
@@ -539,12 +539,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:166
 #, no-wrap
 msgid "Edit organization"
-msgstr ""
+msgstr "編輯組織"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:168
 msgid "On this page a user having the Admin role can edit the organization. Click on the button labelled \"Edit\" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below."
-msgstr ""
+msgstr "在此頁面，具有管理員角色的使用者可以編輯組織。點擊「編輯」按鈕以打開包含所選組織相關詳細資訊的頁面。有關此表單中各欄位及選項的說明，請參考以下資訊："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:169
@@ -556,13 +556,13 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:174
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
-msgstr ""
+msgstr "*組織名稱* - 組織在 GBIF 註冊庫中的名稱。*注意*：此項無法被更改。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
 msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
-msgstr ""
+msgstr "*組織共享標記* - 用於在 GBIF 註冊庫中編輯此組織條目的共享標記。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:176
