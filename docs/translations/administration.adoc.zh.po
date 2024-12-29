@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-29 10:35\n"
+"PO-Revision-Date: 2024-12-29 11:43\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -580,13 +580,13 @@ msgstr "*是否可以發布資源* - 此選框表示該組織是否可以在 IPT
 #: en/modules/ROOT/pages/administration.adoc:178
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to xref:doi-workflow.adoc[register DOIs] for resources; only DataCite is supported. _Most publishers do not need this feature._ *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). Confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
-msgstr ""
+msgstr "*DOI 註冊機構* - 用於 xref:doi-workflow.adoc[註冊 DOI] 的帳戶類型；目前僅支援 DataCite。_大多數發布者不需要此功能_。 *注意*：組織與 DataCite 成員簽訂協議後，帳戶將被發放，允許該組織在一個以上的前綴（如 10.5072）和一個以上的域名（如 gbif.org）下註冊 DOI。請確認該帳戶確實可以在 IPT 的域名/公開 URL 下註冊 DOI，否則無法通過 IPT 進行註冊。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:179
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
-msgstr ""
+msgstr "*帳戶使用者名稱* - 分配給該組織的 DataCite 帳戶的使用者名稱（標記）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:180
