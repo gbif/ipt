@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-29 11:43\n"
+"PO-Revision-Date: 2024-12-29 12:43\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -592,30 +592,30 @@ msgstr "*帳戶使用者名稱* - 分配給該組織的 DataCite 帳戶的使用
 #: en/modules/ROOT/pages/administration.adoc:180
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
-msgstr ""
+msgstr "*帳戶密碼* - 分配給該組織的 DataCite 帳戶的密碼。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:181
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/[test prefix] when running the IPT in test mode.\n"
-msgstr ""
+msgstr "*DOI 前綴/肩標* - 用於生成 DOI 的首選前綴/肩標。此前綴對組織的帳戶是唯一的。注意：在 IPT 處於測試模式時，請使用 https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/[測試前綴]。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:182
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
-msgstr ""
+msgstr "*帳戶已啟用* - 勾選此選框表示該 DataCite 帳戶是 IPT 用於為資料集註冊 DOI 的唯一帳戶。同一時間只能啟用一個 DataCite 帳戶。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:183
 #, no-wrap
 msgid "Add organization"
-msgstr ""
+msgstr "新增組織"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:185
 msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
-msgstr ""
+msgstr "在具有管理員角色的使用者新增組織之前，資源無法與其關聯。點擊「新增」按鈕以打開頁面，從 GBIF 註冊庫中選取要在此 IPT 實例中使用的其他組織。有關此頁面中各欄位及選項的說明，請參見上述「編輯組織」部分。在選擇所需的組織並輸入所有相關資料（包括該組織的共享標記）後，點擊「儲存」按鈕以將所選組織新增到列表中。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:186
@@ -627,17 +627,17 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:188
 #, no-wrap
 msgid "Configure Core Types and Extensions"
-msgstr ""
+msgstr "配置核心類型和延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:190
 msgid "This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence, Taxon, and Event for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the \"Darwin Core Mappings\" heading of the \"Resource Overview\" section."
-msgstr ""
+msgstr "此頁面允許具有管理員角色的使用者啟用 IPT 實例，以從 GBIF 註冊庫中導入和分享各種預先定義好的資料類型。每種類型包含支持特定用途的屬性（欄位、術語）。例如，達爾文核心標準分類單元核心類型提供與分類學名稱、分類單位名稱使用及分類單位概念相關的資訊，並允許 IPT 為分類學及命名法清單提供資源。核心類型與延伸資料集之間的區別在於：核心類型提供資料紀錄的基礎（如出現、分類單元及調查活動），而延伸資料集提供將額外資料與核心類型紀錄關聯的手段。正如「資源概覽」部分的「達爾文核心標準資料對照」標題下所說，每個資源只能選擇一個核心類型。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:192
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr ""
+msgstr "詞彙表包含特定核心類型或延伸資料集中的某個術語可接受的有效值列表。例如，{latest-basis-of-record}[達爾文核心標準類型詞彙表] 包含達爾文核心標準術語 http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] 的所有標準資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:194
