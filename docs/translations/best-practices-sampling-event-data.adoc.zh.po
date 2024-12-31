@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"PO-Revision-Date: 2024-12-31 06:54\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:5
 #, no-wrap
 msgid "Document control"
-msgstr ""
+msgstr "文件版控"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -44,7 +44,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "引用建議"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:59
