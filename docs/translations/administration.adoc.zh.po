@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-29 12:43\n"
+"PO-Revision-Date: 2024-12-31 01:44\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -642,7 +642,7 @@ msgstr "詞彙表包含特定核心類型或延伸資料集中的某個術語可
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:194
 msgid "Following the lists of installed Core Types and Extensions, there is a section labelled \"Synchronize Extensions and Vocabularies\" having a single button labelled \"Synchronize\". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section."
-msgstr ""
+msgstr "在已安裝的核心類型和延伸資料集列表之下，有一個標示為「同步延伸資料集和詞彙表」的部分和一個標示著「同步」的按鈕。GBIF 註冊庫中存在但尚未設置的核心類型和延伸資料集的最新版本將顯示在詞彙表底下。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:195
@@ -659,7 +659,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:200
 #, no-wrap
 msgid "Synchronize Extensions and Vocabularies"
-msgstr ""
+msgstr "同步延伸資料集和詞彙表"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:202
@@ -748,7 +748,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:227
 #, no-wrap
 msgid "ipt2/administration/IPTAdminDataPackages.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminDataPackages.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:230
@@ -759,7 +759,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:231
 #, no-wrap
 msgid "ipt2/administration/IPTAdminDataPackagesDetail.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminDataPackagesDetail.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:233
@@ -776,7 +776,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:237
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUIManagement.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminUIManagement.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:239
