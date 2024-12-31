@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-31 03:13\n"
+"PO-Revision-Date: 2024-12-31 04:20\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -664,18 +664,18 @@ msgstr "同步延伸資料集和詞彙表"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:202
 msgid "An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating in the IPT. Click on the button labelled \"Synchronize\" to synchronize existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronization was successful or if there were any errors."
-msgstr ""
+msgstr "延伸資料集可以使用預定義值的術語列表，稱為控制詞彙表。這些詞彙表可能會定期更改（例如，新增了新的轉譯），需要在 IPT 中進行更新。點擊「同步」按鈕以將現有詞彙表與 GBIF 註冊庫同步。完成更新後，系統會顯示同步成功或發生錯誤的訊息。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:203
 #, no-wrap
 msgid "View extension details"
-msgstr ""
+msgstr "檢視延伸資料集詳細資訊"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:205
 msgid "The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension."
-msgstr ""
+msgstr "第一欄中每個延伸資料集的標題是一個連結，指向該延伸資料集的詳細資訊頁面。頁面中延伸集標題的右側欄位中可以看到所有摘要資訊，以及該延伸資料集內每個屬性的詳細說明、參考資料及範例。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:206
