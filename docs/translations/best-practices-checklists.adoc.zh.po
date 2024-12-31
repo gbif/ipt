@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2024-12-31 08:58\n"
+"PO-Revision-Date: 2024-12-31 10:04\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -154,12 +154,12 @@ msgstr "達爾文核心集檔案格式與 <<GBIF 延伸資料集名錄>> 支援�
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:47
 #, no-wrap
 msgid "Darwin Core Archive Format"
-msgstr ""
+msgstr "達爾文核心集檔案格式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "達爾文核心集檔案 (DwC-A) 是一個資訊學資料標準，使用達爾文核心標準詞彙生成單一、獨立的名錄資料集。檔案中的文件集合形成一個完整的資料集，使用者可以利用單一壓縮文件（Zip 或 Gzip）提供此檔案。一個資料集由描述性的詮釋資料文件和一組一個或多個的資料文件組成。有關 DwC-A 的更多資訊，請參考 xref:darwin-core.adoc[達爾文核心集檔案 — 操作導引]。"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
