@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2024-12-31 06:54\n"
+"PO-Revision-Date: 2024-12-31 08:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -62,7 +62,11 @@ msgid "| Version | Description             | Date of release | Author(s)\n\n"
 "| https://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen\n\n"
 "| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak\n\n"
 "| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett\n"
-msgstr ""
+msgstr "| 版本 | 說明 | 發布日期 | 作者\n\n"
+"| 1.0 | 初始發布版本 | 2011年4月1日 | David Remsen\n\n"
+"| https://links.gbif.org/checklist_best_practices[1.11] | 小幅編輯修改 | 2011年4月28日 | David Remsen\n\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | 移至 Wiki，重大變更 | 2017年3月30日 | Kyle Braak\n\n"
+"| xref:best-practices-checklists.adoc[2.1] | 移至 AsciiDoctor | 2021年5月24日 | Matthew Blissett\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -87,23 +91,23 @@ msgstr "_Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexican
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:31
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "此導引提供了有關如何使用達爾文核心集檔案 (DwC-A) 格式以標準化方式分享分類學名錄資訊的詳細說明。此外，此導引著重於達爾文核心集檔案格式的特定組成部分，以及支持核心分類資料類別的一些延伸資料集，並提供如何充分利用這些組件以最大化共享資料價值的建議。本導引不會對達爾文核心集檔案格式進行詳細概述，有關詳細資訊，請參考 xref:darwin-core.adoc[達爾文核心集檔案 — 操作導引]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:33
 msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility."
-msgstr ""
+msgstr "此處描述的 DwC-A 格式及特定規範是一種國際認可且被正式核准用於分享分類資料的資料交換格式。所有資料交換標準都需要在技術範圍與能力，以及社會接受度與普及性之間取得平衡。簡單的解決方案犧牲了資料的覆蓋範圍和複雜性，以換取易用性；而高度複雜的格式提供更完整的資料表示能力，但需要相應的軟體及專業技術。達爾文核心集檔案格式介於這兩者之間的中間位置，專注於分類學名錄的關鍵元素，並支持將多種類型的延伸資料集連結到此核心結構。檔案中的資料對於熟悉基本結構化文字檔案的生物學家及資料管理者來說將易於理解和使用。GBIF 希望通過提供一種相對容易製作和使用的國際標準，包括支持構建分類資料資源的關鍵元素，為名錄創建者及管理者提供一種標準化的分享方式，並推動一個共同的方式使後續的引用和推廣工作變得更簡單。此外，標準化的格式還能提升資料之間的相關性及其實用性。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:34
 #, no-wrap
 msgid "Scope"
-msgstr ""
+msgstr "範疇"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:37
 msgid "The terms “species checklist” and taxonomic “catalogue” may refer to an overlapping range of taxonomic resources. All of these products contain sets of scientific names that implicitly or explicitly refer to taxa. The set of names included in such a list may be constrained by taxonomic group, geographic region, or by a theme, such as invasive species, or some combination of all three. In order of increasing detail these include the following resource typesfootnote:[These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”]."
-msgstr ""
+msgstr "術語「物種名錄」與分類學「目錄」可能涵蓋一系列重疊的分類資源。這些資料成果均包含隱式或顯式地指向分類群的學名集合。此類清單中包含的名稱集可能受分類群組、地理區域或特定主題（如入侵物種）或三者結合的限制。以下是按詳盡程度排列的資源類型footnote:[這些類別及說明直接取自“Hyam, R.,《泛歐物種目錄的資料交換標準化之基礎架構（PESI）》，第 4.1 章。]："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:39
@@ -191,7 +195,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:60
 #, no-wrap
 msgid "figures/dwc-a_checklist.png"
-msgstr ""
+msgstr "figures/dwc-a_checklist.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
