@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2024-12-31 08:02\n"
+"PO-Revision-Date: 2024-12-31 08:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -113,42 +113,42 @@ msgstr "術語「物種名錄」與分類學「目錄」可能涵蓋一系列重
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:39
 #, no-wrap
 msgid "*Name lists* – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.\n"
-msgstr ""
+msgstr "*名稱清單* - 僅包含物種名稱的簡單清單，未明確標示分類地位，但通常隱含分類群的有效名稱。此類清單通常用於識別某些區域或主題背景內包含的分類群集。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Nomenclatural lists (Nomenclators)* – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.\n"
-msgstr ""
+msgstr "*命名模式清單（命名冊）* - 包含名稱及名義分類群的清單，表示已發表的學名用法登記，這些用法是依據相應命名法規則進行的命名行為。這些行為大多數為新學名的「原始描述」，但也可能包括修訂、更正模式標本及其他命名行為。此類清單不包含分類概念中的同物異名，僅限於與基本名相關的命名學同物異名（如植物學中的新組合）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:41
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
-msgstr ""
+msgstr "*分類學名錄* - 在命名清單的基礎上，增加了以明確分類地位資訊及包含同物異名的形式呈現的分類學意義。此類簡單的分類清單不提供關於同物異名基礎的具體界定資訊。分類群通常被歸類為分類系統。「分類學目錄」這一術語也可用於指代此類名錄及其後續類別，特別是當資源包含經過驗證的發布內容及分類地位細節時。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:42
 #, no-wrap
 msgid "*Annotated Checklists* - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymized checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.\n"
-msgstr ""
+msgstr "*註解名錄* - 此類別在核心的、已同物異名化的分類學名錄基礎上，增加其他資料類型（註解），例如俗名、威脅狀態、分布及基本說明資訊。當註解類型提供足夠細節以有效定義或界定分類群（例如詳細的診斷性描述和插圖、分子資料、標本等），此註解名錄可能符合以下定義的兩種類別之一。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:43
 #, no-wrap
 msgid "*Flora or Faunal lists* – These are typically books that provide detailed species accounts for a particular region. Details may include many of the data types included in annotated checklists but include specific data types, such as detailed descriptions and illustrations, specimen references and other details that explicitly define (circumscribe) the taxon within the scope of the region which is not necessarily global.\n"
-msgstr ""
+msgstr "*植物誌或動物誌名錄* – 這類資源通常以書籍形式呈現，提供某一特定區域內物種的詳細記錄。內容可能包括註解名錄中提到的多種資料類型，但也包含特定資料類型，例如詳細描述與插圖、標本參考及其他明確界定分類群在該區域範疇內（不一定是全球範疇）的細節。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:44
 #, no-wrap
 msgid "*Monographs* – Monographs are detailed species accounts often published as books for a particular taxon group at the global scale. It will contain detailed nomenclature and synonymy and taxon circumscription details, that include textual descriptions and illustrations, details of specimens examined and included in the definition, and a bibliography of examined literature.\n"
-msgstr ""
+msgstr "專著 – 專著通常是以書籍形式發佈的，針對特定分類群於全球範疇內的詳細記錄。內容包含詳細的命名學資訊、同物異名及分類群界定細節，包括文字描述、插圖、檢驗標本的細節，以及相關文獻的書目。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:46
 msgid "The Darwin Core Archive format with the <<GBIF Checklist Extensions>> supports the exchange of key data elements within all of these checklist data types. The specific degree of coverage depends very much on the individual resource. In this document we will use the term ‘checklist’ in the broad sense as a general term for referring to any or all of the resource categories described above. The specific category types will be used when a specific resource is to be referenced."
-msgstr ""
+msgstr "達爾文核心集檔案格式與 <<GBIF 延伸資料集名錄>> 支援在所有上述名錄資料類型中交換關鍵資料元素。具體涵蓋範圍高度依賴於每個資源的特性。在本文中，我們將廣義使用“名錄”這一術語來泛指上述任一或全部資源類別；當參考特定資源時，則會使用具體類別名稱。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:47
