@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-31 04:20\n"
+"PO-Revision-Date: 2024-12-31 06:54\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -686,7 +686,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:209
 msgid "For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label \"Vocabulary:\". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers."
-msgstr ""
+msgstr "對於具有控制詞彙表的屬性，右側欄位中的屬性資訊將包含詞彙表的名稱，並以連結的方式呈現在「詞彙表：」標籤旁。點擊該連結會打開詞彙表的詳細資訊頁面，該頁面頂部顯示詞彙表摘要，並附有有效值的表格及其詳細資訊，如首選術語、替代術語及識別碼等。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:210
@@ -698,34 +698,34 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:212
 #, no-wrap
 msgid "Install extension"
-msgstr ""
+msgstr "安裝延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:214
 msgid "For any of the extensions that have not yet been installed in the IPT, there is a button labelled \"Install\" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT."
-msgstr ""
+msgstr "對於尚未在 IPT 中安裝的任何延伸資料集，其名稱下方的左側欄位會有一個標示為「安裝」的按鈕。點擊此按鈕即可從 GBIF 註冊庫中檢索該延伸資料集並將其安裝到 IPT 中。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:215
 #, no-wrap
 msgid "Remove extension"
-msgstr ""
+msgstr "移除延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:217
 msgid "For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled \"Remove\". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping."
-msgstr ""
+msgstr "對於已安裝到 IPT 的任何延伸資料集，可以通過點擊標示為「移除」的按鈕將其移除。任何已用於 IPT 中某資源資料對照的延伸資料集均無法移除。如果嘗試移除這種延伸資料集，系統將顯示錯誤訊息及一份使用該延伸資料集進行資料對照的資源清單。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:218
 #, no-wrap
 msgid "Update extension"
-msgstr ""
+msgstr "更新延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:220
 msgid "For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled \"Update\". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished."
-msgstr ""
+msgstr "對於已安裝且資料或資訊有待更新的延伸資料集，可以通過點擊標示為「更新」的按鈕進行更新。更新延伸資料集可以使用新增的術語和詞彙表。在更新過程中，任何與已廢止術語的現有對照將被移除，而已替換為其他術語的現有對照將自動被更新。更新後，應檢查並重新發布所有有更動的資源。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:221
@@ -737,12 +737,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:223
 #, no-wrap
 msgid "Data Packages"
-msgstr ""
+msgstr "資料套件"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:226
 msgid "This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields) that support a specific purpose."
-msgstr ""
+msgstr "此頁面允許具有管理員角色的使用者啟用 IPT 實例以從 GBIF 註冊庫中導入和分享各種預定義的資料類型。每種類型包含支援特定用途的屬性（欄位）。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:227
@@ -753,7 +753,7 @@ msgstr "ipt2/administration/IPTAdminDataPackages.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:230
 msgid "Details page:"
-msgstr ""
+msgstr "詳細頁面："
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:231
@@ -765,12 +765,12 @@ msgstr "ipt2/administration/IPTAdminDataPackagesDetail.png"
 #: en/modules/ROOT/pages/administration.adoc:233
 #, no-wrap
 msgid "UI Management"
-msgstr ""
+msgstr "使用者介面管理"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:236
 msgid "The IPT logo and colour scheme can be managed from the UI Management page."
-msgstr ""
+msgstr "可以通過「使用者介面管理」頁面管理 IPT 的標誌及配色主題。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:237
@@ -787,7 +787,7 @@ msgstr "檢視 IPT 日誌"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:241
 msgid "Messages generated from actions taken while running the IPT are logged to files for reference in the directory called \"logs\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled \"complete log file\". The contents of the complete log file may be useful when reporting an apparent bug."
-msgstr ""
+msgstr "在運行 IPT 時執行的操作所產生的訊息會記錄在 IPT 資料目錄中的名為「logs」的目錄下的文件中（請參見「選單：系統管理」中「IPT 設定」部分的資訊）。「檢視 IPT 日誌」頁面顯示來自名為 admin.log 的文件中的訊息，該文件僅包含嚴重性為 WARNING 或更高級別的日誌訊息（例如錯誤）。完整的日誌訊息（包含在名為 debug.log 的文件中）可以通過點擊標示為「完整日誌文件」的連結來打開和檢視。完整日誌文件的內容在報告明顯的錯誤時可能會有助於將來進行除錯。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:242
