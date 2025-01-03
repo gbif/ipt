@@ -235,6 +235,7 @@ public class EmlValidator extends BaseValidator {
 
           String strippedDescription = Optional.ofNullable(eml.getDescription())
               .map(d -> d.replaceAll("<[^>]*>", "")) // get rid of tags
+              .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
               .map(String::trim)
               .orElse("");
 
@@ -251,7 +252,12 @@ public class EmlValidator extends BaseValidator {
           } else {
             try {
               Eml stubValidationEml = getStubEml();
-              stubValidationEml.setDescription(eml.getDescription());
+
+              String descriptionWithNbspReplaced = Optional.ofNullable(eml.getDescription())
+                  .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
+                  .orElse("");
+
+              stubValidationEml.setDescription(descriptionWithNbspReplaced);
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
