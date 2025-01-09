@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2024-12-31 10:04\n"
+"PO-Revision-Date: 2025-01-09 00:28\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -170,7 +170,7 @@ msgstr "名錄詮釋資料"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:54
 msgid "Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr ""
+msgstr "在通過 GBIF 網絡發布名錄資料時，需要記錄資料集的來源和範疇。這些記錄下來的文件稱為“資源詮釋資料”，可以幫助使用者評估資料集的適用性。詮釋資料可以描述名錄的範疇與預期用途、編製過程中的方法與資源，以及參與創建與管理的個人和機構。詮釋資料在達爾文核心集檔案中以 XML 文件形式共享。GBIF 為物種名錄提供了一種基於生態詮釋資料語言的詮釋資料配置文件範本。操作導引詳細說明了使用此格式描述物種名錄的所有選項。請參考 xref:gbif-metadata-profile.adoc[]。"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:55
