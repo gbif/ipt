@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2024-12-31 06:54\n"
+"PO-Revision-Date: 2025-01-19 09:55\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -51,7 +51,7 @@ msgstr "引用建議"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr ""
+msgstr "達爾文核心集檔案資料文件的星狀架構"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
