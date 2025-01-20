@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-20 08:53\n"
+"PO-Revision-Date: 2025-01-20 10:05\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -437,22 +437,22 @@ msgstr "非正規化分類"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:152
 msgid "This format is familiar to anyone who manages species information in spreadsheets. In a denormalized classification, each row of the data table refers to one of the terminal taxa, such as a species, and a complete set of parent taxa as a set of columns, one for each parent taxon."
-msgstr ""
+msgstr "此格式常見於以試算表管理物種資訊的情境。在非正規化分類中，資料表的每一行代表一個終端分類單元（如物種），並包含一組對應的父分類單元，以欄位形式表示，每個父分類單元對應一個欄位。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:154
 msgid "This format is not the recommended method for sharing taxonomic data using Darwin Core Archives but is supported by GBIF as it is in common use in many species lists. If this is the method by which data will be shared, it is highly recommended that"
-msgstr ""
+msgstr "雖然此格式並非分享分類資料的推薦方法，但由於在許多物種清單中普遍使用，GBIF 仍支持該格式。若需使用此方法分享資料，強烈建議遵守以下指導方針："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:156
 msgid "Each higher taxon column is completely populated. Avoid blanks as in the Plantae example below."
-msgstr ""
+msgstr "確保每個更高階分類欄位均填滿，例如在下述「Plantae」的示例中，避免空白。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:157
 msgid "Ensure taxonomic integrity of the list. For example ensure that two species in a common genus share the same family. Ensure that if synonyms are included in separate rows, that their classification matches that of the accepted taxon."
-msgstr ""
+msgstr "確保清單的分類完整性。例如，確保同一屬中的兩個物種共享相同的科；若同物種以同物異名形式出現在多行中，確保它們的分類與可接受分類單元一致。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:165
@@ -462,68 +462,72 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
 "| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
 "| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
+"| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
+"| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:170
 #, no-wrap
 msgid "*Legibility* - The primary advantage of this format is that it is easy to read and the taxonomic hierarchy can be evaluated by simply reading columns.\n"
-msgstr ""
+msgstr "*可讀性* - 該格式的主要優勢在於容易閱讀，分類階層可通過直接閱讀欄位來評估。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:171
 #, no-wrap
 msgid "*Convenient* – Spreadsheet applications and many relational databases make it easy to implement this structure for storing hierarchical data.\n"
-msgstr ""
+msgstr "*便利性* - 試算表應用程式和許多關聯式資料庫容易實現此結構，用於儲存階層式資料。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:175
 #, no-wrap
 msgid "*Higher likelihood of referential integrity loss* – Higher taxa are repeated in this format which can increase the chance that two identical taxa may be spelled differently. Other similar risks are possible with this format. For example it is possible for two instances of the same taxon (example “Felidae”) to be assigned to two different parents, resulting in a conflict of hierarchical integrity.\n"
-msgstr ""
+msgstr "*參考完整性較低* - 此格式中更高階分類單元重複出現，使同一分類單元拼寫不一致的可能性增加。例如，可能出現同一分類單元（如「Felidae」）被分配至不同的父分類單元，導致階層完整性有所衝突。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:176
 #, no-wrap
 msgid "*Lack of details for higher taxa* – This format treats higher taxa as properties of a species, not as separate taxon records themselves. Therefore, this format does not allow properties of higher taxa to be shared either in the core file or in any extensions.\n"
-msgstr ""
+msgstr "*缺乏更高階分類的詳細資訊* - 此格式將更高階分類單元視為物種的屬性，而非獨立的分類單元紀錄，因此無法在核心檔案或任何延伸資料集中分享更高階分類的屬性。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:177
 #, no-wrap
 msgid "Other classification-related recommendations"
-msgstr ""
+msgstr "其他與分類相關的建議"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:180
 msgid "Try to include a Kingdom and a nomenclatural code reference for all records even for basic species lists."
-msgstr ""
+msgstr "嘗試在所有紀錄中包含界（Kingdom）與命名法規的參考資料，即使是基本的物種清單。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:181
 msgid "Try to include Kingdom, Phylum and Family as a minimal classification for denormalized classifications."
-msgstr ""
+msgstr "嘗試在非正規化分類中至少包括界、門（Phylum）和科（Family）的分類。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:182
 msgid "If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-guide.adoc[] for details on mapping global values."
-msgstr ""
+msgstr "如果整個資料集中的分類皆相同，考慮使用靜態對照方式指定術語和資料值。詳細資料參考 xref:dwca-guide.adoc[]（《達爾文核心集檔案 — 操作導引》）。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:183
 #, no-wrap
 msgid "Classification Formats not recommended for publishing"
-msgstr ""
+msgstr "不建議發布的分類格式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:186
 msgid "The following examples illustrate data configurations that can fit the profile *but are not recommended or supported by GBIF* (i.e., GBIF parsers would not handle these cases properly)"
-msgstr ""
+msgstr "以下範例展示了符合資料配置的方式，但 *不建議或不被 GBIF 支援* （GBIF 的解析器無法正確處理這些情況）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:189
 msgid "This example identifies the referent taxon as the last column containing taxon values."
-msgstr ""
+msgstr "這個範例將參照分類單元的值放在最後一個欄位。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:200
@@ -536,12 +540,19 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 "| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         | Animalia    | Chordata   |           |           |            |\n"
+"| 999         | Animalia    | Chordata   | Mammalia  |           |            |\n"
+"| 1000        | Animalia    | Chordata   | Mammalia  | Carnivora |            |\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
+"| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:203
 msgid "This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once"
-msgstr ""
+msgstr "這個範例與上述範例類似，但試圖透過僅記錄一次的高位階分類單元名稱來減少完整性錯誤。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:214
@@ -554,23 +565,30 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        |             |            |           |           | Felidae    |\n"
 "| 1002        |             |            |           |           |            | Panthera tigris\n"
 "| 1003        |             |            |           |           |            | Panthera leo\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         |             | Chordata   |           |           |            |\n"
+"| 999         |             |            | Mammalia  |           |            |\n"
+"| 1000        |             |            |           | Carnivora |            |\n"
+"| 1001        |             |            |           |           | Felidae    |\n"
+"| 1002        |             |            |           |           |            | Panthera tigris\n"
+"| 1003        |             |            |           |           |            | Panthera leo\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:217
 msgid "Please avoid publishing data in these configurations."
-msgstr ""
+msgstr "請避免以這些配置方式發布資料。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:218
 #, no-wrap
 msgid "Publishing Synonymy"
-msgstr ""
+msgstr "同物異名的發布"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:221
 msgid "Darwin Core Archive supports the publication of synonyms in species checklists. A synonym is published as a separate record in the core data file. A synonym references the accepted taxon record through the use of the *dwc:acceptedNameUsageID* field. This field contains the *dwc:taxonID* representing the accepted taxon record. In the simplified example below, the first record represents the accepted name for a taxon and records 2 and 3 are synonyms."
-msgstr ""
+msgstr "達爾文核心集檔案支持在物種名錄中發布同物異名。每個同物異名作為核心資料檔案中的單獨紀錄發布。透過使用 *dwc:acceptedNameUsageID* 欄位，將同物異名連結到其被接受的分類單元紀錄。該欄位包含代表被接受分類單元紀錄的 *dwc:taxonID*。以下的簡化範例中，第一筆紀錄代表分類單元的既定名稱，而紀錄 2 和 3 是同義詞。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:231
@@ -582,12 +600,18 @@ msgid "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclat
 "| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus\n\n"
+"| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |\n"
+"| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |\n"
+"| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |\n"
+"| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:234
 msgid "A synonym record is recommended to contain a distinct *dwc:taxonID*. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
-msgstr ""
+msgstr "建議為每個同物異名紀錄提供一個獨立的 *dwc:taxonID*，且不得與已接受的分類單元紀錄使用相同的 *dwc:taxonID*。同物異名的最簡單表示方式如上述範例所示，即將同物異名列為獨立紀錄，並通過 *dwc:acceptedNameUsageID* 指向已接受的分類單元紀錄。這種簡化的同物異名表示法支持基本物種名錄分類表的發布，其中同物異名的詳細資訊僅限於核心分類單元類別的元素。*dwc:taxonomicStatus* 欄位確認紀錄的狀態，建議使用的詞彙範例為 {latest-taxonomic-status}[可用]。額外的命名細節（支持同物異名的理由）可使用 *dwc:nomenclaturalStatus* 欄位以及 {latest-nomenclatural-status}[支持詞彙] 來描述。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:236
@@ -663,7 +687,10 @@ msgid "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
 "| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
 "| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
 "| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
-msgstr ""
+msgstr "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
+"| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
+"| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
+"| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:275
