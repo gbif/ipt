@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-20 07:54\n"
+"PO-Revision-Date: 2025-01-20 08:53\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -299,70 +299,71 @@ msgstr "C. 拆分名稱至多個部分"
 #, no-wrap
 msgid "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n\n"
 "| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
-msgstr ""
+msgstr "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n\n"
+"| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:105
 msgid "The Darwin Core provides a series of terms that enable scientific names to be separated into component parts. Some databases store species lists in such parsed components. In this case, sharing data in this form may be an option. If so, however, it is strongly recommended that an additional and complete name be composed from the parts and shared in the *dwc:scientificName* field (as in section A above). Note that in the table above, the Darwin Core term, *dwc:subgenus*, is not displayed but represents an additional name component."
-msgstr ""
+msgstr "達爾文核心標準提供一系列詞彙，允許將學名拆分為幾個組成部分。一些資料庫以此解析組件形式存儲物種清單。在此情況下，可以考慮以此形式共享資料。然而，強烈建議從組件中組合出完整名稱，並將其共享在 *dwc:scientificName* 欄位中（如上文 A 節所述）。注意，上表中達爾文核心標準詞彙 *dwc:subgenus* 雖未顯示，但它代表另一個名稱組件。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:106
 #, no-wrap
 msgid "Infrageneric Markers"
-msgstr ""
+msgstr "種內位階標記"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:109
 msgid "If possible, please provide an infrageneric rank marker as part of the scientific name to avoid confusion with the original / basionym author. For example “*Ageratina subgen. Apoda* R.M.King & H.Rob” is preferred over “*Ageratina (Apoda)* R.M.King & H.Rob.” as the later *Apoda* could interpreted as a subgenus or as the basionym author."
-msgstr ""
+msgstr "若可能，請在學名中提供種內位階的標記，以避免與原始/基名作者混淆。例如，建議使用「*Ageratina subgen. Apoda* R.M.King & H.Rob」而非「*Ageratina (Apoda)* R.M.King & H.Rob」，因為後者中的 *Apoda* 可能會被解釋為亞屬或基名作者。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:110
 #, no-wrap
 msgid "Publishing Classifications"
-msgstr ""
+msgstr "分類集的發布"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:113
 msgid "The Darwin Core provides two basic options for publishing classifications or taxonomic hierarchies; normalized and denormalized. These two options account for the primary means by which most classifications are managed in databases."
-msgstr ""
+msgstr "達爾文核心標準提供兩種基本選項來發布分類集或分類階層：正規化與非正規化。這兩種選項對應於大多數資料庫中管理分類集的主要方式。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:114
 #, no-wrap
 msgid "Normalized Classifications (Parent/Child)"
-msgstr ""
+msgstr "正規化分類（父/子關係）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:117
 msgid "The recommended way to share a classification is in a normalized format. This may also be referred to in a database as a \"parent-child relationship\" or an \"adjacency list\". In a normalized taxonomic hierarchy, each taxon is represented by a single row. This includes both species and all higher taxa in the classification. Each row has at least the following component data elements."
-msgstr ""
+msgstr "分類集的分享方式我們推薦正規化的格式，也被稱為資料庫中的「父子關係」或「鄰接清單」。在正規化的分類階層中，每個分類單元以一行表示，包括物種與所有更高階的分類。每行至少包含以下資料元素："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:119
 msgid "A *dwc:taxonID* referring to the current taxon. *You can use whatever identifiers you have*."
-msgstr ""
+msgstr "*dwc:taxonID* 指向當前分類單元的唯一標識符。 *您可使用任何現有的標識符*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:120
 msgid "The *dwc:scientificName* of the current taxon. Example: “*Panthera tigris*”"
-msgstr ""
+msgstr "*dwc:scientificName* 為當前分類單元的學名，例如「 *Panthera tigris* 」。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:121
 msgid "The *dwc:taxonRank* of the referent taxon. Example: “*species*”"
-msgstr ""
+msgstr "*dwc:taxonRank* 為當前分類單元的位階，例如「 *species* 」。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:122
 msgid "A reference to the taxon identifier of the immediate parent taxon stored in the *dwc:parentNameUsageID*. In the example below, the parent of record 7, for “*Panthera tigris* (Linnaeus)” is record 6, the genus “*Panthera*.”"
-msgstr ""
+msgstr "*dwc:parentNameUsageID* 指向當前分類單元的直接父分類單元的標識符。在下例中，紀錄編號 7「*Panthera tigris* (Linnaeus)」的父分類單元是紀錄編號 6，即屬「*Panthera*」。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:124
 msgid "A sample classification for a single species, the tiger, “*Panthera tigris*”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that *dwc:scientificName* provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names."
-msgstr ""
+msgstr "以下是一個描述虎（*Panthera tigris*）的分類示例。請注意，階層中最高的分類單元無父分類，因此其父標識符應留空。請注意，在這種情況下，*dwc:scientificName* 提供了一個用於存儲名稱的通用欄位。其他名稱的命名共享方式已在上面的“共享科學名稱”中描述。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:135
@@ -375,56 +376,63 @@ msgid "| taxonID | taxonRank | scientificName         | parentNameUsageID\n\n"
 "| 5           | Family        | Felidae                    | 4\n"
 "| 6           | Genus         | Panthera                   | 5\n"
 "| 7           | Species       | Panthera tigris (Linnaeus) | 6\n"
-msgstr ""
+msgstr "| taxonID | taxonRank | scientificName         | parentNameUsageID\n\n"
+"| 1           | Kingdom       | Animalia                   |\n"
+"| 2           | Phylum        | Chordata                   | 1\n"
+"| 3           | Class         | Mammalia                   | 2\n"
+"| 4           | Order         | Carnivora                  | 3\n"
+"| 5           | Family        | Felidae                    | 4\n"
+"| 6           | Genus         | Panthera                   | 5\n"
+"| 7           | Species       | Panthera tigris (Linnaeus) | 6\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:137
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:167
 #, no-wrap
 msgid "Advantages"
-msgstr ""
+msgstr "優勢"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:140
 #, no-wrap
 msgid "*Efficiency* – A normalized classification stores a single reference for each taxon in the hierarchy.\n"
-msgstr ""
+msgstr "*效率* – 正規化分類為階層中的每個分類單元儲存單一參考。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:141
 #, no-wrap
 msgid "*Referential integrity* – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.\n"
-msgstr ""
+msgstr "*參考完整性* – 每個分類單元都有一個唯一標識符，且明確引用其直接父分類單元。這將簡化檢查分類階層是否完整且結構正確的過程。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:142
 #, no-wrap
 msgid "*Extensibility* – All taxa are identified with distinct taxon identifiers. This enables higher taxa to be more richly documented through the use of extensions in the same manner as species records.\n"
-msgstr ""
+msgstr "*擴展性* – 所有分類單元均有唯一的標識符，使更高階的分類單元也可以像物種紀錄一樣，通過延伸資料集進行更豐富的描述。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:143
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:172
 #, no-wrap
 msgid "Disadvantages"
-msgstr ""
+msgstr "劣勢"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:146
 #, no-wrap
 msgid "*Convenience* - A normalized classification does not provide an intuitive view of the classification hierarchy when viewed in raw tabular form. Many biologists manage classifications in a less efficient, but more visually intuitive, *denormalized format*, described below. Transforming a denormalized classification to the normalized form is difficult to manually perform.\n"
-msgstr ""
+msgstr "*便利性* - 正規化分類不易於以原始表格形式直觀檢視分類階層。然而，許多生物學家以更直觀但效率較低的方式管理分類，即下述的 *非正規化格式* 。手動將非正規化分類轉換為正規化格式是一個較為困難的過程。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:148
 msgid "A *dwc:parentNameUsageID* must point to an existing record in the dataset. It is invalid to point to higher taxon identifiers that do not exist as records."
-msgstr ""
+msgstr "*dwc:parentNameUsageID* 必須指向資料集中的現有紀錄。指向不存在紀錄的更高階分類單元標識符是無效的。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:149
 #, no-wrap
 msgid "Denormalized Classifications"
-msgstr ""
+msgstr "非正規化分類"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:152
