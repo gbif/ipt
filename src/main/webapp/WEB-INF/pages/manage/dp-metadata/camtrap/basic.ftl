@@ -401,6 +401,22 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+
+            makeSureResourceParameterIsPresentInURL();
+
+            function makeSureResourceParameterIsPresentInURL() {
+                const currentUrl = window.location.href;
+                const url = new URL(currentUrl);
+
+                const searchParams = url.searchParams;
+
+                if (!searchParams.has('r')) {
+                    console.log('Resource shortname (Camtrap DP basic metadata):')
+                    console.log('${resource.shortname}');
+                    searchParams.set('r', '${resource.shortname}');
+                    window.history.replaceState({}, '', url.toString());
+                }
+            }
         });
     </script>
     <#assign currentMenu="manage"/>
