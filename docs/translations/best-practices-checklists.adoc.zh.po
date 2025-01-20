@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-20 13:23\n"
+"PO-Revision-Date: 2025-01-20 14:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -757,95 +757,95 @@ msgstr "達爾文核心標準格式提供了一系列選項與建議，用於提
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:299
 #, no-wrap
 msgid "Metadata Citation and Attribution"
-msgstr ""
+msgstr "詮釋資料的引用與歸屬"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:302
 msgid "The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:"
-msgstr ""
+msgstr "GBIF 詮釋資料配置檔支援資源層級的資料元素，這些元素有助於資料集的引用與歸屬，並使物種名錄的範圍與來源能夠被詳細描述。本文件和 xref:gbif-metadata-profile.adoc[可用] 不包含完整的詮釋資料元素清單，而具體的引用與歸屬相關元素包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
 #, no-wrap
 msgid "*Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.\n"
-msgstr ""
+msgstr "*智慧財產權* – 詮釋資料配置檔包含資源的權利管理聲明，或提供相關資訊的服務參考，例如 Creative Commons 授權聲明。它也包括一個用於描述該資料集的預期用途與目的的元素。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:305
 #, no-wrap
 msgid "*Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.\n"
-msgstr ""
+msgstr "*個人與組織* – 詮釋資料配置檔允許描述與資料集相關的所有個人、機構或組織。這些代理者可被指定與資料集相關的不同角色，並可包含每個資源的 URL。本部分提供一種描述與連結貢獻於物種名錄的個人與組織的方法。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:306
 #, no-wrap
 msgid "*Source URL* – Links to the homepage of the source\n"
-msgstr ""
+msgstr "*來源 URL* – 連結至來源的主頁。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:307
 #, no-wrap
 msgid "*Project Information* – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.\n"
-msgstr ""
+msgstr "*專案資訊* – 如果物種名錄與特定專案相關（例如 “The Catalogue of Life”），則可使用一組欄位來詳細描述該專案。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:308
 #, no-wrap
 msgid "*Citation* – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
-msgstr ""
+msgstr "*引用* – 此元素允許物種名錄的發布者指定在使用時應如何引用該名錄資料。例如 *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”* 。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:309
 #, no-wrap
 msgid "*Bibliography* – A complete bibliography of sources can be described and included in the metadata document.\n"
-msgstr ""
+msgstr "*參考文獻* – 可在詮釋資料檔案中描述並包含完整的參考文獻清單。\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:310
 #, no-wrap
 msgid "Data-level Citation and Attribution"
-msgstr ""
+msgstr "資料層級的引用與歸屬"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:313
 msgid "Attribution and citation information recorded in the metadata document is common to all data records in a dataset. In some cases, additional granularity is needed even down to individual records. In these cases, there are record-level terms that are recommended for use in specifying citation and attribution information."
-msgstr ""
+msgstr "記錄在詮釋資料檔案中的歸屬與引用資訊適用於資料集中所有的紀錄。在某些情況下，可能需要更細化的層級，甚至到單筆紀錄的層級。在這些情況下，推薦使用記錄層級的術語來指定引用與歸屬資訊。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:315
 #, no-wrap
 msgid "*dwc:nameAccordingTo* : This term can be used to identify the individual or citation that serves as the authoritative taxonomic reference for the record. (Example “Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”)\n"
-msgstr ""
+msgstr "*dwc:nameAccordingTo* ：此術語可用來識別作為該紀錄權威分類參考的個人或引用（例如：“Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:316
 #, no-wrap
 msgid "*dwc:nameAccordingToID*: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.\n"
-msgstr ""
+msgstr "*dwc:nameAccordingToID* ：返回上述 nameAccordingTo 參考的唯一識別碼，例如 URL。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:317
 #, no-wrap
 msgid "*dwc:datasetName*: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)\n"
-msgstr ""
+msgstr "*dwc:datasetName* ：如果紀錄源自外部資料集，此資料集可被引用為文字字串（例如：“World Register of Marine Species, cited on 12 April 2011”）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:318
 #, no-wrap
 msgid "*dwc:datasetID* – An identifier that refers to a dataset, preferably resolvable.\n"
-msgstr ""
+msgstr "*dwc:datasetID* – 指向資料集的識別碼，建議為可解析的。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:319
 #, no-wrap
 msgid "*dc:source* – Link to the source web page\n"
-msgstr ""
+msgstr "*dc:source* – 連結至來源網頁。\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:320
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
-msgstr ""
+msgstr "使用案例 1 - 由多個貢獻資料集組成的物種名錄（例如 Catalogue of Life，PESI，WoRMS）"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:323
@@ -871,7 +871,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:332
 #, no-wrap
 msgid "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
-msgstr ""
+msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
@@ -959,7 +959,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:356
 #, no-wrap
 msgid "figures/myristica_fragrans.png"
-msgstr ""
+msgstr "figures/myristica_fragrans.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
