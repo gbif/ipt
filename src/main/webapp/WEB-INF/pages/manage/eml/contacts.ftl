@@ -2332,9 +2332,6 @@
                                 </a>
                             </div>
 
-                            <!-- internal parameter -->
-                            <input name="r" type="hidden" value="${resource.shortname}" />
-
                             <div id="baseItem-associatedParty" class="item row g-2 pb-4 border-bottom" style="display:none;">
                                 <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                     <div>

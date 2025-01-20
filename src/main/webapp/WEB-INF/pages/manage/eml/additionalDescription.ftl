@@ -159,6 +159,8 @@
     </div>
 
     <form id="additional-description-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <input type="hidden" name="r" value="${resource.shortname}" />
+
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
