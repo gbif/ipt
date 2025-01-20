@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-20 11:00\n"
+"PO-Revision-Date: 2025-01-20 13:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -683,7 +683,7 @@ msgstr "命名法上的同物異名"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:265
 #, no-wrap
 msgid "*Nomenclatural synonymy* is supported in the core data file through the use of the *dwc:originalNameUsageID* field. This field refers to the row representing the original taxon reference for the name. This record is recommended to provide a bibliographic citation in the *dwc:namePublishedIn* field, which refers to the publication in which the name was originally established.\n"
-msgstr ""
+msgstr "在核心資料檔案中，可以使用 *dwc:originalNameUsageID* 欄位支援 *命名法上的同物異名*。此欄位指向該名稱的原始分類單元參考所代表的行。建議該紀錄在 *dwc:namePublishedIn* 欄位中提供書目引用，該欄位指的是最初確定該名稱的出版物。\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:272
@@ -700,23 +700,23 @@ msgstr "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:275
 msgid "Nomenclatural and taxonomic synonyms may be designated in the same taxon record."
-msgstr ""
+msgstr "命名法和分類上的同物異名可在同一分類單元紀錄中指定。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:277
 msgid "An *dwc:originalNameUsageID* must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records."
-msgstr ""
+msgstr "*dwc:originalNameUsageID* 必須指向資料集中的現有紀錄。指向不存在紀錄的已接受分類單元是無效的。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:278
 #, no-wrap
 msgid "Pro-parte Synonymy"
-msgstr ""
+msgstr "部分同物異名"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:281
 msgid "Sometimes the same name may be a synonym for more than one accepted taxon or may be both an accepted taxon name and a synonym. These are caused by splits and circumscription changes where, for example, a series of types may be divided among multiple taxa. The recommended practice for sharing pro-parte synonyms is represented in the example. In this example, *Vireo solitarius* is an accepted taxon name and it is also included in the synonymy for both *Vireo cassinii* and *Vireo plumbeus*. In the case of the synonyms, they are represented as a single record with accepted taxon reference concatenated in the *dwc:acceptedNameUsageID* field and separated by a pipe (“|”) character."
-msgstr ""
+msgstr "有時同一名稱可能是多個已接受分類單元的同物異名，或者既是已接受的分類單元名稱又是同物異名。這種情況通常由於分類單元的分裂和範疇變更引起，例如一系列類型可能被分配到多個分類單元中。建議的做法如下範例所示。在此範例中，*Vireo solitarius* 是一個已接受的分類單元名稱，同時也被列為 *Vireo cassinii* 和 *Vireo plumbeus* 的同物異名。對於同物異名，它們被表示為單一紀錄，並在 *dwc:acceptedNameUsageID* 欄位中串聯已接受分類單元參考，使用管道符號（“|”）分隔。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:289
@@ -726,28 +726,32 @@ msgid "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 "| 2           | Vireo cassinii     | 2                       | accepted\n"
 "| 3           | Vireo plumbeus     | 3                       | accepted\n"
 "| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
+"| 1           | Vireo solitarius   | 1                       | accepted\n"
+"| 2           | Vireo cassinii     | 2                       | accepted\n"
+"| 3           | Vireo plumbeus     | 3                       | accepted\n"
+"| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:292
 msgid "IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance."
-msgstr ""
+msgstr "IPT 使用者應為每個來源檔案定義多值分隔符號。請參考 IPT 使用手冊的 xref:manage-resources.adoc#source-data[來源資料部分] 以獲取更多指引。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:293
 #, no-wrap
 msgid "Citation and Attribution"
-msgstr ""
+msgstr "引用與歸屬"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:296
 msgid "Taxonomic checklists often represent significant intellectual and financial efforts on the part of the individuals and organizations who compile them. Some checklists may be derived from, or may reference, other source checklists to create new distinct thematic, regional or taxonomic views of the same source authority. Proper attribution and visibility of these sources is therefore a high priority."
-msgstr ""
+msgstr "物種名錄分類表通常代表了個人和組織在知識和財務上的重大努力。一些物種名錄可能源自或引用其他來源物種名錄，以創建對同一來源權威在主題性、區域性或分類性上的新視角。因此，正確的歸屬和這些來源的公開狀態至關重要。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:298
 msgid "The DwC-A format provides a range of options and recommendations for providing proper citation and attribution. This range extends from global citation and attribution information that form part of the resource metadata down to record-level data elements. These options support the provision of multiple levels of attribution."
-msgstr ""
+msgstr "達爾文核心標準格式提供了一系列選項與建議，用於提供適當的引用與歸屬。其範圍涵蓋從全球引用和歸屬構成的來源詮釋資料，延伸到記錄級別的資料元素，支持多層次的歸屬。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:299
