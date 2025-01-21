@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-21 06:40\n"
+"PO-Revision-Date: 2025-01-21 09:41\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1045,28 +1045,28 @@ msgstr "分享連結與識別碼"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:389
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here]."
-msgstr ""
+msgstr "可以使用 {latest-identifier}[替代識別碼延伸資料集] 分享和描述多個與外部資源相關的連結。該延伸資料集允許資料發布者透過可解析的識別碼嵌入返回來源資料庫或文件的連結。單一分類單元可能提供多個識別碼，例如連結到網頁以及更具機器可讀性的網頁服務響應。建議在每個紀錄中包含格式，以讓使用者了解如何解讀解析資訊，通常是透過此欄位中加入*媒體類型*（或 *MIME 類型*）來完成。完整的媒體類型清單可在 https://www.iana.org/assignments/media-types/media-types.xhtml[IANA 網站]查閱。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:390
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
-msgstr ""
+msgstr "建立物種頁面的動態連結"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:393
 msgid "Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The Darwin Core Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a Darwin Core Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile]."
-msgstr ""
+msgstr "通常，返回來源資料庫的連結遵循一種通用格式，僅在 URL 中使用的識別碼或分類單元名稱不同。這可能導致延伸資料集檔案過於冗長。達爾文核心集格式支援更高效的方法來定義 URL 範本，只需定義一次，並允許在範本中嵌入變數，避免在資料檔案中為每個分類單元重複多組 URL。此方法可透過達爾文核心集檔案的 XML 詮釋文件部分完成。它不使用參考延伸資料集。這需要對 XML 有一定程度的熟悉以編輯 XML 詮釋文件。GBIF xref:gbif-metadata-profile.adoc[提供了達爾文核心標準詮釋文件的完整指南]。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:395
 msgid "The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “\\{id}.” The following examples illustrate these features:"
-msgstr ""
+msgstr "可在詮釋文件中創建變數，該變數可引用網頁或網頁服務呼叫。此變數可嵌入 URL，並將分類單元的識別碼或名稱作為 URL 中的參數之一。透過將索引號用大括號 “{}” 包裹，可以引用發布資料中的任何欄位。例如，核心資料檔案中的分類單元識別碼可透過變數 “\\{id}” 來引用。以下示例展示了這些功能："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:397
 msgid "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial Numbers (TSN) to provide links to taxon pages on its web site."
-msgstr ""
+msgstr "整合分類學資訊系統（Integrated Taxonomic Information System，ITIS）系統使用分類序列號（Taxonomic Serial Numbers，TSN）提供到物種頁面網站的連結。例如："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:400
@@ -1076,7 +1076,7 @@ msgstr "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:402
 msgid "If a core data file is published using the ITIS TSN system a link can be composed and tied to the “identifier” term in the core data standard using the following syntax."
-msgstr ""
+msgstr "如果核心資料檔案使用 ITIS 的 TSN 系統，此連結可與核心資料標準中的 \"identifier\" 項目綁定，並使用以下語法："
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:405
@@ -1087,12 +1087,12 @@ msgstr "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:408
 msgid "where the original numeric value is replaced by the variable `\\{id}`. This value would be derived from the core ID."
-msgstr ""
+msgstr "其中，原始數值被變數 `\\{id}` 取代。此值來自核心 ID。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:411
 msgid "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It also supports name-based searches that can also be encoded as URLs. For example,"
-msgstr ""
+msgstr "《2010 年生命名錄年度物種名錄》提供了類似的識別碼。它也支援基於名稱的搜尋，這些搜尋可以編碼為 URL。例如："
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:415
@@ -1103,7 +1103,7 @@ msgstr "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Stru
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:417
 msgid "embeds a scientific name “Struthio camelus” into a URL. Full scientific name combinations can be published in the core data file using the Darwin Core term “scientificName.” If we assume that this term represented the 12th column in our core data file we could use the syntax"
-msgstr ""
+msgstr "將學名 “Struthio camelus” 嵌入到 URL 中。完整的學名組合可以使用達爾文核心標準中的 “scientificName” 欄位發布於核心資料檔案中。如果我們假設該欄位是核心資料檔案中的第 12 欄，我們可以使用以下語法："
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:420
@@ -1114,108 +1114,108 @@ msgstr "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/se
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:423
 msgid "where `\\{12}` represents the 12th column value that will be substituted in the URL."
-msgstr ""
+msgstr "其中，`\\{12}` 代表第 12 欄的值，該值將替換為 URL 中的對應內容。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:425
 #, no-wrap
 msgid "GBIF Checklist Extensions"
-msgstr ""
+msgstr "GBIF 物種名錄延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:428
 msgid "The core data file in a checklist contains taxon records. The set of terms that can be used to describe a taxon record is defined by the Taxon (Core) Extension."
-msgstr ""
+msgstr "在物種名錄中，核心資料檔案包含分類群紀錄。用於描述分類群紀錄的術語集合由分類群（核心）延伸資料集定義。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:430
 msgid "Each taxon record can be extended with one or more records in an extension file. The set of terms that can be used to describe each extension record is defined by its Extension."
-msgstr ""
+msgstr "每一筆分類群紀錄可以透過一個或多個延伸資料檔案進行擴充。每個延伸紀錄中可用於描述的術語集合由其對應的延伸資料集定義。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:432
 msgid "Below is the complete list of Extensions that can be used to provide additional information about a taxon record:"
-msgstr ""
+msgstr "以下是可用於為分類群紀錄提供額外資訊的延伸資料集完整列表："
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:433
 #, no-wrap
 msgid "Taxon (Core) Extension"
-msgstr ""
+msgstr "分類群（核心）延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
-msgstr ""
+msgstr "最新版本發布： {latest-dwc-taxon}[{date-dwc-taxon}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:438
 msgid "Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms."
-msgstr ""
+msgstr "使用這套術語提供物種名錄的基本資訊，包括分類、異名及其他關鍵元素。名錄中的每一行代表一個分類群名稱，無論是公認名還是異名。這些術語支援不同的分類資訊表現方法。分類可以以「試算表樣式」分享，例如以 Kingdom、Phylum、Class 等欄位表示；或者以「資料庫樣式」分享，每一筆分類群資料行都包含其直接父級的 ID 欄位。請注意，這些表格包含可接受術語的完整列表。物種名錄分享的最低要求可以僅是一份物種清單，但強烈建議附加一個 ID。請參考這些術語列表，找出最能匹配所需分享資料的術語。不要對術語名稱感到畏懼，閱讀說明即可找到相關術語。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:439
 #, no-wrap
 msgid "Vernacular Names Extension"
-msgstr ""
+msgstr "俗名延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
-msgstr ""
+msgstr "最新版本發布： {latest-vernacularname}[{date-vernacularname}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:444
 msgid "This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID."
-msgstr ""
+msgstr "此延伸資料集提供與分類群相關的俗名資訊分享方式。多個俗名可以透過 taxonID 連結至同一分類群。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:445
 #, no-wrap
 msgid "References Extension"
-msgstr ""
+msgstr "參考文獻延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 msgid "Latest version issued: {latest-references}[{date-references}]"
-msgstr ""
+msgstr "最新版本發布： {latest-references}[{date-references}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:450
 msgid "Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists."
-msgstr ""
+msgstr "使用此延伸資料集描述與分類群相關的一個或多個參考文獻。可使用類型欄位來限定文獻的性質。此延伸資料集支援具參考性的同物異名物種名錄分享。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:451
 #, no-wrap
 msgid "Species Distribution Extension"
-msgstr ""
+msgstr "物種分布延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:454
 msgid "Latest version issued: {latest-species-distribution}[{date-species-distribution}]"
-msgstr ""
+msgstr "最新版本發布： {latest-species-distribution}[{date-species-distribution}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:457
 msgid "Use this extension to share information on one or more distribution references for a taxon. One or more locality records may be linked to the same taxon. For example multiple localities, regions, or countries may be listed. Use this extension to describe the threat status for a taxon, seasonal distribution changes, and other properties linked to a taxon in a particular region."
-msgstr ""
+msgstr "使用此延伸資料集分享分類群的一個或多個分布地紀錄。可以將多個地點、地區或國家紀錄連結到同一分類群。此延伸資料集還可描述分類群的威脅狀態、季節性分布變化，以及與特定區域相關的其他屬性。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:458
 #, no-wrap
 msgid "Species Description Extension"
-msgstr ""
+msgstr "物種說明延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:461
 msgid "Latest version issued: {latest-description}[{date-description}]"
-msgstr ""
+msgstr "最新版本發布： {latest-description}[{date-description}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:464
 msgid "Use this extension to provide descriptive text for a taxon. This is typically in the form of a single paragraph per record as would be normally stored in a database. Descriptions can be qualified by a type to indicate, for example that the description is related to, for example, the morphology conservation, reproduction, etc. Multiple descriptions equal multiple records in a descriptions file."
-msgstr ""
+msgstr "使用此延伸資料集為分類群提供說明文字。通常每一筆紀錄有一段文字，與資料庫中一般的存儲的格式類似。說明可以用一個類型進行限定，例如該說明是否與形態特徵、保育狀態、繁殖等相關。在說明文件中，多條說明即對應多筆紀錄。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:465
@@ -1226,42 +1226,42 @@ msgstr "替代的識別碼"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:468
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
-msgstr ""
+msgstr "最新版本發布： {latest-identifier}[{date-identifier}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:470
 msgid "Use this extension if you have more than one identifier or link to information about the taxon. A source database, may, for example provide access to the source data records through a web page, a web service, and a resolvable identifier such as LSID, DOI or other means."
-msgstr ""
+msgstr "如果需要分享一個分類群的多個識別碼或連結，請使用此延伸資料集。例如，來源資料庫可以提供網頁、網路服務以及可解析識別碼（如 LSID、DOI）等方式存取來源資料紀錄。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:471
 #, no-wrap
 msgid "Types and Specimens Extension"
-msgstr ""
+msgstr "模式與標本延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:474
 msgid "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
-msgstr ""
+msgstr "最新版本發布： {latest-typesandspecimen}[{date-typesandspecimen}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:476
 msgid "Use this extension to share data relating to one or more specimens or type references linked to the core taxon"
-msgstr ""
+msgstr "使用此延伸資料集分享與一個或多個標本或類型參考相關的資料，並將其連結到核心分類群。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:477
 #, no-wrap
 msgid "Resource Relationship Extension"
-msgstr ""
+msgstr "資源關係延伸資料集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:480
 msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
-msgstr ""
+msgstr "最新版本發布： {latest-resource-relation}[{date-resource-relation}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:481
 msgid "This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list."
-msgstr ""
+msgstr "此延伸資料集用於描述核心分類群與其他分類群之間的一個或多個關係，無論是在來源列表中還是紀錄中。例如，此延伸資料集可以用於提供一個由核心物種列表中的某個蜜蜂物種進行授粉的植物物種列表（每條紀錄對應一個物種）。"
 
