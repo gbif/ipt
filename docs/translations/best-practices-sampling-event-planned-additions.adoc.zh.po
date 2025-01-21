@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-21 12:06\n"
+"PO-Revision-Date: 2025-01-21 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -85,14 +85,14 @@ msgstr "如何掌握調查活動的層次結構"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "如何找出缺失資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "如何添加補充多媒體資料"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
