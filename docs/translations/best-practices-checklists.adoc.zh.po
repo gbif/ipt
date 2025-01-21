@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-21 04:41\n"
+"PO-Revision-Date: 2025-01-21 05:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -948,12 +948,12 @@ msgstr "使用 *dwc:nameAccordingTo* 或 *dwc:nameAccordingToID* 來引用對應
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:352
 #, no-wrap
 msgid "Sharing Vernacular Names"
-msgstr ""
+msgstr "分享俗名"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
-msgstr ""
+msgstr "本系統支援與分類單元相關的俗名資料共享，這些俗名資料可透過一個獨立的、相關的檔案使用 {latest-vernacularname}[俗名延伸資料集] 來分享。該延伸資料集提供了描述俗名使用的豐富屬性，包括地區和形態限定詞。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:356
@@ -964,72 +964,72 @@ msgstr "figures/myristica_fragrans.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
 msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
-msgstr ""
+msgstr "俗名需透過延伸資料集參照，因此必須與父核心資料檔案中的命名分類單元連結。此外，建議在俗名紀錄中提供語言參照，標識該俗名使用所代表的語言。最佳做法是使用 http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 639 語言代碼]來分享語言資訊。俗名可能具有特定地區的用法，可透過 dwc:locality 元素或使用較低精度的 dwc:country 元素來指明。建議國家名稱使用 http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 Alpha-2 國家代碼]。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:360
 #, no-wrap
 msgid "Sharing Species Descriptions"
-msgstr ""
+msgstr "分享物種描述"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
-msgstr ""
+msgstr "本系統支援與分類單元相關的描述性資訊共享。這些描述性資料以一個獨立的、相關的檔案透過 {latest-description}[物種描述延伸資料集] 來分享。描述性資料可分配至不同的描述類型，並且由於這些資料發布於延伸資料集，單一分類單元可以關聯多個描述紀錄，提供相對豐富的資料集內容。建議使用 {latest-description-type}[描述類型詞彙表] 來描述這些資訊。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:364
 #, no-wrap
 msgid "Multi-line descriptions"
-msgstr ""
+msgstr "多行描述"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:367
 msgid "Descriptive information should be limited to single paragraph text blocks. Multiple paragraphs containing line breaks should be avoided or carefully managed in order to maintain the integrity of the resultant text file output as the Darwin Core Archive. Multi-line data fields served as text files require the record delimiters, which are usually line break characters, to be distinct from the line breaks used within a multi-line field. The best method for supporting multiple lines in a single field is to replace breaking characters with a non-breaking character or character set that a user can replace with proper breaks when the data is parsed and used. One option is to use the HTML break tag `<br>`."
-msgstr ""
+msgstr "描述性資訊應限制在單段落文字區塊內。避免或謹慎處理包含換行符的多段落內容，以維持達爾文核心集檔案輸出的完整性。以文字檔格式提供的多行資料欄位需要記錄分隔符（通常是換行符）與多行欄位內的換行符區分開來。支援多行的最佳方式是用非斷行的字符或字符組替代換行符，讓使用者在解析資料時可替換為適當的換行符。一種選項是使用 HTML 的 `<br>` 標籤。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:368
 #, no-wrap
 msgid "Sharing Species Distributions"
-msgstr ""
+msgstr "分享物種分佈"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:371
 msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
-msgstr ""
+msgstr "本系統支援分佈資料共享。這些分佈資料透過一個獨立的、相關的檔案使用 {latest-species-distribution}[物種分佈延伸資料集] 來分享。該延伸資料集不僅用於指定國家或地區的分佈描述，還支援對分佈的性質進行限定，例如該分類單元的威脅狀態、是否為外來種、本地種等，以及與特定定義區域相關的其他屬性。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:373
 msgid "The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element."
-msgstr ""
+msgstr "建議使用可解析或已知的區域識別碼，並透過 dwc:localityID 元素發布。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:375
 msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
-msgstr ""
+msgstr "如果使用 dwc:country 元素，建議使用 http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 Alpha-2 國家代碼]。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:376
 #, no-wrap
 msgid "Sharing References"
-msgstr ""
+msgstr "分享參考文獻"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr ""
+msgstr "本系統支援書目引用資料共享。這些書目資料透過一個獨立的、相關的檔案使用 {latest-references}[參考文獻延伸資料集] 來分享。該延伸資料集設計用於分享專著和註解物種名錄中的同物異名資訊。它支援分享解析的引用格式，比核心資料檔案中的引用存儲元素（如 dwc:namePublishedIn）提供更細緻的格式。此延伸資料集支援使用 *dc:type* 屬性對參考文獻進行分類和命名限定，並可結合 {latest-reference-type}[參考類型詞彙表] 使用，以區分與分類單元相關的一組參考文獻。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:381
 msgid "Note that extensions must link to the taxa in the core data file by providing the `taxonID` in the `taxonID` field. See the <<checklist-data,structure of Darwin Core Archives>> above."
-msgstr ""
+msgstr "延伸資料集必須透過 `taxonID` 欄位提供核心資料檔案中分類單元的連結。請參見 <<checklist-data,達爾文核心集檔案結構>>。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:382
 #, no-wrap
 msgid "Sharing Type information"
-msgstr ""
+msgstr "分享類型資訊"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:385
