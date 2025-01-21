@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2025-01-21 10:44\n"
+"PO-Revision-Date: 2025-01-21 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -196,22 +196,22 @@ msgstr "一種替代方式來編碼調查活動資料，是將物種出現紀錄
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:52
 msgid "Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.  Discussion on this prototype extension are taking place on GitHub but there is no solution available yet."
-msgstr ""
+msgstr "需要注意的是，目前的 DwC-A 星狀架構存在一些限制。例如，它無法在同一資料集中將測量和事件同時連結到活動和出現紀錄。有關此原型延伸資料集的討論正在 GitHub 上進行，但尚未有解決方案。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
 msgid "Please check the https://www.gbif.org/data-quality-requirements-sampling-events[data quality requirements for sampling events]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the https://www.gbif.org/tools/data-validator[GBIF data validator]."
-msgstr ""
+msgstr "請檢查 https://www.gbif.org/data-quality-requirements-sampling-events[調查活動的資料品質要求]。如果您手動生成達爾文核心集檔案，可能需要添加一個 recordID 欄位以包含唯一識別碼。（如果您使用 IPT，此欄位將自動生成。）有關達爾文核心集檔案結構的更多資訊，請參考 https://dwc.tdwg.org/text/[TDWG 達爾文核心標準文本導引]。您也可以使用 https://www.gbif.org/tools/data-validator[GBIF 資料驗證工具]檢查您的檔案。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:58
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr ""
+msgstr "為了便於理解，我們在本導引中可能使用*欄位*一詞來指代調查活動發布檔案設定檔中的達爾文核心標準詞彙。這些詞彙將對應到使用者的資料。例如，當提到達爾文核心標準詞彙 *scientificName* 時，我們將稱其為 *dwc:scientificName 欄位*。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:60
 msgid "It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes."
-msgstr ""
+msgstr "建議使用標籤或逗號分隔值（CSV），避免使用自訂欄位分隔符號及引號。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65
@@ -223,35 +223,35 @@ msgstr "樣本數"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:68
 msgid "The following Darwin Core fields store the sample size of a sampling event:"
-msgstr ""
+msgstr "以下為達爾文核心標準用於存儲調查活動樣本數的欄位："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
 #, no-wrap
 msgid "*sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeValue*: 數值，用於測量調查活動樣本的大小（如持續時間、長度、面積或體積）。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:71
 #, no-wrap
 msgid "*sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeUnit*: 測量樣本大小（如持續時間、長度、面積或體積）的單位。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr ""
+msgstr "sampleSizeValue 的值必須是數字，並且必須有相應的 sampleSizeUnit。sampleSizeUnit 的值應限制為僅使用國際單位制 (SI) 單位/衍生單位，或國際單位制接受的非 SI 單位（例如分鐘、小時、天、升），依照 {latest-unit-of-measurement}[測量單位詞彙]。下表提供了一些示例："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 msgid "You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "可以使用適當的 WKT 形狀或緯度/經度點位置表示調查區域。如果操作正確，還可以推導出調查方向。例如，使用 WKT 形狀 LINESTRING 表示的海洋拖網線，可以根據起點和終點的標準標記法確定拖網的方向。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
 #, no-wrap
 msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
-msgstr ""
+msgstr "sampleSizeValue 和 sampleSizeUnit 必須一起使用，例如：3 平方公尺或 1 升。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:84
@@ -261,36 +261,40 @@ msgid "| sampleSizeValue | sampleSizeUnit\n\n"
 "| 3 | m2\n"
 "| 17 | km\n"
 "| 1 | litre\n"
-msgstr ""
+msgstr "| sampleSizeValue | sampleSizeUnit\n\n"
+"| 2 | hour\n"
+"| 3 | m2\n"
+"| 17 | km\n"
+"| 1 | litre\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "數量與豐度"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:89
 msgid "The following Darwin Core fields are also required to be used as a pair:"
-msgstr ""
+msgstr "以下達爾文核心欄位也需要成對使用："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
 #, no-wrap
 msgid "*organismQuantity*: a numeric or enumeration value for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantity*: 數值或枚舉值，表示生物數量。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:92
 #, no-wrap
 msgid "*organismQuantityType*: the type of quantification system used for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantityType*: 表示生物數量所使用的量化系統類型。\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
 msgid "Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass."
-msgstr ""
+msgstr "表2列出了一些示例值。organismQuantity 的值可以是數字或枚舉值，例如：“27”（當 organismQuantityType 為 “individuals” 時），12.5（當 organismQuantityType 為 “%biomass” 時），或 r（當 organismQuantityType 為 “BraunBlanquetScale” 時）。organismQuantityType 的值應從控制詞彙中選取，例如 “Individuals”、“%Biomass”、“%Biovolume”、“%Species”、“%Coverage”、“BraunBlanquetScale”、“DominScale”。以下是一些與 organismQuantity 結合的範例：“+” 對應於 “DominScale”；5 對應於 “BraunBlanquetScale”；45 對應於 “%Biomass”。"
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
@@ -306,31 +310,35 @@ msgid "| organismQuantity | organismQuantityType\n\n"
 "| r | BraunBlanquetScale\n"
 "| 0.4 | %Species\n"
 "| 31 | %Biomass\n"
-msgstr ""
+msgstr "| organismQuantity | organismQuantityType\n\n"
+"| 14 | individuals\n"
+"| r | BraunBlanquetScale\n"
+"| 0.4 | %Species\n"
+"| 31 | %Biomass\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "如何唯一識別調查活動"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:109
 msgid "Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.  In the absence of a GUID, publishers may reuse the original fieldNumber."
-msgstr ""
+msgstr "每個活動透過 dwc:eventID 唯一識別，有時也會使用 dwc:parentEventID。雖然標識符的類型和格式是任意的，但建議發布者選擇持久的全域唯一識別碼。如果沒有 GUID，發布者可以重複使用原始的 fieldNumber。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 msgid "Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared."
-msgstr ""
+msgstr "請確保重用現有的穩定標識符，當活動已有標識符時，請勿重新創建新標識符。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "如何掌握調查活動的層次結構"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
