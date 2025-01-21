@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-20 14:38\n"
+"PO-Revision-Date: 2025-01-21 03:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -850,22 +850,22 @@ msgstr "使用案例 1 - 由多個貢獻資料集組成的物種名錄（例如 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:323
 msgid "A taxonomic dataset may be a composite of multiple contributing sources, each of which needs to be acknowledged in addition to the collective resource itself. There are many examples of this. Perhaps the largest such collective effort is the Catalogue of Life Annual Checklist which aims to provide a complete listing of all the worlds living species. The checklist itself is composed of individual datasets that represent major taxonomic groups. Each of these resources, in turn, may be composed of contributions from a sub-network of specialists."
-msgstr ""
+msgstr "一個分類學資料集可能由多個貢獻來源組成，每個來源除了共同的資源本身外，都需要被確認。這有很多例子，如 Catalogue of Life Annual Checklist，其目的是提供世界上所有已知生物的完整名錄，該名錄由代表主要分類群的單獨資料集組成。這些資源進一步也可能是由來自各專家子網路的貢獻組成。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:325
 msgid "Other examples include the Pan-European Species list, which is composed of a number of contributing datasets that include Fauna Europaea, the European Register of Marine Species, Euro+Med PlantBase and others. The World Register of Marine Species represents another such network."
-msgstr ""
+msgstr "其他範例包括泛歐物種名錄（Pan-European Species list），該名錄由多個延伸資料集組成，包括歐洲動物誌（Fauna Europaea）、歐洲海洋物種名錄（European Register of Marine Species）、歐洲與地中海植物基礎資料庫（Euro+Med PlantBase）等。世界海洋物種名錄（World Register of Marine Species）是另一個與此相似的網絡。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:327
 msgid "The recommended practice for effectively documenting the provenance of these sorts of resources can be summarized as follows."
-msgstr ""
+msgstr "有效記錄這些資源來源的推薦做法總結如下："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:329
 msgid "A single metadata document is created to represent the collective resource itself, (e.g., the Catalogue of Life, the The World Register of Marine Species, etc.) This metadata document provides the proper citation, agents, rights, and other elements identified above. This document filename is referenced the Darwin Core Archive descriptor file, meta.xml. This links the document to the entire DwC-A dataset. Recommended best practice is that this file uses the GBIF metadata profile and be named EML.xml. In this case, the metadata descriptor XML would look like this:"
-msgstr ""
+msgstr "創建一份單一的詮釋資料文件用以代表整個資源（例如，生命名錄（Catalogue of Life）、世界海洋物種名錄（The World Register of Marine Species）等）。該詮釋資料文件提供正確的引用、相關代理人、權利及上述其他要素。該文件的檔名在達爾文核心集檔案描述文件 meta.xml 中被引用，從而將詮釋資料文件連結至整個達爾文核心集檔案資料集。建議的最佳做法是使用 GBIF 詮釋資料規範，並將此文件命名為 EML.xml 。在此情況下，詮釋資料描述文件的 XML 格式會如下所示："
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:332
