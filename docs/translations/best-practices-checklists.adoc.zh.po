@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-21 03:31\n"
+"PO-Revision-Date: 2025-01-21 04:41\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -876,73 +876,73 @@ msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
 msgid "Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the *dwc:datasetID* term. If the metadata documents are included in the archive itself, the *dwc:datasetID* equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document."
-msgstr ""
+msgstr "作者可為每個組成的延伸資料集創建額外的詮釋資料文件，並將其包含在檔案中。這使得每個子延伸資料集能像“父”資料集一樣被完整記錄，附有其推薦的引用、貢獻者等。由於這些延伸資料集未記錄整個集合，它們不會在 meta.xml 描述文件中被引用，而是通過 *dwc:datasetID* 詞條從單個資料紀錄中被引用。如果詮釋資料文件包含在檔案本身中，則 *dwc:datasetID* 等於該文件的檔名。或者，它可以參考一個 URL 或其他唯一且可解析的資訊標識符。一種較不推薦但可行的替代方法是添加一個指向數據集的簡單網頁 URL ，即不是結構化的詮釋資料文件。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:336
 msgid "To cite individuals at the record level, providing a 3rd level of citation, it is recommended to use the *dwc:nameAccordingTo* field. Additional record-level terms are provided above."
-msgstr ""
+msgstr "若要在紀錄層級引用個人，提供第三層引用，建議使用 *dwc:nameAccordingTo* 欄位。其他紀錄層級的詞條已在上述內容中提供。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:337
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
-msgstr ""
+msgstr "使用案例2 - 基於一個或多個權威來源的物種名錄"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:340
 msgid "A species checklist in this use case is compiled for a specific purpose but derives it’s basic taxonomic structure from one or more external taxonomic checklists that serve as *authority files*. The new compilation may include additional annotations to the basic source record that apply to the new lists focus. An example might be a European national species checklist derived from a database such as Fauna Europaea or the Catalogue of Life, which, in principle, provide the complete listing for a country as a subset of their own coverage. A national list may then add additional regional details such as a national threat status or some other property of interest, resulting in a new, derived dataset. In this case, it is important to be able to provide record-level attribution and linkages to the source dataset. The recommended means to do this are as follows."
-msgstr ""
+msgstr "在此使用案例中，物種名錄是為特定目的而編制，但其基本分類結構來源於一個或多個作為 *權威文件* 的外部分類物種名錄。該新編纂的名錄可能包含對基本來源紀錄的額外註解，這些註解適用於該新名錄的重點。例如，一份歐洲國家物種名錄可能基於歐洲動物誌（Fauna Europaea）或生命名錄（Catalogue of Life）等資料庫編制，這些資料庫理論上提供了一個國家的完整名錄，作為其自身覆蓋範圍的子集。國家名錄可能進一步添加其他區域性細節，如國家的威脅狀況或其他感興趣的屬性，最終生成一個新的衍生資料集。在這種情況下，能夠提供紀錄層級的來源引用和連結至來源資料集非常重要。推薦的方式如下："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:342
 msgid "A single metadata document is created to represent the new, derived resource itself (e.g., National Checklist of the Netherlands). Datasets that are referenced can be cited in this metadata document."
-msgstr ""
+msgstr "一份單一的詮釋資料文件被建立以代表新的衍生資源本身（例如，荷蘭物種名錄）。被引用的資料集可以在該詮釋資料文件中被引用。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:343
 msgid "Fully described as organizations with a role of Contributor and links to the source web site."
-msgstr ""
+msgstr "完整描述作為具有“貢獻者”角色的組織，並連結至來源網站。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:344
 msgid "Cited in the bibliographic section with the citation represented as recommended by the referenced dataset."
-msgstr ""
+msgstr "在書目引用部分中按照所參考資料集的建議進行引用。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:345
 msgid "In the data files, additional attribution and linkages can be made at the record-level. This includes:"
-msgstr ""
+msgstr "在資料檔案中，可以在紀錄層級進行額外的來源標註與連結，包括："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:346
 msgid "Referencing the dataset by name in *dwc:datasetName*"
-msgstr ""
+msgstr "在 *dwc:datasetName* 中引用資料集的名稱"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:347
 msgid "Referencing the dataset by ID (such as URL) in *dwc:datasetID* and linking to the dataset home page"
-msgstr ""
+msgstr "在 *dwc:datasetID* 中引用資料集的ID（如URL），並連結至資料集首頁"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:348
 msgid "Providing a link to a corresponding species page on the referenced dataset web site using *dc:source*"
-msgstr ""
+msgstr "使用 *dc:source* 提供指向參考資料集網站的對應物種頁面的連結"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:349
 msgid "If dc:source is reserved for pointing to URL for the derived database, a link to the source database can still be added using the Alternative Identifiers extension."
-msgstr ""
+msgstr "如果 dc:source 保留用於指向衍生資料庫的 URL，則仍可以使用延伸資料集的替代標識符添加連結至來源資料庫。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:350
 msgid "If the source dataset provides globally unique identifiers for the taxa referenced in the list, they can be used as the *taxonID* in the derived dataset. This ensures an explicit link to the source taxon and is highly recommended if available."
-msgstr ""
+msgstr "如果來源資料集為名錄中引用的分類群提供全球唯一標識符，建議使用該標識符作為衍生資料集中的 *taxonID*，以確保與來源分類群有明確的連結。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:351
 msgid "Use the *dwc:nameAccordingTo* or *dwc:nameAccordingToID* to refer to the taxon definition in the corresponding source record as a citation or a URL."
-msgstr ""
+msgstr "使用 *dwc:nameAccordingTo* 或 *dwc:nameAccordingToID* 來引用對應來源紀錄中的分類群定義作為參考或 URL。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:352
@@ -1071,7 +1071,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:400
 msgid "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
-msgstr ""
+msgstr "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:402
@@ -1082,7 +1082,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:405
 #, no-wrap
 msgid "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:408
@@ -1098,7 +1098,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:415
 #, no-wrap
 msgid "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
-msgstr ""
+msgstr "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:417
@@ -1109,7 +1109,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:420
 #, no-wrap
 msgid "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:423
