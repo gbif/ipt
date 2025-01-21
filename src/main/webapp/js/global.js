@@ -88,3 +88,15 @@ function setRippleElement(e) {
         dot.style.top = y + '%';
     });
 }
+
+function makeSureResourceParameterIsPresentInURL(resourceShortname) {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+
+    const searchParams = url.searchParams;
+
+    if (!searchParams.has('r')) {
+        searchParams.set('r', resourceShortname);
+        window.history.replaceState({}, '', url.toString());
+    }
+}

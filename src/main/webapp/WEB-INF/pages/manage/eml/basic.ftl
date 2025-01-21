@@ -272,21 +272,7 @@
                 this.submit();
             });
 
-            makeSureResourceParameterIsPresentInURL();
-
-            function makeSureResourceParameterIsPresentInURL() {
-                const currentUrl = window.location.href;
-                const url = new URL(currentUrl);
-
-                const searchParams = url.searchParams;
-
-                if (!searchParams.has('r')) {
-                    console.log('Resource shortname (EML basic metadata):')
-                    console.log('${resource.shortname}');
-                    searchParams.set('r', '${resource.shortname}');
-                    window.history.replaceState({}, '', url.toString());
-                }
-            }
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <style>

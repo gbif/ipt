@@ -63,19 +63,7 @@
                 hideProcessing();
             }
 
-            makeSureResourceParameterIsPresentInURL();
-
-            function makeSureResourceParameterIsPresentInURL() {
-                const currentUrl = window.location.href;
-                const url = new URL(currentUrl);
-
-                const searchParams = url.searchParams;
-
-                if (!searchParams.has('r')) {
-                    searchParams.set('r', '${resource.shortname}');
-                    window.history.replaceState({}, '', url.toString());
-                }
-            }
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
 
