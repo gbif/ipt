@@ -21,6 +21,13 @@
 
         <div class="d-flex justify-content-end">
             <#if dataPackageResource>
+                <a id="download-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download>
+                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M5 20h14v-2H5zM19 9h-4V3H9v6H5l7 7z"></path>
+                    </svg>
+                    <@s.text name="button.download"/>
+                </a>
+
                 <a id="upload-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"></path>
@@ -52,6 +59,13 @@
                     </a>
                 </#if>
             <#else>
+                <a id="download-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download>
+                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M5 20h14v-2H5zM19 9h-4V3H9v6H5l7 7z"></path>
+                    </svg>
+                    <@s.text name="button.download"/>
+                </a>
+
                 <a id="upload-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"></path>
