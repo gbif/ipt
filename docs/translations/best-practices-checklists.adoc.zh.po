@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-21 05:42\n"
+"PO-Revision-Date: 2025-01-21 06:40\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -1029,18 +1029,18 @@ msgstr "延伸資料集必須透過 `taxonID` 欄位提供核心資料檔案中�
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:382
 #, no-wrap
 msgid "Sharing Type information"
-msgstr "分享類型資訊"
+msgstr "分享模式資訊"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:385
 msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
-msgstr ""
+msgstr "本系統支援關於模式和標本的資訊共享。這些資料透過一個獨立的、相關的檔案使用 {latest-typesandspecimen}[模式與標本延伸資料集] 分享。該延伸資料集支援共享關於模式標本、模式物種與屬的基本資訊。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:386
 #, no-wrap
 msgid "Sharing Links and Identifiers"
-msgstr ""
+msgstr "分享連結與識別碼"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:389
