@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2025-01-21 12:06\n"
+"PO-Revision-Date: 2025-01-21 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -300,7 +300,7 @@ msgstr "表2列出了一些示例值。organismQuantity 的值可以是數字或
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
 #, no-wrap
 msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
-msgstr ""
+msgstr "organismQuantity 和 organismQuantityType 必須一起使用，例如：14 隻個體的數量，或 Braun Blanquet 位階中的代碼值 \"r\"。"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
@@ -343,41 +343,41 @@ msgstr "如何掌握調查活動的層次結構"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
 msgid "Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3)."
-msgstr ""
+msgstr "調查活動之間可以相互關聯（例如，巢狀樣本）並共享一個共同的父標識符。例如，某 Whittaker 採樣地中的幾個子調查活動，各自擁有自己的 eventID（例如：“A1:1”、“A1:2”），可共享一個共同的 parentEventID（例如：“A1”），從而使它們能夠相互連結（見表4和圖3）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:117
 msgid "Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata."
-msgstr ""
+msgstr "更多關係性資訊（例如屬於某監測系列）可以在附加詮釋資料的項目部分中描述。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 msgid "You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
-msgstr ""
+msgstr "您也可以參考 xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[常見問題]。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "如何找出缺失資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 msgid "Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
-msgstr ""
+msgstr "請參考 xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[常見問題]。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "如何添加補充多媒體資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:127
 msgid "You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "您可以選擇添加補充媒體資料，以便資料更容易被詮釋。例如，對於植被資料，包含原始掃描的樣地紀錄表連結有助於資料的解讀。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
