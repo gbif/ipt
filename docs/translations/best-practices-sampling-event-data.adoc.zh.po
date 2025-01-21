@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2025-01-21 09:41\n"
+"PO-Revision-Date: 2025-01-21 10:44\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -126,12 +126,12 @@ msgstr "本導引詳細說明如何使用達爾文核心集檔案格式（DwC-A�
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:26
 msgid "The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data."
-msgstr ""
+msgstr "DwC-A 格式及本文描述的特定配置是國際公認並通過的資料交換格式，用於共享調查活動資料。所有資料交換標準都必須在技術範疇與社會接受度之間取得平衡。簡單的解決方案犧牲了覆蓋範圍和複雜性，換取簡易性；而高度複雜的格式則能更全面地表達各種資料類型，但以犧牲簡易性為代價，並需要與之匹配的軟體及專業知識。達爾文核心標準格式介於這兩者之間，專注於調查活動資料的關鍵要素，並允許將多樣的資料類型與此核心結構連結。檔案中的資料可以被熟悉基本結構化文字檔案的生態學家及資料管理者輕鬆理解和使用。藉由此國際標準，GBIF 希望促進調查活動資料的分享，並推廣一個共通的方法來引用及認可創建與管理調查活動資料的社群貢獻。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
 msgid "A standard format also increases relevance and utility."
-msgstr ""
+msgstr "一個標準化的格式還能增加資料的使用相關性和實用性。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
@@ -143,19 +143,19 @@ msgstr "什麼是調查活動（sampling-event）資料？"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:32
 msgid "Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programs. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data."
-msgstr ""
+msgstr "調查活動資料是來自數千個環境、生態及自然資源調查的資料類型。這些資料可以是一次性研究或監測計畫的產物，通常具有定量性、校準性，並遵循某些協議，以便偵測族群的變化與趨勢。這與機會觀察及採集資料形成對比，後者目前佔公開生物多樣性資料的很大比例。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
-msgstr ""
+msgstr "如何以 DwC-A 表現調查活動資料？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:36
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr ""
+msgstr "達爾文核心集檔案（DwC-A）是一種資訊學資料標準，使用達爾文核心標準詞彙生成單一、獨立的資料集，用於物種名錄資料。檔案中的文件集合形成一個完整的資料集，可以作為單一壓縮檔案（Zip 或 GZIP）提供。一個資料集由一個描述性的詮釋資料文件和一個或多個資料檔案組成。更多有關 DwC-A 的資訊，請參閱 xref:darwin-core.adoc[達爾文核心集檔案 — 操作導引]。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
@@ -167,7 +167,7 @@ msgstr "調查活動的詮釋資料"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:40
 msgid "Documenting the provenance and scope of datasets is required in order to publish sampling-event data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the sampling methodologies used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for sampling-event datasets based on the Ecological Metadata Language. A How-to guide describes all the options for describing a sampling-event dataset using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr ""
+msgstr "通過 GBIF 網路發布調查活動資料時，需要記錄資料集的來源及範疇。資料集的記錄被稱為“資源詮釋資料”，允許使用者評估資料集的適用性。詮釋資料可能描述其彙編所使用的調查方法，以及參與創建與管理的個人及組織。在達爾文核心集檔案中，詮釋資料以 XML 文件形式共享。GBIF 為調查活動資料集提供了基於生態詮釋資料語言的詮釋資料配置文件範本。如何使用此格式描述調查活動資料集的導引請參閱 xref:gbif-metadata-profile.adoc[]。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
@@ -179,7 +179,7 @@ msgstr "調查活動資料"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
 msgid "The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘*extensions*’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (*eventID*) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets."
-msgstr ""
+msgstr "達爾文核心集檔案格式提供了一個特定的結構框架，用於發布調查活動資料。檔案由一系列一個或多個文字檔案組成，採用標準逗號分隔或製表符分隔格式。這些檔案以星狀結構排列，包含一個*核心檔案*，列出調查活動（如調查協議、樣本數、地點等），並由多個“*延伸資料集*”環繞，描述相關的資料類型（如物種出現jilt、與調查活動相關的測量或事件等）。核心檔案與延伸紀錄之間的連結使用事件標識符（*eventID*）資料元素完成。這種“星狀結構”提供了一種簡單的關聯資料模型，支援多種類型的調查活動資料集註解類型。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:46
@@ -191,7 +191,7 @@ msgstr "figures/dwc-a_event.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:49
 msgid "An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study."
-msgstr ""
+msgstr "一種替代方式來編碼調查活動資料，是將物種出現紀錄列在核心檔案中，並圍繞其使用多個延伸資料集來描述相關的資料類型（例如與物種出現相關的測量資料等）。請注意，如果研究的主要焦點是樣地或站點，則建議在核心檔案中列出調查活動。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:52
