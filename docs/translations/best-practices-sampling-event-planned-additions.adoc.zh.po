@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-21 09:41\n"
+"PO-Revision-Date: 2025-01-21 10:44\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -36,7 +36,7 @@ msgstr "什麼是調查活動（sampling-event）資料？"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
-msgstr ""
+msgstr "如何以 DwC-A 表現調查活動資料？"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
