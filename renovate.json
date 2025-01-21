@@ -27,6 +27,10 @@
     {
       "matchPackageNames": ["com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"],
       "automerge": false
+    },
+    {
+      "matchPackageNames": ["com.fasterxml.jackson.core:jackson-databind"],
+      "automerge": false
     }
   ],
   "ignorePaths": ["package/**", "docs/**"],
