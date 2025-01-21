@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-21 10:44\n"
+"PO-Revision-Date: 2025-01-21 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -64,21 +64,21 @@ msgstr "樣本數"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "數量與豐度"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "如何唯一識別調查活動"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "如何掌握調查活動的層次結構"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
