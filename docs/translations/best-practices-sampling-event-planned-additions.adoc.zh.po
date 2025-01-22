@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-22 08:16\n"
+"PO-Revision-Date: 2025-01-22 09:27\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -162,14 +162,14 @@ msgstr "在資料集詮釋資料中描述調查活動資料"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "連結相關資料集"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "列出相關研究"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
@@ -183,37 +183,37 @@ msgstr "範例"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
-msgstr ""
+msgstr "淡水無脊椎動物調查"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr ""
+msgstr "鹹淡水無脊椎動物調查"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr ""
+msgstr "大型水生植物調查"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data - planned additions and notes for revision"
-msgstr ""
+msgstr "發布調查活動資料的最佳實務 - 計劃新增項目與修訂說明"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:4
 msgid "Version 2.0"
-msgstr ""
+msgstr "版本 2.0"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:6
 msgid "Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[]."
-msgstr ""
+msgstr "額外資訊：可包含或曾經包含於 xref:best-practices-sampling-event-data.adoc[] 中。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
