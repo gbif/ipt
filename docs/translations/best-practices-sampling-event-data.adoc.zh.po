@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2025-01-22 03:21\n"
+"PO-Revision-Date: 2025-01-22 08:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -456,84 +456,84 @@ msgstr "雖然原始資料和說明不會顯示在 GBIF.org 的網頁介面上�
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "將專案資料作為單一資料集發布"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
 msgid "Data produced from a large sampling project should be published as a single dataset if possible. If you must publish multiple datasets, we encourage linking them using a common project identifier in the metadata."
-msgstr ""
+msgstr "大型調查專案產生的資料應盡可能以單一資料集發布。如果必須發布多個資料集，建議在詮釋資料中使用共同的專案識別碼來連結這些資料集。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr ""
+msgstr "將出現紀錄資料重新發布為調查活動資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:159
 msgid "Sampling events provide better documentation and benefit both the scientific community and policy makers (https://www.gbif.org/sampling-event-data[read more]).  We encourage strongly the republishing of occurrence data as sampling-event data when possible."
-msgstr ""
+msgstr "調查活動資料能提供更好的紀錄文件，惠及科學界和政策制定者（https://www.gbif.org/sampling-event-data[閱讀更多]）。我們強烈建議在可能的情況下，將出現紀錄資料重新發布為調查活動資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's Help Desk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr ""
+msgstr "為此，您需要創建一個新的調查活動資料集，並將電子郵件發送至 GBIF 的服務台（helpdesk@gbif.org）。在郵件中，請提供出現紀錄資料集和新資料集的 UUID。我們將能夠在取消索引前，將第一個資料集與最新資料集連結，以避免資料重複並保留引用。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "對活體個體的持續監測建模"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:165
 msgid "If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event."
-msgstr ""
+msgstr "如果資料集中包含活體個體的持續監測（例如鳥類追蹤資料），可以使用 dwc:organismID 來存儲被追蹤個體的 ID。此外，應將每個被追蹤的個體表示為一個單獨的活動。"
 
 #.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:168
 #, no-wrap
 msgid "Continuous data quality improvement"
-msgstr ""
+msgstr "資料品質的持續改進"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "管理資料集相關的問題"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 msgid "If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by GitHub."
-msgstr ""
+msgstr "如可能，建議使用問題管理系統（例如 GitHub 提供的系統）來追蹤與資料集相關的所有問題。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "分享生成或清理資料集所用的腳本與程式"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
 msgid "Ideally, custom scripts and programs used to transform data should be made publicly available on GitHub. Other publishers will benefit from accessing these scripts along with detailed instructions on how to use them."
-msgstr ""
+msgstr "理想情況下，用於轉換資料的自定義腳本與程式應在 GitHub 上公開。其他發布者可從這些腳本以及詳細的使用說明中受益。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "在資料集詮釋資料中描述調查活動資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:181
 msgid "Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies."
-msgstr ""
+msgstr "發布者應盡可能詳細記錄資料集，尤其是調查方法。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
