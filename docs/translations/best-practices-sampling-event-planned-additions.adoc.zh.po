@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-22 09:27\n"
+"PO-Revision-Date: 2025-01-22 10:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -218,27 +218,27 @@ msgstr "額外資訊：可包含或曾經包含於 xref:best-practices-sampling-
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
 msgid "#TODO:# Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension."
-msgstr ""
+msgstr "#TODO:# 提供建議以解決達爾文核心標準星型結構（DwC-A star schema）的限制，例如無法在同一資料集中將測量和事實同時關聯到事件和物種出現的情況。目前的解決方法是建議發布者發布多個資料集。注意，OBIS 正在設計一種擴展的測量與事實延伸資料集的原型，可能有助於克服此限制。對此原型延伸資料集的討論正在 GitHub 上進行。然而，有意見指出，該原型延伸資料集未明確說明測量與事實是和事件還是物種出現相關。一種替代方案是新增 resourceID（或是 resourceType），而不是在測量或事實延伸資料集中新增 eventID 和 occurrenceID 作為屬性，正如 OBIS 延伸資料集的實踐方法。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:18
 msgid "#TODO:# Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "#TODO:# 提供建議如何透過選擇適當的 WKT 形狀或簡單的緯度/經度點位置來表示調查區域。如果正確執行，也可以導出調查進行的方向。例如，使用 WKT 形狀 LINESTRING 表示的海洋拖網線，可以根據起點和終點的標準標記法確定拖網方向。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:23
 msgid "#TODO:# Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers:"
-msgstr ""
+msgstr "#TODO:# 更好地指導使用者如何使用持久且全球唯一的識別碼填寫 dwc:eventID 和 dwc:parentEventID："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:25
 msgid "dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared."
-msgstr ""
+msgstr "dwc:eventID 應為永久且全球唯一的識別碼。記得重複使用現有的穩定識別碼。當已有識別碼時，不要為該事件創建新的識別碼。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:26
 msgid "In the absence of a GUID, and as a last resort, reuse the original fieldNumber."
-msgstr ""
+msgstr "在缺乏 GUID 的情況下，作為最後手段，重複使用原始 fieldNumber。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:30
