@@ -547,7 +547,12 @@ public class EmlValidator extends BaseValidator {
           } else {
             try {
               Eml stubValidationEml = getStubEml();
-              stubValidationEml.setAcknowledgements(eml.getAcknowledgements());
+
+              String acknowledgementsWithNbspReplaced = Optional.ofNullable(eml.getAcknowledgements())
+                  .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
+                  .orElse("");
+
+              stubValidationEml.setAcknowledgements(acknowledgementsWithNbspReplaced);
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
@@ -719,7 +724,12 @@ public class EmlValidator extends BaseValidator {
           } else {
             try {
               Eml stubValidationEml = getStubEml();
-              stubValidationEml.setGettingStarted(eml.getPurpose());
+
+              String purposeWithNbspReplaced = Optional.ofNullable(eml.getPurpose())
+                  .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
+                  .orElse("");
+
+              stubValidationEml.setGettingStarted(purposeWithNbspReplaced);
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
@@ -731,7 +741,12 @@ public class EmlValidator extends BaseValidator {
 
             try {
               Eml stubValidationEml = getStubEml();
-              stubValidationEml.setGettingStarted(eml.getGettingStarted());
+
+              String gettingStartedWithNbspReplaced = Optional.ofNullable(eml.getGettingStarted())
+                  .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
+                  .orElse("");
+
+              stubValidationEml.setGettingStarted(gettingStartedWithNbspReplaced);
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
@@ -743,7 +758,12 @@ public class EmlValidator extends BaseValidator {
 
             try {
               Eml stubValidationEml = getStubEml();
-              stubValidationEml.setIntroduction(eml.getIntroduction());
+
+              String introductionWithNbspReplaced = Optional.ofNullable(eml.getIntroduction())
+                  .map(d -> d.replace("&nbsp;", " ")) // replace &nbsp; with a space
+                  .orElse("");
+
+              stubValidationEml.setIntroduction(introductionWithNbspReplaced);
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
