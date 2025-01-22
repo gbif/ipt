@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2025-01-22 03:21\n"
+"PO-Revision-Date: 2025-01-22 08:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -120,42 +120,42 @@ msgstr "保留原始資料"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "將專案資料作為單一資料集發布"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr ""
+msgstr "將出現紀錄資料重新發布為調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "對活體個體的持續監測建模"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "管理資料集相關的問題"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "分享生成或清理資料集所用的腳本與程式"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "在資料集詮釋資料中描述調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
