@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-28 05:23\n"
+"PO-Revision-Date: 2025-01-22 12:44\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
-msgstr ""
+msgstr "資料文件格式建議"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
@@ -36,7 +36,7 @@ msgstr "什麼是調查活動（sampling-event）資料？"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
-msgstr ""
+msgstr "如何以 DwC-A 表現調查活動資料？"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
@@ -57,119 +57,119 @@ msgstr "調查活動資料"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
 #, no-wrap
 msgid "Sample size"
-msgstr ""
+msgstr "樣本數"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "數量與豐度"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "如何唯一識別調查活動"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "如何掌握調查活動的層次結構"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "如何找出缺失資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "如何添加補充多媒體資料"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
-msgstr ""
+msgstr "發布調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:132
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr ""
+msgstr "使用 GUID 作為識別碼"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
-msgstr ""
+msgstr "保留原始資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "將專案資料作為單一資料集發布"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr ""
+msgstr "將出現紀錄資料重新發布為調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "對活體個體的持續監測建模"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "管理資料集相關的問題"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "分享生成或清理資料集所用的腳本與程式"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "在資料集詮釋資料中描述調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "連結相關資料集"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "列出相關研究"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
@@ -183,176 +183,176 @@ msgstr "範例"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
-msgstr ""
+msgstr "淡水無脊椎動物調查"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr ""
+msgstr "鹹淡水無脊椎動物調查"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr ""
+msgstr "大型水生植物調查"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data - planned additions and notes for revision"
-msgstr ""
+msgstr "發布調查活動資料的最佳實務 - 計劃新增項目與修訂說明"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:4
 msgid "Version 2.0"
-msgstr ""
+msgstr "版本 2.0"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:6
 msgid "Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[]."
-msgstr ""
+msgstr "額外資訊：可包含或曾經包含於 xref:best-practices-sampling-event-data.adoc[] 中。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
 msgid "#TODO:# Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension."
-msgstr ""
+msgstr "#TODO:# 提供建議以解決達爾文核心標準星型結構（DwC-A star schema）的限制，例如無法在同一資料集中將測量和事實同時關聯到事件和物種出現的情況。目前的解決方法是建議發布者發布多個資料集。注意，OBIS 正在設計一種擴展的測量與事實延伸資料集的原型，可能有助於克服此限制。對此原型延伸資料集的討論正在 GitHub 上進行。然而，有意見指出，該原型延伸資料集未明確說明測量與事實是和事件還是物種出現相關。一種替代方案是新增 resourceID（或是 resourceType），而不是在測量或事實延伸資料集中新增 eventID 和 occurrenceID 作為屬性，正如 OBIS 延伸資料集的實踐方法。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:18
 msgid "#TODO:# Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "#TODO:# 提供建議如何透過選擇適當的 WKT 形狀或簡單的緯度/經度點位置來表示調查區域。如果正確執行，也可以導出調查進行的方向。例如，使用 WKT 形狀 LINESTRING 表示的海洋拖網線，可以根據起點和終點的標準標記法確定拖網方向。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:23
 msgid "#TODO:# Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers:"
-msgstr ""
+msgstr "#TODO:# 更好地指導使用者如何使用持久且全球唯一的識別碼填寫 dwc:eventID 和 dwc:parentEventID："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:25
 msgid "dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared."
-msgstr ""
+msgstr "dwc:eventID 應為永久且全球唯一的識別碼。記得重複使用現有的穩定識別碼。當已有識別碼時，不要為該事件創建新的識別碼。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:26
 msgid "In the absence of a GUID, and as a last resort, reuse the original fieldNumber."
-msgstr ""
+msgstr "在缺乏 GUID 的情況下，作為最後手段，重複使用原始 fieldNumber。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:30
 msgid "#TODO:# Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID"
-msgstr ""
+msgstr "#TODO:# 更好地指導使用者如何使用正確的 dwc:parentEventID 發布事件層級結構（遞歸資料類型）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:34
 msgid "#TODO:# Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus"
-msgstr ""
+msgstr "#TODO:# 從 FAQ 中轉移相關資訊，指導使用者如何在達爾文核心標準中使用正確的 dwc:occurrenceStatus 發布存在/不存在資料。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:38
 msgid "#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "#TODO:# 提供建議如何包括補充媒體以使資料更易於解讀。例如，在解釋資料時，包含植被資料的原始掃描樣區紀錄表的連結是非常有幫助的。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:43
 msgid "#TODO:# Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr ""
+msgstr "#TODO:# 建議發布者使用 GUID，並提供如何為適用欄位如 dwc:occurrenceID、dwc:eventID、dwc:organismID 和 dwc:locationID 創建 GUID 的指導。例如，可以使用 http://www.geonames.org/ 查找（甚至生成新的）dwc:locationID 的識別碼，例如 http://sws.geonames.org/10793757/ 是格陵蘭的一個湖泊的 GUID。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:44
 #, no-wrap
 msgid "Filling in the required and recommended terms"
-msgstr ""
+msgstr "填寫必填與建議的術語"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:47
 msgid "#TODO:# Guide users how to obfuscate the location of sensitive species, such as by:"
-msgstr ""
+msgstr "#TODO:# 指導使用者如何模糊化敏感物種的位置，例如："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:48
 msgid "Simply removing these species from the dataset"
-msgstr ""
+msgstr "直接從資料集中移除這些物種；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:49
 msgid "Publishing the species identifications at Genus level only"
-msgstr ""
+msgstr "僅以屬級發表物種鑑定；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:50
 msgid "Publishing the sensitive/protected species in a separate dataset"
-msgstr ""
+msgstr "將敏感/受保護的物種發布為單獨的資料集；"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:51
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records"
-msgstr ""
+msgstr "在主要資料集中發布模糊化的敏感資料點，並在一個存取受限的獨立資料集中發布未模糊化的詳細資訊，兩個資料集都應包括完整的資料紀錄。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:55
 msgid "#TODO:# Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr ""
+msgstr "#TODO:# 指導使用者如何輸入原始資料的說明。例如，應將原始事件的 ID 或代碼輸入至 dwc:fieldNumber；原始的物種出現觀測紀錄的 ID 或代碼應輸入至 dwc:recordNumber。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:59
 msgid "#TODO:# Provide a recommendation on how to publish data produced from large projects. The current recommendation is to publish a single dataset, because dividing it into multiple datasets results in more duplication of effort entering metadata. Publishers insisting on publishing multiple datasets should link them using Project.ID in EML."
-msgstr ""
+msgstr "#TODO:# 提供建議如何發布由大型專案產生的資料。目前的建議是發布單一資料集，因為將其分為多個資料集會增加重複填寫詮釋資料的工作量。堅持發布多個資料集的發布者應使用 Project.ID 在 EML 中連結它們。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:63
 msgid "#TODO:# Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:"
-msgstr ""
+msgstr "#TODO:# 為將現有的物種出現紀錄資料集遷移為調查活動格式提供理由與指導。需要回答以下問題："
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:64
 msgid "Should the sampling event version replace the existing occurrence version, or should both versions be kept online at the same time?"
-msgstr ""
+msgstr "調查活動版本是否應替代現有的物種出現紀錄版本，還是應同時保留兩個版本？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:65
 msgid "If replacing, should the new sampling event version be assigned a brand new DOI?"
-msgstr ""
+msgstr "如果替代，新的調查活動版本是否應分配一個全新的 DOI？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:66
 msgid "What are the benefits of producing the sampling event version?"
-msgstr ""
+msgstr "生成調查活動的版本有哪些好處？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:70
 msgid "#TODO:# Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded)."
-msgstr ""
+msgstr "#TODO:# 提供建議如何為持續監測活體個體（例如鳥類追蹤資料）建模，例如使用 dwc:organismID 儲存被追蹤個體的 ID，並使用單一事件表示每個被追蹤個體（與之相關聯的物種出現紀錄則記錄在其被觀測到的地方）。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:74
 msgid "#TODO:# Provide a recommendation on how to manage issues related to the dataset using GitHub's issue management system, just like INBO does for example."
-msgstr ""
+msgstr "#TODO:# 提供建議如何使用 GitHub 的問題管理系統處理與資料集相關的問題，正如 INBO 的做法。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:78
 msgid "#TODO:# Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable."
-msgstr ""
+msgstr "#TODO:# 提供建議如何將自訂腳本與程式（例如用於轉換交叉表格資料）公開於 GitHub 上，以造福其他發布者，正如 INBO 的做法。建議應鼓勵使用者納入一組詳細的操作說明，以提高腳本的可用性。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:82
 msgid "#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardize it into DwC."
-msgstr ""
+msgstr "#TODO:# 建議發布者在嘗試將調查活動標準化為達爾文核心標準之前，儘可能記錄有關調查活動的資訊，特別是調查方法。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:86
 msgid "#TODO:# Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID."
-msgstr ""
+msgstr "#TODO:# 建議發布者如何連結同一研究背景下的相關資料集，使其易於使用者檢索。發布者可能需要發布多個資料集來解決達爾文核心標準星型結構的限制。發布者也可以選擇發布從相同調查活動中衍生的單獨物種出現紀錄資料集。目前的建議是使用 Project.ID 將它們連結起來。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:90
 msgid "#TODO:# Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc."
-msgstr ""
+msgstr "#TODO:# 提供建議如何透過納入相關已發布的作品（如期刊文章、項目筆記、論文等）的連結，使資料集更易於解讀。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:96
 msgid "#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr ""
+msgstr "#TODO:# 更新基於荷蘭植被資料庫（Dutch Vegetation Database, LVD）版本的範例，該版本重新發布為調查活動資料集。樣區紀錄延伸資料集在初步指南發布後經歷了重大變更。有關 LVD 和植被調查活動資料模型的更多資訊，請參見：https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html。"
 
