@@ -115,6 +115,8 @@
 
                 hideProcessing();
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMetadataPage = "additional"/>

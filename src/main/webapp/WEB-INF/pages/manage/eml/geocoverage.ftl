@@ -427,6 +427,8 @@
             $("#top-save").click(function (event) {
                 validateCoordinates(event);
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
 

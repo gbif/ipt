@@ -64,6 +64,8 @@
 
                 hideProcessing();
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMetadataPage = "methods"/>

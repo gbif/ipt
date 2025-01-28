@@ -59,6 +59,8 @@
 
                 hideProcessing();
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>

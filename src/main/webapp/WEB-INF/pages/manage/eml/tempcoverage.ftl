@@ -350,6 +350,8 @@
 
                 hideProcessing();
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <style>

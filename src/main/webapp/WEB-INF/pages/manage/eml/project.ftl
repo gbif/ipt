@@ -131,6 +131,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <style>

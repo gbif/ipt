@@ -550,10 +550,6 @@
                                             <td>${tx.taxonID!}</td>
                                         </tr>
                                         <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonIdReference"/></th>
-                                            <td>${tx.taxonIDReference!}</td>
-                                        </tr>
-                                        <tr>
                                             <th class="col-4"><@s.text name="portal.resource.taxonomic.scientificName"/></th>
                                             <td>${tx.scientificName!}</td>
                                         </tr>

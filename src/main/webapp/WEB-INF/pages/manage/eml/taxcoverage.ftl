@@ -176,6 +176,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
