@@ -334,7 +334,7 @@
                                                     </span>
                                                     <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                                 </a>
-                                                <a id="contact-removeLink-${contact_index}" class="removeContactLink metadata-action-link" href="">
+                                                <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -357,7 +357,7 @@
                                             <@input name="eml.contacts[${contact_index}].organisation" i18nkey="eml.contact.organisation"  />
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-positions">
+                                            <div id="contact-${contact_index}-positions" class="contact-positions">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
@@ -397,7 +397,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-addresss">
+                                            <div id="contact-${contact_index}-address" class="contact-address">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
@@ -449,7 +449,7 @@
                                             <@input name="eml.contacts[${contact_index}].address.postalCode" i18nkey="eml.contact.address.postalCode" />
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-phones">
+                                            <div id="contact-${contact_index}-phones" class="contact-phones">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
@@ -489,7 +489,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-emails">
+                                            <div id="contact-${contact_index}-emails" class="contact-emails">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
@@ -529,7 +529,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-homepages">
+                                            <div id="contact-${contact_index}-homepages" class="contact-homepages">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
@@ -570,7 +570,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="contact-${contact_index}-identifiers">
+                                            <div id="contact-${contact_index}-identifiers" class="contact-identifiers">
                                                 <div class="d-flex text-smaller">
                                                     <a tabindex="0" role="button"
                                                        class="popover-link"
@@ -628,7 +628,7 @@
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-contact" href="" class="metadata-action-link">
+                                <a id="plus-contact" href="" class="plus-agent metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -649,7 +649,7 @@
                                             </span>
                                             <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                         </a>
-                                        <a id="contact-removeLink" class="removeContactLink metadata-action-link" href="">
+                                        <a id="contact-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -672,7 +672,7 @@
                                     <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation"  />
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-positions">
+                                    <div id="contact-positions" class="contact-positions">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.contacts.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
@@ -693,7 +693,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-addresss">
+                                    <div id="contact-address" class="contact-address">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.contacts.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
@@ -702,7 +702,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col mt-auto py-1">
-                                            <a id="plus-contact-address" href="" class="metadata-action-link add-contact-address">
+                                            <a id="plus-contact-address" href="" class="metadata-action-link add-agent-contact-info">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -726,7 +726,7 @@
                                     <@input name="eml.contact.address.postalCode" i18nkey="eml.contact.address.postalCode" />
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-phones">
+                                    <div id="contact-phones" class="contact-phones">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.contacts.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
@@ -747,7 +747,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-emails">
+                                    <div id="contact-emails" class="contact-emails">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.contacts.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
@@ -768,7 +768,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-homepages">
+                                    <div id="contact-homepages" class="contact-homepages">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.contacts.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
@@ -789,7 +789,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="contact-identifiers">
+                                    <div id="contact-identifiers" class="contact-identifiers">
                                         <div class="d-flex text-smaller">
                                             <a tabindex="0" role="button"
                                                class="popover-link"
@@ -846,7 +846,7 @@
                                                         <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                                     </ul>
                                                 </div>
-                                                <a id="creator-removeLink-${creator_index}" class="removeCreatorLink metadata-action-link" href="">
+                                                <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -869,7 +869,7 @@
                                             <@input name="eml.creators[${creator_index}].organisation" i18nkey="eml.resourceCreator.organisation"  />
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-positions">
+                                            <div id="creator-${creator_index}-positions" class="creator-positions">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
@@ -909,7 +909,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-addresss">
+                                            <div id="creator-${creator_index}-address" class="creator-address">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.creators.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
@@ -961,7 +961,7 @@
                                             <@input name="eml.creators[${creator_index}].address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-phones">
+                                            <div id="creator-${creator_index}-phones" class="creator-phones">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.creators.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
@@ -1001,7 +1001,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-emails">
+                                            <div id="creator-${creator_index}-emails" class="creator-emails">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.creators.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
@@ -1041,7 +1041,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-homepages">
+                                            <div id="creator-${creator_index}-homepages" class="creator-homepages">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.creators.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
@@ -1081,7 +1081,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="creator-${creator_index}-identifiers">
+                                            <div id="creator-${creator_index}-identifiers" class="creator-identifiers">
                                                 <div class="d-flex text-smaller">
                                                     <a tabindex="0" role="button"
                                                        class="popover-link"
@@ -1139,7 +1139,7 @@
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-creator" href="" class="metadata-action-link">
+                                <a id="plus-creator" href="" class="plus-agent metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -1169,7 +1169,7 @@
                                                 <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                             </ul>
                                         </div>
-                                        <a id="creator-removeLink" class="removeCreatorLink metadata-action-link" href="">
+                                        <a id="creator-removeLink" class="removeAgentLink metadata-action-link" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -1192,7 +1192,7 @@
                                     <@input name="eml.creator.organisation" i18nkey="eml.resourceCreator.organisation" />
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-positions">
+                                    <div id="creator-positions" class="creator-positions">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.creators.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
@@ -1213,7 +1213,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-addresss">
+                                    <div id="creator-address" class="creator-address">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.creators.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
@@ -1246,7 +1246,7 @@
                                     <@input name="eml.creator.address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-phones">
+                                    <div id="creator-phones" class="creator-phones">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.creators.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
@@ -1267,7 +1267,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-emails">
+                                    <div id="creator-emails" class="creator-emails">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.creators.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
@@ -1288,7 +1288,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-homepages">
+                                    <div id="creator-homepages" class="creator-homepages">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.creators.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
@@ -1309,7 +1309,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="creator-identifiers">
+                                    <div id="creator-identifiers" class="creator-identifiers">
                                         <div class="d-flex text-smaller">
                                             <a tabindex="0" role="button"
                                                class="popover-link"
@@ -1365,7 +1365,7 @@
                                                         <li><a id="metadataProvider-copy-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                                     </ul>
                                                 </div>
-                                                <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink metadata-action-link" href="">
+                                                <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -1388,7 +1388,7 @@
                                             <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" i18nkey="eml.metadataProvider.organisation" />
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-positions">
+                                            <div id="metadataProvider-${metadataProvider_index}-positions" class="metadataProvider-positions">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
@@ -1428,7 +1428,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-addresss">
+                                            <div id="metadataProvider-${metadataProvider_index}-address" class="metadataProvider-address">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.contacts.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
@@ -1480,7 +1480,7 @@
                                             <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-phones">
+                                            <div id="metadataProvider-${metadataProvider_index}-phones" class="metadataProvider-phones">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.metadataProviders.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
@@ -1520,7 +1520,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-emails">
+                                            <div id="metadataProvider-${metadataProvider_index}-emails" class="metadataProvider-emails">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.metadataProviders.email" class="form-label mb-0">
                                                         Email
@@ -1560,7 +1560,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-homepages">
+                                            <div id="metadataProvider-${metadataProvider_index}-homepages" class="metadataProvider-homepages">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.metadataProviders.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
@@ -1600,7 +1600,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="metadataProvider-${metadataProvider_index}-identifiers">
+                                            <div id="metadataProvider-${metadataProvider_index}-identifiers" class="metadataProvider-identifiers">
                                                 <div class="d-flex text-smaller">
                                                     <a tabindex="0" role="button"
                                                        class="popover-link"
@@ -1657,7 +1657,7 @@
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-metadataProvider" href="" class="metadata-action-link">
+                                <a id="plus-metadataProvider" href="" class="plus-agent metadata-action-link">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -1687,7 +1687,7 @@
                                                 <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                             </ul>
                                         </div>
-                                        <a id="metadataProvider-removeLink" class="removeMetadataProviderLink metadata-action-link" href="">
+                                        <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -1710,7 +1710,7 @@
                                     <@input name="eml.metadataProvider.organisation" i18nkey="eml.metadataProvider.organisation"  />
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-positions">
+                                    <div id="metadataProvider-positions" class="metadataProvider-positions">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.metadataProviders.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
@@ -1731,7 +1731,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-addresss">
+                                    <div id="metadataProvider-address" class="metadataProvider-address">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.metadataProviders.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
@@ -1764,7 +1764,7 @@
                                     <@input name="eml.metadataProvider.address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-phones">
+                                    <div id="metadataProvider-phones" class="metadataProvider-phones">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.metadataProviders.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
@@ -1785,7 +1785,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-emails">
+                                    <div id="metadataProvider-emails" class="metadataProvider-emails">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.metadataProviders.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
@@ -1806,7 +1806,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-homepages">
+                                    <div id="metadataProvider-homepages" class="metadataProvider-homepages">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.metadataProviders.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
@@ -1827,7 +1827,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="metadataProvider-identifiers">
+                                    <div id="metadataProvider-identifiers" class="metadataProvider-identifiers">
                                         <div class="d-flex text-smaller">
                                             <a tabindex="0" role="button"
                                                class="popover-link"
@@ -2013,7 +2013,7 @@
                                                     </span>
                                                     <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                                 </a>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink metadata-action-link" href="">
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -2039,7 +2039,7 @@
                                             <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${(eml.associatedParties[item_index].role)!}" options=roles />
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-positions">
+                                            <div id="associatedParty-${item_index}-positions" class="associatedParty-positions">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.associatedParties.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
@@ -2079,7 +2079,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-addresss">
+                                            <div id="associatedParty-${item_index}-address" class="associatedParty-address">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.associatedParties.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
@@ -2131,7 +2131,7 @@
                                             <@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-phones">
+                                            <div id="associatedParty-${item_index}-phones" class="associatedParty-phones">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.associatedParties.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
@@ -2171,7 +2171,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-emails">
+                                            <div id="associatedParty-${item_index}-emails" class="associatedParty-emails">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.associatedParties.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
@@ -2211,7 +2211,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-homepages">
+                                            <div id="associatedParty-${item_index}-homepages" class="associatedParty-homepages">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.associatedParties.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
@@ -2252,7 +2252,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div id="associatedParty-${item_index}-identifiers">
+                                            <div id="associatedParty-${item_index}-identifiers" class="associatedParty-identifiers">
                                                 <div class="d-flex text-smaller">
                                                     <a tabindex="0" role="button"
                                                        class="popover-link"
@@ -2310,7 +2310,7 @@
                             </div>
 
                             <div class="addNew col-12 mt-2">
-                                <a id="plus-associatedParty" href="" class="metadata-action-link">
+                                <a id="plus-associatedParty" href="" class="plus-agent metadata-action-link">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
@@ -2334,7 +2334,7 @@
                                             </span>
                                             <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                         </a>
-                                        <a id="associatedParty-removeLink" class="removeContactLink metadata-action-link" href="">
+                                        <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -2360,7 +2360,7 @@
                                     <@select name="role" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-positions">
+                                    <div id="associatedParty-positions" class="associatedParty-positions">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.associatedParties..position" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.position"/>
@@ -2381,7 +2381,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-addresss">
+                                    <div id="associatedParty-address" class="associatedParty-address">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.associatedParties..address" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.address.address"/>
@@ -2414,7 +2414,7 @@
                                     <@input name="address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-phones">
+                                    <div id="associatedParty-phones" class="associatedParty-phones">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.associatedParties..phone" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.phone"/>
@@ -2435,7 +2435,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-emails">
+                                    <div id="associatedParty-emails" class="associatedParty-emails">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.associatedParties..email" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.email"/>
@@ -2456,7 +2456,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-homepages">
+                                    <div id="associatedParty-homepages" class="associatedParty-homepages">
                                         <div class="d-flex text-smaller">
                                             <label for="eml.associatedParties..homepage" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.homepage"/>
@@ -2477,7 +2477,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div id="associatedParty-identifiers">
+                                    <div id="associatedParty-identifiers" class="associatedParty-identifiers">
                                         <div class="d-flex text-smaller">
                                             <a tabindex="0" role="button"
                                                class="popover-link"
