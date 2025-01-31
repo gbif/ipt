@@ -337,7 +337,7 @@
                                                 <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeContactLink?lower_case?cap_first}</span>
@@ -371,12 +371,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePosition?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -411,12 +410,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeAddress?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -463,12 +461,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-phone-remove-${contact_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePhone?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -503,12 +500,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-email-remove-${contact_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeEmail?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -543,12 +539,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-homepage-remove-${contact_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeHomepage?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -597,12 +592,11 @@
 
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeIdentifier?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -652,7 +646,7 @@
                                         <a id="contact-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeContactLink?lower_case?cap_first}</span>
@@ -849,7 +843,7 @@
                                                 <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeCreatorLink?lower_case?cap_first}</span>
@@ -883,12 +877,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePosition?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -923,12 +916,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeAddress?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -975,12 +967,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePhone?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1015,12 +1006,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-email-remove-${creator_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeEmail?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1055,12 +1045,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeHomepage?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1108,12 +1097,11 @@
 
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeIdentifier?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1170,11 +1158,11 @@
                                             </ul>
                                         </div>
                                         <a id="creator-removeLink" class="removeAgentLink metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                             <span>${removeCreatorLink?lower_case?cap_first}</span>
                                         </a>
                                     </div>
@@ -1368,7 +1356,7 @@
                                                 <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
@@ -1402,12 +1390,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePosition?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1442,12 +1429,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeAddress?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1494,12 +1480,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePhone?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1534,12 +1519,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeEmail?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1574,12 +1558,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeHomepage?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1626,12 +1609,11 @@
                                                             </div>
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeIdentifier?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -1642,11 +1624,11 @@
                                             <div class="row">
                                                 <div class="col mt-auto py-1">
                                                     <a id="plus-metadataProvider-identifier-${metadataProvider_index}" href="" class="metadata-action-link add-identifier">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
                                                         <span>${addNewIdentifier?lower_case?cap_first}</span>
                                                     </a>
                                                 </div>
@@ -1690,7 +1672,7 @@
                                         <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
@@ -1864,12 +1846,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeAddress?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1882,12 +1863,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removePosition?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1900,12 +1880,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removePhone?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1918,12 +1897,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeEmail?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1936,12 +1914,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeHomepage?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1957,12 +1934,11 @@
                                     </div>
                                     <div class="col-md-4 mt-auto py-1">
                                         <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeIdentifier?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -1994,6 +1970,7 @@
                             <#assign addNewIdentifier><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.identifier'/></#assign>
                             <#assign removeIdentifier><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.identifier'/></#assign>
                             <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
+                            <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
 
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
@@ -2016,7 +1993,7 @@
                                                 <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link" href="">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeLink?lower_case?cap_first}</span>
@@ -2053,12 +2030,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePosition?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2093,12 +2069,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeAddress?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2145,12 +2120,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removePhone?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2185,12 +2159,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeEmail?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2225,12 +2198,11 @@
                                                             </div>
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeHomepage?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -2265,6 +2237,14 @@
                                                     <label for="eml.associatedParties.userIds" class="form-label mb-0">
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-identifier-${item_index}" href="" class="metadata-action-link add-identifier">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list item.userIds as userId>
                                                     <#if userId.directory?has_content && userId.identifier?has_content>
@@ -2279,30 +2259,17 @@
 
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                    <span>${removeIdentifier?lower_case?cap_first}</span>
+                                                                    <span>
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                        </svg>
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     </#if>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-identifier-${item_index}" href="" class="metadata-action-link add-identifier">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewIdentifier?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -2337,7 +2304,7 @@
                                         <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeLink?lower_case?cap_first}</span>
@@ -2514,12 +2481,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeAddress?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -2532,12 +2498,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removePosition?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -2550,12 +2515,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removePhone?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -2568,12 +2532,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeEmail?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -2586,12 +2549,11 @@
                                     </div>
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeHomepage?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -2607,12 +2569,11 @@
                                     </div>
                                     <div class="col-md-4 mt-auto py-1">
                                         <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                            <span>${removeIdentifier?lower_case?cap_first}</span>
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>

@@ -1933,14 +1933,19 @@ button.close {
 .metadata-action-link {
     font-size: 0.75rem !important;
     font-weight: 500;
-    padding: 4px;
+    padding: 1px;
     border-radius: 10px;
+    margin-left: 5px;
 }
 
 .metadata-action-link:hover {
     background-color: rgba(var(--link-color), 0.05);
     text-decoration: none !important;
     filter: brightness(0.85);
+}
+
+.metadata-action-link:hover:has(.link-icon-danger) {
+    background-color: rgba(var(--color-gbif-danger), 0.05);
 }
 
 .bd-main {
@@ -2200,6 +2205,10 @@ code {
     fill: rgb(var(--link-color));
     height: 1em;
     vertical-align: -0.125em !important;
+}
+
+.link-icon-danger {
+    fill: rgb(var(--color-gbif-danger)) !important;
 }
 
 .inline-icon {
