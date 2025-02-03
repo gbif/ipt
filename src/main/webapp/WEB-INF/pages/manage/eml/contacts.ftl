@@ -263,18 +263,7 @@
     <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
     <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
     <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
-    <#assign addNewPosition><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.position'/></#assign>
-    <#assign removePosition><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.position'/></#assign>
-    <#assign addNewAddress><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.address.address'/></#assign>
-    <#assign removeAddress><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.address.address'/></#assign>
-    <#assign addNewPhone><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.phone'/></#assign>
-    <#assign removePhone><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.phone'/></#assign>
-    <#assign addNewEmail><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.email'/></#assign>
-    <#assign removeEmail><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.email'/></#assign>
-    <#assign addNewHomepage><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.homepage'/></#assign>
-    <#assign removeHomepage><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.homepage'/></#assign>
-    <#assign addNewIdentifier><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.identifier'/></#assign>
-    <#assign removeIdentifier><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.identifier'/></#assign>
+    <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
 
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -323,20 +312,20 @@
                             <@textinline name="eml.contact.plural" help="i18n" requiredField=true/>
                             <div id="contact-items">
                                 <#list eml.contacts as contact>
-                                    <div id="contact-item-${contact_index}" class="item row g-2 pb-4 border-bottom">
+                                    <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
                                         <div class="handle columnLinks mt-4 d-flex justify-content-end">
                                             <div>
-                                                <a id="contact-copy-${contact_index}" href="" class="metadata-action-link">
+                                                <a id="contact-copy-${contact_index}" href="" class="metadata-action-link custom-link">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                                 </a>
-                                                <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link" href="">
+                                                <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
@@ -362,6 +351,14 @@
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
                                                     </label>
+                                                    <a id="plus-contact-position-${contact_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.contacts[contact_index].position as position>
                                                     <div id="contact-${contact_index}-position-${position_index}" class="position-item">
@@ -372,7 +369,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -382,18 +379,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-position-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPosition?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="contact-${contact_index}-address" class="contact-address">
@@ -401,6 +386,14 @@
                                                     <label for="eml.contacts.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
                                                     </label>
+                                                    <a id="plus-contact-address-${contact_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.contacts[contact_index].address.address as address>
                                                     <div id="contact-${contact_index}-address-${address_index}" class="address-item">
@@ -411,7 +404,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -420,18 +413,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-address-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewAddress?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -452,6 +433,14 @@
                                                     <label for="eml.contacts.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
                                                     </label>
+                                                    <a id="plus-contact-phone-${contact_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.contacts[contact_index].phone as phone>
                                                     <div id="contact-${contact_index}-phone-${phone_index}" class="phone-item">
@@ -462,7 +451,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-phone-remove-${contact_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -472,18 +461,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-phone-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPhone?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="contact-${contact_index}-emails" class="contact-emails">
@@ -491,6 +468,14 @@
                                                     <label for="eml.contacts.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
                                                     </label>
+                                                    <a id="plus-contact-email-${contact_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.contacts[contact_index].email as email>
                                                     <div id="contact-${contact_index}-email-${email_index}" class="email-item">
@@ -501,7 +486,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-email-remove-${contact_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -511,18 +496,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-email-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewEmail?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="contact-${contact_index}-homepages" class="contact-homepages">
@@ -530,6 +503,14 @@
                                                     <label for="eml.contacts.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
                                                     </label>
+                                                    <a id="plus-contact-homepage-${contact_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.contacts[contact_index].homepage as homepage>
                                                     <div id="contact-${contact_index}-homepage-${homepage_index}" class="homepage-item">
@@ -540,7 +521,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="contact-homepage-remove-${contact_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -549,19 +530,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-homepage-${contact_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewHomepage?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -578,6 +546,14 @@
                                                     <label for="eml.contacts.userIds" class="form-label mb-0">
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
+                                                    <a id="plus-contact-identifier-${contact_index}" href="" class="metadata-action-link custom-link add-identifier">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list contact.userIds as userId>
                                                     <#if userId.directory?has_content && userId.identifier?has_content>
@@ -593,7 +569,7 @@
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -604,48 +580,36 @@
                                                     </#if>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-contact-identifier-${contact_index}" href="" class="metadata-action-link add-identifier">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNewIdentifier?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </#list>
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-contact" href="" class="plus-agent metadata-action-link">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
+                                <a id="plus-contact" href="" class="plus-agent metadata-action-link custom-link">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
                                     <span>${addContactLink?lower_case?cap_first}</span>
                                 </a>
                             </div>
 
-                            <div id="baseItem-contact" class="item row g-2 pb-4 border-bottom" style="display:none;">
+                            <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
                                 <div class="handle columnLinks mt-4 d-flex justify-content-end">
                                     <div>
-                                        <a id="contact-copy" href="" class="metadata-action-link">
+                                        <a id="contact-copy" href="" class="metadata-action-link custom-link">
                                             <span>
-                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                 </svg>
                                             </span>
                                             <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                         </a>
-                                        <a id="contact-removeLink" class="removeAgentLink metadata-action-link" href="">
+                                        <a id="contact-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -671,17 +635,13 @@
                                             <label for="eml.contacts.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-position" href="" class="metadata-action-link add-contact-position">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPosition?lower_case?cap_first}</span>
+                                            <a id="plus-contact-position" href="" class="metadata-action-link custom-link add-contact-position">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -692,17 +652,13 @@
                                             <label for="eml.contacts.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-address" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewAddress?lower_case?cap_first}</span>
+                                            <a id="plus-contact-address" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -725,17 +681,13 @@
                                             <label for="eml.contacts.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-phone" href="" class="metadata-action-link add-contact-phone">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPhone?lower_case?cap_first}</span>
+                                            <a id="plus-contact-phone" href="" class="metadata-action-link custom-link add-contact-phone">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -746,17 +698,13 @@
                                             <label for="eml.contacts.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-email" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewEmail?lower_case?cap_first}</span>
+                                            <a id="plus-contact-email" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -767,17 +715,13 @@
                                             <label for="eml.contacts.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-homepage" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewHomepage?lower_case?cap_first}</span>
+                                            <a id="plus-contact-homepage" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -796,17 +740,13 @@
                                             <label for="eml.contacts.userIds" class="form-label mb-0">
                                                 <@s.text name="eml.contact.identifier"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-contact-identifier" href="" class="metadata-action-link add-identifier">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                            <a id="plus-contact-identifier" href="" class="metadata-action-link custom-link add-identifier">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -819,16 +759,16 @@
                             <@textinline name="eml.resourceCreator.plural" help="i18n" requiredField=true/>
                             <div id="creator-items">
                                 <#list eml.creators as creator>
-                                    <div id="creator-item-${creator_index}" class="item row g-2 pb-4 border-bottom">
+                                    <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
                                         <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                             <div>
                                                 <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
                                             </div>
                                             <div>
                                                 <div class="btn-group">
-                                                    <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                         </svg>
                                                     </span>
@@ -840,9 +780,9 @@
                                                         <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                                     </ul>
                                                 </div>
-                                                <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link" href="">
+                                                <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
@@ -868,6 +808,14 @@
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
                                                     </label>
+                                                    <a id="plus-creator-position-${creator_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.creators[creator_index].position as position>
                                                     <div id="creator-${creator_index}-position-${position_index}" class="position-item">
@@ -878,7 +826,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -888,18 +836,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-position-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPosition?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="creator-${creator_index}-address" class="creator-address">
@@ -907,6 +843,14 @@
                                                     <label for="eml.creators.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
                                                     </label>
+                                                    <a id="plus-creator-address-${creator_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.creators[creator_index].address.address as address>
                                                     <div id="creator-${creator_index}-address-${address_index}" class="address-item">
@@ -917,7 +861,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -926,18 +870,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-address-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewAddress?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -958,6 +890,14 @@
                                                     <label for="eml.creators.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
                                                     </label>
+                                                    <a id="plus-creator-phone-${creator_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.creators[creator_index].phone as phone>
                                                     <div id="creator-${creator_index}-phone-${phone_index}" class="phone-item">
@@ -968,7 +908,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -978,18 +918,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-phone-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPhone?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="creator-${creator_index}-emails" class="creator-emails">
@@ -997,6 +925,14 @@
                                                     <label for="eml.creators.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
                                                     </label>
+                                                    <a id="plus-creator-email-${creator_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.creators[creator_index].email as email>
                                                     <div id="creator-${creator_index}-email-${email_index}" class="email-item">
@@ -1007,7 +943,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-email-remove-${creator_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1017,18 +953,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-email-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewEmail?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="creator-${creator_index}-homepages" class="creator-homepages">
@@ -1036,6 +960,14 @@
                                                     <label for="eml.creators.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
                                                     </label>
+                                                    <a id="plus-creator-homepage-${creator_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.creators[creator_index].homepage as homepage>
                                                     <div id="creator-${creator_index}-homepage-${homepage_index}" class="homepage-item">
@@ -1046,7 +978,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1055,18 +987,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-homepage-${creator_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewHomepage?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -1083,6 +1003,14 @@
                                                     <label for="eml.creators.userIds" class="form-label mb-0">
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
+                                                    <a id="plus-creator-identifier-${creator_index}" href="" class="metadata-action-link custom-link add-identifier">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list creator.userIds as userId>
                                                     <#if userId.directory?has_content && userId.identifier?has_content>
@@ -1098,7 +1026,7 @@
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1109,47 +1037,35 @@
                                                     </#if>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-creator-identifier-${creator_index}" href="" class="metadata-action-link add-identifier">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewIdentifier?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </#list>
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-creator" href="" class="plus-agent metadata-action-link">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
+                                <a id="plus-creator" href="" class="plus-agent metadata-action-link custom-link">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
                                     <span>${addCreatorLink?lower_case?cap_first}</span>
                                 </a>
                             </div>
 
-                            <div id="baseItem-creator" class="item row g-2 pb-4 border-bottom" style="display:none;">
+                            <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
                                 <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                     <div>
                                         <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
                                     </div>
                                     <div>
                                         <div class="btn-group">
-                                            <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                </svg>
-                                            </span>
+                                            <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>${copyLink?lower_case?cap_first}</span>
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy">
@@ -1157,9 +1073,9 @@
                                                 <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                             </ul>
                                         </div>
-                                        <a id="creator-removeLink" class="removeAgentLink metadata-action-link" href="">
+                                        <a id="creator-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1185,17 +1101,13 @@
                                             <label for="eml.creators.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-position" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPosition?lower_case?cap_first}</span>
+                                            <a id="plus-creator-position" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1206,17 +1118,13 @@
                                             <label for="eml.creators.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-address" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewAddress?lower_case?cap_first}</span>
+                                            <a id="plus-creator-address" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1239,17 +1147,13 @@
                                             <label for="eml.creators.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-phone" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPhone?lower_case?cap_first}</span>
+                                            <a id="plus-creator-phone" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1260,17 +1164,13 @@
                                             <label for="eml.creators.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-email" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewEmail?lower_case?cap_first}</span>
+                                            <a id="plus-creator-email" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1281,17 +1181,13 @@
                                             <label for="eml.creators.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-homepage" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewHomepage?lower_case?cap_first}</span>
+                                            <a id="plus-creator-homepage" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1310,17 +1206,13 @@
                                             <label for="eml.creators.userIds" class="form-label mb-0">
                                                 <@s.text name="eml.contact.identifier"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-creator-identifier" href="" class="metadata-action-link add-identifier">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                            <a id="plus-creator-identifier" href="" class="metadata-action-link custom-link add-identifier">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1333,16 +1225,16 @@
                             <@textinline name="eml.metadataProvider.plural" help="i18n"/>
                             <div id="metadataProvider-items">
                                 <#list eml.metadataProviders as metadataProvider>
-                                    <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-2 pb-4 border-bottom">
+                                    <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
                                         <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                             <div>
                                                 <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
                                             </div>
                                             <div>
                                                 <div class="btn-group">
-                                                    <a id="dropdown-metadataProvider-copy-${metadataProvider_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <a id="dropdown-metadataProvider-copy-${metadataProvider_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                             </svg>
                                                         </span>
@@ -1353,9 +1245,9 @@
                                                         <li><a id="metadataProvider-copy-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                                     </ul>
                                                 </div>
-                                                <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link" href="">
+                                                <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
@@ -1381,6 +1273,14 @@
                                                     <label for="eml.contacts.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-position-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.metadataProviders[metadataProvider_index].position as position>
                                                     <div id="metadataProvider-${metadataProvider_index}-position-${position_index}" class="position-item">
@@ -1391,7 +1291,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1401,18 +1301,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-position-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPosition?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="metadataProvider-${metadataProvider_index}-address" class="metadataProvider-address">
@@ -1420,6 +1308,14 @@
                                                     <label for="eml.contacts.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-address-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.metadataProviders[metadataProvider_index].address.address as address>
                                                     <div id="metadataProvider-${metadataProvider_index}-address-${address_index}" class="address-item">
@@ -1430,7 +1326,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1439,18 +1335,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-address-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewAddress?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -1471,6 +1355,14 @@
                                                     <label for="eml.metadataProviders.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-phone-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.metadataProviders[metadataProvider_index].phone as phone>
                                                     <div id="metadataProvider-${metadataProvider_index}-phone-${phone_index}" class="phone-item">
@@ -1481,7 +1373,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1491,25 +1383,21 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-phone-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPhone?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="metadataProvider-${metadataProvider_index}-emails" class="metadataProvider-emails">
                                                 <div class="d-flex text-smaller">
                                                     <label for="eml.metadataProviders.email" class="form-label mb-0">
-                                                        Email
+                                                        <@s.text name="eml.contact.email"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-email-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.metadataProviders[metadataProvider_index].email as email>
                                                     <div id="metadataProvider-${metadataProvider_index}-email-${email_index}" class="email-item">
@@ -1520,7 +1408,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1530,18 +1418,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-email-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewEmail?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="metadataProvider-${metadataProvider_index}-homepages" class="metadataProvider-homepages">
@@ -1549,6 +1425,14 @@
                                                     <label for="eml.metadataProviders.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-homepage-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.metadataProviders[metadataProvider_index].homepage as homepage>
                                                     <div id="metadataProvider-${metadataProvider_index}-homepage-${homepage_index}" class="homepage-item">
@@ -1559,7 +1443,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1568,18 +1452,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-homepage-${metadataProvider_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewHomepage?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -1596,6 +1468,14 @@
                                                     <label for="eml.contacts.userIds" class="form-label mb-0">
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
+                                                    <a id="plus-metadataProvider-identifier-${metadataProvider_index}" href="" class="metadata-action-link custom-link add-identifier">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list metadataProvider.userIds as userId>
                                                     <#if userId.directory?has_content && userId.identifier?has_content>
@@ -1610,7 +1490,7 @@
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -1621,44 +1501,32 @@
                                                     </#if>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-metadataProvider-identifier-${metadataProvider_index}" href="" class="metadata-action-link add-identifier">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNewIdentifier?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </#list>
                             </div>
 
                             <div class="addNew my-2">
-                                <a id="plus-metadataProvider" href="" class="plus-agent metadata-action-link">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
+                                <a id="plus-metadataProvider" href="" class="plus-agent metadata-action-link custom-link">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
                                     <span>${addMetadataProviderLink?lower_case?cap_first}</span>
                                 </a>
                             </div>
 
-                            <div id="baseItem-metadataProvider" class="item row g-2 pb-4 border-bottom" style="display:none;">
+                            <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
                                 <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                     <div>
                                         <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
                                     </div>
                                     <div>
                                         <div class="btn-group">
-                                            <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
@@ -1669,9 +1537,9 @@
                                                 <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
                                             </ul>
                                         </div>
-                                        <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link" href="">
+                                        <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1697,17 +1565,13 @@
                                             <label for="eml.metadataProviders.position" class="form-label mb-0">
                                                 <@s.text name="eml.contact.position"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-position" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPosition?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-position" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1718,17 +1582,13 @@
                                             <label for="eml.metadataProviders.address" class="form-label mb-0">
                                                 <@s.text name="eml.contact.address.address"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-address" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewAddress?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-address" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1751,17 +1611,13 @@
                                             <label for="eml.metadataProviders.phone" class="form-label mb-0">
                                                 <@s.text name="eml.contact.phone"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-phone" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPhone?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-phone" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1772,17 +1628,13 @@
                                             <label for="eml.metadataProviders.email" class="form-label mb-0">
                                                 <@s.text name="eml.contact.email"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-email" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewEmail?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-email" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1793,17 +1645,13 @@
                                             <label for="eml.metadataProviders.homepage" class="form-label mb-0">
                                                 <@s.text name="eml.contact.homepage"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-homepage" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewHomepage?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-homepage" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1822,17 +1670,13 @@
                                             <label for="eml.metadataProviders.userIds" class="form-label mb-0">
                                                 <@s.text name="eml.contact.identifier"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-metadataProvider-identifier" href="" class="metadata-action-link add-identifier">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                            <a id="plus-metadataProvider-identifier" href="" class="metadata-action-link custom-link add-identifier">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -1847,7 +1691,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1864,7 +1708,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1881,7 +1725,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1898,7 +1742,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1915,7 +1759,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1935,7 +1779,7 @@
                                     <div class="col-md-4 mt-auto py-1">
                                         <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -1957,24 +1801,12 @@
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
                             <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
-                            <#assign addNewPosition><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.position'/></#assign>
-                            <#assign removePosition><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.position'/></#assign>
-                            <#assign addNewAddress><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.address.address'/></#assign>
-                            <#assign removeAddress><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.address.address'/></#assign>
-                            <#assign addNewPhone><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.phone'/></#assign>
-                            <#assign removePhone><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.phone'/></#assign>
-                            <#assign addNewEmail><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.email'/></#assign>
-                            <#assign removeEmail><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.email'/></#assign>
-                            <#assign addNewHomepage><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.homepage'/></#assign>
-                            <#assign removeHomepage><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.homepage'/></#assign>
-                            <#assign addNewIdentifier><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact.identifier'/></#assign>
-                            <#assign removeIdentifier><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact.identifier'/></#assign>
                             <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
                             <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
 
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
-                                    <div id="associatedParty-item-${item_index}" class="item row g-2 pb-4 border-bottom">
+                                    <div id="associatedParty-item-${item_index}" class="item row g-3 pb-4 border-bottom">
                                         <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                             <div>
                                                 <#if item.role?? && (item.role == 'originator' || item.role == 'metadataProvider')>
@@ -1982,17 +1814,17 @@
                                                 </#if>
                                             </div>
                                             <div>
-                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link">
+                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link custom-link">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                                 </a>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link" href="">
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
@@ -2021,6 +1853,14 @@
                                                     <label for="eml.associatedParties.position" class="form-label mb-0">
                                                         <@s.text name="eml.contact.position"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-position-${item_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.associatedParties[item_index].position as position>
                                                     <div id="associatedParty-${item_index}-position-${position_index}" class="position-item">
@@ -2031,7 +1871,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2041,18 +1881,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-position-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPosition?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="associatedParty-${item_index}-address" class="associatedParty-address">
@@ -2060,6 +1888,14 @@
                                                     <label for="eml.associatedParties.address" class="form-label mb-0">
                                                         <@s.text name="eml.contact.address.address"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-address-${item_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.associatedParties[item_index].address.address as address>
                                                     <div id="associatedParty-${item_index}-address-${address_index}" class="address-item">
@@ -2070,7 +1906,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2079,18 +1915,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-address-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewAddress?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -2111,6 +1935,14 @@
                                                     <label for="eml.associatedParties.phone" class="form-label mb-0">
                                                         <@s.text name="eml.contact.phone"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-phone-${item_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.associatedParties[item_index].phone as phone>
                                                     <div id="associatedParty-${item_index}-phone-${phone_index}" class="phone-item">
@@ -2121,7 +1953,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2131,18 +1963,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-phone-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewPhone?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="associatedParty-${item_index}-emails" class="associatedParty-emails">
@@ -2150,6 +1970,14 @@
                                                     <label for="eml.associatedParties.email" class="form-label mb-0">
                                                         <@s.text name="eml.contact.email"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-email-${item_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.associatedParties[item_index].email as email>
                                                     <div id="associatedParty-${item_index}-email-${email_index}" class="email-item">
@@ -2160,7 +1988,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2170,18 +1998,6 @@
                                                     </div>
                                                 </#list>
                                             </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-email-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewEmail?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <div id="associatedParty-${item_index}-homepages" class="associatedParty-homepages">
@@ -2189,6 +2005,14 @@
                                                     <label for="eml.associatedParties.homepage" class="form-label mb-0">
                                                         <@s.text name="eml.contact.homepage"/>
                                                     </label>
+                                                    <a id="plus-associatedParty-homepage-${item_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${addNew?lower_case?cap_first}</span>
+                                                    </a>
                                                 </div>
                                                 <#list eml.associatedParties[item_index].homepage as homepage>
                                                     <div id="associatedParty-${item_index}-homepage-${homepage_index}" class="homepage-item">
@@ -2199,7 +2023,7 @@
                                                             <div class="col-md-6 mt-auto py-1">
                                                                 <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2208,19 +2032,6 @@
                                                         </div>
                                                     </div>
                                                 </#list>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mt-auto py-1">
-                                                    <a id="plus-associatedParty-homepage-${item_index}" href="" class="metadata-action-link add-agent-contact-info">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                        </svg>
-                                                    </span>
-                                                        <span>${addNewHomepage?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -2237,9 +2048,9 @@
                                                     <label for="eml.associatedParties.userIds" class="form-label mb-0">
                                                         <@s.text name="eml.contact.identifier"/>
                                                     </label>
-                                                    <a id="plus-associatedParty-identifier-${item_index}" href="" class="metadata-action-link add-identifier">
+                                                    <a id="plus-associatedParty-identifier-${item_index}" href="" class="metadata-action-link custom-link add-identifier">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                             </svg>
                                                         </span>
@@ -2260,7 +2071,7 @@
                                                             <div class="col-md-4 mt-auto py-1">
                                                                 <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
                                                                     <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
@@ -2277,9 +2088,9 @@
                             </div>
 
                             <div class="addNew col-12 mt-2">
-                                <a id="plus-associatedParty" href="" class="plus-agent metadata-action-link">
+                                <a id="plus-associatedParty" href="" class="plus-agent metadata-action-link custom-link">
                                     <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                         </svg>
                                     </span>
@@ -2287,23 +2098,23 @@
                                 </a>
                             </div>
 
-                            <div id="baseItem-associatedParty" class="item row g-2 pb-4 border-bottom" style="display:none;">
+                            <div id="baseItem-associatedParty" class="item row g-3 pb-4 border-bottom" style="display:none;">
                                 <div class="handle columnLinks mt-4 d-flex justify-content-between">
                                     <div>
                                         <span class="contact-citation-banner" style="display: none;"><@s.text name="eml.contact.citation"/></span>
                                     </div>
                                     <div>
-                                        <a id="associatedParty-copy" href="" class="metadata-action-link">
+                                        <a id="associatedParty-copy" href="" class="metadata-action-link custom-link">
                                             <span>
-                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                 </svg>
                                             </span>
                                             <span>${copyFromAnotherLink?lower_case?cap_first}</span>
                                         </a>
-                                        <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link" href="">
+                                        <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -2332,17 +2143,13 @@
                                             <label for="eml.associatedParties..position" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.position"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-position" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPosition?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-position" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2353,17 +2160,13 @@
                                             <label for="eml.associatedParties..address" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.address.address"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-address" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewAddress?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-address" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2386,17 +2189,13 @@
                                             <label for="eml.associatedParties..phone" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.phone"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-phone" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewPhone?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-phone" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2407,17 +2206,13 @@
                                             <label for="eml.associatedParties..email" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.email"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-email" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewEmail?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-email" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2428,17 +2223,13 @@
                                             <label for="eml.associatedParties..homepage" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.homepage"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-homepage" href="" class="metadata-action-link add-agent-contact-info">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewHomepage?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-homepage" href="" class="metadata-action-link custom-link add-agent-contact-info">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2457,17 +2248,13 @@
                                             <label for="eml.associatedParties..userIds" class="form-label mb-0">
                                                 <@s.text name="eml.associatedParties.identifier"/>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col mt-auto py-1">
-                                            <a id="plus-associatedParty-identifier" href="" class="metadata-action-link add-identifier">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                                <span>${addNewIdentifier?lower_case?cap_first}</span>
+                                            <a id="plus-associatedParty-identifier" href="" class="metadata-action-link custom-link add-identifier">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${addNew?lower_case?cap_first}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -2482,7 +2269,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -2516,7 +2303,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -2533,7 +2320,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -2550,7 +2337,7 @@
                                     <div class="col-md-6 mt-auto py-1">
                                         <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
@@ -2570,7 +2357,7 @@
                                     <div class="col-md-4 mt-auto py-1">
                                         <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>

@@ -1938,6 +1938,16 @@ button.close {
     margin-left: 5px;
 }
 
+.metadata-action-link:has(.link-icon-primary) {
+    color: rgb(var(--color-gbif-primary));
+    text-decoration: none;
+}
+
+.metadata-action-link:has(.link-icon-danger) {
+    color: rgb(var(--color-gbif-danger));
+    text-decoration: none;
+}
+
 .metadata-action-link:hover {
     background-color: rgba(var(--link-color), 0.05);
     text-decoration: none !important;
@@ -1946,6 +1956,19 @@ button.close {
 
 .metadata-action-link:hover:has(.link-icon-danger) {
     background-color: rgba(var(--color-gbif-danger), 0.05);
+}
+
+.metadata-action-link:hover:has(.link-icon-primary) {
+    background-color: rgba(var(--color-gbif-primary), 0.05);
+}
+
+.metadata-action-link:hover:has(.link-icon-neutral) {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.removeSubEntity, .removeIdentifier {
+    margin-left: 1px;
+    padding: 5px;
 }
 
 .bd-main {
@@ -2209,6 +2232,14 @@ code {
 
 .link-icon-danger {
     fill: rgb(var(--color-gbif-danger)) !important;
+}
+
+.link-icon-primary {
+    fill: rgb(var(--color-gbif-primary)) !important;
+}
+
+.link-icon-neutral {
+    fill: rgb(78, 86, 95) !important;
 }
 
 .inline-icon {
