@@ -191,6 +191,19 @@
             var $input = newItem.find("#baseItem-identifier-input");
             var $deleteLink = newItem.find("#baseItem-identifier-remove");
 
+            $select.select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+
             var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
 
             $input.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
@@ -429,7 +442,6 @@
         }
 
         function setAgentItemIndex(item, index, isNew) {
-            console.log("setAgentItemIndex triggered")
             const entityName = getEntityNameFromId(item.attr("id"));
             const entityNamePlural = getEntityNamePlural(entityName);
 
@@ -440,6 +452,7 @@
             setAgentRegularInput("lastName", entityName, entityNamePlural, index);
             setAgentRegularInput("salutation", entityName, entityNamePlural, index);
             setAgentRegularInput("organisation", entityName, entityNamePlural, index);
+            setAgentRegularDropdown("role", entityName, entityNamePlural, index);
             setAgentRepeatableInput("position", entityName, entityNamePlural, index, isNew);
             setAgentRepeatableInput("address", entityName, entityNamePlural, index, isNew);
             setAgentRegularInput("city", entityName, entityNamePlural, index);
@@ -500,23 +513,41 @@
 
         function setAgentRegularDropdown(dropdownName, entityName, entityNamePlural, index) {
             const dropdownNameInId = (dropdownName === "country") ? "address.country" : dropdownName;
+            var $dropdown = $("#" + entityName + "-item-" + index + " [id$='" + dropdownName + "']");
 
-            $("#" + entityName + "-item-" + index + " [id$='" + dropdownName + "']")
+            $dropdown
                 .attr("id", "eml." + entityNamePlural + "[" + index + "]." + dropdownNameInId)
-                .attr("name", function () {return $(this).attr("id");})
-                .select2({
-                    placeholder: '${action.getText("eml.country.selection")?js_string}',
-                    language: {
-                        noResults: function () {
-                            return '${selectNoResultsFound}';
-                        }
-                    },
-                    width: "100%",
-                    allowClear: true,
-                    theme: 'bootstrap4'
-                });
+                .attr("name", function () {return $(this).attr("id");});
             $("#" + entityName + "-item-" + index + " [for$='" + dropdownName + "']")
                 .attr("for", "eml." + entityNamePlural + "[" + index + "]." + dropdownNameInId);
+
+            if (dropdownName === "role") {
+                $dropdown
+                    .select2({
+                        placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                        language: {
+                            noResults: function () {
+                                return '${selectNoResultsFound}';
+                            }
+                        },
+                        width: "100%",
+                        allowClear: true,
+                        theme: 'bootstrap4'
+                    });
+            } else if (dropdownName === "country") {
+                $dropdown
+                    .select2({
+                        placeholder: '${action.getText("eml.country.selection")?js_string}',
+                        language: {
+                            noResults: function () {
+                                return '${selectNoResultsFound}';
+                            }
+                        },
+                        width: "100%",
+                        allowClear: true,
+                        theme: 'bootstrap4'
+                    });
+            }
         }
 
         function setAgentRepeatableInput(inputName, entityName, entityNamePlural, index, isNew) {
@@ -524,7 +555,7 @@
 
             setAgentRepeatableInputMainId(inputNamePlural, entityName, index);
             setAgentRepeatableInputAddNewLink(inputName, entityName, index, isNew);
-            setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, entityNamePlural)
+            setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, entityNamePlural, index)
         }
 
         function setAgentRepeatableInputMainId(inputNamePlural, entityName, index) {
@@ -548,13 +579,13 @@
 
             $("#" + entityName + "-item-" + index + " ." + entityName + "-" + inputNamePlural + " ." + inputName + "-item")
                 .each(function (inputIndex) {
-                    setAgentRepeatableInputItem(inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index);
+                    setAgentRepeatableInputItem($(this), inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index);
                 });
         }
 
-        function setAgentRepeatableInputItem(inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index) {
+        function setAgentRepeatableInputItem($item, inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index) {
             // item's id
-            $(this).attr("id", entityName + "-" + index + "-" + inputName + "-" + inputIndex);
+            $item.attr("id", entityName + "-" + index + "-" + inputName + "-" + inputIndex);
 
             // input's id and name
             $("#" + entityName + "-" + index + "-" + inputName + "-" + inputIndex + " input")
@@ -582,7 +613,8 @@
                     $(this).attr("id", entityName + "-" + index + "-identifier-" + identifierIndex);
 
                     // identifier directory dropdown element id/name (and select2 initialization)
-                    $("#" + entityName + "-" + index + " select")
+                    $(this)
+                        .find("select")
                         .attr("id", "eml." + entityNamePlural + "[" + index + "].userIds[" + identifierIndex + "].directory")
                         .attr("name", function () {
                             return $(this).attr("id");
@@ -601,7 +633,8 @@
                         });
 
                     // identifier input element id/name
-                    $("#" + entityName + "-" + index + " input")
+                    $(this)
+                        .find("input")
                         .attr("id", "eml." + entityNamePlural + "[" + index + "].userIds[" + identifierIndex + "].identifier")
                         .attr("name", function () {
                             return $(this).attr("id");
