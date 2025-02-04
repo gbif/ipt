@@ -257,10 +257,10 @@
                                         <div id="award-item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                                 <div>
-                                                    <a id="award-removeLink-${item_index}" class="removeAwardlLink metadata-action-link" href="">
+                                                    <a id="award-removeLink-${item_index}" class="removeAwardlLink metadata-action-link custom-link" href="">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
                                                         </span>
                                                         <span>${removeAwardLink?lower_case?cap_first}</span>
@@ -287,9 +287,9 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-award" href="" class="metadata-action-link">
+                                    <a id="plus-award" href="" class="metadata-action-link custom-link">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -309,10 +309,10 @@
                                         <div id="relatedProject-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                                 <div>
-                                                    <a id="relatedProject-removeLink-${item_index}" class="removeRelatedProjectLink metadata-action-link" href="">
+                                                    <a id="relatedProject-removeLink-${item_index}" class="removeRelatedProjectLink metadata-action-link custom-link" href="">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
                                                         </span>
                                                         <span>${removeRelatedProjectLink?lower_case?cap_first}</span>
@@ -340,9 +340,9 @@
                                                             <div class="col-12 mt-auto py-1 d-flex justify-content-between">
                                                                 <div>
                                                                     <div class="btn-group">
-                                                                        <a id="dropdown-relatedProject-${item_index}-personnel-copy-${personnel_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        <a id="dropdown-relatedProject-${item_index}-personnel-copy-${personnel_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                             <span>
-                                                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                                                 </svg>
                                                                             </span>
@@ -355,10 +355,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div>
-                                                                    <a id="relatedProject-personnel-remove-${item_index}-${personnel_index}" class="removeRelatedProjectPersonnelLink metadata-action-link" href="">
+                                                                    <a id="relatedProject-personnel-remove-${item_index}-${personnel_index}" class="removeRelatedProjectPersonnelLink metadata-action-link custom-link" href="">
                                                                         <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                             </svg>
                                                                         </span>
                                                                         <span>${removeLink?lower_case?cap_first}</span>
@@ -388,9 +388,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col mt-auto py-1">
-                                                        <a id="plus-relatedProject-personnel-${item_index}" href="" class="metadata-action-link add-relatedProject-personnel">
+                                                        <a id="plus-relatedProject-personnel-${item_index}" href="" class="metadata-action-link add-relatedProject-personnel custom-link">
                                                             <span>
-                                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                                 </svg>
                                                             </span>
@@ -404,9 +404,9 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-relatedProject" href="" class="metadata-action-link">
+                                    <a id="plus-relatedProject" href="" class="metadata-action-link custom-link">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -427,9 +427,9 @@
                                             <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                                 <div>
                                                     <div class="btn-group">
-                                                        <a id="dropdown-personnel-copy-${item_index}" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <a id="dropdown-personnel-copy-${item_index}" href="#" class="metadata-action-link custom-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <span>
-                                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                                 </svg>
                                                             </span>
@@ -442,10 +442,10 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink metadata-action-link" href="">
+                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink metadata-action-link custom-link" href="">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
                                                         </span>
                                                         <span>${removeLink?lower_case?cap_first}</span>
@@ -479,9 +479,9 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-personnel" href="" class="metadata-action-link">
+                                    <a id="plus-personnel" href="" class="metadata-action-link custom-link">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -497,12 +497,12 @@
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
                                         <div class="btn-group">
-                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                </svg>
-                                            </span>
+                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link custom-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>${copyLink?lower_case?cap_first}</span>
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="personnel-creator-copy">
@@ -512,10 +512,10 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link" href="">
+                                        <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeLink?lower_case?cap_first}</span>
@@ -545,10 +545,10 @@
                             <div id="baseItem-relatedProject" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                     <div>
-                                        <a id="relatedProject-removeLink" class="removeRelatedProjectLink metadata-action-link" href="">
+                                        <a id="relatedProject-removeLink" class="removeRelatedProjectLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeRelatedProjectLink?lower_case?cap_first}</span>
@@ -574,9 +574,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col mt-auto py-1">
-                                            <a id="plus-relatedProject-personnel" href="" class="add-relatedProject-personnel metadata-action-link">
+                                            <a id="plus-relatedProject-personnel" href="" class="add-relatedProject-personnel metadata-action-link custom-link">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                     </svg>
                                                 </span>
@@ -590,10 +590,10 @@
                             <div id="baseItem-award" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-end">
                                     <div>
-                                        <a id="award-removeLink" class="removeAwardlLink metadata-action-link" href="">
+                                        <a id="award-removeLink" class="removeAwardlLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeAwardLink?lower_case?cap_first}</span>
@@ -621,9 +621,9 @@
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
                                         <div class="btn-group">
-                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link custom-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
@@ -636,10 +636,10 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link" href="">
+                                        <a id="personnel-removeLink" class="removePersonnelLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeLink?lower_case?cap_first}</span>
@@ -670,9 +670,9 @@
                                 <div class="handle columnLinks mt-2 d-flex justify-content-between">
                                     <div>
                                         <div class="btn-group">
-                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a id="dropdown-personnel-copy" href="#" class="metadata-action-link custom-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
                                                     </svg>
                                                 </span>
@@ -685,10 +685,10 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <a id="personnel-removeLink" class="removeRelatedProjectPersonnelLink metadata-action-link" href="">
+                                        <a id="personnel-removeLink" class="removeRelatedProjectPersonnelLink metadata-action-link custom-link" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </span>
                                             <span>${removeLink?lower_case?cap_first}</span>
