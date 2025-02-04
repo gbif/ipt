@@ -138,8 +138,8 @@
 
     <#macro label i18nkey help="" requiredField=false>
         <div>
-            <label>
-                <@s.text name="${i18nkey}"/><#if requiredField>&#42;</#if>
+            <label class="form-label">
+                <@s.text name="${i18nkey}"/> <#if requiredField><span class="text-gbif-danger">&#42;</span></#if>
             </label>
             <#nested>
         </div>
