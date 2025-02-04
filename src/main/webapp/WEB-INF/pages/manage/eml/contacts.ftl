@@ -3,6 +3,7 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <title><@s.text name='manage.metadata.contacts.title'/></title>
     <script>
@@ -212,34 +213,6 @@
         .popover {
             width: 50%;
             max-width: 600px;
-        }
-
-        .form-control, .form-select {
-            min-height: calc(1.5em + .5rem + 2px);
-            padding: .25rem .5rem;
-            font-size: .875rem;
-            border-radius: .2rem;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single {
-            height: calc(1.5em + .5rem + 2px) !important;
-            font-size: .875rem !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
-            line-height: calc(1.5em + .5rem) !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
-            line-height: calc(1.5em + .5rem) !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection__clear {
-            margin-top: .625em !important;
-        }
-
-        .select2-results__option, .select2-search__field {
-            font-size: .875rem;
         }
     </style>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
