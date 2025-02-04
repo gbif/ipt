@@ -161,7 +161,7 @@ $(document).ready(function(){
 	});
 	
 	$("[id^=add-button]").click(function(event) {
-		createTaxons(event);
+		createTaxa(event);
         var subItemsIndex = event.currentTarget.id.replace("add-button-", "");
         initializeSortableComponent("subItems-" + subItemsIndex)
 	});
@@ -437,17 +437,19 @@ $(document).ready(function(){
         }
         var targetId = $target.attr("id").split("-")[1];
         $("#list-" + targetId).slideDown('slow', function () {
-            $("#taxonsLink-" + targetId).hide();
-            $target.parent().children("img").hide();
-            $target.parent().children("span").hide();
+            var $addTaxaLink = $("#taxonsLink-" + targetId);
+            $addTaxaLink.hide();
+            $addTaxaLink.siblings('a').hide();
         });
     }
 
-    function createTaxons(event) {
+    function createTaxa(event) {
         event.preventDefault();
-        var $target = $(event.target);
-        var index = $target.attr("id").split("-")[2];
-        var lines = $("#taxon-list-" + index).val().split("\n");
+        var $target = event.currentTarget;
+        var id = $target.id;
+        var index = id.split("-")[2];
+        var $taxonListTextarea = $("#taxon-list-" + index);
+        var lines = $taxonListTextarea.val().split("\n");
         var line;
         for (var count in lines) {
             line = $.trim(lines[count]);
@@ -455,10 +457,12 @@ $(document).ready(function(){
                 addNewSubItem(event, line);
             }
         }
-        $("#taxon-list-" + index).val("");
+        $taxonListTextarea.val("");
         $("#list-" + index).slideUp('slow', function () {
-            $("#taxonsLink-" + index).show();
-            $("#taxonsLink-" + index).parent().children("img").show();
+            $taxonListTextarea.show();
+            var $addTaxaLink = $("#taxonsLink-" + index);
+            $addTaxaLink.show();
+            $addTaxaLink.siblings('a').show();
         });
     }
 
@@ -627,7 +631,7 @@ $(document).ready(function(){
                     return $(this).attr("id");
                 });
                 $("#add-button-" + index).click(function (event) {
-                    createTaxons(event);
+                    createTaxa(event);
                     initializeSortableComponent("subItems-" + index)
 
                     // update taxon names

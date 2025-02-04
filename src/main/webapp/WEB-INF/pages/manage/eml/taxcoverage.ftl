@@ -4,6 +4,7 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -266,9 +267,9 @@
 
                                 <div id="preview-links" class="col-md-6">
                                     <div class="d-flex justify-content-end">
-                                        <a id="preview-inferred-taxonomic" class="metadata-action-link" href="">
+                                        <a id="preview-inferred-taxonomic" class="metadata-action-link custom-link p-1" href="">
                                             <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon">
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                     <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                                 </svg>
                                             </span>
@@ -277,9 +278,9 @@
                                     </div>
                                     <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
                                         <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                        <a id="re-infer-link" href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
+                                        <a id="re-infer-link" href="metadata-taxcoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link custom-link p-1">
                                             <span>
-                                                <svg class="link-icon" viewBox="0 0 24 24">
+                                                <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
                                                     <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
                                                 </svg>
                                             </span>
@@ -299,10 +300,10 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
                                         <div class="handle d-flex justify-content-end mt-2">
-                                            <a id="removeLink-${item_index}" class="removeLink metadata-action-link" href="">
+                                            <a id="removeLink-${item_index}" class="removeLink metadata-action-link custom-link" href="">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                     </svg>
                                                 </span>
                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
@@ -314,62 +315,87 @@
                                         </div>
 
                                         <!-- Taxon list-->
-                                        <div class="my-2 fs-smaller-2">
-                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1 metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    <@s.text name="manage.metadata.taxcoverage.addSeveralTaxa"/>
-                                                </span>
-                                            </a>
-                                            <@popoverPropertyInfo "manage.metadata.taxcoverage.addSeveralTaxa.help" />
-                                        </div>
-
-                                        <div id="list-${item_index}" class="half addSeveralTaxa mt-2" style="display:none">
-                                            <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
-                                            <div id="addSeveralTaxaButtons" class="buttons mt-2">
-                                                <input type="submit" value="<@s.text name='button.add'/>" id="add-button-${item_index}" name="add-button-${item_index}" class="button btn btn-outline-gbif-primary">
+                                        <div class="mt-3 mb-1 fs-smaller-2 d-flex justify-content-end">
+                                            <div>
+                                                <a id="taxonsLink-${item_index}" class="show-taxonList mt-1 metadata-action-link custom-link" href="">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>
+                                                        <@s.text name="manage.metadata.taxcoverage.addSeveralTaxa"/>
+                                                    </span>
+                                                </a>
+                                                <@popoverPropertyInfo "manage.metadata.taxcoverage.addSeveralTaxa.help" />
                                             </div>
                                         </div>
-                                        <div id="subItems-${item_index}" class="mt-2 subItems">
+
+                                        <div id="list-${item_index}" class="half addSeveralTaxa my-2" style="display:none">
+                                            <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
+                                            <div id="addSeveralTaxaButtons" class="buttons mt-2">
+                                                <a href="" id="add-button-${item_index}" class="metadata-action-link custom-link">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>
+                                                        <@s.text name='button.add'/>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-lg-4">
+                                                <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" requiredField=true />
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" />
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" />
+                                            </div>
+                                        </div>
+                                        <div id="subItems-${item_index}" class="mt-0 subItems">
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
-                                                    <div id="subItem-${item_index}-${subItem_index}" class="sub-item mt-3" data-ipt-item-index="${item_index}">
-                                                        <div class="handle d-flex justify-content-end mt-2 py-1">
-                                                            <a id="trash-${item_index}-${subItem_index}" class="metadata-action-link" href="">
-                                                                <span>
-                                                                    <svg viewBox="0 0 24 24" class="link-icon">
-                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
-                                                            </a>
-                                                        </div>
-
-                                                        <div class="row flex-grow-1 g-3">
+                                                    <div id="subItem-${item_index}-${subItem_index}" class="sub-item" data-ipt-item-index="${item_index}">
+                                                        <div class="row g-3 py-1">
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true withLabel=false />
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" withLabel=false />
                                                             </div>
 
-                                                            <div class="col-lg-4">
-                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks! value="${(eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank)!?lower_case}"/>
+                                                            <div class="col-lg-4 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks! value="${(eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank)!?lower_case}" withLabel=false />
+                                                                </div>
+
+                                                                <div>
+                                                                    <a id="trash-${item_index}-${subItem_index}" class="removeSubEntity metadata-action-link custom-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </#list>
                                             </#if>
                                         </div>
-                                        <div class="pb-1 mt-3">
-                                            <a id="plus-subItem-${item_index}" href="" class="metadata-action-link">
+                                        <div class="pb-1 mt-1">
+                                            <a id="plus-subItem-${item_index}" href="" class="metadata-action-link custom-link">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                                     </svg>
                                                 </span>
@@ -381,9 +407,9 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus plus-taxcoverage metadata-action-link" href="">
+                                <a id="plus" class="plus plus-taxcoverage metadata-action-link custom-link" href="">
                                     <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                         </svg>
                                     </span>
@@ -447,10 +473,10 @@
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="handle d-flex justify-content-end mt-2">
-                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
+                                    <a id="removeLink" class="removeLink metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
                                         </span>
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
@@ -462,10 +488,10 @@
                                 </div>
 
                                 <!-- Taxon list-->
-                                <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList metadata-action-link" href="">
+                                <div class="addNew mt-3 mb-1 fs-smaller-2 d-flex justify-content-end">
+                                    <a id="taxonsLink" class="show-taxonList metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -475,14 +501,28 @@
                                 <div id="list" class="mt-2" style="display:none">
                                     <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
                                     <div class="buttons taxon-list my-2">
-                                        <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="button btn btn-outline-gbif-primary">
+                                        <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="metadata-action-link custom-link">
                                     </div>
                                 </div>
-                                <div id="subItems" class="my-2 subItems"></div>
+                                <div class="row g-3">
+                                    <div class="col-lg-4">
+                                        <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" requiredField=true />
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" />
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" />
+                                    </div>
+                                </div>
+                                <div id="subItems" class="mt-0 subItems">
+                                </div>
                                 <div class="addNew border-bottom pb-1 mt-1">
-                                    <a id="plus-subItem" href="" class="metadata-action-link">
+                                    <a id="plus-subItem" href="" class="metadata-action-link custom-link">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -491,29 +531,30 @@
                                 </div>
                             </div>
 
-                            <div id="subItem-9999" class="sub-item mt-3" style="display:none">
-                                <div class="handle d-flex justify-content-end mt-2 py-1">
-                                    <a id="trash" class="metadata-action-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
-                                    </a>
-                                </div>
-
-                                <div class="row g-3">
+                            <div id="subItem-9999" class="sub-item" style="display:none">
+                                <div class="row g-3 py-1">
                                     <div class="col-lg-4">
-                                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
+                                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true withLabel=false />
                                     </div>
 
                                     <div class="col-lg-4">
-                                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
+                                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" withLabel=false />
                                     </div>
 
-                                    <div class="col-lg-4">
-                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks! />
+                                    <div class="col-lg-4 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks! withLabel=false />
+                                        </div>
+
+                                        <div class="">
+                                            <a id="trash" class="removeSubEntity metadata-action-link custom-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
