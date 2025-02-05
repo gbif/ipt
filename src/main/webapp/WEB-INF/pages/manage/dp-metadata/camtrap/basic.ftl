@@ -5,6 +5,7 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -504,11 +505,10 @@
                                         <#if item?has_content>
                                         <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="contributor-removeLink-${item_index}" href=""
-                                                   class="metadata-action-link removeContributorLink">
+                                                <a id="contributor-removeLink-${item_index}" href="" class="metadata-action-link custom-link removeContributorLink">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeContributorLink?lower_case?cap_first}</span>
@@ -549,9 +549,9 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-contributor" class="metadata-action-link" href="">
+                                    <a id="plus-contributor" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -624,7 +624,7 @@
                                              class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-2 d-flex justify-content-end">
                                                 <a id="source-removeLink-${item_index}" href=""
-                                                   class="metadata-action-link removeSourceLink">
+                                                   class="metadata-action-link custom-link removeSourceLink">
                                                     <span>
                                                         <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -649,9 +649,9 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-source" class="metadata-action-link" href="">
+                                    <a id="plus-source" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -668,10 +668,10 @@
 
     <div id="baseItem-contributor" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="contributor-removeLink" href="" class="metadata-action-link removeContributorLink">
+            <a id="contributor-removeLink" href="" class="metadata-action-link custom-link removeContributorLink">
                 <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                     </svg>
                 </span>
                 <span>${removeContributorLink?lower_case?cap_first}</span>
@@ -703,10 +703,10 @@
 
     <div id="baseItem-source" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="source-removeLink" href="" class="metadata-action-link removeSourceLink">
+            <a id="source-removeLink" href="" class="metadata-action-link custom-link removeSourceLink">
                 <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                     </svg>
                 </span>
                 <span>${removeSourceLink?lower_case?cap_first}</span>
@@ -728,10 +728,10 @@
 
     <div id="baseItem-license" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
         <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="license-removeLink" href="" class="metadata-action-link removeLicenseLink">
+            <a id="license-removeLink" href="" class="metadata-action-link custom-link removeLicenseLink">
                 <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                     </svg>
                 </span>
                 <span>${removeLicenseLink?lower_case?cap_first}</span>
