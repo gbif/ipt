@@ -1568,7 +1568,6 @@
                                 <div class="row g-2">
                                     <#if resource.lastPublished??>
                                         <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
-                                        ${action.getLastPublishedVersionAssignedLicense(resource)}
 
                                         <div class="col-xl-6" style="height: 100%">
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
