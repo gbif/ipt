@@ -136,10 +136,15 @@ public final class Constants {
   static {
     Set<String> licencesInternal = new HashSet<>();
     licencesInternal.add("http://creativecommons.org/publicdomain/zero/1.0/legalcode");
+    licencesInternal.add("https://creativecommons.org/publicdomain/zero/1.0/legalcode");
     licencesInternal.add("http://creativecommons.org/licenses/by/4.0/legalcode");
+    licencesInternal.add("https://creativecommons.org/licenses/by/4.0/legalcode");
     licencesInternal.add("http://creativecommons.org/licenses/by-nc/4.0/legalcode");
+    licencesInternal.add("https://creativecommons.org/licenses/by-nc/4.0/legalcode");
     licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
+    licencesInternal.add("https://www.opendatacommons.org/licenses/by/1.0/");
     licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
+    licencesInternal.add("https://www.opendatacommons.org/licenses/pddl/1.0/");
     GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
 
     Set<String> licenseCodesInternal = new HashSet<>();

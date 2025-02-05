@@ -42,15 +42,15 @@
 
 <!-- The short form of the license for display in the versions table -->
 <#macro shortLicense licenseUrl="">
-    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode">
+    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode" || licenseUrl == "https://creativecommons.org/publicdomain/zero/1.0/legalcode">
         CC0 1.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode">
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by/4.0/legalcode">
         CC-BY 4.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode">
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by-nc/4.0/legalcode">
         CC-BY-NC 4.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0">
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/pddl/1.0">
         ODC PDDL 1.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0">
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/by/1.0">
         ODC-By 1.0
     <#elseif licenseUrl?has_content>
         <@s.text name='manage.overview.noGBIFLicense'/>
@@ -1568,6 +1568,7 @@
                                 <div class="row g-2">
                                     <#if resource.lastPublished??>
                                         <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
+                                        ${action.getLastPublishedVersionAssignedLicense(resource)}
 
                                         <div class="col-xl-6" style="height: 100%">
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
