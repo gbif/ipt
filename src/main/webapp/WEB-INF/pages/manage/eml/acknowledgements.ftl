@@ -2,6 +2,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>

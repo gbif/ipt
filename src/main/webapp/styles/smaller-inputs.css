@@ -29,3 +29,7 @@
 .select2-results__option, .select2-search__field, .select2-selection__choice {
     font-size: .875rem;
 }
+
+.note-editor {
+    font-size: .875rem;
+}

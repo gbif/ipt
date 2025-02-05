@@ -5,6 +5,7 @@
     <title><@s.text name='manage.metadata.additionalDescription.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <script>
