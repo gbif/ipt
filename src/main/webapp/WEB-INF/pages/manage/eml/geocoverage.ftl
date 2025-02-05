@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/leaflet/leaflet.js"></script>
     <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
 

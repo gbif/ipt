@@ -1,6 +1,7 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <title><@s.text name='manage.metadata.keywords.title'/></title>
     <script>
         $(document).ready(function () {

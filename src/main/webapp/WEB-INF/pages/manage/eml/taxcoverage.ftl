@@ -425,7 +425,7 @@
 
                                 <!-- Data is inferred, preview -->
                                 <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive fs-smaller">
                                         <table class="table table-sm table-borderless">
                                             <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
                                                 <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || (inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content && inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content)) >
