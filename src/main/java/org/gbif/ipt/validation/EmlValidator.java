@@ -158,7 +158,7 @@ public class EmlValidator extends BaseValidator {
   }
 
   public static boolean isValidPhoneNumber(String phone) {
-    return phone != null && phonePattern.matcher(phone).matches();
+    return StringUtils.isNotBlank(phone) && phonePattern.matcher(phone).matches();
   }
 
   public boolean isValid(Resource resource, @Nullable MetadataSection section) {
