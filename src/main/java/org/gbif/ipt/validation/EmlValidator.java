@@ -353,6 +353,16 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
               }
 
+              /* position(s) are optional. But if they exist, they should not be empty */
+              if (!c.getPosition().isEmpty()) {
+                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
+                  if (StringUtils.isEmpty(c.getPosition().get(positionIndex))) {
+                    action.addFieldError("eml.contacts[" + index + "].position[" + positionIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                  }
+                }
+              }
+
               /* email(s) are optional. But if they exist, they should be valid email addresses */
               ValidationResult emailValidationResult;
               if (!c.getEmail().isEmpty()) {
@@ -428,6 +438,16 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
               }
 
+              /* position(s) are optional. But if they exist, they should not be empty */
+              if (!c.getPosition().isEmpty()) {
+                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
+                  if (StringUtils.isEmpty(c.getPosition().get(positionIndex))) {
+                    action.addFieldError("eml.creators[" + index + "].position[" + positionIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                  }
+                }
+              }
+
               /* email(s) are optional. But if they exist, they should be valid email addresses */
               ValidationResult emailValidationResult;
               if (!c.getEmail().isEmpty()) {
@@ -500,6 +520,16 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
               }
 
+              /* position(s) are optional. But if they exist, they should not be empty */
+              if (!c.getPosition().isEmpty()) {
+                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
+                  if (StringUtils.isEmpty(c.getPosition().get(positionIndex))) {
+                    action.addFieldError("eml.metadataProviders[" + index + "].position[" + positionIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                  }
+                }
+              }
+
               /* email(s) are optional. But if they exist, they should be valid email addresses */
               ValidationResult emailValidationResult;
               if (!c.getEmail().isEmpty()) {
@@ -570,6 +600,16 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
                 action.addFieldError("eml.associatedParties[" + index + "].position",
                     action.getText("validation.required", new String[] {action.getText("eml.associatedParties.position")}));
+              }
+
+              /* position(s) are optional. But if they exist, they should not be empty */
+              if (!ap.getPosition().isEmpty()) {
+                for (int positionIndex = 0; positionIndex < ap.getPosition().size(); positionIndex++) {
+                  if (StringUtils.isEmpty(ap.getPosition().get(positionIndex))) {
+                    action.addFieldError("eml.associatedParties[" + index + "].position[" + positionIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                  }
+                }
               }
 
               /* email(s) are optional. But if they exist, they should be valid email addresses */
