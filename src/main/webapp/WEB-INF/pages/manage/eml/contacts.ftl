@@ -943,16 +943,18 @@
                                                     <div id="creator-${creator_index}-homepage-${homepage_index}" class="homepage-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
-                                                                <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" i18nkey="eml.resourceCreator.homepage" withLabel=false />
-                                                            </div>
-                                                            <div class="mb-auto py-1 ps-1">
-                                                                <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" i18nkey="eml.resourceCreator.homepage" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
                                                                         <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
                                                                     </span>
-                                                                </a>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
