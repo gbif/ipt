@@ -118,7 +118,7 @@
                 theme: 'bootstrap4'
             });
 
-            $('[id^="eml.associatedParties"][id$=".address.country"]').select2({
+            $('[id^="eml."][id$=".address.country"]').select2({
                 placeholder: '${action.getText("eml.country.selection")?js_string}',
                 language: {
                     noResults: function () {
@@ -129,40 +129,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
-            $('[id^="eml.contacts"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.creators"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.metadataProviders"][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="eml.associatedParties"][id$=".directory"]').select2({
+
+            $('[id^="eml."][id$=".directory"]').select2({
                 placeholder: '${action.getText("eml.associatedParties.noDirectory")?js_string}',
                 language: {
                     noResults: function () {
