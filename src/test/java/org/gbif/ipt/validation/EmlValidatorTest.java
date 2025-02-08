@@ -459,27 +459,6 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testPartiesPart() {
-    // valid
-    assertTrue(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
-  }
-
-  @Test
-  public void testPartiesPartIncomplete() {
-    // invalid
-    eml.getAssociatedParties().clear();
-    eml.getAssociatedParties().add(badAgent);
-    assertFalse(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
-  }
-
-  @Test
-  public void testPartiesPartFirstPartyIncomplete() {
-    // add emtpy party at top, with remaining 13 valid parties
-    eml.getAssociatedParties().add(0, new Agent());
-    assertFalse(validator.isValid(resource, MetadataSection.PARTIES_SECTION));
-  }
-
-  @Test
   public void testProjectPart() {
     // valid
     assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));

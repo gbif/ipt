@@ -539,6 +539,78 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
+          // Associated parties list: at least one field has to have had data entered into it to qualify for validation
+          if (!isAgentsListEmpty(eml.getAssociatedParties())) {
+            for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
+              Agent ap = eml.getAssociatedParties().get(index);
+
+              // firstName - optional. But if firstName exists, lastName have to exist
+              if (exists(ap.getFirstName()) && !exists(ap.getLastName())) {
+                action.addFieldError("eml.associatedParties[" + index + "].lastName",
+                    action.getText("validation.firstname.lastname"));
+              }
+
+              // directory and personnel id both required (if either is supplied)
+              if (!ap.getUserIds().isEmpty()) {
+                if (exists(ap.getUserIds().get(0).getDirectory()) && !exists(ap.getUserIds().get(0).getIdentifier())) {
+                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].identifier",
+                      action.getText("validation.personnel"));
+                } else if (!exists(ap.getUserIds().get(0).getDirectory()) && exists(ap.getUserIds().get(0).getIdentifier())) {
+                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].directory",
+                      action.getText("validation.directory"));
+                }
+              }
+
+              // At least one of organisation, position, or a lastName have to exist
+              if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && (ap.getPosition().isEmpty() || !exists(ap.getPosition().get(0)))) {
+                action.addActionError(action.getText("validation.lastname.organisation.position"));
+                action.addFieldError("eml.associatedParties[" + index + "].organisation", action
+                    .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
+                action.addFieldError("eml.associatedParties[" + index + "].lastName",
+                    action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
+                action.addFieldError("eml.associatedParties[" + index + "].position",
+                    action.getText("validation.required", new String[] {action.getText("eml.associatedParties.position")}));
+              }
+
+              /* email(s) are optional. But if they exist, they should be valid email addresses */
+              ValidationResult emailValidationResult;
+              if (!ap.getEmail().isEmpty()) {
+                for (int emailIndex = 0; emailIndex < ap.getEmail().size(); emailIndex++) {
+                  emailValidationResult = checkEmailValid(ap.getEmail().get(emailIndex));
+                  if (!emailValidationResult.isValid()) {
+                    action.addFieldError(
+                        "eml.associatedParties[" + index + "].email[" + emailIndex + "]",
+                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                    );
+                  }
+                }
+              }
+
+              /* phone(s) are optional. But if they exist, should match the pattern */
+              if (!ap.getPhone().isEmpty()) {
+                for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
+                  if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
+                    action.addFieldError("eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
+                  }
+                }
+              }
+
+              /* Validate the homepage URL from each contact */
+              if (!ap.getHomepage().isEmpty()) {
+                for (int homepageIndex = 0; homepageIndex < ap.getHomepage().size(); homepageIndex++) {
+                  if (formatURL(ap.getHomepage().get(homepageIndex)) == null) {
+                    action.addFieldError("eml.associatedParties[" + index + "].homepage[" + homepageIndex + "]",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.associatedParties.homepage")}));
+                  } else {
+                    ap.getHomepage().set(homepageIndex, formatURL(ap.getHomepage().get(homepageIndex)));
+                  }
+                }
+              }
+            }
+          }
+
           break;
 
         case ACKNOWLEDGEMENTS_SECTION:
@@ -792,81 +864,6 @@ public class EmlValidator extends BaseValidator {
               index++;
             }
           }
-          break;
-
-        case PARTIES_SECTION:
-          // at least one field has to have had data entered into it to qualify for validation
-          if (!isAgentsListEmpty(eml.getAssociatedParties())) {
-            for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
-              Agent ap = eml.getAssociatedParties().get(index);
-
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(ap.getFirstName()) && !exists(ap.getLastName())) {
-                action.addFieldError("eml.associatedParties[" + index + "].lastName",
-                  action.getText("validation.firstname.lastname"));
-              }
-
-              // directory and personnel id both required (if either is supplied)
-              if (!ap.getUserIds().isEmpty()) {
-                if (exists(ap.getUserIds().get(0).getDirectory()) && !exists(ap.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].identifier",
-                    action.getText("validation.personnel"));
-                } else if (!exists(ap.getUserIds().get(0).getDirectory()) && exists(ap.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].directory",
-                    action.getText("validation.directory"));
-                }
-              }
-
-              // At least one of organisation, position, or a lastName have to exist
-              if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && (ap.getPosition().isEmpty() || !exists(ap.getPosition().get(0)))) {
-                action.addActionError(action.getText("validation.lastname.organisation.position"));
-                action.addFieldError("eml.associatedParties[" + index + "].organisation", action
-                  .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
-                action.addFieldError("eml.associatedParties[" + index + "].lastName",
-                  action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
-                action.addFieldError("eml.associatedParties[" + index + "].position",
-                  action.getText("validation.required", new String[] {action.getText("eml.associatedParties.position")}));
-              }
-
-              /* email(s) are optional. But if they exist, they should be valid email addresses */
-              ValidationResult emailValidationResult;
-              if (!ap.getEmail().isEmpty()) {
-                for (int emailIndex = 0; emailIndex < ap.getEmail().size(); emailIndex++) {
-                  emailValidationResult = checkEmailValid(ap.getEmail().get(emailIndex));
-                  if (!emailValidationResult.isValid()) {
-                    action.addFieldError(
-                        "eml.associatedParties[" + index + "].email[" + emailIndex + "]",
-                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
-                    );
-                  }
-                }
-              }
-
-              /* phone(s) are optional. But if they exist, should match the pattern */
-              if (!ap.getPhone().isEmpty()) {
-                for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
-                  if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
-                    action.addFieldError("eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
-                  }
-                }
-              }
-
-              /* Validate the homepage URL from each contact */
-              if (!ap.getHomepage().isEmpty()) {
-                for (int homepageIndex = 0; homepageIndex < ap.getHomepage().size(); homepageIndex++) {
-                  if (formatURL(ap.getHomepage().get(homepageIndex)) == null) {
-                    action.addFieldError("eml.associatedParties[" + index + "].homepage[" + homepageIndex + "]",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.associatedParties.homepage")}));
-                  } else {
-                    ap.getHomepage().set(homepageIndex, formatURL(ap.getHomepage().get(homepageIndex)));
-                  }
-                }
-              }
-            }
-          }
-
           break;
 
         case PROJECT_SECTION:

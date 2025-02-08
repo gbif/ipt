@@ -33,8 +33,7 @@ public enum MetadataSection {
   COLLECTIONS_SECTION ("collections"),
   PHYSICAL_SECTION ("physical"),
   KEYWORDS_SECTION ("keywords"),
-  ADDITIONAL_SECTION ("additional"),
-  PARTIES_SECTION ("parties");
+  ADDITIONAL_SECTION ("additional");
 
   /**
    * Section name. Used for example in URL.
