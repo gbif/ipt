@@ -254,24 +254,28 @@
                             <div id="contact-items">
                                 <#list eml.contacts as contact>
                                     <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
-                                        <div class="handle columnLinks mt-4 d-flex justify-content-end">
-                                            <div>
-                                                <a id="contact-copy-${contact_index}" href="" class="metadata-action-link custom-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                                </a>
-                                                <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeContactLink?lower_case?cap_first}</span>
-                                                </a>
+                                        <div class="handle columnLinks mt-4 col-12 justify-content-end">
+                                            <div class="row g-1">
+                                                <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                                    <a id="contact-copy-${contact_index}" href="" class="metadata-action-link custom-link">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end">
+                                                    <a id="contact-removeLink-${contact_index}" class="removeAgentLink metadata-action-link custom-link" href="">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${removeContactLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
@@ -549,24 +553,28 @@
                             </div>
 
                             <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                                <div class="handle columnLinks mt-4 d-flex justify-content-end">
-                                    <div>
-                                        <a id="contact-copy" href="" class="metadata-action-link custom-link">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                        </a>
-                                        <a id="contact-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${removeContactLink?lower_case?cap_first}</span>
-                                        </a>
+                                <div class="handle columnLinks mt-4 col-12 justify-content-end">
+                                    <div class="row g-1">
+                                        <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                            <a id="contact-copy" href="" class="metadata-action-link custom-link">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end">
+                                            <a id="contact-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${removeContactLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -712,34 +720,36 @@
                             <div id="creator-items">
                                 <#list eml.creators as creator>
                                     <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
-                                        <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                            <div>
-                                                <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
-                                            </div>
-                                            <div>
-                                                <div class="btn-group">
-                                                    <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div class="handle columnLinks mt-4 col-12">
+                                            <div class="row g-1">
+                                                <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                                    <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <span>
+                                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                                </svg>
+                                                            </span>
+                                                            <span>${copyLink?lower_case?cap_first}</span>
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy-${creator_index}">
+                                                            <li><a id="creator-from-contact-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                            <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
                                                         </span>
-                                                        <span>${copyLink?lower_case?cap_first}</span>
+                                                        <span>${removeCreatorLink?lower_case?cap_first}</span>
                                                     </a>
-
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy-${creator_index}">
-                                                        <li><a id="creator-from-contact-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                        <li><a id="creator-copy-${creator_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                                    </ul>
                                                 </div>
-                                                <a id="creator-removeLink-${creator_index}" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeCreatorLink?lower_case?cap_first}</span>
-                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
@@ -1015,33 +1025,35 @@
                             </div>
 
                             <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                                <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                    <div>
-                                        <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
-                                    </div>
-                                    <div>
-                                        <div class="btn-group">
-                                            <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="handle columnLinks mt-4 col-12">
+                                    <div class="row g-1">
+                                        <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                            <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end">
+                                            <div class="btn-group">
+                                                <a id="dropdown-creator-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${copyLink?lower_case?cap_first}</span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy">
+                                                    <li><a id="creator-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                    <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                </ul>
+                                            </div>
+                                            <a id="creator-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                     </svg>
                                                 </span>
-                                                <span>${copyLink?lower_case?cap_first}</span>
+                                                <span>${removeCreatorLink?lower_case?cap_first}</span>
                                             </a>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdown-creator-copy">
-                                                <li><a id="creator-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                <li><a id="creator-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                            </ul>
                                         </div>
-                                        <a id="creator-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${removeCreatorLink?lower_case?cap_first}</span>
-                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -1187,33 +1199,35 @@
                             <div id="metadataProvider-items">
                                 <#list eml.metadataProviders as metadataProvider>
                                     <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
-                                        <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                            <div>
-                                                <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
-                                            </div>
-                                            <div>
-                                                <div class="btn-group">
-                                                    <a id="dropdown-metadataProvider-copy-${metadataProvider_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div class="handle columnLinks mt-4 col-12">
+                                            <div class="row g-1">
+                                                <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                                    <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <a id="dropdown-metadataProvider-copy-${metadataProvider_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <span>
+                                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                                </svg>
+                                                            </span>
+                                                            <span>${copyLink?lower_case?cap_first}</span>
+                                                        </a>
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-metadataProvider-copy-${metadataProvider_index}">
+                                                            <li><a id="metadataProvider-from-contact-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                            <li><a id="metadataProvider-copy-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link custom-link" href="">
                                                         <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
                                                         </span>
-                                                        <span>${copyLink?lower_case?cap_first}</span>
+                                                        <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
                                                     </a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-metadataProvider-copy-${metadataProvider_index}">
-                                                        <li><a id="metadataProvider-from-contact-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                        <li><a id="metadataProvider-copy-${metadataProvider_index}" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                                    </ul>
                                                 </div>
-                                                <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
-                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
@@ -1489,33 +1503,35 @@
                             </div>
 
                             <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                                <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                    <div>
-                                        <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
-                                    </div>
-                                    <div>
-                                        <div class="btn-group">
-                                            <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="handle columnLinks mt-4 col-12">
+                                    <div class="row g-1">
+                                        <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                            <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end">
+                                            <div class="btn-group">
+                                                <a id="dropdown-metadataProvider-copy" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>${copyLink?lower_case?cap_first}</span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="metadataProvider-creator-copy">
+                                                    <li><a id="metadataProvider-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
+                                                    <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
+                                                </ul>
+                                            </div>
+                                            <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
                                                 <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                     </svg>
                                                 </span>
-                                                <span>${copyLink?lower_case?cap_first}</span>
+                                                <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
                                             </a>
-                                            <ul class="dropdown-menu" aria-labelledby="metadataProvider-creator-copy">
-                                                <li><a id="metadataProvider-from-contact" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromContact"/></a></li>
-                                                <li><a id="metadataProvider-copy" class="dropdown-item menu-link w-100 dropdown-button fs-smaller-2" href="#"><@s.text name="eml.metadataAgent.fromAnother"/></a></li>
-                                            </ul>
                                         </div>
-                                        <a id="metadataProvider-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
-                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -1790,29 +1806,31 @@
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
                                     <div id="associatedParty-item-${item_index}" class="item row g-3 pb-4 border-bottom">
-                                        <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                            <div>
-                                                <#if item.role?? && (item.role == 'originator' || item.role == 'metadataProvider')>
-                                                <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
-                                                </#if>
-                                            </div>
-                                            <div>
-                                                <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link custom-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                                </a>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeLink?lower_case?cap_first}</span>
-                                                </a>
+                                        <div class="handle columnLinks mt-4 col-12">
+                                            <div class="row g-1">
+                                                <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                                    <#if item.role?? && (item.role == 'originator' || item.role == 'metadataProvider')>
+                                                    <span class="contact-citation-banner"><@s.text name="eml.contact.citation"/></span>
+                                                    </#if>
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end">
+                                                    <a id="associatedParty-copy-${item_index}" href="" class="metadata-action-link custom-link">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                    <a id="associatedParty-removeLink-${item_index}" class="removeAgentLink metadata-action-link custom-link" href="">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>${removeLink?lower_case?cap_first}</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
@@ -2093,27 +2111,29 @@
                             </div>
 
                             <div id="baseItem-associatedParty" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                                <div class="handle columnLinks mt-4 d-flex justify-content-between">
-                                    <div>
-                                        <span class="contact-citation-banner" style="display: none;"><@s.text name="eml.contact.citation"/></span>
-                                    </div>
-                                    <div>
-                                        <a id="associatedParty-copy" href="" class="metadata-action-link custom-link">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                        </a>
-                                        <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span>${removeLink?lower_case?cap_first}</span>
-                                        </a>
+                                <div class="handle columnLinks mt-4 col-12">
+                                    <div class="row g-1">
+                                        <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
+                                            <span class="contact-citation-banner" style="display: none;"><@s.text name="eml.contact.citation"/></span>
+                                        </div>
+                                        <div class="col-md-6 d-flex justify-content-end">
+                                            <a id="associatedParty-copy" href="" class="metadata-action-link custom-link">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${copyFromAnotherLink?lower_case?cap_first}</span>
+                                            </a>
+                                            <a id="associatedParty-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>${removeLink?lower_case?cap_first}</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
