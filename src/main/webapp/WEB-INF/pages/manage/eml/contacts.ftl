@@ -360,16 +360,16 @@
                                                 </#list>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <@input name="eml.contacts[${contact_index}].address.city" i18nkey="eml.contact.address.city" />
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <@input name="eml.contacts[${contact_index}].address.province" i18nkey="eml.contact.address.province" />
                                         </div>
-                                        <div class="countryList col-md-3">
+                                        <div class="countryList col-md-6 col-lg-3">
                                             <@select name="eml.contacts[${contact_index}].address.country" help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.contacts[contact_index].address.country!}"/>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6 col-lg-2">
                                             <@input name="eml.contacts[${contact_index}].address.postalCode" i18nkey="eml.contact.address.postalCode" />
                                         </div>
                                         <div class="col-12">
@@ -615,16 +615,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6 col-lg-4">
                                     <@input name="eml.contact.address.city" i18nkey="eml.contact.address.city" />
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6 col-lg-3">
                                     <@input name="eml.contact.address.province" i18nkey="eml.contact.address.province" />
                                 </div>
-                                <div class="countryList col-md-3">
+                                <div class="countryList col-md-6 col-lg-3">
                                     <@select name="country" options=countries help="i18n" i18nkey="eml.contact.address.country" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6 col-lg-2">
                                     <@input name="eml.contact.address.postalCode" i18nkey="eml.contact.address.postalCode" />
                                 </div>
                                 <div class="col-12">
@@ -828,16 +828,16 @@
                                                 </#list>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <@input name="eml.creators[${creator_index}].address.city" i18nkey="eml.resourceCreator.address.city" />
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
                                         </div>
-                                        <div class="countryList col-md-3">
+                                        <div class="countryList col-md-6 col-lg-3">
                                             <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6 col-lg-2">
                                             <@input name="eml.creators[${creator_index}].address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                                         </div>
                                         <div class="col-12">
@@ -1090,16 +1090,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6 col-lg-4">
                                     <@input name="eml.creator.address.city" i18nkey="eml.resourceCreator.address.city" />
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6 col-lg-3">
                                     <@input name="eml.creator.address.province" i18nkey="eml.resourceCreator.address.province" />
                                 </div>
-                                <div class="countryList col-md-3">
+                                <div class="countryList col-md-6 col-lg-3">
                                     <@select name="country" options=countries help="i18n" i18nkey="eml.resourceCreator.address.country" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6 col-lg-2">
                                     <@input name="eml.creator.address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
                                 </div>
                                 <div class="col-12">
@@ -1302,16 +1302,16 @@
                                                 </#list>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" i18nkey="eml.metadataProvider.address.city" />
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" i18nkey="eml.metadataProvider.address.province" />
                                         </div>
-                                        <div class="countryList col-md-3">
+                                        <div class="countryList col-md-6 col-lg-3">
                                             <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6 col-lg-2">
                                             <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                                         </div>
                                         <div class="col-12">
@@ -1564,16 +1564,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6 col-lg-4">
                                     <@input name="eml.metadataProvider.address.city" i18nkey="eml.metadataProvider.address.city" />
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6 col-lg-3">
                                     <@input name="eml.metadataProvider.address.province" i18nkey="eml.metadataProvider.address.province" />
                                 </div>
-                                <div class="countryList col-md-3">
+                                <div class="countryList col-md-6 col-lg-3">
                                     <@select name="country" options=countries help="i18n" i18nkey="eml.metadataProvider.address.country" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6 col-lg-2">
                                     <@input name="eml.metadataProvider.address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
                                 </div>
                                 <div class="col-12">
@@ -1904,16 +1904,16 @@
                                                 </#list>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
                                         </div>
-                                        <div class="countryList col-md-3">
+                                        <div class="countryList col-md-6 col-lg-3">
                                             <@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-6 col-lg-2">
                                             <@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
                                         </div>
                                         <div class="col-12">
@@ -2165,16 +2165,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6 col-lg-4">
                                     <@input name="address.city" i18nkey="eml.associatedParties.address.city" />
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6 col-lg-3">
                                     <@input name="address.province" i18nkey="eml.associatedParties.address.province" />
                                 </div>
-                                <div class="countryList col-md-3">
+                                <div class="countryList col-md-6 col-lg-3">
                                     <@select name="country" options=countries help="i18n" i18nkey="eml.associatedParties.address.country" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6 col-lg-2">
                                     <@input name="address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
                                 </div>
                                 <div class="col-12">
