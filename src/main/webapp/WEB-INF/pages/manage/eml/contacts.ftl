@@ -336,17 +336,19 @@
                                                 <#list eml.contacts[contact_index].position as position>
                                                     <div id="contact-${contact_index}-position-${position_index}" class="position-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.contacts[${contact_index}].position[${position_index}]" i18nkey="eml.contact.position" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].position[${position_index}]" i18nkey="eml.contact.position" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -371,17 +373,19 @@
                                                 <#list eml.contacts[contact_index].address.address as address>
                                                     <div id="contact-${contact_index}-address-${address_index}" class="address-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.contacts[${contact_index}].address.address[${address_index}]" i18nkey="eml.contact.address.address" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].address.address[${address_index}]" i18nkey="eml.contact.address.address" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -418,17 +422,19 @@
                                                 <#list eml.contacts[contact_index].phone as phone>
                                                     <div id="contact-${contact_index}-phone-${phone_index}" class="phone-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.contacts[${contact_index}].phone[${phone_index}]" i18nkey="eml.contact.phone" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="contact-phone-remove-${contact_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].phone[${phone_index}]" i18nkey="eml.contact.phone" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-phone-remove-${contact_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -453,17 +459,19 @@
                                                 <#list eml.contacts[contact_index].email as email>
                                                     <div id="contact-${contact_index}-email-${email_index}" class="email-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.contacts[${contact_index}].email[${email_index}]" i18nkey="eml.contact.email" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="contact-email-remove-${contact_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].email[${email_index}]" i18nkey="eml.contact.email" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-email-remove-${contact_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -488,17 +496,19 @@
                                                 <#list eml.contacts[contact_index].homepage as homepage>
                                                     <div id="contact-${contact_index}-homepage-${homepage_index}" class="homepage-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.contacts[${contact_index}].homepage[${homepage_index}]" i18nkey="eml.contact.homepage" type="url" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="contact-homepage-remove-${contact_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].homepage[${homepage_index}]" i18nkey="eml.contact.homepage" type="url" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-homepage-remove-${contact_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -535,18 +545,19 @@
                                                             <div class="col-md-4">
                                                                 <@select name="eml.contacts[${contact_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
-                                                            </div>
-
-                                                            <div class="col-md-4 mb-auto py-1">
-                                                                <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-4 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -740,11 +751,11 @@
                                             <div>
                                                 <div class="btn-group">
                                                     <a id="dropdown-creator-copy-${creator_index}" href="#" class="metadata-action-link dropdown-toggle custom-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                        </svg>
-                                                    </span>
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
+                                                            </svg>
+                                                        </span>
                                                         <span>${copyLink?lower_case?cap_first}</span>
                                                     </a>
 
@@ -793,17 +804,19 @@
                                                 <#list eml.creators[creator_index].position as position>
                                                     <div id="creator-${creator_index}-position-${position_index}" class="position-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.creators[${creator_index}].position[${position_index}]" i18nkey="eml.resourceCreator.position" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].position[${position_index}]" i18nkey="eml.resourceCreator.position" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -828,17 +841,19 @@
                                                 <#list eml.creators[creator_index].address.address as address>
                                                     <div id="creator-${creator_index}-address-${address_index}" class="address-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.creators[${creator_index}].address.address[${address_index}]" i18nkey="eml.creator.address.address" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].address.address[${address_index}]" i18nkey="eml.creator.address.address" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -875,17 +890,19 @@
                                                 <#list eml.creators[creator_index].phone as phone>
                                                     <div id="creator-${creator_index}-phone-${phone_index}" class="phone-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.creators[${creator_index}].phone[${phone_index}]" i18nkey="eml.creator.phone" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].phone[${phone_index}]" i18nkey="eml.creator.phone" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -910,17 +927,19 @@
                                                 <#list eml.creators[creator_index].email as email>
                                                     <div id="creator-${creator_index}-email-${email_index}" class="email-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.creators[${creator_index}].email[${email_index}]" i18nkey="eml.resourceCreator.email" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="creator-email-remove-${creator_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].email[${email_index}]" i18nkey="eml.resourceCreator.email" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-email-remove-${creator_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -945,10 +964,10 @@
                                                 <#list eml.creators[creator_index].homepage as homepage>
                                                     <div id="creator-${creator_index}-homepage-${homepage_index}" class="homepage-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-6 d-flex">
                                                                 <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" i18nkey="eml.resourceCreator.homepage" withLabel=false />
                                                             </div>
-                                                            <div class="col-md-6 mb-auto py-1">
+                                                            <div class="mb-auto py-1 ps-1">
                                                                 <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
                                                                     <span>
                                                                         <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
@@ -992,18 +1011,19 @@
                                                             <div class="col-md-4">
                                                                 <@select name="eml.creators[${creator_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
-                                                            </div>
-
-                                                            <div class="col-md-4 mb-auto py-1">
-                                                                <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-4 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1258,17 +1278,19 @@
                                                 <#list eml.metadataProviders[metadataProvider_index].position as position>
                                                     <div id="metadataProvider-${metadataProvider_index}-position-${position_index}" class="position-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].position[${position_index}]" i18nkey="eml.metadataProvider.position" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].position[${position_index}]" i18nkey="eml.metadataProvider.position" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1293,17 +1315,19 @@
                                                 <#list eml.metadataProviders[metadataProvider_index].address.address as address>
                                                     <div id="metadataProvider-${metadataProvider_index}-address-${address_index}" class="address-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[${address_index}]" i18nkey="eml.metadataProvider.address" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[${address_index}]" i18nkey="eml.metadataProvider.address" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1340,17 +1364,19 @@
                                                 <#list eml.metadataProviders[metadataProvider_index].phone as phone>
                                                     <div id="metadataProvider-${metadataProvider_index}-phone-${phone_index}" class="phone-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].phone[${phone_index}]" i18nkey="eml.metadataProvider.phone" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].phone[${phone_index}]" i18nkey="eml.metadataProvider.phone" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1375,17 +1401,19 @@
                                                 <#list eml.metadataProviders[metadataProvider_index].email as email>
                                                     <div id="metadataProvider-${metadataProvider_index}-email-${email_index}" class="email-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].email[${email_index}]" i18nkey="eml.metadataProvider.email" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].email[${email_index}]" i18nkey="eml.metadataProvider.email" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1410,17 +1438,19 @@
                                                 <#list eml.metadataProviders[metadataProvider_index].homepage as homepage>
                                                     <div id="metadataProvider-${metadataProvider_index}-homepage-${homepage_index}" class="homepage-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[${homepage_index}]" i18nkey="eml.metadataProvider.homepage" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[${homepage_index}]" i18nkey="eml.metadataProvider.homepage" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1658,85 +1688,95 @@
 
                             <div id="baseItem-address" class="address-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
-                                        <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
-                                    </div>
-                                    <div class="col-md-6 mb-auto py-1">
-                                        <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-6 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="baseItem-position" class="position-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
-                                        <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
-                                    </div>
-                                    <div class="col-md-6 mb-auto py-1">
-                                        <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-6 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="baseItem-phone" class="phone-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
-                                        <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" value="" withLabel=false />
-                                    </div>
-                                    <div class="col-md-6 mb-auto py-1">
-                                        <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-6 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" value="" withLabel=false />
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="baseItem-email" class="email-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
-                                        <@input name="baseItem-email-input" i18nkey="eml.contact.email" value="" withLabel=false />
-                                    </div>
-                                    <div class="col-md-6 mb-auto py-1">
-                                        <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-6 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-email-input" i18nkey="eml.contact.email" value="" withLabel=false />
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="baseItem-homepage" class="homepage-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
-                                        <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" value="" withLabel=false />
-                                    </div>
-                                    <div class="col-md-6 mb-auto py-1">
-                                        <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-6 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" value="" withLabel=false />
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1746,17 +1786,19 @@
                                     <div class="col-md-4">
                                         <@select name="baseItem-directory-select" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="" withLabel=false/>
                                     </div>
-                                    <div class="col-md-4">
-                                        <@input name="baseItem-identifier-input" help="i18n" i18nkey="eml.contact.identifier" value="" withLabel=false placeholder="${inputIdentifierPlaceholder}"/>
-                                    </div>
-                                    <div class="col-md-4 mb-auto py-1">
-                                        <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
+                                    <div class="col-md-4 d-flex">
+                                        <div class="flex-grow-1">
+                                            <@input name="baseItem-identifier-input" help="i18n" i18nkey="eml.contact.identifier" value="" withLabel=false placeholder="${inputIdentifierPlaceholder}"/>
+                                        </div>
+                                        <div class="mb-auto py-1 ps-1">
+                                            <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1838,17 +1880,19 @@
                                                 <#list eml.associatedParties[item_index].position as position>
                                                     <div id="associatedParty-${item_index}-position-${position_index}" class="position-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.associatedParties[${item_index}].position[${position_index}]" i18nkey="eml.associatedParties.position" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].position[${position_index}]" i18nkey="eml.associatedParties.position" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1873,17 +1917,19 @@
                                                 <#list eml.associatedParties[item_index].address.address as address>
                                                     <div id="associatedParty-${item_index}-address-${address_index}" class="address-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.associatedParties[${item_index}].address.address[${address_index}]" i18nkey="eml.associatedParties.address.address" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].address.address[${address_index}]" i18nkey="eml.associatedParties.address.address" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1920,17 +1966,19 @@
                                                 <#list eml.associatedParties[item_index].phone as phone>
                                                     <div id="associatedParty-${item_index}-phone-${phone_index}" class="phone-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.associatedParties[${item_index}].phone[${phone_index}]" i18nkey="eml.associatedParties.phone" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].phone[${phone_index}]" i18nkey="eml.associatedParties.phone" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1955,17 +2003,19 @@
                                                 <#list eml.associatedParties[item_index].email as email>
                                                     <div id="associatedParty-${item_index}-email-${email_index}" class="email-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.associatedParties[${item_index}].email[${email_index}]" i18nkey="eml.associatedParties.email" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].email[${email_index}]" i18nkey="eml.associatedParties.email" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1990,17 +2040,19 @@
                                                 <#list eml.associatedParties[item_index].homepage as homepage>
                                                     <div id="associatedParty-${item_index}-homepage-${homepage_index}" class="homepage-item">
                                                         <div class="row g-2 mt-0">
-                                                            <div class="col-md-6">
-                                                                <@input name="eml.associatedParties[${item_index}].homepage[${homepage_index}]" i18nkey="eml.associatedParties.homepage" type="url" withLabel=false />
-                                                            </div>
-                                                            <div class="col-md-6 mb-auto py-1">
-                                                                <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-6 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].homepage[${homepage_index}]" i18nkey="eml.associatedParties.homepage" type="url" withLabel=false />
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2037,18 +2089,19 @@
                                                             <div class="col-md-4">
                                                                 <@select name="eml.associatedParties[${item_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.associatedParties.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
-                                                            </div>
-
-                                                            <div class="col-md-4 mb-auto py-1">
-                                                                <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
+                                                            <div class="col-md-4 d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                </div>
+                                                                <div class="mb-auto py-1 ps-1">
+                                                                    <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
+                                                                        <span>
+                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2236,10 +2289,10 @@
 
                             <div id="baseItem-address" class="address-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex">
                                         <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
                                     </div>
-                                    <div class="col-md-6 mb-auto py-1">
+                                    <div class="mb-auto py-1 ps-1">
                                         <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
@@ -2253,10 +2306,10 @@
 
                             <div id="baseItem-position" class="position-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex">
                                         <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
                                     </div>
-                                    <div class="col-md-6 mb-auto py-1">
+                                    <div class="mb-auto py-1 ps-1">
                                         <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
@@ -2270,10 +2323,10 @@
 
                             <div id="baseItem-phone" class="phone-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex">
                                         <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" value="" withLabel=false />
                                     </div>
-                                    <div class="col-md-6 mb-auto py-1">
+                                    <div class="mb-auto py-1 ps-1">
                                         <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
@@ -2287,10 +2340,10 @@
 
                             <div id="baseItem-email" class="email-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex">
                                         <@input name="baseItem-email-input" i18nkey="eml.contact.email" value="" withLabel=false />
                                     </div>
-                                    <div class="col-md-6 mb-auto py-1">
+                                    <div class="mb-auto py-1 ps-1">
                                         <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
@@ -2304,10 +2357,10 @@
 
                             <div id="baseItem-homepage" class="homepage-item" style="display: none;">
                                 <div class="row g-2 mt-0">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex">
                                         <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" value="" withLabel=false />
                                     </div>
-                                    <div class="col-md-6 mb-auto py-1">
+                                    <div class="mb-auto py-1 ps-1">
                                         <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
