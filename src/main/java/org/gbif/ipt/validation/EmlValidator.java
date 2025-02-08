@@ -353,6 +353,18 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
               }
 
+              /* address(es) are optional. But if they exist, they should not be empty */
+              if (c.getAddress() != null
+                  && c.getAddress().getAddress() != null
+                  && !c.getAddress().getAddress().isEmpty()) {
+                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
+                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
+                    action.addFieldError("eml.contacts[" + index + "].address.address[" + addressIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                  }
+                }
+              }
+
               /* position(s) are optional. But if they exist, they should not be empty */
               if (!c.getPosition().isEmpty()) {
                 for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
@@ -438,6 +450,18 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
               }
 
+              /* address(es) are optional. But if they exist, they should not be empty */
+              if (c.getAddress() != null
+                  && c.getAddress().getAddress() != null
+                  && !c.getAddress().getAddress().isEmpty()) {
+                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
+                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
+                    action.addFieldError("eml.creators[" + index + "].address.address[" + addressIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                  }
+                }
+              }
+
               /* position(s) are optional. But if they exist, they should not be empty */
               if (!c.getPosition().isEmpty()) {
                 for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
@@ -520,6 +544,18 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
               }
 
+              /* address(es) are optional. But if they exist, they should not be empty */
+              if (c.getAddress() != null
+                  && c.getAddress().getAddress() != null
+                  && !c.getAddress().getAddress().isEmpty()) {
+                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
+                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
+                    action.addFieldError("eml.metadataProviders[" + index + "].address.address[" + addressIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                  }
+                }
+              }
+
               /* position(s) are optional. But if they exist, they should not be empty */
               if (!c.getPosition().isEmpty()) {
                 for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
@@ -600,6 +636,18 @@ public class EmlValidator extends BaseValidator {
                     action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
                 action.addFieldError("eml.associatedParties[" + index + "].position",
                     action.getText("validation.required", new String[] {action.getText("eml.associatedParties.position")}));
+              }
+
+              /* address(es) are optional. But if they exist, they should not be empty */
+              if (ap.getAddress() != null
+                  && ap.getAddress().getAddress() != null
+                  && !ap.getAddress().getAddress().isEmpty()) {
+                for (int addressIndex = 0; addressIndex < ap.getAddress().getAddress().size(); addressIndex++) {
+                  if (StringUtils.isBlank(ap.getAddress().getAddress().get(addressIndex))) {
+                    action.addFieldError("eml.associatedParties[" + index + "].address.address[" + addressIndex + "]",
+                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                  }
+                }
               }
 
               /* position(s) are optional. But if they exist, they should not be empty */
