@@ -144,11 +144,14 @@
         function createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, value) {
             var newItem = $('#baseItem-' + subEntityName).clone();
             newItem.hide();
-            newItem.appendTo('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's');
+
+            var subEntityNamePlural = subEntityName === "address" ? subEntityName : subEntityName + 's';
+
+            newItem.appendTo('#' + entityName + '-' + entityIndex + '-' + subEntityNamePlural);
             newItem.slideDown('slow');
 
             // set correct indexes, names, ids
-            var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + subEntityName + "-item").length;
+            var numberOfSubEntities = $("#" + entityName + "-" + entityIndex + "-" + subEntityNamePlural + " ." + subEntityName + "-item").length;
             var numberOfSubEntitiesInt = parseInt(numberOfSubEntities);
             var subEntityIndex = numberOfSubEntities === 0 ? 0 : numberOfSubEntitiesInt - 1;
 
@@ -314,7 +317,8 @@
         }
 
         function removeOrCleanAllSubEntitiesFromAgentDirectly(entityName, subEntityName, entityIndex) {
-            $('#' + entityName + '-' + entityIndex + '-' + subEntityName + 's').children('.' + subEntityName + '-item').remove();
+            var subEntityNamePlural = subEntityName === 'address' ? subEntityName : subEntityName + 's';
+            $('#' + entityName + '-' + entityIndex + '-' + subEntityNamePlural).children('.' + subEntityName + '-item').remove();
         }
 
         function removeIdentifierFromAgent(event) {
@@ -1144,9 +1148,9 @@
             $("#" + itemId + " [id$='phone']").val("${primaryContact.phone!?replace("\"", "&quot;")}");
             $("#" + itemId + " [id$='email']").val("${primaryContact.email!?replace("\"", "&quot;")}");
             $("#" + itemId + " [id$='homepage']").val("${primaryContact.homepage!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='directory']").val("${primaryContact.userIds[0].directory!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='directory']").val("${(primaryContact.userIds[0].directory)!?replace("\"", "&quot;")}");
             $("#" + itemId + " [id$='directory']").trigger('change');
-            $("#" + itemId + " [id$='identifier']").val("${primaryContact.userIds[0].identifier!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='identifier']").val("${(primaryContact.userIds[0].identifier)!?replace("\"", "&quot;")}");
         }
 
 });
