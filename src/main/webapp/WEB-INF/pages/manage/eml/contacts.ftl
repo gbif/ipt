@@ -511,7 +511,6 @@
                                                     </a>
                                                 </div>
                                                 <#list contact.userIds as userId>
-                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="contact-${contact_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
@@ -533,7 +532,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </#if>
                                                 </#list>
                                             </div>
                                         </div>
@@ -985,7 +983,6 @@
                                                     </a>
                                                 </div>
                                                 <#list creator.userIds as userId>
-                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="creator-${creator_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
@@ -1007,7 +1004,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </#if>
                                                 </#list>
                                             </div>
                                         </div>
@@ -1465,7 +1461,6 @@
                                                     </a>
                                                 </div>
                                                 <#list metadataProvider.userIds as userId>
-                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="metadataProvider-${metadataProvider_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
@@ -1485,7 +1480,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </#if>
                                                 </#list>
                                             </div>
                                         </div>
@@ -2071,7 +2065,6 @@
                                                     </a>
                                                 </div>
                                                 <#list item.userIds as userId>
-                                                    <#if userId.directory?has_content && userId.identifier?has_content>
                                                     <div id="associatedParty-${item_index}-identifier-${userId_index}" class="identifier-item">
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-4">
@@ -2093,7 +2086,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </#if>
                                                 </#list>
                                             </div>
                                         </div>

@@ -903,7 +903,6 @@ public class MetadataAction extends ManagerBaseAction {
       }
       if (firstContact.getUserIds().isEmpty()) {
         List<UserId> userIds = new ArrayList<>();
-        userIds.add(new UserId());
         firstContact.setUserIds(userIds);
       }
       setPrimaryContact(firstContact);

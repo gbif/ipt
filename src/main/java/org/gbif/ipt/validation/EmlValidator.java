@@ -47,6 +47,7 @@ import org.gbif.metadata.eml.ipt.model.UserId;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -333,12 +334,21 @@ public class EmlValidator extends BaseValidator {
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
-                if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.contacts[" + index + "].userIds[0].identifier",
-                      action.getText("validation.personnel"));
-                } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.contacts[" + index + "].userIds[0].directory",
-                      action.getText("validation.directory"));
+                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
+                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.personnel"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.directory"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.identifier")}));
+                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.directory")}));
+                  }
                 }
               }
 
@@ -430,12 +440,21 @@ public class EmlValidator extends BaseValidator {
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
-                if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.creators[" + index + "].userIds[0].identifier",
-                      action.getText("validation.personnel"));
-                } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.creators[" + index + "].userIds[0].directory",
-                      action.getText("validation.directory"));
+                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
+                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.personnel"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.directory"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.identifier")}));
+                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.directory")}));
+                  }
                 }
               }
 
@@ -524,12 +543,21 @@ public class EmlValidator extends BaseValidator {
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
-                if (exists(c.getUserIds().get(0).getDirectory()) && !exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.metadataProviders[" + index + "].userIds[0].identifier",
-                      action.getText("validation.personnel"));
-                } else if (!exists(c.getUserIds().get(0).getDirectory()) && exists(c.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.metadataProviders[" + index + "].userIds[0].directory",
-                      action.getText("validation.directory"));
+                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
+                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.personnel"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.directory"));
+                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.identifier")}));
+                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.contact.directory")}));
+                  }
                 }
               }
 
@@ -618,12 +646,21 @@ public class EmlValidator extends BaseValidator {
 
               // directory and personnel id both required (if either is supplied)
               if (!ap.getUserIds().isEmpty()) {
-                if (exists(ap.getUserIds().get(0).getDirectory()) && !exists(ap.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].identifier",
-                      action.getText("validation.personnel"));
-                } else if (!exists(ap.getUserIds().get(0).getDirectory()) && exists(ap.getUserIds().get(0).getIdentifier())) {
-                  action.addFieldError("eml.associatedParties[" + index + "].userIds[0].directory",
-                      action.getText("validation.directory"));
+                for (int identifierIndex = 0; identifierIndex < ap.getUserIds().size(); identifierIndex++) {
+                  if (exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.personnel"));
+                  } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.directory"));
+                  } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.associatedParties.identifier")}));
+                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
+                        action.getText("validation.invalid",
+                            new String[] {action.getText("eml.associatedParties.directory")}));
+                  }
                 }
               }
 
@@ -1705,30 +1742,30 @@ public class EmlValidator extends BaseValidator {
         province = address.getProvince();
       }
 
-      // only one userId supported
-      String directory = null;
-      String identifier = null;
+      List<String> directories = new ArrayList<>();
+      List<String> identifiers = new ArrayList<>();
       List<UserId> userIds = agent.getUserIds();
       if (!userIds.isEmpty()) {
-        UserId userId = userIds.get(0);
-        directory = userId.getDirectory();
-        identifier = userId.getIdentifier();
+        for (UserId userId : userIds) {
+          directories.add(userId.getDirectory());
+          identifiers.add(userId.getIdentifier());
+        }
       }
 
       return (StringUtils.isBlank(city) &&
-              CollectionUtils.isEmpty(street) &&
-              StringUtils.isBlank(country) &&
-              StringUtils.isBlank(code) &&
-              StringUtils.isBlank(province) &&
-              StringUtils.isBlank(first) &&
-              StringUtils.isBlank(last) &&
-              CollectionUtils.isEmpty(email) &&
-              CollectionUtils.isEmpty(home) &&
-              StringUtils.isBlank(org) &&
-              CollectionUtils.isEmpty(phone) &&
-              CollectionUtils.isEmpty(position) &&
-              StringUtils.isBlank(directory) &&
-              StringUtils.isBlank(identifier));
+          CollectionUtils.isEmpty(street) &&
+          StringUtils.isBlank(country) &&
+          StringUtils.isBlank(code) &&
+          StringUtils.isBlank(province) &&
+          StringUtils.isBlank(first) &&
+          StringUtils.isBlank(last) &&
+          CollectionUtils.isEmpty(email) &&
+          CollectionUtils.isEmpty(home) &&
+          StringUtils.isBlank(org) &&
+          CollectionUtils.isEmpty(phone) &&
+          CollectionUtils.isEmpty(position) &&
+          CollectionUtils.isEmpty(directories) &&
+          CollectionUtils.isEmpty(identifiers));
     }
     return true;
   }
