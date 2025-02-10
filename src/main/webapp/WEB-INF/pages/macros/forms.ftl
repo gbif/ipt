@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1>
+    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1 placeholder="">
         <div>
             <#if withLabel>
                 <div class="d-flex text-smaller">
@@ -13,6 +13,7 @@
                     type="${type}"
                     id="${name}"
                     name="${name}"
+                    placeholder="${placeholder}"
                     <#if (tabindex>0)>tabindex="${tabindex}" </#if>
                     value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
                     <#if (size>0)>size="${size}"</#if>
@@ -75,12 +76,14 @@
         </div>
     </#macro>
 
-    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false tabindex=-1 compareValues=false>
+    <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false tabindex=-1 compareValues=false withLabel=true>
         <div>
+            <#if withLabel>
             <div class="d-flex text-smaller">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
             </div>
+            </#if>
             <select name="${name}" id="${name}" size="${size}" class="form-select" <#if (tabindex>0)>tabindex="${tabindex}" </#if> <#if disabled>readonly="readonly"</#if> <#if requiredField>required</#if>>
                 <#if includeEmpty>
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
@@ -135,8 +138,8 @@
 
     <#macro label i18nkey help="" requiredField=false>
         <div>
-            <label>
-                <@s.text name="${i18nkey}"/><#if requiredField>&#42;</#if>
+            <label class="form-label">
+                <@s.text name="${i18nkey}"/> <#if requiredField><span class="text-gbif-danger">&#42;</span></#if>
             </label>
             <#nested>
         </div>

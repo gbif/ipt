@@ -1,4 +1,4 @@
-FROM maven:3.8-jdk-8 AS builder
+FROM maven:3.8.8-eclipse-temurin-11 AS builder
 
 ARG GIT_REVISION=docker
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 09:58+0000\n"
-"PO-Revision-Date: 2024-02-19 10:36\n"
+"POT-Creation-Date: 2024-10-31 09:17+0000\n"
+"PO-Revision-Date: 2025-01-22 12:44\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -34,19 +34,19 @@ msgstr "介紹"
 #: en/modules/ROOT/pages/checklist-data.adoc:10
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
-msgstr ""
+msgstr "最終，您的資料需要使用達爾文核心標準（DwC）的術語名稱作為欄位名稱以轉換為表格結構。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr ""
+msgstr "您可以嘗試將資料放入 <<Templates,Excel 模板>> 中，該模板包含所有 <<Required DwC Fields,必填的達爾文核心集欄位>> 和 <<Recommended DwC Fields,建議填寫的達爾文核心集欄位>>。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr ""
+msgstr "或者，如果您的資料儲存在 xref:database-connection.adoc[支援的資料庫]中，您可以使用 DwC 欄位名稱撰寫 SQL 表格（視圖）。請務必包含所有 <<Required DwC Fields,必填的達爾文核心集欄位>>，並盡可能多地新增 <<Recommended DwC Fields,建議填寫的達爾文核心集欄位>>。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -54,7 +54,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr ""
+msgstr "模板"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -91,7 +91,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr ""
+msgstr "示範資料集"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -185,7 +185,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
-msgid "http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)]"
+msgid "https://ipt.vertnet.org/archive.do?r=cumv_amph[CUMV Amphibian Collection (Arctos)] (also registered on GBIF here: https://doi.org/10.15468/emivh3)"
 msgstr ""
 
 #. type: Title ====

@@ -229,6 +229,8 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMenu="manage"/>

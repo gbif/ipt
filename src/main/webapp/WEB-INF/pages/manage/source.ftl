@@ -14,6 +14,14 @@
             cancelAnswer: "<@s.text name="basic.no"/>",
             buttonType: "danger"
         });
+        $('#analyze').jConfirmAction({
+            titleQuestion: "<@s.text name="basic.confirm"/>",
+            question: "<@s.text name="manage.source.analyze.confirmation.message"/>",
+            yesAnswer: "<@s.text name="basic.yes"/>",
+            cancelAnswer: "<@s.text name="basic.no"/>",
+            buttonType: "primary",
+            processing: true
+        });
         $("#peekBtn").click(function (e) {
             e.preventDefault();
             displayProcessing();
@@ -36,7 +44,6 @@
         });
 
         $("#save").on("click", displayProcessing);
-        $("#analyze").on("click", displayProcessing);
 
         $(document.body).on('click', '.helpOptionLink', function (e) {
             e.preventDefault();
@@ -221,6 +228,12 @@
                                                     <td>${(source.lastModified?datetime?string.long_medium)!}</td>
                                                 </tr>
                                             </#if>
+                                            <#if (logExists)>
+                                                <tr>
+                                                    <th><@s.text name='manage.source.source.log'/></th>
+                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
+                                                </tr>
+                                            </#if>
                                         <#elseif source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE'>
                                             <tr>
                                                 <th><@s.text name='manage.source.file'/></th>
@@ -251,7 +264,7 @@
                                             <#if (logExists)>
                                                 <tr>
                                                     <th><@s.text name='manage.source.source.log'/></th>
-                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.download'/></a></td>
+                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
                                                 </tr>
                                             </#if>
                                         </#if>

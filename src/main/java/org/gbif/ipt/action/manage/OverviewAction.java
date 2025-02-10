@@ -38,6 +38,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -81,6 +82,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,10 +99,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -112,6 +115,8 @@ import org.xml.sax.SAXException;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
+import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
@@ -149,6 +154,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Date now;
   private File emlFile;
   private File datapackageMetadataFile;
+  private String datapackageMetadataRaw;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
@@ -1159,6 +1165,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // refresh archive report
       updateReport();
 
+      try {
+        if (COL_DP.equals(resource.getCoreType())) {
+          File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+          datapackageMetadataRaw = org.apache.commons.io.FileUtils.readFileToString(metadataFile, StandardCharsets.UTF_8);
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to read ColDP metadata", e);
+      }
+
       // get potential new networks
       try {
         allNetworks = registryManager.getNetworksBrief();
@@ -1252,6 +1267,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       usableSpace = cfg.getDataDir().getDataDirUsableSpace();
       freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
+
+      if (resource.isPublished()
+          && resource.getEml() != null
+          && resource.getEml().getProject() != null
+          && resource.getEml().getProject().getTitle() != null
+          && resource.getEml().getProject().getPersonnel().isEmpty()) {
+        addActionWarning(getText("validation.personnel.now.required"));
+      }
     }
   }
 
@@ -1515,17 +1538,40 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       if (resource.isDataPackage()) {
         if (CAMTRAP_DP.equals(resource.getCoreType())) {
-          CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+            CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
 
-          Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
-              .map(license -> (CamtrapLicense) license)
-              .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
-              .findFirst();
+            Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
+                .map(license -> (CamtrapLicense) license)
+                .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
+                .findFirst();
 
-          return dataLicenceWrapped
-              .map(FrictionlessLicense::getName)
-              .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
-              .orElse(false);
+            return dataLicenceWrapped
+                .map(FrictionlessLicense::getName)
+                .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+                .orElse(false);
+          } else {
+            LOG.error("Wrong metadata type for Camtrap DP resource {}: {}",
+                resource.getShortname(),
+                resource.getDataPackageMetadata().getClass().getSimpleName());
+            return false;
+          }
+        } else if (COL_DP.equals(resource.getCoreType())) {
+          if (resource.getDataPackageMetadata() instanceof ColMetadata) {
+            ColMetadata metadata = (ColMetadata) resource.getDataPackageMetadata();
+
+            Optional<String> license = Optional.ofNullable(metadata.getLicense());
+
+            return license
+                .map(COLDP_LICENSES_CODES_TO_GBIF::get)
+                .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
+                .orElse(false);
+          } else {
+            LOG.error("Wrong metadata type for ColDP resource {}: {}",
+                resource.getShortname(),
+                resource.getDataPackageMetadata().getClass().getSimpleName());
+            return false;
+          }
         }
       } else {
         File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
@@ -1652,7 +1698,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error("Failed to replace EML", e);
       addActionError(getText("manage.overview.failed.replace.eml"));
       return ERROR;
-    } catch (SAXException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       LOG.error("Failed to create EML validator", e);
       addActionError(getText("manage.overview.failed.replace.eml.validator"));
       return ERROR;
@@ -1907,6 +1953,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public boolean isNetworksAvailable() {
     return networksAvailable;
+  }
+
+  public String getDatapackageMetadataRaw() {
+    return datapackageMetadataRaw;
   }
 
   /**

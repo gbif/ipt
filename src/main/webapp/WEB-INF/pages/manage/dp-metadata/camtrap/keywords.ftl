@@ -1,6 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.keywords.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
@@ -73,6 +74,8 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -85,6 +88,8 @@
     </div>
 
     <form class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
+        <input type="hidden" name="r" value="${resource.shortname}" />
+
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -146,26 +151,27 @@
                                 <div id="keyword-items">
                                     <#list metadata.keywords as item>
                                         <div id="keyword-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="keyword-removeLink-${item_index}" href="" class="removeKeywordLink metadata-action-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeKeywordLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <@input name="metadata.keywords[${item_index}]" i18nkey="datapackagemetadata.keyword" withLabel=false />
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <@input name="metadata.keywords[${item_index}]" i18nkey="datapackagemetadata.keyword" withLabel=false />
+                                                </div>
+                                                <div class="columnLinks mt-2 d-flex justify-content-end">
+                                                    <a id="keyword-removeLink-${item_index}" href="" class="removeKeywordLink metadata-action-link custom-link">
+                                                        <span>
+                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-keyword" class="metadata-action-link" href="">
+                                    <a id="plus-keyword" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -182,18 +188,19 @@
     </form>
 
     <div id="baseItem-keyword" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="keyword-removeLink" href="" class="removeKeywordLink metadata-action-link">
-                <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                    </svg>
-                </span>
-                <span>${removeKeywordLink?lower_case?cap_first}</span>
-            </a>
-        </div>
-        <div>
-            <@input name="metadata.keyword" i18nkey="datapackagemetadata.keyword" withLabel=false />
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <@input name="metadata.keyword" i18nkey="datapackagemetadata.keyword" withLabel=false />
+            </div>
+            <div class="columnLinks mt-2 d-flex justify-content-end">
+                <a id="keyword-removeLink" href="" class="removeKeywordLink metadata-action-link custom-link">
+                    <span>
+                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                        </svg>
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
 

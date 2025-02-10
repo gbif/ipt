@@ -828,6 +828,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
 
     } catch (Exception e) {
+      addMessage(Level.ERROR, e.getMessage());
       throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
     }
     // final reporting

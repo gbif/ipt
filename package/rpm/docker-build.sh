@@ -3,7 +3,7 @@
 gitTag=$(git describe --tags --abbrev=0)
 nr_ver=$(echo $gitTag | sed s/ipt-//)
 echo "Building version $nr_ver"
-sed -i 's|%define nr_ver .*|%define nr_ver 3.0.6|' SPECS/ipt.spec
+sed -i "s|%define nr_ver .*|%define nr_ver $nr_ver|" SPECS/ipt.spec
 
 CURRENT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 

@@ -35,6 +35,8 @@ import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+import com.opensymphony.xwork2.interceptor.ValidationErrorAware;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
 
@@ -63,7 +66,7 @@ import static org.gbif.ipt.config.Constants.CANCEL;
  * Please don't add any action errors as this will trigger the validation interceptor and causes problems, use
  * {@link MappingAction#addActionWarning} instead.
  */
-public class MappingAction extends ManagerBaseAction {
+public class MappingAction extends ManagerBaseAction implements ValidationErrorAware {
 
   private static final long serialVersionUID = -831969146160030857L;
 
@@ -279,8 +282,10 @@ public class MappingAction extends ManagerBaseAction {
    */
   public List<String> getRedundantGroups() {
     List<String> redundantGroups = new ArrayList<>();
-    if (resource.getCoreRowType() != null && !resource.getCoreRowType()
-      .equalsIgnoreCase(mapping.getExtension().getRowType())) {
+    if (resource.getCoreRowType() != null
+        && mapping != null
+        && mapping.getExtension() != null
+        && !resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
       Extension core = extensionManager.get(resource.getCoreRowType());
       redundantGroups = extensionManager.getRedundantGroups(mapping.getExtension(), core);
     }
@@ -540,6 +545,9 @@ public class MappingAction extends ManagerBaseAction {
     validateAndReport();
     LOG.debug("mapping saved..");
 
+    // encode id (rowType) before redirect (might be issues with '#' and other characters)
+    id = URLEncoder.encode(id, StandardCharsets.UTF_8.toString());
+
     return "save";
   }
 
@@ -604,5 +612,12 @@ public class MappingAction extends ManagerBaseAction {
       return resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType());
     }
     return false;
+  }
+
+  // by default DefaultWorkflowInterceptor redirects to "input".
+  // "error" is necessary for this action
+  @Override
+  public String actionErrorOccurred(String currentResultName) {
+    return defaultResult;
   }
 }

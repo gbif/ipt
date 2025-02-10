@@ -83,14 +83,22 @@ public class FileUtils {
     if (decimalPos >= 0) {
       fmt.setMaximumFractionDigits(decimalPos);
     }
-    double val = longSize / (1000f * 1000f);
+
+    double val = longSize / (1000f * 1000f * 1000f);
+    if (val > 1) {
+      return fmt.format(val) + delimiter + "GB";
+    }
+
+    val = longSize / (1000f * 1000f);
     if (val > 1) {
       return fmt.format(val) + delimiter + "MB";
     }
+
     val = longSize / 1000f;
     if (val > 1) {
       return fmt.format(val) + delimiter +  "KB";
     }
+
     return longSize + delimiter + "bytes";
   }
 

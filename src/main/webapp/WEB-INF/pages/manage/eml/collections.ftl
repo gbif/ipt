@@ -4,6 +4,7 @@
     <title><@s.text name='manage.metadata.collections.title'/></title>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -125,6 +126,8 @@
                 allowClear: false,
                 theme: 'bootstrap4'
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
 
@@ -201,9 +204,9 @@
                                     <#list eml.collections as item>
                                         <div id="collection-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="collection-removeLink-${item_index}" href="" class="removeCollectionLink metadata-action-link">
+                                                <a id="collection-removeLink-${item_index}" href="" class="removeCollectionLink metadata-action-link custom-link">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                         </svg>
                                                     </span>
@@ -223,9 +226,9 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-collection" class="metadata-action-link" href="">
+                                    <a id="plus-collection" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -243,10 +246,10 @@
                                     <#list eml.specimenPreservationMethods as item>
                                         <div id="specimenPreservationMethod-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="specimenPreservationMethod-removeLink-${item_index}" class="removeSpecimenPreservationMethodLink metadata-action-link" href="">
+                                                <a id="specimenPreservationMethod-removeLink-${item_index}" class="removeSpecimenPreservationMethodLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeSpecimenPreservationMethodLink?lower_case?cap_first}</span>
@@ -259,9 +262,9 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus-specimenPreservationMethod" class="metadata-action-link" href="">
+                                    <a id="plus-specimenPreservationMethod" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -280,10 +283,10 @@
                                         <#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle mt-2 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" href="" class="removeLink metadata-action-link d-flex align-items-center" style="display: inline-block !important;">
+                                                <a id="removeLink-${item_index}" href="" class="removeLink metadata-action-link custom-link d-flex align-items-center" style="display: inline-block !important;">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></span>
@@ -326,9 +329,9 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus" class="metadata-action-link" href="">
+                                    <a id="plus" class="metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -342,10 +345,10 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle mt-2 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
+                                    <a id="removeLink" class="removeLink metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
                                         </span>
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></span>
@@ -380,10 +383,10 @@
 
                             <div id="baseItem-collection" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-end">
-                                    <a id="collection-removeLink" class="removeCollectionLink metadata-action-link" href="">
+                                    <a id="collection-removeLink" class="removeCollectionLink metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
                                         </span>
                                         <span>${removeCollectionLink?lower_case?cap_first}</span>
@@ -402,10 +405,10 @@
 
                             <div id="baseItem-specimenPreservationMethod" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle columnLinks mt-2 d-flex justify-content-end">
-                                    <a id="specimenPreservationMethod-removeLink" class="removeSpecimenPreservationLink metadata-action-link" href="">
+                                    <a id="specimenPreservationMethod-removeLink" class="removeSpecimenPreservationLink metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
                                         </span>
                                         <span>${removeSpecimenPreservationMethodLink?lower_case?cap_first}</span>

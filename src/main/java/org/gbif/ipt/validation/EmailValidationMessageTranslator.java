@@ -21,5 +21,6 @@ public final class EmailValidationMessageTranslator {
         EMAIL_ERROR_TRANSLATIONS.put("Missing local name", "validation.email.error.localAddress.missing");
         EMAIL_ERROR_TRANSLATIONS.put("Local address contains control or whitespace", "validation.email.error.localAddress.containsControl");
         EMAIL_ERROR_TRANSLATIONS.put("Local address contains illegal character", "validation.email.error.localAddress.containsIllegal");
+        EMAIL_ERROR_TRANSLATIONS.put("Email is invalid", "validation.email.invalid");
     }
 }

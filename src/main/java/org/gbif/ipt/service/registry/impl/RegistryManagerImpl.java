@@ -30,6 +30,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
@@ -59,6 +60,7 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -82,6 +84,8 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.DWCA_V2_DP;
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
 
 public class RegistryManagerImpl extends BaseManager implements RegistryManager {
 
@@ -94,6 +98,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
+  private static final String SERVICE_TYPE_COLDP = "COLDP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_MATERIAL_ENTITY = "DWC-ARCHIVE-MATERIAL-ENTITY";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
@@ -166,7 +171,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     // if primaryContact is null, use resource creator as primary contact.
     if (primaryContact == null) {
       primaryContact = new Agent();
-      primaryContact.setEmail(resource.getCreator().getEmail());
+      primaryContact.setEmail(Collections.singletonList(resource.getCreator().getEmail()));
       primaryContact.setFirstName(resource.getCreator().getFirstname());
       primaryContact.setLastName(resource.getCreator().getLastname());
       primaryContact.setRole(null);
@@ -177,12 +182,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     primaryContact.setRole(null);
 
     data.add(new BasicNameValuePair("primaryContactType", primaryContactType));
-    data.add(new BasicNameValuePair("primaryContactEmail", StringUtils.trimToEmpty(primaryContact.getEmail())));
+    data.add(new BasicNameValuePair("primaryContactEmail", !primaryContact.getEmail().isEmpty() ? StringUtils.trimToEmpty(primaryContact.getEmail().get(0)) : ""));
     data.add(new BasicNameValuePair("primaryContactName",
       StringUtils.trimToNull(StringUtils.trimToEmpty(primaryContact.getFullName()))));
     data.add(new BasicNameValuePair("primaryContactAddress",
       StringUtils.trimToEmpty(primaryContact.getAddress().toFormattedString())));
-    data.add(new BasicNameValuePair("primaryContactPhone", StringUtils.trimToEmpty(primaryContact.getPhone())));
+    data.add(new BasicNameValuePair("primaryContactPhone", !primaryContact.getPhone().isEmpty() ? StringUtils.trimToEmpty(primaryContact.getPhone().get(0)) : ""));
 
     // see if we have a published dwca or if its only metadata
     RegistryServices services = buildServiceTypeParams(resource);
@@ -197,6 +202,50 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   private List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
+    if (COL_DP.equals(resource.getCoreType())) {
+      return buildRegistryParametersForColDP(resource);
+    } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      return buildRegistryParametersForCamtrapDP(resource);
+    } else {
+      LOG.error("Unknown data package type: {}", resource.getCoreType());
+      return Collections.emptyList();
+    }
+  }
+
+  private List<NameValuePair> buildRegistryParametersForColDP(Resource resource) {
+    List<NameValuePair> data = new ArrayList<>();
+
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+    ColMetadata colMetadata = null;
+
+    if (metadata instanceof ColMetadata) {
+      colMetadata = (ColMetadata) metadata;
+    }
+
+    if (colMetadata != null) {
+      data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+          : StringUtils.trimToEmpty(resource.getShortname())));
+      data.add(new BasicNameValuePair("description", metadata.getDescription()));
+
+      // Use resource creator as primary contact. May use one of the contributors in the future.
+      data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
+      data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
+      data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
+
+      // service type and url
+      data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_COLDP));
+      data.add(new BasicNameValuePair("serviceUrls", cfg.getResourceArchiveUrl(resource.getShortname())));
+
+      LOG.debug(data);
+    } else {
+      LOG.debug("Failed to extract ColMetadata to build registry parameters! Metadata type is {}",
+          metadata.getClass().getSimpleName());
+    }
+
+    return data;
+  }
+
+  private List<NameValuePair> buildRegistryParametersForCamtrapDP(Resource resource) {
     List<NameValuePair> data = new ArrayList<>();
 
     DataPackageMetadata metadata = resource.getDataPackageMetadata();

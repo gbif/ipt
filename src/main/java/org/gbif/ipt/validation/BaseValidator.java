@@ -19,12 +19,15 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class BaseValidator {
 
   private static final Logger LOG = LogManager.getLogger(BaseValidator.class);
+
+  private EmailValidator emailValidator = EmailValidator.getInstance();
 
   protected boolean exists(String x) {
     return exists(x, 2);
@@ -77,6 +80,13 @@ public abstract class BaseValidator {
         InternetAddress internetAddress = new InternetAddress(email);
         internetAddress.validate();
         result.setValid(true);
+
+        // Additionally validate by Apache Commons' EmailValidator (to align with the registry)
+        boolean validationResult = emailValidator.isValid(email);
+        result.setValid(validationResult);
+        if (!validationResult) {
+          result.setMessage("Email is invalid");
+        }
       }
     } catch (AddressException e) {
       LOG.error("Email address was invalid: {}. Reason: {}", StringUtils.trimToEmpty(email), e.getMessage());

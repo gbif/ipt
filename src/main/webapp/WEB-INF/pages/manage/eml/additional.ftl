@@ -4,6 +4,7 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <script src="${baseURL}/js/ajaxfileupload.js"></script>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
@@ -115,6 +116,8 @@
 
                 hideProcessing();
             }
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMetadataPage = "additional"/>
@@ -218,16 +221,6 @@
                             </div>
 
                             <div class="row g-3 mt-1">
-                                <!-- Purpose -->
-                                <div>
-                                    <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
-                                </div>
-
-                                <!-- Maintenance Update Frequency -->
-                                <div>
-                                    <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
-                                </div>
-
                                 <!-- Additional info -->
                                 <div>
                                     <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
@@ -244,10 +237,10 @@
                                     <#list eml.alternateIdentifiers as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="handle mt-2 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink metadata-action-link" href="">
+                                                <a id="removeLink-${item_index}" class="removeLink metadata-action-link custom-link" href="">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
@@ -259,9 +252,9 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-2">
-                                    <a id="plus" href="" class="metadata-action-link">
+                                    <a id="plus" href="" class="metadata-action-link custom-link">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                                             </svg>
                                         </span>
@@ -276,10 +269,10 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle mt-2 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink metadata-action-link" href="">
+                                    <a id="removeLink" class="removeLink metadata-action-link custom-link" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
                                         </span>
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>

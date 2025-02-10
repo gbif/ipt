@@ -3,6 +3,7 @@
     <title><@s.text name='manage.datapackagemetadata.camtrap.project.title'/></title>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
@@ -43,6 +44,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMenu="manage"/>
@@ -56,6 +59,8 @@
     </div>
 
     <form class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
+        <input type="hidden" name="r" value="${resource.shortname}" />
+
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -167,7 +172,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12">
+                                <div class="col-12 fs-smaller">
                                     <#if (metadata.project.individualAnimals)??>
                                         <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" value="${metadata.project.individualAnimals?c}" help="i18n"/>
                                     <#else>

@@ -148,6 +148,7 @@
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
+      <result name="analyze" type="redirect">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${source.name}</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
@@ -161,7 +162,9 @@
         <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
       </result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="httpheader">
+        <param name="status">400</param>
+      </result>
     </action>
 
     <action name="canceloverwrite" class="org.gbif.ipt.action.manage.SourceAction" method="cancelOverwrite">
@@ -182,6 +185,16 @@
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
+    <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
     </action>
 
     <action name="delete-mapping" class="org.gbif.ipt.action.manage.MappingAction" method="delete">

@@ -42,15 +42,15 @@
 
 <!-- The short form of the license for display in the versions table -->
 <#macro shortLicense licenseUrl="">
-    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode">
+    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode" || licenseUrl == "https://creativecommons.org/publicdomain/zero/1.0/legalcode">
         CC0 1.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode">
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by/4.0/legalcode">
         CC-BY 4.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode">
+    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by-nc/4.0/legalcode">
         CC-BY-NC 4.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0">
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/pddl/1.0">
         ODC PDDL 1.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0">
+    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/by/1.0">
         ODC-By 1.0
     <#elseif licenseUrl?has_content>
         <@s.text name='manage.overview.noGBIFLicense'/>
@@ -318,6 +318,7 @@
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
                 $("#callout-source-exists").hide();
+                $("#callout-file-upload-info").show();
             } else if (selectedTabId === 'tab-source-url') {
                 sourceTypeInput.attr("value", "source-url");
                 urlInput.show();
@@ -337,6 +338,8 @@
                 confirmedFiles = []
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
+
+                $("#callout-file-upload-info").hide();
 
                 if (sourceNames.includes(sourceNameValue)) {
                     $("#callout-source-exists").show();
@@ -370,6 +373,8 @@
                 confirmedFiles = [];
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
+
+                $("#callout-file-upload-info").hide();
 
                 if (sourceNames.includes(sourceNameValue)) {
                     $("#callout-source-exists").show();
@@ -678,6 +683,36 @@
             dialogWindow.modal('show');
         }
 
+        const uploadStatus = sessionStorage.getItem("uploadStatus");
+
+        if (uploadStatus === "success") {
+            showSourceCreatedSuccessfullyInfoWindow();
+            sessionStorage.removeItem("uploadStatus");
+        } else if (uploadStatus === "fail") {
+            console.log("upload failed");
+            sessionStorage.removeItem("uploadStatus");
+        }
+
+        function showSourceCreatedSuccessfullyInfoWindow() {
+            const templateOneSource = `<@s.text name="manage.overview.source.created"/>`;
+            const templateMultipleSources = `<@s.text name="manage.overview.sources.created"/>`;
+            const files = sessionStorage.getItem("uploadedFiles");
+            sessionStorage.removeItem("uploadedFiles");
+
+            var message;
+            if (files.includes(",")) {
+                message = templateMultipleSources.replace("{0}", files);
+            } else {
+                message = templateOneSource.replace("{0}", files);
+            }
+
+            $("#sources-created-successfully-info .message").html(message);
+
+            $("#sources-created-successfully-info").fadeIn(200, function () {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        }
+
         var selectedFiles = [];
 
         document.getElementById("chooseFilesButton").addEventListener("click", function () {
@@ -703,6 +738,7 @@
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
+            var fileNamesConcatenated = "";
 
             // hide remove buttons - already submitted
             var removeButtons = document.querySelectorAll(".removeButton");
@@ -713,18 +749,24 @@
             for (var i = 0; i < selectedFiles.length; i++) {
                 var file = selectedFiles[i];
                 var fileItem = fileItems[i];
-                var progressBar = fileItem.querySelector(".progressBar-value");
-                var fileStatus = fileItem.querySelector(".fileStatus");
 
-                promises.push(uploadFile(file, i, progressBar, fileStatus));
+                if (fileNamesConcatenated) {
+                    fileNamesConcatenated += ", ";
+                }
+                fileNamesConcatenated += file.name;
+
+                promises.push(uploadFile(file, i, fileItem));
             }
 
             try {
                 await Promise.all(promises);
+                sessionStorage.setItem("uploadStatus", "success");
+                sessionStorage.setItem("uploadedFiles", fileNamesConcatenated);
                 closeModal();
                 window.location.reload();
             } catch (error) {
-                console.log(error)
+                sessionStorage.setItem("uploadStatus", "fail");
+                console.log(error);
             }
         });
 
@@ -785,9 +827,22 @@
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutSpaces.toLowerCase());
 
-            if (file.size > 10000000000) {
+            const ACCEPTED_FILE_NAMES = /^[\w.\-\s()]+$/;
+
+            function isValidString(input) {
+                return ACCEPTED_FILE_NAMES.test(input);
+            }
+
+            var isFileNameInvalid = !isValidString(file.name);
+            var isFileSizeTooBig = file.size > 10000000000;
+            var isSourceAlreadyExistOrRepeated = isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces);
+            var displayWarning = isFileNameInvalid || isFileSizeTooBig || isSourceAlreadyExistOrRepeated;
+
+            if (isFileNameInvalid) {
+                fileError.innerText = `<@s.text name='manage.overview.source.file.name.invalid'/>`;
+            } else if (isFileSizeTooBig) {
                 fileError.innerText = `<@s.text name='manage.overview.source.file.too.big'/>`;
-            } else if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+            } else if (isSourceAlreadyExistOrRepeated) {
                 fileError.innerText = `<@s.text name='manage.resource.addSource.sameName.confirm'/>`;
 
                 var confirmOverwriteLink = document.createElement("a");
@@ -812,7 +867,7 @@
             // link divs
             fileMeta.appendChild(fileName);
             fileMeta.appendChild(fileStatus);
-            if (isSourceAlreadyExist && !confirmedFiles.includes(fileNameWithoutSpaces)) {
+            if (displayWarning) {
                 fileMeta.appendChild(fileError);
                 fileDoneIcon.style.visibility = "hidden";
                 fileDoneIcon.style.display = "none";
@@ -876,8 +931,14 @@
             document.getElementById("fileList").appendChild(fileItem);
         }
 
-        async function uploadFile(file, fileIndex, progressBar, fileStatus) {
+        async function uploadFile(file, fileIndex, fileItem) {
             return new Promise(function (resolve, reject) {
+                var fileMeta = fileItem.querySelector(".fileMeta");
+                var progressBar = fileItem.querySelector(".progressBar-value");
+                var fileDoneIcon = fileItem.querySelector(".fileDoneIcon");
+                var fileWarningIcon = fileItem.querySelector(".fileWarningIcon");
+                var fileStatus = fileItem.querySelector(".fileStatus");
+
                 var formData = new FormData();
                 formData.append("r", "${resource.shortname}");
                 formData.append("sourceType", "source-file");
@@ -888,17 +949,46 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "addsource.do", true);
 
+                // Prevent automatic redirection by setting responseType to 'document'
+                xhr.responseType = 'document';
+
                 xhr.onload = function () {
-                    var redirectUrl = xhr.getResponseHeader("Location");
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl;
+                    if (xhr.status >= 300 && xhr.status < 400) {
+                        // Redirection detected, handle it manually
+                        var redirectUrl = xhr.getResponseHeader("Location");
+                        if (redirectUrl) {
+                            // Optional: Navigate to the redirect URL manually
+                            window.location.href = redirectUrl;
+                        }
+                    } else {
+                        // Process the error response
+                        var errorMessage = xhr.getResponseHeader("X-Error-Message");
+
+                        if (errorMessage) {
+                            // file error div
+                            var fileError = document.createElement("div");
+                            fileError.className = "fileError";
+                            fileError.setAttribute('data-index', fileIndex);
+                            fileError.innerText = errorMessage;
+
+                            fileMeta.appendChild(fileError)
+
+                            fileDoneIcon.style.visibility = "hidden";
+                            fileDoneIcon.style.display = "none";
+                            fileWarningIcon.style.visibility = "visible";
+                            fileWarningIcon.style.display = "block";
+
+                            reject(new Error(errorMessage)); // Reject with the error message
+                            return;
+                        }
+
+                        resolve(); // Resolve on success
                     }
-                    resolve();
                 };
 
-                xhr.onerror = function() {
-                    console.error('An error occurred during the request:', xhr.status, xhr.statusText);
-                    reject(new Error('An error occurred during the request:' + xhr.status + "" + xhr.statusText));
+                xhr.onerror = function () {
+                    console.error("An error occurred during the request:", xhr.status, xhr.statusText);
+                    reject(new Error("An error occurred during the request: " + xhr.status + " " + xhr.statusText));
                 };
 
                 xhr.upload.onprogress = function (event) {
@@ -925,13 +1015,17 @@
                 xhr.onloadend = function () {
                     progressBar.style.width = "100%"; // Set progress to 100%
 
-                    // hide progress bar
+                    // Hide progress bar
                     var fileProgressBarWrapper = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .progressBar');
-                    fileProgressBarWrapper.classList.add("d-none")
+                    if (fileProgressBarWrapper) {
+                        fileProgressBarWrapper.classList.add("d-none");
+                    }
 
-                    // and display done icon
+                    // Display done icon
                     var fileDoneIcon = document.querySelector('.fileItem[data-file-index="' + fileIndex + '"] .fileDoneIcon');
-                    fileDoneIcon.style.visibility = "visible";
+                    if (fileDoneIcon) {
+                        fileDoneIcon.style.visibility = "visible";
+                    }
 
                     // "Upload Complete", set to empty
                     fileStatus.innerText = "";
@@ -1017,7 +1111,7 @@
             fileItemElement.find('.fileError').remove();
 
             var fileNameWithExtension = fileItemElement.find('.fileName').text();
-            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.'));
+            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
 
             confirmedFiles.push(fileNameWithoutExtension);
 
@@ -1146,6 +1240,12 @@
         if (scrollPosition > 220) {
             resourceNav.style.display = "block";
         }
+
+        $("#view-metadata-button").on('click', function () {
+            console.log("view-metadata-button")
+            var dialogWindow = $("#datapackage-metadata-modal");
+            dialogWindow.modal('show');
+        });
     });
 </script>
 
@@ -1167,6 +1267,15 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+        <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
+            <div class="me-3">
+                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+            </div>
+            <div class="overflow-x-hidden pt-1 message">
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 
     <div class="container-fluid border-bottom">
@@ -1192,7 +1301,10 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]!resourceTypeLowerCase}</span>
+                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                            <#if resourceSubtypeLowerCase?has_content>
+                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
+                            </#if>
                             <#if resource.status??>
                                 <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
                                     <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
@@ -2191,12 +2303,43 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
+                                    <div id="callout-file-upload-info" class="border rounded px-3 py-1 mt-3">
+                                        <div class="simpleCallout">
+                                            <div class="simpleCallout-inner">
+                                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
+                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                    </div>
+                                                    <div class="simpleCalloutMeta">
+                                                        <div class="simpleCalloutMessage">
+                                                            You can upload multiple files at once, including text files, spreadsheets, or compressed archives.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <a id="chooseFilesButton" href="#" class="btn btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
 
-                                    <div id="callout-source-exists" class="callout callout-danger text-smaller" style="display: none;">
-                                        <@s.text name="manage.resource.addSource.sameName.confirm"/>
-                                        <br>
-                                        <button id="btn-confirm-source-overwrite" class="btn btn-sm btn-outline-gbif-danger mt-3"><@s.text name="button.confirm"/></button>
+                                    <div id="callout-source-exists" class="border rounded px-3 py-1 mt-3" style="display: none;">
+                                        <div class="simpleCallout" >
+                                            <div class="simpleCallout-inner">
+                                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
+                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                        <i class="bi bi-exclamation-circle text-gbif-danger"></i>
+                                                    </div>
+                                                    <div class="simpleCalloutMeta">
+                                                        <div class="simpleCalloutError">
+                                                            <@s.text name="manage.resource.addSource.sameName.confirm"/>
+                                                            <a id="btn-confirm-source-overwrite" class="confirmOverwriteSourceLink custom-link" href="#">
+                                                                <@s.text name="button.confirm"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
@@ -2564,7 +2707,7 @@
                             <p>
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                             </p>
-                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp">
+                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp">
                             <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
                             <p>
                                 <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
@@ -2758,6 +2901,20 @@
                     <button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="datapackage-metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="datapackage-metadata-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm" style="max-width: none !important; margin: 1.75rem; font-size: 12px;">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h5 class="modal-title w-100" id="datapackage-metadata-modal-title">Metadata</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <pre id="json-raw-data" class="fs-smaller-2">${datapackageMetadataRaw!}</pre>
                 </div>
             </div>
         </div>

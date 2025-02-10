@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/leaflet/leaflet.js"></script>
     <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
 
@@ -427,6 +428,8 @@
             $("#top-save").click(function (event) {
                 validateCoordinates(event);
             });
+
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
 
@@ -511,9 +514,9 @@
 
                             <div id="preview-links" class="col-md-6">
                                 <div class="d-flex justify-content-end">
-                                    <a id="preview-inferred-geo" class="metadata-action-link" href="">
+                                    <a id="preview-inferred-geo" class="metadata-action-link custom-link p-1" href="">
                                         <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                             </svg>
                                         </span>
@@ -521,10 +524,10 @@
                                     </a>
                                 </div>
                                 <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                    <span class="fs-smaller-2" style="padding: 4px;">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                    <a id="re-infer-link" href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link">
+                                    <span class="fs-smaller-2 p-1">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
+                                    <a id="re-infer-link" href="metadata-geocoverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link custom-link p-1">
                                         <span>
-                                            <svg class="link-icon" viewBox="0 0 24 24">
+                                            <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
                                                 <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
                                             </svg>
                                         </span>

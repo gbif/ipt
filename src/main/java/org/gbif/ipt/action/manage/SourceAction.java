@@ -44,10 +44,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.google.inject.Inject;
 
 import javax.activation.MimeTypeParseException;
+import javax.servlet.http.HttpServletResponse;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -125,25 +127,31 @@ public class SourceAction extends ManagerBaseAction {
 
       // check not found
       if (responseCode == 404) {
-        addActionError(getText("manage.source.url.notFound", new String[] {url}));
+        LOG.error("Can't read URL {} : Not Found", url);
+        addActionError(getText("manage.source.url.notFound", new String[]{url}));
         return ERROR;
       }
 
-      // check text file (or no extension)
+      // check a text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
-      boolean extensionNotAllowed = (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension) && !"zip".equals(extension));
+      boolean extensionNotAllowed = (!extension.isEmpty()
+          && !StringUtils.equalsAny(extension, "txt", "tsv", "csv", "zip"));
 
       if (extensionNotAllowed) {
+        LOG.debug("No extension in the URL, checking content type.");
         String contentType = URLUtils.getUrlContentType(url);
+        LOG.debug("Content type confirmed: {}", contentType);
 
-        // check mime type
-        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)){
-          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension.isEmpty() ? "unknown" : extension}));
+        // check a mime type
+        if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)) {
+          LOG.error("Not allowed content type: {}", contentType);
+          addActionError(getText("manage.source.url.invalidExtension", new String[]{url, extension}));
           return ERROR;
         }
       }
-    } catch  (IOException | MimeTypeParseException e) {
-      addActionError(getText("manage.source.url.invalid", new String[] {url}));
+    } catch (IOException | MimeTypeParseException e) {
+      LOG.error("Failed to create a URL source: {}", e.getMessage());
+      addActionError(getText("manage.source.url.invalid", new String[]{url}));
       return ERROR;
     }
 
@@ -171,18 +179,22 @@ public class SourceAction extends ManagerBaseAction {
         }
       } catch (IOException e) {
         LOG.error(e);
+        addErrorHeader("manage.source.filesystem.error");
         addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
         return ERROR;
       } catch (UnsupportedCompressionType e) {
         LOG.error(e);
+        addErrorHeader("manage.source.unsupported.compression.format");
         addActionError(getText("manage.source.unsupported.compression.format"));
         return ERROR;
       } catch (InvalidFilenameException e) {
         LOG.error(e);
-        addActionError(getText("manage.source.invalidFileName"));
+        addErrorHeader("manage.source.invalidFileName.archive");
+        addActionError(getText("manage.source.invalidFileName.archive"));
         return ERROR;
       } catch (Exception e) {
         LOG.error(e);
+        addErrorHeader("manage.source.upload.unexpectedException");
         addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
@@ -192,16 +204,23 @@ public class SourceAction extends ManagerBaseAction {
         addDataFile(file, fileFileName);
       } catch (InvalidFilenameException e) {
         LOG.error(e);
+        addErrorHeader("manage.source.invalidFileName");
         addActionError(getText("manage.source.invalidFileName"));
         return ERROR;
       } catch (Exception e) {
         LOG.error(e);
+        addErrorHeader("manage.source.upload.unexpectedException");
         addActionError(getText("manage.source.upload.unexpectedException"));
         return ERROR;
       }
     }
 
     return SUCCESS;
+  }
+
+  private void addErrorHeader(String value) {
+    HttpServletResponse response = ServletActionContext.getResponse();
+    response.setHeader("X-Error-Message", getText(value));
   }
 
   private String addSqlSource() {
@@ -432,6 +451,12 @@ public class SourceAction extends ManagerBaseAction {
     if (id != null && source != null) {
       if (this.analyze || !source.isReadable()) {
         problem = sourceManager.analyze(source);
+        result = "analyze";
+        if (problem == null) {
+          addActionMessage(getText("manage.source.analyzed"));
+        } else {
+          addActionError(getText("manage.source.analyzed.problem", new String[] {problem}));
+        }
       } else {
         result = SUCCESS;
       }

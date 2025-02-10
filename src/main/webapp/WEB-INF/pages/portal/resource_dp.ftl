@@ -118,11 +118,9 @@
                         ${dpMetadata.title!resource.shortname}
                     </h1>
 
-                    <#if typesVocabulary[resourceTypeLowerCase]??>
-                        <div class="text-center">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1">${typesVocabulary[resourceTypeLowerCase]!resourceTypeLowerCase}</span>
-                        </div>
-                    </#if>
+                    <div class="text-center">
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                    </div>
 
                     <#if resource.lastPublished??>
                         <div class="text-gbif-primary fs-smaller-2 mt-2">
@@ -550,10 +548,6 @@
                                         <tr>
                                             <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
                                             <td>${tx.taxonID!}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonIdReference"/></th>
-                                            <td>${tx.taxonIDReference!}</td>
                                         </tr>
                                         <tr>
                                             <th class="col-4"><@s.text name="portal.resource.taxonomic.scientificName"/></th>
