@@ -427,7 +427,7 @@
                 $("#" + entityName + "-items .item").each(function (index) {
                     setAgentItemIndex($(this), index);
                 });
-                calcNumberOfAgentItems();
+                calcNumberOfAgentItems(entityName);
             });
         }
 
