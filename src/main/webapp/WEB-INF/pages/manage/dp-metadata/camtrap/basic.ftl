@@ -626,8 +626,8 @@
                                                 <a id="source-removeLink-${item_index}" href=""
                                                    class="metadata-action-link custom-link removeSourceLink">
                                                     <span>
-                                                        <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </span>
                                                     <span>${removeSourceLink?lower_case?cap_first}</span>
