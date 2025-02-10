@@ -38,6 +38,7 @@ import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
+import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
@@ -936,7 +937,10 @@ public class MetadataAction extends ManagerBaseAction {
       // otherwise, ensure associated parties' country value get converted into 2-letter iso code for proper display
       else if (!resource.getEml().getAssociatedParties().isEmpty()) {
         for (Agent party : resource.getEml().getAssociatedParties()) {
-          String countryValue = party.getAddress().getCountry();
+          String countryValue = Optional.ofNullable(party)
+              .map(Agent::getAddress)
+              .map(Address::getCountry)
+              .orElse(null);
           if (countryValue != null) {
             ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
             if (result.isSuccessful()) {
