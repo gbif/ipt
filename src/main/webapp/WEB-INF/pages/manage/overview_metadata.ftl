@@ -20,7 +20,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <#if dataPackageResource && resource.dataPackageIdentifier?contains("extended-occurrence-dp")>
+            <#if dataPackageResource && resource.dataPackageIdentifier?contains("dwc-dp")>
                 <a id="download-metadata-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download>
                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M5 20h14v-2H5zM19 9h-4V3H9v6H5l7 7z"></path>

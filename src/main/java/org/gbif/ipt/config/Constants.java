@@ -68,7 +68,7 @@ public final class Constants {
   public static final String DATA_PACKAGE_COLDP_IDENTIFIER = "http://rs.gbif.org/data-packages/coldp";
   public static final String DATA_PACKAGE_MATERIAL_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/material-dp";
   public static final String DATA_PACKAGE_INTERACTION_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/interaction-dp";
-  public static final String DATA_PACKAGE_DWCA_V2_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/dwca_v2";
+  public static final String DATA_PACKAGE_DWC_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/dwc-dp";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";
@@ -119,7 +119,7 @@ public final class Constants {
   public static final String CAMTRAP_DP = "camtrap-dp";
   public static final String MATERIAL_DP = "material-dp";
   public static final String INTERACTION_DP = "interaction-dp";
-  public static final String DWCA_V2_DP = "dwca_v2";
+  public static final String DWC_DP = "dwc-dp";
   public static final String COL_DP = "coldp";
   public static final String CAMTRAP_DP_OBSERVATIONS = "observations";
   public static final String DWC_ARCHIVE_NAME = "dwca";

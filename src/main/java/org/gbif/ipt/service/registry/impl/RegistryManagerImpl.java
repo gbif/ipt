@@ -83,7 +83,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
-import static org.gbif.ipt.config.Constants.DWCA_V2_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 
@@ -432,8 +432,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schema url by name and version.
    */
   private String getDataSchemaURL(String schemaName, String schemaVersion) {
-    if (DWCA_V2_DP.equals(schemaName)) {
-      return "https://rs.gbif.org/sandbox/experimental/data-packages/dwca_v2/0.1/";
+    if (DWC_DP.equals(schemaName)) {
+      return "https://rs.gbif.org/sandbox/experimental/data-packages/dwc-dp/" + schemaVersion + "/";
     }
     return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion;
   }
