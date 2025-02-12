@@ -432,9 +432,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * Returns the Data schema url by name and version.
    */
   private String getDataSchemaURL(String schemaName, String schemaVersion) {
-    if (DWC_DP.equals(schemaName)) {
-      return "https://rs.gbif.org/sandbox/experimental/data-packages/dwc-dp/" + schemaVersion + "/";
-    }
     return cfg.getRegistryUrl() + "/registry/dataPackages/" + schemaName + "/" + schemaVersion;
   }
 
