@@ -3739,7 +3739,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else {
       resource.getEml().setGuid(cfg.getResourceGuid(resource.getShortname()));
     }
-    if (!preserveKeywords) {
+    if (!preserveKeywords && !resource.isDataPackage()) {
       // add/update KeywordSet for dataset type and subtype
       updateKeywordsWithDatasetTypeAndSubtype(resource);
     }
