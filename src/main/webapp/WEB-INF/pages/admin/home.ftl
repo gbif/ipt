@@ -201,7 +201,7 @@
 									<i class="bi bi-columns-gap admin-icon"></i>
 								</span>
 								<span>
-									<@s.text name="admin.home.manageDataPackageSchemas"/> <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary"><@s.text name="admin.home.new"/></span>
+									<@s.text name="admin.home.manageDataPackageSchemas"/>
 								</span>
 							</h4>
 						</div>
