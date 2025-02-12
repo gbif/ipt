@@ -402,6 +402,7 @@
                         </div>
                     </div>
 
+                    <#if (resource.coreType) != "dwc-dp">
                     <div class="my-3 p-3">
                         <div class="row g-3">
                             <div class="col-lg-6">
@@ -413,6 +414,7 @@
                             </div>
                         </div>
                     </div>
+                    </#if>
 
                     <div class="my-3 p-3">
                         <div class="row g-3">
