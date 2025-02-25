@@ -34,6 +34,15 @@ pathfind() {
     return 1
 }
 
+if systemctl list-units --full -all | grep -q "tomcat10.service"; then
+    TOMCAT_VERSION="tomcat10"
+elif systemctl list-units --full -all | grep -q "tomcat9.service"; then
+    TOMCAT_VERSION="tomcat9"
+else
+    echo "Error: Found tomcat version not compatible (tomcat9 or tomcat10 required)."
+    exit 1
+fi
+
 
 case "${1}" in
     remove)
@@ -75,7 +84,7 @@ case "${1}" in
         fi
 
         # Remove the configuration file
-        CONFIG_FILE="/var/lib/tomcat9/webapps/ipt/WEB-INF/datadir.location"
+        CONFIG_FILE="/var/lib/${TOMCAT_VERSION}/webapps/ipt/WEB-INF/datadir.location"
         if [ -f "$CONFIG_FILE" ]; then
               rm "$CONFIG_FILE"
         fi
