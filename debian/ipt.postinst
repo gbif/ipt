@@ -14,6 +14,15 @@ set -e
 db_get ipt/data-dir
 DATA_DIR="$RET"
 
+if systemctl list-units --full -all | grep -q "tomcat10.service"; then
+    TOMCAT_VERSION="tomcat10"
+elif systemctl list-units --full -all | grep -q "tomcat9.service"; then
+    TOMCAT_VERSION="tomcat9"
+else
+    echo "Error: Found tomcat version not compatible (tomcat9 or tomcat10 required)."
+    exit 1
+fi
+
 TOMCAT_USER="tomcat"
 TOMCAT_GROUP="tomcat"
 
@@ -29,16 +38,16 @@ if id -u $TOMCAT_USER > /dev/null 2>&1; then
   chown -Rh $TOMCAT_USER:$TOMCAT_GROUP "$DATA_DIR"
 fi
 
-IPT_XML="/etc/tomcat9/Catalina/localhost/ipt.xml"
+IPT_XML="/etc/${TOMCAT_VERSION}/Catalina/localhost/ipt.xml"
 
-# chown $TOMCAT_USER:$TOMCAT_GROUP /usr/share/ipt/ipt.war
+install -m 644 /usr/share/ipt/ipt.xml "$IPT_XML"
 chown $TOMCAT_USER:$TOMCAT_GROUP "$IPT_XML"
 
 # Store the value in debconf
 db_set ipt/data-dir "$DATA_DIR"
 
 # Create the Tomcat service configuration file
-TOMCAT_SERVICE_OVERRIDE="/etc/systemd/system/tomcat9.service.d/override.conf"
+TOMCAT_SERVICE_OVERRIDE="/etc/systemd/system/${TOMCAT_VERSION}.service.d/override.conf"
 mkdir -p "$(dirname "$TOMCAT_SERVICE_OVERRIDE")"
 
 # Write the configuration to the 'override.conf' file
@@ -57,12 +66,12 @@ fi
 
 # Reload the systemd daemon configuration and restart the Tomcat service
 systemctl daemon-reload
-systemctl restart tomcat9
+systemctl restart ${TOMCAT_VERSION}
 
 # Wait for Tomcat to start up
 TOMCAT_STARTUP_TIMEOUT=60
 TOMCAT_START_TIME=$(date +%s)
-while [ "$(systemctl is-active tomcat9)" != "active" ]; do
+while [ "$(systemctl is-active ${TOMCAT_VERSION})" != "active" ]; do
   sleep 1
   if [ $(($(date +%s) - TOMCAT_START_TIME)) -gt $TOMCAT_STARTUP_TIMEOUT ]; then
     echo "Error: Tomcat startup timed out after $TOMCAT_STARTUP_TIMEOUT seconds"
@@ -74,7 +83,7 @@ done
 sleep 3
 
 # Create or update the configuration file with the directory
-CONFIG_FILE="/var/lib/tomcat9/webapps/ipt/WEB-INF/datadir.location"
+CONFIG_FILE="/var/lib/${TOMCAT_VERSION}/webapps/ipt/WEB-INF/datadir.location"
 
 if [ ! -f "$CONFIG_FILE" ]; then
   # It does not exist yet, so create it a restart tomcat
@@ -83,7 +92,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
   chmod 644 "$CONFIG_FILE"
   chown $TOMCAT_USER:$TOMCAT_GROUP "$CONFIG_FILE"
   echo "Restarting tomcat"
-  systemctl restart tomcat9
+  systemctl restart ${TOMCAT_VERSION}
 else
   # Fix perms anyway
   chmod 644 "$CONFIG_FILE"
