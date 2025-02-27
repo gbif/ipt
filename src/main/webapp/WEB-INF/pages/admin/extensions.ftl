@@ -23,12 +23,12 @@
                             ${ext.rowType!}
                         </p>
                         <#if ext.isLatest()>
-                        <p class="text-gbif-primary mb-0 fs-smaller-2">
-                            ${ext.issued?date?string["d MMMM yyyy"]}
-                        </p>
+                            <p class="text-gbif-primary mb-0 fs-smaller-2">
+                                <#if ext.issued??>${ext.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
+                            </p>
                         <#else>
                             <p class="text-gbif-danger mb-0 fs-smaller-2">
-                                ${ext.issued?date?string["d MMMM yyyy"]}
+                                <#if ext.issued??>${ext.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
                             </p>
                         </#if>
                     </div>
@@ -82,7 +82,7 @@
                             ${ext.rowType!}
                         </p>
                         <p class="text-gbif-primary mb-0 fs-smaller-2">
-                            ${ext.issued?date?string["d MMMM yyyy"]}
+                            <#if ext.issued??>${ext.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
                         </p>
                     </div>
                 </div>
