@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <title><@s.text name='manage.metadata.contacts.title'/></title>
+    <script src="${baseURL}/js/metadata-agent.js"></script>
     <script>
         $(document).ready(function () {
             $('#metadata-section').change(function () {
@@ -32,10 +33,19 @@
                 });
             }
 
-            const sortable_temporals = initAndGetSortable('#associatedParty-items');
+            const sortableContacts = initAndGetSortable('#contact-items');
+            const sortableCreators = initAndGetSortable('#creator-items');
+            const sortableMetadataProviders = initAndGetSortable('#metadataProvider-items');
+            const sortableAssociatedParties = initAndGetSortable('#associatedParty-items');
 
-            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
-            sortable_temporals[0].addEventListener('drag', dragScroll);
+            sortableContacts[0].addEventListener('sortupdate', () => changeInputNamesAfterDragging("contact"));
+            sortableContacts[0].addEventListener('drag', dragScroll);
+            sortableCreators[0].addEventListener('sortupdate', () => changeInputNamesAfterDragging("creator"));
+            sortableCreators[0].addEventListener('drag', dragScroll);
+            sortableMetadataProviders[0].addEventListener('sortupdate', () => changeInputNamesAfterDragging("metadataProvider"));
+            sortableMetadataProviders[0].addEventListener('drag', dragScroll);
+            sortableAssociatedParties[0].addEventListener('sortupdate', () => changeInputNamesAfterDragging("associatedParty"));
+            sortableAssociatedParties[0].addEventListener('drag', dragScroll);
 
             function dragScroll(e) {
                 var cursor = e.pageY;
@@ -50,31 +60,53 @@
                 }
             }
 
-            function changeInputNamesAfterDragging(e) {
+            function changeInputNamesAfterDragging(entityName) {
                 displayProcessing();
-                var contactItems = $("#associatedParty-items div.item");
+                const entityNamePlural = getEntityPluralName(entityName);
+                var agentItems = $("#" + entityName + "-items div.item");
 
-                contactItems.each(function (index) {
-                    var elementId = $(this)[0].id;
-
-                    $("div#" + elementId + " input[id$='firstName']").attr("name", "eml.associatedParties[" + index + "].firstName");
-                    $("div#" + elementId + " input[id$='lastName']").attr("name", "eml.associatedParties[" + index + "].lastName");
-                    $("div#" + elementId + " input[id$='position']").attr("name", "eml.associatedParties[" + index + "].position");
-                    $("div#" + elementId + " input[id$='organisation']").attr("name", "eml.associatedParties[" + index + "].organisation");
-                    $("div#" + elementId + " input[id$='address']").attr("name", "eml.associatedParties[" + index + "].address.address");
-                    $("div#" + elementId + " input[id$='city']").attr("name", "eml.associatedParties[" + index + "].address.city");
-                    $("div#" + elementId + " input[id$='province']").attr("name", "eml.associatedParties[" + index + "].address.province");
-                    $("div#" + elementId + " select[id$='country']").attr("name", "eml.associatedParties[" + index + "].address.country");
-                    $("div#" + elementId + " input[id$='postalCode']").attr("name", "eml.associatedParties[" + index + "].address.postalCode");
-                    $("div#" + elementId + " input[id$='phone']").attr("name", "eml.associatedParties[" + index + "].phone");
-                    $("div#" + elementId + " input[id$='email']").attr("name", "eml.associatedParties[" + index + "].email");
-                    $("div#" + elementId + " input[id$='homepage']").attr("name", "eml.associatedParties[" + index + "].homepage");
-                    $("div#" + elementId + " select[id$='directory']").attr("name", "eml.associatedParties[" + index + "].userIds[0].directory");
-                    $("div#" + elementId + " input[id$='identifier']").attr("name", "eml.associatedParties[" + index + "].userIds[0].identifier");
-                    $("div#" + elementId + " select[id$='role']").attr("name", "eml.associatedParties[" + index + "].role");
+                agentItems.each(function (index) {
+                    // previously elementId
+                    var itemId = $(this)[0].id;
+                    var params = {
+                        entity : {
+                            name: entityName,
+                            pluralName: entityNamePlural
+                        },
+                        itemId: itemId,
+                        index: index,
+                        translations: {
+                            role: "${action.getText("eml.agent.role.selection")?js_string}",
+                            country: "${action.getText("eml.country.selection")?js_string}",
+                            directory: "${action.getText("eml.contact.noDirectory")?js_string}",
+                            notFound: "${selectNoResultsFound}"
+                        },
+                        isNew: false
+                    }
+                    setAgentRegularInput("firstName", params);
+                    setAgentRegularInput("lastName", params);
+                    setAgentRegularInput("salutation", params);
+                    setAgentRegularInput("organisation", params);
+                    setAgentRegularDropdown("role", params);
+                    setAgentRepeatableInput("position", params);
+                    setAgentRepeatableInput("address", params);
+                    setAgentRegularInput("city", params);
+                    setAgentRegularInput("province", params);
+                    setAgentRegularDropdown("country", params);
+                    setAgentRegularInput("postalCode", params);
+                    setAgentRepeatableInput("phone", params);
+                    setAgentRepeatableInput("email", params);
+                    setAgentRepeatableInput("homepage", params);
+                    setAgentIdentifier(params);
                 });
 
                 hideProcessing();
+            }
+
+            function getEntityPluralName(entityName) {
+                if (entityName === 'associatedParty')
+                    return 'associatedParties'
+                else return entityName + 's';
             }
 
             var copyAgentModal = $('#copy-agent-modal');
