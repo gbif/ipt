@@ -34,7 +34,7 @@ jobs:
           RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
 
           # Extract the queue number from the response headers
-          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
+          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "^location:" | tr -d '\r' | sed -E 's#^.*/queue/item/([0-9]+)/?#\1#')
 
           # Set QUEUE_NUMBER as an output variable
           echo "::set-output name=queue_number::$QUEUE_NUMBER"
