@@ -60,6 +60,7 @@ jobs:
 
           while true; do
             QUEUE_ITEM_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
+            echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
             echo "DEBUG: Queue response - $(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
             echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
