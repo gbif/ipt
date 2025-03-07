@@ -64,7 +64,7 @@ jobs:
             echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
 
-            if [[ "$QUEUE_ITEM_STATUS" == "false" ]]; then
+            if [[ "$QUEUE_ITEM_STATUS" == false ]]; then
               # The job has left the queue, query the job's URL for its status
               JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
               JOB_RESPONSE=$(curl -s "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
