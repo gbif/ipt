@@ -28,7 +28,7 @@ jobs:
       - name: Trigger Jenkins Job
         id: trigger_jenkins
         run: |
-          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+          BRANCH_NAME="${{ env.branch }}"
 
           # Trigger the Jenkins job and capture the response headers
           RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
