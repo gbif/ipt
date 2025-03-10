@@ -137,6 +137,11 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     return cfg.getBaseUrl();
   }
 
+  public String getLogoRedirectURL() {
+    return Optional.ofNullable(cfg.getLogoRedirectUrl())
+        .orElse(cfg.getBaseUrl());
+  }
+
   public String getPrimaryColor() {
     String primaryColorHex = cfg.getColorSchemeConfig().getPrimaryColor();
     return Integer.valueOf(primaryColorHex.substring(1, 3), 16) + ","

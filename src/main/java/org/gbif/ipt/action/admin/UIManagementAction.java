@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
+import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -37,37 +38,48 @@ public class UIManagementAction extends POSTAction {
 
   private static final Logger LOG = LogManager.getLogger(UIManagementAction.class);
 
-  private DataDir dataDir;
+  private final DataDir dataDir;
+  private final ConfigManager configManager;
 
   private IptColorScheme colorScheme;
 
   private File file;
+  private String logoRedirectUrl;
   private String fileContentType;
   private boolean removeLogo;
 
   @Inject
   public UIManagementAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                            DataDir dataDir) {
+                            DataDir dataDir, ConfigManager configManager) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
+    this.configManager = configManager;
   }
 
   @Override
   public void prepare() {
     super.prepare();
     colorScheme = getCfg().getColorSchemeConfig();
+    logoRedirectUrl = getCfg().getLogoRedirectUrl();
   }
 
   @Override
   public String save() {
     try {
       getCfg().saveColorSchemeConfig(colorScheme);
+      configManager.setLogoRedirectUrl(logoRedirectUrl);
+      configManager.saveConfig();
+
       if (removeLogo) {
         dataDir.removeLogoFile();
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.error("Exception while trying to change IPT UI settings", e);
+      addActionError(getText("admin.uiManagement.error.failedToSafe"));
+      return INPUT;
     }
+
+    addActionMessage(getText("admin.uiManagement.success"));
     return SUCCESS;
   }
 
@@ -102,6 +114,10 @@ public class UIManagementAction extends POSTAction {
 
   public void setFile(File file) {
     this.file = file;
+  }
+
+  public void setLogoRedirectUrl(String url) {
+    this.logoRedirectUrl = url;
   }
 
   public void setFileContentType(String fileContentType) {

@@ -131,4 +131,9 @@ public interface ConfigManager {
    * Sets default IPT language.
    */
   void setDefaultLocale(String defaultLanguage);
+
+  /**
+   * Sets logo redirect URL (by default public URL of the IPT).
+   */
+  void setLogoRedirectUrl(String logoRedirectUrl);
 }
