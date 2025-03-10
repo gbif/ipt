@@ -1633,50 +1633,10 @@ public class EmlValidator extends BaseValidator {
   private boolean isTaxonomicPageEmpty(Eml eml) {
     // total of 1 editable repeatable section on page
     for (TaxonomicCoverage cov : eml.getTaxonomicCoverages()) {
-      boolean isTaxonomicCoverageEmpty = isTaxonomicCoverageEmpty(cov);
+      boolean isTaxonomicCoverageEmpty = cov == null;
       if (!isTaxonomicCoverageEmpty) {
         return false;
       }
-    }
-    return true;
-  }
-
-  /**
-   * Determine if a TaxonomicCoverage is empty. In other words, the user hasn't entered any information for a single
-   * field yet.
-   *
-   * @param cov TaxonomicCoverage
-   * @return whether the TaxonomicCoverage is empty or not.
-   */
-  private boolean isTaxonomicCoverageEmpty(TaxonomicCoverage cov) {
-    if (cov != null) {
-      String description = cov.getDescription();
-      // check all TaxonKeyword are empty
-      for (TaxonKeyword word : cov.getTaxonKeywords()) {
-        boolean isTaxonKeywordEmpty = isTaxonKeywordEmpty(word);
-        if (!isTaxonKeywordEmpty) {
-          return false;
-        }
-      }
-      // gotten here means all TaxonKeyword were empty, therefore the only thing left to check is the description
-      return StringUtils.isBlank(description);
-    }
-    return true;
-  }
-
-  /**
-   * Determine if a TaxonKeyword is empty. In other words, the user hasn't entered any information for a single
-   * field yet.
-   *
-   * @param word TaxonKeyword
-   * @return whether the TaxonKeyword is empty or not.
-   */
-  private boolean isTaxonKeywordEmpty(TaxonKeyword word) {
-    if (word != null) {
-      String scientificName = word.getScientificName();
-      String common = word.getCommonName();
-      String rank = word.getRank();
-      return StringUtils.isBlank(scientificName) && StringUtils.isBlank(common) && StringUtils.isBlank(rank);
     }
     return true;
   }
