@@ -67,6 +67,7 @@ public class ConfigAction extends POSTAction {
   // http request submitted
   protected String baseUrl;
   protected String proxy;
+  protected String logoRedirectUrl;
   protected Boolean debug;
   protected String analyticsKey;
   protected String adminEmail;
@@ -94,6 +95,10 @@ public class ConfigAction extends POSTAction {
 
   public String getBaseUrl() {
     return cfg.getBaseUrl();
+  }
+
+  public String getLogoRedirectUrl() {
+    return cfg.getLogoRedirectUrl();
   }
 
   public String getDataDir() {
@@ -210,6 +215,14 @@ public class ConfigAction extends POSTAction {
       return INPUT;
     }
 
+    // Logo redirect URL
+    try {
+      configManager.setLogoRedirectUrl(logoRedirectUrl);
+    } catch (InvalidConfigException e) {
+      addActionError(getText(e.getMessage()) + " " + logoRedirectUrl);
+      return INPUT;
+    }
+
     // ipt debug mode
     if (debug != null) {
       try {
@@ -279,6 +292,7 @@ public class ConfigAction extends POSTAction {
       return HOME;
     }
 
+    addActionMessage(getText("admin.config.success"));
     return SUCCESS;
   }
 
@@ -293,6 +307,10 @@ public class ConfigAction extends POSTAction {
 
   public void setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
+  }
+
+  public void setLogoRedirectUrl(String logoRedirectUrl) {
+    this.logoRedirectUrl = logoRedirectUrl;
   }
 
   public void setDebug(Boolean debug) {
