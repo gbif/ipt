@@ -102,7 +102,7 @@
                 <@s.text name="admin.config.section.serverLocation"/>
             </h4>
             <div class="row g-3 mb-5">
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="row g-3">
                         <div class="col-12">
                             <@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
@@ -115,11 +115,11 @@
 
 
                 <#if latitude?? && longitude??>
-                    <div class="col-6">
+                    <div class="col-sm-6">
                         <div id="locationMap" class="mt-0"></div>
                     </div>
                 <#else>
-                    <div class="col-6 d-flex justify-content-center align-items-center">
+                    <div class="col-sm-6 d-flex justify-content-center align-items-center">
                         <img src="${baseURL}/images/ipt_no_location_map.gif"/>
                     </div>
                 </#if>
