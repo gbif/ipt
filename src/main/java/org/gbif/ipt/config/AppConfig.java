@@ -82,6 +82,7 @@ public class AppConfig {
   public static final String DEV_VERSION = "dev.version";
   public static final String ADMIN_EMAIL = "admin.email";
   public static final String DEFAULT_LOCALE = "defaultLocale";
+  public static final String LOGO_REDIRECT_URL = "logoRedirectUrl";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   public static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
@@ -658,6 +659,10 @@ public class AppConfig {
     return colorScheme;
   }
 
+  public String getLogoRedirectUrl() {
+    return properties.getProperty(LOGO_REDIRECT_URL);
+  }
+
   // public to be accessible by ConfigManager
   public void saveConfig() throws IOException {
     // save property config file
@@ -729,5 +734,9 @@ public class AppConfig {
 
   public boolean isSupportedLocale(Locale locale) {
     return IPT_SUPPORTED_LOCALES.contains(locale);
+  }
+
+  public void setLogoRedirectUrl(String logoRedirectUrl) {
+    properties.setProperty(LOGO_REDIRECT_URL, logoRedirectUrl);
   }
 }

@@ -23,45 +23,57 @@ jobs:
         id: extract_branch
         run: |
           BRANCH_NAME=$(jq -r '.pull_request.head.ref' $GITHUB_EVENT_PATH)
-          echo "::set-output name=branch::$BRANCH_NAME"
+          echo "branch=$BRANCH_NAME" >> "$GITHUB_ENV"
 
       - name: Trigger Jenkins Job
         id: trigger_jenkins
         run: |
-          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+          BRANCH_NAME="${{ env.branch }}"
 
           # Trigger the Jenkins job and capture the response headers
           RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
 
           # Extract the queue number from the response headers
-          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "Location: " | sed -E 's/Location: .*\/([0-9]*)\/.*/\1/')
+          QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "^location:" | head -n 1 | tr -d '\r' | sed -E 's#^.*/queue/item/([0-9]+)/?#\1#')
+
+          # Check if QUEUE_NUMBER is a valid number
+          if ! [[ "$QUEUE_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "ERROR: Failed to extract a valid queue number. Got: '$QUEUE_NUMBER'"
+            echo "DEBUG: Full response headers:"
+            echo "$RESPONSE_HEADERS"
+            exit 1
+          fi
 
           # Set QUEUE_NUMBER as an output variable
-          echo "::set-output name=queue_number::$QUEUE_NUMBER"
+          echo "queue_number=$QUEUE_NUMBER" >> "$GITHUB_ENV"
 
           # Extract the HTTP response status code
-          HTTP_RESPONSE_STATUS=$(echo "$RESPONSE_HEADERS" | grep -i "HTTP/" | awk '{print $2}')
+          HTTP_RESPONSE_STATUS=$(echo "$RESPONSE_HEADERS" | grep -i "HTTP/" | head -n 1 | awk '{print $2}')
 
           echo "Jenkins job queued with queue number: $QUEUE_NUMBER"
           echo "HTTP Response Status: $HTTP_RESPONSE_STATUS"
 
           if [[ "$HTTP_RESPONSE_STATUS" -ne 201 ]]; then
-            echo "Failed to trigger Jenkins job. HTTP Response Code: HTTP_RESPONSE_STATUS"
+            echo "Failed to trigger Jenkins job. HTTP Response Code: $HTTP_RESPONSE_STATUS"
             exit 1
           fi
 
       - name: Check Jenkins Job Status
         id: check_jenkins_job
         run: |
-          BRANCH_NAME="${{ steps.extract_branch.outputs.branch }}"
+          BRANCH_NAME="${{ env.branch }}"
 
           # Access the queue_number output from the previous step
-          QUEUE_NUMBER="${{ steps.trigger_jenkins.outputs.queue_number }}"
+          QUEUE_NUMBER="${{ env.queue_number }}"
 
           while true; do
             QUEUE_ITEM_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
+            # echo "DEBUG: Queue number: $QUEUE_NUMBER"
+            # echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
+            # echo "DEBUG: Queue response - $(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
+            # echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
-            if [[ "$QUEUE_ITEM_STATUS" == "false" ]]; then
+            if [[ "$QUEUE_ITEM_STATUS" == false ]]; then
               # The job has left the queue, query the job's URL for its status
               JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
               JOB_RESPONSE=$(curl -s "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
@@ -70,7 +82,7 @@ jobs:
 
               echo "Job status is $JOB_RESPONSE"
 
-              if [[ "$IS_JOB_BUILDING" == "false" ]]; then
+              if [[ "$IS_JOB_BUILDING" == false ]]; then
                 if [[ "$JOB_STATUS" == "FAILURE" || "$JOB_STATUS" == "UNSTABLE" ]]; then
                   echo "Jenkins job has failed."
                   echo "See more $JOB_URL"

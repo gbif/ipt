@@ -81,6 +81,7 @@ public class MetadataAction extends ManagerBaseAction {
   private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
   private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
   private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
+  private static final String LICENSE_URL_PROPERTY_PREFIX = "license.url.";
   private static final String DIRECTORIES_PROPFILE_PATH = "/org/gbif/metadata/eml/UserDirectories.properties";
 
   private MetadataSection section = MetadataSection.BASIC_SECTION;
@@ -110,6 +111,7 @@ public class MetadataAction extends ManagerBaseAction {
   private static Properties directoriesProperties;
   private static Map<String, String> licenses;
   private static Map<String, String> licenseTexts;
+  private static Map<String, String> licenseUrls;
   private static Map<String, String> userIdDirectories;
 
   private DataDir dataDir;
@@ -200,7 +202,16 @@ public class MetadataAction extends ManagerBaseAction {
           return entry.getKey();
         }
       }
+
+      // Try URL instead (MDT style)
+      for (Map.Entry<String, String> entry: licenseUrls.entrySet()) {
+        String licenseUrl = entry.getValue();
+        if (StringUtils.isNotBlank(licenseUrl) && licenseTextUpdated.contains(licenseUrl)) {
+          return entry.getKey();
+        }
+      }
     }
+
     return null;
   }
 
@@ -210,6 +221,10 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getLicenseTexts() {
     return licenseTexts;
+  }
+
+  public Map<String, String> getLicenseUrls() {
+    return licenseUrls;
   }
 
   /**
@@ -782,6 +797,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * Load license maps: #1) license names - used to populate select on Basic Metadata Page
    *                    #2) license texts - used to populate text area on Basic Metadata Page
+   *                    #3) license URLs
    *
    * @param firstOption the default select option for the license names (e.g. no license selected)
    *
@@ -789,23 +805,30 @@ public class MetadataAction extends ManagerBaseAction {
    */
   @Singleton
   public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
-    if (licenses == null || licenseTexts == null) {
+    if (licenses == null || licenseTexts == null || licenseUrls == null) {
       licenses = new TreeMap<>(new LicenceComparator());
       licenses.put("", (firstOption == null) ? "-" : firstOption);
       licenseTexts = new TreeMap<>();
+      licenseUrls = new TreeMap<>();
 
       Properties properties = licenseProperties();
       for (Map.Entry<Object, Object> entry : properties.entrySet()) {
         String key = StringUtils.trim((String) entry.getKey());
         String value = StringUtils.trim((String) entry.getValue());
+
         if (key != null && key.startsWith(LICENSE_NAME_PROPERTY_PREFIX) && value != null) {
           String keyMinusPrefix = StringUtils.trimToNull(key.replace(LICENSE_NAME_PROPERTY_PREFIX, ""));
+
           if (keyMinusPrefix != null) {
             String licenseText =
               StringUtils.trimToNull(properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix));
+            String licenseUrl =
+                StringUtils.trimToNull(properties.getProperty(LICENSE_URL_PROPERTY_PREFIX + keyMinusPrefix));
+
             if (licenseText != null) {
               licenses.put(keyMinusPrefix, value);
               licenseTexts.put(keyMinusPrefix, licenseText);
+              licenseUrls.put(keyMinusPrefix, licenseUrl);
             }
           } else {
             String error = LICENSES_PROPFILE_PATH + " has been been configured wrong.";

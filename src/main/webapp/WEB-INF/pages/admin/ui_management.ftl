@@ -463,6 +463,13 @@
                             </a>
                         </div>
 
+                        <div class="col-lg-6">
+                            <label for="file" class="form-label">
+                                <@s.text name="admin.uiManagement.logoUrl"/>
+                            </label>
+                            <input type="text" name="logoRedirectUrl" class="form-control my-1" value="${logoRedirectURL!}">
+                        </div>
+
                         <div class="col-lg-3 d-flex justify-content-start align-items-center">
                             <div id="applogo">
                                 <img id="applogo-image" src="${baseURL}/appLogo.do" />

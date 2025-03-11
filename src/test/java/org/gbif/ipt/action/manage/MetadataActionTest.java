@@ -106,7 +106,7 @@ public class MetadataActionTest {
 
   @Test
   public void testLicensesProperties() {
-    assertEquals(6, MetadataAction.licenseProperties().size());
+    assertEquals(9, MetadataAction.licenseProperties().size());
   }
 
   @Test
@@ -115,6 +115,7 @@ public class MetadataActionTest {
     assertEquals(4, action.getLicenses().size()); // includes "select a license"
     assertEquals("Select a license", action.getLicenses().get(""));
     assertEquals(3, action.getLicenseTexts().size());
+    assertEquals(3, action.getLicenseUrls().size());
   }
 
   @Test

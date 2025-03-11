@@ -526,4 +526,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
             .filter(cfg::isSupportedLanguage)
             .ifPresent(cfg::setDefaultLocale);
   }
+
+  @Override
+  public void setLogoRedirectUrl(String logoRedirectUrl) {
+    Optional.ofNullable(logoRedirectUrl)
+        .ifPresent(cfg::setLogoRedirectUrl);
+  }
 }

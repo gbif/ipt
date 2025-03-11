@@ -77,6 +77,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Guice;
@@ -92,6 +93,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+// TODO: temporarily disabled because of connection to builds.gbif.org/clb
+@Disabled("Temporarily disabled because of connection to builds.gbif.org/clb")
 public class GenerateDwcaIT {
 
   private static final String RESOURCE_SHORTNAME = "res1";
