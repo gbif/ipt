@@ -199,6 +199,7 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.EML_2_1_1_SCHEMA;
 import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
@@ -2109,7 +2110,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void loadMetadata(Resource resource) {
-    if (resource.isDataPackage()) {
+    if (resource.isDataPackage() && DWC_DP.equals(resource.getCoreType())) {
+      loadDatapackageMetadata(resource);
+      loadEml(resource);
+    } else if (resource.isDataPackage()) {
       loadDatapackageMetadata(resource);
     } else {
       loadEml(resource);
