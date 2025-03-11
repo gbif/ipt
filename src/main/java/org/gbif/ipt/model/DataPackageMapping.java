@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +33,8 @@ import lombok.NoArgsConstructor;
 public class DataPackageMapping implements Serializable {
 
   private static final long serialVersionUID = -8441887797416795559L;
+
+  private static final Logger LOG = LogManager.getLogger(DataPackageMapping.class);
 
   private Source source;
   private DataPackageSchema dataPackageSchema;
@@ -71,10 +76,14 @@ public class DataPackageMapping implements Serializable {
 
   public DataPackageFieldMapping getField(String name) {
     if (fields != null) {
+      int index = 0;
       for (DataPackageFieldMapping dsfm : fields) {
-        if (dsfm.getField().getName().equals(name)) {
+        if (dsfm.getField() == null) {
+          LOG.error("Data package field mapping has null for field. Index: {}", index);
+        } else if (dsfm.getField().getName().equals(name)) {
           return dsfm;
         }
+        index++;
       }
     }
     return null;
