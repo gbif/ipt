@@ -18,7 +18,6 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
-import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -39,36 +38,30 @@ public class UIManagementAction extends POSTAction {
   private static final Logger LOG = LogManager.getLogger(UIManagementAction.class);
 
   private final DataDir dataDir;
-  private final ConfigManager configManager;
 
   private IptColorScheme colorScheme;
 
   private File file;
-  private String logoRedirectUrl;
   private String fileContentType;
   private boolean removeLogo;
 
   @Inject
   public UIManagementAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                            DataDir dataDir, ConfigManager configManager) {
+                            DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
-    this.configManager = configManager;
   }
 
   @Override
   public void prepare() {
     super.prepare();
     colorScheme = getCfg().getColorSchemeConfig();
-    logoRedirectUrl = getCfg().getLogoRedirectUrl();
   }
 
   @Override
   public String save() {
     try {
       getCfg().saveColorSchemeConfig(colorScheme);
-      configManager.setLogoRedirectUrl(logoRedirectUrl);
-      configManager.saveConfig();
 
       if (removeLogo) {
         dataDir.removeLogoFile();
@@ -114,10 +107,6 @@ public class UIManagementAction extends POSTAction {
 
   public void setFile(File file) {
     this.file = file;
-  }
-
-  public void setLogoRedirectUrl(String url) {
-    this.logoRedirectUrl = url;
   }
 
   public void setFileContentType(String fileContentType) {
