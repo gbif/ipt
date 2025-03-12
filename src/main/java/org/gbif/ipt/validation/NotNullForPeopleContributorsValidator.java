@@ -33,7 +33,7 @@ public class NotNullForPeopleContributorsValidator implements ConstraintValidato
       String lastName = BeanUtils.getProperty(value, "lastName");
 
       // last name must not be null for the roles
-      if (ROLES.contains(roleValue) && StringUtils.isEmpty(lastName)) {
+      if ((ROLES.contains(roleValue) || StringUtils.isEmpty(roleValue)) && StringUtils.isEmpty(lastName)) {
         ctx.disableDefaultConstraintViolation();
         ctx.buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
             .addPropertyNode("lastName")
