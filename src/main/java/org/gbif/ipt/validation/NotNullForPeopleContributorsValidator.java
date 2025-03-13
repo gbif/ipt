@@ -13,14 +13,14 @@
  */
 package org.gbif.ipt.validation;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class NotNullForPeopleContributorsValidator implements ConstraintValidator<NotNullLastNameForPeopleContributors, Object> {
 
@@ -30,7 +30,7 @@ public class NotNullForPeopleContributorsValidator implements ConstraintValidato
   public boolean isValid(Object value, ConstraintValidatorContext ctx) {
     try {
       String roleValue = BeanUtils.getProperty(value, "role");
-      String lastName = BeanUtils.getProperty(value, "lastName");
+      String lastName = StringUtils.trimToNull(BeanUtils.getProperty(value, "lastName"));
 
       // last name must not be null for the roles
       if ((ROLES.contains(roleValue) || StringUtils.isEmpty(roleValue)) && StringUtils.isEmpty(lastName)) {
