@@ -81,19 +81,10 @@
 
     <main class="container main-content-container">
         <div class="my-3 p-3 ">
-            <div class="row g-3">
-                <div class="col-lg-6">
-                    <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
-                </div>
-
-                <div class="col-lg-6">
-                    <@select name="defaultLocale" value="${defaultLocale!'en'}" options=defaultLocales help="i18n" i18nkey="admin.config.defaultLocale" includeEmpty=false />
-                </div>
-
-                <div class="col-lg-6">
-                    <@input name="adminEmail" i18nkey="admin.config.adminEmail" help="i18n" size=80/>
-                </div>
-
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.urls"/>
+            </h4>
+            <div class="row g-3 mb-5">
                 <div class="col-lg-6">
                     <@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
                 </div>
@@ -103,50 +94,107 @@
                 </div>
 
                 <div class="col-lg-6">
+                    <@input name="logoRedirectUrl" i18nkey="admin.config.logoUrl" help="i18n" size=80/>
+                </div>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.serverLocation"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-sm-6">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
+                        </div>
+                        <div class="col-12">
+                            <@input name="longitude" i18nkey="admin.config.server.longitude" help="i18n" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <#if latitude?? && longitude??>
+                    <div class="col-sm-6">
+                        <div id="locationMap" class="mt-0"></div>
+                    </div>
+                <#else>
+                    <div class="col-sm-6 d-flex justify-content-center align-items-center">
+                        <img src="${baseURL}/images/ipt_no_location_map.gif"/>
+                    </div>
+                </#if>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.administration"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-lg-6">
+                    <@input name="adminEmail" i18nkey="admin.config.adminEmail" help="i18n" size=80/>
+                </div>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.localization"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-lg-6">
+                    <@select name="defaultLocale" value="${defaultLocale!'en'}" options=defaultLocales help="i18n" i18nkey="admin.config.defaultLocale" includeEmpty=false />
+                </div>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.analytics"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-lg-6">
                     <@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
                 </div>
+            </div>
 
-                <div class="col-12">
-                    <@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
-                </div>
-
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.archiving"/>
+            </h4>
+            <div class="row g-3 mb-5">
                 <div class="col-12">
                     <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" value="${archivalMode?c}" help="i18n"/>
                 </div>
 
                 <div class="col-lg-6">
                     <@input name="archivalLimit" i18nkey="admin.config.archivalLimit" help="i18n" type="number"/>
+                </div>
+            </div>
 
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.debugging"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-12">
+                    <@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
+                </div>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.directories"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-lg-6">
+                    <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
                 </div>
 
                 <div class="col-lg-6">
                     <@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
                 </div>
+            </div>
 
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.registry"/>
+            </h4>
+            <div class="row g-3 mb-5">
                 <div class="col-lg-6">
                     <@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
                 </div>
-
             </div>
-
-            <div id="location" class="row g-3 mb-3 mt-2">
-                <label for="latitude"><@s.text name="admin.config.server.location"/></label>
-                <div class="col-lg-6">
-                    <@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
-                </div>
-                <div class="col-lg-6">
-                    <@input name="longitude" i18nkey="admin.config.server.longitude" help="i18n" />
-                </div>
-            </div>
-
-            <#if latitude?? && longitude??>
-                <#-- the map -->
-                <div id="locationMap" class="mt-0"></div>
-            <#else>
-                <div class="mt-0" >
-                    <img src="${baseURL}/images/ipt_no_location_map.gif"/>
-                </div>
-            </#if>
         </div>
     </main>
 </form>

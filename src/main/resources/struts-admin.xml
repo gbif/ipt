@@ -24,7 +24,7 @@
     <!-- IPT MAIN CONFIGURATION -->
     <action name="config" class="org.gbif.ipt.action.admin.ConfigAction">
       <result name="input">/WEB-INF/pages/admin/config.ftl</result>
-      <result name="success" type="redirect">${baseURL}/home.do</result>
+      <result name="success" type="redirect">${baseURL}/config.do</result>
       <result name="home" type="redirect">${baseURL}/home.do</result>
     </action>
     <action name="publishAll" class="org.gbif.ipt.action.admin.PublishAllResourcesAction">

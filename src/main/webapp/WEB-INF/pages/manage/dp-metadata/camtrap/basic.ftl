@@ -113,10 +113,6 @@
                     removeContributorItem(event);
                 });
 
-                $("#contributor-item-" + index + " [id$='titleDisplay']").attr("id", "contributor[" + index + "].titleDisplay").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='titleDisplay']").attr("for", "contributor[" + index + "].titleDisplay");
                 $("#contributor-item-" + index + " [id$='title']").attr("id", "metadata.contributors[" + index + "].title").attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -163,20 +159,64 @@
                 });
                 $("#contributor-item-" + index + " [for$='organization']").attr("for", "metadata.contributors[" + index + "].organization");
 
+                $('input[id^="metadata\\.contributors"][id$="\\.firstName"]').on('input', function() {
+                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var lastName = $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").val();
+                    var title;
+
+                    if (lastName) {
+                        title = $(this).val() + " " + lastName;
+                    } else {
+                        title = $(this).val();
+                    }
+
+                    if (title) {
+                        title = title.trim();
+                    }
+
+                    $title.val(title);
+                });
+
+                $('input[id^="metadata\\.contributors"][id$="\\.lastName"]').on('input', function() {
+                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                    var firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName").val();
+
+                    var title;
+
+                    if (firstName) {
+                        title = firstName + " " + $(this).val();
+                    } else {
+                        title = $(this).val();
+                    }
+
+                    if (title) {
+                        title = title.trim();
+                    }
+
+                    $title.val(title);
+                });
+
                 // disable title, show last name and first name
                 $("#metadata\\.contributors\\[" + index + "\\]\\.role").on("change", function () {
                     var selectedRole = $(this).val();
 
                     var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var $displayedTitle = $("#contributor\\[" + index + "\\]\\.titleDisplay");
+                    var $titleWrapper = $title.closest(".title-col-wrapper");
                     var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                    var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
                     var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+                    var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
 
-                    if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
-                        // title should be disabled
-                        $displayedTitle.prop("readonly", true);
-                        $displayedTitle.val($firstName.val() + " " + $lastName.val());
+                    if (!selectedRole
+                        || selectedRole === 'CONTACT'
+                        || selectedRole === 'PRINCIPAL_INVESTIGATOR'
+                        || selectedRole === 'CONTRIBUTOR') {
                         $title.val($firstName.val() + " " + $lastName.val());
+                        $titleWrapper.hide();
+
+                        // add margins (remove zero margin class)
+                        $firstNameWrapper.removeClass("mt-0");
+                        $lastNameWrapper.removeClass("mt-0");
 
                         // first name input and label should be displayed
                         $firstName.show();
@@ -187,25 +227,34 @@
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
 
 
+                        var title;
                         $firstName.on('input', function() {
-                            $title.val($(this).val() + " " + $lastName.val());
+                            title = $(this).val() + " " + $lastName.val();
+                            if (title) title = title.trim();
+                            $title.val(title);
                         });
 
                         $lastName.on('input', function() {
-                            $title.val($firstName.val() + " " + $(this).val());
+                            title = $firstName.val() + " " + $(this).val();
+                            if (title) title = title.trim();
+                            $title.val(title);
                         });
 
                     } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
-                        $displayedTitle.prop("readonly", false);
-                        $title.val($displayedTitle.val());
-                        $displayedTitle.on('input', function() {
-                            $title.val($displayedTitle.val());
-                        });
+                        $title.val($firstName.val() + " " + $lastName.val());
+                        $titleWrapper.removeClass("d-none");
+                        $titleWrapper.show();
+
+                        // remove margins
+                        $firstNameWrapper.addClass("mt-0");
+                        $lastNameWrapper.addClass("mt-0");
 
                         $firstName.hide();
+                        $firstName.val("")
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
 
                         $lastName.hide();
+                        $lastName.val("");
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
                     }
                 });
@@ -257,11 +306,16 @@
                 var index = $(this)[0].id.match(/\d+/)[0];
                 var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
                 var lastName = $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").val();
+                var title;
 
                 if (lastName) {
-                    $title.val($(this).val() + " " + lastName);
+                    title = $(this).val() + " " + lastName;
+                    if (title) title = title.trim();
+                    $title.val(title);
                 } else {
-                    $title.val($(this).val());
+                    title = $(this).val();
+                    if (title) title = title.trim();
+                    $title.val(title);
                 }
             });
 
@@ -269,11 +323,16 @@
                 var index = $(this)[0].id.match(/\d+/)[0];
                 var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
                 var firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName").val();
+                var title;
 
                 if (firstName) {
-                    $title.val(firstName + " " + $(this).val());
+                    title = firstName + " " + $(this).val();
+                    if (title) title = title.trim();
+                    $title.val(title);
                 } else {
-                    $title.val($(this).val());
+                    title = $(this).val();
+                    if (title) title = title.trim();
+                    $title.val(title);
                 }
             });
 
@@ -284,15 +343,20 @@
 
                 if (idNumbersMatch) {
                     var index = idNumbersMatch[0];
-
                     var role = $(this).val();
-
                     var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var $displayedTitle = $("#contributor\\[" + index + "\\]\\.titleDisplay");
+                    var $titleWrapper = $title.closest('.title-col-wrapper');
                     var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                    var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
                     var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+                    var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
 
-                    if (role === 'CONTACT' || role === 'PRINCIPAL_INVESTIGATOR' || role === 'CONTRIBUTOR') {
+                    if (!role
+                        || role === 'CONTACT'
+                        || role === 'PRINCIPAL_INVESTIGATOR'
+                        || role === 'CONTRIBUTOR') {
+                        $titleWrapper.hide();
+
                         // first name input and label should be displayed
                         $firstName.show();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
@@ -301,10 +365,13 @@
                         $lastName.show();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
                     } else {
-                        $displayedTitle.prop("disabled", false);
+                        $titleWrapper.show();
+
+                        $firstNameWrapper.addClass("mt-0");
                         $firstName.hide();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
 
+                        $lastNameWrapper.addClass("mt-0");
                         $lastName.hide();
                         $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
                     }
@@ -313,58 +380,85 @@
 
             // existing contributors - hide/display first/last name fields when role changes
             $('select[id^="metadata\\.contributors"][id$="\\.role"]').on("change", function () {
-                var selectedRole = $(this).val();
+                var $select = $(this);
+                var selectedRole = $select.val();
                 var index = $(this)[0].id.match(/\d+/)[0];
 
-                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
-                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+                // remove validation message
+                $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").removeClass("is-invalid")
 
-                if (selectedRole === 'CONTACT' || selectedRole === 'PRINCIPAL_INVESTIGATOR' || selectedRole === 'CONTRIBUTOR') {
-                    // title should be disabled (read-only)
-                    $("#contributor\\[" + index + "\\]\\.titleDisplay").prop("readonly", true);
-
-                    // first name input and label should be displayed
-                    $firstName.show();
-                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
-
-                    // last name input and label should be displayed
-                    $lastName.show();
-                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
-
-                    var names = $title.val().split(/\s+/);
-
-                    if (names.length > 0) {
-                        if (names.length === 1) {
-                            $lastName.val(names[0])
-                        } else {
-                            $firstName.val(names[0])
-                            $lastName.val(names.slice(1).join(" "))
-                        }
-                    }
-
-                    $firstName.on('input', function() {
-                        $title.val($(this).val() + " " + $lastName.val());
-                    });
-
-                    $lastName.on('input', function() {
-                        $title.val($firstName.val() + " " + $(this).val());
-                    });
-
-                } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
-                    $("#contributor\\[" + index + "\\]\\.titleDisplay").prop("readonly", false);
-
-                    $firstName.hide();
-                    $firstName.val('');
-                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
-
-                    $lastName.hide();
-                    $lastName.val('');
-                    $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
+                if (!selectedRole
+                    || selectedRole === 'CONTACT'
+                    || selectedRole === 'PRINCIPAL_INVESTIGATOR'
+                    || selectedRole === 'CONTRIBUTOR') {
+                    handlePeopleContributor(index);
+                } else if (selectedRole === 'PUBLISHER'
+                    || selectedRole === 'RIGHTS_HOLDER') {
+                    handleOrganizationalContributor(index);
                 }
             });
 
+            function handlePeopleContributor(index) {
+                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                var $titleWrapper = $title.closest(".title-col-wrapper");
+                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
+                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+                var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
 
+                // title is hidden (hide its wrapper)
+                $titleWrapper.hide();
+
+                // first name input and label should be displayed
+                $firstNameWrapper.removeClass("mt-0");
+                $firstName.show();
+                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
+
+                // last name input and label should be displayed
+                $lastNameWrapper.removeClass("mt-0");
+                $lastName.show();
+                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
+
+                var names = $title.val().split(/\s+/);
+
+                if (names.length > 0) {
+                    if (names.length === 1) {
+                        $lastName.val(names[0])
+                    } else {
+                        $firstName.val(names[0])
+                        $lastName.val(names.slice(1).join(" "))
+                    }
+                }
+
+                $firstName.on('input', function() {
+                    $title.val($firstName.val() + " " + $lastName.val());
+                });
+
+                $lastName.on('input', function() {
+                    $title.val($firstName.val() + " " + $lastName.val());
+                });
+            }
+
+            function handleOrganizationalContributor(index) {
+                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
+                var $titleWrapper = $title.closest('.title-col-wrapper');
+                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
+                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
+
+                $title.show();
+                $titleWrapper.removeClass("d-none");
+                $titleWrapper.show();
+
+                $firstName.hide();
+                $firstName.closest('.firstName-col-wrapper').addClass("mt-0");
+                $firstName.val('');
+                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
+
+                $lastName.hide();
+                $lastName.closest('.lastName-col-wrapper').addClass("mt-0");
+                $lastName.val('');
+                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
+            }
 
             $('#metadata\\.licenses\\[0\\]\\.name').select2({
                 placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
@@ -514,18 +608,21 @@
                                                     <span>${removeContributorLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
-                                            <div class="col-12">
-                                                <#if (item.role)?? && (item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator")>
-                                                    <@input name="contributor[${item_index}].titleDisplay" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true disabled=true />
-                                                <#else>
-                                                    <@input name="contributor[${item_index}].titleDisplay" value="${item.title!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
-                                                </#if>
-                                                <input type='hidden' id='metadata.contributors[${item_index}].title' name='metadata.contributors[${item_index}].title' value='${item.title!}' />
+
+                                            <#if ((item.role)?? && (item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator")) || !(item.role)??>
+                                                <div class="col-12 title-col-wrapper d-none">
+                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                </div>
+                                            <#else>
+                                                <div class="col-12 title-col-wrapper">
+                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.title!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                </div>
+                                            </#if>
+
+                                            <div class="col-lg-6 firstName-col-wrapper">
+                                                <@input name="metadata.contributors[${item_index}].firstName" i18nkey="datapackagemetadata.contributor.firstName" />
                                             </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-6 lastName-col-wrapper">
                                                 <@input name="metadata.contributors[${item_index}].lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
@@ -677,14 +774,13 @@
                 <span>${removeContributorLink?lower_case?cap_first}</span>
             </a>
         </div>
-        <div class="col-12">
-            <@input name="contributor.titleDisplay" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true/>
-            <input type='hidden' id='metadata.contributors.title' name='metadata.contributors.title' value='' />
+        <div class="col-12 title-col-wrapper d-none">
+            <@input name="metadata.contributors.title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
         </div>
-        <div class="col-lg-6">
-            <@input name="metadata.contributors.firstName" i18nkey="datapackagemetadata.contributor.firstName" requiredField=true />
+        <div class="col-lg-6 firstName-col-wrapper">
+            <@input name="metadata.contributors.firstName" i18nkey="datapackagemetadata.contributor.firstName" />
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 lastName-col-wrapper">
             <@input name="metadata.contributors.lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
         </div>
         <div class="col-lg-6">

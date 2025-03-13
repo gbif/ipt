@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -47,7 +47,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    * (Required)
    */
   @JsonProperty("title")
-  @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
+  @NotBlank(message = "validation.input.required", groups = BasicMetadata.class)
   private String title;
 
   /**

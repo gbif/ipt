@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -84,6 +85,20 @@ public class CamtrapContributor extends FrictionlessContributor {
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", CamtrapContributor.class.getSimpleName() + "[", "]")
+        .add("title='" + super.getTitle() + "'")
+        .add("path='" + super.getPath() + "'")
+        .add("email='" + super.getEmail() + "'")
+        .add("organization='" + super.getOrganization() + "'")
+        .add("role='" + super.getRole() + "'")
+        .add("firstName='" + firstName + "'")
+        .add("lastName='" + lastName + "'")
+        .add("additionalProperties=" + super.getAdditionalProperties())
+        .toString();
   }
 
   public static class CamtrapContributorDeserializer extends JsonDeserializer<Contributor> {

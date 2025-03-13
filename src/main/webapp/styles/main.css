@@ -1563,7 +1563,7 @@ div#record_graph .color-bar {
 #locationMap {
     clear: both;
     height: 170px;
-    max-width: 310px;
+    max-width: 100%;
 }
 
 #map {
