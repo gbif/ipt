@@ -14,13 +14,18 @@ image::ipt2/v22/Crowdin-Join.png[]
 
 === Current languages
 
+* Arabic
+* Czech
+* English
 * French
+* Chinese Simplified
+* Chinese Traditional 
 * Japanese
+* Polish
 * Portuguese
 * Russian
 * Spanish
-* Traditional Chinese
-* Persian (incomplete)
+* Ukrainian
 
 If you want to translate the user interface into another language, please email helpdesk@gbif.org.
 
