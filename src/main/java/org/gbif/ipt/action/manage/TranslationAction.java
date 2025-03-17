@@ -34,13 +34,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
+import org.springframework.web.context.annotation.SessionScope;
 
 import freemarker.ext.beans.SimpleMapModel;
 
@@ -51,7 +50,7 @@ public class TranslationAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
 
-  @SessionScoped
+  @SessionScope
   static class Translation {
 
     private String rowType;
@@ -122,8 +121,14 @@ public class TranslationAction extends ManagerBaseAction {
   private Integer mid;
 
   @Inject
-  public TranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, SourceManager sourceManager, VocabulariesManager vocabManager, Translation trans) {
+  public TranslationAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      SourceManager sourceManager,
+      VocabulariesManager vocabManager,
+      Translation trans) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.vocabManager = vocabManager;

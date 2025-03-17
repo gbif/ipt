@@ -15,6 +15,7 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -22,18 +23,20 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -79,6 +82,7 @@ public class UserAccountsAction extends POSTAction {
           "to share the new password with the user";
 
   private final UserAccountManager userManager;
+  private final ResourceManager resourceManager;
   private final UserValidator validator = new UserValidator();
 
   private User user;
@@ -88,10 +92,65 @@ public class UserAccountsAction extends POSTAction {
   private List<User> users;
 
   @Inject
-  public UserAccountsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    UserAccountManager userManager) {
+  public UserAccountsAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      UserAccountManager userManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
+    this.resourceManager = resourceManager;
+  }
+
+  private void checkUserResourcesBeforeDeletion(String email) throws DeletionNotAllowedException {
+    User remUser = userManager.get(email);
+
+    // TODO: check remUser not null?
+
+    Set<String> resourcesCreatedByUser = new HashSet<>();
+    for (Resource r : resourceManager.list()) {
+      User creator = userManager.get(r.getCreator().getEmail());
+      if (creator != null && creator.equals(remUser)) {
+        resourcesCreatedByUser.add(r.getShortname());
+      }
+    }
+
+    Set<String> resourcesManagedOnlyByUser = new HashSet<>();
+    for (Resource r : resourceManager.list(remUser)) {
+      Set<User> managers = new HashSet<>();
+      // add creator to the list of managers, but only if creator has manager rights!
+      User creator = userManager.get(r.getCreator().getEmail());
+      if (creator != null && creator.hasManagerRights()) {
+        managers.add(creator);
+      }
+      for (User m : r.getManagers()) {
+        User manager = userManager.get(m.getEmail());
+        if (manager != null) {
+          managers.add(manager);
+        }
+      }
+      // lastly, exclude user to be deleted, then check if at least one user with manager rights remains for resource
+      managers.remove(remUser);
+      if (managers.isEmpty()) {
+        resourcesManagedOnlyByUser.add(r.getShortname());
+      }
+    }
+
+    if (!resourcesManagedOnlyByUser.isEmpty()) {
+      // Check #1, is user the only manager that exists for or more resources? If yes, prevent deletion!
+      throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesManagedOnlyByUser.toString());
+    } else if (!resourcesCreatedByUser.isEmpty()) {
+      // Check #2, is user the creator of one or more resources? If yes, prevent deletion!
+      throw new DeletionNotAllowedException(Reason.IS_RESOURCE_CREATOR, resourcesCreatedByUser.toString());
+    }
+  }
+
+  private void removeUserFromResourceManagers(User user) {
+    for (Resource r : resourceManager.list(user)) {
+      r.getManagers().remove(user);
+      resourceManager.save(r);
+    }
   }
 
   @Override
@@ -103,16 +162,26 @@ public class UserAccountsAction extends POSTAction {
       addActionError(getText("admin.user.deleted.current"));
     } else {
       try {
-        User removedUser = userManager.delete(id);
-        if (removedUser == null) {
+        User userToBeDeleted = userManager.get(id);
+
+        if (userToBeDeleted == null) {
           return NOT_FOUND;
+        } else {
+          checkUserResourcesBeforeDeletion(id);
+          removeUserFromResourceManagers(userToBeDeleted);
+          boolean result = userManager.delete(id);
+
+          if (result) {
+            userManager.save();
+            LOG.info("User {} has been successfully deleted by {}", id, currentUser.getEmail());
+            addActionMessage(getText("admin.user.deleted"));
+
+            return SUCCESS;
+          } else {
+            LOG.info("Failed to delete user {}", id);
+            return INPUT;
+          }
         }
-        userManager.save();
-
-        LOG.info("User {} has been successfully deleted by {}", id, currentUser.getEmail());
-        addActionMessage(getText("admin.user.deleted"));
-
-        return SUCCESS;
       } catch (DeletionNotAllowedException e) {
         if (Reason.LAST_ADMIN == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastadmin"));

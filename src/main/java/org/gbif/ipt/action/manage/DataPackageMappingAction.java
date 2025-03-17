@@ -39,11 +39,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.inject.Inject;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -85,9 +84,13 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<String> newSources = new ArrayList<>();
 
   @Inject
-  public DataPackageMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
-                                  RegistrationManager registrationManager, ResourceManager resourceManager,
-                                  DataPackageSchemaManager schemaManager, SourceManager sourceManager) {
+  public DataPackageMappingAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      DataPackageSchemaManager schemaManager,
+      SourceManager sourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.schemaManager = schemaManager;
     this.sourceManager = sourceManager;

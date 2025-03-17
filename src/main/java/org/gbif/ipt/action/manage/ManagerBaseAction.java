@@ -22,9 +22,9 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.inject.Inject;
 
-import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,8 +40,11 @@ public class ManagerBaseAction extends POSTAction {
   protected Resource resource;
 
   @Inject
-  public ManagerBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager) {
+  public ManagerBaseAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
   }

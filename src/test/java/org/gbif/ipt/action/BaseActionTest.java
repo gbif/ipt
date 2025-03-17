@@ -59,7 +59,7 @@ public class BaseActionTest {
     when(mockActionContext.getContainer()).thenReturn(mockContainer);
 
     //Set threadLocal ActionContext
-    ActionContext.setContext(mockActionContext);
+    ActionContext.bind(mockActionContext);
 
     //TEST
     BaseAction action = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));

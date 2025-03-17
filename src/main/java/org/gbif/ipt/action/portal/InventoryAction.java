@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -49,7 +49,9 @@ public class InventoryAction extends ActionSupport {
   private List<DatasetItem> inventory = new ArrayList<>();
 
   @Inject
-  public InventoryAction(AppConfig cfg, ResourceManager resourceManager) {
+  public InventoryAction(
+      AppConfig cfg,
+      ResourceManager resourceManager) {
     this.cfg = cfg;
     this.resourceManager = resourceManager;
   }

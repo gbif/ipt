@@ -32,7 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 /**
  * The Action responsible for serving datadir resource files.
@@ -50,8 +50,12 @@ public class ResourceFileAction extends PortalBaseAction {
   protected String filename;
 
   @Inject
-  public ResourceFileAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    DataDir dataDir, ResourceManager resourceManager) {
+  public ResourceFileAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      DataDir dataDir,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.dataDir = dataDir;
   }

@@ -24,12 +24,11 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.math.BigDecimal;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * Action that allows a editing a resource version's change summary.
@@ -42,8 +41,11 @@ public class VersionHistoryAction extends ManagerBaseAction {
   private String summary;
 
   @Inject
-  public VersionHistoryAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager) {
+  public VersionHistoryAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
   }
 

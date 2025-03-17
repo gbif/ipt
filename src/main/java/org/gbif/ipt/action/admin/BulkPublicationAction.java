@@ -18,12 +18,15 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 public class BulkPublicationAction extends BaseAction {
 
   @Inject
-  public BulkPublicationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+  public BulkPublicationAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
   }
 

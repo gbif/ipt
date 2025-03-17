@@ -25,11 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The Action responsible for serving config datadir ui files.
@@ -47,8 +46,12 @@ public class AppFileAction extends PortalBaseAction {
   protected String filename;
 
   @Inject
-  public AppFileAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                            DataDir dataDir, ResourceManager resourceManager) {
+  public AppFileAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      DataDir dataDir,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.dataDir = dataDir;
   }

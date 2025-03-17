@@ -41,13 +41,12 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
@@ -86,9 +85,16 @@ public class SetupAction extends BaseAction {
   private static final List<String> MODES = Arrays.asList(MODE_DEVELOPMENT, MODE_PRODUCTION);
 
   @Inject
-  public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
-                     ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-                     ExtensionManager extensionManager, DataPackageSchemaManager schemaManager, HttpClient client) {
+  public SetupAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager regManager,
+      ConfigManager configManager,
+      UserAccountManager userManager,
+      DataDir dataDir,
+      ExtensionManager extensionManager,
+      DataPackageSchemaManager schemaManager,
+      HttpClient client) {
     super(textProvider, cfg, regManager);
     this.cfg = cfg;
     this.configManager = configManager;

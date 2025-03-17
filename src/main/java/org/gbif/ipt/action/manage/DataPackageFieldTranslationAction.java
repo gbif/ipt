@@ -35,13 +35,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
+import org.springframework.web.context.annotation.SessionScope;
 
 import freemarker.ext.beans.SimpleMapModel;
 import lombok.Getter;
@@ -52,7 +51,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
 
-  @SessionScoped
+  @SessionScope
   static class Translation {
 
     private String tableSchema;
@@ -110,8 +109,13 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   private Integer mid;
 
   @Inject
-  public DataPackageFieldTranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                           ResourceManager resourceManager, SourceManager sourceManager, Translation trans) {
+  public DataPackageFieldTranslationAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      SourceManager sourceManager,
+      Translation trans) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.trans = trans;

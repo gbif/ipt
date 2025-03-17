@@ -15,7 +15,9 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
@@ -29,11 +31,10 @@ import org.gbif.ipt.validation.EmlValidator;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 public class PublishAllResourcesAction extends BaseAction {
 
@@ -48,9 +49,13 @@ public class PublishAllResourcesAction extends BaseAction {
   private final DataPackageMetadataValidator dpMetadataValidator;
 
   @Inject
-  public PublishAllResourcesAction(SimpleTextProvider textProvider, AppConfig cfg,
-                                   RegistrationManager registrationManager, ResourceManager resourceManager,
-                                   RegistryManager registryManager, DataPackageMetadataValidator dpMetadataValidator) {
+  public PublishAllResourcesAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      RegistryManager registryManager,
+      DataPackageMetadataValidator dpMetadataValidator) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.registryManager = registryManager;
@@ -67,8 +72,10 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // start with IPT registration update, provided the IPT has been registered already
     try {
-      if (registrationManager.getIpt() != null) {
-        registryManager.updateIpt(registrationManager.getIpt());
+      Ipt ipt = registrationManager.getIpt();
+      if (ipt != null) {
+        registryManager.updateIpt(ipt);
+        updateResources(ipt);
       }
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
@@ -147,5 +154,20 @@ public class PublishAllResourcesAction extends BaseAction {
     clearMessages();
     addActionMessage(getText("admin.config.updateMetadata.summary"));
     return SUCCESS;
+  }
+
+  private void updateResources(Ipt ipt) {
+    List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
+    if (!resources.isEmpty()) {
+      LOG.info("Next, update {} resource registrations...", resources.size());
+      for (Resource resource : resources) {
+        try {
+          registryManager.updateResource(resource, ipt.getKey().toString());
+        } catch (IllegalArgumentException e) {
+          LOG.error(e.getMessage());
+        }
+      }
+      LOG.info("Resource registrations updated successfully!");
+    }
   }
 }

@@ -20,18 +20,15 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.IOException;
 import java.util.List;
-
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -53,8 +50,11 @@ public class LoginAction extends POSTAction {
   private String csrfToken;
 
   @Inject
-  public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                     UserAccountManager userManager) {
+  public LoginAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      UserAccountManager userManager) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
   }

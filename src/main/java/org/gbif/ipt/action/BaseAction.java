@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +43,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -82,7 +82,10 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   protected RegistrationManager registrationManager;
 
   @Inject
-  public BaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+  public BaseAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager) {
     this.textProvider = textProvider;
     this.cfg = cfg;
     this.registrationManager = registrationManager;

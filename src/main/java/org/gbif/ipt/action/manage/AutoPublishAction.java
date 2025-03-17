@@ -30,11 +30,10 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimeZone;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 public class AutoPublishAction extends ManagerBaseAction {
 
@@ -54,8 +53,12 @@ public class AutoPublishAction extends ManagerBaseAction {
   private Map<String, String> daysOfWeek;
 
   @Inject
-  public AutoPublishAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager, ResourceManager resourceManager,
-                           VocabulariesManager vocabManager) {
+  public AutoPublishAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
   }

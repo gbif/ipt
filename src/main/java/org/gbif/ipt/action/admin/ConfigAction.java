@@ -30,12 +30,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
@@ -78,8 +77,12 @@ public class ConfigAction extends POSTAction {
   protected String defaultLocale;
 
   @Inject
-  public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ConfigManager configManager, ResourceManager resourceManager) {
+  public ConfigAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ConfigManager configManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.configManager = configManager;
     this.resourceManager = resourceManager;

@@ -45,12 +45,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 public class CreateResourceAction extends POSTAction {
 
@@ -72,9 +71,14 @@ public class CreateResourceAction extends POSTAction {
   private final ResourceValidator validator = new ResourceValidator();
 
   @Inject
-  public CreateResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                              ResourceManager resourceManager, DataDir dataDir, VocabulariesManager vocabManager,
-                              DataPackageSchemaManager schemaManager) {
+  public CreateResourceAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      DataDir dataDir,
+      VocabulariesManager vocabManager,
+      DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;

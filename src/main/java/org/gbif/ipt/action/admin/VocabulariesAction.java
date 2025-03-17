@@ -20,7 +20,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the vocabularies in use within the IPT.
@@ -33,8 +33,11 @@ public class VocabulariesAction extends BaseAction {
   private Vocabulary vocabulary;
 
   @Inject
-  public VocabulariesAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    VocabulariesManager vocabManager) {
+  public VocabulariesAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager);
     this.vocabManager = vocabManager;
   }

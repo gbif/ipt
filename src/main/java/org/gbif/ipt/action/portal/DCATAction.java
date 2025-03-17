@@ -18,8 +18,8 @@ import org.gbif.ipt.task.GenerateDCAT;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import javax.inject.Inject;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**

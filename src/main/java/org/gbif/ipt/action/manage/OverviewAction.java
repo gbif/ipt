@@ -83,7 +83,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,8 +98,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -111,8 +110,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
-
-import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
@@ -184,10 +181,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final DataPackageSchemaManager schemaManager;
 
   @Inject
-  public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
-    RegistryManager registryManager, DataPackageSchemaManager schemaManager) {
+  public OverviewAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      UserAccountManager userAccountManager,
+      ExtensionManager extensionManager,
+      GenerateDwcaFactory dwcaFactory,
+      GenerateDataPackageFactory dataPackageFactory,
+      VocabulariesManager vocabManager,
+      RegistryManager registryManager,
+      DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;

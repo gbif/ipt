@@ -20,6 +20,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +31,6 @@ import org.apache.struts2.json.annotations.JSON;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.inject.Inject;
 
 public class HealthAction extends BaseAction {
 
@@ -77,8 +78,12 @@ public class HealthAction extends BaseAction {
   public String iptMode = "";
 
   @Inject
-  public HealthAction(SimpleTextProvider textProvider, AppConfig cfg, HttpClient client, RegistrationManager registrationManager,
-                      DataDir dataDir) {
+  public HealthAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      HttpClient client,
+      RegistrationManager registrationManager,
+      DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
     this.http = client;

@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +58,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -211,10 +211,14 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   }
 
   @Inject
-  public DataPackageMetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                                   ResourceManager resourceManager, DataPackageMetadataValidator metadataValidator,
-                                   ResourceMetadataInferringService metadataInferringService,
-                                   DataPackageSchemaManager dataPackageSchemaManager) {
+  public DataPackageMetadataAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      DataPackageMetadataValidator metadataValidator,
+      ResourceMetadataInferringService metadataInferringService,
+      DataPackageSchemaManager dataPackageSchemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.metadataValidator = metadataValidator;
     this.dataPackageSchemaManager = dataPackageSchemaManager;

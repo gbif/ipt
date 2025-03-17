@@ -23,11 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The Action responsible for showing IPT logs to the admin.
@@ -43,10 +42,12 @@ public class LogsAction extends BaseAction {
   private InputStream inputStream;
   private String log;
 
-
   @Inject
-  public LogsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    DataDir dataDir) {
+  public LogsAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
   }

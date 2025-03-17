@@ -17,10 +17,13 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -32,14 +35,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class DataPackageSchemaAction extends POSTAction {
 
@@ -64,6 +68,8 @@ public class DataPackageSchemaAction extends POSTAction {
   private DataPackageSchema dataPackageSchema;
   @Getter
   private String dataPackageSchemaRawData;
+  @Getter
+  private ResourceManager resourceManager;
   // true if all installed data schemas use the latest version, false otherwise
   @Setter
   @Getter
@@ -72,18 +78,34 @@ public class DataPackageSchemaAction extends POSTAction {
   private boolean iptReinstallationRequired = false;
 
   @Inject
-  public DataPackageSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                                 DataPackageSchemaManager schemaManager, RegistryManager registryManager,
-                                 ConfigWarnings configWarnings) {
+  public DataPackageSchemaAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      DataPackageSchemaManager schemaManager,
+      RegistryManager registryManager,
+      ConfigWarnings configWarnings,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.configWarnings = configWarnings;
+    this.resourceManager = resourceManager;
   }
 
   @Override
   public String delete() throws Exception {
     try {
+      // check if it's used by some resources
+      for (Resource r : resourceManager.list()) {
+        if (r.getDataPackageIdentifier() != null
+            && r.getDataPackageIdentifier().equals(id) && !r.getDataPackageMappings().isEmpty()) {
+          LOG.warn("Schema mapped in resource {}", r.getShortname());
+          String msg = getText("admin.dataPackages.delete.error.mapped", new String[] {r.getShortname()});
+          throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
+        }
+      }
+
       schemaManager.uninstallSafely(id, schemaName);
       addActionMessage(getText("admin.dataPackages.delete.success", new String[] {id}));
     } catch (DeletionNotAllowedException e) {
@@ -105,13 +127,38 @@ public class DataPackageSchemaAction extends POSTAction {
   public String update() throws Exception {
     try {
       LOG.info("Updating data schema {} to the latest version...", id);
-      schemaManager.update(id);
+      DataPackageSchema latestCompatibleSchema = schemaManager.update(id);
+
+      if (latestCompatibleSchema != null) {
+        updateResourcesAfterSchemaUpdate(latestCompatibleSchema);
+      }
+
       addActionMessage(getText("admin.dataPackages.update.success", new String[] {id}));
     } catch (Exception e) {
       LOG.error(e);
       addActionWarning(getText("admin.dataPackages.update.error", new String[] {e.getMessage()}), e);
     }
     return SUCCESS;
+  }
+
+  private void updateResourcesAfterSchemaUpdate(DataPackageSchema newlyInstalledSchema) {
+    resourceManager.list()
+        .stream()
+        .filter(Resource::isDataPackage)
+        .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
+  }
+
+  private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
+    // update metadata profile
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
+        CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+        metadata.setProfile(newlyInstalledSchema.getProfile());
+      }
+    }
+
+    // update schema in mappings
+    resource.getDataPackageMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
   }
 
   /**

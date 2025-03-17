@@ -63,6 +63,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -70,8 +71,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
-
-import com.google.inject.Inject;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -185,9 +184,15 @@ public class ResourceAction extends PortalBaseAction {
   private String rtfSizeForVersion;
 
   @Inject
-  public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                        ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir,
-                        ExtensionManager extensionManager, MetadataReader metadataReader) {
+  public ResourceAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      VocabulariesManager vocabManager,
+      DataDir dataDir,
+      ExtensionManager extensionManager,
+      MetadataReader metadataReader) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;

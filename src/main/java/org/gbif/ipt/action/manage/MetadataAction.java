@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
+import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,8 +65,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.opensymphony.xwork2.ActionContext;
 
 import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
@@ -118,9 +117,15 @@ public class MetadataAction extends ManagerBaseAction {
   private File file;
 
   @Inject
-  public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager,
-    ResourceMetadataInferringService resourceMetadataInferringService, ConfigWarnings configWarnings, DataDir dataDir) {
+  public MetadataAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      VocabulariesManager vocabManager,
+      ResourceMetadataInferringService resourceMetadataInferringService,
+      ConfigWarnings configWarnings,
+      DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.resourceMetadataInferringService = resourceMetadataInferringService;
@@ -755,7 +760,6 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @throws InvalidConfigException if licenses properties file could not be loaded
    */
-  @Singleton
   public static synchronized Properties licenseProperties() throws InvalidConfigException {
     if (licenseProperties == null) {
       Properties p = new Properties();
@@ -777,7 +781,6 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @throws InvalidConfigException if directories properties file could not be loaded
    */
-  @Singleton
   public static synchronized Properties directoriesProperties() throws InvalidConfigException {
     if (directoriesProperties == null) {
       Properties p = new Properties();
@@ -803,7 +806,6 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @throws InvalidConfigException if the licenses properties file was badly configured
    */
-  @Singleton
   public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
     if (licenses == null || licenseTexts == null || licenseUrls == null) {
       licenses = new TreeMap<>(new LicenceComparator());
@@ -852,7 +854,6 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @throws InvalidConfigException if the directories properties file was badly configured
    */
-  @Singleton
   public static synchronized void loadDirectories(String firstOption) throws InvalidConfigException {
     if (userIdDirectories == null) {
       userIdDirectories = new TreeMap<>();

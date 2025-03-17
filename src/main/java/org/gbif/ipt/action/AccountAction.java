@@ -21,12 +21,11 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -56,8 +55,11 @@ public class AccountAction extends POSTAction {
   private User currentUser;
 
   @Inject
-  public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    UserAccountManager userManager) {
+  public AccountAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      UserAccountManager userManager) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
   }
