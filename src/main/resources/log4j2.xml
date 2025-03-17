@@ -30,6 +30,7 @@
     <Logger name="org.apache.http" level="ERROR"/>
     <Logger name="org.apache.commons.digester" level="ERROR"/>
     <Logger name="org.apache.commons.digester3" level="ERROR"/>
+    <Logger name="org.gbif.common.parsers.LanguageParser" level="ERROR"/>
 
     <!-- This logger is referred to in LoggingConfiguration.java, don't remove it. -->
     <Logger name="org.gbif" level="DEBUG"/>
