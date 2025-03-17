@@ -20,13 +20,12 @@ import org.gbif.ipt.model.VocabularyTerm;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
-
-import com.google.inject.Inject;
 
 /**
  * Class used to build Vocabularies from XML definitions.

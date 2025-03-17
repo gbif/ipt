@@ -32,12 +32,11 @@ import org.gbif.metadata.eml.ipt.model.Agent;
 
 import java.util.Date;
 import java.util.UUID;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 public class OrganisationSupport {
 
@@ -48,7 +47,9 @@ public class OrganisationSupport {
   private AppConfig cfg;
 
   @Inject
-  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg) {
+  public OrganisationSupport(
+      RegistryManager registryManager,
+      AppConfig cfg) {
     this.registryManager = registryManager;
     this.cfg = cfg;
   }

@@ -15,7 +15,7 @@ package org.gbif.ipt.utils;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.utils.HttpClient;
@@ -24,7 +24,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 public abstract class IptMockBaseTest {
 
-  protected IPTModule guice = new IPTModule();
   protected DataDir dataDir;
   protected AppConfig cfg;
   private HttpClient http;
@@ -37,7 +36,7 @@ public abstract class IptMockBaseTest {
   protected HttpClient buildHttpClient() {
     // lazy load
     if (http == null) {
-      http = guice.provideHttpClient();
+      http = TestBeanProvider.provideHttpClient();
     }
     return http;
   }
@@ -47,6 +46,6 @@ public abstract class IptMockBaseTest {
   }
 
   protected SAXParserFactory buildSaxFactory() {
-    return guice.provideNsAwareSaxParserFactory();
+    return TestBeanProvider.provideNsAwareSaxParserFactory();
   }
 }

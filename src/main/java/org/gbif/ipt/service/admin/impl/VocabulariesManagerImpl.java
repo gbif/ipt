@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
@@ -58,9 +59,6 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.http.StatusLine;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import static org.gbif.utils.HttpUtil.success;
 
 /**
@@ -68,7 +66,6 @@ import static org.gbif.utils.HttpUtil.success;
  * is keyed on a normed filename derived from a vocabularies URL. We use this derived filename instead of the proper
  * URL as we don't persist any more data than the extension file itself - which doesn't have its own URL embedded.
  */
-@Singleton
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
 
   // local lookup
@@ -91,9 +88,15 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private BaseAction baseAction;
 
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
-                                 HttpClient client, RegistryManager registryManager, ConfigWarnings warnings,
-                                 SimpleTextProvider textProvider, RegistrationManager registrationManager) {
+  public VocabulariesManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      VocabularyFactory vocabFactory,
+      HttpClient client,
+      RegistryManager registryManager,
+      ConfigWarnings warnings,
+      SimpleTextProvider textProvider,
+      RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
     this.downloader = client;

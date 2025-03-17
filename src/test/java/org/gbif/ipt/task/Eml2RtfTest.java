@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.task;
 
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -37,16 +38,19 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.rtf.RtfWriter2;
 
+import static org.mockito.Mockito.mock;
+
 public class Eml2RtfTest {
 
+  private AppConfig mockedAppConfig;
   private VocabulariesManager mockedVocabManager;
   private Eml2Rtf eml2Rtf;
 
   @BeforeEach
   public void setUp() throws ParserConfigurationException, SAXException {
-    eml2Rtf = new Eml2Rtf();
+    mockedAppConfig = mock(AppConfig.class);
     mockedVocabManager = new MockVocabulariesManager();
-    eml2Rtf.setVocabManager(mockedVocabManager);
+    eml2Rtf = new Eml2Rtf(mockedAppConfig, mockedVocabManager);
   }
 
   @Test

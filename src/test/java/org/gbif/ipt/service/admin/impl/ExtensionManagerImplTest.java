@@ -21,7 +21,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.PropertyMapping;
@@ -61,11 +61,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.ServletModule;
-import com.google.inject.struts2.Struts2GuicePluginModule;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -96,12 +91,10 @@ public class ExtensionManagerImplTest {
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
 
-    Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-
     // construct ExtensionFactory using injected parameters
-    HttpClient httpClient = injector.getInstance(HttpClient.class);
+    HttpClient httpClient = TestBeanProvider.provideHttpClient();
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
-    SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
+    SAXParserFactory saxf = TestBeanProvider.provideNsAwareSaxParserFactory();
     extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
 
     // construct mock RegistryManager:
@@ -118,8 +111,9 @@ public class ExtensionManagerImplTest {
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
-      new RegistryManagerImpl(appConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider,
-        mockRegistrationManager, resourceManager);
+      new RegistryManagerImpl(appConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider);
+
+    ExtensionsHolder mockExtensionsHolder = new ExtensionsHolder();
 
     File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     assertTrue(myTmpDir.isDirectory());
@@ -193,8 +187,8 @@ public class ExtensionManagerImplTest {
 
     // create instance
     extensionManager =
-      new ExtensionManagerImpl(appConfig, mockDataDir, extensionFactory, resourceManager, mockHttpUtil, warnings,
-        mockSimpleTextProvider, mockRegistrationManager, mockRegistryManager);
+      new ExtensionManagerImpl(appConfig, mockDataDir, extensionFactory, mockHttpUtil, warnings,
+        mockSimpleTextProvider, mockRegistrationManager, mockRegistryManager, mockExtensionsHolder);
   }
 
   @Test
@@ -312,8 +306,8 @@ public class ExtensionManagerImplTest {
   public void testMigrateResourceToNewExtensionVersion() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
-        mock(RegistrationManager.class), mock(RegistryManager.class));
+          mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+          mock(RegistrationManager.class), mock(RegistryManager.class), mock(ExtensionsHolder.class));
     File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load current (installed) version of Occurrence extension
@@ -416,8 +410,8 @@ public class ExtensionManagerImplTest {
   public void testGetRedundantGroups() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
-        mock(RegistrationManager.class), mock(RegistryManager.class));
+        mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(RegistrationManager.class), mock(RegistryManager.class), mock(ExtensionsHolder.class));
     File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load Occurrence extension

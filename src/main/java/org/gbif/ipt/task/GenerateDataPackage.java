@@ -60,9 +60,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
 import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
@@ -98,9 +95,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   // record counts by extension <rowType, count>
   private Map<String, Integer> recordsByTableSchema = new HashMap<>();
 
-  @Inject
-  public GenerateDataPackage(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
-                      SourceManager sourceManager, AppConfig cfg, MetadataReader metadataReader) throws IOException {
+  public GenerateDataPackage(
+      Resource resource,
+      ReportHandler handler,
+      DataDir dataDir,
+      SourceManager sourceManager,
+      AppConfig cfg,
+      MetadataReader metadataReader) {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;

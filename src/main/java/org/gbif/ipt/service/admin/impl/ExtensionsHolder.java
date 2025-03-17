@@ -11,25 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.config;
+package org.gbif.ipt.service.admin.impl;
 
-import javax.servlet.ServletContext;
+import org.gbif.ipt.model.Extension;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * This guice module provides objects only for true IPTs running in a servlet environment. The module is replaced by a
- * test module when using guice for unit tests.
- */
-public class IPTTestModule extends IPTModule {
+import lombok.Getter;
 
-  /**
-   * provide a test datadir based on classpath.
-   */
-  @Provides
-  @Singleton
-  ServletContext provideMockServlet() {
-    return new MockServletContext();
-  }
+@Getter
+public class ExtensionsHolder {
+
+  private final Map<String, Extension> extensionsByRowtype = new HashMap<>();
 }

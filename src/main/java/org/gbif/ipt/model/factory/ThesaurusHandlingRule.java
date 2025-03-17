@@ -19,13 +19,12 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.inject.Inject;
 
 import org.apache.commons.digester.Rule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
-
-import com.google.inject.Inject;
 
 /**
  * This will call the root of the stack to find the url2thesaurus, and then set the appropriate thesaurus on the

@@ -31,12 +31,9 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
-import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.RegistryException.Type;
-import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.RegistryEntryHandler;
@@ -65,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -81,7 +79,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.inject.Inject;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -120,22 +117,25 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private SAXParser saxParser;
   private Gson gson;
   private ConfigWarnings warnings;
-  private ResourceManager resourceManager;
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private BaseAction baseAction;
 
   @Inject
-  public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpClient client, SAXParserFactory saxFactory,
-                             ConfigWarnings warnings, SimpleTextProvider textProvider, RegistrationManager registrationManager,
-                             ResourceManager resourceManager)
+  public RegistryManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      HttpClient client,
+      SAXParserFactory saxFactory,
+      ConfigWarnings warnings,
+      SimpleTextProvider textProvider)
     throws ParserConfigurationException, SAXException {
     super(cfg, dataDir);
     this.saxParser = saxFactory.newSAXParser();
     this.http = client;
     this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
     this.warnings = warnings;
-    this.resourceManager = resourceManager;
-    baseAction = new BaseAction(textProvider, cfg, registrationManager);
+    // TODO: use null for registrationManager to avoid circular dependency
+    baseAction = new BaseAction(textProvider, cfg, null);
   }
 
   private List<NameValuePair> buildRegistryParameters(Resource resource) {
@@ -1064,19 +1064,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       // to continue updating registered resources, IPT update must have been successful
       Type type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, url, "Update IPT registration failed: " + resp.getStatusLine());
-    }
-
-    List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
-    if (!resources.isEmpty()) {
-      LOG.info("Next, update " + resources.size() + " resource registrations...");
-      for (Resource resource : resources) {
-        try {
-          updateResource(resource, ipt.getKey().toString());
-        } catch (IllegalArgumentException e) {
-          LOG.error(e.getMessage());
-        }
-      }
-      LOG.info("Resource registrations updated successfully!");
     }
   }
 

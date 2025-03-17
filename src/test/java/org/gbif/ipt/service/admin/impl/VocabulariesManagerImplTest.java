@@ -17,12 +17,11 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
+import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -48,11 +47,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.ServletModule;
-import com.google.inject.struts2.Struts2GuicePluginModule;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -80,8 +74,7 @@ public class VocabulariesManagerImplTest {
     appConfig = new AppConfig(dataDir);
     ConfigWarnings warnings = new ConfigWarnings();
 
-    Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
+    SAXParserFactory saxf = TestBeanProvider.provideNsAwareSaxParserFactory();
     VocabularyFactory vocabularyFactory = new VocabularyFactory(saxf);
 
     // construct mock RegistryManager:
@@ -97,8 +90,7 @@ public class VocabulariesManagerImplTest {
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
-      new RegistryManagerImpl(appConfig, dataDir, mockHttpClient, saxf, warnings, mock(SimpleTextProvider.class),
-        mock(RegistrationManager.class), mock(ResourceManager.class));
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpClient, saxf, warnings, mock(SimpleTextProvider.class));
 
     assertTrue(TMP_DIR.isDirectory());
 

@@ -16,21 +16,27 @@ package org.gbif.ipt.model.converter;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.UserAccountManager;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
 public class UserEmailConverter implements Converter {
 
-  private final UserAccountManager userManager;
+  private UserAccountManager userManager;
+
+  public UserEmailConverter() {
+  }
+
+  public UserEmailConverter(UserAccountManager userManager) {
+    this.userManager = userManager;
+  }
 
   @Inject
-  public UserEmailConverter(UserAccountManager userManager) {
+  public void setUserManager(UserAccountManager userManager) {
     this.userManager = userManager;
   }
 

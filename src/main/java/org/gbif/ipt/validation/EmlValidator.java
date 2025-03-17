@@ -56,13 +56,12 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 import static org.gbif.ipt.validation.EmailValidationMessageTranslator.EMAIL_ERROR_TRANSLATIONS;
 import static org.gbif.metadata.eml.EmlValidator.newValidator;
@@ -97,7 +96,10 @@ public class EmlValidator extends BaseValidator {
   }
 
   @Inject
-  public EmlValidator(AppConfig cfg, RegistrationManager registrationManager, SimpleTextProvider simpleTextProvider) {
+  public EmlValidator(
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      SimpleTextProvider simpleTextProvider) {
     this.cfg = cfg;
     this.regManager = registrationManager;
     this.simpleTextProvider = simpleTextProvider;

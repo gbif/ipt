@@ -34,7 +34,6 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.FileUtils;
 
@@ -59,12 +58,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
-@Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
   private static final Logger LOG = LogManager.getLogger(RegistrationManagerImpl.class);
@@ -76,14 +72,14 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   private Registration registration = new Registration();
   private final XStream xstreamV1 = new XStream();
   private final XStream xstreamV2 = new XStream();
-  private ResourceManager resourceManager;
   private RegistryManager registryManager;
 
-  @Inject
-  public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager, PasswordEncrypter passwordEncrypter) {
+  public RegistrationManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      RegistryManager registryManager,
+      PasswordEncrypter passwordEncrypter) {
     super(cfg, dataDir);
-    this.resourceManager = resourceManager;
     defineXstreamMappingV1();
     defineXstreamMappingV2(passwordEncrypter);
     this.registryManager = registryManager;
@@ -104,7 +100,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       LOG.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
 
-      resourceManager.updateOrganisationNameForResources(organisation.getKey(), organisation.getName(), organisation.getAlias());
+      // TODO: Test an make sure it works #1971 Update organisation name and alias for resources when changed
     }
     return organisation;
   }
@@ -250,10 +246,10 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public Organisation delete(String key) throws DeletionNotAllowedException {
+  public Organisation delete(String key, List<Resource> resources) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
-      for (Resource resource : resourceManager.list()) {
+      for (Resource resource : resources) {
         // Ensure the organisation is not associated to any registered resources
         if (resource.getOrganisation() != null && resource.getOrganisation().equals(org)) {
           throw new DeletionNotAllowedException(Reason.RESOURCE_REGISTERED_WITH_ORGANISATION,

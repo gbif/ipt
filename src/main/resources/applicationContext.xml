@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+  <bean id="iptModule" class="org.gbif.ipt.config.IPTModule">
+    <property name="servletContext" ref="servletContext"/>
+  </bean>
+  <bean id="inputStreamUtils" class="org.gbif.ipt.utils.InputStreamUtils"/>
+  <bean id="simpleTextProvider" class="org.gbif.ipt.struts2.SimpleTextProvider"/>
+  <bean id="configWarnings" class="org.gbif.ipt.config.ConfigWarnings"/>
+
+  <bean id="passwordEncrypter" class="org.gbif.ipt.model.converter.PasswordEncrypter">
+    <constructor-arg ref="pbeEncrypt"/>
+  </bean>
+  <bean id="pbeEncrypt" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="providePasswordEncryption"/>
+  </bean>
+
+  <bean id="dataDir" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="provideDataDir"/>
+  </bean>
+
+  <bean id="appConfig" class="org.gbif.ipt.config.AppConfig">
+      <constructor-arg ref="dataDir"/>
+  </bean>
+
+  <bean id="freemarkerConfig" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="provideFreemarker"/>
+    <property name="arguments">
+      <list>
+        <ref bean="dataDir"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="saxParserFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="provideNsAwareSaxParserFactory"/>
+  </bean>
+
+  <bean id="httpClient" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="provideHttpClient"/>
+  </bean>
+
+  <bean id="jdbcSupport" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="iptModule"/>
+    <property name="targetMethod" value="provideJdbcSupport"/>
+  </bean>
+
+  <bean id="registryManager" class="org.gbif.ipt.service.registry.impl.RegistryManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="saxParserFactory"/>
+    <constructor-arg ref="configWarnings"/>
+    <constructor-arg ref="simpleTextProvider"/>
+  </bean>
+
+  <bean id="extensionManager" class="org.gbif.ipt.service.admin.impl.ExtensionManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="extensionFactory"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="configWarnings"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="extensionsHolder"/>
+  </bean>
+
+  <bean id="sourceManager" class="org.gbif.ipt.service.manage.impl.SourceManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+  </bean>
+
+  <bean id="resourceConverterManager" class="org.gbif.ipt.service.manage.impl.ResourceConvertersManager" lazy-init="true">
+    <property name="userConverter" ref="userEmailConverter"/>
+    <property name="orgConverter" ref="organisationKeyConverter"/>
+    <property name="extensionConverter" ref="extensionRowTypeConverter"/>
+    <property name="conceptTermConverter" ref="conceptTermConverter"/>
+    <property name="dataSchemaConverter" ref="dataPackageIdentifierConverter"/>
+    <property name="tableSchemaNameConverter" ref="tableSchemaNameConverter"/>
+    <property name="dataPackageFieldConverter" ref="dataPackageFieldConverter"/>
+    <property name="jdbcInfoConverter" ref="jdbcInfoConverter"/>
+  </bean>
+
+  <bean id="userEmailConverter" class="org.gbif.ipt.model.converter.UserEmailConverter" lazy-init="true">
+    <property name="userManager" ref="userAccountManager"/>
+  </bean>
+
+  <bean id="organisationKeyConverter" class="org.gbif.ipt.model.converter.OrganisationKeyConverter">
+    <constructor-arg ref="registrationManager"/>
+  </bean>
+
+  <bean id="extensionRowTypeConverter" class="org.gbif.ipt.model.converter.ExtensionRowTypeConverter">
+    <constructor-arg ref="extensionsHolder"/>
+  </bean>
+
+  <bean id="conceptTermConverter" class="org.gbif.ipt.model.converter.ConceptTermConverter">
+    <constructor-arg ref="extensionRowTypeConverter"/>
+  </bean>
+
+  <bean id="dataPackageIdentifierConverter" class="org.gbif.ipt.model.converter.DataPackageIdentifierConverter">
+    <constructor-arg ref="dataPackageSchemaManager"/>
+  </bean>
+
+  <bean id="tableSchemaNameConverter" class="org.gbif.ipt.model.converter.TableSchemaNameConverter"/>
+
+  <bean id="dataPackageFieldConverter" class="org.gbif.ipt.model.converter.DataPackageFieldConverter">
+    <constructor-arg ref="dataPackageIdentifierConverter"/>
+    <constructor-arg ref="tableSchemaNameConverter"/>
+  </bean>
+
+  <bean id="jdbcInfoConverter" class="org.gbif.ipt.model.converter.JdbcInfoConverter">
+    <constructor-arg ref="jdbcSupport"/>
+  </bean>
+
+  <bean id="dataPackageSchemaManager" class="org.gbif.ipt.service.admin.impl.DataPackageSchemaManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="configWarnings"/>
+    <constructor-arg ref="dataSchemaFactory"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="httpClient"/>
+  </bean>
+
+  <bean id="dataSchemaFactory" class="org.gbif.ipt.model.factory.DataSchemaFactory"/>
+
+  <bean id="eml2Rtf" class="org.gbif.ipt.task.Eml2Rtf">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="vocabulariesManager"/>
+  </bean>
+
+  <bean id="jsonService" class="org.gbif.ipt.service.manage.impl.JsonServiceImpl"/>
+  <bean id="yamlService" class="org.gbif.ipt.service.manage.impl.YamlServiceImpl"/>
+
+  <bean id="metadataReader" class="org.gbif.ipt.service.manage.impl.MetadataReaderImpl">
+    <constructor-arg ref="jsonService"/>
+    <constructor-arg ref="yamlService"/>
+  </bean>
+
+  <bean id="resourceMetadataInferringService"
+        class="org.gbif.ipt.service.manage.impl.ResourceMetadataInferringServiceImpl">
+    <constructor-arg ref="sourceManager"/>
+    <constructor-arg ref="vocabulariesManager"/>
+  </bean>
+
+  <bean id="dwcaFactory" class="org.gbif.ipt.task.GenerateDwcaFactoryImpl">
+    <constructor-arg ref="dataDir" />
+    <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="appConfig" />
+    <constructor-arg ref="vocabulariesManager" />
+  </bean>
+
+  <bean id="dataPackageFactory" class="org.gbif.ipt.task.GenerateDataPackageFactoryImpl">
+    <constructor-arg ref="dataDir" />
+    <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="appConfig" />
+    <constructor-arg ref="metadataReader" />
+  </bean>
+
+  <bean id="userAccountManager" class="org.gbif.ipt.service.admin.impl.UserAccountManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="pbeEncrypt"/>
+  </bean>
+
+  <bean id="registrationManager" class="org.gbif.ipt.service.admin.impl.RegistrationManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="passwordEncrypter"/>
+  </bean>
+
+  <bean id="resourceManager" class="org.gbif.ipt.service.manage.impl.ResourceManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceConverterManager"/>
+    <constructor-arg ref="sourceManager"/>
+    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="dataPackageSchemaManager"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="dwcaFactory"/>
+    <constructor-arg ref="dataPackageFactory"/>
+    <constructor-arg ref="passwordEncrypter"/>
+    <constructor-arg ref="eml2Rtf"/>
+    <constructor-arg ref="vocabulariesManager"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="metadataReader"/>
+    <constructor-arg ref="resourceMetadataInferringService"/>
+  </bean>
+
+  <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="vocabularyFactory"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="configWarnings"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+  </bean>
+  <bean id="thesaurusRule" class="org.gbif.ipt.model.factory.ThesaurusHandlingRule">
+    <constructor-arg ref="vocabulariesManager"/>
+  </bean>
+
+  <bean id="extensionFactory" class="org.gbif.ipt.model.factory.ExtensionFactory">
+    <constructor-arg ref="thesaurusRule"/>
+    <constructor-arg ref="saxParserFactory"/>
+    <constructor-arg ref="httpClient"/>
+  </bean>
+
+  <bean id="vocabularyFactory" class="org.gbif.ipt.model.factory.VocabularyFactory">
+      <constructor-arg ref="saxParserFactory"/>
+  </bean>
+
+  <bean id="configManager" class="org.gbif.ipt.service.admin.impl.ConfigManagerImpl">
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="userAccountManager"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="vocabulariesManager"/>
+    <constructor-arg ref="dataPackageSchemaManager"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="configWarnings"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="publishingMonitor"/>
+  </bean>
+
+  <bean id="publishingMonitor" class="org.gbif.ipt.config.PublishingMonitor">
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+  </bean>
+
+  <bean id="iptI18nInterceptor" class="org.gbif.ipt.struts2.IptI18nInterceptor">
+    <property name="appConfig" ref="appConfig"/>
+  </bean>
+
+  <bean id="generateDCAT" class="org.gbif.ipt.task.GenerateDCAT">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+  </bean>
+
+  <bean id="dataPackageMetadataValidator" class="org.gbif.ipt.validation.DataPackageMetadataValidator"/>
+
+  <bean id="emlValidator" class="org.gbif.ipt.validation.EmlValidator">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="simpleTextProvider"/>
+  </bean>
+
+  <bean id="extensionMappingConverter" class="org.gbif.ipt.model.converter.ExtensionMappingConverter">
+    <constructor-arg ref="extensionManager"/>
+  </bean>
+
+  <bean id="defaultLocaleInterceptor" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor">
+    <property name="cfg" ref="appConfig"/>
+  </bean>
+
+  <bean id="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor">
+    <property name="cfg" ref="appConfig"/>
+  </bean>
+
+  <bean id="requireManagerInterceptor" class="org.gbif.ipt.struts2.RequireManagerInterceptor">
+    <property name="resourceManager" ref="resourceManager"/>
+  </bean>
+
+  <bean id="privateDeletedResourceInterceptor" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor">
+    <property name="resourceManager" ref="resourceManager"/>
+  </bean>
+
+  <bean id="setupAndCancelInterceptor" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor">
+    <property name="configManager" ref="configManager"/>
+    <property name="warnings" ref="configWarnings"/>
+  </bean>
+
+  <bean id="extensionsHolder" class="org.gbif.ipt.service.admin.impl.ExtensionsHolder"/>
+
+  <bean id="portalHomeAction" class="org.gbif.ipt.action.portal.HomeAction" scope="prototype">
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+  </bean>
+
+  <bean id="healthAction" class="org.gbif.ipt.action.HealthAction" scope="prototype">
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="dataDir"/>
+  </bean>
+
+  <bean id="resourceAction" class="org.gbif.ipt.action.portal.ResourceAction" scope="prototype">
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="vocabulariesManager"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="metadataReader"/>
+  </bean>
+
+  <bean id="organisationSupport" class="org.gbif.ipt.validation.OrganisationSupport">
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="appConfig"/>
+  </bean>
+
+  <bean id="iptValidator" class="org.gbif.ipt.validation.IptValidator"/>
+</beans>

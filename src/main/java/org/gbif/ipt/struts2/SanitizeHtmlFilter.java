@@ -37,15 +37,11 @@ import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.HtmlSanitizer;
 import org.owasp.html.HtmlStreamEventReceiver;
 
-import com.google.inject.Singleton;
-
 /**
  * Filter that wraps a request and checks every parameter for potential xss attacks.
  * If found a bad request response error is returned.
- *
  * Otherwise all html tags are stripped from the content found in input parameters to prevent yet unknown xss attacks.
  */
-@Singleton
 public class SanitizeHtmlFilter implements Filter {
   private static final Logger LOG = LogManager.getLogger(SanitizeHtmlFilter.class);
   private static final HtmlPolicyBuilder POLICY_BUILDER = new HtmlPolicyBuilder();

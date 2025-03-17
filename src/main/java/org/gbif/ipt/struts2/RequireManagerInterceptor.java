@@ -20,7 +20,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import java.util.Map;
-
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -48,7 +47,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = -7688584369470756187L;
 
-  @Inject
   private ResourceManager resourceManager;
 
   protected static String getResourceParam(ActionInvocation invocation) {
@@ -139,5 +137,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     }
 
     return BaseAction.NOT_ALLOWED_MANAGER;
+  }
+
+  @Inject
+  public void setResourceManager(ResourceManager resourceManager) {
+    this.resourceManager = resourceManager;
   }
 }

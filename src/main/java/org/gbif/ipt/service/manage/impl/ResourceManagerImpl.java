@@ -188,8 +188,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
@@ -208,7 +206,6 @@ import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
 import static org.gbif.ipt.utils.FileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
-@Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
   // key=shortname in lower case, value=resource
@@ -240,7 +237,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-  @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
                              SourceManager sourceManager, ExtensionManager extensionManager,
                              DataPackageSchemaManager schemaManager, RegistryManager registryManager,
@@ -280,6 +276,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.error("Failed to reconstruct resource's last published version", e);
     }
+  }
+
+  @Override
+  public void updateOrganisationNameForResources(Organisation organisation) {
+    updateOrganisationNameForResources(organisation.getKey(), organisation.getName(), organisation.getAlias());
   }
 
   @Override
@@ -1258,7 +1259,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // persist only schema identifier, table schema name and field name
     xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
     xstream.registerConverter(resourceConvertersManager.getTableSchemaNameConverter());
-    xstream.registerConverter(resourceConvertersManager.getDataSchemaFieldConverter());
+    xstream.registerConverter(resourceConvertersManager.getDataPackageFieldConverter());
     // encrypt passwords
     xstream.registerConverter(passwordEncrypter);
 

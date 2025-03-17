@@ -41,8 +41,6 @@ import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.HibernateValidator;
 
-import com.google.inject.Inject;
-
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class DataPackageMetadataValidator {
@@ -51,7 +49,6 @@ public class DataPackageMetadataValidator {
 
   private static final Pattern VERNACULAR_NAME_KEY_PATTERN = Pattern.compile("^[a-z]{3}$");
 
-  @Inject
   public DataPackageMetadataValidator() {
     try (ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure().buildValidatorFactory()) {
       validator = validatorFactory.getValidator();

@@ -22,22 +22,25 @@ import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
 
-@Singleton
+import lombok.Getter;
+
+@Getter
 public class ResourceConvertersManager {
 
-  private final UserEmailConverter userConverter;
-  private final OrganisationKeyConverter orgConverter;
-  private final ExtensionRowTypeConverter extensionConverter;
-  private final ConceptTermConverter conceptTermConverter;
-  private final DataPackageIdentifierConverter dataSchemaConverter;
-  private final TableSchemaNameConverter tableSchemaNameConverter;
-  private final DataPackageFieldConverter dataPackageFieldConverter;
-  private final JdbcInfoConverter jdbcInfoConverter;
+  private UserEmailConverter userConverter;
+  private OrganisationKeyConverter orgConverter;
+  private ExtensionRowTypeConverter extensionConverter;
+  private ConceptTermConverter conceptTermConverter;
+  private DataPackageIdentifierConverter dataSchemaConverter;
+  private TableSchemaNameConverter tableSchemaNameConverter;
+  private DataPackageFieldConverter dataPackageFieldConverter;
+  private JdbcInfoConverter jdbcInfoConverter;
 
-  @Inject
+  public ResourceConvertersManager() {
+  }
+
   public ResourceConvertersManager(
       UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
       ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
@@ -53,35 +56,43 @@ public class ResourceConvertersManager {
     this.jdbcInfoConverter = jdbcInfoConverter;
   }
 
-  public UserEmailConverter getUserConverter() {
-    return userConverter;
+  @Inject
+  public void setUserConverter(UserEmailConverter userConverter) {
+    this.userConverter = userConverter;
   }
 
-  public OrganisationKeyConverter getOrgConverter() {
-    return orgConverter;
+  @Inject
+  public void setOrgConverter(OrganisationKeyConverter orgConverter) {
+    this.orgConverter = orgConverter;
   }
 
-  public ExtensionRowTypeConverter getExtensionConverter() {
-    return extensionConverter;
+  @Inject
+  public void setExtensionConverter(ExtensionRowTypeConverter extensionConverter) {
+    this.extensionConverter = extensionConverter;
   }
 
-  public ConceptTermConverter getConceptTermConverter() {
-    return conceptTermConverter;
+  @Inject
+  public void setConceptTermConverter(ConceptTermConverter conceptTermConverter) {
+    this.conceptTermConverter = conceptTermConverter;
   }
 
-  public DataPackageIdentifierConverter getDataSchemaConverter() {
-    return dataSchemaConverter;
+  @Inject
+  public void setDataSchemaConverter(DataPackageIdentifierConverter dataSchemaConverter) {
+    this.dataSchemaConverter = dataSchemaConverter;
   }
 
-  public TableSchemaNameConverter getTableSchemaNameConverter() {
-    return tableSchemaNameConverter;
+  @Inject
+  public void setTableSchemaNameConverter(TableSchemaNameConverter tableSchemaNameConverter) {
+    this.tableSchemaNameConverter = tableSchemaNameConverter;
   }
 
-  public DataPackageFieldConverter getDataSchemaFieldConverter() {
-    return dataPackageFieldConverter;
+  @Inject
+  public void setDataPackageFieldConverter(DataPackageFieldConverter dataPackageFieldConverter) {
+    this.dataPackageFieldConverter = dataPackageFieldConverter;
   }
 
-  public JdbcInfoConverter getJdbcInfoConverter() {
-    return jdbcInfoConverter;
+  @Inject
+  public void setJdbcInfoConverter(JdbcInfoConverter jdbcInfoConverter) {
+    this.jdbcInfoConverter = jdbcInfoConverter;
   }
 }

@@ -72,9 +72,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CLASS;
 import static org.gbif.ipt.config.Constants.DWC_ROWTYPE_EVENT;
@@ -93,7 +90,6 @@ import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
 
-@Singleton
 public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInferringService {
 
   protected final Logger LOG = LogManager.getLogger(ResourceMetadataInferringServiceImpl.class);
@@ -110,7 +106,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
 
-  @Inject
   public ResourceMetadataInferringServiceImpl(SourceManager sourceManager, VocabulariesManager vocabManager) {
     this.sourceManager = sourceManager;
     this.vocabManager = vocabManager;

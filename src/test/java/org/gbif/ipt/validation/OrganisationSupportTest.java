@@ -40,8 +40,7 @@ public class OrganisationSupportTest {
   private static final String VALID_ORGANISATION_PASSWORD = "password";
   private static final OrganisationsAction action =
     new OrganisationsAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mock(OrganisationSupport.class), mock(OrganisationsAction.RegisteredOrganisations.class),
-      mock(ResourceManager.class));
+      mock(OrganisationSupport.class), mock(ResourceManager.class), mock(RegistryManager.class));
 
   public static Stream<Arguments> data() {
     // config in production mode

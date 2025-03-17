@@ -20,7 +20,6 @@ import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.SourceException;
-import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -30,12 +29,9 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details all methods associated with a source entity.
  */
-@ImplementedBy(SourceManagerImpl.class)
 public interface SourceManager {
 
   /**

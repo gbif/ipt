@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
-  "http://struts.apache.org/dtds/struts-2.5.dtd">
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 6.0//EN"
+    "https://struts.apache.org/dtds/struts-6.0.dtd">
 <!--
 	NOTES TO DEVELOPERS:
 	Wildcards can be used in this definition to reduce the amount of configuration necesary
@@ -25,6 +26,9 @@
 	http://issues.apache.org/struts/browse/WW-2068
 -->
 <struts>
+
+  <constant name="struts.objectFactory" value="spring"/>
+
   <!--
      default settings all other packages inherit from
      security interceptors, default action class & result type, global results are defined here
@@ -189,11 +193,11 @@
       <result>/WEB-INF/pages/about.ftl</result>
     </action>
 
-    <action name="health" class="org.gbif.ipt.action.HealthAction">
+    <action name="health" class="healthAction">
       <result>/WEB-INF/pages/health.ftl</result>
     </action>
 
-    <action name="rss" class="org.gbif.ipt.action.portal.ResourceAction" method="rss">
+    <action name="rss" class="resourceAction" method="rss">
       <result name="success" type="freemarker">
         <param name="location">/WEB-INF/pages/portal/rss.ftl</param>
         <param name="contentType">text/xml</param>

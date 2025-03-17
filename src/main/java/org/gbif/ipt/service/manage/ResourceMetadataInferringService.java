@@ -15,11 +15,7 @@ package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.manage.impl.ResourceMetadataInferringServiceImpl;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(ResourceMetadataInferringServiceImpl.class)
 public interface ResourceMetadataInferringService {
 
     /**

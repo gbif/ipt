@@ -64,8 +64,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.inject.Inject;
-
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private static class ColumnIterator implements ClosableIterator<Object> {
@@ -303,7 +301,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   // Allowed characters in file names: alphanumeric characters, plus ".", "-", "_", ")", "(", and " "
   private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
 
-  @Inject
   public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
     super(cfg, dataDir);
   }

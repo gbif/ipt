@@ -22,14 +22,10 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 
 import java.util.List;
 import java.util.UUID;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(RegistryManagerImpl.class)
 public interface RegistryManager {
 
   /**
@@ -147,9 +143,11 @@ public interface RegistryManager {
   String registerIPT(Ipt ipt, Organisation organisation) throws RegistryException;
 
   /**
-   * Update an IPT instance against the GBIF Registry. Also updates all registered resources against the GBIF Registry.
+   * Update an IPT instance against the GBIF Registry.
    * This method ensures the GBIF Registry has the correct endpoint URLs for both the IPT and all its registered
    * resources.
+   * <p>
+   * NOTE: All the resources registered against the GBIF Registry should be updated seprately!
    *
    * @param ipt IPT whose registration is being updated
    *

@@ -30,18 +30,15 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 /**
  * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due,
  * and which ensures publication always finishes entirely.
  */
-@Singleton
 public class PublishingMonitor {
 
   // 10 second interval
@@ -53,8 +50,11 @@ public class PublishingMonitor {
   private final BaseAction baseAction;
 
   @Inject
-  public PublishingMonitor(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager) {
+  public PublishingMonitor(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     this.resourceManager = resourceManager;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
   }
@@ -62,13 +62,9 @@ public class PublishingMonitor {
   /**
    * Polls the queue and launches threads if possible.
    */
-  @Singleton
   class QueueMonitor implements Runnable {
 
-    private ResourceManager resourceManager;
-
-    public QueueMonitor(ResourceManager resourceManager) {
-      this.resourceManager = resourceManager;
+    public QueueMonitor() {
       running = new AtomicBoolean();
     }
 
@@ -173,7 +169,7 @@ public class PublishingMonitor {
    * Start the publishing monitor thread itself.
    */
   private void startMonitorThread() {
-    monitorThread = new Thread(new QueueMonitor(resourceManager));
+    monitorThread = new Thread(new QueueMonitor());
     monitorThread.start();
     LOG.debug("The monitor thread has started.");
   }

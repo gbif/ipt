@@ -28,7 +28,6 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.metadata.eml.InvalidEmlException;
 
@@ -48,14 +47,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.collections4.ListValuedMap;
 import org.xml.sax.SAXException;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details ALL methods associated with the main resource entity.
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
  * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
  */
-@ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
   /**
@@ -433,4 +429,9 @@ public interface ResourceManager {
    * Update organisation name and alias for published resources.
    */
   void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias);
+
+  /**
+   * Update organisation name and alias for published resources.
+   */
+  void updateOrganisationNameForResources(Organisation organisation);
 }

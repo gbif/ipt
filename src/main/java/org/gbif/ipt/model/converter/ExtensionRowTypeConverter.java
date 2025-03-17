@@ -14,34 +14,29 @@
 package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
+import lombok.Getter;
+
 public class ExtensionRowTypeConverter implements Converter {
 
-  private final ExtensionManager extManager;
+  private final ExtensionsHolder extensionsHolder;
+  @Getter
   private Extension lastExtensionConverted;
 
-  @Inject
-  public ExtensionRowTypeConverter(ExtensionManager extManager) {
-    this.extManager = extManager;
+  public ExtensionRowTypeConverter(ExtensionsHolder extensionsHolder) {
+    this.extensionsHolder = extensionsHolder;
   }
 
   @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(Extension.class);
-  }
-
-  public Extension getLastExtensionConverted() {
-    return lastExtensionConverted;
   }
 
   @Override
@@ -52,7 +47,7 @@ public class ExtensionRowTypeConverter implements Converter {
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    Extension e = extManager.get(reader.getValue());
+    Extension e = extensionsHolder.getExtensionsByRowtype().get(reader.getValue());
     lastExtensionConverted = e;
     return e;
   }

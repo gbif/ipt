@@ -16,20 +16,16 @@ package org.gbif.ipt.model.converter;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.config.JdbcSupport.JdbcInfo;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
 public class JdbcInfoConverter implements Converter {
 
   private final JdbcSupport jdbcs;
 
-  @Inject
   public JdbcInfoConverter(JdbcSupport jdbcs) {
     this.jdbcs = jdbcs;
   }

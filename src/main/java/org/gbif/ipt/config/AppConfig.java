@@ -53,11 +53,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.annotations.Since;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-@Singleton
 public class AppConfig {
 
   public enum REGISTRY_TYPE {
@@ -69,7 +64,7 @@ public class AppConfig {
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
-  @Since(2.1)
+   // Since 2.1
   public static final String CORE_ROW_TYPES = "ipt.core_rowTypes";
   public static final String CORE_ROW_ID_TERMS = "ipt.core_idTerms";
   public static final String PROXY = "proxy";
@@ -147,13 +142,11 @@ public class AppConfig {
   private AppConfig() {
   }
 
-  @Inject
   public AppConfig(DataDir dataDir) throws InvalidConfigException {
     this.dataDir = dataDir;
     // also loaded via ConfigManager constructor if datadir was linked at startup already
     // If it wasn't, this is the only place to load at least the default classpath config settings
     loadConfig();
-
   }
 
   /**

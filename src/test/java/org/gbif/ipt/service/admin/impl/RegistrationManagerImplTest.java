@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -134,14 +135,14 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mock(RegistrationManager.class), mock(ResourceManager.class));
+        mockSimpleTextProvider);
 
     // make sure the list of organisations is fully populated
     assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));
 
     // create instance of manager
     registrationManager =
-      new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager, mockRegistryManager,
+      new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockRegistryManager,
         mock(PasswordEncrypter.class));
 
     // load associatedOrganisations, hostingOrganisation, etc
@@ -153,7 +154,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // try deleting the Academy of Natural Sciences - it will throw a DeletionNotAllowedException since there is a
     // resource associated to it
     try {
-      registrationManager.delete(RESOURCE1_ORGANISATION_KEY);
+      registrationManager.delete(RESOURCE1_ORGANISATION_KEY, Collections.emptyList());
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, e.getReason());
     }
@@ -197,7 +198,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   @Test
   public void testDeleteOrganizationAssociatedToResourceDoi() {
     try {
-      registrationManager.delete(RESOURCE2_ORGANISATION_KEY);
+      registrationManager.delete(RESOURCE2_ORGANISATION_KEY, Collections.emptyList());
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_DOI_REGISTERED_WITH_ORGANISATION, e.getReason());
     }

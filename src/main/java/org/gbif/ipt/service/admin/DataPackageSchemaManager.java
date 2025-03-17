@@ -14,16 +14,11 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.DataPackageSchemaManagerImpl;
 
 import java.io.IOException;
 import java.util.List;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(DataPackageSchemaManagerImpl.class)
 public interface DataPackageSchemaManager {
 
   /**
@@ -31,15 +26,13 @@ public interface DataPackageSchemaManager {
    *
    * @param identifier of installed data schema to remove
    * @param name of installed data schema to remove
-   *
-   * @throws DeletionNotAllowedException if at least one mapping to this data schema exists preventing deletion
    */
-  void uninstallSafely(String identifier, String name) throws DeletionNotAllowedException;
+  void uninstallSafely(String identifier, String name);
 
   /**
    * Update an installed data schema to the latest version.
    */
-  void update(String identifier) throws IOException;
+  DataPackageSchema update(String identifier) throws IOException;
 
   /**
    * Get a locally installed data schema by its identifier or name.

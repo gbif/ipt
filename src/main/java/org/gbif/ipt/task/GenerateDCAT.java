@@ -42,7 +42,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -50,14 +49,12 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 /**
  * Class to generate a DCAT feed, including all resources that are published, public and have a license.
@@ -65,7 +62,6 @@ import com.google.inject.Singleton;
  * @see <a href="https://github.com/oSoc15/ipt-dcat">DCAT project homepage</a>
  * @see <a href="https://github.com/oSoc15/ipt">DCAT IPT Fork</a>
  */
-@Singleton
 public class GenerateDCAT {
 
   // logging
@@ -101,7 +97,10 @@ public class GenerateDCAT {
   private final ResourceManager resourceManager;
 
   @Inject
-  public GenerateDCAT(AppConfig cfg, RegistrationManager registrationManager, ResourceManager resourceManager) {
+  public GenerateDCAT(
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     this.cfg = cfg;
     this.registrationManager = registrationManager;
     this.resourceManager = resourceManager;

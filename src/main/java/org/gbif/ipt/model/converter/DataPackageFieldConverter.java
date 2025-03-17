@@ -20,22 +20,18 @@ import org.gbif.ipt.model.DataPackageTableSchema;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
 public class DataPackageFieldConverter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(DataPackageFieldConverter.class);
   private final DataPackageIdentifierConverter schemaConverter;
   private final TableSchemaNameConverter schemaNameConverter;
 
-  @Inject
   public DataPackageFieldConverter(DataPackageIdentifierConverter schemaConverter,
                                    TableSchemaNameConverter schemaNameConverter) {
     this.schemaConverter = schemaConverter;

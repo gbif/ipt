@@ -15,14 +15,12 @@ package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
 public class TableSchemaNameConverter implements Converter {
 
   private String lastTableSchemaConverted;

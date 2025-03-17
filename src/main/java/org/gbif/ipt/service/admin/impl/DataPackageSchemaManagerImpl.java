@@ -20,16 +20,12 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.SupportedDataPackageType;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.factory.DataSchemaFactory;
 import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
@@ -56,16 +52,14 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.StatusLine;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import javax.inject.Inject;
+
 import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHEMA;
 import static org.gbif.utils.HttpUtil.success;
 
-@Singleton
 public class DataPackageSchemaManagerImpl extends BaseManager implements DataPackageSchemaManager {
 
   private static final String CONFIG_FOLDER = ".dataPackages";
@@ -74,7 +68,6 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   private final ConfigWarnings warnings;
   private final DataSchemaFactory factory;
   private final RegistryManager registryManager;
-  private final ResourceManager resourceManager;
   private final HttpClient downloader;
   private final Gson gson;
 
@@ -86,45 +79,41 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   private Map<String, String> dataPackageSchemaRawContentByName = new HashMap<>();
 
   @Inject
-  public DataPackageSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
-                                      SimpleTextProvider textProvider, RegistrationManager registrationManager,
-                                      RegistryManager registryManager, ResourceManager resourceManager, HttpClient downloader) {
+  public DataPackageSchemaManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      ConfigWarnings warnings,
+      DataSchemaFactory factory,
+      SimpleTextProvider textProvider,
+      RegistrationManager registrationManager,
+      RegistryManager registryManager,
+      HttpClient downloader) {
     super(cfg, dataDir);
     this.warnings = warnings;
     this.factory = factory;
     this.registryManager = registryManager;
-    this.resourceManager = resourceManager;
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd").create();
   }
 
   @Override
-  public void uninstallSafely(String schemaIdentifier, String schemaName) throws DeletionNotAllowedException {
+  public void uninstallSafely(String schemaIdentifier, String schemaName) {
     if (dataPackageSchemasByIdentifiers.containsKey(schemaIdentifier)) {
-      // check if it's used by some resources
-      for (Resource r : resourceManager.list()) {
-        if (r.getDataPackageIdentifier() != null
-            && r.getDataPackageIdentifier().equals(schemaIdentifier) && !r.getDataPackageMappings().isEmpty()) {
-          LOG.warn("Schema mapped in resource " + r.getShortname());
-          String msg = baseAction.getText("admin.dataPackages.delete.error.mapped", new String[] {r.getShortname()});
-          throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
-        }
-      }
       uninstall(schemaIdentifier, schemaName);
     } else {
-      LOG.warn("Data schema not installed locally, can't delete " + schemaIdentifier);
+      LOG.warn("Data schema not installed locally, can't delete {}", schemaIdentifier);
     }
   }
 
   @Override
-  public synchronized void update(String identifier) throws IOException, RegistryException {
+  public synchronized DataPackageSchema update(String identifier) throws IOException, RegistryException {
     // identify installed data schema by identifier
     DataPackageSchema installed = get(identifier);
+    DataPackageSchema latestCompatibleSchema = null;
 
     if (installed != null) {
       // verify there is a newer version
-      DataPackageSchema latestCompatibleSchema = null;
       String latestCompatibleSchemaVersion = registryManager.getLatestCompatibleSchemaVersion(installed.getName(), installed.getVersion());
 
       if (latestCompatibleSchemaVersion != null) {
@@ -148,30 +137,12 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         // uninstall and install new version
         uninstall(identifier, latestCompatibleSchema.getName());
         install(latestCompatibleSchema);
-
-        updateResourcesAfterSchemaUpdate(latestCompatibleSchema);
-      }
-    }
-  }
-
-  private void updateResourcesAfterSchemaUpdate(DataPackageSchema newlyInstalledSchema) {
-    resourceManager.list()
-        .stream()
-        .filter(Resource::isDataPackage)
-        .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
-  }
-
-  private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
-    // update metadata profile
-    if (CAMTRAP_DP.equals(resource.getCoreType())) {
-      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-        CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-        metadata.setProfile(newlyInstalledSchema.getProfile());
+      } else {
+        return null;
       }
     }
 
-    // update schema in mappings
-    resource.getDataPackageMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
+    return latestCompatibleSchema;
   }
 
   @Override

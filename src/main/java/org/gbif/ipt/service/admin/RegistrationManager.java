@@ -17,21 +17,18 @@ import org.gbif.doi.service.DoiService;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Network;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details ALL methods associated with the Organisations associated with the IPT.
  */
-@ImplementedBy(RegistrationManagerImpl.class)
 public interface RegistrationManager {
 
   /**
@@ -56,12 +53,13 @@ public interface RegistrationManager {
    * against it (it cannot be the hosting organisation), nor can there be any resource registered against it.
    *
    * @param key key of organisation to be deleted
+   * @param resources all resources
    *
    * @return Organisation if it was not null and was deleted successfully, or null if it couldn't be found
    *
    * @throws DeletionNotAllowedException if the deletion was not allowed for some reason
    */
-  Organisation delete(String key) throws DeletionNotAllowedException;
+  Organisation delete(String key, List<Resource> resources) throws DeletionNotAllowedException;
 
   /**
    * Returns a single organisation associated to the key, from list of organisations loaded into memory.

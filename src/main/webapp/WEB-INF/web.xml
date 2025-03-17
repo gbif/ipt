@@ -14,19 +14,38 @@
 			<tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-    <!-- Google Guice is used instead of Spring for lightweight dependency injection -->
-	<filter>
-		<filter-name>guice</filter-name>
-		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-	</filter>
+<!--    &lt;!&ndash; Google Guice is used instead of Spring for lightweight dependency injection &ndash;&gt;-->
+<!--	<filter>-->
+<!--		<filter-name>guice</filter-name>-->
+<!--		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>-->
+<!--	</filter>-->
 
-    <!-- The Guice listener defining all servlets & filters. -->
-	<filter-mapping>
-		<filter-name>guice</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>	
-	<listener>
-		<listener-class>org.gbif.ipt.config.IPTContextListener</listener-class>
+<!--    &lt;!&ndash; The Guice listener defining all servlets & filters. &ndash;&gt;-->
+<!--	<filter-mapping>-->
+<!--		<filter-name>guice</filter-name>-->
+<!--		<url-pattern>/*</url-pattern>-->
+<!--	</filter-mapping>	-->
+<!--	<listener>-->
+<!--		<listener-class>org.gbif.ipt.config.IPTContextListener</listener-class>-->
+<!--	</listener>-->
+
+  <filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
 
 </web-app>

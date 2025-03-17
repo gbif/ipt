@@ -54,8 +54,8 @@ public class OrganisationSupportIT {
       mock(AppConfig.class),
       mock(RegistrationManager.class),
       mock(OrganisationSupport.class),
-      mock(OrganisationsAction.RegisteredOrganisations.class),
-      mock(ResourceManager.class));
+      mock(ResourceManager.class),
+      mock(RegistryManager.class));
 
   private static AppConfig mockCfg;
   private static RegistryManager mockRegistryManager;

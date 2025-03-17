@@ -18,12 +18,11 @@ import org.gbif.ipt.struts2.converter.LongitudeFormatConverter;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
+import org.apache.struts2.conversion.TypeConversionException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import com.opensymphony.xwork2.conversion.TypeConversionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

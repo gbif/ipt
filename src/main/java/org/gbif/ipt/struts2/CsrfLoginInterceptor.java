@@ -20,14 +20,13 @@ import org.gbif.ipt.config.Constants;
 import java.net.URI;
 import java.security.SecureRandom;
 import java.util.Map;
-
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.StrutsStatics;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -42,7 +41,6 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
   private final static int TOKEN_LENGTH = 32;
   private static SecureRandom rnd = new SecureRandom();
 
-  @Inject
   private AppConfig cfg;
 
   @Override
@@ -89,5 +87,10 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
     resp.addCookie(csrfCookie);
 
     return invocation.invoke();
+  }
+
+  @Inject
+  public void setCfg(AppConfig cfg) {
+    this.cfg = cfg;
   }
 }
