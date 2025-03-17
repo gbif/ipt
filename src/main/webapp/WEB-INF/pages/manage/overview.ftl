@@ -1,6 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
-<#escape x as x?html>
-
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
@@ -1242,7 +1240,6 @@
         }
 
         $("#view-metadata-button").on('click', function () {
-            console.log("view-metadata-button")
             var dialogWindow = $("#datapackage-metadata-modal");
             dialogWindow.modal('show');
         });
@@ -1552,10 +1549,14 @@
 
                             <div class="details mt-3">
                                 <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
+                                <#assign lastPublishedTitle = lastPublishedTitle?markup_string>
                                 <#assign nextPublishedTitle><@s.text name="manage.overview.published.next.publication.intro"/></#assign>
+                                <#assign nextPublishedTitle = nextPublishedTitle?markup_string>
                                 <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
                                 <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
+                                <#assign releasedTitle = releasedTitle?markup_string>
                                 <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
+                                <#assign pubLogTitle = pubLogTitle?markup_string>
                                 <#assign pubRepTitle><@s.text name="manage.overview.published.report.show"/></#assign>
                                 <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
                                 <#assign showTitle><@s.text name="basic.show"/></#assign>
@@ -1564,10 +1565,11 @@
                                 <#assign emptyCell="-"/>
                                 <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
                                 <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
+                                <#assign licenseTitle = licenseTitle?markup_string>
 
                                 <div class="row g-2">
                                     <#if resource.lastPublished??>
-                                        <#assign lastPublishedVersionStatus>${resource.getLastPublishedVersionsPublicationStatus()?lower_case}</#assign>
+                                        <#assign lastPublishedVersionStatus = resource.getLastPublishedVersionsPublicationStatus()?string?lower_case />
 
                                         <div class="col-xl-6" style="height: 100%">
                                             <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
@@ -1691,6 +1693,7 @@
 
                                     <div class="col-xl-6" style="height: 100%">
                                         <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+                                        <#assign nextVersionStatus = nextVersionStatus?markup_string>
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
                                             <div class="ps-2 next-version-item-link">
@@ -2920,5 +2923,4 @@
         </div>
     </div>
 
-</#escape>
 <#include "/WEB-INF/pages/inc/footer.ftl">

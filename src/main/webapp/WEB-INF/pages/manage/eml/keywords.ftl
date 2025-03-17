@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -185,4 +184,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

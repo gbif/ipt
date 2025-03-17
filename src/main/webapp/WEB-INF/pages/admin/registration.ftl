@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
@@ -47,7 +46,6 @@
             }
 
             $('#organisation\\.key').change(function() {
-
                 var organisationSelected = $('#organisation\\.key :selected');
                 var organisationKey = organisationSelected.val();
                 var orgName = organisationSelected.text();
@@ -64,7 +62,7 @@
 
                 $('#organisation\\.alias').val(orgName);
 
-                if(organisationKey) {
+                if (organisationKey) {
                     var url = '${registryURL}organisation/' + organisationKey + ".json";
 
                     $.getJSON(url, function (data) {
@@ -111,7 +109,7 @@
                         if (numberOfIptInstallations > 0) {
                             // do not remove, will be substituted in installationsWarningText
                             var organizationPortalLink = "<a href=\"${cfg.portalUrl!}/publisher/" + organisationKey + "\">" + orgName + "</a>";
-                            var installationsWarningText = `<@s.text name="admin.registration.duplicate.warning"/>`;
+                            var installationsWarningText = `<@s.text name="admin.registration.duplicate.warning"><@s.param>` + organizationPortalLink + `</@s.param></@s.text>`;
                             var installationsCallout = $("#installations-warning");
                             installationsCallout.html(installationsWarningText);
                             installationsCallout.show();
@@ -383,6 +381,7 @@
                                     <#assign selectOrganisationInfo>
                                         <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
                                     </#assign>
+                                    <#assign selectOrganisationInfo = selectOrganisationInfo?markup_string>
                                     <div class="d-flex text-smaller">
                                         <a tabindex="0" role="button"
                                            class="popover-link"
@@ -459,4 +458,3 @@
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

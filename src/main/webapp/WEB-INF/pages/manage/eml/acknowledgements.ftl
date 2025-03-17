@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -155,4 +154,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

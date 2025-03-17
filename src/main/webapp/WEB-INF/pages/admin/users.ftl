@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageUsers"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -100,5 +99,3 @@
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-
-</#escape>

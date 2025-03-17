@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MappingAction" -->
-<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.mapping.title"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -373,9 +372,7 @@
 </#macro>
 
 <#macro processSurroundedWithBackticksAsCode examples>
-    <#noescape>
         ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
-    </#noescape>
 </#macro>
 
 <#macro showField field index>
@@ -505,6 +502,7 @@
                 <#else>
                     <#assign extensionType><@s.text name='extension'/></#assign>
                 </#if>
+                <#assign extensionType = extensionType?markup_string>
 
                 <div class="mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
@@ -766,4 +764,3 @@
 </form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl"/>
-</#escape>

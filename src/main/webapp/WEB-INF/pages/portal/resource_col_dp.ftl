@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.portal.ResourceAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title>${dpMetadata.title!"IPT"}</title>
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -673,5 +672,3 @@
         });
 
     </script>
-
-</#escape>

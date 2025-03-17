@@ -24,7 +24,6 @@
 
             $("#plus-source").click(function (event) {
                 event.preventDefault();
-                console.log("plus source triggered")
                 addNewSourceItem(true);
             });
 
@@ -48,7 +47,6 @@
             }
 
             function addNewSourceItem(effects) {
-                console.log("add new source triggered")
                 var newItem = $('#baseItem-source').clone();
                 if (effects) newItem.hide();
                 newItem.appendTo('#source-items');

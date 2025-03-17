@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
@@ -229,14 +228,23 @@
 
     <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
     <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
+    <#assign copyLink = copyLink?markup_string>
     <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
+    <#assign copyFromAnotherLink = copyFromAnotherLink?markup_string>
     <#assign removeContactLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.contact'/></#assign>
+    <#assign removeContactLink = removeContactLink?markup_string>
     <#assign removeCreatorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='portal.resource.creator'/></#assign>
+    <#assign removeCreatorLink = removeCreatorLink?markup_string>
     <#assign removeMetadataProviderLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.metadataProvider'/></#assign>
+    <#assign removeMetadataProviderLink = removeMetadataProviderLink?markup_string>
     <#assign addContactLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.contact'/></#assign>
+    <#assign addContactLink = addContactLink?markup_string>
     <#assign addCreatorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='portal.resource.creator'/></#assign>
+    <#assign addCreatorLink = addCreatorLink?markup_string>
     <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
+    <#assign addMetadataProviderLink = addMetadataProviderLink?markup_string>
     <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
+    <#assign addNew = addNew?markup_string>
 
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
@@ -1825,11 +1833,16 @@
 
                             <!-- retrieve some link names one time -->
                             <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
+                            <#assign copyLink = copyLink?markup_string>
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+                            <#assign removeLink = removeLink?markup_string>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.parties.item'/></#assign>
+                            <#assign addLink = addLink?markup_string>
                             <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
+                            <#assign copyFromAnotherLink = copyFromAnotherLink?markup_string>
                             <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
                             <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
+                            <#assign addNew = addNew?markup_string>
 
                             <div id="associatedParty-items">
                                 <#list eml.associatedParties as item>
@@ -2460,4 +2473,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

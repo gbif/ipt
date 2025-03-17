@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.UIManagementAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/ajaxfileupload.js"></script>
@@ -610,4 +609,3 @@
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

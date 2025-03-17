@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
@@ -431,7 +430,7 @@
                                                 <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || (inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content && inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content)) >
                                                     <tr>
                                                         <#-- 1st col, write rank name once -->
-                                                        <th class="col-4">${ranks.get(k.rank?html)?cap_first!}</th>
+                                                        <th class="col-4">${ranks.get(k.rank)?cap_first!}</th>
                                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                         <td>
                                                             <#if inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content>
@@ -568,4 +567,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

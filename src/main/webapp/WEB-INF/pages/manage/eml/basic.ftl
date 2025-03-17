@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
@@ -437,13 +436,13 @@
 
                                     <#if eml.intellectualRights?has_content>
                                         <#if eml.intellectualRights.contains("CC-BY-NC")>
-                                            <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                            <@s.text name='eml.intellectualRights.licence.ccbync'/>
                                         <#elseif eml.intellectualRights.contains("CC-BY")>
-                                            <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                            <@s.text name='eml.intellectualRights.licence.ccby'/>
                                         <#elseif eml.intellectualRights.contains("CC0")>
-                                            <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                            <@s.text name='eml.intellectualRights.licence.cczero'/>
                                         <#else>
-                                            <#noescape>${eml.intellectualRights!}</#noescape>
+                                            ${eml.intellectualRights!}
                                         </#if>
                                     </#if>
                                 </div>
@@ -497,4 +496,3 @@
 </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

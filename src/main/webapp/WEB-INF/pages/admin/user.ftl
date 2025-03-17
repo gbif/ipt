@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#if "${newUser!}"=="no">
         <#assign newUserPage=false/>
         <#assign editUserPage=true/>
@@ -153,4 +152,3 @@
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>
