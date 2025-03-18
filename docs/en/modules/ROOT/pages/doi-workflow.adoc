@@ -19,13 +19,16 @@ Best practice is to assign a new DOI to the resource every time it undergoes a s
 
 == Assigning a DOI to a resource
 
-On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs.  The {doiicon} button allows assigning a new DOI for a resource.  Assigning a new DOI also increases the major version of the resource.
+On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs. The {doiicon} button allows assigning a new DOI for a resource. Assigning a new DOI also increases the major version of the resource.
 
-.This demonstrates a major version change since the pending version has been reserved a new DOI:
+.This demonstrates a page with Reserve DOI button
 image::ipt2/manage/IPTManageResourcePublishTable.png[]
 
-.This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
+.This demonstrates a major version change since the pending version has been reserved a new DOI:
 image::ipt2/manage/IPTManageResourcePublishTable2.png[]
+
+.This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:
+image::ipt2/manage/IPTManageResourcePublishTable3.png[]
 
 Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.  Once a resource with a DOI is made public, it can no longer be made private.
 
