@@ -10,6 +10,7 @@ image::ipt2/administration/IPTAdminBeforeRegistration.png[]
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
 
 image::ipt2/administration/IPTAdminConfigIPT.png[]
+image::ipt2/administration/IPTAdminConfigIPT2.png[]
 
 * *IPT data directory* - This shows the directory on the server where all the IPT's configuration, resources and log files are stored.
 * *Default language* - This shows the default IPT language. English by default.
@@ -36,6 +37,7 @@ The IPT tests the Public URL for accessibility from the client computer when the
 * *Archival Mode* - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.
 * *Number of archived versions* - When archival mode is enabled, setting this configuration value to a number will keep that many old versions, but automatically delete older versions.
 * *IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.
+* *Logo redirect URL* - Enable redirection from the main logo to another location, with the default set to the IPT public URL.
 
 == Publish all resources
 This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually.
